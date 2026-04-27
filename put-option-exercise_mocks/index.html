@@ -676,7 +676,10 @@
               <div style="font-size:11px;color:#374151;"><code style="background:#DBEAFE;padding:1px 5px;border-radius:3px;">coupon_rate</code> &nbsp;13.50% p.a.</div>
               <div style="font-size:11px;color:#374151;"><code style="background:#DBEAFE;padding:1px 5px;border-radius:3px;">payment_frequency</code> &nbsp;Monthly</div>
               <div style="font-size:11px;color:#374151;"><code style="background:#DBEAFE;padding:1px 5px;border-radius:3px;">face_value</code> &nbsp;₹1,00,000</div>
-              <div style="font-size:11px;color:#374151;"><code style="background:#DBEAFE;padding:1px 5px;border-radius:3px;">settlement_date</code> &nbsp;today + T+1 &nbsp;<span style="background:#6366F1;color:#fff;font-size:10px;padding:1px 5px;border-radius:3px;font-weight:600;">RECALCULATED DAILY</span></div>
+              <div style="font-size:11px;color:#374151;grid-column:1/-1;"><code style="background:#DBEAFE;padding:1px 5px;border-radius:3px;">r</code> &nbsp;= 1.1715% &nbsp;<span style="background:#059669;color:#fff;font-size:10px;padding:1px 5px;border-radius:3px;font-weight:600;">CONSTANT — computed once from approved_ytp, stored</span></div>
+              <div style="font-size:11px;color:#374151;grid-column:1/-1;border-top:1px dashed #BFDBFE;margin-top:6px;padding-top:6px;font-weight:600;color:#1E40AF;">Dynamic — recalculated daily / at checkout</div>
+              <div style="font-size:11px;color:#374151;"><code style="background:#DBEAFE;padding:1px 5px;border-radius:3px;">settlement_date</code> &nbsp;<span style="background:#6366F1;color:#fff;font-size:10px;padding:1px 5px;border-radius:3px;font-weight:600;">T+1 or T+2</span></div>
+              <div style="font-size:11px;color:#374151;">📅 Before 3:00 PM on business day → T+1<br>📅 At/after 3:00 PM or weekend/holiday → T+2</div>
             </div>
           </div>
 
@@ -688,8 +691,8 @@
             <div style="display:flex;flex-direction:column;gap:6px;">
               <div style="display:flex;gap:10px;align-items:flex-start;">
                 <div style="background:#F59E0B;color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">1</div>
-                <div style="font-size:11px;color:#374151;">Convert <code style="background:#FEF3C7;padding:1px 4px;border-radius:3px;">approved_ytp</code> to monthly rate &nbsp;→&nbsp;
-                  <span style="font-family:monospace;background:#FEF3C7;padding:2px 6px;border-radius:3px;display:inline-block;margin-top:3px;">r = (1 + approved_ytp / 100)^(1/12) − 1 &nbsp;→&nbsp; r = 1.1715% / month</span></div>
+                <div style="font-size:11px;color:#374151;"><code style="background:#FEF3C7;padding:1px 4px;border-radius:3px;">r</code> is already stored as a constant &nbsp;→&nbsp; <strong>skip recomputation</strong><br>
+                  <span style="color:#6B7280;font-size:10px;">r = 1.1715% was derived once at onboarding: (1 + 15/100)^(1/12) − 1</span></div>
               </div>
               <div style="display:flex;gap:10px;align-items:flex-start;">
                 <div style="background:#F59E0B;color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">2</div>
@@ -711,9 +714,18 @@
 
           <!-- Step: Output -->
           <div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:8px;padding:14px 16px;margin-top:4px;">
-            <div style="font-size:11px;font-weight:700;color:#14532D;margin-bottom:8px;">📤 OUTPUT — Writes to Listing Record (daily)</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;">
-              <div style="font-size:11px;color:#374151;"><code style="background:#DCFCE7;padding:1px 5px;border-radius:3px;">purchase_price</code> = <strong style="color:#16A34A;">₹99,523</strong> &nbsp;<span style="color:#6B7280;">(changes daily → pulls to par)</span></div>
+            <div style="font-size:11px;font-weight:700;color:#14532D;margin-bottom:10px;">📤 OUTPUT — Two prices produced</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div style="background:#DCFCE7;border-radius:6px;padding:10px;">
+                <div style="font-size:10px;font-weight:700;color:#14532D;margin-bottom:6px;text-transform:uppercase;">Listing Display Price (daily cron)</div>
+                <div style="font-size:11px;color:#374151;">Settlement = T+1 (indicative)<br>Used on: bond card, explore page<br><strong style="color:#16A34A;">₹99,523</strong> &nbsp;<span style="color:#6B7280;">pulls to par daily</span></div>
+              </div>
+              <div style="background:#DCFCE7;border-radius:6px;padding:10px;">
+                <div style="font-size:10px;font-weight:700;color:#14532D;margin-bottom:6px;text-transform:uppercase;">Checkout Price (at trade)</div>
+                <div style="font-size:11px;color:#374151;">Settlement = actual T+1 or T+2<br>Used on: confirmation screen<br><strong style="color:#16A34A;">₹99,523</strong> (T+1) &nbsp;/&nbsp; <strong style="color:#16A34A;">₹99,562</strong> (T+2)<br><span style="color:#6B7280;">YTP = 15.0% in both cases</span></div>
+              </div>
+            </div>
+            <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;">
               <div style="font-size:11px;color:#374151;"><code style="background:#DCFCE7;padding:1px 5px;border-radius:3px;">yield_to_put</code> = <strong style="color:#16A34A;">15.0</strong> &nbsp;<span style="color:#6B7280;">(always = approved_ytp)</span></div>
               <div style="font-size:11px;color:#374151;"><code style="background:#DCFCE7;padding:1px 5px;border-radius:3px;">effective_yield</code> = <strong style="color:#16A34A;">15.0</strong></div>
               <div style="font-size:11px;color:#374151;"><code style="background:#DCFCE7;padding:1px 5px;border-radius:3px;">effective_maturity_date</code> = "2026-05-15"</div>
@@ -739,18 +751,18 @@
       <!-- Daily price drift -->
       <div style="background:#fff;border:1px solid #E2E8F0;border-radius:10px;padding:20px 24px;margin-bottom:20px;">
         <div style="font-size:13px;font-weight:700;color:#0F172A;margin-bottom:14px;">Daily Price Drift — Pull to Par</div>
-        <div style="font-size:11px;color:#475569;margin-bottom:12px;">As <code>settlement_date</code> advances, the number of coupon periods shrinks. To maintain exactly 15% YTP, <code>purchase_price</code> rises toward par each day.</div>
+        <div style="font-size:11px;color:#475569;margin-bottom:12px;">As <code>settlement_date</code> advances, coupon periods shrink. To maintain exactly 15% YTP, <code>purchase_price</code> rises toward par. Only <code>n</code> changes — <code>r</code> stays constant at 1.1715%.</div>
         <table style="width:100%;border-collapse:collapse;font-size:11px;">
-          <thead><tr style="background:#F8FAFC;"><th style="text-align:left;padding:7px 10px;color:#64748B;font-weight:600;border-bottom:1px solid #E2E8F0;">Day</th><th style="text-align:left;padding:7px 10px;color:#64748B;font-weight:600;border-bottom:1px solid #E2E8F0;">Months to put</th><th style="text-align:left;padding:7px 10px;color:#64748B;font-weight:600;border-bottom:1px solid #E2E8F0;">purchase_price</th><th style="text-align:left;padding:7px 10px;color:#64748B;font-weight:600;border-bottom:1px solid #E2E8F0;">yield_to_put</th></tr></thead>
+          <thead><tr style="background:#F8FAFC;"><th style="text-align:left;padding:7px 10px;color:#64748B;font-weight:600;border-bottom:1px solid #E2E8F0;">Day</th><th style="text-align:left;padding:7px 10px;color:#64748B;font-weight:600;border-bottom:1px solid #E2E8F0;">Months left (n)</th><th style="text-align:left;padding:7px 10px;color:#64748B;font-weight:600;border-bottom:1px solid #E2E8F0;">Listing price (T+1)</th><th style="text-align:left;padding:7px 10px;color:#64748B;font-weight:600;border-bottom:1px solid #E2E8F0;">Checkout T+2 (after 3pm)</th><th style="text-align:left;padding:7px 10px;color:#64748B;font-weight:600;border-bottom:1px solid #E2E8F0;">yield_to_put</th></tr></thead>
           <tbody>
-            <tr style="border-bottom:1px solid #F1F5F9;"><td style="padding:7px 10px;color:#374151;">Day 0</td><td style="padding:7px 10px;color:#374151;">11</td><td style="padding:7px 10px;color:#374151;font-weight:600;">₹99,523</td><td style="padding:7px 10px;color:#16A34A;font-weight:700;">15.0%</td></tr>
-            <tr style="border-bottom:1px solid #F1F5F9;"><td style="padding:7px 10px;color:#374151;">Day 30</td><td style="padding:7px 10px;color:#374151;">10</td><td style="padding:7px 10px;color:#374151;font-weight:600;">₹99,648</td><td style="padding:7px 10px;color:#16A34A;font-weight:700;">15.0%</td></tr>
-            <tr style="border-bottom:1px solid #F1F5F9;"><td style="padding:7px 10px;color:#374151;">Day 90</td><td style="padding:7px 10px;color:#374151;">8</td><td style="padding:7px 10px;color:#374151;font-weight:600;">₹99,845</td><td style="padding:7px 10px;color:#16A34A;font-weight:700;">15.0%</td></tr>
-            <tr style="border-bottom:1px solid #F1F5F9;"><td style="padding:7px 10px;color:#374151;">Day 150</td><td style="padding:7px 10px;color:#374151;">5</td><td style="padding:7px 10px;color:#374151;font-weight:600;">₹99,921</td><td style="padding:7px 10px;color:#16A34A;font-weight:700;">15.0%</td></tr>
-            <tr><td style="padding:7px 10px;color:#374151;">Day 210</td><td style="padding:7px 10px;color:#374151;">2</td><td style="padding:7px 10px;color:#374151;font-weight:600;">₹99,979</td><td style="padding:7px 10px;color:#16A34A;font-weight:700;">15.0%</td></tr>
+            <tr style="border-bottom:1px solid #F1F5F9;"><td style="padding:7px 10px;color:#374151;">Day 0</td><td style="padding:7px 10px;color:#374151;">11</td><td style="padding:7px 10px;color:#374151;font-weight:600;">₹99,523</td><td style="padding:7px 10px;color:#374151;">₹99,562 <span style="color:#9AA4B2;">(+₹39)</span></td><td style="padding:7px 10px;color:#16A34A;font-weight:700;">15.0%</td></tr>
+            <tr style="border-bottom:1px solid #F1F5F9;"><td style="padding:7px 10px;color:#374151;">Day 30</td><td style="padding:7px 10px;color:#374151;">10</td><td style="padding:7px 10px;color:#374151;font-weight:600;">₹99,564</td><td style="padding:7px 10px;color:#374151;">₹99,603</td><td style="padding:7px 10px;color:#16A34A;font-weight:700;">15.0%</td></tr>
+            <tr style="border-bottom:1px solid #F1F5F9;"><td style="padding:7px 10px;color:#374151;">Day 90</td><td style="padding:7px 10px;color:#374151;">8</td><td style="padding:7px 10px;color:#374151;font-weight:600;">₹99,647</td><td style="padding:7px 10px;color:#374151;">₹99,686</td><td style="padding:7px 10px;color:#16A34A;font-weight:700;">15.0%</td></tr>
+            <tr style="border-bottom:1px solid #F1F5F9;"><td style="padding:7px 10px;color:#374151;">Day 150</td><td style="padding:7px 10px;color:#374151;">6</td><td style="padding:7px 10px;color:#374151;font-weight:600;">₹99,732</td><td style="padding:7px 10px;color:#374151;">₹99,771</td><td style="padding:7px 10px;color:#16A34A;font-weight:700;">15.0%</td></tr>
+            <tr><td style="padding:7px 10px;color:#374151;">Day 210</td><td style="padding:7px 10px;color:#374151;">4</td><td style="padding:7px 10px;color:#374151;font-weight:600;">₹99,818</td><td style="padding:7px 10px;color:#374151;">₹99,857</td><td style="padding:7px 10px;color:#16A34A;font-weight:700;">15.0%</td></tr>
           </tbody>
         </table>
-        <div style="margin-top:10px;background:#EFF6FF;border-radius:6px;padding:8px 12px;font-size:11px;color:#1E40AF;"><strong>Key property:</strong> <code>yield_to_put</code> is always exactly 15.0% regardless of when the investor buys. The price moves, the yield doesn't.</div>
+        <div style="margin-top:10px;background:#EFF6FF;border-radius:6px;padding:8px 12px;font-size:11px;color:#1E40AF;"><strong>Key property:</strong> <code>yield_to_put</code> is always exactly 15.0% regardless of when the investor buys or which settlement applies. Price moves, yield doesn't. T+1 vs T+2 difference is always ≈₹39.</div>
       </div>
 
       <!-- Real numbers example -->
