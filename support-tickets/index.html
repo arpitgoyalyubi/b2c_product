@@ -120,7 +120,7 @@
     <a class="header-back" href="../">← All mocks</a>
   </div>
   <h1>Support Ticket Analysis — April 2026</h1>
-  <p>Freshdesk B2C-only · Apr 1–25 · 561 clean tickets · B2B2C excluded via post-fetch tag guard</p>
+  <p>Freshdesk B2C-only · Apr 1–25 · 514 clean tickets · B2B2C excluded via post-fetch tag guard</p>
   <div class="header-meta">
     <span class="meta-chip">Source: <strong>Freshdesk REST API v2</strong></span>
     <span class="meta-chip">Sample: <strong>15 ticket bodies / category</strong></span>
@@ -131,35 +131,38 @@
 <div class="wrap">
 
   <!-- Volume Trend -->
-  <div class="section-title">Weekly Volume Trend</div>
+  <div class="section-title">Weekly Volume Trend — True Mon–Sun Calendar Weeks</div>
   <div class="week-grid">
     <div class="week-card">
-      <div class="wk">Week 1</div>
-      <div class="dates">Apr 1–7</div>
-      <div class="count">146</div>
-      <div class="rate">20.9 / day</div>
+      <div class="wk">Week 1 · Partial</div>
+      <div class="dates">Apr 1–5 (Wed–Sun)</div>
+      <div class="count">103</div>
+      <div class="rate">20.6 / day · 5 days</div>
     </div>
     <div class="week-card">
       <div class="wk">Week 2</div>
-      <div class="dates">Apr 8–14</div>
-      <div class="count">131</div>
-      <div class="rate">18.7 / day</div>
+      <div class="dates">Apr 6–12 (Mon–Sun)</div>
+      <div class="count">119</div>
+      <div class="rate">17.0 / day · 7 days</div>
     </div>
     <div class="week-card">
-      <div class="wk">Week 3</div>
-      <div class="dates">Apr 15–21</div>
-      <div class="count">158</div>
-      <div class="rate">22.6 / day</div>
+      <div class="wk">Week 3 ⚠</div>
+      <div class="dates">Apr 13–19 (Mon–Sun)</div>
+      <div class="count">75</div>
+      <div class="rate">10.7 / day · 7 days</div>
     </div>
     <div class="week-card alert">
       <div class="wk">Week 4</div>
-      <div class="dates">Apr 22–25</div>
-      <div class="count">129</div>
-      <div class="rate">32.3 / day</div>
-      <div class="alert-badge">⚠ Accelerating</div>
+      <div class="dates">Apr 20–25 (Mon–Sat)</div>
+      <div class="count">217</div>
+      <div class="rate">36.2 / day · 6 days</div>
+      <div class="alert-badge">⚠ 3.4× spike vs Wk 3</div>
     </div>
   </div>
-  <p style="font-size:12px;color:#64748B;margin-top:8px;">Peak days: Apr 23 (43 tickets), Apr 24 (47 tickets) — investigate what changed Apr 20–22.</p>
+  <p style="font-size:12px;color:#64748B;margin-top:8px;">
+    Peak days: Apr 23 (43), Apr 24 (46), Apr 25 (43) — all in Week 4.
+    <strong style="color:#D97706"> · Note:</strong> Apr 15–16 show zero tickets in Freshdesk data — likely a gap around the Ambedkar Jayanti (Apr 14) holiday weekend. Week 3 count (75) may be slightly understated.
+  </p>
 
   <!-- Category Summary -->
   <div class="section-title">Category Breakdown</div>
