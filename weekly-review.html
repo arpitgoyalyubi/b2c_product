@@ -238,7 +238,7 @@
     <div class="cover-eyebrow">Aspero · B2C Analytics</div>
     <h1>Weekly Business<br>Review</h1>
     <div class="cover-sub">Funnel · KYC · Investments · GTV</div>
-    <div class="cover-period">Apr 21 – 28, 2026 &nbsp;·&nbsp; Generated Apr 28, 2026 · 12:00</div>
+    <div class="cover-period">Apr 21 – 28, 2026 &nbsp;·&nbsp; Generated Apr 28, 2026 · 12:22</div>
     <div class="cover-metrics" id="cover-metrics"></div>
   </div>
 
@@ -338,7 +338,7 @@
       <div class="stat-list">
         <div class="stat-item"><span class="si-lbl">Orders This Week</span><span class="si-val" id="s5-orders">—</span></div>
         <div class="stat-item"><span class="si-lbl">10-Wk Avg GTV</span><span class="si-val" id="s5-avgg">—</span></div>
-        <div class="stat-item"><span class="si-lbl">Repeat Investors</span><span class="si-val" id="s5-repeat">—</span></div>
+        <div class="stat-item"><span class="si-lbl">MTD vs Last Month</span><span class="si-val" id="s5-repeat">—</span></div>
       </div>
     </div>
     <div class="right-panel">
@@ -386,7 +386,7 @@ document.addEventListener('keydown', e => {
 });
 
 // ── Data & helpers ────────────────────────────────────────────────────────────
-const D = {"generated": "Apr 28, 2026 · 12:00", "period": "Apr 21 – 28, 2026", "health": "healthy", "labels": ["Feb 16", "Feb 23", "Mar 2", "Mar 9", "Mar 16", "Mar 23", "Mar 30", "Apr 6", "Apr 13", "Apr 20"], "signups": [1967.0, 1921.0, 1177.0, 1354.0, 1625.0, 2163.0, 2891.0, 2229.0, 2476.0, 2901.0], "otps": [3383.0, 3397.0, 2596.0, 2550.0, 2859.0, 3544.0, 5094.0, 4250.0, 4207.0, 4566.0], "signup_conv": [58.1, 56.5, 45.3, 53.1, 56.8, 61.0, 56.8, 52.4, 58.9, 63.5], "kpi_signups": {"last": 2476.0, "this": 2901.0, "avg": 2070.4, "delta": 425.0, "suffix": ""}, "kpi_signup_conv": {"last": 58.9, "this": 63.5, "avg": 56.2, "delta": 4.6, "suffix": "%"}, "kyc_starters": [716.0, 766.0, 517.0, 539.0, 617.0, 798.0, 907.0, 766.0, 850.0, 954.0], "kyc_done": [49.0, 60.0, 51.0, 88.0, 200.0, 284.0, 328.0, 297.0, 358.0, 248.0], "kyc_start_pct": [36.4, 39.9, 43.9, 39.8, 38.0, 36.9, 31.4, 34.4, 34.3, 32.9], "kyc_e2e_pct": [2.5, 3.1, 4.3, 6.5, 12.3, 13.1, 11.3, 13.3, 14.5, 8.5], "kpi_kyc_start_pct": {"last": 34.3, "this": 32.9, "avg": 36.8, "delta": -1.4, "suffix": "%"}, "kpi_kyc_e2e_pct": {"last": 14.5, "this": 8.5, "avg": 8.9, "delta": -6.0, "suffix": "%"}, "rtt": [49.0, 60.0, 51.0, 88.0, 200.0, 284.0, 328.0, 297.0, 358.0, 248.0], "payments": [57.0, 68.0, 65.0, 52.0, 56.0, 57.0, 70.0, 87.0, 124.0, 163.0], "rtt_conv": [116.3, 113.3, 127.5, 59.1, 28.0, 20.1, 21.3, 29.3, 34.6, 65.7], "kpi_rtt": {"last": 358.0, "this": 248.0, "avg": 196.3, "delta": -110.0, "suffix": ""}, "kpi_rtt_conv": {"last": 34.6, "this": 65.7, "avg": 61.5, "delta": 31.1, "suffix": "%"}, "wau": [5244.0, 5200.0, 4484.0, 4382.0, 4643.0, 5425.0, 7648.0, 6712.0, 6378.0, 7247.0], "kpi_wau": {"last": 6378.0, "this": 7247.0, "avg": 5736.3, "delta": 869.0, "suffix": ""}, "orders": [57.0, 68.0, 65.0, 52.0, 56.0, 57.0, 70.0, 87.0, 124.0, 163.0], "new_orders": [37, 44, 42, 34, 37, 37, 46, 57, 81, 107], "rep_orders": [20.0, 24.0, 23.0, 18.0, 19.0, 20.0, 24.0, 30.0, 43.0, 56.0], "gtv": [1.22, 1.36, 1.41, 1.06, 1.03, 1.09, 1.41, 1.57, 2.23, 3.06], "kpi_orders": {"last": 124.0, "this": 163.0, "avg": 79.9, "delta": 39.0, "suffix": ""}, "kpi_gtv": {"last": 2.23, "this": 3.06, "avg": 1.5, "delta": 0.8, "suffix": "cr"}, "repeat_pct": 33.9, "gtv_mtd_this": 13.5, "gtv_mtd_prev": 4.6, "mtd_month_this": "Apr", "mtd_month_prev": "Mar"};
+const D = {"generated": "Apr 28, 2026 · 12:22", "period": "Apr 21 – 28, 2026", "health": "healthy", "labels": ["Feb 16", "Feb 23", "Mar 2", "Mar 9", "Mar 16", "Mar 23", "Mar 30", "Apr 6", "Apr 13", "Apr 20"], "signups": [1967.0, 1921.0, 1177.0, 1354.0, 1625.0, 2163.0, 2891.0, 2229.0, 2476.0, 2901.0], "otps": [3383.0, 3397.0, 2596.0, 2550.0, 2859.0, 3544.0, 5094.0, 4250.0, 4207.0, 4566.0], "signup_conv": [58.1, 56.5, 45.3, 53.1, 56.8, 61.0, 56.8, 52.4, 58.9, 63.5], "kpi_signups": {"last": 2476.0, "this": 2901.0, "avg": 2070.4, "delta": 425.0, "suffix": ""}, "kpi_signup_conv": {"last": 58.9, "this": 63.5, "avg": 56.2, "delta": 4.6, "suffix": "%"}, "kyc_starters": [716.0, 766.0, 517.0, 539.0, 617.0, 798.0, 907.0, 766.0, 850.0, 954.0], "kyc_done": [49.0, 60.0, 51.0, 88.0, 200.0, 284.0, 328.0, 297.0, 358.0, 248.0], "kyc_start_pct": [36.4, 39.9, 43.9, 39.8, 38.0, 36.9, 31.4, 34.4, 34.3, 32.9], "kyc_e2e_pct": [2.5, 3.1, 4.3, 6.5, 12.3, 13.1, 11.3, 13.3, 14.5, 8.5], "kpi_kyc_start_pct": {"last": 34.3, "this": 32.9, "avg": 36.8, "delta": -1.4, "suffix": "%"}, "kpi_kyc_e2e_pct": {"last": 14.5, "this": 8.5, "avg": 8.9, "delta": -6.0, "suffix": "%"}, "rtt": [49.0, 60.0, 51.0, 88.0, 200.0, 284.0, 328.0, 297.0, 358.0, 248.0], "payments": [57.0, 68.0, 65.0, 52.0, 56.0, 57.0, 70.0, 87.0, 124.0, 163.0], "rtt_conv": [116.3, 113.3, 127.5, 59.1, 28.0, 20.1, 21.3, 29.3, 34.6, 65.7], "kpi_rtt": {"last": 358.0, "this": 248.0, "avg": 196.3, "delta": -110.0, "suffix": ""}, "kpi_rtt_conv": {"last": 34.6, "this": 65.7, "avg": 61.5, "delta": 31.1, "suffix": "%"}, "wau": [2813.0, 2813.0, 2058.0, 2243.0, 2578.0, 3251.0, 4414.0, 3790.0, 3975.0, 4544.0], "kpi_wau": {"last": 3975.0, "this": 4544.0, "avg": 3247.9, "delta": 569.0, "suffix": ""}, "orders": [101.0, 99.0, 112.0, 79.0, 88.0, 73.0, 121.0, 125.0, 191.0, 237.0], "gtv": [1.22, 1.36, 1.41, 1.06, 1.03, 1.09, 1.41, 1.57, 2.23, 3.06], "kpi_orders": {"last": 191.0, "this": 237.0, "avg": 122.6, "delta": 46.0, "suffix": ""}, "kpi_gtv": {"last": 2.23, "this": 3.06, "avg": 1.5, "delta": 0.8, "suffix": "cr"}, "repeat_pct": 33.9, "gtv_mtd_this": 8.7, "gtv_mtd_prev": 4.6, "mtd_month_this": "Apr", "mtd_month_prev": "Mar"};
 const L = D.labels;
 
 function num(v)  { return v != null ? Math.round(v).toLocaleString() : '—'; }
@@ -539,15 +539,14 @@ insights('ins-s4', [
 setHero('h5-val', 'h5-delta', cr(D.kpi_gtv.this), null, '');
 setEl('s5-orders', num(D.kpi_orders.this));
 setEl('s5-avgg',   cr(D.kpi_gtv.avg));
-setEl('s5-repeat', D.repeat_pct.toFixed(1) + '%');
+setEl('s5-repeat', `₹${D.gtv_mtd_this}cr vs ₹${D.gtv_mtd_prev}cr`);
 mkChart('chart-gtv', [
-  bar('New Customer Orders',    D.new_orders, BLUE,  'ord'),
-  bar('Repeat Customer Orders', D.rep_orders, ROSE,  'ord'),
-  line('Weekly GTV (₹cr)',      D.gtv,        AMBER, 'y2'),
+  bar('Orders', D.orders, ROSE),
+  line('Weekly GTV (₹cr)', D.gtv, AMBER, 'y2'),
 ], Y2);
 insights('ins-s5', [
-  { color: ROSE,  txt: `MTD GTV: ₹${D.gtv_mtd_this}cr vs ₹${D.gtv_mtd_prev}cr last ${D.mtd_month_prev}` },
-  { color: BLUE,  txt: `10-wk avg GTV: ${cr(D.kpi_gtv.avg)} · repeat: ${D.repeat_pct.toFixed(1)}%` },
+  { color: ROSE,  txt: `${D.mtd_month_this} MTD GTV: ₹${D.gtv_mtd_this}cr vs ₹${D.gtv_mtd_prev}cr (${D.mtd_month_prev} same day)` },
+  { color: AMBER, txt: `10-wk avg GTV: ${cr(D.kpi_gtv.avg)} · orders last wk: ${num(D.kpi_orders.last)}` },
 ]);
 </script>
 </body>
