@@ -152,7 +152,7 @@
   <div class="header">
     <h1>Aspero SEO — Release Note · Apr 2026</h1>
     <div class="meta">
-      <span>📅 Period: Mar – Apr 28 2026</span>
+      <span>📅 Period: Mar – Apr 27 2026</span>
       <span>🎯 Scope: Bond Detail Pages (/invest/bond/*)</span>
       <span>👥 For: CXO Team</span>
       <span>📊 Data: Google Search Console (live)</span>
@@ -172,7 +172,7 @@
       <li><strong>The problem we solved:</strong> Since Aspero launched, every bond detail page was invisible to Google. Our app was built as a React client-side app — when Google's crawler visited a bond page, it saw a blank spinner, not the bond name, ISIN, or yield. A headless Chrome test in March 2026 confirmed it: at Google's crawl conditions (4× CPU throttle, 1.5 Mbps), the page had <em>exactly 6 readable characters</em> at the 5-second mark — just "Aspero" in the title tag. We were ranking for nothing because Google had nothing to index.</li>
       <li><strong>The hidden trap we found:</strong> Even beyond the CSR problem, a secondary issue compounded it — ISIN, coupon rate, and trustee data were inside a click-triggered modal. Google cannot click. That data was invisible to crawlers regardless of rendering. We discovered this in a manual DOM audit of the Krazybee bond page: 0 occurrences of "INE07HK07783" in rendered HTML. Zero. Every critical data point locked away.</li>
       <li><strong>11 SEO tickets shipped in 5 days (Apr 16–21)</strong> — all P0 blockers resolved in one focused sprint: server-side rendering, meta titles per bond, JSON-LD FinancialProduct schema, H1/H2/H3 headers, canonical tags, modal→accordion, partner subdomain noindex, sitemap submission (143 bond pages), and 301 redirects from the legacy invest.aspero.in URLs.</li>
-      <li><strong>Confirmed results through Apr 27 (GSC data):</strong> Bond page impressions/day up <strong>6.5×</strong> (24 → 158 imp/day in week of Apr 21–27). Average position improved from 12.9 → 8.6. 11 unique ISIN queries now appearing per week — these were completely absent before. 89 bond pages receiving impressions vs effectively none pre-fix.</li>
+      <li><strong>Confirmed results through Apr 27 (GSC data):</strong> Bond page impressions/day up <strong>6.5×</strong> (24 → 158 imp/day in week of Apr 20–26). Average position improved from 12.9 → 8.6. 11 unique ISIN queries now appearing per week — these were completely absent before. 89 bond pages receiving impressions vs effectively none pre-fix.</li>
       <li><strong>Full impact expected May 12–Jun 2026.</strong> Projection: 3,000–6,000 bond page impressions/week (vs ~900/week today) as Google re-indexes all pages with server-rendered content. <strong>Issuer aggregator pages (ASP-3592) and SSR internal linking (ASP-3440) are now Live as of Apr 28</strong> — adding a second and third impression surface. Issuer pages alone could account for ~40% of organic bond traffic (Wint Wealth benchmark).</li>
     </ul>
   </div>
@@ -183,7 +183,7 @@
       <div class="label">Bond Page Imp/Day</div>
       <div class="val">158</div>
       <div class="delta up">▲ 6.5× vs pre-fix baseline</div>
-      <div class="sub">Was 24/day (Jan 26–Apr 5) · Latest: Apr 21–27</div>
+      <div class="sub">Was 24/day (Jan 26–Apr 5) · Latest: Apr 20–26</div>
     </div>
     <div class="stat">
       <div class="label">Avg Position (bond pages)</div>
@@ -200,7 +200,7 @@
     <div class="stat">
       <div class="label">Bond Pages w/ Impressions</div>
       <div class="val">89</div>
-      <div class="delta up">▲ receiving impressions Apr 21–27</div>
+      <div class="delta up">▲ receiving impressions Apr 20–26</div>
       <div class="sub">154 in sitemap · 89 active this week</div>
     </div>
   </div>
@@ -335,7 +335,7 @@
         <div class="ba-row"><span class="metric">Avg Position</span><span class="value">12.9</span></div>
       </div>
       <div class="ba-box after">
-        <div class="ba-label">➡ After (Apr 6 – Apr 27 · 21 days)</div>
+        <div class="ba-label">➡ After (Apr 6 – Apr 26 · 21 days)</div>
         <div class="ba-row"><span class="metric">Total Impressions</span><span class="value">2,890</span></div>
         <div class="ba-row"><span class="metric">Impressions / Day</span><span class="value" style="color:var(--green)">138 ▲ 5.6×</span></div>
         <div class="ba-row"><span class="metric">Total Clicks</span><span class="value">90</span></div>
@@ -351,7 +351,7 @@
 
     <div class="callout">
       <span class="icon">💡</span>
-      <span>Data confirmed through Apr 27. The Apr 21–27 week hit <strong>158 imp/day and 89 active bond pages</strong> — the highest weekly performance ever recorded. Position has stabilised at 8.6, confirming the fix is fully indexed. Week of Apr 28 will be the first full post-indexing week for the new issuer aggregator pages (ASP-3592).</span>
+      <span>Data confirmed through Apr 27. The Apr 20–26 week hit <strong>158 imp/day and 89 active bond pages</strong> — the highest weekly performance ever recorded. Position has stabilised at 8.6, confirming the fix is fully indexed. Week of Apr 28 will be the first full post-indexing week for the new issuer aggregator pages (ASP-3592).</span>
     </div>
   </div>
 
@@ -430,7 +430,7 @@
         Before the fix, ~40–53 ISINs were "indexed" every week — Google had visited those URLs but seen a blank spinner.
         The ISIN count per week barely changed post-fix (40–53 → 59–74). But impressions jumped <strong>5.6×</strong>.
         The driver isn't just <em>how many</em> ISINs are indexed — it's <em>how well</em>. Each page that Google can now read
-        generates <strong>14.6 impressions/ISIN/week vs 3.6 before</strong>. The SSR fix didn't just index more pages; it made every indexed page rank properly.
+        generates <strong>13.5 impressions/ISIN/week on average post-fix, vs 4.0 before</strong> (3.4× quality lift). The peak week hit 14.6/ISIN. The SSR fix didn't just index more pages; it made every indexed page rank properly.
       </div>
     </div>
 
@@ -707,7 +707,7 @@
       </div>
       <div style="background:var(--blue-lt);border-radius:8px;padding:14px 16px">
         <div style="font-weight:700;font-size:13px;color:var(--green);margin-bottom:4px">Apr 27 Data In — Projection On Track ✅</div>
-        <div style="font-size:13px;color:var(--text2);line-height:1.6">Week of Apr 21–27 confirmed: <strong>1,106 impressions, 158/day, position 8.6</strong>. Growth trajectory is accelerating. ISIN queries holding at 7–11/week. Next signal: issuer aggregator pages (ASP-3592, live Apr 28) should start showing impressions in the week of May 5.</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.6">Week of Apr 20–26 confirmed: <strong>1,106 impressions, 158/day, position 8.6</strong>. Growth trajectory is accelerating. ISIN queries holding at 7–11/week. Next signal: issuer aggregator pages (ASP-3592, live Apr 28) should start showing impressions in the week of May 5.</div>
       </div>
       <div style="background:var(--green-lt);border-radius:8px;padding:14px 16px">
         <div style="font-weight:700;font-size:13px;color:var(--green);margin-bottom:4px">GSC Now Live — Automated Monitoring Fixed</div>
@@ -828,7 +828,7 @@ const weeks = [
   '22 Dec','29 Dec','5 Jan','12 Jan','19 Jan','26 Jan',
   '2 Feb','9 Feb','16 Feb','23 Feb',
   '2 Mar','9 Mar','16 Mar','23 Mar','30 Mar',
-  '6 Apr','13 Apr','20 Apr*'
+  '6 Apr','13 Apr','20 Apr'
 ];
 const bondImp = [24,59,99,84,140,174,152,179,264,221,93,108,111,131,275,892,892,1106];
 const bondClicks = [0,2,4,3,5,4,5,6,5,4,1,3,0,14,7,31,29,30];
@@ -864,7 +864,7 @@ const bondPages = [
 ];
 
 // ─── Projection data ─────────────────────────────────────────────────────────
-const projWeeks = ['Apr 13','Apr 20*','Apr 28','May 5','May 12','May 19','May 26','Jun 2','Jun 9','Jun 16'];
+const projWeeks = ['Apr 13','Apr 20','Apr 27','May 4','May 11','May 18','May 25','Jun 1','Jun 8','Jun 15'];
 const projActual =  [892, 1106, null,null,null,null,null,null,null,null];
 const projForecast= [null,1106,1400,2000,2800,3500,4200,4800,5400,6000];
 
@@ -1177,7 +1177,7 @@ isinData.forEach(d => {
 })();
 
 // ─── Stacked chart: bond pages vs app pages ───────────────────────────────────
-const investImp = [80,199,310,225,325,250,200,281,400,352,339,345,216,293,1099,1470,1657,347];
+const investImp = [80,199,310,225,325,250,200,281,400,352,339,345,216,293,1099,1470,1657,2123];
 const appImp    = investImp.map((v,i) => Math.max(0, v - bondImp[i]));  // app = invest minus bond
 
 new Chart(document.getElementById('stackedChart'), {
@@ -1411,8 +1411,8 @@ new Chart(document.getElementById('impPerIsinChart'), {
           },
           avgPre: {
             type: 'line',
-            yMin: 3.6,
-            yMax: 3.6,
+            yMin: 4.0,
+            yMax: 4.0,
             xMin: 0,
             xMax: PRE - 1,
             borderColor: '#F97316',
@@ -1420,7 +1420,7 @@ new Chart(document.getElementById('impPerIsinChart'), {
             borderDash: [4, 3],
             label: {
               display: true,
-              content: 'avg 3.6 pre-fix',
+              content: 'avg 4.0 pre-fix',
               position: 'end',
               backgroundColor: 'rgba(249,115,22,0.85)',
               color: '#FFF',
