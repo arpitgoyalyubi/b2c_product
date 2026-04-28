@@ -3,29 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>B2C Weekly Review — Apr 17 – 24, 2026</title>
+<title>B2C Weekly Review — Apr 21 – 28, 2026</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-  :root {
-    --navy: #0f2044;
-    --blue: #1a56db;
-    --accent: #22c55e;
-    --warn: #f59e0b;
-    --danger: #ef4444;
-    --text: #1e293b;
-    --muted: #64748b;
-    --bg: #f8fafc;
-    --card: #ffffff;
-    --border: #e2e8f0;
-  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-         background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0d1117;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 16px 56px;
+  }
 
-  /* Slide container */
-  .deck { width: 100vw; height: 100vh; position: relative; }
-  .slide { display: none; flex-direction: column; width: 100%; height: 100%;
-           padding: 0; position: absolute; top: 0; left: 0; }
+  /* ── Fixed 16:9 deck ─────────────────────────────────── */
+  .deck-wrap {
+    width: min(100%, 1200px);
+    aspect-ratio: 16 / 9;
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 30px 90px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.06);
+  }
+  .deck { width: 100%; height: 100%; }
+  .slide {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+  }
   .slide.active { display: flex; }
 
   /* Header bar */
@@ -41,216 +50,329 @@
   .slide-header h1 { font-size: 1.1rem; font-weight: 600; letter-spacing: .01em; }
   .slide-header .meta { font-size: .72rem; opacity: .7; }
 
-  /* Cover slide */
+  /* ── Cover slide ────────────────────────────────────── */
   .cover {
-    background: linear-gradient(135deg, #0f2044 0%, #1a3a6b 60%, #1e4fd9 100%);
-    color: #fff;
-    display: flex;
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 55%, #2563eb 100%);
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    gap: 16px;
+    color: #fff;
     text-align: center;
+    padding: 32px 40px;
+    gap: 0;
   }
-  .cover h1 { font-size: 2.4rem; font-weight: 700; }
-  .cover .sub { font-size: 1.1rem; opacity: .75; }
-  .cover .badge {
-    background: rgba(255,255,255,.12);
-    border: 1px solid rgba(255,255,255,.25);
-    border-radius: 20px;
-    padding: 6px 18px;
-    font-size: .85rem;
-    margin-top: 8px;
+  .cover-eyebrow {
+    font-size: .68rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.45);
+    margin-bottom: 10px;
   }
+  .cover h1 {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -.025em;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .cover-sub { font-size: .9rem; color: rgba(255,255,255,.6); margin-bottom: 20px; }
+  .cover-period {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 100px;
+    padding: 5px 18px;
+    font-size: .76rem;
+    color: rgba(255,255,255,.75);
+    margin-bottom: 32px;
+  }
+  .cover-metrics { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .cover-metric {
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 10px;
+    padding: 14px 20px;
+    text-align: left;
+    min-width: 130px;
+  }
+  .cover-metric .cm-label {
+    font-size: .63rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: rgba(255,255,255,.4);
+    margin-bottom: 5px;
+  }
+  .cover-metric .cm-val { font-size: 1.35rem; font-weight: 700; }
+  .cover-metric .cm-wow { font-size: .68rem; margin-top: 3px; }
+  .cm-wow.up   { color: #4ade80; }
+  .cm-wow.down { color: #f87171; }
+  .cm-wow.flat { color: rgba(255,255,255,.35); }
 
-  /* Body */
-  .slide-body {
-    flex: 1;
-    overflow: hidden;
+  /* ── Two-column content slides ─────────────────────── */
+  .two-col { flex-direction: row; }
+
+  .left-panel {
+    width: 30%;
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    padding: 16px 28px 8px;
-    gap: 12px;
-  }
-
-  /* KPI row */
-  .kpi-row { display: flex; gap: 12px; flex-shrink: 0; }
-  .kpi-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 18px;
-    flex: 1;
-    min-width: 0;
-  }
-  .kpi-card .label { font-size: .7rem; color: var(--muted); text-transform: uppercase;
-                     letter-spacing: .06em; margin-bottom: 4px; }
-  .kpi-card .value { font-size: 1.55rem; font-weight: 700; color: var(--text); }
-  .kpi-card .delta { font-size: .78rem; margin-top: 2px; }
-  .delta.up   { color: var(--accent); }
-  .delta.down { color: var(--danger); }
-  .delta.flat { color: var(--muted); }
-
-  /* Chart wrapper */
-  .chart-wrap {
-    flex: 1;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px;
-    overflow: hidden;
+    padding: 28px 22px 24px;
+    color: #fff;
     position: relative;
-    min-height: 0;
+    overflow: hidden;
   }
-  .chart-wrap canvas { max-height: 100%; }
+  .left-panel::before {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -80px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.05);
+    pointer-events: none;
+  }
+  .slide-num  { font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; opacity: .45; margin-bottom: 3px; }
+  .slide-ttl  { font-size: clamp(.9rem, 1.5vw, 1.1rem); font-weight: 700; line-height: 1.25; margin-bottom: 3px; }
+  .slide-sub  { font-size: .67rem; opacity: .55; margin-bottom: 20px; }
 
-  /* Navigation */
-  .nav {
-    position: fixed;
-    bottom: 18px;
-    left: 50%;
-    transform: translateX(-50%);
+  .hero-num {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -.03em;
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  .hero-lbl { font-size: .62rem; text-transform: uppercase; letter-spacing: .08em; opacity: .55; margin-bottom: 8px; }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: .72rem;
+    font-weight: 600;
+    border-radius: 100px;
+    padding: 3px 10px;
+    margin-bottom: 20px;
+  }
+  .hero-badge.up   { background: rgba(74,222,128,.22); color: #4ade80; }
+  .hero-badge.down { background: rgba(248,113,113,.22); color: #f87171; }
+  .hero-badge.flat { background: rgba(255,255,255,.1);  color: rgba(255,255,255,.55); }
+
+  .stat-list { display: flex; flex-direction: column; gap: 0; margin-top: auto; }
+  .stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 9px 0;
+    border-top: 1px solid rgba(255,255,255,.1);
+  }
+  .si-lbl { font-size: .62rem; text-transform: uppercase; letter-spacing: .07em; opacity: .5; }
+  .si-val { font-size: .88rem; font-weight: 700; }
+
+  /* ── Right panel ────────────────────────────────────── */
+  .right-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    padding: 20px 24px 14px;
+  }
+  .chart-area { flex: 1; position: relative; min-height: 0; }
+  .insight-row {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .ins-chip {
     display: flex;
     align-items: center;
-    gap: 16px;
-    background: rgba(15,32,68,.88);
-    border-radius: 24px;
-    padding: 8px 20px;
-    color: #fff;
-    font-size: .8rem;
-    z-index: 99;
-    backdrop-filter: blur(8px);
+    gap: 5px;
+    font-size: .67rem;
+    color: #64748b;
   }
-  .nav button {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 1.1rem;
-    cursor: pointer;
-    padding: 2px 6px;
-    border-radius: 6px;
-    transition: background .15s;
-  }
-  .nav button:hover { background: rgba(255,255,255,.18); }
-  .nav button:disabled { opacity: .3; cursor: default; }
-  #slide-counter { min-width: 48px; text-align: center; }
+  .ins-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
-  /* MTD comparison bar */
-  .mtd-row { display: flex; gap: 12px; flex-shrink: 0; }
-  .mtd-card {
-    flex: 1;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 18px;
+  /* ── Navigation bar (below deck) ───────────────────── */
+  .nav-bar {
+    margin-top: 16px;
     display: flex;
     align-items: center;
     gap: 14px;
   }
-  .mtd-card .mo { font-size: .78rem; color: var(--muted); text-transform: uppercase;
-                  letter-spacing: .05em; }
-  .mtd-card .v  { font-size: 1.4rem; font-weight: 700; }
-  .mtd-bar-wrap { flex: 1; height: 8px; background: var(--border); border-radius: 4px; }
-  .mtd-bar      { height: 8px; border-radius: 4px; background: var(--blue); }
+  .nav-btn {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.18);
+    color: #fff;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: .95rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,.2); }
+  .nav-btn:disabled { opacity: .25; cursor: default; }
+  .dots { display: flex; gap: 6px; align-items: center; }
+  .dot-btn {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: rgba(255,255,255,.28);
+    border: none; cursor: pointer; padding: 0;
+    transition: all .15s;
+  }
+  .dot-btn.active { background: #fff; transform: scale(1.35); }
 
   @media print {
-    .nav { display: none; }
-    .slide { page-break-after: always; }
-    body  { overflow: visible; height: auto; }
-    .deck { height: auto; }
+    body { background: #fff; padding: 0; }
+    .deck-wrap { box-shadow: none; border-radius: 0; }
+    .nav-bar { display: none; }
   }
 </style>
 </head>
 <body>
+
+<div class="deck-wrap">
 <div class="deck" id="deck">
 
   <!-- Slide 0: Cover -->
   <div class="slide cover active" id="s0">
-    <h1>B2C Weekly Review</h1>
-    <div class="sub">Funnel · KYC · Investments · GTV</div>
-    <div class="badge">Apr 17 – 24, 2026 &nbsp;·&nbsp; Generated Apr 28, 2026 · 11:30</div>
+    <div class="cover-eyebrow">Aspero · B2C Analytics</div>
+    <h1>Weekly Business<br>Review</h1>
+    <div class="cover-sub">Funnel · KYC · Investments · GTV</div>
+    <div class="cover-period">Apr 21 – 28, 2026 &nbsp;·&nbsp; Generated Apr 28, 2026 · 12:00</div>
+    <div class="cover-metrics" id="cover-metrics"></div>
   </div>
 
-  <!-- Slide 1: Signup Completion -->
-  <div class="slide" id="s1">
-    <div class="slide-header">
-      <h1>1 — Signup Completion</h1>
-      <div class="meta">OTP started → PIN set (weekly)</div>
+  <!-- Slide 1: Signup Completion — Sky Blue -->
+  <div class="slide two-col" id="s1">
+    <div class="left-panel" style="background:linear-gradient(160deg,#1d4ed8,#3b82f6);">
+      <div class="slide-num">Slide 01</div>
+      <div class="slide-ttl">Signup Completion</div>
+      <div class="slide-sub">OTP started → PIN set</div>
+      <div class="hero-num" id="h1-val">—</div>
+      <div class="hero-lbl">This week signups</div>
+      <div class="hero-badge flat" id="h1-delta">—</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">Last Week</span><span class="si-val" id="s1-last">—</span></div>
+        <div class="stat-item"><span class="si-lbl">10-Wk Average</span><span class="si-val" id="s1-avg">—</span></div>
+        <div class="stat-item"><span class="si-lbl">OTP→PIN Conv%</span><span class="si-val" id="s1-conv">—</span></div>
+      </div>
     </div>
-    <div class="slide-body">
-      <div class="kpi-row" id="kpi-signups"></div>
-      <div class="chart-wrap"><canvas id="chart-signups"></canvas></div>
-    </div>
-  </div>
-
-  <!-- Slide 2: KYC Start → Completion -->
-  <div class="slide" id="s2">
-    <div class="slide-header">
-      <h1>2 — KYC Start → Completion</h1>
-      <div class="meta">% of signups who start and complete full KYC</div>
-    </div>
-    <div class="slide-body">
-      <div class="kpi-row" id="kpi-kyc"></div>
-      <div class="chart-wrap"><canvas id="chart-kyc"></canvas></div>
-    </div>
-  </div>
-
-  <!-- Slide 3: RTT → First Trade -->
-  <div class="slide" id="s3">
-    <div class="slide-header">
-      <h1>3 — RTT → First Trade</h1>
-      <div class="meta">Ready-to-Trade users who made their first investment</div>
-    </div>
-    <div class="slide-body">
-      <div class="kpi-row" id="kpi-rtt"></div>
-      <div class="chart-wrap"><canvas id="chart-rtt"></canvas></div>
+    <div class="right-panel">
+      <div class="chart-area"><canvas id="chart-signups"></canvas></div>
+      <div class="insight-row" id="ins-s1"></div>
     </div>
   </div>
 
-  <!-- Slide 4: Weekly Active Users -->
-  <div class="slide" id="s4">
-    <div class="slide-header">
-      <h1>4 — Weekly Active Users</h1>
-      <div class="meta">Unique users who initiated a signin session</div>
+  <!-- Slide 2: KYC — Violet -->
+  <div class="slide two-col" id="s2">
+    <div class="left-panel" style="background:linear-gradient(160deg,#5b21b6,#8b5cf6);">
+      <div class="slide-num">Slide 02</div>
+      <div class="slide-ttl">KYC Start → Completion</div>
+      <div class="slide-sub">% of signups through full KYC</div>
+      <div class="hero-num" id="h2-val">—</div>
+      <div class="hero-lbl">KYC start rate (this week)</div>
+      <div class="hero-badge flat" id="h2-delta">—</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">Start Rate Last Wk</span><span class="si-val" id="s2-last">—</span></div>
+        <div class="stat-item"><span class="si-lbl">KYC Done Rate</span><span class="si-val" id="s2-done">—</span></div>
+        <div class="stat-item"><span class="si-lbl">10-Wk Avg Start</span><span class="si-val" id="s2-avg">—</span></div>
+      </div>
     </div>
-    <div class="slide-body">
-      <div class="kpi-row" id="kpi-wau"></div>
-      <div class="chart-wrap"><canvas id="chart-wau"></canvas></div>
+    <div class="right-panel">
+      <div class="chart-area"><canvas id="chart-kyc"></canvas></div>
+      <div class="insight-row" id="ins-s2"></div>
     </div>
   </div>
 
-  <!-- Slide 5: Orders & GTV -->
-  <div class="slide" id="s5">
-    <div class="slide-header">
-      <h1>5 — Orders &amp; GTV</h1>
-      <div class="meta">New &amp; existing customer orders · MTD comparison</div>
+  <!-- Slide 3: RTT → First Trade — Emerald -->
+  <div class="slide two-col" id="s3">
+    <div class="left-panel" style="background:linear-gradient(160deg,#065f46,#10b981);">
+      <div class="slide-num">Slide 03</div>
+      <div class="slide-ttl">RTT → First Trade</div>
+      <div class="slide-sub">Ready-to-Trade → first investment</div>
+      <div class="hero-num" id="h3-val">—</div>
+      <div class="hero-lbl">RTT conv% (this week)</div>
+      <div class="hero-badge flat" id="h3-delta">—</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">RTT Users This Wk</span><span class="si-val" id="s3-rtt">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Conv% Last Wk</span><span class="si-val" id="s3-last">—</span></div>
+        <div class="stat-item"><span class="si-lbl">10-Wk Avg Conv%</span><span class="si-val" id="s3-avg">—</span></div>
+      </div>
     </div>
-    <div class="slide-body">
-      <div class="mtd-row" id="mtd-row"></div>
-      <div class="kpi-row" id="kpi-gtv"></div>
-      <div class="chart-wrap"><canvas id="chart-gtv"></canvas></div>
+    <div class="right-panel">
+      <div class="chart-area"><canvas id="chart-rtt"></canvas></div>
+      <div class="insight-row" id="ins-s3"></div>
+    </div>
+  </div>
+
+  <!-- Slide 4: Weekly Active Users — Amber -->
+  <div class="slide two-col" id="s4">
+    <div class="left-panel" style="background:linear-gradient(160deg,#78350f,#f59e0b);">
+      <div class="slide-num">Slide 04</div>
+      <div class="slide-ttl">Weekly Active Users</div>
+      <div class="slide-sub">Unique users who started a signin</div>
+      <div class="hero-num" id="h4-val">—</div>
+      <div class="hero-lbl">WAU this week</div>
+      <div class="hero-badge flat" id="h4-delta">—</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">Last Week</span><span class="si-val" id="s4-last">—</span></div>
+        <div class="stat-item"><span class="si-lbl">10-Wk Average</span><span class="si-val" id="s4-avg">—</span></div>
+        <div class="stat-item"><span class="si-lbl">WoW Change</span><span class="si-val" id="s4-wow">—</span></div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div class="chart-area"><canvas id="chart-wau"></canvas></div>
+      <div class="insight-row" id="ins-s4"></div>
+    </div>
+  </div>
+
+  <!-- Slide 5: Orders & GTV — Rose -->
+  <div class="slide two-col" id="s5">
+    <div class="left-panel" style="background:linear-gradient(160deg,#881337,#ec4899);">
+      <div class="slide-num">Slide 05</div>
+      <div class="slide-ttl">Orders &amp; GTV</div>
+      <div class="slide-sub">New &amp; repeat · MTD vs last month</div>
+      <div class="hero-num" id="h5-val">—</div>
+      <div class="hero-lbl">GTV this week (₹cr)</div>
+      <div class="hero-badge flat" id="h5-delta">—</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">Orders This Week</span><span class="si-val" id="s5-orders">—</span></div>
+        <div class="stat-item"><span class="si-lbl">10-Wk Avg GTV</span><span class="si-val" id="s5-avgg">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Repeat Investors</span><span class="si-val" id="s5-repeat">—</span></div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div class="chart-area"><canvas id="chart-gtv"></canvas></div>
+      <div class="insight-row" id="ins-s5"></div>
     </div>
   </div>
 
 </div>
+</div><!-- /.deck-wrap -->
 
-<!-- Navigation -->
-<nav class="nav">
-  <button id="btn-prev" onclick="navigate(-1)" disabled>←</button>
-  <span id="slide-counter">1 / 6</span>
-  <button id="btn-next" onclick="navigate(1)">→</button>
-</nav>
+<!-- Navigation bar -->
+<div class="nav-bar">
+  <button class="nav-btn" id="btn-prev" onclick="navigate(-1)" disabled>&#8592;</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="btn-next" onclick="navigate(1)">&#8594;</button>
+</div>
 
 <script>
-// ── Slide navigation ─────────────────────────────────────────────────────────
+// ── Navigation ────────────────────────────────────────────────────────────────
 let current = 0;
 const slides = document.querySelectorAll('.slide');
 const total  = slides.length;
-
+const dotsEl = document.getElementById('dots');
+slides.forEach((_, i) => {
+  const b = document.createElement('button');
+  b.className = 'dot-btn' + (i === 0 ? ' active' : '');
+  b.onclick = () => { current = i; showSlide(i); };
+  dotsEl.appendChild(b);
+});
 function showSlide(n) {
   slides.forEach(s => s.classList.remove('active'));
   slides[n].classList.add('active');
-  document.getElementById('slide-counter').textContent = `${n + 1} / ${total}`;
+  document.querySelectorAll('.dot-btn').forEach((d, i) => d.classList.toggle('active', i === n));
   document.getElementById('btn-prev').disabled = (n === 0);
   document.getElementById('btn-next').disabled = (n === total - 1);
 }
@@ -263,180 +385,170 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   navigate(-1);
 });
 
-// ── Chart.js helpers ─────────────────────────────────────────────────────────
-const NAVY   = '#0f2044';
-const BLUE   = '#1a56db';
-const GREEN  = '#22c55e';
-const ORANGE = '#f59e0b';
-const RED    = '#ef4444';
-const GREY   = '#94a3b8';
-const LIGHT  = 'rgba(26,86,219,.12)';
-
-const baseOpts = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: { legend: { labels: { font: { size: 11 } } },
-             tooltip: { mode: 'index', intersect: false } },
-  scales: {
-    x: { grid: { display: false }, ticks: { font: { size: 10 } } },
-    y: { grid: { color: '#f1f5f9' }, ticks: { font: { size: 10 } } },
-  },
-};
-
-function barLine(id, labels, bars, lines) {
-  // bars: [{label, data, color}]  lines: [{label, data, color, yAxisID?}]
-  const datasets = [];
-  bars.forEach(b => datasets.push({
-    type: 'bar', label: b.label, data: b.data,
-    backgroundColor: b.color + 'cc', borderColor: b.color,
-    borderWidth: 1, borderRadius: 4,
-  }));
-  lines.forEach(l => datasets.push({
-    type: 'line', label: l.label, data: l.data,
-    borderColor: l.color, backgroundColor: 'transparent',
-    pointRadius: 3, pointHoverRadius: 5, tension: .3,
-    yAxisID: l.yAxisID || 'y',
-  }));
-  const opts = JSON.parse(JSON.stringify(baseOpts));
-  const hasY2 = lines.some(l => l.yAxisID === 'y2');
-  if (hasY2) {
-    opts.scales.y2 = {
-      position: 'right', grid: { display: false },
-      ticks: { font: { size: 10 } },
-    };
-  }
-  new Chart(document.getElementById(id), { data: { labels, datasets }, options: opts });
-}
-
-function buildKpi(containerId, cards) {
-  const el = document.getElementById(containerId);
-  el.innerHTML = cards.map(c => {
-    const d = c.delta;
-    const cls = d === null ? 'flat' : d > 0 ? 'up' : d < 0 ? 'down' : 'flat';
-    const arrow = d === null ? '' : d > 0 ? '▲' : d < 0 ? '▼' : '–';
-    const dText = d === null ? '' : `${arrow} ${Math.abs(d)}${c.suffix || ''}`;
-    const valFmt = typeof c.value === 'number' && c.value > 10000
-      ? c.value.toLocaleString() : c.value;
-    return `<div class="kpi-card">
-      <div class="label">${c.label}</div>
-      <div class="value">${valFmt}${c.suffix||''}</div>
-      ${dText ? `<div class="delta ${cls}">${dText} WoW</div>` : '<div class="delta flat">—</div>'}
-    </div>`;
-  }).join('');
-}
-
-// ── Data injected by Python ───────────────────────────────────────────────────
-const D = {"generated": "Apr 28, 2026 · 11:30", "period": "Apr 17 – 24, 2026", "health": "healthy", "labels": ["Feb 16", "Feb 23", "Mar 2", "Mar 9", "Mar 16", "Mar 23", "Mar 30", "Apr 6", "Apr 13", "Apr 20"], "signups": [1967.0, 1921.0, 1177.0, 1354.0, 1625.0, 2163.0, 2891.0, 2229.0, 2476.0, 2901.0], "otps": [3383.0, 3397.0, 2596.0, 2550.0, 2859.0, 3544.0, 5094.0, 4250.0, 4207.0, 4566.0], "signup_conv": [58.1, 56.5, 45.3, 53.1, 56.8, 61.0, 56.8, 52.4, 58.9, 63.5], "kpi_signups": {"last": 2476.0, "this": 2901.0, "avg": 2070.4, "delta": 425.0, "suffix": ""}, "kpi_signup_conv": {"last": 58.9, "this": 63.5, "avg": 56.2, "delta": 4.6, "suffix": "%"}, "kyc_starters": [716.0, 766.0, 517.0, 539.0, 617.0, 798.0, 907.0, 766.0, 850.0, 954.0], "kyc_done": [49.0, 60.0, 51.0, 88.0, 200.0, 284.0, 328.0, 297.0, 358.0, 248.0], "kyc_start_pct": [36.4, 39.9, 43.9, 39.8, 38.0, 36.9, 31.4, 34.4, 34.3, 32.9], "kyc_e2e_pct": [2.5, 3.1, 4.3, 6.5, 12.3, 13.1, 11.3, 13.3, 14.5, 8.5], "kpi_kyc_start_pct": {"last": 34.3, "this": 32.9, "avg": 36.8, "delta": -1.4, "suffix": "%"}, "kpi_kyc_e2e_pct": {"last": 14.5, "this": 8.5, "avg": 8.9, "delta": -6.0, "suffix": "%"}, "rtt": [49.0, 60.0, 51.0, 88.0, 200.0, 284.0, 328.0, 297.0, 358.0, 248.0], "payments": [57.0, 68.0, 65.0, 52.0, 56.0, 57.0, 70.0, 87.0, 124.0, 163.0], "rtt_conv": [116.3, 113.3, 127.5, 59.1, 28.0, 20.1, 21.3, 29.3, 34.6, 65.7], "kpi_rtt": {"last": 358.0, "this": 248.0, "avg": 196.3, "delta": -110.0, "suffix": ""}, "kpi_rtt_conv": {"last": 34.6, "this": 65.7, "avg": 61.5, "delta": 31.1, "suffix": "%"}, "wau": [5244.0, 5200.0, 4484.0, 4382.0, 4643.0, 5425.0, 7648.0, 6712.0, 6378.0, 7247.0], "kpi_wau": {"last": 6378.0, "this": 7247.0, "avg": 5736.3, "delta": 869.0, "suffix": ""}, "orders": [57.0, 68.0, 65.0, 52.0, 56.0, 57.0, 70.0, 87.0, 124.0, 163.0], "new_orders": [31, 37, 35, 28, 30, 31, 38, 47, 67, 89], "rep_orders": [26.0, 31.0, 30.0, 24.0, 26.0, 26.0, 32.0, 40.0, 57.0, 74.0], "gtv": [1.22, 1.36, 1.41, 1.06, 1.03, 1.09, 1.41, 1.57, 2.23, 3.06], "kpi_orders": {"last": 124.0, "this": 163.0, "avg": 79.9, "delta": 39.0, "suffix": ""}, "kpi_gtv": {"last": 2.23, "this": 3.06, "avg": 1.5, "delta": 0.8, "suffix": "cr"}, "repeat_pct": 45.3, "gtv_mtd_this": 12.0, "gtv_mtd_prev": 4.6, "mtd_month_this": "Apr", "mtd_month_prev": "Mar"};
-
-// ── Render slides ─────────────────────────────────────────────────────────────
+// ── Data & helpers ────────────────────────────────────────────────────────────
+const D = {"generated": "Apr 28, 2026 · 12:00", "period": "Apr 21 – 28, 2026", "health": "healthy", "labels": ["Feb 16", "Feb 23", "Mar 2", "Mar 9", "Mar 16", "Mar 23", "Mar 30", "Apr 6", "Apr 13", "Apr 20"], "signups": [1967.0, 1921.0, 1177.0, 1354.0, 1625.0, 2163.0, 2891.0, 2229.0, 2476.0, 2901.0], "otps": [3383.0, 3397.0, 2596.0, 2550.0, 2859.0, 3544.0, 5094.0, 4250.0, 4207.0, 4566.0], "signup_conv": [58.1, 56.5, 45.3, 53.1, 56.8, 61.0, 56.8, 52.4, 58.9, 63.5], "kpi_signups": {"last": 2476.0, "this": 2901.0, "avg": 2070.4, "delta": 425.0, "suffix": ""}, "kpi_signup_conv": {"last": 58.9, "this": 63.5, "avg": 56.2, "delta": 4.6, "suffix": "%"}, "kyc_starters": [716.0, 766.0, 517.0, 539.0, 617.0, 798.0, 907.0, 766.0, 850.0, 954.0], "kyc_done": [49.0, 60.0, 51.0, 88.0, 200.0, 284.0, 328.0, 297.0, 358.0, 248.0], "kyc_start_pct": [36.4, 39.9, 43.9, 39.8, 38.0, 36.9, 31.4, 34.4, 34.3, 32.9], "kyc_e2e_pct": [2.5, 3.1, 4.3, 6.5, 12.3, 13.1, 11.3, 13.3, 14.5, 8.5], "kpi_kyc_start_pct": {"last": 34.3, "this": 32.9, "avg": 36.8, "delta": -1.4, "suffix": "%"}, "kpi_kyc_e2e_pct": {"last": 14.5, "this": 8.5, "avg": 8.9, "delta": -6.0, "suffix": "%"}, "rtt": [49.0, 60.0, 51.0, 88.0, 200.0, 284.0, 328.0, 297.0, 358.0, 248.0], "payments": [57.0, 68.0, 65.0, 52.0, 56.0, 57.0, 70.0, 87.0, 124.0, 163.0], "rtt_conv": [116.3, 113.3, 127.5, 59.1, 28.0, 20.1, 21.3, 29.3, 34.6, 65.7], "kpi_rtt": {"last": 358.0, "this": 248.0, "avg": 196.3, "delta": -110.0, "suffix": ""}, "kpi_rtt_conv": {"last": 34.6, "this": 65.7, "avg": 61.5, "delta": 31.1, "suffix": "%"}, "wau": [5244.0, 5200.0, 4484.0, 4382.0, 4643.0, 5425.0, 7648.0, 6712.0, 6378.0, 7247.0], "kpi_wau": {"last": 6378.0, "this": 7247.0, "avg": 5736.3, "delta": 869.0, "suffix": ""}, "orders": [57.0, 68.0, 65.0, 52.0, 56.0, 57.0, 70.0, 87.0, 124.0, 163.0], "new_orders": [37, 44, 42, 34, 37, 37, 46, 57, 81, 107], "rep_orders": [20.0, 24.0, 23.0, 18.0, 19.0, 20.0, 24.0, 30.0, 43.0, 56.0], "gtv": [1.22, 1.36, 1.41, 1.06, 1.03, 1.09, 1.41, 1.57, 2.23, 3.06], "kpi_orders": {"last": 124.0, "this": 163.0, "avg": 79.9, "delta": 39.0, "suffix": ""}, "kpi_gtv": {"last": 2.23, "this": 3.06, "avg": 1.5, "delta": 0.8, "suffix": "cr"}, "repeat_pct": 33.9, "gtv_mtd_this": 13.5, "gtv_mtd_prev": 4.6, "mtd_month_this": "Apr", "mtd_month_prev": "Mar"};
 const L = D.labels;
 
-// Slide 1 — Signup Completion
-buildKpi('kpi-signups', [
-  { label: 'Last Week Signups', value: D.kpi_signups.last, delta: null },
-  { label: 'This Week Signups', value: D.kpi_signups.this,
-    delta: D.kpi_signups.delta },
-  { label: '10-Week Avg',       value: D.kpi_signups.avg,   delta: null },
-  { label: 'Conv% (OTP→PIN) This Wk',
-    value: D.kpi_signup_conv.this.toFixed(1), suffix: '%', delta: null },
-]);
-barLine('chart-signups', L,
-  [{ label: 'Signups', data: D.signups, color: BLUE }],
-  [{ label: 'OTP→Signup Conv%', data: D.signup_conv, color: ORANGE, yAxisID: 'y2' }]);
+function num(v)  { return v != null ? Math.round(v).toLocaleString() : '—'; }
+function pct(v)  { return v != null ? (+v).toFixed(1) + '%' : '—'; }
+function cr(v)   { return v != null ? '₹' + (+v).toFixed(1) + 'cr' : '—'; }
+function setEl(id, txt) { const e = document.getElementById(id); if (e) e.textContent = txt; }
 
-// Slide 2 — KYC
-buildKpi('kpi-kyc', [
-  { label: 'KYC Start Rate Last Wk', value: D.kpi_kyc_start_pct.last.toFixed(1), suffix: '%', delta: null },
-  { label: 'KYC Start Rate This Wk', value: D.kpi_kyc_start_pct.this.toFixed(1), suffix: '%',
-    delta: +D.kpi_kyc_start_pct.delta.toFixed(1) },
-  { label: 'KYC Done Rate This Wk',  value: D.kpi_kyc_e2e_pct.this.toFixed(1), suffix: '%',
-    delta: +D.kpi_kyc_e2e_pct.delta.toFixed(1) },
-  { label: '10-Week Avg Start Rate', value: D.kpi_kyc_start_pct.avg.toFixed(1), suffix: '%', delta: null },
-]);
-barLine('chart-kyc', L,
-  [
-    { label: 'KYC Starters', data: D.kyc_starters, color: BLUE },
-    { label: 'KYC Completed', data: D.kyc_done, color: GREEN },
-  ],
-  [
-    { label: 'Start Rate%', data: D.kyc_start_pct, color: ORANGE, yAxisID: 'y2' },
-    { label: 'E2E Done%',   data: D.kyc_e2e_pct,   color: RED,    yAxisID: 'y2' },
-  ]);
+function setHero(valId, badgeId, valTxt, delta, suf) {
+  setEl(valId, valTxt);
+  const el = document.getElementById(badgeId);
+  if (!el) return;
+  if (delta === null || delta === undefined) {
+    el.textContent = '—'; el.className = 'hero-badge flat';
+  } else {
+    const cls = delta > 0 ? 'up' : delta < 0 ? 'down' : 'flat';
+    const arr = delta > 0 ? '▲' : delta < 0 ? '▼' : '–';
+    el.textContent = arr + ' ' + Math.abs(delta) + (suf || '') + ' WoW';
+    el.className = 'hero-badge ' + cls;
+  }
+}
 
-// Slide 3 — RTT → First Trade
-buildKpi('kpi-rtt', [
-  { label: 'RTT Users Last Wk', value: D.kpi_rtt.last, delta: null },
-  { label: 'RTT Users This Wk', value: D.kpi_rtt.this, delta: D.kpi_rtt.delta },
-  { label: 'RTT→Trade Conv% This Wk',
-    value: D.kpi_rtt_conv.this.toFixed(1), suffix: '%',
-    delta: +D.kpi_rtt_conv.delta.toFixed(1) },
-  { label: '10-Week Avg Conv%', value: D.kpi_rtt_conv.avg.toFixed(1), suffix: '%', delta: null },
-]);
-barLine('chart-rtt', L,
-  [
-    { label: 'RTT Users',  data: D.rtt,      color: BLUE  },
-    { label: 'Investors',  data: D.payments, color: GREEN },
-  ],
-  [{ label: 'RTT→Trade Conv%', data: D.rtt_conv, color: ORANGE, yAxisID: 'y2' }]);
+function insights(id, chips) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = chips.map(c =>
+    `<div class="ins-chip"><span class="ins-dot" style="background:${c.color}"></span>${c.txt}</div>`
+  ).join('');
+}
 
-// Slide 4 — WAU
-buildKpi('kpi-wau', [
-  { label: 'WAU Last Week', value: D.kpi_wau.last.toLocaleString(), delta: null },
-  { label: 'WAU This Week', value: D.kpi_wau.this.toLocaleString(), delta: D.kpi_wau.delta },
-  { label: '10-Week Avg WAU', value: Math.round(D.kpi_wau.avg).toLocaleString(), delta: null },
-  { label: 'WoW Change', value: (D.kpi_wau.delta >= 0 ? '+' : '') + D.kpi_wau.delta.toLocaleString(),
-    delta: null },
-]);
-barLine('chart-wau', L,
-  [{ label: 'Weekly Active Users', data: D.wau, color: NAVY }],
-  []);
+// ── Chart helpers ─────────────────────────────────────────────────────────────
+const BLUE   = '#3b82f6';
+const VIOLET = '#8b5cf6';
+const GREEN  = '#10b981';
+const AMBER  = '#f59e0b';
+const ROSE   = '#ec4899';
+const GREY   = '#94a3b8';
 
-// Slide 5 — Orders & GTV
+function mkOpts(extra) {
+  return {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { font: { size: 9 }, boxWidth: 9, padding: 10 } },
+      tooltip: { mode: 'index', intersect: false },
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 8 }, maxRotation: 0 } },
+      y: { grid: { color: '#f8fafc' }, ticks: { font: { size: 8 } }, beginAtZero: true },
+      ...(extra || {}),
+    },
+  };
+}
+const Y2 = { y2: { position: 'right', grid: { display: false }, ticks: { font: { size: 8 } } } };
+
+function mkChart(id, datasets, extra) {
+  new Chart(document.getElementById(id), {
+    data: { labels: L, datasets },
+    options: mkOpts(extra),
+  });
+}
+function bar(label, data, color, stack) {
+  return { type: 'bar', label, data, backgroundColor: color + 'bb', borderColor: color,
+           borderWidth: 1, borderRadius: 3, ...(stack ? { stack } : {}) };
+}
+function line(label, data, color, yAxisID) {
+  return { type: 'line', label, data, borderColor: color, backgroundColor: 'transparent',
+           pointRadius: 3, pointHoverRadius: 5, tension: .35, ...(yAxisID ? { yAxisID } : {}) };
+}
+
+// ── Cover: summary tiles ──────────────────────────────────────────────────────
 (function() {
-  const mtdEl = document.getElementById('mtd-row');
-  const maxMtd = Math.max(D.gtv_mtd_this, D.gtv_mtd_prev, 0.01);
-  mtdEl.innerHTML = `
-    <div class="mtd-card">
-      <div>
-        <div class="mo">${D.mtd_month_this} MTD</div>
-        <div class="v">₹${D.gtv_mtd_this}cr</div>
-      </div>
-      <div class="mtd-bar-wrap">
-        <div class="mtd-bar" style="width:${(D.gtv_mtd_this/maxMtd*100).toFixed(1)}%;
-             background:#1a56db;"></div>
-      </div>
-    </div>
-    <div class="mtd-card">
-      <div>
-        <div class="mo">${D.mtd_month_prev} MTD (same day)</div>
-        <div class="v">₹${D.gtv_mtd_prev}cr</div>
-      </div>
-      <div class="mtd-bar-wrap">
-        <div class="mtd-bar" style="width:${(D.gtv_mtd_prev/maxMtd*100).toFixed(1)}%;
-             background:#64748b;"></div>
-      </div>
-    </div>
-    <div class="mtd-card" style="flex:.5;">
-      <div>
-        <div class="mo">Repeat Investors</div>
-        <div class="v">${D.repeat_pct.toFixed(1)}%</div>
-      </div>
-    </div>
-  `;
+  const items = [
+    { lbl: 'Signups',     val: num(D.kpi_signups.this),       wow: D.kpi_signups.delta,         suf: '' },
+    { lbl: 'KYC Start%', val: pct(D.kpi_kyc_start_pct.this), wow: D.kpi_kyc_start_pct.delta,   suf: 'pp' },
+    { lbl: 'RTT Conv%',  val: pct(D.kpi_rtt_conv.this),      wow: D.kpi_rtt_conv.delta,        suf: 'pp' },
+    { lbl: 'WAU',        val: num(D.kpi_wau.this),            wow: D.kpi_wau.delta,             suf: '' },
+    { lbl: 'GTV',        val: cr(D.kpi_gtv.this),             wow: null,                        suf: '' },
+  ];
+  document.getElementById('cover-metrics').innerHTML = items.map(it => {
+    let ww = '';
+    if (it.wow !== null && it.wow !== undefined) {
+      const cls = it.wow >= 0 ? 'up' : 'down';
+      const a   = it.wow >= 0 ? '▲' : '▼';
+      ww = `<div class="cm-wow ${cls}">${a} ${Math.abs(it.wow)}${it.suf} WoW</div>`;
+    }
+    return `<div class="cover-metric"><div class="cm-label">${it.lbl}</div><div class="cm-val">${it.val}</div>${ww}</div>`;
+  }).join('');
 })();
 
-buildKpi('kpi-gtv', [
-  { label: 'Orders Last Week', value: D.kpi_orders.last, delta: null },
-  { label: 'Orders This Week', value: D.kpi_orders.this, delta: D.kpi_orders.delta },
-  { label: 'GTV This Week',    value: '₹' + D.kpi_gtv.this.toFixed(1), suffix: 'cr', delta: null },
-  { label: '10-Wk Avg GTV',    value: '₹' + D.kpi_gtv.avg.toFixed(1), suffix: 'cr', delta: null },
+// ── Slide 1: Signups ──────────────────────────────────────────────────────────
+setHero('h1-val', 'h1-delta', num(D.kpi_signups.this), D.kpi_signups.delta, '');
+setEl('s1-last', num(D.kpi_signups.last));
+setEl('s1-avg',  num(D.kpi_signups.avg));
+setEl('s1-conv', pct(D.kpi_signup_conv.this));
+mkChart('chart-signups', [
+  bar('Weekly Signups', D.signups, BLUE),
+  line('OTP→PIN Conv%', D.signup_conv, AMBER, 'y2'),
+], Y2);
+insights('ins-s1', [
+  { color: BLUE,  txt: `10-wk avg: ${num(D.kpi_signups.avg)} signups/week` },
+  { color: AMBER, txt: `Conv% this wk: ${pct(D.kpi_signup_conv.this)} vs ${pct(D.kpi_signup_conv.last)} last wk` },
 ]);
-barLine('chart-gtv', L,
-  [
-    { label: 'New Customer Orders',    data: D.new_orders, color: BLUE  },
-    { label: 'Repeat Customer Orders', data: D.rep_orders, color: GREEN },
-  ],
-  [{ label: 'Weekly GTV (₹cr)', data: D.gtv, color: ORANGE, yAxisID: 'y2' }]);
+
+// ── Slide 2: KYC ──────────────────────────────────────────────────────────────
+setHero('h2-val', 'h2-delta', pct(D.kpi_kyc_start_pct.this), +D.kpi_kyc_start_pct.delta.toFixed(1), 'pp');
+setEl('s2-last', pct(D.kpi_kyc_start_pct.last));
+setEl('s2-done', pct(D.kpi_kyc_e2e_pct.this));
+setEl('s2-avg',  pct(D.kpi_kyc_start_pct.avg));
+mkChart('chart-kyc', [
+  bar('KYC Starters',  D.kyc_starters, VIOLET),
+  bar('KYC Completed', D.kyc_done,     GREEN),
+  line('Start Rate%',  D.kyc_start_pct, AMBER, 'y2'),
+  line('E2E Done%',    D.kyc_e2e_pct,   ROSE,  'y2'),
+], Y2);
+insights('ins-s2', [
+  { color: VIOLET, txt: `Start rate: ${pct(D.kpi_kyc_start_pct.this)} · last wk: ${pct(D.kpi_kyc_start_pct.last)}` },
+  { color: GREEN,  txt: `E2E completion: ${pct(D.kpi_kyc_e2e_pct.this)} · 10-wk avg start: ${pct(D.kpi_kyc_start_pct.avg)}` },
+]);
+
+// ── Slide 3: RTT → First Trade ────────────────────────────────────────────────
+setHero('h3-val', 'h3-delta', pct(D.kpi_rtt_conv.this), +D.kpi_rtt_conv.delta.toFixed(1), 'pp');
+setEl('s3-rtt',  num(D.kpi_rtt.this));
+setEl('s3-last', pct(D.kpi_rtt_conv.last));
+setEl('s3-avg',  pct(D.kpi_rtt_conv.avg));
+mkChart('chart-rtt', [
+  bar('RTT Users', D.rtt,      GREEN),
+  bar('Investors', D.payments, BLUE),
+  line('RTT→Trade%', D.rtt_conv, AMBER, 'y2'),
+], Y2);
+insights('ins-s3', [
+  { color: GREEN, txt: `RTT users: ${num(D.kpi_rtt.this)} this wk vs ${num(D.kpi_rtt.last)} last wk` },
+  { color: AMBER, txt: `Conv% 10-wk avg: ${pct(D.kpi_rtt_conv.avg)}` },
+]);
+
+// ── Slide 4: WAU ──────────────────────────────────────────────────────────────
+setHero('h4-val', 'h4-delta', num(D.kpi_wau.this), D.kpi_wau.delta, '');
+setEl('s4-last', num(D.kpi_wau.last));
+setEl('s4-avg',  Math.round(D.kpi_wau.avg).toLocaleString());
+setEl('s4-wow',  (D.kpi_wau.delta >= 0 ? '+' : '') + D.kpi_wau.delta.toLocaleString());
+mkChart('chart-wau', [
+  { type: 'line', label: 'Weekly Active Users', data: D.wau,
+    borderColor: AMBER, backgroundColor: AMBER + '18', fill: true,
+    pointRadius: 4, pointHoverRadius: 6, tension: .4 },
+]);
+insights('ins-s4', [
+  { color: AMBER, txt: `10-wk avg WAU: ${Math.round(D.kpi_wau.avg).toLocaleString()}` },
+  { color: GREY,  txt: `WoW: ${D.kpi_wau.delta >= 0 ? '+' : ''}${D.kpi_wau.delta.toLocaleString()} users` },
+]);
+
+// ── Slide 5: Orders & GTV ─────────────────────────────────────────────────────
+setHero('h5-val', 'h5-delta', cr(D.kpi_gtv.this), null, '');
+setEl('s5-orders', num(D.kpi_orders.this));
+setEl('s5-avgg',   cr(D.kpi_gtv.avg));
+setEl('s5-repeat', D.repeat_pct.toFixed(1) + '%');
+mkChart('chart-gtv', [
+  bar('New Customer Orders',    D.new_orders, BLUE,  'ord'),
+  bar('Repeat Customer Orders', D.rep_orders, ROSE,  'ord'),
+  line('Weekly GTV (₹cr)',      D.gtv,        AMBER, 'y2'),
+], Y2);
+insights('ins-s5', [
+  { color: ROSE,  txt: `MTD GTV: ₹${D.gtv_mtd_this}cr vs ₹${D.gtv_mtd_prev}cr last ${D.mtd_month_prev}` },
+  { color: BLUE,  txt: `10-wk avg GTV: ${cr(D.kpi_gtv.avg)} · repeat: ${D.repeat_pct.toFixed(1)}%` },
+]);
 </script>
 </body>
 </html>
