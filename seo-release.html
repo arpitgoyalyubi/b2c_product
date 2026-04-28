@@ -399,6 +399,96 @@
     </table>
   </div>
 
+  <!-- Section: ISIN Crawl Correlation -->
+  <div class="card" style="border-left:4px solid #7C3AED">
+    <h2><span class="section-num" style="background:#7C3AED">↗</span> ISIN Crawl Correlation — Indexed ISINs vs Bond Impressions</h2>
+    <div class="subtitle">142 total ISINs ever crawled · 28 newly indexed post-fix · Impressions/ISIN jumped 4× from quality of indexing alone</div>
+
+    <!-- 3 stat chips -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px">
+      <div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:10px;padding:16px 18px;text-align:center">
+        <div style="font-size:28px;font-weight:800;color:#7C3AED">142</div>
+        <div style="font-size:11px;font-weight:600;color:#7C3AED;text-transform:uppercase;letter-spacing:.05em;margin-top:4px">Total ISINs Crawled</div>
+        <div style="font-size:11px;color:var(--gray);margin-top:4px">All-time unique ISINs appearing in GSC</div>
+      </div>
+      <div style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:10px;padding:16px 18px;text-align:center">
+        <div style="font-size:28px;font-weight:800;color:var(--green)">+28</div>
+        <div style="font-size:11px;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:.05em;margin-top:4px">New ISINs Post-Fix</div>
+        <div style="font-size:11px;color:var(--gray);margin-top:4px">First indexed Apr 6–27 (after SSR fix)</div>
+      </div>
+      <div style="background:var(--blue-lt);border:1px solid #BFDBFE;border-radius:10px;padding:16px 18px;text-align:center">
+        <div style="font-size:28px;font-weight:800;color:var(--blue)">4×</div>
+        <div style="font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:.05em;margin-top:4px">Impressions / ISIN</div>
+        <div style="font-size:11px;color:var(--gray);margin-top:4px">3.6/ISIN/week → 14.6 post-fix</div>
+      </div>
+    </div>
+
+    <!-- Key insight callout -->
+    <div style="background:#FFF7ED;border:1px solid #FED7AA;border-radius:8px;padding:14px 16px;margin-bottom:22px">
+      <div style="font-size:12px;font-weight:700;color:#C2410C;margin-bottom:6px">💡 Why ISINs ≠ Impressions (the SSR quality effect)</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.7">
+        Before the fix, ~40–53 ISINs were "indexed" every week — Google had visited those URLs but seen a blank spinner.
+        The ISIN count per week barely changed post-fix (40–53 → 59–74). But impressions jumped <strong>5.6×</strong>.
+        The driver isn't just <em>how many</em> ISINs are indexed — it's <em>how well</em>. Each page that Google can now read
+        generates <strong>14.6 impressions/ISIN/week vs 3.6 before</strong>. The SSR fix didn't just index more pages; it made every indexed page rank properly.
+      </div>
+    </div>
+
+    <!-- Dual-axis chart: ISIN count bars + impressions line -->
+    <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px">ISINs with impressions per week (bars) vs Total bond impressions per week (line)</div>
+    <div class="chart-wrap" style="height:280px;margin-bottom:24px">
+      <canvas id="corrDualChart"></canvas>
+    </div>
+
+    <!-- Impressions/ISIN trend -->
+    <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px">Impressions per ISIN per week — the "indexing quality" metric</div>
+    <div class="chart-wrap" style="height:200px;margin-bottom:24px">
+      <canvas id="impPerIsinChart"></canvas>
+    </div>
+
+    <!-- Scatter: ISIN count vs impressions -->
+    <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px">Scatter: ISIN count vs weekly impressions — <span style="color:#DC2626">●</span> pre-fix &nbsp;<span style="color:#16A34A">●</span> post-fix</div>
+    <div style="font-size:11px;color:var(--gray);margin-bottom:10px">Shows two distinct clusters — same ISIN count range, but post-fix impressions are 5–8× higher per point</div>
+    <div class="chart-wrap" style="height:240px">
+      <canvas id="corrScatterChart"></canvas>
+    </div>
+
+    <!-- Newly indexed ISINs table -->
+    <div style="margin-top:22px">
+      <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:10px">28 ISINs First Indexed by Google After Fix (Apr 6–27)</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE03K307132 <span style="color:var(--gray)">Apr 6</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE08XP07308 <span style="color:var(--gray)">Apr 7</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE0BUS07BQ9 <span style="color:var(--gray)">Apr 7</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE134E07208 <span style="color:var(--gray)">Apr 8</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE02YC07034 <span style="color:var(--gray)">Apr 9</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE01HV07635 <span style="color:var(--gray)">Apr 9</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE321N07632 <span style="color:var(--gray)">Apr 11</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE348L07233 <span style="color:var(--gray)">Apr 11</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE501X07604 <span style="color:var(--gray)">Apr 12</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE859C07253 <span style="color:var(--gray)">Apr 13</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE296G07176 <span style="color:var(--gray)">Apr 13</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE342T07619 <span style="color:var(--gray)">Apr 14</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE348L07225 <span style="color:var(--gray)">Apr 14</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE109C07147 <span style="color:var(--gray)">Apr 15</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE605Y07130 <span style="color:var(--gray)">Apr 15</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE413U07426 <span style="color:var(--gray)">Apr 15</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE348L07191 <span style="color:var(--gray)">Apr 15</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE342T07569 <span style="color:var(--gray)">Apr 15</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE148I07XK0 <span style="color:var(--gray)">Apr 15</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE03W107223 <span style="color:var(--gray)">Apr 16</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE342T07635 <span style="color:var(--gray)">Apr 17</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE296Q07167 <span style="color:var(--gray)">Apr 17</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE105N07738 <span style="color:var(--gray)">Apr 18</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE389Z07104 <span style="color:var(--gray)">Apr 21</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE07HK07809 <span style="color:var(--gray)">Apr 23</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE101Q07AZ8 <span style="color:var(--gray)">Apr 24</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE836B07857 <span style="color:var(--gray)">Apr 24</span></span>
+        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE583D07489 <span style="color:var(--gray)">Apr 24</span></span>
+      </div>
+    </div>
+  </div>
+
   <!-- Section: Top bond pages -->
   <div class="card">
     <h2><span class="section-num">9</span> Top Bond Detail Pages by Impressions</h2>
@@ -1174,6 +1264,263 @@ function initViewAll(tbodyId, visibleCount) {
 initViewAll('shippedBody', 5);
 initViewAll('engBody', 3);
 initViewAll('mktBody', 3);
+
+// ─── ISIN Crawl Correlation Charts ────────────────────────────────────────────
+// 13 weeks Jan 26 – Apr 20 · pre-fix = first 10 wks · post-fix = last 3 wks
+const corrWeeks      = ['26 Jan','02 Feb','09 Feb','16 Feb','23 Feb','02 Mar','09 Mar','16 Mar','23 Mar','30 Mar','06 Apr','13 Apr','20 Apr'];
+const corrIsins      = [48, 43, 43, 38, 47, 37, 38, 38, 38, 53, 59, 71, 74];
+const corrImp        = [174, 152, 179, 264, 221, 93, 108, 111, 131, 275, 815, 868, 1083];
+const corrImpPerIsin = [3.6, 3.5, 4.2, 6.9, 4.7, 2.5, 2.8, 2.9, 3.4, 5.2, 13.8, 12.2, 14.6];
+const PRE = 10; // first 10 weeks are pre-fix
+
+// Bar colours: pre-fix = light purple, post-fix = darker green
+const barColors = corrWeeks.map((_, i) => i < PRE ? 'rgba(167,139,250,0.6)' : 'rgba(34,197,94,0.75)');
+const barBorders = corrWeeks.map((_, i) => i < PRE ? '#7C3AED' : '#16A34A');
+
+// ── 1. Dual-axis: ISIN bars + impressions line ────────────────────────────────
+new Chart(document.getElementById('corrDualChart'), {
+  data: {
+    labels: corrWeeks,
+    datasets: [
+      {
+        type: 'bar',
+        label: 'ISINs with impressions',
+        data: corrIsins,
+        backgroundColor: barColors,
+        borderColor: barBorders,
+        borderWidth: 1,
+        yAxisID: 'yIsins',
+        order: 2,
+      },
+      {
+        type: 'line',
+        label: 'Bond page impressions',
+        data: corrImp,
+        borderColor: '#2563EB',
+        backgroundColor: 'rgba(37,99,235,0.08)',
+        borderWidth: 2.5,
+        pointRadius: 4,
+        pointBackgroundColor: corrWeeks.map((_, i) => i < PRE ? '#93C5FD' : '#1D4ED8'),
+        tension: 0.3,
+        fill: true,
+        yAxisID: 'yImp',
+        order: 1,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 } } },
+      annotation: {
+        annotations: {
+          ssrLine: {
+            type: 'line',
+            xMin: PRE - 0.5,
+            xMax: PRE - 0.5,
+            borderColor: '#DC2626',
+            borderWidth: 2,
+            borderDash: [5, 4],
+            label: {
+              display: true,
+              content: 'SSR fix Apr 5',
+              position: 'start',
+              backgroundColor: '#DC2626',
+              color: '#FFF',
+              font: { size: 10, weight: 'bold' },
+              padding: { x: 6, y: 3 },
+            },
+          },
+        },
+      },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            if (ctx.dataset.label === 'ISINs with impressions') return ` ${ctx.parsed.y} ISINs`;
+            return ` ${ctx.parsed.y.toLocaleString()} impressions`;
+          },
+        },
+      },
+    },
+    scales: {
+      x: { ticks: { font: { size: 10 }, maxRotation: 45 }, grid: { display: false } },
+      yIsins: {
+        type: 'linear',
+        position: 'left',
+        title: { display: true, text: 'ISINs', font: { size: 10 } },
+        min: 0,
+        max: 100,
+        ticks: { font: { size: 10 } },
+        grid: { color: 'rgba(0,0,0,0.05)' },
+      },
+      yImp: {
+        type: 'linear',
+        position: 'right',
+        title: { display: true, text: 'Impressions', font: { size: 10 } },
+        min: 0,
+        ticks: { font: { size: 10 } },
+        grid: { drawOnChartArea: false },
+      },
+    },
+  },
+});
+
+// ── 2. Impressions / ISIN trend ───────────────────────────────────────────────
+new Chart(document.getElementById('impPerIsinChart'), {
+  type: 'line',
+  data: {
+    labels: corrWeeks,
+    datasets: [
+      {
+        label: 'Impressions / ISIN / week',
+        data: corrImpPerIsin,
+        borderColor: '#7C3AED',
+        backgroundColor: 'rgba(124,58,237,0.08)',
+        borderWidth: 2.5,
+        pointRadius: corrWeeks.map((_, i) => i < PRE ? 4 : 6),
+        pointBackgroundColor: corrWeeks.map((_, i) => i < PRE ? '#C4B5FD' : '#7C3AED'),
+        tension: 0.35,
+        fill: true,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      annotation: {
+        annotations: {
+          ssrLine: {
+            type: 'line',
+            xMin: PRE - 0.5,
+            xMax: PRE - 0.5,
+            borderColor: '#DC2626',
+            borderWidth: 2,
+            borderDash: [5, 4],
+            label: {
+              display: true,
+              content: 'SSR fix',
+              position: 'start',
+              backgroundColor: '#DC2626',
+              color: '#FFF',
+              font: { size: 10, weight: 'bold' },
+              padding: { x: 5, y: 3 },
+            },
+          },
+          avgPre: {
+            type: 'line',
+            yMin: 3.6,
+            yMax: 3.6,
+            xMin: 0,
+            xMax: PRE - 1,
+            borderColor: '#F97316',
+            borderWidth: 1.5,
+            borderDash: [4, 3],
+            label: {
+              display: true,
+              content: 'avg 3.6 pre-fix',
+              position: 'end',
+              backgroundColor: 'rgba(249,115,22,0.85)',
+              color: '#FFF',
+              font: { size: 9 },
+              padding: { x: 4, y: 2 },
+            },
+          },
+          avgPost: {
+            type: 'line',
+            yMin: 13.5,
+            yMax: 13.5,
+            xMin: PRE,
+            xMax: corrWeeks.length - 1,
+            borderColor: '#16A34A',
+            borderWidth: 1.5,
+            borderDash: [4, 3],
+            label: {
+              display: true,
+              content: 'avg 13.5 post-fix',
+              position: 'end',
+              backgroundColor: 'rgba(22,163,74,0.85)',
+              color: '#FFF',
+              font: { size: 9 },
+              padding: { x: 4, y: 2 },
+            },
+          },
+        },
+      },
+      tooltip: {
+        callbacks: {
+          label: ctx => ` ${ctx.parsed.y} impr/ISIN`,
+        },
+      },
+    },
+    scales: {
+      x: { ticks: { font: { size: 10 }, maxRotation: 45 }, grid: { display: false } },
+      y: {
+        min: 0,
+        title: { display: true, text: 'Impr / ISIN / wk', font: { size: 10 } },
+        ticks: { font: { size: 10 } },
+        grid: { color: 'rgba(0,0,0,0.05)' },
+      },
+    },
+  },
+});
+
+// ── 3. Scatter: ISIN count vs weekly impressions ──────────────────────────────
+const prePoints  = corrIsins.slice(0, PRE).map((x, i) => ({ x, y: corrImp[i] }));
+const postPoints = corrIsins.slice(PRE).map((x, i)  => ({ x, y: corrImp[PRE + i] }));
+
+new Chart(document.getElementById('corrScatterChart'), {
+  type: 'scatter',
+  data: {
+    datasets: [
+      {
+        label: 'Pre-fix (Jan 26 – Mar 29)',
+        data: prePoints,
+        backgroundColor: 'rgba(220,38,38,0.65)',
+        borderColor: '#DC2626',
+        pointRadius: 7,
+        pointHoverRadius: 9,
+      },
+      {
+        label: 'Post-fix (Apr 6 – Apr 20)',
+        data: postPoints,
+        backgroundColor: 'rgba(22,163,74,0.7)',
+        borderColor: '#16A34A',
+        pointRadius: 9,
+        pointHoverRadius: 11,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 } } },
+      tooltip: {
+        callbacks: {
+          label: ctx => ` ${ctx.parsed.x} ISINs → ${ctx.parsed.y} impressions`,
+        },
+      },
+    },
+    scales: {
+      x: {
+        title: { display: true, text: 'ISINs with impressions (weekly)', font: { size: 11 } },
+        min: 30,
+        max: 85,
+        ticks: { font: { size: 10 } },
+        grid: { color: 'rgba(0,0,0,0.05)' },
+      },
+      y: {
+        title: { display: true, text: 'Total bond impressions (weekly)', font: { size: 11 } },
+        min: 0,
+        ticks: { font: { size: 10 } },
+        grid: { color: 'rgba(0,0,0,0.05)' },
+      },
+    },
+  },
+});
 </script>
 </body>
 </html>
