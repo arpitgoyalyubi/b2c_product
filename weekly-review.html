@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2C Weekly Review — Apr 17 – 24, 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --navy: #0f2044;
+    --blue: #1a56db;
+    --accent: #22c55e;
+    --warn: #f59e0b;
+    --danger: #ef4444;
+    --text: #1e293b;
+    --muted: #64748b;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --border: #e2e8f0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+         background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
+
+  /* Slide container */
+  .deck { width: 100vw; height: 100vh; position: relative; }
+  .slide { display: none; flex-direction: column; width: 100%; height: 100%;
+           padding: 0; position: absolute; top: 0; left: 0; }
+  .slide.active { display: flex; }
+
+  /* Header bar */
+  .slide-header {
+    background: var(--navy);
+    color: #fff;
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .slide-header h1 { font-size: 1.1rem; font-weight: 600; letter-spacing: .01em; }
+  .slide-header .meta { font-size: .72rem; opacity: .7; }
+
+  /* Cover slide */
+  .cover {
+    background: linear-gradient(135deg, #0f2044 0%, #1a3a6b 60%, #1e4fd9 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+  .cover h1 { font-size: 2.4rem; font-weight: 700; }
+  .cover .sub { font-size: 1.1rem; opacity: .75; }
+  .cover .badge {
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 20px;
+    padding: 6px 18px;
+    font-size: .85rem;
+    margin-top: 8px;
+  }
+
+  /* Body */
+  .slide-body {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 28px 8px;
+    gap: 12px;
+  }
+
+  /* KPI row */
+  .kpi-row { display: flex; gap: 12px; flex-shrink: 0; }
+  .kpi-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 18px;
+    flex: 1;
+    min-width: 0;
+  }
+  .kpi-card .label { font-size: .7rem; color: var(--muted); text-transform: uppercase;
+                     letter-spacing: .06em; margin-bottom: 4px; }
+  .kpi-card .value { font-size: 1.55rem; font-weight: 700; color: var(--text); }
+  .kpi-card .delta { font-size: .78rem; margin-top: 2px; }
+  .delta.up   { color: var(--accent); }
+  .delta.down { color: var(--danger); }
+  .delta.flat { color: var(--muted); }
+
+  /* Chart wrapper */
+  .chart-wrap {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    overflow: hidden;
+    position: relative;
+    min-height: 0;
+  }
+  .chart-wrap canvas { max-height: 100%; }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(15,32,68,.88);
+    border-radius: 24px;
+    padding: 8px 20px;
+    color: #fff;
+    font-size: .8rem;
+    z-index: 99;
+    backdrop-filter: blur(8px);
+  }
+  .nav button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 6px;
+    transition: background .15s;
+  }
+  .nav button:hover { background: rgba(255,255,255,.18); }
+  .nav button:disabled { opacity: .3; cursor: default; }
+  #slide-counter { min-width: 48px; text-align: center; }
+
+  /* MTD comparison bar */
+  .mtd-row { display: flex; gap: 12px; flex-shrink: 0; }
+  .mtd-card {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .mtd-card .mo { font-size: .78rem; color: var(--muted); text-transform: uppercase;
+                  letter-spacing: .05em; }
+  .mtd-card .v  { font-size: 1.4rem; font-weight: 700; }
+  .mtd-bar-wrap { flex: 1; height: 8px; background: var(--border); border-radius: 4px; }
+  .mtd-bar      { height: 8px; border-radius: 4px; background: var(--blue); }
+
+  @media print {
+    .nav { display: none; }
+    .slide { page-break-after: always; }
+    body  { overflow: visible; height: auto; }
+    .deck { height: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- Slide 0: Cover -->
+  <div class="slide cover active" id="s0">
+    <h1>B2C Weekly Review</h1>
+    <div class="sub">Funnel · KYC · Investments · GTV</div>
+    <div class="badge">Apr 17 – 24, 2026 &nbsp;·&nbsp; Generated Apr 28, 2026 · 11:30</div>
+  </div>
+
+  <!-- Slide 1: Signup Completion -->
+  <div class="slide" id="s1">
+    <div class="slide-header">
+      <h1>1 — Signup Completion</h1>
+      <div class="meta">OTP started → PIN set (weekly)</div>
+    </div>
+    <div class="slide-body">
+      <div class="kpi-row" id="kpi-signups"></div>
+      <div class="chart-wrap"><canvas id="chart-signups"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Slide 2: KYC Start → Completion -->
+  <div class="slide" id="s2">
+    <div class="slide-header">
+      <h1>2 — KYC Start → Completion</h1>
+      <div class="meta">% of signups who start and complete full KYC</div>
+    </div>
+    <div class="slide-body">
+      <div class="kpi-row" id="kpi-kyc"></div>
+      <div class="chart-wrap"><canvas id="chart-kyc"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Slide 3: RTT → First Trade -->
+  <div class="slide" id="s3">
+    <div class="slide-header">
+      <h1>3 — RTT → First Trade</h1>
+      <div class="meta">Ready-to-Trade users who made their first investment</div>
+    </div>
+    <div class="slide-body">
+      <div class="kpi-row" id="kpi-rtt"></div>
+      <div class="chart-wrap"><canvas id="chart-rtt"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Slide 4: Weekly Active Users -->
+  <div class="slide" id="s4">
+    <div class="slide-header">
+      <h1>4 — Weekly Active Users</h1>
+      <div class="meta">Unique users who initiated a signin session</div>
+    </div>
+    <div class="slide-body">
+      <div class="kpi-row" id="kpi-wau"></div>
+      <div class="chart-wrap"><canvas id="chart-wau"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Slide 5: Orders & GTV -->
+  <div class="slide" id="s5">
+    <div class="slide-header">
+      <h1>5 — Orders &amp; GTV</h1>
+      <div class="meta">New &amp; existing customer orders · MTD comparison</div>
+    </div>
+    <div class="slide-body">
+      <div class="mtd-row" id="mtd-row"></div>
+      <div class="kpi-row" id="kpi-gtv"></div>
+      <div class="chart-wrap"><canvas id="chart-gtv"></canvas></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<nav class="nav">
+  <button id="btn-prev" onclick="navigate(-1)" disabled>←</button>
+  <span id="slide-counter">1 / 6</span>
+  <button id="btn-next" onclick="navigate(1)">→</button>
+</nav>
+
+<script>
+// ── Slide navigation ─────────────────────────────────────────────────────────
+let current = 0;
+const slides = document.querySelectorAll('.slide');
+const total  = slides.length;
+
+function showSlide(n) {
+  slides.forEach(s => s.classList.remove('active'));
+  slides[n].classList.add('active');
+  document.getElementById('slide-counter').textContent = `${n + 1} / ${total}`;
+  document.getElementById('btn-prev').disabled = (n === 0);
+  document.getElementById('btn-next').disabled = (n === total - 1);
+}
+function navigate(dir) {
+  current = Math.max(0, Math.min(total - 1, current + dir));
+  showSlide(current);
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   navigate(-1);
+});
+
+// ── Chart.js helpers ─────────────────────────────────────────────────────────
+const NAVY   = '#0f2044';
+const BLUE   = '#1a56db';
+const GREEN  = '#22c55e';
+const ORANGE = '#f59e0b';
+const RED    = '#ef4444';
+const GREY   = '#94a3b8';
+const LIGHT  = 'rgba(26,86,219,.12)';
+
+const baseOpts = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { labels: { font: { size: 11 } } },
+             tooltip: { mode: 'index', intersect: false } },
+  scales: {
+    x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+    y: { grid: { color: '#f1f5f9' }, ticks: { font: { size: 10 } } },
+  },
+};
+
+function barLine(id, labels, bars, lines) {
+  // bars: [{label, data, color}]  lines: [{label, data, color, yAxisID?}]
+  const datasets = [];
+  bars.forEach(b => datasets.push({
+    type: 'bar', label: b.label, data: b.data,
+    backgroundColor: b.color + 'cc', borderColor: b.color,
+    borderWidth: 1, borderRadius: 4,
+  }));
+  lines.forEach(l => datasets.push({
+    type: 'line', label: l.label, data: l.data,
+    borderColor: l.color, backgroundColor: 'transparent',
+    pointRadius: 3, pointHoverRadius: 5, tension: .3,
+    yAxisID: l.yAxisID || 'y',
+  }));
+  const opts = JSON.parse(JSON.stringify(baseOpts));
+  const hasY2 = lines.some(l => l.yAxisID === 'y2');
+  if (hasY2) {
+    opts.scales.y2 = {
+      position: 'right', grid: { display: false },
+      ticks: { font: { size: 10 } },
+    };
+  }
+  new Chart(document.getElementById(id), { data: { labels, datasets }, options: opts });
+}
+
+function buildKpi(containerId, cards) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = cards.map(c => {
+    const d = c.delta;
+    const cls = d === null ? 'flat' : d > 0 ? 'up' : d < 0 ? 'down' : 'flat';
+    const arrow = d === null ? '' : d > 0 ? '▲' : d < 0 ? '▼' : '–';
+    const dText = d === null ? '' : `${arrow} ${Math.abs(d)}${c.suffix || ''}`;
+    const valFmt = typeof c.value === 'number' && c.value > 10000
+      ? c.value.toLocaleString() : c.value;
+    return `<div class="kpi-card">
+      <div class="label">${c.label}</div>
+      <div class="value">${valFmt}${c.suffix||''}</div>
+      ${dText ? `<div class="delta ${cls}">${dText} WoW</div>` : '<div class="delta flat">—</div>'}
+    </div>`;
+  }).join('');
+}
+
+// ── Data injected by Python ───────────────────────────────────────────────────
+const D = {"generated": "Apr 28, 2026 · 11:30", "period": "Apr 17 – 24, 2026", "health": "healthy", "labels": ["Feb 16", "Feb 23", "Mar 2", "Mar 9", "Mar 16", "Mar 23", "Mar 30", "Apr 6", "Apr 13", "Apr 20"], "signups": [1967.0, 1921.0, 1177.0, 1354.0, 1625.0, 2163.0, 2891.0, 2229.0, 2476.0, 2901.0], "otps": [3383.0, 3397.0, 2596.0, 2550.0, 2859.0, 3544.0, 5094.0, 4250.0, 4207.0, 4566.0], "signup_conv": [58.1, 56.5, 45.3, 53.1, 56.8, 61.0, 56.8, 52.4, 58.9, 63.5], "kpi_signups": {"last": 2476.0, "this": 2901.0, "avg": 2070.4, "delta": 425.0, "suffix": ""}, "kpi_signup_conv": {"last": 58.9, "this": 63.5, "avg": 56.2, "delta": 4.6, "suffix": "%"}, "kyc_starters": [716.0, 766.0, 517.0, 539.0, 617.0, 798.0, 907.0, 766.0, 850.0, 954.0], "kyc_done": [49.0, 60.0, 51.0, 88.0, 200.0, 284.0, 328.0, 297.0, 358.0, 248.0], "kyc_start_pct": [36.4, 39.9, 43.9, 39.8, 38.0, 36.9, 31.4, 34.4, 34.3, 32.9], "kyc_e2e_pct": [2.5, 3.1, 4.3, 6.5, 12.3, 13.1, 11.3, 13.3, 14.5, 8.5], "kpi_kyc_start_pct": {"last": 34.3, "this": 32.9, "avg": 36.8, "delta": -1.4, "suffix": "%"}, "kpi_kyc_e2e_pct": {"last": 14.5, "this": 8.5, "avg": 8.9, "delta": -6.0, "suffix": "%"}, "rtt": [49.0, 60.0, 51.0, 88.0, 200.0, 284.0, 328.0, 297.0, 358.0, 248.0], "payments": [57.0, 68.0, 65.0, 52.0, 56.0, 57.0, 70.0, 87.0, 124.0, 163.0], "rtt_conv": [116.3, 113.3, 127.5, 59.1, 28.0, 20.1, 21.3, 29.3, 34.6, 65.7], "kpi_rtt": {"last": 358.0, "this": 248.0, "avg": 196.3, "delta": -110.0, "suffix": ""}, "kpi_rtt_conv": {"last": 34.6, "this": 65.7, "avg": 61.5, "delta": 31.1, "suffix": "%"}, "wau": [5244.0, 5200.0, 4484.0, 4382.0, 4643.0, 5425.0, 7648.0, 6712.0, 6378.0, 7247.0], "kpi_wau": {"last": 6378.0, "this": 7247.0, "avg": 5736.3, "delta": 869.0, "suffix": ""}, "orders": [57.0, 68.0, 65.0, 52.0, 56.0, 57.0, 70.0, 87.0, 124.0, 163.0], "new_orders": [31, 37, 35, 28, 30, 31, 38, 47, 67, 89], "rep_orders": [26.0, 31.0, 30.0, 24.0, 26.0, 26.0, 32.0, 40.0, 57.0, 74.0], "gtv": [1.22, 1.36, 1.41, 1.06, 1.03, 1.09, 1.41, 1.57, 2.23, 3.06], "kpi_orders": {"last": 124.0, "this": 163.0, "avg": 79.9, "delta": 39.0, "suffix": ""}, "kpi_gtv": {"last": 2.23, "this": 3.06, "avg": 1.5, "delta": 0.8, "suffix": "cr"}, "repeat_pct": 45.3, "gtv_mtd_this": 12.0, "gtv_mtd_prev": 4.6, "mtd_month_this": "Apr", "mtd_month_prev": "Mar"};
+
+// ── Render slides ─────────────────────────────────────────────────────────────
+const L = D.labels;
+
+// Slide 1 — Signup Completion
+buildKpi('kpi-signups', [
+  { label: 'Last Week Signups', value: D.kpi_signups.last, delta: null },
+  { label: 'This Week Signups', value: D.kpi_signups.this,
+    delta: D.kpi_signups.delta },
+  { label: '10-Week Avg',       value: D.kpi_signups.avg,   delta: null },
+  { label: 'Conv% (OTP→PIN) This Wk',
+    value: D.kpi_signup_conv.this.toFixed(1), suffix: '%', delta: null },
+]);
+barLine('chart-signups', L,
+  [{ label: 'Signups', data: D.signups, color: BLUE }],
+  [{ label: 'OTP→Signup Conv%', data: D.signup_conv, color: ORANGE, yAxisID: 'y2' }]);
+
+// Slide 2 — KYC
+buildKpi('kpi-kyc', [
+  { label: 'KYC Start Rate Last Wk', value: D.kpi_kyc_start_pct.last.toFixed(1), suffix: '%', delta: null },
+  { label: 'KYC Start Rate This Wk', value: D.kpi_kyc_start_pct.this.toFixed(1), suffix: '%',
+    delta: +D.kpi_kyc_start_pct.delta.toFixed(1) },
+  { label: 'KYC Done Rate This Wk',  value: D.kpi_kyc_e2e_pct.this.toFixed(1), suffix: '%',
+    delta: +D.kpi_kyc_e2e_pct.delta.toFixed(1) },
+  { label: '10-Week Avg Start Rate', value: D.kpi_kyc_start_pct.avg.toFixed(1), suffix: '%', delta: null },
+]);
+barLine('chart-kyc', L,
+  [
+    { label: 'KYC Starters', data: D.kyc_starters, color: BLUE },
+    { label: 'KYC Completed', data: D.kyc_done, color: GREEN },
+  ],
+  [
+    { label: 'Start Rate%', data: D.kyc_start_pct, color: ORANGE, yAxisID: 'y2' },
+    { label: 'E2E Done%',   data: D.kyc_e2e_pct,   color: RED,    yAxisID: 'y2' },
+  ]);
+
+// Slide 3 — RTT → First Trade
+buildKpi('kpi-rtt', [
+  { label: 'RTT Users Last Wk', value: D.kpi_rtt.last, delta: null },
+  { label: 'RTT Users This Wk', value: D.kpi_rtt.this, delta: D.kpi_rtt.delta },
+  { label: 'RTT→Trade Conv% This Wk',
+    value: D.kpi_rtt_conv.this.toFixed(1), suffix: '%',
+    delta: +D.kpi_rtt_conv.delta.toFixed(1) },
+  { label: '10-Week Avg Conv%', value: D.kpi_rtt_conv.avg.toFixed(1), suffix: '%', delta: null },
+]);
+barLine('chart-rtt', L,
+  [
+    { label: 'RTT Users',  data: D.rtt,      color: BLUE  },
+    { label: 'Investors',  data: D.payments, color: GREEN },
+  ],
+  [{ label: 'RTT→Trade Conv%', data: D.rtt_conv, color: ORANGE, yAxisID: 'y2' }]);
+
+// Slide 4 — WAU
+buildKpi('kpi-wau', [
+  { label: 'WAU Last Week', value: D.kpi_wau.last.toLocaleString(), delta: null },
+  { label: 'WAU This Week', value: D.kpi_wau.this.toLocaleString(), delta: D.kpi_wau.delta },
+  { label: '10-Week Avg WAU', value: Math.round(D.kpi_wau.avg).toLocaleString(), delta: null },
+  { label: 'WoW Change', value: (D.kpi_wau.delta >= 0 ? '+' : '') + D.kpi_wau.delta.toLocaleString(),
+    delta: null },
+]);
+barLine('chart-wau', L,
+  [{ label: 'Weekly Active Users', data: D.wau, color: NAVY }],
+  []);
+
+// Slide 5 — Orders & GTV
+(function() {
+  const mtdEl = document.getElementById('mtd-row');
+  const maxMtd = Math.max(D.gtv_mtd_this, D.gtv_mtd_prev, 0.01);
+  mtdEl.innerHTML = `
+    <div class="mtd-card">
+      <div>
+        <div class="mo">${D.mtd_month_this} MTD</div>
+        <div class="v">₹${D.gtv_mtd_this}cr</div>
+      </div>
+      <div class="mtd-bar-wrap">
+        <div class="mtd-bar" style="width:${(D.gtv_mtd_this/maxMtd*100).toFixed(1)}%;
+             background:#1a56db;"></div>
+      </div>
+    </div>
+    <div class="mtd-card">
+      <div>
+        <div class="mo">${D.mtd_month_prev} MTD (same day)</div>
+        <div class="v">₹${D.gtv_mtd_prev}cr</div>
+      </div>
+      <div class="mtd-bar-wrap">
+        <div class="mtd-bar" style="width:${(D.gtv_mtd_prev/maxMtd*100).toFixed(1)}%;
+             background:#64748b;"></div>
+      </div>
+    </div>
+    <div class="mtd-card" style="flex:.5;">
+      <div>
+        <div class="mo">Repeat Investors</div>
+        <div class="v">${D.repeat_pct.toFixed(1)}%</div>
+      </div>
+    </div>
+  `;
+})();
+
+buildKpi('kpi-gtv', [
+  { label: 'Orders Last Week', value: D.kpi_orders.last, delta: null },
+  { label: 'Orders This Week', value: D.kpi_orders.this, delta: D.kpi_orders.delta },
+  { label: 'GTV This Week',    value: '₹' + D.kpi_gtv.this.toFixed(1), suffix: 'cr', delta: null },
+  { label: '10-Wk Avg GTV',    value: '₹' + D.kpi_gtv.avg.toFixed(1), suffix: 'cr', delta: null },
+]);
+barLine('chart-gtv', L,
+  [
+    { label: 'New Customer Orders',    data: D.new_orders, color: BLUE  },
+    { label: 'Repeat Customer Orders', data: D.rep_orders, color: GREEN },
+  ],
+  [{ label: 'Weekly GTV (₹cr)', data: D.gtv, color: ORANGE, yAxisID: 'y2' }]);
+</script>
+</body>
+</html>
