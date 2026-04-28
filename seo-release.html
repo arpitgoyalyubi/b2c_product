@@ -828,12 +828,13 @@ const weeks = [
   '22 Dec','29 Dec','5 Jan','12 Jan','19 Jan','26 Jan',
   '2 Feb','9 Feb','16 Feb','23 Feb',
   '2 Mar','9 Mar','16 Mar','23 Mar','30 Mar',
-  '6 Apr','13 Apr','20 Apr'
+  '6 Apr','13 Apr','20 Apr','27 Apr'
 ];
-const bondImp = [24,59,99,84,140,174,152,179,264,221,93,108,111,131,275,892,892,1106];
-const bondClicks = [0,2,4,3,5,4,5,6,5,4,1,3,0,14,7,31,29,30];
-const bondPos = [22.2,8.7,8.9,10.6,12.7,13.5,10.1,9.5,11.8,14.8,19.4,18.7,16.3,14.1,9.2,8.3,8.7,8.6];
-const bondCtr = [0,3.39,4.04,3.57,3.57,2.3,3.29,3.35,1.89,1.81,1.08,2.78,0,10.69,2.55,3.48,3.25,2.71];
+// 27 Apr = in-progress week (data from Apr 27 only) — null keeps the axis extended without misleading bars
+const bondImp    = [24,59,99,84,140,174,152,179,264,221,93,108,111,131,275,892,892,1106,null];
+const bondClicks = [0,2,4,3,5,4,5,6,5,4,1,3,0,14,7,31,29,30,null];
+const bondPos    = [22.2,8.7,8.9,10.6,12.7,13.5,10.1,9.5,11.8,14.8,19.4,18.7,16.3,14.1,9.2,8.3,8.7,8.6,null];
+const bondCtr    = [0,3.39,4.04,3.57,3.57,2.3,3.29,3.35,1.89,1.81,1.08,2.78,0,10.69,2.55,3.48,3.25,2.71,null];
 
 const isinData = [
   {isin:'INE01YL07417', issuer:'EarlySalary Services', imp:186, clicks:12, ctr:6.5, pos:8.5},
@@ -888,6 +889,44 @@ const FIX_LINE = {
     font: { size: 10, weight: '600' },
     padding: {top:3,bottom:3,left:6,right:6},
     yAdjust: -30
+  }
+};
+
+// "today" marker — boundary between last complete week and current in-progress week
+const NOW_LINE = {
+  type:'line',
+  xMin: 17.5, xMax: 17.5,
+  borderColor: '#16A34A',
+  borderWidth: 1.5,
+  borderDash: [4,3],
+  label: {
+    display: true,
+    content: 'Apr 27 ↑ current week',
+    position: 'end',
+    backgroundColor: '#16A34A',
+    color: 'white',
+    font: { size: 9, weight: '600' },
+    padding: {top:2,bottom:2,left:5,right:5},
+    yAdjust: 20
+  }
+};
+
+// "today" marker for corr charts (corrWeeks index 12='20 Apr', 13='27 Apr')
+const CORR_NOW_LINE = {
+  type:'line',
+  xMin: 12.5, xMax: 12.5,
+  borderColor: '#16A34A',
+  borderWidth: 1.5,
+  borderDash: [4,3],
+  label: {
+    display: true,
+    content: 'Apr 27 ↑ current week',
+    position: 'end',
+    backgroundColor: '#16A34A',
+    color: 'white',
+    font: { size: 9, weight: '600' },
+    padding: {top:2,bottom:2,left:5,right:5},
+    yAdjust: 20
   }
 };
 
@@ -974,7 +1013,7 @@ new Chart(document.getElementById('trendChart'), {
     interaction: { mode: 'index', intersect: false },
     plugins: {
       legend: { position: 'top' },
-      annotation: { annotations: { fixLine: FIX_LINE } }
+      annotation: { annotations: { fixLine: FIX_LINE, nowLine: NOW_LINE } }
     },
     scales: {
       y:  { beginAtZero: true, grid: { color: '#F1F5F9' }, title: { display: true, text: 'Impressions' } },
@@ -1177,8 +1216,8 @@ isinData.forEach(d => {
 })();
 
 // ─── Stacked chart: bond pages vs app pages ───────────────────────────────────
-const investImp = [80,199,310,225,325,250,200,281,400,352,339,345,216,293,1099,1470,1657,2123];
-const appImp    = investImp.map((v,i) => Math.max(0, v - bondImp[i]));  // app = invest minus bond
+const investImp = [80,199,310,225,325,250,200,281,400,352,339,345,216,293,1099,1470,1657,2123,null];
+const appImp    = investImp.map((v,i) => (v == null || bondImp[i] == null) ? null : Math.max(0, v - bondImp[i]));
 
 new Chart(document.getElementById('stackedChart'), {
   type: 'bar',
@@ -1216,7 +1255,8 @@ new Chart(document.getElementById('stackedChart'), {
                      backgroundColor: '#9333EA', color: 'white',
                      font: { size: 10, weight: '600' }, padding: {top:3,bottom:3,left:6,right:6}, yAdjust: -20 }
           },
-          fixes: { ...FIX_LINE }
+          fixes: { ...FIX_LINE },
+          nowLine: { ...NOW_LINE }
         }
       }
     },
@@ -1266,11 +1306,11 @@ initViewAll('engBody', 3);
 initViewAll('mktBody', 3);
 
 // ─── ISIN Crawl Correlation Charts ────────────────────────────────────────────
-// 13 weeks Jan 26 – Apr 20 · pre-fix = first 10 wks · post-fix = last 3 wks
-const corrWeeks      = ['26 Jan','02 Feb','09 Feb','16 Feb','23 Feb','02 Mar','09 Mar','16 Mar','23 Mar','30 Mar','06 Apr','13 Apr','20 Apr'];
-const corrIsins      = [48, 43, 43, 38, 47, 37, 38, 38, 38, 53, 59, 71, 74];
-const corrImp        = [174, 152, 179, 264, 221, 93, 108, 111, 131, 275, 815, 868, 1083];
-const corrImpPerIsin = [3.6, 3.5, 4.2, 6.9, 4.7, 2.5, 2.8, 2.9, 3.4, 5.2, 13.8, 12.2, 14.6];
+// 14 weeks Jan 26 – Apr 27 · pre-fix = first 10 wks · post-fix = last 3 wks · 27 Apr = in-progress
+const corrWeeks      = ['26 Jan','02 Feb','09 Feb','16 Feb','23 Feb','02 Mar','09 Mar','16 Mar','23 Mar','30 Mar','06 Apr','13 Apr','20 Apr','27 Apr'];
+const corrIsins      = [48, 43, 43, 38, 47, 37, 38, 38, 38, 53, 59, 71, 74, null];
+const corrImp        = [174, 152, 179, 264, 221, 93, 108, 111, 131, 275, 815, 868, 1083, null];
+const corrImpPerIsin = [3.6, 3.5, 4.2, 6.9, 4.7, 2.5, 2.8, 2.9, 3.4, 5.2, 13.8, 12.2, 14.6, null];
 const PRE = 10; // first 10 weeks are pre-fix
 
 // Bar colours: pre-fix = light purple, post-fix = darker green
@@ -1332,6 +1372,7 @@ new Chart(document.getElementById('corrDualChart'), {
               padding: { x: 6, y: 3 },
             },
           },
+          corrNowLine: { ...CORR_NOW_LINE },
         },
       },
       tooltip: {
@@ -1447,6 +1488,7 @@ new Chart(document.getElementById('impPerIsinChart'), {
               padding: { x: 4, y: 2 },
             },
           },
+          corrNowLine: { ...CORR_NOW_LINE },
         },
       },
       tooltip: {
