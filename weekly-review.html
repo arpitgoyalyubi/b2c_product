@@ -238,7 +238,7 @@
     <div class="cover-eyebrow">Aspero · B2C Analytics</div>
     <h1>Weekly Business<br>Review</h1>
     <div class="cover-sub">Funnel · KYC · Investments · GTV</div>
-    <div class="cover-period">Apr 20 – 26, 2026 &nbsp;·&nbsp; Generated Apr 28, 2026 · 14:54</div>
+    <div class="cover-period">Apr 20 – 26, 2026 &nbsp;·&nbsp; Generated Apr 28, 2026 · 15:16</div>
     <div class="cover-metrics" id="cover-metrics"></div>
   </div>
 
@@ -296,7 +296,7 @@
       <div class="stat-list">
         <div class="stat-item"><span class="si-lbl">Prior Wk Investors</span><span class="si-val" id="s3-last">—</span></div>
         <div class="stat-item"><span class="si-lbl">7-Wk Avg Investors</span><span class="si-val" id="s3-avg">—</span></div>
-        <div class="stat-item"><span class="si-lbl">RTT Users Last Wk</span><span class="si-val" id="s3-rtt">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Cohort Conv% (last wk)</span><span class="si-val" id="s3-conv">—</span></div>
       </div>
     </div>
     <div class="right-panel">
@@ -408,7 +408,7 @@ document.addEventListener('keydown', e => {
 });
 
 // ── Data & helpers ────────────────────────────────────────────────────────────
-const D = {"generated": "Apr 28, 2026 · 14:54", "period": "Apr 20 – 26, 2026", "health": "healthy", "labels": ["Mar 9", "Mar 16", "Mar 23", "Mar 30", "Apr 6", "Apr 13", "Apr 20"], "signups": [1354.0, 1625.0, 2163.0, 2891.0, 2229.0, 2476.0, 2901.0], "otps": [2550.0, 2859.0, 3544.0, 5094.0, 4250.0, 4207.0, 4566.0], "signup_conv": [53.1, 56.8, 61.0, 56.8, 52.4, 58.9, 63.5], "kpi_signups": {"last": 2476.0, "this": 2901.0, "avg": 2234.1, "delta": 425.0, "suffix": ""}, "kpi_signup_conv": {"last": 58.9, "this": 63.5, "avg": 57.5, "delta": 4.6, "suffix": "%"}, "kyc_starters": [539.0, 617.0, 798.0, 907.0, 766.0, 850.0, 954.0], "kyc_done": [92.0, 190.0, 249.0, 290.0, 222.0, 307.0, 238.0], "kyc_start_pct": [39.8, 38.0, 36.9, 31.4, 34.4, 34.3, 32.9], "kyc_start_to_done_pct": [17.1, 30.8, 31.2, 32.0, 29.0, 36.1, 24.9], "kpi_kyc_start_pct": {"last": 34.3, "this": 32.9, "avg": 35.4, "delta": -1.4, "suffix": "%"}, "kpi_kyc_start_to_done": {"last": 36.1, "this": 24.9, "avg": 28.7, "delta": -11.2, "suffix": "%"}, "rtt": [92.0, 190.0, 249.0, 290.0, 222.0, 307.0, 238.0], "payments": [52.0, 56.0, 57.0, 70.0, 87.0, 124.0, 163.0], "rtt_conv": [56.5, 29.5, 22.9, 24.1, 39.2, 40.4, 68.5], "kpi_rtt": {"last": 307.0, "this": 238.0, "avg": 226.9, "delta": -69.0, "suffix": ""}, "kpi_investors": {"last": 124.0, "this": 163.0, "avg": 87.0, "delta": 39.0, "suffix": ""}, "kpi_rtt_conv": {"last": 40.4, "this": 68.5, "avg": 40.2, "delta": 28.1, "suffix": "%"}, "wau": [2243.0, 2578.0, 3251.0, 4414.0, 3790.0, 3975.0, 4544.0], "kpi_wau": {"last": 3975.0, "this": 4544.0, "avg": 3542.1, "delta": 569.0, "suffix": ""}, "orders": [79.0, 88.0, 73.0, 121.0, 125.0, 191.0, 237.0], "gtv": [1.06, 1.03, 1.09, 1.41, 1.57, 2.23, 3.06], "kpi_orders": {"last": 191.0, "this": 237.0, "avg": 130.6, "delta": 46.0, "suffix": ""}, "kpi_gtv": {"last": 2.23, "this": 3.06, "avg": 1.6, "delta": 0.8, "suffix": "cr"}, "repeat_pct": 33.9, "gtv_mtd_this": 8.8, "gtv_mtd_prev": 4.6, "mtd_month_this": "Apr", "mtd_month_prev": "Mar", "gtv_by_issuer": [{"name": "AKARA CAPITAL ADVISORS PRIVATE LIMITED", "gtv_this": 1.62, "gtv_last": 0.47, "pct_this": 52.8, "pct_last": 21.1, "wow_pp": 31.7}, {"name": "RDC CONCRETEINDIA LIMITED", "gtv_this": 0.17, "gtv_last": 0.09, "pct_this": 5.5, "pct_last": 4.0, "wow_pp": 1.5}, {"name": "KEERTANA FINSERV LIMITED", "gtv_this": 0.14, "gtv_last": 0.44, "pct_this": 4.5, "pct_last": 19.8, "wow_pp": -15.3}, {"name": "MUFIN GREEN FINANCE LIMITED", "gtv_this": 0.11, "gtv_last": 0.31, "pct_this": 3.7, "pct_last": 14.1, "wow_pp": -10.4}, {"name": "NATIONAL HIGHWAYS INFRA TRUST", "gtv_this": 0.0, "gtv_last": 0.0, "pct_this": 0.0, "pct_last": 0.1, "wow_pp": -0.1}]};
+const D = {"generated": "Apr 28, 2026 · 15:16", "period": "Apr 20 – 26, 2026", "health": "healthy", "labels": ["Mar 9", "Mar 16", "Mar 23", "Mar 30", "Apr 6", "Apr 13", "Apr 20"], "signups": [1354.0, 1625.0, 2163.0, 2891.0, 2229.0, 2476.0, 2901.0], "otps": [2550.0, 2859.0, 3544.0, 5094.0, 4250.0, 4207.0, 4566.0], "signup_conv": [53.1, 56.8, 61.0, 56.8, 52.4, 58.9, 63.5], "kpi_signups": {"last": 2476.0, "this": 2901.0, "avg": 2234.1, "delta": 425.0, "suffix": ""}, "kpi_signup_conv": {"last": 58.9, "this": 63.5, "avg": 57.5, "delta": 4.6, "suffix": "%"}, "kyc_starters": [539.0, 617.0, 798.0, 907.0, 766.0, 850.0, 954.0], "kyc_done": [92.0, 190.0, 249.0, 290.0, 222.0, 307.0, 238.0], "kyc_start_pct": [39.8, 38.0, 36.9, 31.4, 34.4, 34.3, 32.9], "kyc_start_to_done_pct": [17.1, 30.8, 31.2, 32.0, 29.0, 36.1, 24.9], "kpi_kyc_start_pct": {"last": 34.3, "this": 32.9, "avg": 35.4, "delta": -1.4, "suffix": "%"}, "kpi_kyc_start_to_done": {"last": 36.1, "this": 24.9, "avg": 28.7, "delta": -11.2, "suffix": "%"}, "rtt": [92.0, 190.0, 249.0, 290.0, 222.0, 307.0, 238.0], "payments": [52.0, 56.0, 57.0, 70.0, 87.0, 124.0, 163.0], "rtt_cohort_conv_pct": [18.5, 14.7, 12.4, 14.5, 17.1, 18.9, 17.2], "kpi_rtt": {"last": 307.0, "this": 238.0, "avg": 226.9, "delta": -69.0, "suffix": ""}, "kpi_investors": {"last": 124.0, "this": 163.0, "avg": 87.0, "delta": 39.0, "suffix": ""}, "kpi_rtt_cohort_conv": {"last": 18.9, "this": 17.2, "avg": 16.2, "delta": -1.7, "suffix": "%"}, "wau": [2243.0, 2578.0, 3251.0, 4414.0, 3790.0, 3975.0, 4544.0], "kpi_wau": {"last": 3975.0, "this": 4544.0, "avg": 3542.1, "delta": 569.0, "suffix": ""}, "orders": [79.0, 88.0, 73.0, 121.0, 125.0, 191.0, 237.0], "gtv": [1.06, 1.03, 1.09, 1.41, 1.57, 2.23, 3.06], "kpi_orders": {"last": 191.0, "this": 237.0, "avg": 130.6, "delta": 46.0, "suffix": ""}, "kpi_gtv": {"last": 2.23, "this": 3.06, "avg": 1.6, "delta": 0.8, "suffix": "cr"}, "repeat_pct": 33.9, "gtv_mtd_this": 8.8, "gtv_mtd_prev": 4.6, "mtd_month_this": "Apr", "mtd_month_prev": "Mar", "gtv_by_issuer": [{"name": "AKARA CAPITAL ADVISORS PRIVATE LIMITED", "gtv_this": 1.62, "gtv_last": 0.47, "pct_this": 52.8, "pct_last": 21.1, "wow_pp": 31.7}, {"name": "RDC CONCRETEINDIA LIMITED", "gtv_this": 0.17, "gtv_last": 0.09, "pct_this": 5.5, "pct_last": 4.0, "wow_pp": 1.5}, {"name": "KEERTANA FINSERV LIMITED", "gtv_this": 0.14, "gtv_last": 0.44, "pct_this": 4.5, "pct_last": 19.8, "wow_pp": -15.3}, {"name": "MUFIN GREEN FINANCE LIMITED", "gtv_this": 0.11, "gtv_last": 0.31, "pct_this": 3.7, "pct_last": 14.1, "wow_pp": -10.4}, {"name": "NATIONAL HIGHWAYS INFRA TRUST", "gtv_this": 0.0, "gtv_last": 0.0, "pct_this": 0.0, "pct_last": 0.1, "wow_pp": -0.1}]};
 const L = D.labels;
 
 function num(v)  { return v != null ? Math.round(v).toLocaleString() : '—'; }
@@ -532,20 +532,21 @@ insights('ins-s2', [
 ]);
 
 // ── Slide 3: RTT → First Trade ────────────────────────────────────────────────
-// Hero = investors (the business outcome). RTT count is context.
-// Conv% (investors/rtt same week) is omitted — it's a cross-cohort ratio:
-// investors this week include prior-cohort RTT users, making it unreliable.
+// Hero = investors (absolute business outcome). WoW on investor count.
+// Cohort conv% = of users who became RTT in that week, % who have since invested
+// (to-date; naturally lower for recent weeks — older cohorts had more time).
 setHero('h3-val', 'h3-delta', num(D.kpi_investors.this), D.kpi_investors.delta, '');
 setEl('s3-last', num(D.kpi_investors.last));
 setEl('s3-avg',  num(D.kpi_investors.avg));
-setEl('s3-rtt',  num(D.kpi_rtt.this));
+setEl('s3-conv', pct(D.kpi_rtt_cohort_conv.this));
 mkChart('chart-rtt', [
-  bar('RTT Users', D.rtt,      GREEN),
-  bar('Investors', D.payments, BLUE),
-]);
+  bar('RTT Users',      D.rtt,                 GREEN),
+  bar('Investors',      D.payments,            BLUE),
+  line('Cohort Conv%',  D.rtt_cohort_conv_pct, AMBER, 'y2'),
+], Y2_PCT);
 insights('ins-s3', [
   { color: BLUE,  txt: `Investors: ${num(D.kpi_investors.this)} last wk vs ${num(D.kpi_investors.last)} prior wk · 7-wk avg: ${num(D.kpi_investors.avg)}` },
-  { color: GREEN, txt: `RTT users last wk: ${num(D.kpi_rtt.this)} (KYC Demat Verified)` },
+  { color: AMBER, txt: `Last-wk RTT cohort conv: ${pct(D.kpi_rtt_cohort_conv.this)} to-date · prior wk cohort: ${pct(D.kpi_rtt_cohort_conv.last)} (older cohort, naturally higher)` },
 ]);
 
 // ── Slide 4: WAU ──────────────────────────────────────────────────────────────
