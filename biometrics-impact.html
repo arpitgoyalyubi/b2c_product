@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biometrics Launch Impact — Aspero B2C</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --blue:    #2563EB;
+    --blue-lt: #EFF6FF;
+    --green:   #16A34A;
+    --green-lt:#F0FDF4;
+    --purple:  #7C3AED;
+    --purple-lt:#F5F3FF;
+    --amber:   #D97706;
+    --amber-lt:#FFFBEB;
+    --red:     #DC2626;
+    --gray:    #64748B;
+    --border:  #E2E8F0;
+    --text:    #0F172A;
+    --text2:   #475569;
+    --bg:      #F1F5F9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  .header {
+    background: linear-gradient(135deg, #312E81 0%, #4F46E5 60%, #6366F1 100%);
+    color: white;
+    padding: 48px 32px 40px;
+    text-align: center;
+  }
+  .header .pill {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    margin-bottom: 18px;
+  }
+  .header h1 {
+    font-size: 34px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    letter-spacing: -.02em;
+  }
+  .header .sub {
+    font-size: 15px;
+    opacity: .78;
+    max-width: 560px;
+    margin: 0 auto 18px;
+    line-height: 1.6;
+  }
+  .header .meta {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    opacity: .7;
+  }
+  .header .meta span { display: flex; align-items: center; gap: 5px; }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 40px 0 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--blue);
+    flex-shrink: 0;
+  }
+
+  /* KPI grid */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 8px; }
+  .kpi {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 22px 18px;
+  }
+  .kpi .label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--gray);
+    margin-bottom: 8px;
+  }
+  .kpi .val {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -.03em;
+    line-height: 1;
+    color: var(--text);
+    margin-bottom: 5px;
+  }
+  .kpi .sub { font-size: 13px; color: var(--text2); }
+  .kpi.blue  { border-left: 4px solid var(--blue);   background: var(--blue-lt); }
+  .kpi.green { border-left: 4px solid var(--green);  background: var(--green-lt); }
+  .kpi.purple{ border-left: 4px solid var(--purple); background: var(--purple-lt); }
+  .kpi.amber { border-left: 4px solid var(--amber);  background: var(--amber-lt); }
+  .kpi.blue .val  { color: var(--blue); }
+  .kpi.green .val { color: var(--green); }
+  .kpi.purple .val{ color: var(--purple); }
+  .kpi.amber .val { color: var(--amber); }
+
+  /* Before / After table */
+  .ba-table { width: 100%; border-collapse: collapse; background: white; border-radius: 14px; overflow: hidden; border: 1px solid var(--border); }
+  .ba-table th, .ba-table td { padding: 13px 18px; text-align: left; border-bottom: 1px solid var(--border); }
+  .ba-table th { background: #F8FAFC; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--gray); }
+  .ba-table td { font-size: 14px; }
+  .ba-table tr:last-child td { border-bottom: none; }
+  .ba-table .metric-col { font-weight: 600; color: var(--text); }
+  .ba-table .before-col { color: var(--text2); }
+  .ba-table .after-col  { font-weight: 700; color: var(--blue); }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 100px;
+  }
+  .badge.up   { background: var(--green-lt); color: var(--green); }
+  .badge.dn   { background: #FEF2F2; color: var(--red); }
+  .badge.flat { background: #F1F5F9; color: var(--gray); }
+
+  /* Funnel bars */
+  .funnel { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+  .funnel-row { margin-bottom: 16px; }
+  .funnel-row:last-child { margin-bottom: 0; }
+  .funnel-row .row-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; }
+  .funnel-row .row-label { font-size: 14px; font-weight: 600; color: var(--text); }
+  .funnel-row .row-nums  { font-size: 14px; color: var(--text2); }
+  .funnel-row .row-nums .n { font-weight: 700; color: var(--text); }
+  .bar-track { background: #F1F5F9; border-radius: 6px; height: 10px; }
+  .bar-fill  { height: 10px; border-radius: 6px; transition: width .6s; }
+
+  /* Chart card */
+  .chart-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+  }
+  .chart-card .chart-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .chart-card .chart-sub {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 20px;
+  }
+
+  /* Insight box */
+  .insight-box {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 28px;
+  }
+  .insight-box .i-row {
+    display: flex;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .insight-box .i-row:last-child { border-bottom: none; }
+  .insight-box .i-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+  .insight-box .i-text { font-size: 14px; color: var(--text2); line-height: 1.6; }
+  .insight-box .i-text strong { color: var(--text); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 680px) { .two-col { grid-template-columns: 1fr; } }
+
+  .section-note {
+    font-size: 12px;
+    color: var(--gray);
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--blue);
+    text-decoration: none;
+    margin-bottom: 28px;
+  }
+  .back-link:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="pill">Feature Impact Report</div>
+  <h1>Biometrics Authentication</h1>
+  <p class="sub">Face ID / Fingerprint login for returning users — before &amp; after analysis based on Amplitude data.</p>
+  <div class="meta">
+    <span>🚀 Launched April 20, 2026</span>
+    <span>📅 Before: Mar 24 – Apr 19 (27 days)</span>
+    <span>📅 After: Apr 20 – Apr 27 (8 days)</span>
+    <span>🔬 Source: Amplitude Project 506002</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <a href="index.html" class="back-link">← Product Hub</a>
+
+  <!-- Top KPIs (post-launch) -->
+  <h2><span class="dot" style="background:#7C3AED"></span>8-Day Post-Launch Summary</h2>
+  <div class="kpi-grid">
+    <div class="kpi purple">
+      <div class="label">Users Enrolled</div>
+      <div class="val">1,976</div>
+      <div class="sub">of 2,893 who saw setup screen</div>
+    </div>
+    <div class="kpi blue">
+      <div class="label">Enrollment Rate</div>
+      <div class="val">68.3%</div>
+      <div class="sub">opted in on first prompt</div>
+    </div>
+    <div class="kpi green">
+      <div class="label">Bio Logins Verified</div>
+      <div class="val">786</div>
+      <div class="sub">successful biometric re-logins</div>
+    </div>
+    <div class="kpi amber">
+      <div class="label">Bio Login Success</div>
+      <div class="val">60.6%</div>
+      <div class="sub">of 1,296 biometric attempts</div>
+    </div>
+  </div>
+
+  <!-- Before / After -->
+  <h2><span class="dot" style="background:#2563EB"></span>Before vs After Comparison</h2>
+  <table class="ba-table">
+    <thead>
+      <tr>
+        <th class="metric-col">Metric</th>
+        <th>Before Launch<br><small style="font-weight:400;text-transform:none">Mar 24 – Apr 19 (27 days)</small></th>
+        <th>After Launch<br><small style="font-weight:400;text-transform:none">Apr 20 – Apr 27 (8 days)</small></th>
+        <th>Change</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="metric-col">Signin Page Views / day</td>
+        <td class="before-col">1,036</td>
+        <td class="after-col">1,074</td>
+        <td><span class="badge up">↑ +3.7%</span></td>
+      </tr>
+      <tr>
+        <td class="metric-col">OTP Conv Rate (Signin → Verified)</td>
+        <td class="before-col">63.3%</td>
+        <td class="after-col">61.9%</td>
+        <td><span class="badge flat">−1.4pp (noise)</span></td>
+      </tr>
+      <tr>
+        <td class="metric-col">New Signups / day</td>
+        <td class="before-col">352</td>
+        <td class="after-col">409</td>
+        <td><span class="badge up">↑ +16.2%</span></td>
+      </tr>
+      <tr>
+        <td class="metric-col">Biometric Logins / day</td>
+        <td class="before-col">0 (not available)</td>
+        <td class="after-col">98 avg<br><small style="font-weight:400;color:#64748B">reaching 150 by Apr 27</small></td>
+        <td><span class="badge up">↑ New channel</span></td>
+      </tr>
+      <tr>
+        <td class="metric-col">Re-login Method</td>
+        <td class="before-col">PIN only</td>
+        <td class="after-col">PIN + Biometrics<br><small style="font-weight:400;color:#64748B">60.6% bio success rate</small></td>
+        <td><span class="badge up">✓ New path</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="section-note">Note: OTP conv rate is unchanged — biometrics affects the PIN verification step (post-OTP), not the OTP flow itself.</p>
+
+  <!-- Two columns: Enrollment Funnel + Login Performance -->
+  <h2><span class="dot" style="background:#16A34A"></span>Enrollment &amp; Login Detail</h2>
+  <div class="two-col">
+
+    <!-- Enrollment funnel -->
+    <div class="funnel">
+      <div style="font-size:15px;font-weight:700;margin-bottom:18px;">Setup Funnel</div>
+      <div class="funnel-row">
+        <div class="row-head">
+          <div class="row-label">Shown setup screen</div>
+          <div class="row-nums"><span class="n">2,893</span> &nbsp; 100%</div>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="background:#6366F1;width:100%"></div></div>
+      </div>
+      <div class="funnel-row">
+        <div class="row-head">
+          <div class="row-label">✅ Enrolled biometrics</div>
+          <div class="row-nums"><span class="n" style="color:#16A34A">1,976</span> &nbsp; 68.3%</div>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="background:#16A34A;width:68.3%"></div></div>
+      </div>
+      <div class="funnel-row">
+        <div class="row-head">
+          <div class="row-label">⏳ Deferred (Set Up Later)</div>
+          <div class="row-nums"><span class="n" style="color:#D97706">839</span> &nbsp; 29.0%</div>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="background:#F59E0B;width:29.0%"></div></div>
+      </div>
+      <div class="funnel-row">
+        <div class="row-head">
+          <div class="row-label">❌ Enrollment failed</div>
+          <div class="row-nums"><span class="n" style="color:#DC2626">199</span> &nbsp; 6.9%</div>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="background:#EF4444;width:6.9%"></div></div>
+      </div>
+      <div style="font-size:12px;color:#64748B;margin-top:14px;padding-top:12px;border-top:1px solid #E2E8F0;">
+        Deferred users are re-prompted after 3 days — expect enrollment to climb to ~75–80% over the next 2 weeks.
+      </div>
+    </div>
+
+    <!-- Login performance -->
+    <div class="funnel">
+      <div style="font-size:15px;font-weight:700;margin-bottom:18px;">Biometric Login Funnel</div>
+      <div class="funnel-row">
+        <div class="row-head">
+          <div class="row-label">Tapped biometric button</div>
+          <div class="row-nums"><span class="n">1,296</span> &nbsp; 100%</div>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="background:#6366F1;width:100%"></div></div>
+      </div>
+      <div class="funnel-row">
+        <div class="row-head">
+          <div class="row-label">✅ Verified (backend)</div>
+          <div class="row-nums"><span class="n" style="color:#16A34A">786</span> &nbsp; 60.6%</div>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="background:#16A34A;width:60.6%"></div></div>
+      </div>
+      <div class="funnel-row">
+        <div class="row-head">
+          <div class="row-label">❌ OS prompt failed</div>
+          <div class="row-nums"><span class="n" style="color:#D97706">454</span> &nbsp; 35.0%</div>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="background:#F59E0B;width:35.0%"></div></div>
+      </div>
+      <div class="funnel-row">
+        <div class="row-head">
+          <div class="row-label">❌ Backend challenge failed</div>
+          <div class="row-nums"><span class="n">24</span> &nbsp; 1.9%</div>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="background:#EF4444;width:1.9%"></div></div>
+      </div>
+      <div class="funnel-row">
+        <div class="row-head">
+          <div class="row-label">🔁 Fell back to PIN</div>
+          <div class="row-nums"><span class="n">2</span> &nbsp; &lt;0.1%</div>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="background:#94A3B8;width:0.2%"></div></div>
+      </div>
+      <div style="font-size:12px;color:#64748B;margin-top:14px;padding-top:12px;border-top:1px solid #E2E8F0;">
+        35% OS failure rate is expected early — includes Face ID / fingerprint mismatches and user cancels. Only 2 users hit the 3-strike PIN fallback.
+      </div>
+    </div>
+  </div>
+
+  <!-- Daily Trend Chart -->
+  <h2><span class="dot" style="background:#2563EB"></span>Daily Trend (Apr 20 – Apr 27)</h2>
+  <div class="chart-card">
+    <div class="chart-title">Biometric Enrollments &amp; Logins per Day</div>
+    <div class="chart-sub">Enrollments stabilising at ~290–320/day; logins growing as cumulative enrolled base re-opens app.</div>
+    <canvas id="trendChart" height="100"></canvas>
+  </div>
+
+  <!-- Insights -->
+  <h2><span class="dot" style="background:#D97706"></span>Key Takeaways</h2>
+  <div class="insight-box">
+    <div class="i-row">
+      <div class="i-icon">🎯</div>
+      <div class="i-text">
+        <strong>Strong adoption out of the gate.</strong> 68.3% of users enrolled on first prompt — well above the 50–60% industry baseline for biometric opt-in on a financial app. 29% deferred, meaning re-prompt in 3 days will drive another enrollment wave.
+      </div>
+    </div>
+    <div class="i-row">
+      <div class="i-icon">📈</div>
+      <div class="i-text">
+        <strong>Bio-logins compounding daily.</strong> From 1 on launch day to 150 by Apr 27, and accelerating — because users enrolled earlier are returning to use it. This number will continue growing without any additional launches.
+      </div>
+    </div>
+    <div class="i-row">
+      <div class="i-icon">⚠️</div>
+      <div class="i-text">
+        <strong>OS prompt failure rate is 35% — the key optimization lever.</strong> Likely cause: users with Face ID in non-ideal conditions, first-time hesitation, or accidental cancel. Consider adding a pre-prompt explainer (e.g. "Look at your phone to continue") to reduce cancel rate. The 24 backend challenge failures (1.9%) are also worth a backend investigation.
+      </div>
+    </div>
+    <div class="i-row">
+      <div class="i-icon">✅</div>
+      <div class="i-text">
+        <strong>Near-zero PIN fallback.</strong> Only 2 users hit the 3-strike limit and fell back to PIN — confirming biometrics rarely forces degraded UX. Users who fail once typically retry and succeed.
+      </div>
+    </div>
+    <div class="i-row">
+      <div class="i-icon">📊</div>
+      <div class="i-text">
+        <strong>Signin funnel unaffected (expected).</strong> OTP conv rate held at 63.3% → 61.9% (within noise). Biometrics acts on the PIN screen post-OTP — it reduces friction for returning users, not the top-of-funnel OTP flow. Retention impact will show in D14/D30 re-login frequency over the coming weeks.
+      </div>
+    </div>
+    <div class="i-row">
+      <div class="i-icon">🔜</div>
+      <div class="i-text">
+        <strong>Watch for in week 3–4:</strong> (1) Deferred users re-prompted → expect enrollment to cross 2,800+. (2) D14 re-login frequency for biometric-enrolled vs non-enrolled users. (3) OS prompt success rate trend — should improve as users build muscle memory.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const labels = ["Apr 20","Apr 21","Apr 22","Apr 23","Apr 24","Apr 25","Apr 26","Apr 27"];
+const enrolled  = [1, 191, 286, 309, 310, 318, 288, 273];
+const bioLogins = [1,  47,  99, 120, 131, 130, 108, 150];
+
+new Chart(document.getElementById('trendChart'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [
+      {
+        label: 'New Enrollments / day',
+        data: enrolled,
+        borderColor: '#7C3AED',
+        backgroundColor: 'rgba(124,58,237,0.08)',
+        borderWidth: 2.5,
+        pointBackgroundColor: '#7C3AED',
+        pointRadius: 5,
+        tension: 0.35,
+        fill: true,
+      },
+      {
+        label: 'Biometric Logins Verified / day',
+        data: bioLogins,
+        borderColor: '#16A34A',
+        backgroundColor: 'rgba(22,163,74,0.08)',
+        borderWidth: 2.5,
+        pointBackgroundColor: '#16A34A',
+        pointRadius: 5,
+        tension: 0.35,
+        fill: true,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top', labels: { usePointStyle: true, padding: 20, font: { size: 13 } } },
+      tooltip: { mode: 'index', intersect: false },
+    },
+    scales: {
+      x: { grid: { color: '#F1F5F9' }, ticks: { font: { size: 12 } } },
+      y: {
+        grid: { color: '#F1F5F9' },
+        ticks: { font: { size: 12 } },
+        beginAtZero: true,
+        title: { display: true, text: 'Users', font: { size: 12 }, color: '#64748B' },
+      },
+    },
+  },
+});
+</script>
+
+</body>
+</html>
