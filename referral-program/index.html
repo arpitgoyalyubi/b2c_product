@@ -460,7 +460,7 @@
 
   /* Floating toggle btn */
   #phoneFab {
-    position: fixed; bottom: 28px; right: 28px; z-index: 8999;
+    position: fixed; bottom: 28px; right: 28px; z-index: 510;
     display: flex; align-items: center; gap: 8px;
     padding: 12px 20px; border-radius: 100px;
     background: var(--g-dkr); color: #fff;
@@ -491,9 +491,244 @@
       .stat:nth-child(1), .stat:nth-child(2) { border-bottom: 1px solid rgba(255,255,255,.07); }
       .stat:nth-child(2) { border-right: none; }
     }
+
+    /* ════════════════════════════════════════════
+       SIDE PANEL NAV
+    ════════════════════════════════════════════ */
+
+
+    #sidenav {
+      position: fixed; left: 0; top: 0; bottom: 0; width: 224px;
+      background: #0D1F16; border-right: 1px solid rgba(255,255,255,.08);
+      display: flex; flex-direction: column; z-index: 500;
+      overflow-y: auto; padding: 0 0 24px;
+    }
+    #sidenav::-webkit-scrollbar { width: 0; }
+
+    .sn-logo {
+      padding: 22px 20px 18px;
+      font-size: 18px; font-weight: 800; letter-spacing: -.5px;
+      color: #fff; border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .sn-logo em { color: var(--g-hi); font-style: normal; }
+
+    .sn-section {
+      padding: 16px 16px 6px;
+      font-size: 10px; font-weight: 700; color: rgba(255,255,255,.3);
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+
+    .sn-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 16px; margin: 1px 8px; border-radius: 10px;
+      font-size: 13px; font-weight: 500; color: rgba(255,255,255,.55);
+      cursor: pointer; transition: all .15s; user-select: none;
+    }
+    .sn-item:hover { background: rgba(255,255,255,.07); color: rgba(255,255,255,.85); }
+    .sn-item.active { background: rgba(74,222,128,.13); color: var(--g-hi); font-weight: 600; }
+    .sn-item .sn-badge {
+      margin-left: auto; padding: 1px 7px; border-radius: 100px;
+      font-size: 10px; font-weight: 700; background: rgba(74,222,128,.15); color: var(--g-hi);
+    }
+
+    .sn-divider {
+      margin: 8px 16px;
+      border: none; border-top: 1px solid rgba(255,255,255,.07);
+    }
+
+    .sn-tp-label {
+      margin: 4px 16px 6px;
+      display: flex; align-items: center; gap: 6px;
+      font-size: 10px; font-weight: 700; color: rgba(255,255,255,.3);
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .sn-tp-dot {
+      width: 5px; height: 5px; border-radius: 50%; background: #F59E0B; flex-shrink: 0;
+    }
+
+    /* All pages offset by sidenav width */
+    .page {
+      margin-left: 224px;
+    }
+
+    @media (max-width: 768px) {
+      .page { margin-left: 0; }
+    }
+
+    /* Mobile nav toggle */
+    #snToggle {
+      display: none; position: fixed; top: 14px; left: 14px; z-index: 600;
+      padding: 8px 12px; border-radius: 10px;
+      background: var(--g-dkr); color: #fff; border: 1px solid rgba(255,255,255,.12);
+      font-size: 13px; font-weight: 600; cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      #sidenav { transform: translateX(-100%); transition: transform .25s; }
+      #sidenav.open { transform: translateX(0); }
+
+      #snToggle { display: block; }
+      .sn-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 499; }
+      .sn-overlay.show { display: block; }
+    }
+
+    /* ════════════════════════════════════════════
+       TOUCHPOINT PAGES — PHONE FRAME
+    ════════════════════════════════════════════ */
+    .tp-page {
+      min-height: 100vh; background: #F1F5F9;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 32px 24px 60px;
+    }
+    .tp-header {
+      width: 100%; max-width: 800px; margin-bottom: 28px;
+    }
+    .tp-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 12px; border-radius: 100px;
+      background: #FEF3C7; color: #92400E;
+      font-size: 11px; font-weight: 700; margin-bottom: 10px;
+    }
+    .tp-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #F59E0B; }
+    .tp-h { font-size: 22px; font-weight: 800; color: #0F172A; letter-spacing: -.4px; margin-bottom: 6px; }
+    .tp-sub { font-size: 14px; color: #64748B; line-height: 1.6; max-width: 520px; }
+
+    /* Phone shell */
+    .tp-phone {
+      background: #1C1C1E; border-radius: 48px; padding: 12px;
+      box-shadow: 0 0 0 1px #3A3A3C, 0 40px 80px rgba(0,0,0,.35);
+      position: relative; margin-bottom: 28px;
+    }
+    .tp-phone-inner {
+      border-radius: 36px; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .tp-statusbar {
+      height: 50px; background: #000;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .tp-notch {
+      width: 108px; height: 28px; background: #1C1C1E; border-radius: 18px;
+    }
+    .tp-screen {
+      width: 375px; overflow-y: auto; background: #F5F7F5;
+    }
+    .tp-screen::-webkit-scrollbar { display: none; }
+    .tp-home-bar {
+      height: 34px; background: #fff;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tp-home-ind { width: 120px; height: 4px; background: #1C1C1E; border-radius: 4px; }
+
+    /* Annotation callout */
+    .tp-callouts { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 10px; }
+    .tp-callout {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: #fff; border-radius: 12px; padding: 14px 16px;
+      border: 1.5px solid #E2E8F0;
+    }
+    .tp-callout-num {
+      width: 24px; height: 24px; border-radius: 8px; flex-shrink: 0;
+      background: var(--g-lt); color: var(--g);
+      font-size: 12px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tp-callout-txt strong { font-size: 13px; font-weight: 700; color: #0F172A; display: block; margin-bottom: 2px; }
+    .tp-callout-txt span { font-size: 12px; color: #64748B; line-height: 1.5; }
+
+    /* ── App chrome (shared across all touchpoint screen mocks) ── */
+    .app-topbar {
+      background: #fff; padding: 14px 18px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid #F1F5F9; position: sticky; top: 0; z-index: 10;
+    }
+    .app-topbar-title { font-size: 16px; font-weight: 700; color: #0F172A; }
+    .app-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--g-lt); display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: var(--g);
+    }
+    .app-tab-bar {
+      background: #fff; border-top: 1px solid #E5E7EB;
+      display: flex; padding: 8px 0 4px;
+      position: sticky; bottom: 0;
+    }
+    .app-tab {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+      font-size: 10px; font-weight: 500; color: #9CA3AF; padding: 4px 0;
+    }
+    .app-tab.active { color: var(--g); }
+    .app-tab-icon { font-size: 18px; }
+
+    /* ── Highlight ring for annotated elements ── */
+    .tp-highlight {
+      position: relative;
+    }
+    .tp-highlight::after {
+      content: '';
+      position: absolute; inset: -4px; border-radius: inherit;
+      border: 2px dashed #F59E0B; pointer-events: none;
+      animation: pulse-border 2s infinite;
+    }
+    @keyframes pulse-border {
+      0%, 100% { opacity: 1; } 50% { opacity: .4; }
+    }
+    .tp-badge {
+      position: absolute; top: -8px; right: -8px;
+      background: #F59E0B; color: #fff;
+      font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 100px;
+      z-index: 5;
+    }
+
   </style>
 </head>
 <body>
+
+<!-- Mobile overlay -->
+<div class="sn-overlay" id="snOverlay" onclick="closeSidenav()"></div>
+<!-- Mobile toggle -->
+<button id="snToggle" onclick="openSidenav()">☰</button>
+
+<!-- Side nav -->
+<aside id="sidenav">
+  <div class="sn-logo">aspero<em>.</em></div>
+
+  <div class="sn-section">Core Referral Flow</div>
+  <div class="sn-item active" id="sn-landing" onclick="showPage('page-landing')">
+    <span>🏠</span> Landing Hub
+  </div>
+  <div class="sn-item" id="sn-dashboard" onclick="showPage('page-dashboard')">
+    <span>📊</span> Dashboard
+  </div>
+  <div class="sn-item" id="sn-referral" onclick="showPage('page-referral')">
+    <span>📤</span> Invitee Share Page
+  </div>
+
+  <hr class="sn-divider">
+
+  <div class="sn-tp-label">
+    <span class="sn-tp-dot"></span>
+    Discovery Touchpoints
+  </div>
+  <div class="sn-item" id="sn-homepage" onclick="showPage('page-homepage')">
+    <span>🏡</span> Homepage
+  </div>
+  <div class="sn-item" id="sn-postinvest" onclick="showPage('page-postinvest')">
+    <span>🎉</span> Post-Investment
+  </div>
+  <div class="sn-item" id="sn-profile" onclick="showPage('page-profile')">
+    <span>👤</span> Profile Screen
+  </div>
+  <div class="sn-item" id="sn-wallet" onclick="showPage('page-wallet')">
+    <span>💳</span> Wallet Screen
+  </div>
+  <div class="sn-item" id="sn-pushnotif" onclick="showPage('page-pushnotif')">
+    <span>🔔</span> Push Notification
+  </div>
+</aside>
+
+<!-- Main content wrapper -->
+<div id="main-wrap">
 
 <!-- ═══════════════════════════════════════════════════════════════════════
      PAGE 1  ·  LANDING
@@ -918,10 +1153,37 @@
   };
 
   /* ── Navigation ── */
+  const PAGE_TO_SN = {
+    'page-landing':    'sn-landing',
+    'page-dashboard':  'sn-dashboard',
+    'page-referral':   'sn-referral',
+    'page-homepage':   'sn-homepage',
+    'page-postinvest': 'sn-postinvest',
+    'page-profile':    'sn-profile',
+    'page-wallet':     'sn-wallet',
+    'page-pushnotif':  'sn-pushnotif',
+  };
+
   function showPage(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
+    // Update sidenav active state
+    document.querySelectorAll('.sn-item').forEach(el => el.classList.remove('active'));
+    const snId = PAGE_TO_SN[id];
+    if (snId) document.getElementById(snId)?.classList.add('active');
+    // Close mobile nav if open
+    document.getElementById('sidenav').classList.remove('open');
+    document.getElementById('snOverlay').classList.remove('show');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function openSidenav() {
+    document.getElementById('sidenav').classList.add('open');
+    document.getElementById('snOverlay').classList.add('show');
+  }
+  function closeSidenav() {
+    document.getElementById('sidenav').classList.remove('open');
+    document.getElementById('snOverlay').classList.remove('show');
   }
 
   /* ── Render referral list ── */
@@ -1159,5 +1421,543 @@
   // Close overlay with Escape key
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closePhone(); });
 </script>
+
+</div><!-- /main-wrap -->
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     DISCOVERY TOUCHPOINT 1: HOMEPAGE
+═══════════════════════════════════════════════════════════════════════════ -->
+<div id="page-homepage" class="page">
+<div class="tp-page">
+  <div class="tp-header">
+    <div class="tp-tag">Discovery Touchpoint</div>
+    <div class="tp-h">Homepage — Refer & Earn Entry Points</div>
+    <div class="tp-sub">Two discovery surfaces on the Aspero Home tab: a persistent chip in the header (always visible) and a feature card for users 30 days post first investment.</div>
+  </div>
+
+  <div class="tp-phone">
+    <div class="tp-phone-inner">
+      <div class="tp-statusbar"><div class="tp-notch"></div></div>
+      <div class="tp-screen" style="height:680px">
+        <!-- App Top Bar -->
+        <div class="app-topbar">
+          <div>
+            <div style="font-size:11px;color:#9CA3AF;font-weight:500">Good morning,</div>
+            <div class="app-topbar-title">Arpit 👋</div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <!-- Refer chip — TOUCHPOINT 1 -->
+            <div class="tp-highlight" style="border-radius:100px;position:relative">
+              <div style="background:#ECFDF5;border:1.5px solid #86EFAC;border-radius:100px;padding:5px 12px;display:flex;align-items:center;gap:5px;cursor:pointer">
+                <span style="font-size:12px">💸</span>
+                <span style="font-size:11px;font-weight:700;color:#15803D">Earn ₹433/mo</span>
+              </div>
+              <div class="tp-badge">1</div>
+            </div>
+            <div class="app-avatar">AG</div>
+          </div>
+        </div>
+        <!-- Portfolio snapshot -->
+        <div style="background:linear-gradient(135deg,#0D1F16,#1A3C34);margin:12px;border-radius:16px;padding:18px">
+          <div style="font-size:11px;color:rgba(255,255,255,.45);margin-bottom:4px;font-weight:500">Portfolio Value</div>
+          <div style="font-size:26px;font-weight:800;color:#fff;margin-bottom:2px">₹4,20,000</div>
+          <div style="font-size:12px;color:#4ADE80">↑ ₹29,400 returns (7.0%)</div>
+        </div>
+        <!-- Refer & Earn feature card — TOUCHPOINT 2 -->
+        <div style="margin:0 12px 12px">
+          <div style="font-size:12px;font-weight:600;color:#6B7280;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">For You</div>
+          <div class="tp-highlight" style="border-radius:16px;position:relative">
+            <div style="background:linear-gradient(120deg,#0D1F16 0%,#1A3C34 100%);border-radius:16px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer">
+              <div style="width:44px;height:44px;border-radius:12px;background:rgba(74,222,128,.15);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">💸</div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:2px">Refer & Earn</div>
+                <div style="font-size:11px;color:rgba(255,255,255,.5);line-height:1.4">Get 1% of every rupee your friends invest. Up to ₹10K/mo</div>
+              </div>
+              <div style="font-size:11px;font-weight:700;color:#4ADE80">→</div>
+            </div>
+            <div class="tp-badge">2</div>
+          </div>
+        </div>
+        <!-- Bond card sample -->
+        <div style="margin:0 12px">
+          <div style="font-size:12px;font-weight:600;color:#6B7280;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Active Positions</div>
+          <div style="background:#fff;border-radius:14px;padding:14px;border:1.5px solid #E5E7EB;margin-bottom:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+              <div style="font-size:13px;font-weight:700;color:#0F172A">Shriram Finance NCD</div>
+              <div style="font-size:13px;font-weight:700;color:#15803D">14.2%</div>
+            </div>
+            <div style="font-size:11px;color:#9CA3AF">₹1,50,000 invested · Matures Mar 2027</div>
+          </div>
+          <div style="background:#fff;border-radius:14px;padding:14px;border:1.5px solid #E5E7EB">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+              <div style="font-size:13px;font-weight:700;color:#0F172A">Adani Ports NCD</div>
+              <div style="font-size:13px;font-weight:700;color:#15803D">11.8%</div>
+            </div>
+            <div style="font-size:11px;color:#9CA3AF">₹2,70,000 invested · Matures Jun 2028</div>
+          </div>
+        </div>
+        <!-- Bottom padding -->
+        <div style="height:60px"></div>
+        <!-- Tab Bar -->
+        <div class="app-tab-bar">
+          <div class="app-tab active"><div class="app-tab-icon">🏠</div>Home</div>
+          <div class="app-tab"><div class="app-tab-icon">🔍</div>Explore</div>
+          <div class="app-tab"><div class="app-tab-icon">📊</div>Portfolio</div>
+          <div class="app-tab"><div class="app-tab-icon">👤</div>Profile</div>
+        </div>
+      </div>
+      <div class="tp-home-bar"><div class="tp-home-ind"></div></div>
+    </div>
+  </div>
+
+  <div class="tp-callouts">
+    <div class="tp-callout">
+      <div class="tp-callout-num">1</div>
+      <div class="tp-callout-txt">
+        <strong>Persistent Earn Chip (Header)</strong>
+        <span>Always visible on Home screen header after KYC completion. Shows personalised "Earn ₹433/mo" copy (avg referrer earnings). Taps into referral landing hub. Low friction — no scroll required.</span>
+      </div>
+    </div>
+    <div class="tp-callout">
+      <div class="tp-callout-num">2</div>
+      <div class="tp-callout-txt">
+        <strong>For You — Referral Feature Card</strong>
+        <span>Appears in the "For You" section 30 days after a user's first investment. Shown above bond positions. Triggered by: days_since_first_investment >= 30 AND total_referred == 0. Disappears once first share is made.</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     DISCOVERY TOUCHPOINT 2: POST-INVESTMENT SUCCESS
+═══════════════════════════════════════════════════════════════════════════ -->
+<div id="page-postinvest" class="page">
+<div class="tp-page">
+  <div class="tp-header">
+    <div class="tp-tag">Discovery Touchpoint</div>
+    <div class="tp-h">Post-Investment Success Screen</div>
+    <div class="tp-sub">After every investment confirmation, a secondary "Share your win" CTA introduces the referral program. High-intent moment — user is excited about their investment and likely to share.</div>
+  </div>
+
+  <div class="tp-phone">
+    <div class="tp-phone-inner">
+      <div class="tp-statusbar"><div class="tp-notch"></div></div>
+      <div class="tp-screen" style="height:680px;overflow-y:auto">
+        <div style="padding:20px 20px 32px;text-align:center">
+          <!-- Success animation placeholder -->
+          <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#ECFDF5,#D1FAE5);display:flex;align-items:center;justify-content:center;margin:24px auto 20px;font-size:36px;box-shadow:0 8px 24px rgba(21,128,61,.2)">✅</div>
+          <div style="font-size:20px;font-weight:800;color:#0F172A;letter-spacing:-.4px;margin-bottom:6px">Investment Confirmed!</div>
+          <div style="font-size:13px;color:#6B7280;margin-bottom:24px">Your units are being allotted. Settled within T+1.</div>
+
+          <!-- Investment summary card -->
+          <div style="background:#F8FAFC;border-radius:16px;padding:16px;text-align:left;margin-bottom:20px;border:1.5px solid #E2E8F0">
+            <div style="font-size:12px;font-weight:600;color:#6B7280;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Investment Summary</div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+              <span style="font-size:13px;color:#374151">Bond</span>
+              <span style="font-size:13px;font-weight:700;color:#0F172A">Shriram Finance NCD</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+              <span style="font-size:13px;color:#374151">Amount</span>
+              <span style="font-size:13px;font-weight:700;color:#0F172A">₹1,00,000</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+              <span style="font-size:13px;color:#374151">YTM</span>
+              <span style="font-size:13px;font-weight:700;color:#15803D">14.2%</span>
+            </div>
+            <div style="display:flex;justify-content:space-between">
+              <span style="font-size:13px;color:#374151">Monthly payout</span>
+              <span style="font-size:13px;font-weight:700;color:#0F172A">~₹1,183</span>
+            </div>
+          </div>
+
+          <!-- Primary CTA -->
+          <div style="background:#0D1F16;border-radius:14px;padding:14px 16px;margin-bottom:12px;cursor:pointer">
+            <div style="font-size:14px;font-weight:700;color:#fff">View Portfolio →</div>
+          </div>
+
+          <!-- TOUCHPOINT: Share your win -->
+          <div class="tp-highlight" style="border-radius:14px;position:relative">
+            <div style="border:1.5px solid #86EFAC;border-radius:14px;padding:14px 16px;background:#ECFDF5;cursor:pointer">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="font-size:22px">💸</div>
+                <div style="text-align:left">
+                  <div style="font-size:13px;font-weight:700;color:#15803D;margin-bottom:2px">Share your win → Earn 1%</div>
+                  <div style="font-size:11px;color:#6B7280;line-height:1.4">Tell a friend about Aspero. Earn 1% of everything they invest — forever.</div>
+                </div>
+                <div style="font-size:14px;color:#15803D;font-weight:700">→</div>
+              </div>
+            </div>
+            <div class="tp-badge" style="top:-8px;right:-8px">1</div>
+          </div>
+
+          <div style="margin-top:16px;font-size:12px;color:#9CA3AF">Next coupon payment in 28 days</div>
+        </div>
+        <div class="app-tab-bar">
+          <div class="app-tab"><div class="app-tab-icon">🏠</div>Home</div>
+          <div class="app-tab active"><div class="app-tab-icon">🔍</div>Explore</div>
+          <div class="app-tab"><div class="app-tab-icon">📊</div>Portfolio</div>
+          <div class="app-tab"><div class="app-tab-icon">👤</div>Profile</div>
+        </div>
+      </div>
+      <div class="tp-home-bar"><div class="tp-home-ind"></div></div>
+    </div>
+  </div>
+
+  <div class="tp-callouts">
+    <div class="tp-callout">
+      <div class="tp-callout-num">1</div>
+      <div class="tp-callout-txt">
+        <strong>Post-Investment Referral CTA</strong>
+        <span>Secondary CTA shown on every investment success screen, always. No trigger condition — every successful investment is a sharing moment. Copy adapts: first-ever investment shows "Share your first bond investment"; repeat shows "Share your win". Taps directly into referral landing hub.</span>
+      </div>
+    </div>
+    <div class="tp-callout">
+      <div class="tp-callout-num">2</div>
+      <div class="tp-callout-txt" style="display:contents">
+        <strong>Why this moment works</strong>
+        <span>Investment confirmation is peak excitement — user just committed capital and is feeling good. Sharing rate at this moment is 2–3× higher than ambient (Groww data). The copy "Share your win" frames it as social proof, not just referral.</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     DISCOVERY TOUCHPOINT 3: PROFILE SCREEN
+═══════════════════════════════════════════════════════════════════════════ -->
+<div id="page-profile" class="page">
+<div class="tp-page">
+  <div class="tp-header">
+    <div class="tp-tag">Discovery Touchpoint</div>
+    <div class="tp-h">Profile Screen — Refer & Earn Card</div>
+    <div class="tp-sub">A prominent "Refer & Earn" card in the Profile tab, positioned above settings. Shows live earnings badge for users who have already earned commissions.</div>
+  </div>
+
+  <div class="tp-phone">
+    <div class="tp-phone-inner">
+      <div class="tp-statusbar"><div class="tp-notch"></div></div>
+      <div class="tp-screen" style="height:680px;overflow-y:auto">
+        <div class="app-topbar">
+          <div class="app-topbar-title">Profile</div>
+          <div style="font-size:12px;color:#9CA3AF;font-weight:500">Settings</div>
+        </div>
+        <!-- User header -->
+        <div style="background:#fff;padding:20px 18px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;gap:14px">
+          <div style="width:52px;height:52px;border-radius:50%;background:var(--g-lt);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:var(--g);flex-shrink:0">AG</div>
+          <div>
+            <div style="font-size:16px;font-weight:800;color:#0F172A">Arpit Goyal</div>
+            <div style="font-size:12px;color:#6B7280">arpit@aspero.in · KYC Complete ✓</div>
+          </div>
+        </div>
+
+        <div style="padding:14px 14px 0">
+          <!-- TOUCHPOINT: Refer & Earn card -->
+          <div class="tp-highlight" style="border-radius:16px;position:relative;margin-bottom:12px">
+            <div style="background:linear-gradient(120deg,#0D1F16,#1A3C34);border-radius:16px;padding:16px 18px;cursor:pointer">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+                <div>
+                  <div style="font-size:15px;font-weight:800;color:#fff;margin-bottom:3px">Refer & Earn 💸</div>
+                  <div style="font-size:12px;color:rgba(255,255,255,.5)">1% on every referred investment</div>
+                </div>
+                <!-- Earnings badge — shows for users with earnings > 0 -->
+                <div style="background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.25);border-radius:100px;padding:4px 10px">
+                  <div style="font-size:11px;font-weight:700;color:#4ADE80">₹4,000 earned</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px">
+                <div style="flex:1;background:var(--g);border-radius:10px;padding:8px 12px;text-align:center;font-size:12px;font-weight:700;color:#fff">Share Code</div>
+                <div style="flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:8px 12px;text-align:center;font-size:12px;font-weight:600;color:rgba(255,255,255,.7)">Dashboard</div>
+              </div>
+            </div>
+            <div class="tp-badge">1</div>
+          </div>
+
+          <!-- Regular menu items -->
+          <div style="background:#fff;border-radius:14px;overflow:hidden;border:1.5px solid #E5E7EB;margin-bottom:10px">
+            <div style="padding:14px 16px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span style="font-size:18px">🏦</span>
+                <span style="font-size:14px;font-weight:600;color:#0F172A">Bank & Payments</span>
+              </div>
+              <span style="color:#9CA3AF">›</span>
+            </div>
+            <div style="padding:14px 16px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span style="font-size:18px">📋</span>
+                <span style="font-size:14px;font-weight:600;color:#0F172A">KYC Documents</span>
+              </div>
+              <span style="color:#9CA3AF">›</span>
+            </div>
+            <div style="padding:14px 16px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span style="font-size:18px">🔔</span>
+                <span style="font-size:14px;font-weight:600;color:#0F172A">Notifications</span>
+              </div>
+              <span style="color:#9CA3AF">›</span>
+            </div>
+            <div style="padding:14px 16px;display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span style="font-size:18px">🛡️</span>
+                <span style="font-size:14px;font-weight:600;color:#0F172A">Security & PIN</span>
+              </div>
+              <span style="color:#9CA3AF">›</span>
+            </div>
+          </div>
+        </div>
+        <div class="app-tab-bar">
+          <div class="app-tab"><div class="app-tab-icon">🏠</div>Home</div>
+          <div class="app-tab"><div class="app-tab-icon">🔍</div>Explore</div>
+          <div class="app-tab"><div class="app-tab-icon">📊</div>Portfolio</div>
+          <div class="app-tab active"><div class="app-tab-icon">👤</div>Profile</div>
+        </div>
+      </div>
+      <div class="tp-home-bar"><div class="tp-home-ind"></div></div>
+    </div>
+  </div>
+
+  <div class="tp-callouts">
+    <div class="tp-callout">
+      <div class="tp-callout-num">1</div>
+      <div class="tp-callout-txt">
+        <strong>Refer & Earn Card (Top of Profile)</strong>
+        <span>Full-width card above all settings menus. Position is critical — it's the first thing a user sees after their own name. Two states: (a) zero earnings = standard "Refer & Earn 💸" with no badge; (b) earnings > 0 = green "₹4,000 earned" badge appears, reinforcing the habit. Two inline CTAs to reduce friction: "Share Code" goes to landing hub, "Dashboard" goes to tracking.</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     DISCOVERY TOUCHPOINT 4: WALLET SCREEN
+═══════════════════════════════════════════════════════════════════════════ -->
+<div id="page-wallet" class="page">
+<div class="tp-page">
+  <div class="tp-header">
+    <div class="tp-tag">Discovery Touchpoint</div>
+    <div class="tp-h">Wallet Screen — Referral Commission Line Items</div>
+    <div class="tp-sub">The Aspero Wallet screen shows referral commissions as labelled line items. For users who haven't referred yet, a "Unlock referral earnings" empty state nudges them to start. Each credit reinforces the earning loop.</div>
+  </div>
+
+  <div class="tp-phone">
+    <div class="tp-phone-inner">
+      <div class="tp-statusbar"><div class="tp-notch"></div></div>
+      <div class="tp-screen" style="height:680px;overflow-y:auto">
+        <div class="app-topbar">
+          <div class="app-topbar-title">Wallet</div>
+          <div style="font-size:12px;color:#27AE60;font-weight:600;cursor:pointer">Withdraw</div>
+        </div>
+        <!-- Balance card -->
+        <div style="background:linear-gradient(135deg,#0D1F16,#1A3C34);margin:12px;border-radius:18px;padding:20px">
+          <div style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:6px">Available Balance</div>
+          <div style="font-size:32px;font-weight:800;color:#fff;margin-bottom:4px">₹4,000</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.45)">Min. withdrawal: ₹500</div>
+          <div style="margin-top:14px;background:rgba(255,255,255,.08);border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between">
+            <div style="text-align:center">
+              <div style="font-size:14px;font-weight:700;color:#4ADE80">₹4,000</div>
+              <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:2px">From Referrals</div>
+            </div>
+            <div style="width:1px;background:rgba(255,255,255,.1)"></div>
+            <div style="text-align:center">
+              <div style="font-size:14px;font-weight:700;color:#fff">₹0</div>
+              <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:2px">From Cashback</div>
+            </div>
+            <div style="width:1px;background:rgba(255,255,255,.1)"></div>
+            <div style="text-align:center">
+              <div style="font-size:14px;font-weight:700;color:#fff">₹0</div>
+              <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:2px">Pending</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transactions -->
+        <div style="padding:0 12px">
+          <div style="font-size:12px;font-weight:600;color:#6B7280;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Transaction History</div>
+
+          <!-- Referral credit items — TOUCHPOINT -->
+          <div class="tp-highlight" style="border-radius:12px;position:relative;margin-bottom:8px">
+            <div style="background:#fff;border-radius:12px;padding:14px;border:1.5px solid #E5E7EB">
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <div style="width:38px;height:38px;border-radius:10px;background:#ECFDF5;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">💸</div>
+                  <div>
+                    <div style="font-size:13px;font-weight:700;color:#0F172A">Referral: Priya's investment</div>
+                    <div style="font-size:11px;color:#6B7280">Apr 26, 2026 · 1% of ₹2,50,000</div>
+                  </div>
+                </div>
+                <div style="font-size:14px;font-weight:800;color:#15803D">+₹2,500</div>
+              </div>
+            </div>
+            <div class="tp-badge">1</div>
+          </div>
+
+          <div style="background:#fff;border-radius:12px;padding:14px;border:1.5px solid #E5E7EB;margin-bottom:8px">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:12px">
+                <div style="width:38px;height:38px;border-radius:10px;background:#ECFDF5;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">💸</div>
+                <div>
+                  <div style="font-size:13px;font-weight:700;color:#0F172A">Referral: Vikram's investment</div>
+                  <div style="font-size:11px;color:#6B7280">Apr 10, 2026 · 1% of ₹1,00,000</div>
+                </div>
+              </div>
+              <div style="font-size:14px;font-weight:800;color:#15803D">+₹1,000</div>
+            </div>
+          </div>
+
+          <div style="background:#fff;border-radius:12px;padding:14px;border:1.5px solid #E5E7EB;margin-bottom:8px">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:12px">
+                <div style="width:38px;height:38px;border-radius:10px;background:#ECFDF5;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">💸</div>
+                <div>
+                  <div style="font-size:13px;font-weight:700;color:#0F172A">Referral: Neha's first investment</div>
+                  <div style="font-size:11px;color:#6B7280">Mar 28, 2026 · 1% of ₹50,000</div>
+                </div>
+              </div>
+              <div style="font-size:14px;font-weight:800;color:#15803D">+₹500</div>
+            </div>
+          </div>
+
+          <!-- Referral upsell nudge -->
+          <div class="tp-highlight" style="border-radius:12px;position:relative;margin-top:4px">
+            <div style="background:#F0FDF4;border:1.5px dashed #86EFAC;border-radius:12px;padding:14px;text-align:center;cursor:pointer">
+              <div style="font-size:13px;font-weight:700;color:#15803D;margin-bottom:3px">Refer more to earn more 💸</div>
+              <div style="font-size:11px;color:#6B7280">3 friends referred · ₹7,500 more to earn this month</div>
+            </div>
+            <div class="tp-badge" style="top:-8px;right:-8px">2</div>
+          </div>
+        </div>
+        <div style="height:70px"></div>
+        <div class="app-tab-bar">
+          <div class="app-tab"><div class="app-tab-icon">🏠</div>Home</div>
+          <div class="app-tab"><div class="app-tab-icon">🔍</div>Explore</div>
+          <div class="app-tab"><div class="app-tab-icon">📊</div>Portfolio</div>
+          <div class="app-tab active"><div class="app-tab-icon">👤</div>Profile</div>
+        </div>
+      </div>
+      <div class="tp-home-bar"><div class="tp-home-ind"></div></div>
+    </div>
+  </div>
+
+  <div class="tp-callouts">
+    <div class="tp-callout">
+      <div class="tp-callout-num">1</div>
+      <div class="tp-callout-txt">
+        <strong>Referral Commission Line Items</strong>
+        <span>Each wallet credit from a referral shows: referral friend's name, date, investment amount, and commission earned. Label: "Referral: {Friend}'s investment". This transparency builds trust and reinforces the 1% model — users can verify the math themselves.</span>
+      </div>
+    </div>
+    <div class="tp-callout">
+      <div class="tp-callout-num">2</div>
+      <div class="tp-callout-txt">
+        <strong>Referral Upsell Strip</strong>
+        <span>Pinned at the bottom of the transaction list. Shows remaining cap for the month (₹7,500 more to earn) and total friends referred. Dashed border signals it's actionable, not just informational. Taps into referral landing hub. Hidden if monthly cap is reached.</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     DISCOVERY TOUCHPOINT 5: PUSH NOTIFICATION
+═══════════════════════════════════════════════════════════════════════════ -->
+<div id="page-pushnotif" class="page">
+<div class="tp-page">
+  <div class="tp-header">
+    <div class="tp-tag">Discovery Touchpoint</div>
+    <div class="tp-h">Push Notifications — 5 Trigger Moments</div>
+    <div class="tp-sub">Five push notification templates across the referral funnel. Each fires at a distinct trigger and deep-links into the most relevant screen.</div>
+  </div>
+
+  <!-- Notification cards — no phone frame needed, just stacked cards -->
+  <div style="width:100%;max-width:480px;display:flex;flex-direction:column;gap:14px">
+
+    <!-- Notif 1: Friend signed up -->
+    <div style="background:#1C1C1E;border-radius:18px;padding:16px 18px">
+      <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:10px">
+        <div style="width:40px;height:40px;border-radius:10px;background:#0D1F16;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">aspero<span style="display:none"></span></div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:3px">Aspero</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.85);line-height:1.5">👤 Priya Sharma signed up via your code! Nudge her to complete KYC and you'll start earning.</div>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3)">now</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <div style="flex:1;background:rgba(255,255,255,.08);border-radius:8px;padding:7px;text-align:center;font-size:11px;font-weight:600;color:rgba(255,255,255,.7)">Nudge her</div>
+        <div style="flex:1;background:var(--g);border-radius:8px;padding:7px;text-align:center;font-size:11px;font-weight:700;color:#fff">View</div>
+      </div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.07);font-size:11px;color:#F59E0B;font-weight:600">Trigger: REFERRAL_SIGNUP_COMPLETED</div>
+    </div>
+
+    <!-- Notif 2: Commission earned -->
+    <div style="background:#1C1C1E;border-radius:18px;padding:16px 18px">
+      <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:10px">
+        <div style="width:40px;height:40px;border-radius:10px;background:#0D1F16;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">💰</div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:3px">Aspero</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.85);line-height:1.5">₹2,500 credited to your wallet! Priya Sharma just invested ₹2,50,000 via your referral.</div>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3)">2m ago</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <div style="flex:1;background:rgba(255,255,255,.08);border-radius:8px;padding:7px;text-align:center;font-size:11px;font-weight:600;color:rgba(255,255,255,.7)">View Wallet</div>
+        <div style="flex:1;background:var(--g);border-radius:8px;padding:7px;text-align:center;font-size:11px;font-weight:700;color:#fff">Share More →</div>
+      </div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.07);font-size:11px;color:#4ADE80;font-weight:600">Trigger: COMMISSION_CREDITED · Deep-link → Wallet</div>
+    </div>
+
+    <!-- Notif 3: Friend KYC done, not invested -->
+    <div style="background:#1C1C1E;border-radius:18px;padding:16px 18px">
+      <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:10px">
+        <div style="width:40px;height:40px;border-radius:10px;background:#0D1F16;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">⏰</div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:3px">Aspero</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.85);line-height:1.5">Vikram Singh completed KYC 3 days ago but hasn't invested yet. Send him a nudge — you're 1 step from earning.</div>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3)">1h ago</div>
+      </div>
+      <div style="flex:1;background:rgba(255,255,255,.08);border-radius:8px;padding:7px;text-align:center;font-size:11px;font-weight:600;color:rgba(255,255,255,.7)">👋 Nudge Vikram on WhatsApp</div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.07);font-size:11px;color:#F59E0B;font-weight:600">Trigger: KYC_DONE + no investment after 72h · Deep-link → Dashboard</div>
+    </div>
+
+    <!-- Notif 4: Cap about to be reached -->
+    <div style="background:#1C1C1E;border-radius:18px;padding:16px 18px">
+      <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:10px">
+        <div style="width:40px;height:40px;border-radius:10px;background:#0D1F16;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🏆</div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:3px">Aspero</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.85);line-height:1.5">You're at ₹7,500 this month — just ₹2,500 away from the ₹10,000 cap! Refer 1 more friend to hit it.</div>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3)">today</div>
+      </div>
+      <div style="flex:1;background:var(--g);border-radius:8px;padding:7px;text-align:center;font-size:11px;font-weight:700;color:#fff">Share Code Now →</div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.07);font-size:11px;color:#4ADE80;font-weight:600">Trigger: monthly_earned >= 75% of cap · Deep-link → Landing Hub</div>
+    </div>
+
+    <!-- Notif 5: Cap reset -->
+    <div style="background:#1C1C1E;border-radius:18px;padding:16px 18px">
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        <div style="width:40px;height:40px;border-radius:10px;background:#0D1F16;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🔄</div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:3px">Aspero</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.85);line-height:1.5">May 1 — your ₹10,000 referral cap has reset! A fresh month to earn. Your 6 referred friends are still active. 🎉</div>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3)">May 1</div>
+      </div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.07);font-size:11px;color:#F59E0B;font-weight:600">Trigger: 1st of month, earned > 0 in previous month · Deep-link → Dashboard</div>
+    </div>
+  </div>
+
+  <div class="tp-callouts" style="margin-top:24px">
+    <div class="tp-callout">
+      <div class="tp-callout-num">✓</div>
+      <div class="tp-callout-txt">
+        <strong>Rate limits</strong>
+        <span>Max 2 referral-related push notifications per week per user. Commission credited notifs are never suppressed (they're positive). KYC nudge fires once per referred friend, not repeatedly. Cap warning fires at 75% and 95% — not both if hit on same day.</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
 </body>
 </html>
