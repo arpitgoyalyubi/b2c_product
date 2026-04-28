@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Play Store Metrics — Aspero B2C</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+         background: #F1F5F9; color: #0F172A; min-height: 100vh; }
+
+  /* ── Header ── */
+  .header { background: #0F172A; padding: 28px 32px; }
+  .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .header-back { color: #94A3B2; font-size: 13px; text-decoration: none; }
+  .header-back:hover { color: #F8FAFC; }
+  .header h1 { color: #F8FAFC; font-size: 20px; font-weight: 700; margin-top: 12px; }
+  .header p  { color: #94A3B2; font-size: 13px; margin-top: 5px; }
+  .header-meta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+  .meta-chip { background: #1E293B; color: #94A3B2; font-size: 12px; border-radius: 6px;
+               padding: 4px 10px; }
+  .meta-chip strong { color: #F8FAFC; }
+
+  /* ── Layout ── */
+  .wrap { max-width: 960px; margin: 32px auto; padding: 0 24px 60px; }
+  .section-title { font-size: 11px; font-weight: 700; text-transform: uppercase;
+                   letter-spacing: .08em; color: #64748B; margin: 32px 0 12px;
+                   padding-bottom: 8px; border-bottom: 1px solid #E2E8F0; }
+
+  /* ── KPI Row ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+  .kpi { background: white; border-radius: 12px; border: 1px solid #E2E8F0; padding: 18px 20px; }
+  .kpi-label { font-size: 11px; font-weight: 700; color: #94A3B2; text-transform: uppercase;
+               letter-spacing: .06em; margin-bottom: 6px; }
+  .kpi-value { font-size: 26px; font-weight: 800; color: #0F172A; line-height: 1; }
+  .kpi-sub   { font-size: 12px; color: #64748B; margin-top: 4px; }
+  .kpi.warn .kpi-value { color: #D97706; }
+  .kpi.bad  .kpi-value { color: #DC2626; }
+  .kpi.good .kpi-value { color: #16A34A; }
+
+  /* ── Histogram ── */
+  .hist-card { background: white; border-radius: 12px; border: 1px solid #E2E8F0; padding: 20px 24px; }
+  .hist-row  { display: flex; align-items: center; gap: 10px; padding: 5px 0; }
+  .hist-star { font-size: 13px; font-weight: 700; width: 22px; flex-shrink: 0; text-align: right; }
+  .hist-bar-wrap { flex: 1; background: #F1F5F9; border-radius: 4px; height: 14px; overflow: hidden; }
+  .hist-bar { height: 14px; border-radius: 4px; transition: width .3s; }
+  .bar-5 { background: #16A34A; }
+  .bar-4 { background: #65A30D; }
+  .bar-3 { background: #D97706; }
+  .bar-2 { background: #EA580C; }
+  .bar-1 { background: #DC2626; }
+  .hist-count { font-size: 13px; font-weight: 700; width: 32px; text-align: right; flex-shrink: 0; }
+  .hist-pct   { font-size: 12px; color: #94A3B2; width: 40px; text-align: right; flex-shrink: 0; }
+  .hist-note  { font-size: 11px; font-weight: 600; background: #FEE2E2; color: #DC2626;
+                border-radius: 4px; padding: 1px 6px; flex-shrink: 0; }
+
+  /* ── Monthly trend ── */
+  .trend-card { background: white; border-radius: 12px; border: 1px solid #E2E8F0;
+                padding: 20px 24px; overflow-x: auto; }
+  .trend-table { width: 100%; border-collapse: collapse; min-width: 560px; }
+  .trend-table th { font-size: 11px; font-weight: 700; color: #94A3B2; text-transform: uppercase;
+                    letter-spacing: .05em; padding: 8px 12px; text-align: left; }
+  .trend-table td { font-size: 13px; padding: 9px 12px; border-top: 1px solid #F1F5F9;
+                    vertical-align: middle; }
+  .trend-table tr.alert td { background: #FFF5F5; }
+  .avg-pill { display: inline-block; padding: 2px 10px; border-radius: 20px;
+              font-size: 12px; font-weight: 700; }
+  .mini-bar-wrap { width: 80px; background: #F1F5F9; border-radius: 4px; height: 8px;
+                   display: inline-block; vertical-align: middle; margin-right: 6px; }
+  .mini-bar { height: 8px; border-radius: 4px; display: block; background: #2563EB; }
+  .neg-badge { font-size: 11px; font-weight: 700; background: #FEE2E2; color: #DC2626;
+               border-radius: 4px; padding: 1px 5px; }
+
+  /* ── Issue clusters ── */
+  .cluster-grid { display: flex; flex-direction: column; gap: 14px; }
+  .cluster-card { background: white; border-radius: 12px; border: 1px solid #E2E8F0; overflow: hidden; }
+  .cluster-header { padding: 14px 20px; display: flex; align-items: center; gap: 12px;
+                    border-bottom: 1px solid #F1F5F9; }
+  .cluster-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .cluster-title { font-size: 15px; font-weight: 700; }
+  .cluster-vol { margin-left: auto; background: #F8FAFC; border: 1px solid #E2E8F0;
+                  border-radius: 20px; padding: 2px 12px; font-size: 12px;
+                  font-weight: 700; color: #0F172A; }
+  .cluster-reviews { padding: 4px 0; }
+  .review-row { padding: 11px 20px; border-top: 1px solid #F1F5F9; display: flex; gap: 10px; align-items: flex-start; }
+  .review-row:first-child { border-top: none; }
+  .review-meta { flex-shrink: 0; min-width: 90px; }
+  .review-date { font-size: 11px; color: #94A3B2; }
+  .review-author { font-size: 12px; font-weight: 600; color: #475569; margin-top: 2px; }
+  .review-thumbs { font-size: 11px; color: #94A3B2; margin-top: 2px; }
+  .review-text { font-size: 13px; color: #334155; line-height: 1.55; flex: 1; }
+  .review-reply { font-size: 12px; color: #2563EB; margin-top: 5px; font-style: italic; }
+  .p0-label { font-size: 10px; font-weight: 700; background: #FEE2E2; color: #DC2626;
+              border-radius: 4px; padding: 1px 5px; display: inline-block; margin-left: 6px; }
+
+  /* ── Last 30d reviews ── */
+  .reviews-list { display: flex; flex-direction: column; gap: 10px; }
+  .rev-card { background: white; border-radius: 10px; border: 1px solid #E2E8F0; padding: 14px 18px; }
+  .rev-card.neg { border-left: 3px solid #DC2626; }
+  .rev-card.pos { border-left: 3px solid #16A34A; }
+  .rev-card.neu { border-left: 3px solid #D97706; }
+  .rev-top { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; flex-wrap: wrap; }
+  .rev-stars { font-size: 13px; font-weight: 700; }
+  .rev-author { font-size: 13px; font-weight: 600; color: #334155; }
+  .rev-date { font-size: 12px; color: #94A3B2; margin-left: auto; }
+  .rev-body { font-size: 13px; color: #475569; line-height: 1.55; }
+
+  /* ── Performance status ── */
+  .perf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  .perf-card { background: white; border-radius: 12px; border: 1px solid #E2E8F0; padding: 18px 20px; }
+  .perf-icon { font-size: 22px; margin-bottom: 8px; }
+  .perf-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .perf-status { font-size: 12px; font-weight: 600; display: inline-block; padding: 2px 8px;
+                 border-radius: 20px; margin-bottom: 8px; }
+  .status-ok      { background: #F0FDF4; color: #16A34A; }
+  .status-stub    { background: #FFFBEB; color: #D97706; }
+  .status-missing { background: #FEF2F2; color: #DC2626; }
+  .perf-desc { font-size: 12px; color: #64748B; line-height: 1.5; }
+
+  /* ── Footer ── */
+  .footer { text-align: center; color: #94A3B2; font-size: 12px; padding-top: 24px;
+            border-top: 1px solid #E2E8F0; }
+  .footer a { color: #2563EB; text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .header { padding: 20px 16px; }
+    .wrap { padding: 0 14px 40px; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .perf-grid { grid-template-columns: 1fr; }
+    .hist-pct { display: none; }
+    .rev-date { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <a class="header-back" href="../">← Product Hub</a>
+  </div>
+  <h1>📱 Play Store Metrics</h1>
+  <p>Android app performance — ratings, reviews, issue clusters, and monitoring status.</p>
+  <div class="header-meta">
+    <div class="meta-chip">App: <strong>Aspero Bonds</strong></div>
+    <div class="meta-chip">ID: <strong>com.yubi.android.my.yubi.invest</strong></div>
+    <div class="meta-chip">Launched: <strong>Apr 10, 2023</strong></div>
+    <div class="meta-chip">Updated: <strong>Apr 28, 2026</strong></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- KPI Row -->
+  <div class="section-title">App Overview</div>
+  <div class="kpi-grid">
+    <div class="kpi warn">
+      <div class="kpi-label">Overall Rating</div>
+      <div class="kpi-value">3.86</div>
+      <div class="kpi-sub">out of 5 · 255 ratings</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Real Installs</div>
+      <div class="kpi-value">190K</div>
+      <div class="kpi-sub">190,095 verified installs</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Total Reviews</div>
+      <div class="kpi-value">95</div>
+      <div class="kpi-sub">of 255 ratings have text</div>
+    </div>
+    <div class="kpi bad">
+      <div class="kpi-label">1-Star Ratings</div>
+      <div class="kpi-value">53</div>
+      <div class="kpi-sub">20.8% of all ratings</div>
+    </div>
+    <div class="kpi good">
+      <div class="kpi-label">Last 30d Avg</div>
+      <div class="kpi-value">4.42</div>
+      <div class="kpi-sub">12 reviews · Apr 2026</div>
+    </div>
+    <div class="kpi good">
+      <div class="kpi-label">5-Star Share</div>
+      <div class="kpi-value">59.6%</div>
+      <div class="kpi-sub">152 of 255 ratings</div>
+    </div>
+  </div>
+
+  <!-- Rating Histogram -->
+  <div class="section-title">Rating Breakdown — All Time (255 total)</div>
+  <div class="hist-card">
+    <div class="hist-row">
+      <div class="hist-star">5★</div>
+      <div class="hist-bar-wrap"><div class="hist-bar bar-5" style="width:59.6%"></div></div>
+      <div class="hist-count">152</div>
+      <div class="hist-pct">59.6%</div>
+    </div>
+    <div class="hist-row">
+      <div class="hist-star">4★</div>
+      <div class="hist-bar-wrap"><div class="hist-bar bar-4" style="width:9.8%"></div></div>
+      <div class="hist-count">25</div>
+      <div class="hist-pct">9.8%</div>
+    </div>
+    <div class="hist-row">
+      <div class="hist-star">3★</div>
+      <div class="hist-bar-wrap"><div class="hist-bar bar-3" style="width:6.7%"></div></div>
+      <div class="hist-count">17</div>
+      <div class="hist-pct">6.7%</div>
+    </div>
+    <div class="hist-row">
+      <div class="hist-star">2★</div>
+      <div class="hist-bar-wrap"><div class="hist-bar bar-2" style="width:2.0%"></div></div>
+      <div class="hist-count">5</div>
+      <div class="hist-pct">2.0%</div>
+    </div>
+    <div class="hist-row">
+      <div class="hist-star">1★</div>
+      <div class="hist-bar-wrap"><div class="hist-bar bar-1" style="width:20.8%"></div></div>
+      <div class="hist-count">53</div>
+      <div class="hist-pct">20.8%</div>
+      <div class="hist-note">⚠ High</div>
+    </div>
+  </div>
+
+  <!-- Monthly Trend -->
+  <div class="section-title">Review Trend by Month (200 newest reviews)</div>
+  <div class="trend-card">
+    <table class="trend-table">
+      <thead>
+        <tr>
+          <th>Month</th>
+          <th>Reviews</th>
+          <th>Avg Rating</th>
+          <th>Volume</th>
+          <th>Negative (≤3★)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="alert"><td>Sep 2025</td><td>6</td><td><span class="avg-pill" style="background:#FEE2E2;color:#DC2626">1.00</span></td><td><span class="mini-bar-wrap"><span class="mini-bar" style="width:37%"></span></span></td><td><span class="neg-badge">6 / 6</span></td></tr>
+        <tr class="alert"><td>Jan 2026</td><td>5</td><td><span class="avg-pill" style="background:#FEE2E2;color:#DC2626">1.00</span></td><td><span class="mini-bar-wrap"><span class="mini-bar" style="width:31%"></span></span></td><td><span class="neg-badge">5 / 5</span></td></tr>
+        <tr class="alert"><td>May 2025</td><td>4</td><td><span class="avg-pill" style="background:#FEE2E2;color:#DC2626">1.00</span></td><td><span class="mini-bar-wrap"><span class="mini-bar" style="width:25%"></span></span></td><td><span class="neg-badge">4 / 4</span></td></tr>
+        <tr class="alert"><td>Jun 2025</td><td>4</td><td><span class="avg-pill" style="background:#FEE2E2;color:#DC2626">1.25</span></td><td><span class="mini-bar-wrap"><span class="mini-bar" style="width:25%"></span></span></td><td><span class="neg-badge">4 / 4</span></td></tr>
+        <tr class="alert"><td>Feb 2026</td><td>8</td><td><span class="avg-pill" style="background:#FFFBEB;color:#D97706">3.25</span></td><td><span class="mini-bar-wrap"><span class="mini-bar" style="width:50%"></span></span></td><td><span class="neg-badge">4 / 8</span></td></tr>
+        <tr><td>Oct 2025</td><td>3</td><td><span class="avg-pill" style="background:#FFFBEB;color:#D97706">2.33</span></td><td><span class="mini-bar-wrap"><span class="mini-bar" style="width:19%"></span></span></td><td><span class="neg-badge">2 / 3</span></td></tr>
+        <tr><td>Nov 2025</td><td>3</td><td><span class="avg-pill" style="background:#FFFBEB;color:#D97706">3.00</span></td><td><span class="mini-bar-wrap"><span class="mini-bar" style="width:19%"></span></span></td><td><span class="neg-badge">2 / 3</span></td></tr>
+        <tr><td>Jul 2025</td><td>16</td><td><span class="avg-pill" style="background:#F0FDF4;color:#16A34A">4.38</span></td><td><span class="mini-bar-wrap"><span class="mini-bar" style="width:100%"></span></span></td><td>3 / 16</td></tr>
+        <tr><td>Mar 2026</td><td>13</td><td><span class="avg-pill" style="background:#F0FDF4;color:#16A34A">4.23</span></td><td><span class="mini-bar-wrap"><span class="mini-bar" style="width:81%"></span></span></td><td>3 / 13</td></tr>
+        <tr><td>Apr 2026</td><td>11</td><td><span class="avg-pill" style="background:#F0FDF4;color:#16A34A">4.36</span></td><td><span class="mini-bar-wrap"><span class="mini-bar" style="width:69%"></span></span></td><td>2 / 11</td></tr>
+        <tr><td>Aug 2025</td><td>4</td><td><span class="avg-pill" style="background:#F0FDF4;color:#16A34A">4.00</span></td><td><span class="mini-bar-wrap"><span class="mini-bar" style="width:25%"></span></span></td><td>1 / 4</td></tr>
+        <tr><td>Dec 2025</td><td>2</td><td><span class="avg-pill" style="background:#F0FDF4;color:#16A34A">5.00</span></td><td><span class="mini-bar-wrap"><span class="mini-bar" style="width:12%"></span></span></td><td>0 / 2</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 1-Star Issue Clusters -->
+  <div class="section-title">1-Star Review Clusters — 34 analysed (200 newest)</div>
+  <div class="cluster-grid">
+
+    <!-- Bond Quality / Trust -->
+    <div class="cluster-card">
+      <div class="cluster-header">
+        <div class="cluster-dot" style="background:#7C3AED"></div>
+        <div class="cluster-title">Bond Quality &amp; Trust <span class="p0-label">P0</span></div>
+        <div class="cluster-vol">6 reviews · 196 👍</div>
+      </div>
+      <div class="cluster-reviews">
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Sep 19, 2025</div>
+            <div class="review-author">Siddharth Rao</div>
+            <div class="review-thumbs">👍 81</div>
+          </div>
+          <div class="review-text">The bonds offered are super low quality and highly susceptible to default. Also the rates are far above what they are buying them at.</div>
+        </div>
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">May 14, 2025</div>
+            <div class="review-author">Ananth Kumar</div>
+            <div class="review-thumbs">👍 41</div>
+          </div>
+          <div class="review-text">Yubi owns Aspero. They sold unlisted bonds of BluSmart to gullible investors without proper due diligence. Made a mockery of senior secured — nothing was secure.</div>
+        </div>
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Sep 27, 2025</div>
+            <div class="review-author">Abhishek Das</div>
+            <div class="review-thumbs">👍 27</div>
+          </div>
+          <div class="review-text">Fraud app — they hide info about past defaulted bonds, delete internet reviews, and use paid reviewers to inflate scores.</div>
+        </div>
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Sep 6, 2025</div>
+            <div class="review-author">Ranjan King</div>
+            <div class="review-thumbs">👍 26</div>
+          </div>
+          <div class="review-text">Don't use this app. They list only fraud bonds like Kinara Capital. Take huge benefit from defaulter company and your money will be lost.</div>
+        </div>
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Sep 22, 2025</div>
+            <div class="review-author">Narayana Swamy</div>
+            <div class="review-thumbs">👍 9</div>
+          </div>
+          <div class="review-text">Giving false information and cheating people with their money — making fraudulent activities. Don't use Aspero, go with another alternative.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- App Stability / Crashes -->
+    <div class="cluster-card">
+      <div class="cluster-header">
+        <div class="cluster-dot" style="background:#DC2626"></div>
+        <div class="cluster-title">App Stability &amp; Crashes <span class="p0-label">P0</span></div>
+        <div class="cluster-vol">3 reviews · 111 👍</div>
+      </div>
+      <div class="cluster-reviews">
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">May 30, 2025</div>
+            <div class="review-author">Section Officer</div>
+            <div class="review-thumbs">👍 57</div>
+          </div>
+          <div class="review-text">App not working properly. Keeps showing a "Retry" message and now it's automatically closing on its own. Please check and fix the issue.</div>
+        </div>
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">May 31, 2023</div>
+            <div class="review-author">Siddardha G</div>
+            <div class="review-thumbs">👍 33</div>
+          </div>
+          <div class="review-text">Keeps crashing on filling the OTP.</div>
+        </div>
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">May 29, 2025</div>
+            <div class="review-author">Sudhakar K</div>
+            <div class="review-thumbs">👍 13</div>
+          </div>
+          <div class="review-text">The whole app is down. It says "oops something went wrong, please try again" everywhere.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login / OTP Friction -->
+    <div class="cluster-card">
+      <div class="cluster-header">
+        <div class="cluster-dot" style="background:#EA580C"></div>
+        <div class="cluster-title">Login &amp; OTP Friction <span class="p0-label">P0</span></div>
+        <div class="cluster-vol">7 reviews · 57 👍</div>
+      </div>
+      <div class="cluster-reviews">
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Feb 12, 2026</div>
+            <div class="review-author">S K</div>
+            <div class="review-thumbs">👍 29</div>
+          </div>
+          <div class="review-text">Aspero has a very cumbersome login process. Every time: mobile number → OTP → PIN. Time-consuming and frustrating. Should have auto-login or biometric option.</div>
+        </div>
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Jan 13, 2025</div>
+            <div class="review-author">Sandeep Sahu</div>
+            <div class="review-thumbs">👍 7</div>
+          </div>
+          <div class="review-text">Useless app — not working, OTP not received. Wasted my time.</div>
+        </div>
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Jan 10, 2025</div>
+            <div class="review-author">Kanmaya E</div>
+            <div class="review-thumbs">👍 2</div>
+          </div>
+          <div class="review-text">Not getting OTP.</div>
+        </div>
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Mar 6, 2026</div>
+            <div class="review-author">Gaurav Jain</div>
+            <div class="review-thumbs">👍 2</div>
+          </div>
+          <div class="review-text">OTP never comes.</div>
+        </div>
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Jan 17, 2026</div>
+            <div class="review-author">Vishnu Kumar</div>
+            <div class="review-thumbs">👍 2</div>
+          </div>
+          <div class="review-text">Too much lagging.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Support -->
+    <div class="cluster-card">
+      <div class="cluster-header">
+        <div class="cluster-dot" style="background:#D97706"></div>
+        <div class="cluster-title">Customer Support</div>
+        <div class="cluster-vol">5 reviews · 41 👍</div>
+      </div>
+      <div class="cluster-reviews">
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Jan 24, 2026</div>
+            <div class="review-author">Anmol Sharma</div>
+            <div class="review-thumbs">👍 9</div>
+          </div>
+          <div class="review-text">Don't use this app. Terrible customer support — chat never has an available executive, even during working hours (Mon–Sat, 9am–6pm).</div>
+        </div>
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Mar 15, 2026</div>
+            <div class="review-author">Jitendra Khera</div>
+            <div class="review-thumbs">👍 7 · Dev replied</div>
+          </div>
+          <div class="review-text">Very bad experience — unable to track my deposits. App says "email already exists" with no way to recover account or track funds.</div>
+        </div>
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Feb 8, 2026</div>
+            <div class="review-author">Abhishek</div>
+            <div class="review-thumbs">👍 6</div>
+          </div>
+          <div class="review-text">Stay away — UI sucks. Most important: until you sign up, you can't see the bonds. Compared to Wint Wealth it's less transparent.</div>
+        </div>
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Jun 6, 2025</div>
+            <div class="review-author">Aakash Gupta</div>
+            <div class="review-thumbs">👍 7</div>
+          </div>
+          <div class="review-text">Chat support is non-existent.</div>
+        </div>
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Jul 5, 2025</div>
+            <div class="review-author">Sunil Sharma</div>
+            <div class="review-thumbs">👍 10</div>
+          </div>
+          <div class="review-text">Customer care service is not satisfactory.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bond Operations -->
+    <div class="cluster-card">
+      <div class="cluster-header">
+        <div class="cluster-dot" style="background:#2563EB"></div>
+        <div class="cluster-title">Bond Operations (Sell / Track)</div>
+        <div class="cluster-vol">3 reviews · 28 👍</div>
+      </div>
+      <div class="cluster-reviews">
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Jan 14, 2025</div>
+            <div class="review-author">Rajesh Arun</div>
+            <div class="review-thumbs">👍 9</div>
+          </div>
+          <div class="review-text">Unable to sell the bond.</div>
+        </div>
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Mar 15, 2026</div>
+            <div class="review-author">Jitendra Khera</div>
+            <div class="review-thumbs">👍 7</div>
+          </div>
+          <div class="review-text">Unable to track my deposits. App always says "no already exist" or "email already exist" — no way to trace your funds.</div>
+        </div>
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Aug 16, 2025</div>
+            <div class="review-author">Nishant Solanki</div>
+            <div class="review-thumbs">👍 9</div>
+          </div>
+          <div class="review-text">This app is useless — unable to chat or raise a ticket. Tried to complete KYC but it says "KRA not available".</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KYC Issues -->
+    <div class="cluster-card">
+      <div class="cluster-header">
+        <div class="cluster-dot" style="background:#64748B"></div>
+        <div class="cluster-title">KYC Blockers</div>
+        <div class="cluster-vol">3 reviews · 31 👍</div>
+      </div>
+      <div class="cluster-reviews">
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Jan 21, 2025</div>
+            <div class="review-author">Amit Saini</div>
+            <div class="review-thumbs">👍 12</div>
+          </div>
+          <div class="review-text">Not able to do KYC — showing "email already exists".</div>
+        </div>
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Oct 23, 2023</div>
+            <div class="review-author">Harish Balaji</div>
+            <div class="review-thumbs">👍 13</div>
+          </div>
+          <div class="review-text">Not getting OTP during signup/KYC.</div>
+        </div>
+        <div class="review-row">
+          <div class="review-meta">
+            <div class="review-date">Apr 10, 2025</div>
+            <div class="review-author">Praveen S</div>
+            <div class="review-thumbs">👍 6</div>
+          </div>
+          <div class="review-text">Not able to do KYC.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Last 30-Day Reviews -->
+  <div class="section-title">All Reviews — Last 30 Days (Apr 1–28, 2026)</div>
+  <div class="reviews-list">
+
+    <div class="rev-card pos">
+      <div class="rev-top">
+        <div class="rev-stars" style="color:#16A34A">5★</div>
+        <div class="rev-author">ABHILASH T A</div>
+        <div class="rev-date">Apr 17 · 👍2</div>
+      </div>
+      <div class="rev-body">Aspero is definitely the smoothest for fixed income. Paperless KYC was incredibly fast — ready to invest in minutes without messy document uploads. Clean interface, easy to filter bonds by credit rating and yield.</div>
+    </div>
+
+    <div class="rev-card pos">
+      <div class="rev-top">
+        <div class="rev-stars" style="color:#16A34A">5★</div>
+        <div class="rev-author">Nanda Kubsad</div>
+        <div class="rev-date">Apr 23 · 👍0</div>
+      </div>
+      <div class="rev-body">Good App for FD investment.</div>
+    </div>
+
+    <div class="rev-card pos">
+      <div class="rev-top">
+        <div class="rev-stars" style="color:#16A34A">5★</div>
+        <div class="rev-author">I.S Javali</div>
+        <div class="rev-date">Apr 11 · 👍4</div>
+      </div>
+      <div class="rev-body">My friend referred me this app for investing in Bonds. It is very easy to use.</div>
+    </div>
+
+    <div class="rev-card pos">
+      <div class="rev-top">
+        <div class="rev-stars" style="color:#16A34A">5★</div>
+        <div class="rev-author">Shabeer Zaid Shareef</div>
+        <div class="rev-date">Apr 8 · 👍2</div>
+      </div>
+      <div class="rev-body">Very poor experience at first — no timely customer support. Fortunately, I checked my email and found their response, which helped me get in touch. Once connected, they acted quickly and the issue was resolved.</div>
+    </div>
+
+    <div class="rev-card pos">
+      <div class="rev-top">
+        <div class="rev-stars" style="color:#16A34A">5★</div>
+        <div class="rev-author">Bhagyashri Gonal</div>
+        <div class="rev-date">Apr 4 · 👍5</div>
+      </div>
+      <div class="rev-body">Good App for investing in fixed deposit, simple to understand. Good app if you are investing for the first time.</div>
+    </div>
+
+    <div class="rev-card pos">
+      <div class="rev-top">
+        <div class="rev-stars" style="color:#16A34A">5★</div>
+        <div class="rev-author">mahesh vishwakarma</div>
+        <div class="rev-date">Apr 1 · 👍2</div>
+      </div>
+      <div class="rev-body">I got very good returns from my investing. I invested in bonds and secured earnings.</div>
+    </div>
+
+    <div class="rev-card pos">
+      <div class="rev-top">
+        <div class="rev-stars" style="color:#16A34A">5★</div>
+        <div class="rev-author">Nagaraj Javali</div>
+        <div class="rev-date">Apr 1 · 👍1</div>
+      </div>
+      <div class="rev-body">I liked this app — very easy process to invest and deposit.</div>
+    </div>
+
+    <div class="rev-card pos">
+      <div class="rev-top">
+        <div class="rev-stars" style="color:#16A34A">5★</div>
+        <div class="rev-author">Ash serena</div>
+        <div class="rev-date">Apr 7 · 👍1</div>
+      </div>
+      <div class="rev-body">is like good</div>
+    </div>
+
+    <div class="rev-card pos">
+      <div class="rev-top">
+        <div class="rev-stars" style="color:#16A34A">5★</div>
+        <div class="rev-author">Ɲ S</div>
+        <div class="rev-date">Mar 31 · 👍0</div>
+      </div>
+      <div class="rev-body">nice 👌🏻</div>
+    </div>
+
+    <div class="rev-card" style="border-left: 3px solid #65A30D">
+      <div class="rev-top">
+        <div class="rev-stars" style="color:#65A30D">4★</div>
+        <div class="rev-author">Megha Somaling Kubsad</div>
+        <div class="rev-date">Apr 6 · 👍3</div>
+      </div>
+      <div class="rev-body">Bond suggestions are with AAA. Which is very helpful.</div>
+    </div>
+
+    <div class="rev-card neu">
+      <div class="rev-top">
+        <div class="rev-stars" style="color:#D97706">3★</div>
+        <div class="rev-author">Sanjay S</div>
+        <div class="rev-date">Apr 9 · 👍0</div>
+      </div>
+      <div class="rev-body">superb</div>
+    </div>
+
+    <div class="rev-card neg">
+      <div class="rev-top">
+        <div class="rev-stars" style="color:#DC2626">1★</div>
+        <div class="rev-author">HARISH ADWANI</div>
+        <div class="rev-date">Apr 20 · 👍1</div>
+      </div>
+      <div class="rev-body">worst app</div>
+    </div>
+
+  </div>
+
+  <!-- Performance Monitoring Status -->
+  <div class="section-title">Performance Monitoring Coverage</div>
+  <div class="perf-grid">
+
+    <div class="perf-card">
+      <div class="perf-icon">📊</div>
+      <div class="perf-title">Android Vitals</div>
+      <div class="perf-status status-missing">Not Accessible</div>
+      <div class="perf-desc">Frozen frames, slow frames, ANR rate, crash rate — all locked behind the <strong>Play Developer Reporting API</strong>. Requires a service account key from Play Console. Not yet configured.</div>
+    </div>
+
+    <div class="perf-card">
+      <div class="perf-icon">💥</div>
+      <div class="perf-title">Firebase Crashlytics</div>
+      <div class="perf-status status-stub">SDK Installed, No API Access</div>
+      <div class="perf-desc"><code>@react-native-firebase/crashlytics</code> is installed and active. But no Firebase Admin credentials configured — cannot query crash data programmatically from agents.</div>
+    </div>
+
+    <div class="perf-card">
+      <div class="perf-icon">⚡</div>
+      <div class="perf-title">Firebase Performance</div>
+      <div class="perf-status status-stub">SDK Installed — Not Instrumented</div>
+      <div class="perf-desc"><code>@react-native-firebase/perf</code> is installed. <code>useCustomTrace()</code> hook is a no-op stub — <strong>no traces are being sent to Firebase</strong>. Zero screen render time or startup data being collected.</div>
+    </div>
+
+    <div class="perf-card">
+      <div class="perf-icon">⭐</div>
+      <div class="perf-title">Play Store Reviews</div>
+      <div class="perf-status status-ok">Live via Scraper</div>
+      <div class="perf-desc">Reviews fetched via <code>google-play-scraper</code>. PM agent <code>user_signals</code> skill aggregates negative reviews (≤3★) with Freshdesk + Jira bugs daily.</div>
+    </div>
+
+    <div class="perf-card">
+      <div class="perf-icon">📱</div>
+      <div class="perf-title">App Analytics (Amplitude)</div>
+      <div class="perf-status status-ok">Live</div>
+      <div class="perf-desc">Full funnel: Signup → KYC → Investment, broken down by platform (Android Premium / Mid / Low, iOS, Web). Funnel agent runs daily at 8 AM IST.</div>
+    </div>
+
+    <div class="perf-card">
+      <div class="perf-icon">🔧</div>
+      <div class="perf-title">To Unlock Android Vitals</div>
+      <div class="perf-status" style="background:#EFF6FF;color:#2563EB">Action Required</div>
+      <div class="perf-desc">1. Play Console → Setup → API access → link Google Cloud project<br>2. Create service account with "View app info" permission<br>3. Download JSON key → add to <code>.env</code><br>4. PM agent connector ready to build.</div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="wrap" style="padding-top: 0">
+  <div class="footer">
+    Aspero B2C — Play Store Metrics · Updated Apr 28, 2026 · Data: google-play-scraper · <a href="../">← Product Hub</a>
+  </div>
+</div>
+
+</body>
+</html>
