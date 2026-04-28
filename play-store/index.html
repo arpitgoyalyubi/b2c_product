@@ -105,6 +105,56 @@
   .rev-date { font-size: 12px; color: #94A3B2; margin-left: auto; }
   .rev-body { font-size: 13px; color: #475569; line-height: 1.55; }
 
+  /* ── Android Vitals ── */
+  .vitals-hero { background: white; border-radius: 14px; border: 1px solid #E2E8F0;
+                 padding: 22px 26px; margin-bottom: 14px; }
+  .vitals-hero-top { display: flex; align-items: flex-start; gap: 32px; flex-wrap: wrap; margin-bottom: 18px; }
+  .vitals-main-stat { }
+  .vitals-main-value { font-size: 42px; font-weight: 800; color: #D97706; line-height: 1; }
+  .vitals-main-label { font-size: 13px; color: #64748B; margin-top: 4px; }
+  .vitals-delta { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+  .delta-good { font-size: 13px; font-weight: 700; color: #16A34A; }
+  .delta-bad  { font-size: 13px; font-weight: 700; color: #DC2626; }
+  .delta-sub  { font-size: 12px; color: #94A3B2; }
+  .vitals-peer { border-left: 1px solid #E2E8F0; padding-left: 28px; }
+  .vitals-peer-value { font-size: 26px; font-weight: 800; color: #DC2626; line-height: 1; }
+  .vitals-peer-label { font-size: 13px; color: #64748B; margin-top: 4px; }
+  .vitals-peer-median { font-size: 13px; color: #94A3B2; margin-top: 4px; }
+  .vitals-peer-median strong { color: #0F172A; }
+  .fix-banner { background: #F0FDF4; border: 1px solid #86EFAC; border-radius: 10px;
+                padding: 14px 18px; display: flex; align-items: flex-start; gap: 12px; }
+  .fix-banner-icon { font-size: 20px; flex-shrink: 0; }
+  .fix-banner-text { font-size: 13px; color: #15803D; line-height: 1.55; }
+  .fix-banner-text strong { font-weight: 700; }
+
+  .vitals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 640px) { .vitals-grid { grid-template-columns: 1fr; } }
+
+  .vitals-table-card { background: white; border-radius: 12px; border: 1px solid #E2E8F0; overflow: hidden; }
+  .vtable-title { font-size: 13px; font-weight: 700; padding: 14px 18px;
+                  border-bottom: 1px solid #F1F5F9; color: #0F172A; }
+  .vtable { width: 100%; border-collapse: collapse; }
+  .vtable th { font-size: 10px; font-weight: 700; color: #94A3B2; text-transform: uppercase;
+               letter-spacing: .05em; padding: 8px 14px; text-align: right; background: #F8FAFC; }
+  .vtable th:first-child { text-align: left; }
+  .vtable td { font-size: 12px; padding: 9px 14px; border-top: 1px solid #F1F5F9;
+               text-align: right; }
+  .vtable td:first-child { text-align: left; font-weight: 600; }
+  .vtable tr.highlight td { background: #F0FDF4; }
+  .vtable tr.highlight td:first-child { color: #16A34A; }
+  .pct-bad  { color: #DC2626; font-weight: 700; }
+  .pct-warn { color: #D97706; font-weight: 700; }
+  .pct-good { color: #16A34A; font-weight: 700; }
+
+  .cause-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 16px; }
+  .cause-item { }
+  .cause-label { font-size: 11px; color: #64748B; margin-bottom: 4px; }
+  .cause-bar-wrap { background: #F1F5F9; border-radius: 4px; height: 10px; margin-bottom: 3px; }
+  .cause-bar { height: 10px; border-radius: 4px; background: #DC2626; }
+  .cause-bar.mod { background: #D97706; }
+  .cause-bar.low { background: #94A3B2; }
+  .cause-pct { font-size: 13px; font-weight: 700; color: #0F172A; }
+
   /* ── Performance status ── */
   .perf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
   .perf-card { background: white; border-radius: 12px; border: 1px solid #E2E8F0; padding: 18px 20px; }
@@ -629,6 +679,210 @@
 
   </div>
 
+  <!-- Android Vitals -->
+  <div class="section-title">Android Vitals — Excessive Frozen Frames · Last 90 Days</div>
+
+  <!-- Hero KPIs + fix banner -->
+  <div class="vitals-hero">
+    <div class="vitals-hero-top">
+      <div class="vitals-main-stat">
+        <div class="vitals-main-value">14.51%</div>
+        <div class="vitals-main-label">Excessive frozen frames in production</div>
+        <div class="vitals-delta">
+          <span class="delta-good">↓ -1.38%</span>
+          <span class="delta-sub">vs previous period</span>
+        </div>
+      </div>
+      <div class="vitals-peer">
+        <div class="vitals-peer-value">+9.88pp</div>
+        <div class="vitals-peer-label">above peers (Investment category)</div>
+        <div class="vitals-peer-median">Peers' median: <strong>4.63%</strong> &nbsp;·&nbsp; We are at <strong>75th+ percentile</strong></div>
+      </div>
+    </div>
+    <div class="fix-banner">
+      <div class="fix-banner-icon">✅</div>
+      <div class="fix-banner-text">
+        <strong>Frozen frames fix shipped in v2.7.0.</strong> 28-day rolling average peaked at ~35% in early April
+        then dropped sharply to ~15% in late April after the fix. Version-level data confirms: v2.6.4 had
+        <strong>32.48%</strong> frozen frames → v2.7.0 dropped to <strong>6.40%</strong> — a <strong>5× improvement</strong>.
+        Still 3× above peers' median; next target: get below 8% to enter top quartile.
+      </div>
+    </div>
+  </div>
+
+  <!-- Version + Android version breakdowns -->
+  <div class="vitals-grid">
+
+    <div class="vitals-table-card">
+      <div class="vtable-title">By App Version</div>
+      <table class="vtable">
+        <thead>
+          <tr>
+            <th>Version</th>
+            <th>Affected %</th>
+            <th>Sessions</th>
+            <th>p90 (ms)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>73 · v2.6.3</td>
+            <td><span class="pct-bad">33.19%</span></td>
+            <td>~200</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>76 · v2.6.4</td>
+            <td><span class="pct-bad">32.48%</span></td>
+            <td>~2K</td>
+            <td>29–30</td>
+          </tr>
+          <tr class="highlight">
+            <td>77 · v2.7.0 ✓ fix</td>
+            <td><span class="pct-good">6.40%</span></td>
+            <td>~5K</td>
+            <td>42–44</td>
+          </tr>
+          <tr>
+            <td>79 · v2.7.2</td>
+            <td><span class="pct-warn">16.47%</span></td>
+            <td>~90</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="vitals-table-card">
+      <div class="vtable-title">By Android Version</div>
+      <table class="vtable">
+        <thead>
+          <tr>
+            <th>OS</th>
+            <th>Affected %</th>
+            <th>Sessions</th>
+            <th>p90 (ms)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Android 16 Beta (36)</td>
+            <td><span class="pct-good">8.57%</span></td>
+            <td>~3K</td>
+            <td>25–26</td>
+          </tr>
+          <tr>
+            <td>Android 15 (SDK 35)</td>
+            <td><span class="pct-warn">15.77%</span></td>
+            <td>~1K</td>
+            <td>25–26</td>
+          </tr>
+          <tr>
+            <td>Android 14 (SDK 34)</td>
+            <td><span class="pct-good">6.86%</span></td>
+            <td>~100</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Android 13 (SDK 33)</td>
+            <td><span class="pct-warn">13.46%</span></td>
+            <td>~50</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Root causes + Form factor -->
+  <div class="vitals-grid" style="margin-top:14px">
+
+    <div class="vitals-table-card">
+      <div class="vtable-title">Root Causes (of affected frames)</div>
+      <div class="cause-grid">
+        <div class="cause-item">
+          <div class="cause-label">Slow draw commands</div>
+          <div class="cause-bar-wrap"><div class="cause-bar" style="width:63%"></div></div>
+          <div class="cause-pct">63%</div>
+        </div>
+        <div class="cause-item">
+          <div class="cause-label">Slow UI thread</div>
+          <div class="cause-bar-wrap"><div class="cause-bar" style="width:49%"></div></div>
+          <div class="cause-pct">49%</div>
+        </div>
+        <div class="cause-item">
+          <div class="cause-label">Missed Vsyncs</div>
+          <div class="cause-bar-wrap"><div class="cause-bar mod" style="width:21%"></div></div>
+          <div class="cause-pct">21%</div>
+        </div>
+        <div class="cause-item">
+          <div class="cause-label">Slow bitmap uploads</div>
+          <div class="cause-bar-wrap"><div class="cause-bar low" style="width:20%"></div></div>
+          <div class="cause-pct">20%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vitals-table-card">
+      <div class="vtable-title">Impact — Phone Sessions</div>
+      <table class="vtable">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Affected sessions</td>
+            <td><strong>~1,020</strong></td>
+          </tr>
+          <tr>
+            <td>Affected sessions %</td>
+            <td><span class="pct-warn">14.65%</span></td>
+          </tr>
+          <tr>
+            <td>Total sessions measured</td>
+            <td>~7K</td>
+          </tr>
+          <tr>
+            <td>p90 render time</td>
+            <td>32–34 ms</td>
+          </tr>
+          <tr>
+            <td>p99 render time</td>
+            <td><span class="pct-bad">750 ms – ∞</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Insights callout -->
+  <div style="background:white;border-radius:12px;border:1px solid #E2E8F0;padding:20px 24px;margin-top:14px">
+    <div style="font-size:13px;font-weight:700;margin-bottom:12px;color:#0F172A">Key Insights &amp; Next Actions</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;gap:10px;font-size:13px;color:#334155;line-height:1.5">
+        <span style="color:#16A34A;font-weight:700;flex-shrink:0">✅ Win:</span>
+        <span>v2.7.0 fix is confirmed working — <strong>32% → 6.4%</strong> frozen frames (5× better). Rolling average continues to trend down. This explains the Apr 2026 review improvement to 4.36★ avg.</span>
+      </div>
+      <div style="display:flex;gap:10px;font-size:13px;color:#334155;line-height:1.5">
+        <span style="color:#D97706;font-weight:700;flex-shrink:0">⚠ Watch:</span>
+        <span>v2.7.2 (79) shows <strong>16.47%</strong> on a small ~90 session sample. Too early to call regression but worth monitoring as adoption grows. p99 on v2.7.0 is also <strong>750ms–∞</strong> — tail latency is still a problem even though the main rate improved.</span>
+      </div>
+      <div style="display:flex;gap:10px;font-size:13px;color:#334155;line-height:1.5">
+        <span style="color:#DC2626;font-weight:700;flex-shrink:0">🔴 Gap:</span>
+        <span>At <strong>14.51%</strong> we're still <strong>3× above the Investment category peers' median (4.63%)</strong> and sitting above the 75th percentile. The remaining gap is dominated by <strong>slow draw commands (63%)</strong> and <strong>slow UI thread (49%)</strong> — likely heavy list renders (bond list, portfolio screen) on mid/low Android devices.</span>
+      </div>
+      <div style="display:flex;gap:10px;font-size:13px;color:#334155;line-height:1.5">
+        <span style="color:#2563EB;font-weight:700;flex-shrink:0">→ Next:</span>
+        <span>Profile bond list and portfolio screens on Android 15 (SDK 35) devices — they have the highest affected % at 15.77% with significant session volume (~1K). Android 16 Beta is already cleaner at 8.57%, suggesting framework-level improvements there.</span>
+      </div>
+    </div>
+  </div>
+
   <!-- Performance Monitoring Status -->
   <div class="section-title">Performance Monitoring Coverage</div>
   <div class="perf-grid">
@@ -636,8 +890,8 @@
     <div class="perf-card">
       <div class="perf-icon">📊</div>
       <div class="perf-title">Android Vitals</div>
-      <div class="perf-status status-missing">Not Accessible</div>
-      <div class="perf-desc">Frozen frames, slow frames, ANR rate, crash rate — all locked behind the <strong>Play Developer Reporting API</strong>. Requires a service account key from Play Console. Not yet configured.</div>
+      <div class="perf-status status-stub">Manual via Play Console</div>
+      <div class="perf-desc">Frozen frames data captured above from Play Console UI (Apr 28 2026). <strong>14.51%</strong> excessive frozen frames — 3× peers' median. To automate: set up Play Developer Reporting API service account (see steps in connector).</div>
     </div>
 
     <div class="perf-card">
