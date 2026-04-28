@@ -120,7 +120,7 @@
     <a class="header-back" href="../">← All mocks</a>
   </div>
   <h1>Support Ticket Analysis — April 2026</h1>
-  <p>Freshdesk B2C-only · Apr 1–25 · 514 clean tickets · B2B2C excluded via post-fetch tag guard</p>
+  <p>Freshdesk B2C-only · Apr 1–28 · 689 clean tickets · B2B2C excluded via post-fetch tag guard</p>
   <div class="header-meta">
     <span class="meta-chip">Source: <strong>Freshdesk REST API v2</strong></span>
     <span class="meta-chip">Sample: <strong>15 ticket bodies / category</strong></span>
@@ -132,7 +132,7 @@
 
   <!-- Volume Trend -->
   <div class="section-title">Weekly Volume Trend — True Mon–Sun Calendar Weeks</div>
-  <div class="week-grid">
+  <div class="week-grid" style="grid-template-columns:repeat(5,1fr);">
     <div class="week-card">
       <div class="wk">Week 1 · Partial</div>
       <div class="dates">Apr 1–5 (Wed–Sun)</div>
@@ -146,23 +146,109 @@
       <div class="rate">17.0 / day · 7 days</div>
     </div>
     <div class="week-card">
-      <div class="wk">Week 3 ⚠</div>
+      <div class="wk">Week 3</div>
       <div class="dates">Apr 13–19 (Mon–Sun)</div>
-      <div class="count">75</div>
-      <div class="rate">10.7 / day · 7 days</div>
+      <div class="count">129</div>
+      <div class="rate">18.4 / day · 7 days</div>
     </div>
     <div class="week-card alert">
       <div class="wk">Week 4</div>
       <div class="dates">Apr 20–25 (Mon–Sat)</div>
       <div class="count">217</div>
       <div class="rate">36.2 / day · 6 days</div>
-      <div class="alert-badge">⚠ 3.4× spike vs Wk 3</div>
+      <div class="alert-badge">⚠ 1.7× spike vs Wk 3</div>
+    </div>
+    <div class="week-card alert">
+      <div class="wk">Week 5 · Partial</div>
+      <div class="dates">Apr 26–28 (Mon–Wed)</div>
+      <div class="count">103</div>
+      <div class="rate">34.3 / day · 3 days</div>
+      <div class="alert-badge">Still elevated</div>
     </div>
   </div>
   <p style="font-size:12px;color:#64748B;margin-top:8px;">
-    Peak days: Apr 23 (43), Apr 24 (46), Apr 25 (43) — all in Week 4.
-    <strong style="color:#D97706"> · Note:</strong> Apr 15–16 show zero tickets in Freshdesk data — likely a gap around the Ambedkar Jayanti (Apr 14) holiday weekend. Week 3 count (75) may be slightly understated.
+    Peak days: Apr 23 (43), Apr 24 (46), Apr 25 (43). Spike has not reverted — Week 5 pace (34/day) matches Week 4.
+    <br><strong style="color:#64748B">Note:</strong> Earlier Wk3 count of 75 was a query pagination artifact (Apr 15–16 truncated). True Wk3 = 129.
   </p>
+
+
+  <!-- Spike Analysis -->
+  <div class="section-title">What Drove the Week 4 Spike?</div>
+  <div style="background:white;border-radius:12px;border:1px solid #E2E8F0;overflow:hidden;">
+    <table style="width:100%;border-collapse:collapse;">
+      <thead>
+        <tr style="background:#F8FAFC;">
+          <th style="font-size:11px;font-weight:700;color:#94A3B2;text-transform:uppercase;letter-spacing:.05em;padding:10px 20px;text-align:left;">Category</th>
+          <th style="font-size:11px;font-weight:700;color:#94A3B2;text-transform:uppercase;letter-spacing:.05em;padding:10px 16px;text-align:right;">Wk2</th>
+          <th style="font-size:11px;font-weight:700;color:#94A3B2;text-transform:uppercase;letter-spacing:.05em;padding:10px 16px;text-align:right;">Wk3</th>
+          <th style="font-size:11px;font-weight:700;color:#94A3B2;text-transform:uppercase;letter-spacing:.05em;padding:10px 16px;text-align:right;">Wk4</th>
+          <th style="font-size:11px;font-weight:700;color:#94A3B2;text-transform:uppercase;letter-spacing:.05em;padding:10px 16px;text-align:right;">Wk5 (3d)</th>
+          <th style="font-size:11px;font-weight:700;color:#94A3B2;text-transform:uppercase;letter-spacing:.05em;padding:10px 20px;text-align:left;">vs Wk3</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-top:1px solid #F1F5F9;background:#FFF5F5;">
+          <td style="padding:12px 20px;font-size:13px;font-weight:700;">Demat</td>
+          <td style="padding:12px 16px;font-size:13px;text-align:right;">10</td>
+          <td style="padding:12px 16px;font-size:13px;text-align:right;">7</td>
+          <td style="padding:12px 16px;font-size:14px;font-weight:800;color:#DC2626;text-align:right;">39</td>
+          <td style="padding:12px 16px;font-size:13px;text-align:right;">24</td>
+          <td style="padding:12px 20px;"><span style="font-size:12px;font-weight:700;background:#FEE2E2;color:#DC2626;border-radius:4px;padding:2px 8px;">5.6× ↑</span><span style="font-size:12px;color:#64748B;margin-left:8px;">Primary driver</span></td>
+        </tr>
+        <tr style="border-top:1px solid #F1F5F9;background:#FFFBF5;">
+          <td style="padding:12px 20px;font-size:13px;font-weight:700;">App / Bug</td>
+          <td style="padding:12px 16px;font-size:13px;text-align:right;">22</td>
+          <td style="padding:12px 16px;font-size:13px;text-align:right;">21</td>
+          <td style="padding:12px 16px;font-size:14px;font-weight:800;color:#EA580C;text-align:right;">47</td>
+          <td style="padding:12px 16px;font-size:13px;text-align:right;">21</td>
+          <td style="padding:12px 20px;"><span style="font-size:12px;font-weight:700;background:#FEF3C7;color:#D97706;border-radius:4px;padding:2px 8px;">2.2× ↑</span><span style="font-size:12px;color:#64748B;margin-left:8px;">KRA failures spike</span></td>
+        </tr>
+        <tr style="border-top:1px solid #F1F5F9;background:#FFFBF5;">
+          <td style="padding:12px 20px;font-size:13px;font-weight:700;">Personal Details</td>
+          <td style="padding:12px 16px;font-size:13px;text-align:right;">16</td>
+          <td style="padding:12px 16px;font-size:13px;text-align:right;">11</td>
+          <td style="padding:12px 16px;font-size:14px;font-weight:800;color:#EA580C;text-align:right;">29</td>
+          <td style="padding:12px 16px;font-size:13px;text-align:right;">10</td>
+          <td style="padding:12px 20px;"><span style="font-size:12px;font-weight:700;background:#FEF3C7;color:#D97706;border-radius:4px;padding:2px 8px;">2.6× ↑</span><span style="font-size:12px;color:#64748B;margin-left:8px;">Marital status bug</span></td>
+        </tr>
+        <tr style="border-top:1px solid #F1F5F9;background:#FFFBF5;">
+          <td style="padding:12px 20px;font-size:13px;font-weight:700;">Uncategorised</td>
+          <td style="padding:12px 16px;font-size:13px;text-align:right;">30</td>
+          <td style="padding:12px 16px;font-size:13px;text-align:right;">16</td>
+          <td style="padding:12px 16px;font-size:14px;font-weight:800;color:#EA580C;text-align:right;">33</td>
+          <td style="padding:12px 16px;font-size:13px;text-align:right;">11</td>
+          <td style="padding:12px 20px;"><span style="font-size:12px;font-weight:700;background:#FEF3C7;color:#D97706;border-radius:4px;padding:2px 8px;">2.1× ↑</span><span style="font-size:12px;color:#64748B;margin-left:8px;">TDS / portfolio</span></td>
+        </tr>
+        <tr style="border-top:1px solid #F1F5F9;">
+          <td style="padding:12px 20px;font-size:13px;font-weight:700;">PAN Issue</td>
+          <td style="padding:12px 16px;font-size:13px;text-align:right;">22</td>
+          <td style="padding:12px 16px;font-size:13px;text-align:right;">52</td>
+          <td style="padding:12px 16px;font-size:14px;font-weight:700;text-align:right;">39</td>
+          <td style="padding:12px 16px;font-size:13px;text-align:right;">26</td>
+          <td style="padding:12px 20px;"><span style="font-size:12px;font-weight:600;background:#F1F5F9;color:#64748B;border-radius:4px;padding:2px 8px;">0.75× ↓</span><span style="font-size:12px;color:#64748B;margin-left:8px;">Declining from Wk3 peak</span></td>
+        </tr>
+        <tr style="border-top:1px solid #F1F5F9;">
+          <td style="padding:12px 20px;font-size:13px;font-weight:700;">Bank Account</td>
+          <td style="padding:12px 16px;font-size:13px;text-align:right;">12</td>
+          <td style="padding:12px 16px;font-size:13px;text-align:right;">13</td>
+          <td style="padding:12px 16px;font-size:14px;font-weight:700;text-align:right;">21</td>
+          <td style="padding:12px 16px;font-size:13px;text-align:right;">6</td>
+          <td style="padding:12px 20px;"><span style="font-size:12px;font-weight:600;background:#F1F5F9;color:#64748B;border-radius:4px;padding:2px 8px;">1.6×</span></td>
+        </tr>
+        <tr style="border-top:2px solid #E2E8F0;background:#F8FAFC;">
+          <td style="padding:12px 20px;font-size:13px;font-weight:700;color:#0F172A;">TOTAL</td>
+          <td style="padding:12px 16px;font-size:13px;font-weight:700;text-align:right;">119</td>
+          <td style="padding:12px 16px;font-size:13px;font-weight:700;text-align:right;">129</td>
+          <td style="padding:12px 16px;font-size:14px;font-weight:800;color:#DC2626;text-align:right;">217</td>
+          <td style="padding:12px 16px;font-size:13px;font-weight:700;text-align:right;">103</td>
+          <td style="padding:12px 20px;font-size:12px;color:#64748B;">Spike not reverting in Wk5</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="padding:14px 20px;background:#F0FDF4;border-top:1px solid #BBF7D0;">
+      <p style="font-size:13px;color:#166534;"><strong>Hypothesis:</strong> Demat spike (5.6×) suggests a platform change or user-base expansion around Apr 20 brought in more new users hitting the "why do I need a new demat?" friction wall. Coincides with App/Bug and Personal Details also spiking — points to a cohort of new users flowing through onboarding simultaneously. <strong>Action: check what acquisition event or campaign launched ~Apr 18–20.</strong></p>
+    </div>
+  </div>
 
   <!-- Category Summary -->
   <div class="section-title">Category Breakdown</div>
