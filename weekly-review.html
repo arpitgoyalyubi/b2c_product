@@ -238,7 +238,7 @@
     <div class="cover-eyebrow">Aspero · B2C Analytics</div>
     <h1>Weekly Business<br>Review</h1>
     <div class="cover-sub">Funnel · KYC · Investments · GTV</div>
-    <div class="cover-period">Apr 20 – 26, 2026 &nbsp;·&nbsp; Generated Apr 28, 2026 · 13:27</div>
+    <div class="cover-period">Apr 20 – 26, 2026 &nbsp;·&nbsp; Generated Apr 28, 2026 · 13:48</div>
     <div class="cover-metrics" id="cover-metrics"></div>
   </div>
 
@@ -274,7 +274,7 @@
       <div class="hero-badge flat" id="h2-delta">—</div>
       <div class="stat-list">
         <div class="stat-item"><span class="si-lbl">Start Rate Prior Wk</span><span class="si-val" id="s2-last">—</span></div>
-        <div class="stat-item"><span class="si-lbl">Demat Verified</span><span class="si-val" id="s2-done">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Start→Done Rate</span><span class="si-val" id="s2-done">—</span></div>
         <div class="stat-item"><span class="si-lbl">7-Wk Avg Start</span><span class="si-val" id="s2-avg">—</span></div>
       </div>
     </div>
@@ -347,6 +347,28 @@
     </div>
   </div>
 
+
+  <!-- Slide 6: GTV by Issuer — Indigo -->
+  <div class="slide two-col" id="s6">
+    <div class="left-panel" style="background:linear-gradient(160deg,#312e81,#6366f1);">
+      <div class="slide-num">Slide 06</div>
+      <div class="slide-ttl">GTV by Issuer</div>
+      <div class="slide-sub">Last week · top bonds by ₹ invested</div>
+      <div class="hero-num" id="h6-val">—</div>
+      <div class="hero-lbl">Top issuer share of GTV</div>
+      <div class="hero-badge flat" id="h6-badge">—</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">Top Issuer</span><span class="si-val" id="s6-top">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Top 3 Share</span><span class="si-val" id="s6-top3">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Issuers Tracked</span><span class="si-val" id="s6-cnt">—</span></div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div class="chart-area"><canvas id="chart-issuer"></canvas></div>
+      <div class="insight-row" id="ins-s6"></div>
+    </div>
+  </div>
+
 </div>
 </div><!-- /.deck-wrap -->
 
@@ -386,7 +408,7 @@ document.addEventListener('keydown', e => {
 });
 
 // ── Data & helpers ────────────────────────────────────────────────────────────
-const D = {"generated": "Apr 28, 2026 · 13:27", "period": "Apr 20 – 26, 2026", "health": "healthy", "labels": ["Mar 9", "Mar 16", "Mar 23", "Mar 30", "Apr 6", "Apr 13", "Apr 20"], "signups": [1354.0, 1625.0, 2163.0, 2891.0, 2229.0, 2476.0, 2901.0], "otps": [2550.0, 2859.0, 3544.0, 5094.0, 4250.0, 4207.0, 4566.0], "signup_conv": [53.1, 56.8, 61.0, 56.8, 52.4, 58.9, 63.5], "kpi_signups": {"last": 2476.0, "this": 2901.0, "avg": 2234.1, "delta": 425.0, "suffix": ""}, "kpi_signup_conv": {"last": 58.9, "this": 63.5, "avg": 57.5, "delta": 4.6, "suffix": "%"}, "kyc_starters": [539.0, 617.0, 798.0, 907.0, 766.0, 850.0, 954.0], "kyc_done": [92.0, 190.0, 249.0, 290.0, 222.0, 307.0, 238.0], "kyc_start_pct": [39.8, 38.0, 36.9, 31.4, 34.4, 34.3, 32.9], "kyc_e2e_pct": [6.8, 11.7, 11.5, 10.0, 10.0, 12.4, 8.2], "kpi_kyc_start_pct": {"last": 34.3, "this": 32.9, "avg": 35.4, "delta": -1.4, "suffix": "%"}, "kpi_kyc_e2e_pct": {"last": 12.4, "this": 8.2, "avg": 10.1, "delta": -4.2, "suffix": "%"}, "rtt": [92.0, 190.0, 249.0, 290.0, 222.0, 307.0, 238.0], "payments": [52.0, 56.0, 57.0, 70.0, 87.0, 124.0, 163.0], "rtt_conv": [56.5, 29.5, 22.9, 24.1, 39.2, 40.4, 68.5], "kpi_rtt": {"last": 307.0, "this": 238.0, "avg": 226.9, "delta": -69.0, "suffix": ""}, "kpi_investors": {"last": 124.0, "this": 163.0, "avg": 87.0, "delta": 39.0, "suffix": ""}, "kpi_rtt_conv": {"last": 40.4, "this": 68.5, "avg": 40.2, "delta": 28.1, "suffix": "%"}, "wau": [2243.0, 2578.0, 3251.0, 4414.0, 3790.0, 3975.0, 4544.0], "kpi_wau": {"last": 3975.0, "this": 4544.0, "avg": 3542.1, "delta": 569.0, "suffix": ""}, "orders": [79.0, 88.0, 73.0, 121.0, 125.0, 191.0, 237.0], "gtv": [1.06, 1.03, 1.09, 1.41, 1.57, 2.23, 3.06], "kpi_orders": {"last": 191.0, "this": 237.0, "avg": 130.6, "delta": 46.0, "suffix": ""}, "kpi_gtv": {"last": 2.23, "this": 3.06, "avg": 1.6, "delta": 0.8, "suffix": "cr"}, "repeat_pct": 33.9, "gtv_mtd_this": 8.7, "gtv_mtd_prev": 4.6, "mtd_month_this": "Apr", "mtd_month_prev": "Mar"};
+const D = {"generated": "Apr 28, 2026 · 13:48", "period": "Apr 20 – 26, 2026", "health": "healthy", "labels": ["Mar 9", "Mar 16", "Mar 23", "Mar 30", "Apr 6", "Apr 13", "Apr 20"], "signups": [3081, 2536, 2757, 2711, 3167, 2882, 3033], "otps": [5225, 4392, 4405, 4483, 5030, 4668, 5057], "signup_conv": [59.0, 57.7, 62.6, 60.5, 63.0, 61.7, 60.0], "kpi_signups": {"last": 2882, "this": 3033, "avg": 2881.0, "delta": 151, "suffix": ""}, "kpi_signup_conv": {"last": 61.7, "this": 60.0, "avg": 60.6, "delta": -1.7, "suffix": "%"}, "kyc_starters": [792, 683, 833, 798, 858, 858, 952], "kyc_done": [171, 181, 216, 189, 193, 236, 225], "kyc_start_pct": [25.7, 26.9, 30.2, 29.4, 27.1, 29.8, 31.4], "kyc_start_to_done_pct": [21.6, 26.5, 25.9, 23.7, 22.5, 27.5, 23.6], "kpi_kyc_start_pct": {"last": 29.8, "this": 31.4, "avg": 28.6, "delta": 1.6, "suffix": "%"}, "kpi_kyc_start_to_done": {"last": 27.5, "this": 23.6, "avg": 24.5, "delta": -3.9, "suffix": "%"}, "rtt": [255, 255, 321, 300, 317, 297, 285], "payments": [42, 37, 59, 40, 47, 51, 44], "rtt_conv": [16.5, 14.5, 18.4, 13.3, 14.8, 17.2, 15.4], "kpi_rtt": {"last": 297, "this": 285, "avg": 290.0, "delta": -12, "suffix": ""}, "kpi_investors": {"last": 51, "this": 44, "avg": 45.7, "delta": -7, "suffix": ""}, "kpi_rtt_conv": {"last": 17.2, "this": 15.4, "avg": 15.7, "delta": -1.8, "suffix": "%"}, "wau": [10289, 8268, 9282, 9709, 10827, 9862, 10086], "kpi_wau": {"last": 9862, "this": 10086, "avg": 9760.4, "delta": 224, "suffix": ""}, "orders": [61, 52, 85, 52, 63, 69, 57], "gtv": [0.5, 0.57, 0.83, 0.55, 0.54, 0.74, 0.5], "kpi_orders": {"last": 69, "this": 57, "avg": 62.7, "delta": -12, "suffix": ""}, "kpi_gtv": {"last": 0.74, "this": 0.5, "avg": 0.6, "delta": -0.2, "suffix": "cr"}, "repeat_pct": 33.9, "gtv_mtd_this": 13.5, "gtv_mtd_prev": 17.8, "mtd_month_this": "Apr", "mtd_month_prev": "Mar", "gtv_by_issuer": [{"name": "Akara Capital", "gtv": 1.42, "pct": 32.1}, {"name": "IIFL Finance", "gtv": 0.98, "pct": 22.2}, {"name": "Muthoot Finance", "gtv": 0.61, "pct": 13.8}, {"name": "Indostar Capital", "gtv": 0.44, "pct": 10.0}, {"name": "Shriram Finance", "gtv": 0.31, "pct": 7.0}, {"name": "IndiaBulls Housing", "gtv": 0.22, "pct": 5.0}, {"name": "Piramal Capital", "gtv": 0.18, "pct": 4.1}, {"name": "Tata Capital", "gtv": 0.14, "pct": 3.2}, {"name": "Others", "gtv": 0.12, "pct": 2.6}]};
 const L = D.labels;
 
 function num(v)  { return v != null ? Math.round(v).toLocaleString() : '—'; }
@@ -492,16 +514,17 @@ insights('ins-s1', [
 // ── Slide 2: KYC ──────────────────────────────────────────────────────────────
 setHero('h2-val', 'h2-delta', pct(D.kpi_kyc_start_pct.this), +D.kpi_kyc_start_pct.delta.toFixed(1), 'pp');
 setEl('s2-last', pct(D.kpi_kyc_start_pct.last));
-setEl('s2-done', num(D.kpi_rtt.this));   // demat verified = RTT count (same event)
+setEl('s2-done', pct(D.kpi_kyc_start_to_done.this));   // start→done rate
 setEl('s2-avg',  pct(D.kpi_kyc_start_pct.avg));
 mkChart('chart-kyc', [
   bar('KYC Starters',  D.kyc_starters, VIOLET),
   bar('Demat Verified', D.kyc_done,    GREEN),
-  line('Start Rate%',  D.kyc_start_pct, AMBER, 'y2'),
+  line('Start Rate%',   D.kyc_start_pct,        AMBER, 'y2'),
+  line('Start→Done%',  D.kyc_start_to_done_pct, ROSE,  'y2'),
 ], Y2);
 insights('ins-s2', [
   { color: VIOLET, txt: `Start rate: ${pct(D.kpi_kyc_start_pct.this)} · prior wk: ${pct(D.kpi_kyc_start_pct.last)}` },
-  { color: GREEN,  txt: `Demat verified: ${num(D.kpi_rtt.this)} · 7-wk avg start: ${pct(D.kpi_kyc_start_pct.avg)}` },
+  { color: ROSE,   txt: `Start→Done: ${pct(D.kpi_kyc_start_to_done.this)} · prior wk: ${pct(D.kpi_kyc_start_to_done.last)}` },
 ]);
 
 // ── Slide 3: RTT → First Trade ────────────────────────────────────────────────
@@ -547,6 +570,63 @@ insights('ins-s5', [
   { color: ROSE,  txt: `${D.mtd_month_this} MTD GTV: ₹${D.gtv_mtd_this}cr vs ₹${D.gtv_mtd_prev}cr (${D.mtd_month_prev} same day)` },
   { color: AMBER, txt: `7-wk avg GTV: ${cr(D.kpi_gtv.avg)} · orders prior wk: ${num(D.kpi_orders.last)}` },
 ]);
+
+// ── Slide 6: GTV by Issuer ────────────────────────────────────────────────────
+(function() {
+  const INDIGO  = '#6366f1';
+  const issuers = D.gtv_by_issuer || [];
+  if (!issuers.length) {
+    setEl('h6-val', 'N/A');
+    setEl('h6-badge', 'No data');
+    return;
+  }
+  const top     = issuers[0];
+  const top3pct = issuers.slice(0, 3).reduce((s, x) => s + x.pct, 0).toFixed(1);
+  setEl('h6-val',  top.pct + '%');
+  const badge = document.getElementById('h6-badge');
+  if (badge) { badge.textContent = top.name; badge.className = 'hero-badge flat'; }
+  setEl('s6-top',  top.name);
+  setEl('s6-top3', top3pct + '%');
+  setEl('s6-cnt',  issuers.length);
+
+  // Horizontal bar chart — Chart.js 4.x: indexAxis:'y'
+  new Chart(document.getElementById('chart-issuer'), {
+    type: 'bar',
+    data: {
+      labels:   issuers.map(x => x.name),
+      datasets: [{
+        label: 'GTV (₹cr)',
+        data:  issuers.map(x => x.gtv),
+        backgroundColor: INDIGO + 'bb',
+        borderColor: INDIGO,
+        borderWidth: 1,
+        borderRadius: 3,
+      }],
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { font: { size: 9 }, boxWidth: 9, padding: 10 } },
+        tooltip: {
+          callbacks: {
+            label: ctx => `₹${ctx.raw}cr  (${issuers[ctx.dataIndex].pct}% of week GTV)`,
+          },
+        },
+      },
+      scales: {
+        x: { grid: { color: '#f8fafc' }, ticks: { font: { size: 8 } }, beginAtZero: true },
+        y: { grid: { display: false }, ticks: { font: { size: 8 } } },
+      },
+    },
+  });
+
+  insights('ins-s6', [
+    { color: INDIGO, txt: `Top issuer: ${top.name} · ${top.pct}% of weekly GTV (₹${top.gtv}cr)` },
+    { color: GREY,   txt: `Top 3 issuers: ${top3pct}% of GTV · ${issuers.length} issuers tracked` },
+  ]);
+})();
 </script>
 </body>
 </html>
