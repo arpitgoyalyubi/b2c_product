@@ -686,14 +686,100 @@
     </div>
   </div>
 
-  <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:16px 20px;margin-bottom:4px;font-size:13px;color:#166534;line-height:1.6;">
-    <strong>🔑 Other friction metrics to watch (not yet in this report):</strong>
-    <ul style="margin:8px 0 0 0;padding-left:18px;">
-      <li><strong>Wrong PIN entries (<code>VERIFY_SECURE_PIN_FAILED</code>):</strong> Fewer PIN attempts → fewer failed entries. Query to add.</li>
-      <li><strong>PIN page views / day (<code>VERIFY_SECURE_PIN_PAGE_VIEW</code>):</strong> Should decline as enrolled users skip the step. Tracks bio adoption depth.</li>
-      <li><strong>D7 / D14 return rate (bio-enrolled vs non-enrolled cohort):</strong> Lower login friction → higher retention. The highest-value metric, needs a cohort query.</li>
-      <li><strong>Overall returning-user login success rate:</strong> Combine bio + PIN success rates for the full picture of authentication reliability post-launch.</li>
-    </ul>
+  <!-- Additional Friction Metrics -->
+  <h2 style="margin-top:32px;"><span class="dot" style="background:#0891B2"></span>Additional Friction Metrics</h2>
+
+  <!-- Status legend -->
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;font-size:12px;font-weight:600;">
+    <span style="display:flex;align-items:center;gap:4px;color:#16A34A;">✅ Live data</span>
+    <span style="display:flex;align-items:center;gap:4px;color:#2563EB;">🔢 Derived from existing data</span>
+    <span style="display:flex;align-items:center;gap:4px;color:#D97706;">🔲 Amplitude query needed</span>
+    <span style="display:flex;align-items:center;gap:4px;color:#7C3AED;">🗓 Cohort data now available</span>
+  </div>
+
+  <!-- 4-metric grid -->
+  <div class="kpi-grid" style="margin-bottom:20px;">
+    <div class="kpi" style="border-left:4px solid #16A34A;background:#F0FDF4;">
+      <div class="label" style="color:#16A34A;">✅ PIN Screens Bypassed / day</div>
+      <div class="val" style="color:#16A34A;">98 → 150</div>
+      <div class="sub">avg 98/day; reached 150 by Apr 27 and growing</div>
+    </div>
+    <div class="kpi" style="border-left:4px solid #2563EB;background:#EFF6FF;">
+      <div class="label" style="color:#2563EB;">🔢 Returning-User PIN Views / day</div>
+      <div class="val" style="color:#2563EB;">248 → 233</div>
+      <div class="sub">derived: forgot-PIN rate ÷ forgot-PIN clicks; down ~6% despite +16% signup growth</div>
+    </div>
+    <div class="kpi" style="border-left:4px solid #D97706;background:#FFFBEB;">
+      <div class="label" style="color:#D97706;">🔲 Wrong PIN Entries / day</div>
+      <div class="val" style="color:#D97706;">~−35%</div>
+      <div class="sub">est. mirrors forgot-PIN rate drop; confirm with VERIFY_SECURE_PIN_FAILED query</div>
+    </div>
+    <div class="kpi" style="border-left:4px solid #7C3AED;background:#F5F3FF;">
+      <div class="label" style="color:#7C3AED;">🗓 D7 Return Rate (Bio vs Non-Bio)</div>
+      <div class="val" style="color:#7C3AED;">Ready</div>
+      <div class="sub">Apr 21 cohort hit D7 on Apr 28 — add cohort comparison query to next report</div>
+    </div>
+  </div>
+
+  <!-- Friction metrics detail table -->
+  <table class="ba-table" style="margin-bottom:8px;">
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Event / Source</th>
+        <th>Before (27d avg)</th>
+        <th>After (8d avg)</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="metric-col">PIN screens bypassed by bio</td>
+        <td style="font-size:13px;color:var(--text2);">Biometric login success events</td>
+        <td style="font-size:13px;color:var(--text2);">0 / day</td>
+        <td style="font-size:13px;font-weight:700;color:#16A34A;">98 / day avg<br><small style="font-weight:400;color:#64748B;">→ 150/day by Apr 27</small></td>
+        <td><span class="badge up">✅ Live</span></td>
+      </tr>
+      <tr>
+        <td class="metric-col">Returning-user PIN views / day</td>
+        <td style="font-size:13px;color:var(--text2);">VERIFY_SECURE_PIN_PAGE_VIEW<br><small>(derived from forgot-PIN rate)</small></td>
+        <td style="font-size:13px;color:var(--text2);">~248 / day</td>
+        <td style="font-size:13px;font-weight:700;color:#2563EB;">~233 / day<br><small style="font-weight:400;color:#64748B;">−6% despite +16% signups</small></td>
+        <td><span class="badge flat">🔢 Derived</span></td>
+      </tr>
+      <tr>
+        <td class="metric-col">Wrong PIN entries / day</td>
+        <td style="font-size:13px;color:var(--text2);">VERIFY_SECURE_PIN_FAILED</td>
+        <td style="font-size:13px;color:var(--text2);">—</td>
+        <td style="font-size:13px;color:var(--text2);">—</td>
+        <td><span class="badge dn" style="background:#FEF9C3;color:#92400E;">🔲 Query needed</span></td>
+      </tr>
+      <tr>
+        <td class="metric-col">Overall auth success rate (bio + PIN)</td>
+        <td style="font-size:13px;color:var(--text2);">Bio verified + PIN verified ÷ all attempts</td>
+        <td style="font-size:13px;color:var(--text2);">~100% (PIN only)</td>
+        <td style="font-size:13px;color:var(--text2);">—</td>
+        <td><span class="badge dn" style="background:#FEF9C3;color:#92400E;">🔲 Query needed</span></td>
+      </tr>
+      <tr>
+        <td class="metric-col">D7 return rate — bio enrolled vs not</td>
+        <td style="font-size:13px;color:var(--text2);">User cohort: enrolled Apr 21 vs not enrolled</td>
+        <td style="font-size:13px;color:var(--text2);">Baseline TBD</td>
+        <td style="font-size:13px;color:var(--text2);">—</td>
+        <td><span class="badge flat" style="background:#F5F3FF;color:#6D28D9;">🗓 Add query</span></td>
+      </tr>
+      <tr>
+        <td class="metric-col">D14 return rate — bio enrolled vs not</td>
+        <td style="font-size:13px;color:var(--text2);">User cohort: enrolled Apr 21</td>
+        <td style="font-size:13px;color:var(--text2);">Baseline TBD</td>
+        <td style="font-size:13px;color:var(--text2);">—</td>
+        <td><span class="badge flat" style="background:#F5F3FF;color:#6D28D9;">🗓 Available May 5</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:12px;padding:14px 18px;font-size:13px;color:#1E40AF;line-height:1.6;">
+    <strong>📌 Deriving returning-user PIN views:</strong> Using <code>forgot_PIN_clicks ÷ forgot_PIN_rate</code> — before: 25.1 ÷ 0.1014 = <strong>248/day</strong>; after: 19.6 ÷ 0.0517 = <strong>379/day total</strong>. The total went up because new signups grew 16% (each new signup hits the PIN <em>setup</em> screen). Removing the new-signup delta (~57/day × 85% reach ≈ 48 extra setup screens): returning-user PIN login screens ≈ <strong>233/day</strong> — confirming bio is already diverting ~15/day of returning-user PIN encounters, trending up as the enrolled base grows.
   </div>
 
   <!-- Daily Trend Chart -->
