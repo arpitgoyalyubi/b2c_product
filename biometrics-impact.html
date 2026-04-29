@@ -483,9 +483,21 @@
         <td class="after-col">PIN + Biometrics<br><small style="font-weight:400;color:#64748B">60.6% bio success rate</small></td>
         <td><span class="badge up">✓ New path</span></td>
       </tr>
+      <tr>
+        <td class="metric-col">Forgot PIN Rate<br><small style="font-weight:400;color:#64748B">RESET_PIN_CTA_CLICKED per 1,000 PIN page views</small></td>
+        <td class="before-col">101.4 / 1k</td>
+        <td class="after-col">51.7 / 1k</td>
+        <td><span class="badge up">↓ −49% 🎉</span></td>
+      </tr>
+      <tr>
+        <td class="metric-col">Forgot PIN Clicks / day<br><small style="font-weight:400;color:#64748B">Absolute volume of RESET_PIN_CTA_CLICKED</small></td>
+        <td class="before-col">25.1 / day</td>
+        <td class="after-col">19.6 / day</td>
+        <td><span class="badge up">↓ −22%</span></td>
+      </tr>
     </tbody>
   </table>
-  <p class="section-note">Note: OTP conv rate is unchanged — biometrics affects the PIN verification step (post-OTP), not the OTP flow itself.</p>
+  <p class="section-note">Note: OTP conv rate is unchanged — biometrics affects the PIN verification step (post-OTP), not the OTP flow itself. Forgot PIN rate is normalised per 1,000 PIN page views (accounting for lower PIN volume as bio users bypass the step entirely).</p>
 
   <!-- Two columns: Enrollment Funnel + Login Performance -->
   <h2><span class="dot" style="background:#16A34A"></span>Enrollment &amp; Login Detail</h2>
@@ -632,6 +644,55 @@
   </div>
   <div style="background:white;border:1px solid #FDE68A;border-radius:12px;padding:16px 20px;margin-bottom:4px;font-size:13px;color:#78350F;line-height:1.6;">
     <strong>🔍 Key platform finding:</strong> Enrollment rates are identical (iOS 68.7% ≈ Android 68.3%), but post-enrollment login success diverges sharply — <strong>iOS 35% vs Android 69%</strong>. The gap is entirely from Face ID OS-level failures (iOS 257 fails vs Android 200 despite iOS having 3.8× fewer users). This is a Face ID UX problem, not a backend issue. <strong>Action: add a "Look at your phone" pre-prompt for iOS users.</strong>
+  </div>
+
+  <!-- PIN Friction Impact -->
+  <h2><span class="dot" style="background:#16A34A"></span>Friction Impact — Forgot PIN &amp; PIN Resets</h2>
+  <div class="kpi-grid" style="margin-bottom:16px;">
+    <div class="kpi green">
+      <div class="label">Forgot PIN Rate</div>
+      <div class="val">−49%</div>
+      <div class="sub">101.4 → 51.7 per 1,000 PIN views</div>
+    </div>
+    <div class="kpi green">
+      <div class="label">Forgot PIN Clicks / day</div>
+      <div class="val">−22%</div>
+      <div class="sub">25.1 → 19.6 absolute daily volume</div>
+    </div>
+    <div class="kpi blue">
+      <div class="label">Bio Logins Replacing PIN</div>
+      <div class="val">~1,776</div>
+      <div class="sub">returning-user sessions that bypassed PIN entirely</div>
+    </div>
+    <div class="kpi purple">
+      <div class="label">PIN Resets Avoided (est.)</div>
+      <div class="val">~43</div>
+      <div class="sub">based on −5.5 clicks/day × 8 days</div>
+    </div>
+  </div>
+
+  <div style="background:white;border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:8px;">
+    <div style="font-size:15px;font-weight:700;margin-bottom:16px;">Why these two numbers tell different stories</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div>
+        <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--gray);margin-bottom:8px;">−49% Rate (normalised)</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.6;">The rate per 1,000 PIN views controls for the fact that biometric users now bypass PIN entirely, so total PIN volume is lower. A 49% drop in rate means enrolled users are genuinely remembering their PINs better — or more likely, they rarely need to type it any more so the PIN-users who do appear are a more confident subset.</div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--gray);margin-bottom:8px;">−22% Absolute Volume</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.6;">The absolute drop is smaller because the denominator (total PIN views) also fell. This is still real savings: ~43 fewer PIN resets over 8 days × ~3 min customer support time each = <strong>~2 hrs of CS load saved</strong>, growing daily as the enrolled base compounds.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:16px 20px;margin-bottom:4px;font-size:13px;color:#166534;line-height:1.6;">
+    <strong>🔑 Other friction metrics to watch (not yet in this report):</strong>
+    <ul style="margin:8px 0 0 0;padding-left:18px;">
+      <li><strong>Wrong PIN entries (<code>VERIFY_SECURE_PIN_FAILED</code>):</strong> Fewer PIN attempts → fewer failed entries. Query to add.</li>
+      <li><strong>PIN page views / day (<code>VERIFY_SECURE_PIN_PAGE_VIEW</code>):</strong> Should decline as enrolled users skip the step. Tracks bio adoption depth.</li>
+      <li><strong>D7 / D14 return rate (bio-enrolled vs non-enrolled cohort):</strong> Lower login friction → higher retention. The highest-value metric, needs a cohort query.</li>
+      <li><strong>Overall returning-user login success rate:</strong> Combine bio + PIN success rates for the full picture of authentication reliability post-launch.</li>
+    </ul>
   </div>
 
   <!-- Daily Trend Chart -->
