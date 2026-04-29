@@ -240,7 +240,7 @@
 <!-- Page Switcher -->
 <div class="switcher">
   <button class="active" onclick="showPage('landing')">1. Directory Landing</button>
-  <button onclick="showPage('category')">2. Category Listing</button>
+  <button onclick="showPage('category')">2. Issuer Page (same as today)</button>
   <button onclick="showPage('not-listed')">3. ISIN — Not Listed</button>
   <button onclick="showPage('matured')">4. ISIN — Matured</button>
   <button onclick="showPage('live')">5. ISIN — Live on Aspero</button>
@@ -252,7 +252,11 @@
 ═══════════════════════════════════════════════════ -->
 <div id="landing" class="page active">
 
-  <!-- Nav -->
+  <!-- Nav — same as today annotation -->
+  <div style="background:#EFF6FF; border-bottom:1px solid #BFDBFE; padding:6px 24px; display:flex; align-items:center; gap:8px;">
+    <span style="font-size:11px; font-weight:700; color:#1D4ED8;">📐 Nav: Same as today's Aspero web nav — no changes.</span>
+    <span style="font-size:11px; color:#3B82F6;">All links, logo, and "Sign In" button are unchanged.</span>
+  </div>
   <div class="nav">
     <div class="nav-logo">aspero</div>
     <div class="nav-links">
@@ -372,7 +376,10 @@
       <a class="az-chip" href="#">V</a><a class="az-chip" href="#">W</a><a class="az-chip" href="#">X</a>
       <a class="az-chip" href="#">Y</a><a class="az-chip" href="#">Z</a>
     </div>
-    <div class="section-landing-title" style="font-size:14px; color:#697586; font-weight:500; margin-bottom:12px;">Top issuers</div>
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px; flex-wrap:wrap;">
+      <div class="section-landing-title" style="font-size:14px; color:#697586; font-weight:500; margin-bottom:0;">Top issuers</div>
+      <div style="font-size:11px; color:#15803D; background:#F0FDF4; border:1px solid #86EFAC; border-radius:6px; padding:4px 10px; white-space:nowrap;">📐 Dynamic — sorted by bond count from NSE/BSE inventory API · No hardcoding · Recomputed daily · Top 12</div>
+    </div>
     <div class="top-issuers">
       <a class="issuer-chip" href="#">Adani Enterprises</a>
       <a class="issuer-chip" href="#">NTPC Limited</a>
@@ -396,9 +403,19 @@
 
 
 <!-- ══════════════════════════════════════════════════
-     PAGE 2 — CATEGORY LISTING  /invest/bonds/corporate-bonds/
+     PAGE 2 — ISSUER PAGE  /invest/bonds/issuer/hdfc-bank/
+     (Same as today's issuer pages — no design changes)
 ═══════════════════════════════════════════════════ -->
 <div id="category" class="page">
+
+  <!-- Same as today annotation banner -->
+  <div style="background:#FFF7ED; border-bottom:3px solid #F59E0B; padding:10px 24px; display:flex; align-items:center; gap:10px;">
+    <span style="font-size:16px;">📐</span>
+    <div>
+      <span style="font-size:13px; font-weight:700; color:#92400E;">Design note: Same as today — no changes needed.</span>
+      <span style="font-size:13px; color:#92400E;"> Issuer pages already exist and rank on Aspero. The bond directory links to them; they link back to ISIN pages. URL: <code style="background:#FEF3C7; padding:1px 5px; border-radius:3px;">/invest/bonds/issuer/[slug]/</code></span>
+    </div>
+  </div>
 
   <div class="nav">
     <div class="nav-logo">aspero</div>
@@ -411,12 +428,12 @@
   </div>
 
   <div class="breadcrumb"><div class="breadcrumb-inner">
-    <a href="#">Home</a> › <a href="#">Bonds</a> › <span>Corporate Bonds</span>
+    <a href="#">Home</a> › <a href="#">Bonds</a> › <span>HDFC Bank</span>
   </div></div>
 
   <div class="container-wide">
-    <h1 style="font-size:22px; font-weight:800; color:#121926; margin-bottom:8px;">Corporate Bonds</h1>
-    <p class="category-description">Corporate bonds are debt instruments issued by private and public companies to raise capital. They offer fixed coupon payments and return of principal at maturity. Browse all corporate bonds listed on NSE/BSE.</p>
+    <h1 style="font-size:22px; font-weight:800; color:#121926; margin-bottom:8px;">HDFC Bank</h1>
+    <p class="category-description">Browse all bonds issued by HDFC Bank Limited listed on NSE/BSE. Filter by rating, maturity, and coupon rate. HDFC Bank bonds are rated AAA by CRISIL and ICRA.</p>
 
     <div class="listing-layout">
       <!-- Filter sidebar -->
@@ -1022,31 +1039,6 @@
               <div class="sbc-row"><span class="sbc-l">Coupon</span><span class="sbc-v">9.90%</span></div>
               <div class="sbc-row"><span class="sbc-l">Maturity</span><span class="sbc-v">Dec 2026</span></div>
               <div class="sbc-row"><span class="sbc-l">Rating</span><span class="sbc-v">AA</span></div>
-            </a>
-          </div>
-        </div>
-
-        <!-- Similar bonds -->
-        <div class="scroll-section">
-          <div class="section-title">Similar bonds</div>
-          <div class="scroll-row">
-            <a class="scroll-bond-card" href="#">
-              <div class="sbc-name">Arka Fincap Limited</div><div class="sbc-isin">INE03W107223</div>
-              <div class="sbc-row"><span class="sbc-l">Coupon</span><span class="sbc-v">8.80%</span></div>
-              <div class="sbc-row"><span class="sbc-l">Maturity</span><span class="sbc-v">Oct 2026</span></div>
-              <div class="sbc-row"><span class="sbc-l">Rating</span><span class="sbc-v">AA</span></div>
-            </a>
-            <a class="scroll-bond-card" href="#">
-              <div class="sbc-name">U GRO Capital</div><div class="sbc-isin">INE583D07620</div>
-              <div class="sbc-row"><span class="sbc-l">Coupon</span><span class="sbc-v">10.50%</span></div>
-              <div class="sbc-row"><span class="sbc-l">Maturity</span><span class="sbc-v">Aug 2026</span></div>
-              <div class="sbc-row"><span class="sbc-l">Rating</span><span class="sbc-v">A+</span></div>
-            </a>
-            <a class="scroll-bond-card" href="#">
-              <div class="sbc-name">IIFL Home Finance</div><div class="sbc-isin">INE477L07AN9</div>
-              <div class="sbc-row"><span class="sbc-l">Coupon</span><span class="sbc-v">9.60%</span></div>
-              <div class="sbc-row"><span class="sbc-l">Maturity</span><span class="sbc-v">Mar 2026</span></div>
-              <div class="sbc-row"><span class="sbc-l">Rating</span><span class="sbc-v">AA-</span></div>
             </a>
           </div>
         </div>
