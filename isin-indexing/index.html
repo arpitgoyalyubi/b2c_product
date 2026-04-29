@@ -258,7 +258,7 @@
 <!-- Page Switcher -->
 <div class="switcher">
   <button class="active" onclick="showPage('landing')">1. Directory Landing</button>
-  <button onclick="showPage('category')">2. Filtered Listing (Bond Type / Rating click)</button>
+  <button onclick="showPage('category')">2. Explore Page (filter pre-applied)</button>
   <button onclick="showPage('not-listed')">3. ISIN — Not Listed</button>
   <button onclick="showPage('matured')">4. ISIN — Matured</button>
   <button onclick="showPage('live')">5. ISIN — Live on Aspero</button>
@@ -314,53 +314,53 @@
   <!-- Categories -->
   <div class="section-landing"><div class="section-landing-inner">
     <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap;">
-      <div class="section-landing-title" style="margin-bottom:0;">Browse by Bond Type</div>
-      <div style="font-size:11px; color:#1D4ED8; background:#EFF6FF; border:1px solid #BFDBFE; border-radius:6px; padding:4px 10px; white-space:nowrap;">📐 Click → Filtered listing (Page 2)</div>
+      <div class="section-landing-title" style="margin-bottom:0;">Browse by Instrument Type</div>
+      <div style="font-size:11px; color:#1D4ED8; background:#EFF6FF; border:1px solid #BFDBFE; border-radius:6px; padding:4px 10px; white-space:nowrap;">📐 Click → Explore page with Instrument Type pre-selected</div>
     </div>
     <div class="category-grid">
-      <a class="category-tile" href="#" onclick="navigateTo('category',{label:'Corporate Bonds',key:'corporate-bonds',count:'9,240',url:'/invest/bonds/?type=corporate-bonds'}); return false;">
+      <a class="category-tile" href="#" onclick="navigateTo('category',{label:'Corporate Bonds',key:'corporate-bonds',count:'9,240',url:'/invest/bonds/?instrument_type=corporate-bonds'}); return false;">
         <div class="category-tile-icon">🏢</div>
         <div class="category-tile-name">Corporate Bonds</div>
         <div class="category-tile-count">9,240 bonds</div>
         <div class="category-tile-arrow">Explore →</div>
       </a>
-      <a class="category-tile" href="#" onclick="navigateTo('category',{label:'NCDs',key:'ncds',count:'4,180',url:'/invest/bonds/?type=ncd'}); return false;">
+      <a class="category-tile" href="#" onclick="navigateTo('category',{label:'NCDs',key:'ncds',count:'4,180',url:'/invest/bonds/?instrument_type=ncd'}); return false;">
         <div class="category-tile-icon">📋</div>
         <div class="category-tile-name">NCDs</div>
         <div class="category-tile-count">4,180 bonds</div>
         <div class="category-tile-arrow">Explore →</div>
       </a>
-      <a class="category-tile" href="#" onclick="navigateTo('category',{label:'Government Bonds',key:'government-bonds',count:'1,820',url:'/invest/bonds/?type=government-bonds'}); return false;">
+      <a class="category-tile" href="#" onclick="navigateTo('category',{label:'Government Bonds',key:'government-bonds',count:'1,820',url:'/invest/bonds/?instrument_type=government-bonds'}); return false;">
         <div class="category-tile-icon">🏛️</div>
         <div class="category-tile-name">Government Bonds</div>
         <div class="category-tile-count">1,820 bonds</div>
         <div class="category-tile-arrow">Explore →</div>
       </a>
-      <a class="category-tile" href="#" onclick="navigateTo('category',{label:'Tax-Free Bonds',key:'tax-free-bonds',count:'312',url:'/invest/bonds/?type=tax-free-bonds'}); return false;">
+      <a class="category-tile" href="#" onclick="navigateTo('category',{label:'Tax-Free Bonds',key:'tax-free-bonds',count:'312',url:'/invest/bonds/?instrument_type=tax-free-bonds'}); return false;">
         <div class="category-tile-icon">🌿</div>
         <div class="category-tile-name">Tax-Free Bonds</div>
         <div class="category-tile-count">312 bonds</div>
         <div class="category-tile-arrow">Explore →</div>
       </a>
-      <a class="category-tile" href="#" onclick="navigateTo('category',{label:'SGBs',key:'sgbs',count:'88',url:'/invest/bonds/?type=sgb'}); return false;">
+      <a class="category-tile" href="#" onclick="navigateTo('category',{label:'SGBs',key:'sgbs',count:'88',url:'/invest/bonds/?instrument_type=sgb'}); return false;">
         <div class="category-tile-icon">🥇</div>
         <div class="category-tile-name">SGBs</div>
         <div class="category-tile-count">88 series</div>
         <div class="category-tile-arrow">Explore →</div>
       </a>
-      <a class="category-tile" href="#" onclick="navigateTo('category',{label:'AT-1 Bonds',key:'at1-bonds',count:'220',url:'/invest/bonds/?type=at1-bonds'}); return false;">
+      <a class="category-tile" href="#" onclick="navigateTo('category',{label:'AT-1 Bonds',key:'at1-bonds',count:'220',url:'/invest/bonds/?instrument_type=at1-bonds'}); return false;">
         <div class="category-tile-icon">🏦</div>
         <div class="category-tile-name">AT-1 Bonds</div>
         <div class="category-tile-count">220 bonds</div>
         <div class="category-tile-arrow">Explore →</div>
       </a>
-      <a class="category-tile" href="#" onclick="navigateTo('category',{label:'Perpetual Bonds',key:'perpetual-bonds',count:'140',url:'/invest/bonds/?type=perpetual-bonds'}); return false;">
+      <a class="category-tile" href="#" onclick="navigateTo('category',{label:'Perpetual Bonds',key:'perpetual-bonds',count:'140',url:'/invest/bonds/?instrument_type=perpetual-bonds'}); return false;">
         <div class="category-tile-icon">♾️</div>
         <div class="category-tile-name">Perpetual Bonds</div>
         <div class="category-tile-count">140 bonds</div>
         <div class="category-tile-arrow">Explore →</div>
       </a>
-      <a class="category-tile" href="#" onclick="navigateTo('category',{label:'Zero Coupon Bonds',key:'zero-coupon',count:'95',url:'/invest/bonds/?type=zero-coupon'}); return false;">
+      <a class="category-tile" href="#" onclick="navigateTo('category',{label:'Zero Coupon Bonds',key:'zero-coupon',count:'95',url:'/invest/bonds/?instrument_type=zero-coupon'}); return false;">
         <div class="category-tile-icon">0️⃣</div>
         <div class="category-tile-name">Zero Coupon</div>
         <div class="category-tile-count">95 bonds</div>
@@ -373,7 +373,7 @@
   <div class="section-landing"><div class="section-landing-inner">
     <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap;">
       <div class="section-landing-title" style="margin-bottom:0;">Browse by Credit Rating</div>
-      <div style="font-size:11px; color:#1D4ED8; background:#EFF6FF; border:1px solid #BFDBFE; border-radius:6px; padding:4px 10px; white-space:nowrap;">📐 Click → Filtered listing (Page 2)</div>
+      <div style="font-size:11px; color:#1D4ED8; background:#EFF6FF; border:1px solid #BFDBFE; border-radius:6px; padding:4px 10px; white-space:nowrap;">📐 Click → Explore page with Credit Rating pre-selected</div>
     </div>
     <div class="rating-row">
       <a class="rating-chip aaa" href="#" onclick="navigateTo('category',{label:'AAA Rated Bonds',key:'AAA',isRating:true,count:'3,400',url:'/invest/bonds/?rating=AAA'}); return false;">AAA</a>
@@ -393,7 +393,7 @@
   <div class="section-landing"><div class="section-landing-inner">
     <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap;">
       <div class="section-landing-title" style="margin-bottom:0;">Top Issuers</div>
-      <div style="font-size:11px; color:#15803D; background:#F0FDF4; border:1px solid #86EFAC; border-radius:6px; padding:4px 10px; white-space:nowrap;">📐 Dynamic — sorted by bond count from NSE/BSE inventory API · No hardcoding · Recomputed daily · Top 12</div>
+      <div style="font-size:11px; color:#15803D; background:#F0FDF4; border:1px solid #86EFAC; border-radius:6px; padding:4px 10px; white-space:nowrap;">📐 Click → Explore page with Issuer pre-selected · Dynamic, sorted by bond count · Recomputed daily · Top 12</div>
     </div>
     <div class="top-issuers">
       <a class="issuer-chip" href="#" onclick="navigateTo('category',{label:'Adani Enterprises',key:'adani-enterprises',issuer:true,count:'42',url:'/invest/bonds/adani-enterprises-limited/'}); return false;">Adani Enterprises</a>
@@ -420,7 +420,7 @@
 <!-- ══════════════════════════════════════════════════
      PAGE 2 — FILTERED LISTING
      Shown when user clicks a Bond Type tile or Credit Rating chip
-     URL example: /invest/bonds/?type=corporate-bonds  OR  /invest/bonds/?rating=AAA
+     URL example: /invest/bonds/?instrument_type=corporate-bonds  OR  /invest/bonds/?rating=AAA
 ═══════════════════════════════════════════════════ -->
 <div id="category" class="page">
 
@@ -428,8 +428,8 @@
   <div style="background:#EFF6FF; border-bottom:3px solid #3B82F6; padding:10px 24px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
     <span style="font-size:16px;">📐</span>
     <div>
-      <span style="font-size:13px; font-weight:700; color:#1D4ED8;">User journey: </span>
-      <span style="font-size:13px; color:#1E40AF;">Clicking a Bond Type tile, Credit Rating chip, or Top Issuer chip on the directory landing lands here — same page with filter pre-applied. URL param like <code style="background:#DBEAFE; padding:1px 5px; border-radius:3px;">/invest/bonds/?type=corporate-bonds</code> or <code style="background:#DBEAFE; padding:1px 5px; border-radius:3px;">/invest/bonds/?rating=AAA</code>.</span>
+      <span style="font-size:13px; font-weight:700; color:#1D4ED8;">This IS the existing Explore page — </span>
+      <span style="font-size:13px; color:#1E40AF;">user arrives here from the Bond Directory with a filter pre-applied via URL param. Instrument Type: <code style="background:#DBEAFE; padding:1px 5px; border-radius:3px;">?instrument_type=corporate-bonds</code> · Rating: <code style="background:#DBEAFE; padding:1px 5px; border-radius:3px;">?rating=AAA</code> · Issuer: <code style="background:#DBEAFE; padding:1px 5px; border-radius:3px;">/invest/bonds/adani-enterprises-limited/</code>. Default sort = Coupon Rate ↓. List view.</span>
     </div>
   </div>
 
@@ -439,19 +439,23 @@
   <div class="nav">
     <div class="nav-logo">aspero</div>
     <div class="nav-links">
-      <a href="#">Home</a><a href="#">Explore</a>
-      <a href="#" class="active">Bond Collections</a>
+      <a href="#">Home</a>
+      <a href="#" class="active">Explore</a>
+      <a href="#">Bond Collections</a>
       <a href="#">Fixed Deposit</a><a href="#">My Portfolio</a>
     </div>
     <div class="nav-right"><button class="nav-btn">Sign In</button></div>
   </div>
 
   <div class="breadcrumb"><div class="breadcrumb-inner">
-    <a href="#" onclick="showPage('landing'); return false;">Home</a> › <a href="#" onclick="showPage('landing'); return false;">Bonds</a> › <span id="cat-breadcrumb-label">Corporate Bonds</span>
+    <a href="#" onclick="showPage('landing'); return false;">Home</a> › <a href="#" onclick="showPage('landing'); return false;">Explore</a> › <span id="cat-breadcrumb-label">Corporate Bonds</span>
   </div></div>
 
   <div class="container-wide">
-    <h1 id="cat-heading" style="font-size:22px; font-weight:800; color:#121926; margin-bottom:8px;">Corporate Bonds</h1>
+    <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:8px; flex-wrap:wrap;">
+      <h1 id="cat-heading" style="font-size:22px; font-weight:800; color:#121926; margin:0;">Corporate Bonds</h1>
+      <span id="cat-filter-type-label" style="font-size:12px; background:#F0FDF4; color:#15803D; border:1px solid #86EFAC; border-radius:20px; padding:3px 10px; font-weight:600; white-space:nowrap;">🏷️ Instrument Type</span>
+    </div>
     <p id="cat-description" class="category-description">Corporate bonds are debt instruments issued by private and public companies to raise capital. They offer fixed coupon payments and return of principal at maturity. Browse all corporate bonds listed on NSE/BSE.</p>
 
     <div class="listing-layout">
@@ -460,6 +464,16 @@
         <div class="filter-header">
           <div class="filter-header-title">Filter by</div>
           <button class="filter-reset">Reset all</button>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-group-title" id="sidebar-instrument-label">Instrument Type <span>›</span></div>
+          <div class="filter-options" id="sidebar-instrument-options">
+            <label class="filter-option"><input type="checkbox" checked id="sidebar-itype-selected" /> <span id="sidebar-itype-name">Corporate Bonds <span style="color:#9AA4B2;font-size:11px">(9,240)</span></span></label>
+            <label class="filter-option"><input type="checkbox" /> <span>NCDs <span style="color:#9AA4B2;font-size:11px">(4,180)</span></span></label>
+            <label class="filter-option"><input type="checkbox" /> <span>Government Bonds <span style="color:#9AA4B2;font-size:11px">(1,820)</span></span></label>
+            <label class="filter-option"><input type="checkbox" /> <span>Tax-Free Bonds <span style="color:#9AA4B2;font-size:11px">(312)</span></span></label>
+          </div>
         </div>
 
         <div class="filter-group">
@@ -526,7 +540,7 @@
         </div>
         <div class="listing-header">
           <div id="cat-count" class="listing-count">Showing <strong>4,218 bonds</strong> · 3 filters active</div>
-          <button class="sort-btn">Sort: Coupon Rate ↓</button>
+          <button class="sort-btn" style="border-color:#16B364; color:#15803D; font-weight:700;">⇩ Coupon Rate (default)</button>
         </div>
         <div style="font-size:11px; color:#9AA4B2; margin-bottom:8px;">💡 Click any bond row to view its full ISIN detail page (State 3, 4, or 5)</div>
 
@@ -813,11 +827,11 @@
         <div class="sidebar-card">
           <div class="sidebar-title">Popular Bond Categories</div>
           <div class="sidebar-category-list">
-            <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'Corporate Bonds',key:'corporate-bonds',count:'9,240',url:'/invest/bonds/?type=corporate-bonds'}); return false;">Corporate Bonds <span class="sidebar-cat-arrow">↗</span></a>
-            <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'Tax-Free Bonds',key:'tax-free-bonds',count:'312',url:'/invest/bonds/?type=tax-free-bonds'}); return false;">Tax-Free Bonds <span class="sidebar-cat-arrow">↗</span></a>
-            <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'Government Bonds',key:'government-bonds',count:'1,820',url:'/invest/bonds/?type=government-bonds'}); return false;">Government Bonds <span class="sidebar-cat-arrow">↗</span></a>
-            <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'AT-1 Bonds',key:'at1-bonds',count:'220',url:'/invest/bonds/?type=at1-bonds'}); return false;">AT-1 Bonds <span class="sidebar-cat-arrow">↗</span></a>
-            <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'SGBs',key:'sgbs',count:'88',url:'/invest/bonds/?type=sgb'}); return false;">SGBs <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'Corporate Bonds',key:'corporate-bonds',count:'9,240',url:'/invest/bonds/?instrument_type=corporate-bonds'}); return false;">Corporate Bonds <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'Tax-Free Bonds',key:'tax-free-bonds',count:'312',url:'/invest/bonds/?instrument_type=tax-free-bonds'}); return false;">Tax-Free Bonds <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'Government Bonds',key:'government-bonds',count:'1,820',url:'/invest/bonds/?instrument_type=government-bonds'}); return false;">Government Bonds <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'AT-1 Bonds',key:'at1-bonds',count:'220',url:'/invest/bonds/?instrument_type=at1-bonds'}); return false;">AT-1 Bonds <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'SGBs',key:'sgbs',count:'88',url:'/invest/bonds/?instrument_type=sgb'}); return false;">SGBs <span class="sidebar-cat-arrow">↗</span></a>
             <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'Senior Secured Bonds',key:'corporate-bonds',count:'6,100',url:'/invest/bonds/?seniority=senior-secured'}); return false;">Senior Secured Bonds <span class="sidebar-cat-arrow">↗</span></a>
             <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'AAA Rated Bonds',key:'AAA',isRating:true,count:'3,400',url:'/invest/bonds/?rating=AAA'}); return false;">AAA Rated Bonds <span class="sidebar-cat-arrow">↗</span></a>
           </div>
@@ -967,8 +981,8 @@
           <div class="sidebar-category-list">
             <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'AAA Rated Bonds',key:'AAA',isRating:true,count:'3,400',url:'/invest/bonds/?rating=AAA'}); return false;">AAA Rated Bonds <span class="sidebar-cat-arrow">↗</span></a>
             <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'PSU Bonds',key:'government-bonds',count:'480',url:'/invest/bonds/?issuer-type=psu'}); return false;">PSU Bonds <span class="sidebar-cat-arrow">↗</span></a>
-            <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'Tax-Free Bonds',key:'tax-free-bonds',count:'312',url:'/invest/bonds/?type=tax-free-bonds'}); return false;">Tax-Free Bonds <span class="sidebar-cat-arrow">↗</span></a>
-            <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'Government Bonds',key:'government-bonds',count:'1,820',url:'/invest/bonds/?type=government-bonds'}); return false;">Government Bonds <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'Tax-Free Bonds',key:'tax-free-bonds',count:'312',url:'/invest/bonds/?instrument_type=tax-free-bonds'}); return false;">Tax-Free Bonds <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'Government Bonds',key:'government-bonds',count:'1,820',url:'/invest/bonds/?instrument_type=government-bonds'}); return false;">Government Bonds <span class="sidebar-cat-arrow">↗</span></a>
             <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'Senior Secured Bonds',key:'corporate-bonds',count:'6,100',url:'/invest/bonds/?seniority=senior-secured'}); return false;">Senior Secured Bonds <span class="sidebar-cat-arrow">↗</span></a>
           </div>
         </div>
@@ -1091,7 +1105,7 @@
           <div class="sidebar-title">Popular Bond Categories</div>
           <div class="sidebar-category-list">
             <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'AA Rated Bonds',key:'AA',isRating:true,count:'2,800',url:'/invest/bonds/?rating=AA'}); return false;">AA Rated Bonds <span class="sidebar-cat-arrow">↗</span></a>
-            <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'Senior Secured NCDs',key:'ncds',count:'2,900',url:'/invest/bonds/?type=ncd&seniority=senior-secured'}); return false;">Senior Secured NCDs <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'Senior Secured NCDs',key:'ncds',count:'2,900',url:'/invest/bonds/?instrument_type=ncd&seniority=senior-secured'}); return false;">Senior Secured NCDs <span class="sidebar-cat-arrow">↗</span></a>
             <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'1–2 Year Bonds',key:'corporate-bonds',count:'3,100',url:'/invest/bonds/?maturity=1-2y'}); return false;">1–2 Year Bonds <span class="sidebar-cat-arrow">↗</span></a>
             <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'NBFC Bonds',key:'corporate-bonds',count:'2,400',url:'/invest/bonds/?issuer-type=nbfc'}); return false;">NBFC Bonds <span class="sidebar-cat-arrow">↗</span></a>
           </div>
@@ -1266,7 +1280,7 @@
     'BBB-':'BBB- bonds sit at the lowest investment-grade tier, just above sub-investment grade.',
   };
 
-  // ── Navigate to filtered listing (Page 2) and update its content ──
+  // ── Navigate to Explore page and update its content ──
   function navigateTo(pageId, filter) {
     if (pageId === 'category' && filter) {
       document.getElementById('cat-heading').textContent = filter.label;
@@ -1276,14 +1290,27 @@
           ? 'Showing all bonds from ' + filter.label + ' indexed on NSE/BSE. Click any bond to view full ISIN details, coupon schedule, and availability on Aspero.'
           : 'Bonds filtered by ' + filter.label + '.');
       document.getElementById('cat-description').textContent = desc;
-      const icon = filter.issuer ? '🏢' : filter.isRating ? '⭐' : '🏷️';
+      const icon   = filter.issuer ? '🏢' : filter.isRating ? '⭐' : '🏷️';
+      const ftype  = filter.issuer ? 'Issuer' : filter.isRating ? 'Credit Rating' : 'Instrument Type';
+      const ftypeColor = filter.issuer
+        ? 'background:#EFF6FF;color:#1D4ED8;border:1px solid #BFDBFE;'
+        : filter.isRating
+          ? 'background:#FEF9C3;color:#854D0E;border:1px solid #FDE68A;'
+          : 'background:#F0FDF4;color:#15803D;border:1px solid #86EFAC;';
+      document.getElementById('cat-filter-type-label').setAttribute('style',
+        'font-size:12px;border-radius:20px;padding:3px 10px;font-weight:600;white-space:nowrap;' + ftypeColor);
+      document.getElementById('cat-filter-type-label').textContent = icon + ' ' + ftype;
+      // Update sidebar pre-selection label
+      if (!filter.issuer && !filter.isRating) {
+        document.getElementById('sidebar-itype-name').innerHTML = filter.label + ' <span style="color:#9AA4B2;font-size:11px">(' + filter.count + ')</span>';
+      }
       document.getElementById('cat-count').innerHTML =
         'Showing <strong>' + filter.count + ' bonds</strong> &nbsp;·&nbsp; ' +
-        '<span style="background:#EFF6FF;color:#1D4ED8;border:1px solid #BFDBFE;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;">' +
-        icon + ' ' + filter.label + ' active</span>';
+        '<span style="' + ftypeColor + 'padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;">' +
+        icon + ' ' + filter.label + '</span>';
       document.getElementById('cat-filter-banner').innerHTML =
-        '<span style="font-size:11px;font-weight:700;color:#1D4ED8;">📐 Filter applied:</span>' +
-        '<span style="background:#EFF6FF;border:1px solid #BFDBFE;color:#1D4ED8;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:600;">' + icon + ' ' + filter.label + '</span>' +
+        '<span style="font-size:11px;font-weight:700;color:#059669;">📐 ' + ftype + ' filter from Bond Directory:</span>' +
+        '<span style="' + ftypeColor + 'padding:4px 14px;border-radius:20px;font-size:13px;font-weight:600;">' + icon + ' ' + filter.label + '</span>' +
         '<span style="font-size:11px;color:#697586;">URL: <code style="background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:11px;">' + (filter.url || '/invest/bonds/?filter=' + filter.key) + '</code></span>';
       document.getElementById('cat-filter-banner').style.display = 'flex';
     }
