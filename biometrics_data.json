@@ -1,0 +1,192 @@
+{
+  "generated_at": "2026-04-29T13:42:15Z",
+  "period": {
+    "after_start": "20260420",
+    "after_end": "20260428",
+    "after_days": 9,
+    "before_start": "20260324",
+    "before_end": "20260419",
+    "before_days": 27,
+    "bug_fix_date": "20260428"
+  },
+  "setup": {
+    "screen_views": 3340,
+    "enrolled": 2256,
+    "deferred": 963,
+    "failed": 442,
+    "enrollment_rate": 67.5
+  },
+  "login": {
+    "clicked": 3368,
+    "verified": 1776,
+    "os_failed": 1030,
+    "bk_failed": 38,
+    "fallback": 2,
+    "success_rate": 52.7
+  },
+  "platform": {
+    "iOS": {
+      "screen_views": 302,
+      "enrolled": 200,
+      "deferred": 66,
+      "enroll_failed": 16,
+      "enrollment_rate": 66.2,
+      "login_clicks": 1100,
+      "login_verified": 294,
+      "os_failed": 724,
+      "pin_fallback": 0,
+      "login_success_rate": 26.7,
+      "os_fail_rate": 65.8
+    },
+    "Android": {
+      "screen_views": 3038,
+      "enrolled": 2056,
+      "deferred": 897,
+      "enroll_failed": 426,
+      "enrollment_rate": 67.7,
+      "login_clicks": 2268,
+      "login_verified": 1482,
+      "os_failed": 306,
+      "pin_fallback": 2,
+      "login_success_rate": 65.3,
+      "os_fail_rate": 13.5
+    }
+  },
+  "before_after": {
+    "signin_before": 37959,
+    "signin_after": 12678,
+    "otp_before": 20975,
+    "otp_after": 7002,
+    "signup_before": 9504,
+    "signup_after": 3642,
+    "otp_cr_before": 55.3,
+    "otp_cr_after": 55.2,
+    "signin_per_day_before": 1406,
+    "signin_per_day_after": 1409,
+    "signup_per_day_before": 352,
+    "signup_per_day_after": 405
+  },
+  "daily": {
+    "dates": [
+      "2026-04-20",
+      "2026-04-21",
+      "2026-04-22",
+      "2026-04-23",
+      "2026-04-24",
+      "2026-04-25",
+      "2026-04-26",
+      "2026-04-27",
+      "2026-04-28"
+    ],
+    "enrolled": [
+      1,
+      194,
+      292,
+      310,
+      314,
+      320,
+      291,
+      273,
+      261
+    ],
+    "logins": [
+      9,
+      80,
+      187,
+      267,
+      236,
+      225,
+      167,
+      311,
+      294
+    ],
+    "otp": [
+      651,
+      920,
+      780,
+      748,
+      771,
+      821,
+      794,
+      760,
+      757
+    ],
+    "signups": [
+      316,
+      473,
+      401,
+      419,
+      392,
+      442,
+      458,
+      378,
+      363
+    ],
+    "ios_fail_rate": [
+      null,
+      42.9,
+      42.0,
+      51.3,
+      68.2,
+      66.5,
+      72.0,
+      64.9,
+      75.9
+    ],
+    "android_fail_rate": [
+      25.0,
+      9.3,
+      14.1,
+      11.7,
+      12.5,
+      15.7,
+      14.6,
+      14.6,
+      12.1
+    ],
+    "ios_os_failed": [
+      0,
+      3,
+      29,
+      60,
+      101,
+      117,
+      113,
+      131,
+      170
+    ],
+    "android_os_failed": [
+      3,
+      8,
+      26,
+      32,
+      33,
+      47,
+      41,
+      66,
+      50
+    ],
+    "ios_login_clicks": [
+      0,
+      7,
+      69,
+      117,
+      148,
+      176,
+      157,
+      202,
+      224
+    ],
+    "android_login_clicks": [
+      12,
+      86,
+      184,
+      273,
+      265,
+      300,
+      281,
+      453,
+      414
+    ]
+  }
+}

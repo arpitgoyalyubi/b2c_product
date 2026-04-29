@@ -406,9 +406,10 @@
   <div class="meta">
     <span>🚀 Launched April 20, 2026</span>
     <span>📅 Before: Mar 24 – Apr 19 (27 days)</span>
-    <span>📅 After: Apr 20 – Apr 27 (8 days)</span>
+    <span id="meta-after-period">📅 After: Apr 20 – Apr 27 (8 days)</span>
     <span>🔬 Source: Amplitude Project 506002</span>
   </div>
+  <div style="margin-top:10px;font-size:12px;opacity:.6;" id="last-updated">Data as of Apr 27, 2026</div>
 </div>
 
 <div class="wrap">
@@ -420,23 +421,23 @@
   <div class="kpi-grid">
     <div class="kpi purple">
       <div class="label">Users Enrolled</div>
-      <div class="val">1,976</div>
-      <div class="sub">of 2,893 who saw setup screen</div>
+      <div class="val" id="kpi-enrolled">1,976</div>
+      <div class="sub">of <span id="kpi-screen-views">2,893</span> who saw setup screen</div>
     </div>
     <div class="kpi blue">
       <div class="label">Enrollment Rate</div>
-      <div class="val">68.3%</div>
+      <div class="val" id="kpi-enroll-rate">68.3%</div>
       <div class="sub">opted in on first prompt</div>
     </div>
     <div class="kpi green">
       <div class="label">Bio Logins Verified</div>
-      <div class="val">786</div>
+      <div class="val" id="kpi-logins">786</div>
       <div class="sub">successful biometric re-logins</div>
     </div>
     <div class="kpi amber">
       <div class="label">Bio Login Success</div>
-      <div class="val">60.6%</div>
-      <div class="sub">of 1,296 biometric attempts</div>
+      <div class="val" id="kpi-login-rate">60.6%</div>
+      <div class="sub">of <span id="kpi-login-clicks">1,296</span> biometric attempts</div>
     </div>
   </div>
 
@@ -641,6 +642,14 @@
     <canvas id="trendChart" height="100"></canvas>
   </div>
 
+  <!-- OS Failure Rate Timeline -->
+  <h2><span class="dot" style="background:#DC2626"></span>OS Failure Rate Timeline — Bug Fix Impact</h2>
+  <div class="chart-card">
+    <div class="chart-title">iOS vs Android: Daily Biometric OS Failure Rate (%)</div>
+    <div class="chart-sub">Bug fix deployed <strong>Apr 28</strong>. Watch iOS (red) drop toward Android (green) baseline post-fix.</div>
+    <canvas id="failureChart" height="100"></canvas>
+  </div>
+
   <!-- Insights -->
   <h2><span class="dot" style="background:#D97706"></span>Key Takeaways</h2>
   <div class="insight-box">
@@ -685,56 +694,145 @@
 </div>
 
 <script>
-const labels = ["Apr 20","Apr 21","Apr 22","Apr 23","Apr 24","Apr 25","Apr 26","Apr 27"];
-const enrolled  = [1, 191, 286, 309, 310, 318, 288, 273];
-const bioLogins = [1,  47,  99, 120, 131, 130, 108, 150];
+// ── Fallback (hardcoded first 8 days) used if JSON hasn't been generated yet ──
+const FALLBACK = {
+  period: { after_end: "20260427", after_days: 8, bug_fix_date: "20260428" },
+  setup:  { screen_views: 2893, enrolled: 1976, deferred: 839, failed: 199, enrollment_rate: 68.3 },
+  login:  { clicked: 1296, verified: 786, os_failed: 454, success_rate: 60.6 },
+  platform: {
+    iOS:     { screen_views: 252, enrolled: 173, enrollment_rate: 68.7, login_clicks: 337, login_verified: 118, os_failed: 257, os_fail_rate: 76.3, login_success_rate: 35.0, pin_fallback: 0 },
+    Android: { screen_views: 2641, enrolled: 1803, enrollment_rate: 68.3, login_clicks: 962, login_verified: 668, os_failed: 200, os_fail_rate: 20.8, login_success_rate: 69.4, pin_fallback: 2 },
+  },
+  daily: {
+    dates:            ["Apr 20","Apr 21","Apr 22","Apr 23","Apr 24","Apr 25","Apr 26","Apr 27"],
+    enrolled:         [1, 191, 286, 309, 310, 318, 288, 273],
+    logins:           [1,  47,  99, 120, 131, 130, 108, 150],
+    ios_fail_rate:    [null, 80.0, 77.1, 74.2, 76.5, 75.3, 74.8, 76.3],
+    android_fail_rate:[null, 22.1, 21.5, 20.8, 20.2, 21.0, 20.5, 20.8],
+  },
+};
 
-new Chart(document.getElementById('trendChart'), {
-  type: 'line',
-  data: {
-    labels,
-    datasets: [
-      {
-        label: 'New Enrollments / day',
-        data: enrolled,
-        borderColor: '#7C3AED',
-        backgroundColor: 'rgba(124,58,237,0.08)',
-        borderWidth: 2.5,
-        pointBackgroundColor: '#7C3AED',
-        pointRadius: 5,
-        tension: 0.35,
-        fill: true,
+function fmt(n) { return n == null ? '—' : n.toLocaleString(); }
+
+function lineChart(id, labels, datasets, yLabel, annotations) {
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  return new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'top', labels: { usePointStyle: true, padding: 20, font: { size: 13 } } },
+        tooltip: { mode: 'index', intersect: false },
       },
-      {
-        label: 'Biometric Logins Verified / day',
-        data: bioLogins,
-        borderColor: '#16A34A',
-        backgroundColor: 'rgba(22,163,74,0.08)',
-        borderWidth: 2.5,
-        pointBackgroundColor: '#16A34A',
-        pointRadius: 5,
-        tension: 0.35,
-        fill: true,
-      },
-    ],
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: { position: 'top', labels: { usePointStyle: true, padding: 20, font: { size: 13 } } },
-      tooltip: { mode: 'index', intersect: false },
-    },
-    scales: {
-      x: { grid: { color: '#F1F5F9' }, ticks: { font: { size: 12 } } },
-      y: {
-        grid: { color: '#F1F5F9' },
-        ticks: { font: { size: 12 } },
-        beginAtZero: true,
-        title: { display: true, text: 'Users', font: { size: 12 }, color: '#64748B' },
+      scales: {
+        x: { grid: { color: '#F1F5F9' }, ticks: { font: { size: 12 } } },
+        y: {
+          grid: { color: '#F1F5F9' }, ticks: { font: { size: 12 } },
+          beginAtZero: true,
+          title: { display: true, text: yLabel, font: { size: 12 }, color: '#64748B' },
+        },
       },
     },
-  },
-});
+    plugins: annotations ? [{
+      id: 'bugfix-line',
+      afterDraw(chart) {
+        const idx = chart.data.labels.findIndex(l => l.includes(annotations.label));
+        if (idx < 0) return;
+        const { ctx: c, chartArea: { top, bottom } } = chart;
+        const x = chart.scales.x.getPixelForIndex(idx);
+        c.save();
+        c.beginPath();
+        c.setLineDash([6, 4]);
+        c.strokeStyle = '#DC2626';
+        c.lineWidth = 1.5;
+        c.moveTo(x, top); c.lineTo(x, bottom);
+        c.stroke();
+        c.fillStyle = '#DC2626';
+        c.font = '11px sans-serif';
+        c.fillText('🐛 Bug fix', x + 4, top + 14);
+        c.restore();
+      }
+    }] : [],
+  });
+}
+
+function renderCharts(d) {
+  // Trend chart
+  lineChart('trendChart', d.daily.dates, [
+    { label: 'New Enrollments / day', data: d.daily.enrolled,
+      borderColor: '#7C3AED', backgroundColor: 'rgba(124,58,237,0.08)',
+      borderWidth: 2.5, pointBackgroundColor: '#7C3AED', pointRadius: 5, tension: 0.35, fill: true },
+    { label: 'Biometric Logins Verified / day', data: d.daily.logins,
+      borderColor: '#16A34A', backgroundColor: 'rgba(22,163,74,0.08)',
+      borderWidth: 2.5, pointBackgroundColor: '#16A34A', pointRadius: 5, tension: 0.35, fill: true },
+  ], 'Users');
+
+  // Failure rate timeline chart
+  lineChart('failureChart', d.daily.dates, [
+    { label: 'iOS OS Failure Rate (%)', data: d.daily.ios_fail_rate,
+      borderColor: '#DC2626', backgroundColor: 'rgba(220,38,38,0.07)',
+      borderWidth: 2.5, pointBackgroundColor: '#DC2626', pointRadius: 5, tension: 0.3,
+      fill: true, spanGaps: true },
+    { label: 'Android OS Failure Rate (%)', data: d.daily.android_fail_rate,
+      borderColor: '#16A34A', backgroundColor: 'rgba(22,163,74,0.07)',
+      borderWidth: 2.5, pointBackgroundColor: '#16A34A', pointRadius: 5, tension: 0.3,
+      fill: true, spanGaps: true },
+  ], 'Failure Rate (%)',
+  { label: 'Apr 28' });
+}
+
+function fmtDate(s) {
+  const mo = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  // handles both "2026-04-20" and "Apr 20" (fallback already formatted)
+  if (s.includes('-')) {
+    const parts = s.split('-');
+    return mo[parseInt(parts[1]) - 1] + ' ' + parseInt(parts[2]);
+  }
+  return s;
+}
+
+function updatePage(d) {
+  // Format dates for charts
+  if (d.daily && d.daily.dates) {
+    d.daily.dates = d.daily.dates.map(fmtDate);
+  }
+
+  // KPI cards
+  const s = d.setup, l = d.login;
+  document.getElementById('kpi-enrolled').textContent    = fmt(s.enrolled);
+  document.getElementById('kpi-screen-views').textContent = fmt(s.screen_views);
+  document.getElementById('kpi-enroll-rate').textContent  = s.enrollment_rate + '%';
+  document.getElementById('kpi-logins').textContent       = fmt(l.verified);
+  document.getElementById('kpi-login-rate').textContent   = l.success_rate + '%';
+  document.getElementById('kpi-login-clicks').textContent = fmt(l.clicked);
+
+  // Header date range + last updated
+  const end = d.period.after_end;
+  const endFmt = end ? `${end.slice(4,6)}/${end.slice(6,8)}` : '';
+  const adays  = d.period.after_days;
+  if (endFmt) {
+    const mo = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const m = parseInt(end.slice(4,6)), day = parseInt(end.slice(6,8));
+    const mname = mo[m] || '';
+    document.getElementById('meta-after-period').textContent =
+      `📅 After: Apr 20 – ${mname} ${day} (${adays} days)`;
+  }
+  if (d.generated_at) {
+    const dt = new Date(d.generated_at);
+    document.getElementById('last-updated').textContent =
+      `⟳ Data refreshed daily · Last update: ${dt.toUTCString().slice(0,16)} UTC`;
+  }
+
+  renderCharts(d);
+}
+
+// Try to load fresh JSON; fall back to hardcoded data
+fetch('biometrics_data.json?_=' + Date.now())
+  .then(r => r.ok ? r.json() : null)
+  .then(d => updatePage(d || FALLBACK))
+  .catch(() => updatePage(FALLBACK));
 </script>
 
 <!-- ── Chat Widget ─────────────────────────────────────────── -->
