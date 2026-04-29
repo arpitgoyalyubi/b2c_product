@@ -956,9 +956,14 @@ function toggleChat() {
 }
 document.getElementById('chat-btn').addEventListener('click', toggleChat);
 
-// ── LLM Council config ────────────────────────────────────────────────────────
-const LLM_BASE = 'https://llmproxy.go-yubi.in/chat/completions';
-const LLM_KEY  = 'sk-5wJPukqGUr_yz7c2JORgtA';
+// ── Worker config — update WORKER_URL after deploying chat-worker/ ────────────
+// Deploy:  cd chat-worker && wrangler deploy
+// Then:    copy the workers.dev URL here
+const WORKER_URL = null; // e.g. 'https://biometrics-chat.YOUR-SUBDOMAIN.workers.dev'
+
+// Fallback: direct LLM Council (no tool use, pre-computed answers only)
+const LLM_BASE  = 'https://llmproxy.go-yubi.in/chat/completions';
+const LLM_KEY   = 'sk-5wJPukqGUr_yz7c2JORgtA';
 const LLM_MODEL = 'bedrock-claude-sonnet-4.6-(US)';
 
 // ── Send ─────────────────────────────────────────────────────────────────────
@@ -974,34 +979,48 @@ async function sendMessage(text) {
   appendMsg('user', userText);
   chatHistory.push({ role: 'user', content: userText });
 
-  const thinkingEl = appendMsg('thinking', '…');
+  // Show contextual thinking label
+  const needsLiveData = /cohort|before.*after|compare|trend|daily|ios.*android|platform|forgot.*pin|reset.*pin|retention|return.*rate/i.test(userText);
+  const thinkingEl = appendMsg('thinking', WORKER_URL && needsLiveData ? '🔍 Querying Amplitude…' : '…');
   document.getElementById('chat-send').disabled = true;
   isTyping = true;
 
   try {
-    const resp = await fetch(LLM_BASE, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LLM_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: LLM_MODEL,
-        max_tokens: 600,
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          ...chatHistory,
-        ],
-      }),
-    });
+    let reply;
 
-    if (!resp.ok) {
-      const err = await resp.json().catch(() => ({}));
-      throw new Error(err.error?.message || `HTTP ${resp.status}`);
+    if (WORKER_URL) {
+      // ── Route through Worker (tool use + live Amplitude queries) ──
+      const resp = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: chatHistory }),
+      });
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        throw new Error(err.error || `HTTP ${resp.status}`);
+      }
+      const data = await resp.json();
+      reply = data.reply || '(empty response)';
+
+    } else {
+      // ── Fallback: direct LLM Council (no live data) ──
+      const resp = await fetch(LLM_BASE, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${LLM_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: LLM_MODEL,
+          max_tokens: 600,
+          messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...chatHistory],
+        }),
+      });
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const data = await resp.json();
+      reply = data.choices?.[0]?.message?.content || '(empty response)';
+      if (needsLiveData) {
+        reply += '\n\n_⚠️ Live Amplitude queries not available yet — deploy the chat-worker to enable them._';
+      }
     }
 
-    const data = await resp.json();
-    const reply = data.choices?.[0]?.message?.content || '(empty response)';
     thinkingEl.remove();
     appendMsg('assistant', formatReply(reply));
     chatHistory.push({ role: 'assistant', content: reply });

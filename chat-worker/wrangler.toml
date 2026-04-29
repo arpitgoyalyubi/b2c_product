@@ -1,0 +1,8 @@
+name       = "biometrics-chat"
+main       = "worker.js"
+compatibility_date = "2024-09-23"
+
+# Secrets — set these via CLI, never commit values:
+#   wrangler secret put AMPLITUDE_API_KEY
+#   wrangler secret put AMPLITUDE_SECRET_KEY
+#   wrangler secret put LLM_KEY
