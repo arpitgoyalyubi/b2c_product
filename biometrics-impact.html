@@ -783,6 +783,7 @@ function lineChart(id, labels, datasets, yLabel, annotations) {
     data: { labels, datasets },
     options: {
       responsive: true,
+      animation: false,
       plugins: {
         legend: { position: 'top', labels: { usePointStyle: true, padding: 20, font: { size: 13 } } },
         tooltip: { mode: 'index', intersect: false },
@@ -886,7 +887,21 @@ function updatePage(d) {
       `⟳ Data refreshed daily · Last update: ${dt.toUTCString().slice(0,16)} UTC`;
   }
 
-  renderCharts(d);
+  try {
+    renderCharts(d);
+  } catch (e) {
+    console.error('Chart render failed:', e);
+    ['trendChart','failureChart'].forEach(id => {
+      const c = document.getElementById(id);
+      if (c) {
+        c.style.display = 'none';
+        const msg = document.createElement('p');
+        msg.style = 'text-align:center;color:#DC2626;font-size:13px;padding:20px 0';
+        msg.textContent = 'Chart failed to load — try a hard refresh (Cmd+Shift+R).';
+        c.parentNode.insertBefore(msg, c.nextSibling);
+      }
+    });
+  }
 }
 
 // Try to load fresh JSON; fall back to hardcoded data
