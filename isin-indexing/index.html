@@ -240,7 +240,7 @@
 <!-- Page Switcher -->
 <div class="switcher">
   <button class="active" onclick="showPage('landing')">1. Directory Landing</button>
-  <button onclick="showPage('category')">2. Issuer Page (same as today)</button>
+  <button onclick="showPage('category')">2. Filtered Listing (Bond Type / Rating click)</button>
   <button onclick="showPage('not-listed')">3. ISIN — Not Listed</button>
   <button onclick="showPage('matured')">4. ISIN — Matured</button>
   <button onclick="showPage('live')">5. ISIN — Live on Aspero</button>
@@ -280,6 +280,9 @@
       <button>Search</button>
     </div>
     <div class="search-hint">Try: INE423A07500 · Adani Enterprises · AAA Corporate Bonds</div>
+    <div style="margin-top:10px; font-size:11px; color:#64748B; background:rgba(0,0,0,0.2); border-radius:8px; padding:6px 14px; display:inline-block;">
+      📐 <strong style="color:#94A3B8;">Search journey:</strong>&nbsp; Autocomplete shows ISINs + issuers + bond names · Selecting an ISIN → ISIN detail page · Selecting an issuer → issuer page (today's page) · Hitting Enter → filtered listing (Page 2)
+    </div>
   </div>
 
   <!-- Stats strip -->
@@ -292,7 +295,10 @@
 
   <!-- Categories -->
   <div class="section-landing"><div class="section-landing-inner">
-    <div class="section-landing-title">Browse by Bond Type</div>
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap;">
+      <div class="section-landing-title" style="margin-bottom:0;">Browse by Bond Type</div>
+      <div style="font-size:11px; color:#1D4ED8; background:#EFF6FF; border:1px solid #BFDBFE; border-radius:6px; padding:4px 10px; white-space:nowrap;">📐 Click → Filtered listing (Page 2)</div>
+    </div>
     <div class="category-grid">
       <a class="category-tile" href="#">
         <div class="category-tile-icon">🏢</div>
@@ -347,7 +353,10 @@
 
   <!-- By Rating -->
   <div class="section-landing"><div class="section-landing-inner">
-    <div class="section-landing-title">Browse by Credit Rating</div>
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap;">
+      <div class="section-landing-title" style="margin-bottom:0;">Browse by Credit Rating</div>
+      <div style="font-size:11px; color:#1D4ED8; background:#EFF6FF; border:1px solid #BFDBFE; border-radius:6px; padding:4px 10px; white-space:nowrap;">📐 Click → Filtered listing (Page 2)</div>
+    </div>
     <div class="rating-row">
       <a class="rating-chip aaa" href="#">AAA</a>
       <a class="rating-chip aa" href="#">AA+</a>
@@ -362,22 +371,10 @@
     </div>
   </div></div>
 
-  <!-- Issuer A-Z -->
+  <!-- Top Issuers -->
   <div class="section-landing"><div class="section-landing-inner">
-    <div class="section-landing-title">Browse by Issuer</div>
-    <div class="issuer-az">
-      <a class="az-chip" href="#">A</a><a class="az-chip" href="#">B</a><a class="az-chip" href="#">C</a>
-      <a class="az-chip" href="#">D</a><a class="az-chip" href="#">E</a><a class="az-chip" href="#">F</a>
-      <a class="az-chip" href="#">G</a><a class="az-chip" href="#">H</a><a class="az-chip" href="#">I</a>
-      <a class="az-chip" href="#">J</a><a class="az-chip" href="#">K</a><a class="az-chip" href="#">L</a>
-      <a class="az-chip" href="#">M</a><a class="az-chip" href="#">N</a><a class="az-chip" href="#">O</a>
-      <a class="az-chip" href="#">P</a><a class="az-chip" href="#">Q</a><a class="az-chip" href="#">R</a>
-      <a class="az-chip" href="#">S</a><a class="az-chip" href="#">T</a><a class="az-chip" href="#">U</a>
-      <a class="az-chip" href="#">V</a><a class="az-chip" href="#">W</a><a class="az-chip" href="#">X</a>
-      <a class="az-chip" href="#">Y</a><a class="az-chip" href="#">Z</a>
-    </div>
-    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px; flex-wrap:wrap;">
-      <div class="section-landing-title" style="font-size:14px; color:#697586; font-weight:500; margin-bottom:0;">Top issuers</div>
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap;">
+      <div class="section-landing-title" style="margin-bottom:0;">Top Issuers</div>
       <div style="font-size:11px; color:#15803D; background:#F0FDF4; border:1px solid #86EFAC; border-radius:6px; padding:4px 10px; white-space:nowrap;">📐 Dynamic — sorted by bond count from NSE/BSE inventory API · No hardcoding · Recomputed daily · Top 12</div>
     </div>
     <div class="top-issuers">
@@ -403,17 +400,18 @@
 
 
 <!-- ══════════════════════════════════════════════════
-     PAGE 2 — ISSUER PAGE  /invest/bonds/issuer/hdfc-bank/
-     (Same as today's issuer pages — no design changes)
+     PAGE 2 — FILTERED LISTING
+     Shown when user clicks a Bond Type tile or Credit Rating chip
+     URL example: /invest/bonds/?type=corporate-bonds  OR  /invest/bonds/?rating=AAA
 ═══════════════════════════════════════════════════ -->
 <div id="category" class="page">
 
-  <!-- Same as today annotation banner -->
-  <div style="background:#FFF7ED; border-bottom:3px solid #F59E0B; padding:10px 24px; display:flex; align-items:center; gap:10px;">
+  <!-- Journey annotation banner -->
+  <div style="background:#EFF6FF; border-bottom:3px solid #3B82F6; padding:10px 24px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
     <span style="font-size:16px;">📐</span>
     <div>
-      <span style="font-size:13px; font-weight:700; color:#92400E;">Design note: Same as today — no changes needed.</span>
-      <span style="font-size:13px; color:#92400E;"> Issuer pages already exist and rank on Aspero. The bond directory links to them; they link back to ISIN pages. URL: <code style="background:#FEF3C7; padding:1px 5px; border-radius:3px;">/invest/bonds/issuer/[slug]/</code></span>
+      <span style="font-size:13px; font-weight:700; color:#1D4ED8;">User journey: </span>
+      <span style="font-size:13px; color:#1E40AF;">Clicking a Bond Type tile (e.g. "Corporate Bonds") or a Credit Rating chip (e.g. "AAA") on the directory landing lands here — the directory with that filter pre-applied. Not a separate static page; same page with URL param like <code style="background:#DBEAFE; padding:1px 5px; border-radius:3px;">/invest/bonds/?type=corporate-bonds</code> or <code style="background:#DBEAFE; padding:1px 5px; border-radius:3px;">/invest/bonds/?rating=AAA</code>.</span>
     </div>
   </div>
 
@@ -428,12 +426,12 @@
   </div>
 
   <div class="breadcrumb"><div class="breadcrumb-inner">
-    <a href="#">Home</a> › <a href="#">Bonds</a> › <span>HDFC Bank</span>
+    <a href="#">Home</a> › <a href="#">Bonds</a> › <span>Corporate Bonds</span>
   </div></div>
 
   <div class="container-wide">
-    <h1 style="font-size:22px; font-weight:800; color:#121926; margin-bottom:8px;">HDFC Bank</h1>
-    <p class="category-description">Browse all bonds issued by HDFC Bank Limited listed on NSE/BSE. Filter by rating, maturity, and coupon rate. HDFC Bank bonds are rated AAA by CRISIL and ICRA.</p>
+    <h1 style="font-size:22px; font-weight:800; color:#121926; margin-bottom:8px;">Corporate Bonds</h1>
+    <p class="category-description">Corporate bonds are debt instruments issued by private and public companies to raise capital. They offer fixed coupon payments and return of principal at maturity. Browse all corporate bonds listed on NSE/BSE.</p>
 
     <div class="listing-layout">
       <!-- Filter sidebar -->
