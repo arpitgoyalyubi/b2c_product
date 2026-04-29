@@ -801,10 +801,12 @@ function lineChart(id, labels, datasets, yLabel, annotations) {
     plugins: annotations ? [{
       id: 'bugfix-line',
       afterDraw(chart) {
+        if (!chart.chartArea) return;
         const idx = chart.data.labels.findIndex(l => l.includes(annotations.label));
         if (idx < 0) return;
-        const { ctx: c, chartArea: { top, bottom } } = chart;
-        const x = chart.scales.x.getPixelForIndex(idx);
+        const { top, bottom } = chart.chartArea;
+        const c = chart.ctx;
+        const x = chart.scales.x.getPixelForValue(chart.data.labels[idx]);
         c.save();
         c.beginPath();
         c.setLineDash([6, 4]);
@@ -821,19 +823,31 @@ function lineChart(id, labels, datasets, yLabel, annotations) {
   });
 }
 
+function safeChart(id, fn) {
+  try { fn(); } catch(e) {
+    console.error(id + ' failed:', e);
+    const c = document.getElementById(id);
+    if (c) {
+      c.style.display = 'none';
+      const msg = document.createElement('p');
+      msg.style = 'text-align:center;color:#DC2626;font-size:13px;padding:20px 0';
+      msg.textContent = 'Chart error: ' + (e.message || String(e));
+      c.parentNode.insertBefore(msg, c.nextSibling);
+    }
+  }
+}
+
 function renderCharts(d) {
-  // Trend chart
-  lineChart('trendChart', d.daily.dates, [
+  safeChart('trendChart', () => lineChart('trendChart', d.daily.dates, [
     { label: 'New Enrollments / day', data: d.daily.enrolled,
       borderColor: '#7C3AED', backgroundColor: 'rgba(124,58,237,0.08)',
       borderWidth: 2.5, pointBackgroundColor: '#7C3AED', pointRadius: 5, tension: 0.35, fill: true },
     { label: 'Biometric Logins Verified / day', data: d.daily.logins,
       borderColor: '#16A34A', backgroundColor: 'rgba(22,163,74,0.08)',
       borderWidth: 2.5, pointBackgroundColor: '#16A34A', pointRadius: 5, tension: 0.35, fill: true },
-  ], 'Users');
+  ], 'Users'));
 
-  // Failure rate timeline chart
-  lineChart('failureChart', d.daily.dates, [
+  safeChart('failureChart', () => lineChart('failureChart', d.daily.dates, [
     { label: 'iOS OS Failure Rate (%)', data: d.daily.ios_fail_rate,
       borderColor: '#DC2626', backgroundColor: 'rgba(220,38,38,0.07)',
       borderWidth: 2.5, pointBackgroundColor: '#DC2626', pointRadius: 5, tension: 0.3,
@@ -843,7 +857,7 @@ function renderCharts(d) {
       borderWidth: 2.5, pointBackgroundColor: '#16A34A', pointRadius: 5, tension: 0.3,
       fill: true, spanGaps: true },
   ], 'Failure Rate (%)',
-  { label: 'Apr 28' });
+  { label: 'Apr 28' }));
 }
 
 function fmtDate(s) {
@@ -888,21 +902,7 @@ function updatePage(d) {
       `⟳ Data refreshed daily · Last update: ${dt.toUTCString().slice(0,16)} UTC`;
   }
 
-  try {
-    renderCharts(d);
-  } catch (e) {
-    console.error('Chart render failed:', e);
-    ['trendChart','failureChart'].forEach(id => {
-      const c = document.getElementById(id);
-      if (c) {
-        c.style.display = 'none';
-        const msg = document.createElement('p');
-        msg.style = 'text-align:center;color:#DC2626;font-size:13px;padding:20px 0';
-        msg.textContent = 'Chart error: ' + (e && e.message ? e.message : String(e));
-        c.parentNode.insertBefore(msg, c.nextSibling);
-      }
-    });
-  }
+  renderCharts(d);
 }
 
 // Try to load fresh JSON; fall back to hardcoded data
