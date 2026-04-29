@@ -1064,22 +1064,29 @@ async function sendMessage(text) {
 
   try {
     let reply;
+    let workerFailed = false;
 
     if (WORKER_URL) {
       // ── Route through Worker (tool use + live Amplitude queries) ──
-      const resp = await fetch(WORKER_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: chatHistory }),
-      });
-      if (!resp.ok) {
-        const err = await resp.json().catch(() => ({}));
-        throw new Error(err.error || `HTTP ${resp.status}`);
+      try {
+        const resp = await fetch(WORKER_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: chatHistory }),
+        });
+        if (!resp.ok) {
+          const err = await resp.json().catch(() => ({}));
+          throw new Error(err.error || `HTTP ${resp.status}`);
+        }
+        const data = await resp.json();
+        reply = data.reply || '(empty response)';
+      } catch (workerErr) {
+        console.warn('Worker unavailable, falling back to direct LLM:', workerErr.message);
+        workerFailed = true;
       }
-      const data = await resp.json();
-      reply = data.reply || '(empty response)';
+    }
 
-    } else {
+    if (!reply) {
       // ── Fallback: direct LLM Council (no live data) ──
       const resp = await fetch(LLM_BASE, {
         method: 'POST',
@@ -1090,11 +1097,11 @@ async function sendMessage(text) {
           messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...chatHistory],
         }),
       });
-      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      if (!resp.ok) throw new Error(`LLM HTTP ${resp.status}`);
       const data = await resp.json();
       reply = data.choices?.[0]?.message?.content || '(empty response)';
-      if (needsLiveData) {
-        reply += '\n\n_⚠️ Live Amplitude queries not available yet — deploy the chat-worker to enable them._';
+      if (needsLiveData || workerFailed) {
+        reply += '\n\n_ℹ️ Answering from report data — live Amplitude queries unavailable._';
       }
     }
 
