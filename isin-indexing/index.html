@@ -71,7 +71,7 @@
     .hero-landing { background: linear-gradient(135deg, #0A1628 0%, #0F2645 100%); padding: 56px 32px; text-align: center; }
     .hero-landing h1 { font-size: 36px; font-weight: 800; color: #fff; margin-bottom: 8px; }
     .hero-landing p { font-size: 16px; color: #94A3B8; margin-bottom: 28px; }
-    .search-bar-landing { display: flex; max-width: 600px; margin: 0 auto 12px; border-radius: 12px; overflow: hidden; border: 2px solid #16B364; }
+    .search-bar-landing { display: flex; width: 100%; border-radius: 12px; overflow: hidden; border: 2px solid #16B364; }
     .search-bar-landing input { flex: 1; padding: 14px 18px; border: none; outline: none; font-size: 15px; color: #121926; }
     .search-bar-landing button { background: #16B364; color: #fff; border: none; padding: 14px 24px; font-size: 15px; font-weight: 700; cursor: pointer; }
     .search-hint { font-size: 12px; color: #64748B; text-align: center; }
@@ -233,6 +233,24 @@
 
     /* Page header section with description */
     .category-description { font-size: 14px; color: #697586; line-height: 1.6; margin-bottom: 20px; max-width: 680px; }
+
+    /* ── Search Autocomplete ── */
+    .search-wrapper { position: relative; max-width: 600px; margin: 0 auto 12px; }
+    .search-autocomplete { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: #fff; border-radius: 12px; border: 1px solid #E3E8EF; box-shadow: 0 12px 32px rgba(0,0,0,0.18); z-index: 200; overflow: hidden; display: none; }
+    .ac-group-label { font-size: 11px; font-weight: 700; color: #9AA4B2; text-transform: uppercase; letter-spacing: 0.06em; padding: 10px 16px 4px; }
+    .ac-item { padding: 10px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #F1F5F9; color: inherit; transition: background 0.1s; }
+    .ac-item:hover { background: #F9FAFB; }
+    .ac-item:last-of-type { border-bottom: none; }
+    .ac-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+    .ac-icon-issuer { background: #EFF6FF; }
+    .ac-icon-isin { background: #F0FDF4; }
+    .ac-main { font-size: 14px; font-weight: 600; color: #121926; }
+    .ac-sub { font-size: 12px; color: #697586; margin-top: 2px; }
+    .ac-match { color: #16B364; }
+    .ac-footer { padding: 11px 16px; font-size: 13px; color: #16B364; font-weight: 600; cursor: pointer; text-align: center; border-top: 1px solid #E3E8EF; background: #F9FAFB; }
+    .ac-footer:hover { background: #F0FDF4; }
+    .ac-empty { padding: 14px 16px; font-size: 13px; color: #9AA4B2; text-align: center; }
+    .ac-hint { padding: 10px 16px; font-size: 12px; color: #9AA4B2; text-align: center; }
   </style>
 </head>
 <body>
@@ -275,14 +293,14 @@
   <div class="hero-landing">
     <h1>Search from 17,000+ Bonds in India</h1>
     <p>Explore bonds across 14 categories from India's leading issuers. Filter by rating, tenure, and coupon.</p>
-    <div class="search-bar-landing">
-      <input type="text" placeholder="Search by ISIN, issuer name, or bond type…" />
-      <button>Search</button>
+    <div class="search-wrapper">
+      <div class="search-bar-landing">
+        <input id="search-input" type="text" placeholder="Search by ISIN, issuer name, or bond type…" oninput="handleSearchInput(this)" autocomplete="off" />
+        <button onclick="handleSearchSubmit()">Search</button>
+      </div>
+      <div id="search-dropdown" class="search-autocomplete"></div>
     </div>
-    <div class="search-hint">Try: INE423A07500 · Adani Enterprises · AAA Corporate Bonds</div>
-    <div style="margin-top:10px; font-size:11px; color:#64748B; background:rgba(0,0,0,0.2); border-radius:8px; padding:6px 14px; display:inline-block;">
-      📐 <strong style="color:#94A3B8;">Search journey:</strong>&nbsp; Autocomplete shows ISINs + issuers + bond names · Selecting an ISIN → ISIN detail page · Selecting an issuer → issuer page (today's page) · Hitting Enter → filtered listing (Page 2)
-    </div>
+    <div class="search-hint">Try: adani · INE4 · ntpc · hdfc · poon — type 3+ chars to search</div>
   </div>
 
   <!-- Stats strip -->
@@ -1082,9 +1100,142 @@
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.switcher button').forEach(b => b.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    event.target.classList.add('active');
+    // find button whose onclick references this id
+    document.querySelectorAll('.switcher button').forEach(b => {
+      if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + id + "'")) b.classList.add('active');
+    });
     window.scrollTo(0, 0);
   }
+
+  // ── Autocomplete data ──
+  const AC_DATA = [
+    { type:'issuer', name:'Adani Enterprises Limited',      bonds:42, page:'category' },
+    { type:'issuer', name:'NTPC Limited',                   bonds:38, page:'category' },
+    { type:'issuer', name:'HDFC Bank',                      bonds:96, page:'category' },
+    { type:'issuer', name:'Tata Capital Financial Services',bonds:61, page:'category' },
+    { type:'issuer', name:'Poonawalla Fincorp',             bonds:14, page:'category' },
+    { type:'issuer', name:'Power Finance Corporation',      bonds:54, page:'category' },
+    { type:'issuer', name:'REC Limited',                    bonds:49, page:'category' },
+    { type:'issuer', name:'Muthoot Finance',                bonds:28, page:'category' },
+    { type:'issuer', name:'Sammaan Capital Limited',        bonds:19, page:'category' },
+    { type:'issuer', name:'IIFL Finance Limited',           bonds:33, page:'category' },
+    { type:'isin', isin:'INE423A07500', issuer:'Adani Enterprises',  coupon:'8.50%', rating:'AA-',  status:'Not Listed', page:'not-listed' },
+    { type:'isin', isin:'INE423A07484', issuer:'Adani Enterprises',  coupon:'8.60%', rating:'AA-',  status:'Not Listed', page:'not-listed' },
+    { type:'isin', isin:'INE733E07CB1', issuer:'NTPC Limited',       coupon:'11.25%',rating:'AAA', status:'Matured',    page:'matured'    },
+    { type:'isin', isin:'INE733E07XY1', issuer:'NTPC Limited',       coupon:'9.67%', rating:'AAA', status:'Not Listed', page:'not-listed' },
+    { type:'isin', isin:'INE148I07GL3', issuer:'Sammaan Capital',    coupon:'9.80%', rating:'AA',  status:'Live',       page:'live'       },
+    { type:'isin', isin:'INE511C08AE1', issuer:'Poonawalla Fincorp', coupon:'10.40%',rating:'AAA', status:'Live',       page:'live'       },
+    { type:'isin', isin:'INE040A08365', issuer:'HDFC Bank',          coupon:'8.75%', rating:'AAA', status:'Not Listed', page:'not-listed' },
+    { type:'isin', isin:'INE101Q07BX1', issuer:'Muthoot Mcred',      coupon:'11.10%',rating:'BBB+',status:'Live',       page:'live'       },
+  ];
+
+  function highlight(text, q) {
+    const i = text.toLowerCase().indexOf(q.toLowerCase());
+    if (i === -1) return text;
+    return text.slice(0, i)
+      + '<span class="ac-match">' + text.slice(i, i + q.length) + '</span>'
+      + text.slice(i + q.length);
+  }
+
+  function handleSearchInput(input) {
+    const q = input.value.trim();
+    const dd = document.getElementById('search-dropdown');
+
+    if (q.length < 3) {
+      if (q.length > 0) {
+        dd.innerHTML = '<div class="ac-hint">Type ' + (3 - q.length) + ' more character' + (3 - q.length > 1 ? 's' : '') + ' to search…</div>';
+        dd.style.display = 'block';
+      } else {
+        dd.style.display = 'none';
+      }
+      return;
+    }
+
+    const matches = AC_DATA.filter(d => {
+      const haystack = d.type === 'issuer'
+        ? d.name
+        : d.isin + ' ' + d.issuer;
+      return haystack.toLowerCase().includes(q.toLowerCase());
+    });
+
+    if (matches.length === 0) {
+      dd.innerHTML = '<div class="ac-empty">No results for "<strong>' + q + '</strong>"</div>'
+        + '<div class="ac-footer" onclick="goFiltered()">Explore all 17,000+ bonds →</div>';
+      dd.style.display = 'block';
+      return;
+    }
+
+    const issuers = matches.filter(m => m.type === 'issuer').slice(0, 4);
+    const isins   = matches.filter(m => m.type === 'isin').slice(0, 4);
+
+    const statusColor = s => s === 'Live' ? '#15803D' : s === 'Matured' ? '#697586' : '#854D0E';
+    const statusDot   = s => s === 'Live' ? '●' : s === 'Matured' ? '◌' : '○';
+
+    let html = '';
+
+    if (issuers.length) {
+      html += '<div class="ac-group-label">Issuers</div>';
+      issuers.forEach(d => {
+        html += `<div class="ac-item" onclick="showPage('${d.page}')">
+          <div class="ac-icon ac-icon-issuer">🏢</div>
+          <div>
+            <div class="ac-main">${highlight(d.name, q)}</div>
+            <div class="ac-sub">${d.bonds} bonds indexed</div>
+          </div>
+        </div>`;
+      });
+    }
+
+    if (isins.length) {
+      html += '<div class="ac-group-label">Bonds (ISINs)</div>';
+      isins.forEach(d => {
+        const sc = statusColor(d.status);
+        const dot = statusDot(d.status);
+        html += `<div class="ac-item" onclick="showPage('${d.page}')">
+          <div class="ac-icon ac-icon-isin">📄</div>
+          <div>
+            <div class="ac-main">${highlight(d.isin, q)} &nbsp;<span style="font-weight:400;color:#697586;font-size:13px;">${highlight(d.issuer, q)}</span></div>
+            <div class="ac-sub">${d.coupon} &middot; ${d.rating} &middot; <span style="color:${sc}">${dot} ${d.status}</span></div>
+          </div>
+        </div>`;
+      });
+    }
+
+    html += '<div class="ac-footer" onclick="goFiltered()">Explore all 17,000+ bonds →</div>';
+    dd.innerHTML = html;
+    dd.style.display = 'block';
+  }
+
+  function handleSearchSubmit() {
+    const q = document.getElementById('search-input').value.trim();
+    if (q.length >= 3) {
+      document.getElementById('search-dropdown').style.display = 'none';
+      showPageById('category');
+    }
+  }
+
+  function goFiltered() {
+    document.getElementById('search-dropdown').style.display = 'none';
+    showPageById('category');
+  }
+
+  function showPageById(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.switcher button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.switcher button').forEach(b => {
+      if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + id + "'")) b.classList.add('active');
+    });
+    window.scrollTo(0, 0);
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.search-wrapper')) {
+      const dd = document.getElementById('search-dropdown');
+      if (dd) dd.style.display = 'none';
+    }
+  });
 </script>
 </body>
 </html>
