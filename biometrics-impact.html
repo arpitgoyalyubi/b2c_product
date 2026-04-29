@@ -215,6 +215,215 @@
     margin-bottom: 28px;
   }
   .back-link:hover { text-decoration: underline; }
+
+  /* ── Chat Widget ────────────────────────────────────────────── */
+  #chat-btn {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4F46E5, #7C3AED);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 4px 20px rgba(79,70,229,0.45);
+    z-index: 1000;
+    transition: transform .2s, box-shadow .2s;
+  }
+  #chat-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(79,70,229,0.55); }
+
+  #chat-panel {
+    position: fixed;
+    bottom: 96px;
+    right: 28px;
+    width: 380px;
+    max-width: calc(100vw - 40px);
+    height: 520px;
+    background: white;
+    border-radius: 20px;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 16px 56px rgba(0,0,0,0.16);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 999;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  #chat-panel.open { display: flex; }
+
+  .chat-header {
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #4F46E5, #7C3AED);
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .chat-header .avatar {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .chat-header .title { font-size: 14px; font-weight: 700; }
+  .chat-header .subtitle { font-size: 11px; opacity: .75; margin-top: 1px; }
+  .chat-header .close-btn {
+    margin-left: auto;
+    background: none; border: none; color: white;
+    font-size: 20px; cursor: pointer; opacity: .75; padding: 4px;
+  }
+  .chat-header .close-btn:hover { opacity: 1; }
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #F8FAFC;
+  }
+  .chat-messages::-webkit-scrollbar { width: 4px; }
+  .chat-messages::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+
+  .msg {
+    max-width: 85%;
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    word-break: break-word;
+  }
+  .msg.user {
+    align-self: flex-end;
+    background: #4F46E5;
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+  .msg.assistant {
+    align-self: flex-start;
+    background: white;
+    color: #0F172A;
+    border: 1px solid #E2E8F0;
+    border-bottom-left-radius: 4px;
+  }
+  .msg.thinking {
+    align-self: flex-start;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-bottom-left-radius: 4px;
+    color: #94A3B8;
+    font-style: italic;
+    font-size: 13px;
+  }
+  .msg.assistant strong { color: #1E293B; }
+  .msg.assistant code {
+    background: #F1F5F9;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: monospace;
+  }
+
+  .suggested-qs {
+    padding: 10px 16px;
+    background: #F8FAFC;
+    border-top: 1px solid #E2E8F0;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    flex-shrink: 0;
+  }
+  .suggested-qs::-webkit-scrollbar { display: none; }
+  .sq-btn {
+    white-space: nowrap;
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 5px 11px;
+    border-radius: 100px;
+    border: 1px solid #CBD5E1;
+    background: white;
+    color: #475569;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .sq-btn:hover { background: #EEF2FF; border-color: #4F46E5; color: #4F46E5; }
+
+  .chat-input-row {
+    padding: 12px 16px;
+    display: flex;
+    gap: 8px;
+    border-top: 1px solid #E2E8F0;
+    background: white;
+    flex-shrink: 0;
+  }
+  #chat-input {
+    flex: 1;
+    border: 1px solid #CBD5E1;
+    border-radius: 10px;
+    padding: 9px 13px;
+    font-size: 13.5px;
+    outline: none;
+    resize: none;
+    font-family: inherit;
+    max-height: 80px;
+    min-height: 38px;
+    color: #0F172A;
+  }
+  #chat-input:focus { border-color: #4F46E5; box-shadow: 0 0 0 3px rgba(79,70,229,0.12); }
+  #chat-send {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: #4F46E5;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    transition: background .15s;
+  }
+  #chat-send:hover { background: #4338CA; }
+  #chat-send:disabled { background: #CBD5E1; cursor: not-allowed; }
+
+  .api-key-banner {
+    background: #FFFBEB;
+    border: 1px solid #FCD34D;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px;
+    color: #92400E;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-self: stretch;
+    max-width: 100%;
+  }
+  .api-key-banner input {
+    border: 1px solid #FCD34D;
+    border-radius: 7px;
+    padding: 7px 10px;
+    font-size: 13px;
+    width: 100%;
+    font-family: monospace;
+  }
+  .api-key-banner button {
+    background: #D97706;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    padding: 7px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
@@ -493,6 +702,240 @@ new Chart(document.getElementById('trendChart'), {
     },
   },
 });
+</script>
+
+<!-- ── Chat Widget ─────────────────────────────────────────── -->
+<button id="chat-btn" title="Ask about this data">💬</button>
+
+<div id="chat-panel">
+  <div class="chat-header">
+    <div class="avatar">🤖</div>
+    <div>
+      <div class="title">Biometrics Data Assistant</div>
+      <div class="subtitle">Ask anything about this report</div>
+    </div>
+    <button class="close-btn" onclick="toggleChat()">×</button>
+  </div>
+
+  <div class="chat-messages" id="chat-messages">
+    <div class="msg assistant">
+      Hi! I know everything about this biometrics launch. Ask me anything — enrollment rates, login failures, comparisons, or what to do next. 📊
+    </div>
+  </div>
+
+  <div class="suggested-qs" id="suggested-qs">
+    <button class="sq-btn" onclick="askSuggested('Why is the OS failure rate 35%?')">Why 35% OS failure?</button>
+    <button class="sq-btn" onclick="askSuggested('What should we do to improve adoption?')">Improve adoption?</button>
+    <button class="sq-btn" onclick="askSuggested('When will enrollment peak?')">Enrollment forecast?</button>
+    <button class="sq-btn" onclick="askSuggested('What does the 60.6% login success mean in practice?')">Login success explained</button>
+  </div>
+
+  <div class="chat-input-row">
+    <textarea id="chat-input" placeholder="Ask about the data…" rows="1" onkeydown="handleKey(event)"></textarea>
+    <button id="chat-send" onclick="sendMessage()">➤</button>
+  </div>
+</div>
+
+<script>
+// ── Context ──────────────────────────────────────────────────────────────────
+const SYSTEM_PROMPT = `You are an expert product analytics assistant embedded in the Aspero B2C biometrics feature impact report. You have deep knowledge of all the data on this page. Answer questions concisely and helpfully. Use numbers from the data. Be direct. Format answers with bullet points or bold text where helpful.
+
+KEY DATA (Apr 20–27 2026, first 8 days post-launch):
+
+SETUP FUNNEL:
+- 2,893 users shown the biometric setup screen
+- 1,976 enrolled (68.3% enrollment rate)
+- 839 deferred with "Set Up Later" (29%)
+- 199 enrollment failures (6.9%)
+- Deferred users re-prompted after 3 days (Remote Config: biometricSetupDeferralDays)
+
+LOGIN FUNNEL (first 8 days):
+- 1,296 biometric login attempts by enrolled users
+- 786 verified successfully (60.6% success rate)
+- 454 OS prompt failures (35%) — user cancel, Face ID mismatch, fingerprint fail
+- 24 backend challenge verification failures (1.9%)
+- Only 2 users hit 3-strike limit and fell back to PIN (<0.1%)
+- Average ~98 bio-logins/day, reaching 150 by Apr 27 (growing)
+
+BEFORE vs AFTER (27-day pre-launch vs 8-day post-launch):
+- Signin page views: 1,036/day → 1,074/day (+3.7%)
+- OTP conv rate: 63.3% → 61.9% (-1.4pp, within noise — biometrics affects PIN screen post-OTP, not OTP flow)
+- New signups/day: 352 → 409 (+16.2% — organic growth, not biometrics effect)
+- Biometric logins: 0 → 98/day avg (new channel)
+- Re-login method: was PIN-only, now PIN + biometrics
+
+DAILY TREND:
+Apr 20: 1 enrollment, 1 login
+Apr 21: 191 enrollments, 47 logins
+Apr 22: 286, 99
+Apr 23: 309, 120
+Apr 24: 310, 131
+Apr 25: 318, 130
+Apr 26: 288, 108
+Apr 27: 273, 150
+
+TECHNICAL CONTEXT:
+- Biometrics replaces PIN step after OTP verification (not the OTP flow itself)
+- RSA-2048 key stays on device (Android Keystore / iOS Keychain), never leaves
+- Backend challenge-response flow: get nonce → sign → verify → return pinSessionToken
+- Remote Config controls: enableBiometricSetup (default true), biometricSetupDeferralDays (default 3)
+- Auto-prompts biometric on PIN screen mount if key pair exists for current user
+- 3 failed attempts → button disabled, user must use PIN
+
+WHAT NEEDS FIXING:
+1. 35% OS failure rate is the main optimization lever (pre-prompt explainer helps)
+2. 24 backend failures (1.9%) worth investigating
+3. 839 deferred users will get re-prompted from Apr 23 onwards — watch for enrollment spike
+
+IMPORTANT CONTEXT:
+- Biometrics launched Apr 20 (1 enrollment on day 1, mass rollout Apr 21)
+- This is Aspero (formerly Yubi), a retail bonds/fixed income investment platform
+- Target audience: retail investors in India`;
+
+// ── State ────────────────────────────────────────────────────────────────────
+let chatHistory = [];
+let isTyping = false;
+
+// ── Toggle ───────────────────────────────────────────────────────────────────
+function toggleChat() {
+  const panel = document.getElementById('chat-panel');
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open')) {
+    setTimeout(() => document.getElementById('chat-input').focus(), 100);
+  }
+}
+document.getElementById('chat-btn').addEventListener('click', toggleChat);
+
+// ── Send ─────────────────────────────────────────────────────────────────────
+async function sendMessage(text) {
+  const input = document.getElementById('chat-input');
+  const userText = text || input.value.trim();
+  if (!userText || isTyping) return;
+
+  const apiKey = getApiKey();
+  if (!apiKey) { showApiKeyPrompt(); return; }
+
+  input.value = '';
+  autoResize(input);
+  hideSuggestions();
+
+  appendMsg('user', userText);
+  chatHistory.push({ role: 'user', content: userText });
+
+  const thinkingEl = appendMsg('thinking', '…');
+  document.getElementById('chat-send').disabled = true;
+  isTyping = true;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 600,
+        system: SYSTEM_PROMPT,
+        messages: chatHistory,
+      }),
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      if (resp.status === 401) {
+        localStorage.removeItem('anthropic_key');
+        thinkingEl.remove();
+        showApiKeyPrompt('Invalid API key. Enter a valid Anthropic key:');
+        chatHistory.pop();
+        isTyping = false;
+        document.getElementById('chat-send').disabled = false;
+        return;
+      }
+      throw new Error(err.error?.message || `HTTP ${resp.status}`);
+    }
+
+    const data = await resp.json();
+    const reply = data.content?.[0]?.text || '(empty response)';
+    thinkingEl.remove();
+    appendMsg('assistant', formatReply(reply));
+    chatHistory.push({ role: 'assistant', content: reply });
+  } catch (e) {
+    thinkingEl.remove();
+    appendMsg('assistant', `⚠️ Error: ${e.message}`);
+    chatHistory.pop();
+  }
+
+  isTyping = false;
+  document.getElementById('chat-send').disabled = false;
+}
+
+function askSuggested(q) { sendMessage(q); }
+
+// ── API key management ───────────────────────────────────────────────────────
+function getApiKey() { return localStorage.getItem('anthropic_key'); }
+
+function showApiKeyPrompt(msg) {
+  const messages = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'api-key-banner';
+  div.innerHTML = `
+    <div>${msg || '🔑 Enter your Anthropic API key to chat. Stored only in your browser.'}</div>
+    <input type="password" id="key-input" placeholder="sk-ant-…" />
+    <button onclick="saveKey()">Save & Continue</button>
+    <div style="font-size:11px;opacity:.7">Get a key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></div>`;
+  messages.appendChild(div);
+  scrollToBottom();
+  setTimeout(() => document.getElementById('key-input')?.focus(), 100);
+}
+
+function saveKey() {
+  const val = document.getElementById('key-input')?.value.trim();
+  if (!val || !val.startsWith('sk-')) { alert('Key must start with sk-'); return; }
+  localStorage.setItem('anthropic_key', val);
+  document.querySelector('.api-key-banner')?.remove();
+  appendMsg('assistant', 'Key saved! Ask me anything about the biometrics data. 🚀');
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function appendMsg(role, html) {
+  const el = document.createElement('div');
+  el.className = `msg ${role}`;
+  el.innerHTML = html;
+  document.getElementById('chat-messages').appendChild(el);
+  scrollToBottom();
+  return el;
+}
+
+function formatReply(text) {
+  return text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/`(.*?)`/g, '<code>$1</code>')
+    .replace(/^•\s/gm, '• ')
+    .replace(/\n/g, '<br>');
+}
+
+function scrollToBottom() {
+  const m = document.getElementById('chat-messages');
+  m.scrollTop = m.scrollHeight;
+}
+
+function hideSuggestions() {
+  document.getElementById('suggested-qs').style.display = 'none';
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  autoResize(e.target);
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 80) + 'px';
+}
 </script>
 
 </body>
