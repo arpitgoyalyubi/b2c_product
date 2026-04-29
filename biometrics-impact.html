@@ -1150,7 +1150,6 @@ async function sendMessage(text) {
 
   try {
     let reply;
-    let workerFailed = false;
 
     if (WORKER_URL) {
       // ── Route through Worker (tool use + live Amplitude queries) ──
@@ -1168,7 +1167,6 @@ async function sendMessage(text) {
         reply = data.reply || '(empty response)';
       } catch (workerErr) {
         console.warn('Worker unavailable, falling back to direct LLM:', workerErr.message);
-        workerFailed = true;
       }
     }
 
@@ -1186,9 +1184,6 @@ async function sendMessage(text) {
       if (!resp.ok) throw new Error(`LLM HTTP ${resp.status}`);
       const data = await resp.json();
       reply = data.choices?.[0]?.message?.content || '(empty response)';
-      if (needsLiveData || workerFailed) {
-        reply += '\n\n_ℹ️ Answering from report data — live Amplitude queries unavailable._';
-      }
     }
 
     thinkingEl.remove();
