@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ISIN Bond Directory — Aspero Mocks (ASP-3439)</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F2F4F7; color: #121926; }
+
+    /* ── Page switcher ── */
+    .switcher { position: sticky; top: 0; z-index: 100; background: #1A1F2E; display: flex; gap: 4px; padding: 10px 16px; overflow-x: auto; }
+    .switcher button { background: transparent; border: 1px solid #374151; color: #9CA3AF; padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; white-space: nowrap; }
+    .switcher button.active { background: #16B364; border-color: #16B364; color: #fff; font-weight: 600; }
+
+    /* ── Page visibility ── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── Aspero Nav ── */
+    .nav { background: #fff; border-bottom: 1px solid #E3E8EF; padding: 0 32px; display: flex; align-items: center; height: 56px; gap: 32px; }
+    .nav-logo { font-weight: 700; font-size: 18px; color: #16B364; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { font-size: 14px; color: #4B5565; text-decoration: none; }
+    .nav-links a.active { color: #121926; font-weight: 600; border-bottom: 2px solid #16B364; padding-bottom: 2px; }
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+    .nav-btn { background: #16B364; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
+
+    /* ── Breadcrumb ── */
+    .breadcrumb { font-size: 13px; color: #697586; background: #fff; border-bottom: 1px solid #E3E8EF; }
+    .breadcrumb-inner { max-width: 1100px; margin: 0 auto; padding: 12px 24px; display: flex; gap: 6px; align-items: center; }
+    .breadcrumb a { color: #697586; text-decoration: none; }
+    .breadcrumb a:hover { color: #16B364; }
+    .breadcrumb span { color: #121926; font-weight: 500; }
+
+    /* ── Page Container ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 28px 24px; }
+    .container-wide { max-width: 1100px; margin: 0 auto; padding: 28px 24px; }
+
+    /* ── Buttons ── */
+    .btn-primary { background: #16B364; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-secondary { background: #fff; color: #16B364; border: 1.5px solid #16B364; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .btn-outline { background: #fff; color: #4B5565; border: 1px solid #E3E8EF; padding: 8px 16px; border-radius: 8px; font-size: 13px; cursor: pointer; }
+    .btn-ghost { background: transparent; color: #16B364; border: none; font-size: 13px; font-weight: 600; cursor: pointer; padding: 6px 0; }
+    .btn-notify { background: #FFF7ED; color: #C2410C; border: 1.5px solid #FED7AA; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+
+    /* ── Tags / Badges ── */
+    .tag { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+    .tag-green { background: #DCFCE7; color: #15803D; }
+    .tag-yellow { background: #FEF9C3; color: #854D0E; }
+    .tag-gray { background: #F1F5F9; color: #475569; }
+    .tag-blue { background: #EFF6FF; color: #1D4ED8; }
+    .tag-orange { background: #FFF7ED; color: #C2410C; }
+    .rating-badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+    .rating-aaa { background: #DCFCE7; color: #15803D; }
+    .rating-aa { background: #EFF6FF; color: #1D4ED8; }
+    .rating-a { background: #FEF9C3; color: #854D0E; }
+    .rating-bbb { background: #FFF7ED; color: #C2410C; }
+
+    /* ── Cards ── */
+    .card { background: #fff; border-radius: 12px; border: 1px solid #E3E8EF; }
+    .card-pad { padding: 20px; }
+
+    /* ── Section headings ── */
+    .section-title { font-size: 16px; font-weight: 700; color: #121926; margin-bottom: 16px; }
+    .section-sub { font-size: 13px; color: #697586; margin-top: 4px; margin-bottom: 16px; }
+
+    /* ══════════════════════════════════════════════════
+       PAGE 1 — DIRECTORY LANDING
+    ══════════════════════════════════════════════════ */
+    .hero-landing { background: linear-gradient(135deg, #0A1628 0%, #0F2645 100%); padding: 56px 32px; text-align: center; }
+    .hero-landing h1 { font-size: 36px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .hero-landing p { font-size: 16px; color: #94A3B8; margin-bottom: 28px; }
+    .search-bar-landing { display: flex; max-width: 600px; margin: 0 auto 12px; border-radius: 12px; overflow: hidden; border: 2px solid #16B364; }
+    .search-bar-landing input { flex: 1; padding: 14px 18px; border: none; outline: none; font-size: 15px; color: #121926; }
+    .search-bar-landing button { background: #16B364; color: #fff; border: none; padding: 14px 24px; font-size: 15px; font-weight: 700; cursor: pointer; }
+    .search-hint { font-size: 12px; color: #64748B; text-align: center; }
+
+    .section-landing { padding: 40px 0; background: #fff; border-bottom: 1px solid #E3E8EF; }
+    .section-landing + .section-landing { background: #F9FAFB; }
+    .section-landing-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .section-landing-title { font-size: 18px; font-weight: 700; color: #121926; margin-bottom: 20px; }
+
+    .category-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .category-tile { background: #fff; border: 1px solid #E3E8EF; border-radius: 12px; padding: 20px; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s; text-decoration: none; display: flex; flex-direction: column; gap: 10px; }
+    .category-tile:hover { border-color: #16B364; box-shadow: 0 4px 12px rgba(22,179,100,0.12); }
+    .category-tile-icon { width: 40px; height: 40px; background: #F0FDF4; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .category-tile-name { font-size: 14px; font-weight: 700; color: #121926; }
+    .category-tile-count { font-size: 12px; color: #697586; }
+    .category-tile-arrow { font-size: 12px; color: #16B364; margin-top: auto; }
+
+    .rating-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .rating-chip { background: #fff; border: 1px solid #E3E8EF; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; color: #121926; transition: all 0.15s; }
+    .rating-chip:hover { background: #F0FDF4; border-color: #16B364; color: #16B364; }
+    .rating-chip.aaa { color: #15803D; background: #F0FDF4; border-color: #86EFAC; }
+    .rating-chip.aa { color: #1D4ED8; background: #EFF6FF; border-color: #BFDBFE; }
+
+    .issuer-az { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+    .az-chip { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid #E3E8EF; border-radius: 8px; font-size: 13px; font-weight: 700; color: #4B5565; cursor: pointer; text-decoration: none; }
+    .az-chip:hover { background: #F0FDF4; border-color: #16B364; color: #16B364; }
+    .top-issuers { display: flex; gap: 10px; flex-wrap: wrap; }
+    .issuer-chip { background: #F9FAFB; border: 1px solid #E3E8EF; border-radius: 8px; padding: 8px 14px; font-size: 13px; color: #4B5565; cursor: pointer; text-decoration: none; }
+    .issuer-chip:hover { border-color: #16B364; color: #16B364; }
+
+    .stat-strip { display: flex; gap: 40px; padding: 20px 32px; background: #0F2645; }
+    .stat-item { text-align: center; }
+    .stat-num { font-size: 28px; font-weight: 800; color: #16B364; }
+    .stat-label { font-size: 12px; color: #94A3B8; margin-top: 2px; }
+
+    /* ══════════════════════════════════════════════════
+       PAGE 2 — CATEGORY LISTING
+    ══════════════════════════════════════════════════ */
+    .listing-layout { display: grid; grid-template-columns: 240px 1fr; gap: 24px; }
+    .filter-sidebar { background: #fff; border: 1px solid #E3E8EF; border-radius: 12px; padding: 16px; height: fit-content; }
+    .filter-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .filter-header-title { font-size: 14px; font-weight: 700; color: #121926; }
+    .filter-reset { font-size: 12px; color: #16B364; cursor: pointer; background: none; border: none; }
+    .filter-group { border-bottom: 1px solid #E3E8EF; padding: 12px 0; }
+    .filter-group:last-child { border-bottom: none; }
+    .filter-group-title { font-size: 13px; font-weight: 600; color: #4B5565; display: flex; justify-content: space-between; cursor: pointer; }
+    .filter-options { margin-top: 10px; display: flex; flex-direction: column; gap: 7px; }
+    .filter-option { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #4B5565; cursor: pointer; }
+    .filter-option input[type=checkbox] { accent-color: #16B364; }
+
+    .listing-main { }
+    .listing-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .listing-count { font-size: 14px; color: #697586; }
+    .listing-count strong { color: #121926; }
+    .sort-btn { display: flex; align-items: center; gap: 6px; background: #fff; border: 1px solid #E3E8EF; border-radius: 8px; padding: 7px 12px; font-size: 13px; color: #4B5565; cursor: pointer; }
+
+    .bond-table { background: #fff; border: 1px solid #E3E8EF; border-radius: 12px; overflow: hidden; }
+    .bond-table-header { display: grid; grid-template-columns: 2.5fr 1fr 1fr 1fr 1fr; padding: 12px 16px; background: #F9FAFB; border-bottom: 1px solid #E3E8EF; }
+    .bond-table-header span { font-size: 12px; font-weight: 600; color: #697586; text-transform: uppercase; letter-spacing: 0.04em; }
+    .bond-row { display: grid; grid-template-columns: 2.5fr 1fr 1fr 1fr 1fr; padding: 14px 16px; border-bottom: 1px solid #F1F5F9; align-items: center; cursor: pointer; transition: background 0.1s; text-decoration: none; color: inherit; }
+    .bond-row:hover { background: #F9FAFB; }
+    .bond-row:last-child { border-bottom: none; }
+    .bond-name { font-size: 14px; font-weight: 600; color: #121926; }
+    .bond-isin { font-size: 12px; color: #697586; margin-top: 2px; }
+    .bond-cell { font-size: 13px; color: #4B5565; }
+    .bond-cell-center { font-size: 13px; color: #4B5565; text-align: center; }
+    .status-live { display: inline-flex; align-items: center; gap: 4px; background: #DCFCE7; color: #15803D; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+    .status-not-listed { display: inline-flex; align-items: center; gap: 4px; background: #FEF9C3; color: #854D0E; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+    .status-matured { display: inline-flex; align-items: center; gap: 4px; background: #F1F5F9; color: #475569; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+
+    .pagination { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 24px; }
+    .page-num { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid #E3E8EF; border-radius: 8px; font-size: 13px; cursor: pointer; background: #fff; color: #4B5565; }
+    .page-num.active { background: #16B364; border-color: #16B364; color: #fff; font-weight: 700; }
+
+    /* ══════════════════════════════════════════════════
+       PAGE 3–5 — ISIN PAGES
+    ══════════════════════════════════════════════════ */
+    .isin-layout { display: grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start; }
+    .isin-main { min-width: 0; }
+    .isin-sidebar { position: sticky; top: 76px; align-self: start; }
+
+    .isin-header { margin-bottom: 20px; }
+    .isin-title { font-size: 26px; font-weight: 800; color: #121926; margin-bottom: 10px; line-height: 1.3; }
+    .isin-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+
+    .key-stats { background: #fff; border: 1px solid #E3E8EF; border-radius: 12px; display: grid; grid-template-columns: repeat(5, 1fr); overflow: hidden; margin-bottom: 20px; }
+    .key-stat { padding: 16px; border-right: 1px solid #E3E8EF; }
+    .key-stat:last-child { border-right: none; }
+    .key-stat-label { font-size: 11px; color: #9AA4B2; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+    .key-stat-value { font-size: 16px; font-weight: 700; color: #121926; }
+    .key-stat-value.green { color: #16B364; }
+
+    /* CTA blocks */
+    .cta-block { border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+    .cta-block-live { background: #F0FDF4; border: 1.5px solid #86EFAC; }
+    .cta-block-not-listed { background: #FFFBEB; border: 1.5px solid #FCD34D; }
+    .cta-block-matured { background: #F8FAFC; border: 1.5px solid #CBD5E1; }
+    .cta-block-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .cta-block-live .cta-block-title { color: #15803D; }
+    .cta-block-not-listed .cta-block-title { color: #92400E; }
+    .cta-block-matured .cta-block-title { color: #475569; }
+    .cta-block-subtitle { font-size: 13px; color: #697586; margin-bottom: 16px; }
+
+    .similar-bonds-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+    .similar-bond-card { background: #fff; border: 1px solid #E3E8EF; border-radius: 10px; padding: 14px; }
+    .cta-block-live .similar-bond-card { border-color: #86EFAC; }
+    .cta-block-not-listed .similar-bond-card { border-color: #FCD34D; }
+    .cta-block-matured .similar-bond-card { border-color: #CBD5E1; }
+    .sbc-issuer { font-size: 12px; font-weight: 600; color: #121926; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sbc-stats { display: flex; gap: 12px; margin-bottom: 10px; }
+    .sbc-stat { }
+    .sbc-stat-label { font-size: 10px; color: #9AA4B2; text-transform: uppercase; }
+    .sbc-stat-value { font-size: 13px; font-weight: 700; color: #121926; }
+    .sbc-stat-value.green { color: #16B364; }
+    .sbc-btn { width: 100%; background: #121926; color: #fff; border: none; padding: 7px; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; }
+
+    .live-invest-row { display: flex; align-items: center; gap: 16px; }
+    .live-min-invest { font-size: 13px; color: #4B5565; }
+    .live-min-invest strong { color: #121926; font-size: 15px; }
+
+    /* Bond highlights */
+    .bond-highlights { background: #fff; border: 1px solid #E3E8EF; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+    .highlights-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .highlight-item { }
+    .highlight-label { font-size: 11px; color: #9AA4B2; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .highlight-value { font-size: 14px; font-weight: 600; color: #121926; }
+
+    /* Horizontal scroll sections */
+    .scroll-section { margin-bottom: 24px; }
+    .scroll-row { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 4px; }
+    .scroll-row::-webkit-scrollbar { height: 4px; }
+    .scroll-row::-webkit-scrollbar-track { background: #F1F5F9; border-radius: 2px; }
+    .scroll-row::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 2px; }
+    .scroll-bond-card { min-width: 180px; background: #fff; border: 1px solid #E3E8EF; border-radius: 10px; padding: 14px; flex-shrink: 0; text-decoration: none; color: inherit; transition: border-color 0.15s; }
+    .scroll-bond-card:hover { border-color: #16B364; }
+    .sbc-name { font-size: 12px; font-weight: 600; color: #121926; margin-bottom: 3px; }
+    .sbc-isin { font-size: 11px; color: #9AA4B2; margin-bottom: 10px; }
+    .sbc-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+    .sbc-l { font-size: 11px; color: #9AA4B2; }
+    .sbc-v { font-size: 12px; font-weight: 600; color: #4B5565; }
+
+    /* FAQs */
+    .faq-section { background: #fff; border: 1px solid #E3E8EF; border-radius: 12px; overflow: hidden; margin-bottom: 24px; }
+    .faq-item { border-bottom: 1px solid #F1F5F9; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { padding: 16px 20px; font-size: 14px; font-weight: 600; color: #121926; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    .faq-a { padding: 0 20px 16px; font-size: 13px; color: #4B5565; line-height: 1.6; }
+
+    /* Sidebar */
+    .sidebar-card { background: #fff; border: 1px solid #E3E8EF; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+    .sidebar-title { font-size: 13px; font-weight: 700; color: #121926; margin-bottom: 12px; }
+    .sidebar-category-list { display: flex; flex-direction: column; gap: 6px; }
+    .sidebar-cat-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-radius: 8px; font-size: 13px; color: #4B5565; text-decoration: none; cursor: pointer; }
+    .sidebar-cat-item:hover { background: #F9FAFB; color: #16B364; }
+    .sidebar-cat-arrow { color: #16B364; }
+
+    /* Divider label */
+    .divider-label { text-align: center; color: #9AA4B2; font-size: 12px; margin: 8px 0; }
+
+    /* Page header section with description */
+    .category-description { font-size: 14px; color: #697586; line-height: 1.6; margin-bottom: 20px; max-width: 680px; }
+  </style>
+</head>
+<body>
+
+<!-- Page Switcher -->
+<div class="switcher">
+  <button class="active" onclick="showPage('landing')">1. Directory Landing</button>
+  <button onclick="showPage('category')">2. Category Listing</button>
+  <button onclick="showPage('not-listed')">3. ISIN — Not Listed</button>
+  <button onclick="showPage('matured')">4. ISIN — Matured</button>
+  <button onclick="showPage('live')">5. ISIN — Live on Aspero</button>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════
+     PAGE 1 — DIRECTORY LANDING  /invest/bonds/
+═══════════════════════════════════════════════════ -->
+<div id="landing" class="page active">
+
+  <!-- Nav -->
+  <div class="nav">
+    <div class="nav-logo">aspero</div>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Explore</a>
+      <a href="#" class="active">Bond Collections</a>
+      <a href="#">Fixed Deposit</a>
+      <a href="#">My Portfolio</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn-primary">Sign In</button>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero-landing">
+    <h1>Search from 17,000+ Bonds in India</h1>
+    <p>Explore bonds across 14 categories from India's leading issuers. Filter by rating, tenure, and coupon.</p>
+    <div class="search-bar-landing">
+      <input type="text" placeholder="Search by ISIN, issuer name, or bond type…" />
+      <button>Search</button>
+    </div>
+    <div class="search-hint">Try: INE423A07500 · Adani Enterprises · AAA Corporate Bonds</div>
+  </div>
+
+  <!-- Stats strip -->
+  <div class="stat-strip" style="justify-content:center;">
+    <div class="stat-item"><div class="stat-num">17,000+</div><div class="stat-label">Bonds indexed</div></div>
+    <div class="stat-item"><div class="stat-num">2,400+</div><div class="stat-label">Issuers</div></div>
+    <div class="stat-item"><div class="stat-num">14</div><div class="stat-label">Bond categories</div></div>
+    <div class="stat-item"><div class="stat-num">57</div><div class="stat-label">Live on Aspero</div></div>
+  </div>
+
+  <!-- Categories -->
+  <div class="section-landing"><div class="section-landing-inner">
+    <div class="section-landing-title">Browse by Bond Type</div>
+    <div class="category-grid">
+      <a class="category-tile" href="#">
+        <div class="category-tile-icon">🏢</div>
+        <div class="category-tile-name">Corporate Bonds</div>
+        <div class="category-tile-count">9,240 bonds</div>
+        <div class="category-tile-arrow">Explore →</div>
+      </a>
+      <a class="category-tile" href="#">
+        <div class="category-tile-icon">📋</div>
+        <div class="category-tile-name">NCDs</div>
+        <div class="category-tile-count">4,180 bonds</div>
+        <div class="category-tile-arrow">Explore →</div>
+      </a>
+      <a class="category-tile" href="#">
+        <div class="category-tile-icon">🏛️</div>
+        <div class="category-tile-name">Government Bonds</div>
+        <div class="category-tile-count">1,820 bonds</div>
+        <div class="category-tile-arrow">Explore →</div>
+      </a>
+      <a class="category-tile" href="#">
+        <div class="category-tile-icon">🌿</div>
+        <div class="category-tile-name">Tax-Free Bonds</div>
+        <div class="category-tile-count">312 bonds</div>
+        <div class="category-tile-arrow">Explore →</div>
+      </a>
+      <a class="category-tile" href="#">
+        <div class="category-tile-icon">🥇</div>
+        <div class="category-tile-name">SGBs</div>
+        <div class="category-tile-count">88 series</div>
+        <div class="category-tile-arrow">Explore →</div>
+      </a>
+      <a class="category-tile" href="#">
+        <div class="category-tile-icon">🏦</div>
+        <div class="category-tile-name">AT-1 Bonds</div>
+        <div class="category-tile-count">220 bonds</div>
+        <div class="category-tile-arrow">Explore →</div>
+      </a>
+      <a class="category-tile" href="#">
+        <div class="category-tile-icon">♾️</div>
+        <div class="category-tile-name">Perpetual Bonds</div>
+        <div class="category-tile-count">140 bonds</div>
+        <div class="category-tile-arrow">Explore →</div>
+      </a>
+      <a class="category-tile" href="#">
+        <div class="category-tile-icon">0️⃣</div>
+        <div class="category-tile-name">Zero Coupon</div>
+        <div class="category-tile-count">95 bonds</div>
+        <div class="category-tile-arrow">Explore →</div>
+      </a>
+    </div>
+  </div></div>
+
+  <!-- By Rating -->
+  <div class="section-landing"><div class="section-landing-inner">
+    <div class="section-landing-title">Browse by Credit Rating</div>
+    <div class="rating-row">
+      <a class="rating-chip aaa" href="#">AAA</a>
+      <a class="rating-chip aa" href="#">AA+</a>
+      <a class="rating-chip aa" href="#">AA</a>
+      <a class="rating-chip aa" href="#">AA-</a>
+      <a class="rating-chip" href="#">A+</a>
+      <a class="rating-chip" href="#">A</a>
+      <a class="rating-chip" href="#">A-</a>
+      <a class="rating-chip" href="#">BBB+</a>
+      <a class="rating-chip" href="#">BBB</a>
+      <a class="rating-chip" href="#">BBB-</a>
+    </div>
+  </div></div>
+
+  <!-- Issuer A-Z -->
+  <div class="section-landing"><div class="section-landing-inner">
+    <div class="section-landing-title">Browse by Issuer</div>
+    <div class="issuer-az">
+      <a class="az-chip" href="#">A</a><a class="az-chip" href="#">B</a><a class="az-chip" href="#">C</a>
+      <a class="az-chip" href="#">D</a><a class="az-chip" href="#">E</a><a class="az-chip" href="#">F</a>
+      <a class="az-chip" href="#">G</a><a class="az-chip" href="#">H</a><a class="az-chip" href="#">I</a>
+      <a class="az-chip" href="#">J</a><a class="az-chip" href="#">K</a><a class="az-chip" href="#">L</a>
+      <a class="az-chip" href="#">M</a><a class="az-chip" href="#">N</a><a class="az-chip" href="#">O</a>
+      <a class="az-chip" href="#">P</a><a class="az-chip" href="#">Q</a><a class="az-chip" href="#">R</a>
+      <a class="az-chip" href="#">S</a><a class="az-chip" href="#">T</a><a class="az-chip" href="#">U</a>
+      <a class="az-chip" href="#">V</a><a class="az-chip" href="#">W</a><a class="az-chip" href="#">X</a>
+      <a class="az-chip" href="#">Y</a><a class="az-chip" href="#">Z</a>
+    </div>
+    <div class="section-landing-title" style="font-size:14px; color:#697586; font-weight:500; margin-bottom:12px;">Top issuers</div>
+    <div class="top-issuers">
+      <a class="issuer-chip" href="#">Adani Enterprises</a>
+      <a class="issuer-chip" href="#">NTPC Limited</a>
+      <a class="issuer-chip" href="#">HDFC Bank</a>
+      <a class="issuer-chip" href="#">Tata Capital</a>
+      <a class="issuer-chip" href="#">Poonawalla Fincorp</a>
+      <a class="issuer-chip" href="#">Power Finance Corp</a>
+      <a class="issuer-chip" href="#">REC Limited</a>
+      <a class="issuer-chip" href="#">IIFL Finance</a>
+      <a class="issuer-chip" href="#">Muthoot Finance</a>
+      <a class="issuer-chip" href="#">Sammaan Capital</a>
+      <a class="issuer-chip" href="#">Navi Finserv</a>
+      <a class="issuer-chip" href="#">Moneyboxx Finance</a>
+    </div>
+    <div style="margin-top:20px;">
+      <button class="btn-ghost">Browse all 2,400+ issuers →</button>
+    </div>
+  </div></div>
+
+</div><!-- /landing -->
+
+
+<!-- ══════════════════════════════════════════════════
+     PAGE 2 — CATEGORY LISTING  /invest/bonds/corporate-bonds/
+═══════════════════════════════════════════════════ -->
+<div id="category" class="page">
+
+  <div class="nav">
+    <div class="nav-logo">aspero</div>
+    <div class="nav-links">
+      <a href="#">Home</a><a href="#">Explore</a>
+      <a href="#" class="active">Bond Collections</a>
+      <a href="#">Fixed Deposit</a><a href="#">My Portfolio</a>
+    </div>
+    <div class="nav-right"><button class="nav-btn">Sign In</button></div>
+  </div>
+
+  <div class="breadcrumb"><div class="breadcrumb-inner">
+    <a href="#">Home</a> › <a href="#">Bonds</a> › <span>Corporate Bonds</span>
+  </div></div>
+
+  <div class="container-wide">
+    <h1 style="font-size:22px; font-weight:800; color:#121926; margin-bottom:8px;">Corporate Bonds</h1>
+    <p class="category-description">Corporate bonds are debt instruments issued by private and public companies to raise capital. They offer fixed coupon payments and return of principal at maturity. Browse all corporate bonds listed on NSE/BSE.</p>
+
+    <div class="listing-layout">
+      <!-- Filter sidebar -->
+      <div class="filter-sidebar">
+        <div class="filter-header">
+          <div class="filter-header-title">Filter by</div>
+          <button class="filter-reset">Reset all</button>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-group-title">Credit Rating <span>›</span></div>
+          <div class="filter-options">
+            <label class="filter-option"><input type="checkbox" checked /> <span>AAA <span style="color:#9AA4B2;font-size:11px">(1,240)</span></span></label>
+            <label class="filter-option"><input type="checkbox" /> <span>AA+ <span style="color:#9AA4B2;font-size:11px">(890)</span></span></label>
+            <label class="filter-option"><input type="checkbox" /> <span>AA <span style="color:#9AA4B2;font-size:11px">(1,420)</span></span></label>
+            <label class="filter-option"><input type="checkbox" /> <span>AA- <span style="color:#9AA4B2;font-size:11px">(780)</span></span></label>
+            <label class="filter-option"><input type="checkbox" /> <span>A+ <span style="color:#9AA4B2;font-size:11px">(560)</span></span></label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-group-title">Remaining Maturity <span>›</span></div>
+          <div class="filter-options">
+            <label class="filter-option"><input type="checkbox" /> <span>0 – 1 year</span></label>
+            <label class="filter-option"><input type="checkbox" checked /> <span>1 – 3 years</span></label>
+            <label class="filter-option"><input type="checkbox" /> <span>3 – 5 years</span></label>
+            <label class="filter-option"><input type="checkbox" /> <span>5+ years</span></label>
+            <label class="filter-option"><input type="checkbox" /> <span>Matured</span></label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-group-title">Coupon Rate <span>›</span></div>
+          <div class="filter-options">
+            <label class="filter-option"><input type="checkbox" /> <span>Below 8%</span></label>
+            <label class="filter-option"><input type="checkbox" /> <span>8% – 10%</span></label>
+            <label class="filter-option"><input type="checkbox" checked /> <span>10% – 12%</span></label>
+            <label class="filter-option"><input type="checkbox" /> <span>Above 12%</span></label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-group-title">Instrument Status <span>›</span></div>
+          <div class="filter-options">
+            <label class="filter-option"><input type="checkbox" checked /> <span>Active</span></label>
+            <label class="filter-option"><input type="checkbox" /> <span>Matured</span></label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-group-title">Interest Frequency <span>›</span></div>
+          <div class="filter-options">
+            <label class="filter-option"><input type="checkbox" /> Monthly</label>
+            <label class="filter-option"><input type="checkbox" checked /> Quarterly</label>
+            <label class="filter-option"><input type="checkbox" /> Annually</label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-group-title">Seniority <span>›</span></div>
+        </div>
+        <div class="filter-group">
+          <div class="filter-group-title">Instrument Security <span>›</span></div>
+        </div>
+      </div>
+
+      <!-- Listing main -->
+      <div class="listing-main">
+        <div class="listing-header">
+          <div class="listing-count">Showing <strong>4,218 bonds</strong> · 3 filters active</div>
+          <button class="sort-btn">Sort: Coupon Rate ↓</button>
+        </div>
+
+        <div class="bond-table">
+          <div class="bond-table-header">
+            <span>Bond / ISIN</span>
+            <span>Rating</span>
+            <span>Coupon</span>
+            <span>Maturity</span>
+            <span>Status</span>
+          </div>
+
+          <a class="bond-row" href="#">
+            <div><div class="bond-name">Poonawalla Fincorp Limited</div><div class="bond-isin">INE511C08AE1 · NCD · Secured</div></div>
+            <div class="bond-cell"><span class="rating-badge rating-aaa">CRISIL AAA</span></div>
+            <div class="bond-cell">10.40%</div>
+            <div class="bond-cell">24 Jan 2027</div>
+            <div><span class="status-live">● Live</span></div>
+          </a>
+          <a class="bond-row" href="#">
+            <div><div class="bond-name">Adani Enterprises Limited</div><div class="bond-isin">INE423A07500 · NCD · Secured</div></div>
+            <div class="bond-cell"><span class="rating-badge rating-aa">CRISIL AA-</span></div>
+            <div class="bond-cell">8.50%</div>
+            <div class="bond-cell">18 Mar 2026</div>
+            <div><span class="status-not-listed">○ Not Listed</span></div>
+          </a>
+          <a class="bond-row" href="#">
+            <div><div class="bond-name">IIFL Samasta Finance Limited</div><div class="bond-isin">INE413U07442 · NCD · Secured</div></div>
+            <div class="bond-cell"><span class="rating-badge rating-a">IND A+</span></div>
+            <div class="bond-cell">11.00%</div>
+            <div class="bond-cell">15 Jun 2026</div>
+            <div><span class="status-live">● Live</span></div>
+          </a>
+          <a class="bond-row" href="#">
+            <div><div class="bond-name">NTPC Limited</div><div class="bond-isin">INE733E07CB1 · Bond · Secured</div></div>
+            <div class="bond-cell"><span class="rating-badge rating-aaa">CRISIL AAA</span></div>
+            <div class="bond-cell">11.25%</div>
+            <div class="bond-cell">06 Nov 2023</div>
+            <div><span class="status-matured">◌ Matured</span></div>
+          </a>
+          <a class="bond-row" href="#">
+            <div><div class="bond-name">Muthoot Mcred Limited</div><div class="bond-isin">INE101Q07BX1 · NCD · Secured</div></div>
+            <div class="bond-cell"><span class="rating-badge rating-bbb">BBB+</span></div>
+            <div class="bond-cell">11.10%</div>
+            <div class="bond-cell">28 Feb 2027</div>
+            <div><span class="status-live">● Live</span></div>
+          </a>
+          <a class="bond-row" href="#">
+            <div><div class="bond-name">Sammaan Capital Limited</div><div class="bond-isin">INE148I07GL3 · NCD · Secured</div></div>
+            <div class="bond-cell"><span class="rating-badge rating-aa">ICRA AA</span></div>
+            <div class="bond-cell">9.80%</div>
+            <div class="bond-cell">12 Sep 2025</div>
+            <div><span class="status-live">● Live</span></div>
+          </a>
+          <a class="bond-row" href="#">
+            <div><div class="bond-name">Moneyboxx Finance Limited</div><div class="bond-isin">INE296Q07142 · NCD · Secured</div></div>
+            <div class="bond-cell"><span class="rating-badge rating-bbb">BBB</span></div>
+            <div class="bond-cell">12.06%</div>
+            <div class="bond-cell">30 Nov 2026</div>
+            <div><span class="status-not-listed">○ Not Listed</span></div>
+          </a>
+          <a class="bond-row" href="#">
+            <div><div class="bond-name">Kotak Mahindra Prime Limited</div><div class="bond-isin">INE916D08DT2 · Bond · Secured</div></div>
+            <div class="bond-cell"><span class="rating-badge rating-aaa">CRISIL AAA</span></div>
+            <div class="bond-cell">10.50%</div>
+            <div class="bond-cell">22 Jun 2023</div>
+            <div><span class="status-matured">◌ Matured</span></div>
+          </a>
+        </div>
+
+        <div class="pagination">
+          <button class="page-num">‹</button>
+          <button class="page-num active">1</button>
+          <button class="page-num">2</button>
+          <button class="page-num">3</button>
+          <span style="font-size:13px;color:#9AA4B2;">…</span>
+          <button class="page-num">85</button>
+          <button class="page-num">›</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /category -->
+
+
+<!-- ══════════════════════════════════════════════════
+     PAGE 3 — ISIN (NOT LISTED)
+     /invest/bonds/adani-enterprises-limited/INE423A07500/
+═══════════════════════════════════════════════════ -->
+<div id="not-listed" class="page">
+
+  <div class="nav">
+    <div class="nav-logo">aspero</div>
+    <div class="nav-links">
+      <a href="#">Home</a><a href="#">Explore</a>
+      <a href="#" class="active">Bond Collections</a>
+      <a href="#">Fixed Deposit</a><a href="#">My Portfolio</a>
+    </div>
+    <div class="nav-right"><button class="nav-btn">Sign In</button></div>
+  </div>
+
+  <div class="breadcrumb"><div class="breadcrumb-inner">
+    <a href="#">Home</a> › <a href="#">Bonds</a> › <a href="#">Adani Enterprises Limited</a> › <span>INE423A07500</span>
+  </div></div>
+
+  <div class="container">
+    <div class="isin-layout">
+      <div class="isin-main">
+
+        <!-- Header -->
+        <div class="isin-header">
+          <h1 class="isin-title">Adani Enterprises Limited — INE423A07500</h1>
+          <div class="isin-tags">
+            <span class="tag tag-blue">NCD</span>
+            <span class="tag tag-gray">Senior Secured</span>
+            <span class="tag tag-yellow">⚠ Not Listed on Aspero</span>
+          </div>
+        </div>
+
+        <!-- Key Stats -->
+        <div class="key-stats">
+          <div class="key-stat">
+            <div class="key-stat-label">Credit Rating</div>
+            <div class="key-stat-value"><span class="rating-badge rating-aa" style="font-size:14px;padding:4px 10px;">CRISIL AA-</span></div>
+          </div>
+          <div class="key-stat">
+            <div class="key-stat-label">Face Value</div>
+            <div class="key-stat-value">₹1,000</div>
+          </div>
+          <div class="key-stat">
+            <div class="key-stat-label">Coupon Rate</div>
+            <div class="key-stat-value green">8.50%</div>
+          </div>
+          <div class="key-stat">
+            <div class="key-stat-label">Taxability</div>
+            <div class="key-stat-value">Taxable</div>
+          </div>
+          <div class="key-stat">
+            <div class="key-stat-label">Issue Size</div>
+            <div class="key-stat-value">₹500 Cr</div>
+          </div>
+        </div>
+
+        <!-- CTA Block — Not Listed -->
+        <div class="cta-block cta-block-not-listed">
+          <div class="cta-block-title">⚡ Similar bonds available on Aspero right now</div>
+          <div class="cta-block-subtitle">INE423A07500 is not currently listed. Explore comparable AA-rated bonds you can invest in today.</div>
+          <div class="similar-bonds-row">
+            <div class="similar-bond-card">
+              <div class="sbc-issuer">Sammaan Capital Ltd</div>
+              <div class="sbc-stats">
+                <div class="sbc-stat"><div class="sbc-stat-label">YTM</div><div class="sbc-stat-value green">9.80%</div></div>
+                <div class="sbc-stat"><div class="sbc-stat-label">Maturity</div><div class="sbc-stat-value">5M 4D</div></div>
+              </div>
+              <div style="margin-bottom:6px;"><span class="rating-badge rating-aa" style="font-size:10px;">ICRA AA</span></div>
+              <button class="sbc-btn">View Details</button>
+            </div>
+            <div class="similar-bond-card">
+              <div class="sbc-issuer">Arka Fincap Limited</div>
+              <div class="sbc-stats">
+                <div class="sbc-stat"><div class="sbc-stat-label">YTM</div><div class="sbc-stat-value green">8.80%</div></div>
+                <div class="sbc-stat"><div class="sbc-stat-label">Maturity</div><div class="sbc-stat-value">2Y 8M</div></div>
+              </div>
+              <div style="margin-bottom:6px;"><span class="rating-badge rating-aa" style="font-size:10px;">CRISIL AA</span></div>
+              <button class="sbc-btn">View Details</button>
+            </div>
+            <div class="similar-bond-card">
+              <div class="sbc-issuer">Adani Enterprises Ltd</div>
+              <div class="sbc-stats">
+                <div class="sbc-stat"><div class="sbc-stat-label">YTM</div><div class="sbc-stat-value green">8.50%</div></div>
+                <div class="sbc-stat"><div class="sbc-stat-label">Maturity</div><div class="sbc-stat-value">1Y 8M</div></div>
+              </div>
+              <div style="margin-bottom:6px;"><span class="rating-badge rating-aa" style="font-size:10px;">CRISIL AA-</span></div>
+              <button class="sbc-btn">View Details</button>
+            </div>
+          </div>
+          <button class="btn-notify">🔔 Notify me when INE423A07500 is listed on Aspero</button>
+        </div>
+
+        <!-- Bond Highlights -->
+        <div class="bond-highlights">
+          <div class="section-title">Bond Highlights</div>
+          <div class="highlights-grid">
+            <div class="highlight-item"><div class="highlight-label">Allotment Date</div><div class="highlight-value">15 Mar 2022</div></div>
+            <div class="highlight-item"><div class="highlight-label">Maturity Date</div><div class="highlight-value">18 Mar 2026</div></div>
+            <div class="highlight-item"><div class="highlight-label">Interest Frequency</div><div class="highlight-value">Annually</div></div>
+            <div class="highlight-item"><div class="highlight-label">Issuer Ownership</div><div class="highlight-value">Private</div></div>
+            <div class="highlight-item"><div class="highlight-label">Seniority</div><div class="highlight-value">Senior Secured</div></div>
+            <div class="highlight-item"><div class="highlight-label">Other Ratings</div><div class="highlight-value">ICRA AA-, CARE AA-</div></div>
+          </div>
+        </div>
+
+        <!-- Other bonds by issuer -->
+        <div class="scroll-section">
+          <div class="section-title">Other bonds by Adani Enterprises Limited</div>
+          <div class="scroll-row">
+            <a class="scroll-bond-card" href="#">
+              <div class="sbc-name">Adani Enterprises Limited</div>
+              <div class="sbc-isin">INE423A07484</div>
+              <div class="sbc-row"><span class="sbc-l">Coupon</span><span class="sbc-v">8.60%</span></div>
+              <div class="sbc-row"><span class="sbc-l">Maturity</span><span class="sbc-v">Jan 2026</span></div>
+              <div class="sbc-row"><span class="sbc-l">Rating</span><span class="sbc-v">AA-</span></div>
+            </a>
+            <a class="scroll-bond-card" href="#">
+              <div class="sbc-name">Adani Enterprises Limited</div>
+              <div class="sbc-isin">INE423A07526</div>
+              <div class="sbc-row"><span class="sbc-l">Coupon</span><span class="sbc-v">8.75%</span></div>
+              <div class="sbc-row"><span class="sbc-l">Maturity</span><span class="sbc-v">Dec 2028</span></div>
+              <div class="sbc-row"><span class="sbc-l">Rating</span><span class="sbc-v">AA-</span></div>
+            </a>
+            <a class="scroll-bond-card" href="#">
+              <div class="sbc-name">Adani Enterprises Limited</div>
+              <div class="sbc-isin">INE423A07518</div>
+              <div class="sbc-row"><span class="sbc-l">Coupon</span><span class="sbc-v">9.10%</span></div>
+              <div class="sbc-row"><span class="sbc-l">Maturity</span><span class="sbc-v">Jun 2027</span></div>
+              <div class="sbc-row"><span class="sbc-l">Rating</span><span class="sbc-v">AA-</span></div>
+            </a>
+            <a class="scroll-bond-card" href="#">
+              <div class="sbc-name">Adani Enterprises Limited</div>
+              <div class="sbc-isin">INE423A07492</div>
+              <div class="sbc-row"><span class="sbc-l">Coupon</span><span class="sbc-v">8.30%</span></div>
+              <div class="sbc-row"><span class="sbc-l">Maturity</span><span class="sbc-v">Sep 2025</span></div>
+              <div class="sbc-row"><span class="sbc-l">Rating</span><span class="sbc-v">AA-</span></div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Similar bonds -->
+        <div class="scroll-section">
+          <div class="section-title">Similar bonds</div>
+          <div class="scroll-row">
+            <a class="scroll-bond-card" href="#">
+              <div class="sbc-name">Tata Capital Financial Services</div>
+              <div class="sbc-isin">INE306N07JP9</div>
+              <div class="sbc-row"><span class="sbc-l">Coupon</span><span class="sbc-v">8.45%</span></div>
+              <div class="sbc-row"><span class="sbc-l">Maturity</span><span class="sbc-v">Mar 2026</span></div>
+              <div class="sbc-row"><span class="sbc-l">Rating</span><span class="sbc-v">AAA</span></div>
+            </a>
+            <a class="scroll-bond-card" href="#">
+              <div class="sbc-name">Mahindra & Mahindra Financial</div>
+              <div class="sbc-isin">INE774D07RT6</div>
+              <div class="sbc-row"><span class="sbc-l">Coupon</span><span class="sbc-v">8.60%</span></div>
+              <div class="sbc-row"><span class="sbc-l">Maturity</span><span class="sbc-v">Apr 2026</span></div>
+              <div class="sbc-row"><span class="sbc-l">Rating</span><span class="sbc-v">AA+</span></div>
+            </a>
+            <a class="scroll-bond-card" href="#">
+              <div class="sbc-name">Bajaj Finance Limited</div>
+              <div class="sbc-isin">INE549A07EJ0</div>
+              <div class="sbc-row"><span class="sbc-l">Coupon</span><span class="sbc-v">8.80%</span></div>
+              <div class="sbc-row"><span class="sbc-l">Maturity</span><span class="sbc-v">Feb 2027</span></div>
+              <div class="sbc-row"><span class="sbc-l">Rating</span><span class="sbc-v">AAA</span></div>
+            </a>
+          </div>
+        </div>
+
+        <!-- FAQs -->
+        <div class="section-title">FAQs — INE423A07500</div>
+        <div class="faq-section">
+          <div class="faq-item">
+            <div class="faq-q">What is the coupon rate on the Adani Enterprises INE423A07500 bond? <span>›</span></div>
+            <div class="faq-a">The coupon rate on INE423A07500 is 8.50% per annum, paid annually on the allotment anniversary date.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">When does the INE423A07500 bond mature? <span>›</span></div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">What is the credit rating of the INE423A07500 bond? <span>›</span></div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">How frequently is interest paid on INE423A07500? <span>›</span></div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">What is the face value of the INE423A07500 bond? <span>›</span></div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Is the INE423A07500 bond taxable? <span>›</span></div>
+          </div>
+        </div>
+
+      </div><!-- /isin-main -->
+
+      <!-- Sidebar -->
+      <div class="isin-sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-title">Popular Bond Categories</div>
+          <div class="sidebar-category-list">
+            <a class="sidebar-cat-item" href="#">Corporate Bonds <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#">Tax-Free Bonds <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#">Government Bonds <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#">AT-1 Bonds <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#">SGBs <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#">Senior Secured Bonds <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#">AAA Rated Bonds <span class="sidebar-cat-arrow">↗</span></a>
+          </div>
+        </div>
+        <div class="sidebar-card" style="background:#F0FDF4; border-color:#86EFAC;">
+          <div class="sidebar-title" style="color:#15803D;">Live on Aspero</div>
+          <div style="font-size:13px;color:#4B5565;margin-bottom:12px;">57 bonds available to invest in right now</div>
+          <button class="btn-primary" style="width:100%; justify-content:center;">Explore Live Bonds</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /not-listed -->
+
+
+<!-- ══════════════════════════════════════════════════
+     PAGE 4 — ISIN (MATURED)
+     /invest/bonds/ntpc-limited/INE733E07CB1/
+═══════════════════════════════════════════════════ -->
+<div id="matured" class="page">
+
+  <div class="nav">
+    <div class="nav-logo">aspero</div>
+    <div class="nav-links">
+      <a href="#">Home</a><a href="#">Explore</a>
+      <a href="#" class="active">Bond Collections</a>
+      <a href="#">Fixed Deposit</a><a href="#">My Portfolio</a>
+    </div>
+    <div class="nav-right"><button class="nav-btn">Sign In</button></div>
+  </div>
+
+  <div class="breadcrumb"><div class="breadcrumb-inner">
+    <a href="#">Home</a> › <a href="#">Bonds</a> › <a href="#">NTPC Limited</a> › <span>INE733E07CB1</span>
+  </div></div>
+
+  <div class="container">
+    <div class="isin-layout">
+      <div class="isin-main">
+
+        <div class="isin-header">
+          <h1 class="isin-title">NTPC Limited — INE733E07CB1</h1>
+          <div class="isin-tags">
+            <span class="tag tag-blue">Corporate Bond</span>
+            <span class="tag tag-gray">Senior Secured</span>
+            <span class="tag tag-gray">PSU</span>
+            <span class="tag tag-gray">◌ Matured 06 Nov 2023</span>
+          </div>
+        </div>
+
+        <div class="key-stats">
+          <div class="key-stat"><div class="key-stat-label">Credit Rating</div><div class="key-stat-value"><span class="rating-badge rating-aaa" style="font-size:14px;padding:4px 10px;">CRISIL AAA</span></div></div>
+          <div class="key-stat"><div class="key-stat-label">Face Value</div><div class="key-stat-value">₹2,00,000</div></div>
+          <div class="key-stat"><div class="key-stat-label">Coupon Rate</div><div class="key-stat-value green">11.25%</div></div>
+          <div class="key-stat"><div class="key-stat-label">Taxability</div><div class="key-stat-value">Taxable</div></div>
+          <div class="key-stat"><div class="key-stat-label">Issue Size</div><div class="key-stat-value">₹140 Cr</div></div>
+        </div>
+
+        <!-- CTA Block — Matured -->
+        <div class="cta-block cta-block-matured">
+          <div class="cta-block-title">📋 This bond matured on 06 Nov 2023</div>
+          <div class="cta-block-subtitle">Explore active AAA-rated bonds with similar profiles available on Aspero today.</div>
+          <div class="similar-bonds-row">
+            <div class="similar-bond-card">
+              <div class="sbc-issuer">Poonawalla Fincorp</div>
+              <div class="sbc-stats">
+                <div class="sbc-stat"><div class="sbc-stat-label">YTM</div><div class="sbc-stat-value green">10.40%</div></div>
+                <div class="sbc-stat"><div class="sbc-stat-label">Maturity</div><div class="sbc-stat-value">24 Jan 2027</div></div>
+              </div>
+              <div style="margin-bottom:6px;"><span class="rating-badge rating-aaa" style="font-size:10px;">CRISIL AAA</span></div>
+              <button class="sbc-btn">View Details</button>
+            </div>
+            <div class="similar-bond-card">
+              <div class="sbc-issuer">NTPC Limited</div>
+              <div class="sbc-stats">
+                <div class="sbc-stat"><div class="sbc-stat-label">YTM</div><div class="sbc-stat-value green">9.67%</div></div>
+                <div class="sbc-stat"><div class="sbc-stat-label">Maturity</div><div class="sbc-stat-value">23 Dec 2027</div></div>
+              </div>
+              <div style="margin-bottom:6px;"><span class="rating-badge rating-aaa" style="font-size:10px;">CRISIL AAA</span></div>
+              <button class="sbc-btn">View Details</button>
+            </div>
+            <div class="similar-bond-card">
+              <div class="sbc-issuer">REC Limited</div>
+              <div class="sbc-stats">
+                <div class="sbc-stat"><div class="sbc-stat-label">YTM</div><div class="sbc-stat-value green">9.80%</div></div>
+                <div class="sbc-stat"><div class="sbc-stat-label">Maturity</div><div class="sbc-stat-value">Mar 2028</div></div>
+              </div>
+              <div style="margin-bottom:6px;"><span class="rating-badge rating-aaa" style="font-size:10px;">CRISIL AAA</span></div>
+              <button class="sbc-btn">View Details</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bond Highlights -->
+        <div class="bond-highlights">
+          <div class="section-title">Bond Highlights</div>
+          <div class="highlights-grid">
+            <div class="highlight-item"><div class="highlight-label">Allotment Date</div><div class="highlight-value">06 Nov 2008</div></div>
+            <div class="highlight-item"><div class="highlight-label">Maturity Date</div><div class="highlight-value">06 Nov 2023</div></div>
+            <div class="highlight-item"><div class="highlight-label">Interest Frequency</div><div class="highlight-value">Annually</div></div>
+            <div class="highlight-item"><div class="highlight-label">Issuer Ownership</div><div class="highlight-value">PSU</div></div>
+            <div class="highlight-item"><div class="highlight-label">Seniority</div><div class="highlight-value">Not Available</div></div>
+            <div class="highlight-item"><div class="highlight-label">Other Ratings</div><div class="highlight-value">ICRA AAA, CARE AAA</div></div>
+          </div>
+        </div>
+
+        <!-- Other bonds by NTPC -->
+        <div class="scroll-section">
+          <div class="section-title">Other bonds by NTPC Limited</div>
+          <div class="scroll-row">
+            <a class="scroll-bond-card" href="#">
+              <div class="sbc-name">NTPC Limited</div><div class="sbc-isin">INE733E07XY1</div>
+              <div class="sbc-row"><span class="sbc-l">Coupon</span><span class="sbc-v">9.67%</span></div>
+              <div class="sbc-row"><span class="sbc-l">Maturity</span><span class="sbc-v">Dec 2027</span></div>
+              <div class="sbc-row"><span class="sbc-l">Status</span><span class="sbc-v" style="color:#16B364">Active</span></div>
+            </a>
+            <a class="scroll-bond-card" href="#">
+              <div class="sbc-name">NTPC Limited</div><div class="sbc-isin">INE733E07AB3</div>
+              <div class="sbc-row"><span class="sbc-l">Coupon</span><span class="sbc-v">9.67%</span></div>
+              <div class="sbc-row"><span class="sbc-l">Maturity</span><span class="sbc-v">Dec 2030</span></div>
+              <div class="sbc-row"><span class="sbc-l">Status</span><span class="sbc-v" style="color:#16B364">Active</span></div>
+            </a>
+            <a class="scroll-bond-card" href="#">
+              <div class="sbc-name">NTPC Limited</div><div class="sbc-isin">INE733E07CD7</div>
+              <div class="sbc-row"><span class="sbc-l">Coupon</span><span class="sbc-v">9.67%</span></div>
+              <div class="sbc-row"><span class="sbc-l">Maturity</span><span class="sbc-v">Dec 2025</span></div>
+              <div class="sbc-row"><span class="sbc-l">Status</span><span class="sbc-v" style="color:#9AA4B2">Matured</span></div>
+            </a>
+          </div>
+        </div>
+
+        <!-- FAQs -->
+        <div class="section-title">FAQs — INE733E07CB1</div>
+        <div class="faq-section">
+          <div class="faq-item"><div class="faq-q">What was the coupon rate on the NTPC INE733E07CB1 bond? <span>›</span></div><div class="faq-a">The coupon rate on INE733E07CB1 was 11.25% per annum, paid annually.</div></div>
+          <div class="faq-item"><div class="faq-q">When did the INE733E07CB1 bond mature? <span>›</span></div></div>
+          <div class="faq-item"><div class="faq-q">What was the credit rating of INE733E07CB1? <span>›</span></div></div>
+          <div class="faq-item"><div class="faq-q">What was the face value of INE733E07CB1? <span>›</span></div></div>
+          <div class="faq-item"><div class="faq-q">Was INE733E07CB1 a taxable bond? <span>›</span></div></div>
+          <div class="faq-item"><div class="faq-q">What was the issue size of the NTPC INE733E07CB1 bond? <span>›</span></div></div>
+        </div>
+
+      </div>
+
+      <div class="isin-sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-title">Popular Bond Categories</div>
+          <div class="sidebar-category-list">
+            <a class="sidebar-cat-item" href="#">AAA Rated Bonds <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#">PSU Bonds <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#">Tax-Free Bonds <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#">Government Bonds <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#">Senior Secured Bonds <span class="sidebar-cat-arrow">↗</span></a>
+          </div>
+        </div>
+        <div class="sidebar-card" style="background:#F0FDF4; border-color:#86EFAC;">
+          <div class="sidebar-title" style="color:#15803D;">Live on Aspero</div>
+          <div style="font-size:13px;color:#4B5565;margin-bottom:12px;">57 bonds available right now</div>
+          <button class="btn-primary" style="width:100%;justify-content:center;">Explore Live Bonds</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /matured -->
+
+
+<!-- ══════════════════════════════════════════════════
+     PAGE 5 — ISIN (LIVE ON ASPERO)
+     /invest/bonds/sammaan-capital-limited/INE148I07GL3/
+═══════════════════════════════════════════════════ -->
+<div id="live" class="page">
+
+  <div class="nav">
+    <div class="nav-logo">aspero</div>
+    <div class="nav-links">
+      <a href="#">Home</a><a href="#">Explore</a>
+      <a href="#" class="active">Bond Collections</a>
+      <a href="#">Fixed Deposit</a><a href="#">My Portfolio</a>
+    </div>
+    <div class="nav-right"><button class="nav-btn">Sign In</button></div>
+  </div>
+
+  <div class="breadcrumb"><div class="breadcrumb-inner">
+    <a href="#">Home</a> › <a href="#">Bonds</a> › <a href="#">Sammaan Capital Limited</a> › <span>INE148I07GL3</span>
+  </div></div>
+
+  <div class="container">
+    <div class="isin-layout">
+      <div class="isin-main">
+
+        <div class="isin-header">
+          <h1 class="isin-title">Sammaan Capital Limited — INE148I07GL3</h1>
+          <div class="isin-tags">
+            <span class="tag tag-blue">NCD</span>
+            <span class="tag tag-gray">Senior Secured</span>
+            <span class="tag tag-green">✅ Live on Aspero</span>
+          </div>
+        </div>
+
+        <div class="key-stats">
+          <div class="key-stat"><div class="key-stat-label">Credit Rating</div><div class="key-stat-value"><span class="rating-badge rating-aa" style="font-size:14px;padding:4px 10px;">ICRA AA</span></div></div>
+          <div class="key-stat"><div class="key-stat-label">Face Value</div><div class="key-stat-value">₹1,000</div></div>
+          <div class="key-stat"><div class="key-stat-label">Coupon Rate</div><div class="key-stat-value green">9.80%</div></div>
+          <div class="key-stat"><div class="key-stat-label">Taxability</div><div class="key-stat-value">Taxable</div></div>
+          <div class="key-stat"><div class="key-stat-label">Issue Size</div><div class="key-stat-value">₹200 Cr</div></div>
+        </div>
+
+        <!-- CTA Block — Live -->
+        <div class="cta-block cta-block-live">
+          <div class="cta-block-title">✅ Available to invest on Aspero</div>
+          <div class="cta-block-subtitle">This bond is currently live. View full details, coupon schedule, and invest directly.</div>
+          <div class="live-invest-row">
+            <div class="live-min-invest">Minimum investment: <strong>₹1,047.30</strong></div>
+            <button class="btn-primary" style="padding:12px 28px; font-size:15px;">View Details &amp; Invest →</button>
+          </div>
+        </div>
+
+        <!-- Bond Highlights -->
+        <div class="bond-highlights">
+          <div class="section-title">Bond Highlights</div>
+          <div class="highlights-grid">
+            <div class="highlight-item"><div class="highlight-label">Allotment Date</div><div class="highlight-value">14 Sep 2022</div></div>
+            <div class="highlight-item"><div class="highlight-label">Maturity Date</div><div class="highlight-value">12 Sep 2025</div></div>
+            <div class="highlight-item"><div class="highlight-label">Interest Frequency</div><div class="highlight-value">Annually</div></div>
+            <div class="highlight-item"><div class="highlight-label">Issuer Ownership</div><div class="highlight-value">Private</div></div>
+            <div class="highlight-item"><div class="highlight-label">Seniority</div><div class="highlight-value">Senior Secured</div></div>
+            <div class="highlight-item"><div class="highlight-label">Other Ratings</div><div class="highlight-value">CARE AA</div></div>
+          </div>
+        </div>
+
+        <!-- Other bonds by issuer -->
+        <div class="scroll-section">
+          <div class="section-title">Other bonds by Sammaan Capital Limited</div>
+          <div class="scroll-row">
+            <a class="scroll-bond-card" href="#">
+              <div class="sbc-name">Sammaan Capital</div><div class="sbc-isin">INE148I07GK5</div>
+              <div class="sbc-row"><span class="sbc-l">Coupon</span><span class="sbc-v">9.50%</span></div>
+              <div class="sbc-row"><span class="sbc-l">Maturity</span><span class="sbc-v">Jun 2025</span></div>
+              <div class="sbc-row"><span class="sbc-l">Rating</span><span class="sbc-v">AA</span></div>
+            </a>
+            <a class="scroll-bond-card" href="#">
+              <div class="sbc-name">Sammaan Capital</div><div class="sbc-isin">INE148I07GM1</div>
+              <div class="sbc-row"><span class="sbc-l">Coupon</span><span class="sbc-v">9.90%</span></div>
+              <div class="sbc-row"><span class="sbc-l">Maturity</span><span class="sbc-v">Dec 2026</span></div>
+              <div class="sbc-row"><span class="sbc-l">Rating</span><span class="sbc-v">AA</span></div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Similar bonds -->
+        <div class="scroll-section">
+          <div class="section-title">Similar bonds</div>
+          <div class="scroll-row">
+            <a class="scroll-bond-card" href="#">
+              <div class="sbc-name">Arka Fincap Limited</div><div class="sbc-isin">INE03W107223</div>
+              <div class="sbc-row"><span class="sbc-l">Coupon</span><span class="sbc-v">8.80%</span></div>
+              <div class="sbc-row"><span class="sbc-l">Maturity</span><span class="sbc-v">Oct 2026</span></div>
+              <div class="sbc-row"><span class="sbc-l">Rating</span><span class="sbc-v">AA</span></div>
+            </a>
+            <a class="scroll-bond-card" href="#">
+              <div class="sbc-name">U GRO Capital</div><div class="sbc-isin">INE583D07620</div>
+              <div class="sbc-row"><span class="sbc-l">Coupon</span><span class="sbc-v">10.50%</span></div>
+              <div class="sbc-row"><span class="sbc-l">Maturity</span><span class="sbc-v">Aug 2026</span></div>
+              <div class="sbc-row"><span class="sbc-l">Rating</span><span class="sbc-v">A+</span></div>
+            </a>
+            <a class="scroll-bond-card" href="#">
+              <div class="sbc-name">IIFL Home Finance</div><div class="sbc-isin">INE477L07AN9</div>
+              <div class="sbc-row"><span class="sbc-l">Coupon</span><span class="sbc-v">9.60%</span></div>
+              <div class="sbc-row"><span class="sbc-l">Maturity</span><span class="sbc-v">Mar 2026</span></div>
+              <div class="sbc-row"><span class="sbc-l">Rating</span><span class="sbc-v">AA-</span></div>
+            </a>
+          </div>
+        </div>
+
+        <!-- FAQs -->
+        <div class="section-title">FAQs — INE148I07GL3</div>
+        <div class="faq-section">
+          <div class="faq-item"><div class="faq-q">What is the coupon rate on the Sammaan Capital INE148I07GL3 bond? <span>›</span></div><div class="faq-a">The coupon rate on INE148I07GL3 is 9.80% per annum, paid annually.</div></div>
+          <div class="faq-item"><div class="faq-q">When does the INE148I07GL3 bond mature? <span>›</span></div></div>
+          <div class="faq-item"><div class="faq-q">What is the credit rating of INE148I07GL3? <span>›</span></div></div>
+          <div class="faq-item"><div class="faq-q">How frequently is interest paid on INE148I07GL3? <span>›</span></div></div>
+          <div class="faq-item"><div class="faq-q">What is the minimum investment amount for INE148I07GL3? <span>›</span></div></div>
+          <div class="faq-item"><div class="faq-q">Is the INE148I07GL3 bond taxable? <span>›</span></div></div>
+        </div>
+
+      </div>
+
+      <div class="isin-sidebar">
+        <div class="sidebar-card" style="background:#F0FDF4;border-color:#86EFAC;">
+          <div class="sidebar-title" style="color:#15803D;">✅ Live on Aspero</div>
+          <div style="font-size:24px;font-weight:800;color:#16B364;margin:4px 0;">9.80%</div>
+          <div style="font-size:13px;color:#4B5565;margin-bottom:4px;">Maximum YTM</div>
+          <div style="font-size:13px;color:#4B5565;margin-bottom:12px;">Min ₹1,047.30 · Matures Sep 2025</div>
+          <button class="btn-primary" style="width:100%;justify-content:center;">Invest Now →</button>
+        </div>
+        <div class="sidebar-card">
+          <div class="sidebar-title">Popular Bond Categories</div>
+          <div class="sidebar-category-list">
+            <a class="sidebar-cat-item" href="#">AA Rated Bonds <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#">Senior Secured NCDs <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#">1–2 Year Bonds <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#">NBFC Bonds <span class="sidebar-cat-arrow">↗</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /live -->
+
+
+<script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.switcher button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+</script>
+</body>
+</html>
