@@ -1150,6 +1150,7 @@ async function sendMessage(text) {
 
   try {
     let reply;
+    let replySource = '';
 
     if (WORKER_URL) {
       // ── Route through Worker (tool use + live Amplitude queries) ──
@@ -1165,6 +1166,7 @@ async function sendMessage(text) {
         }
         const data = await resp.json();
         reply = data.reply || '(empty response)';
+        replySource = 'worker';
       } catch (workerErr) {
         console.warn('Worker unavailable, falling back to direct LLM:', workerErr.message);
       }
@@ -1184,10 +1186,15 @@ async function sendMessage(text) {
       if (!resp.ok) throw new Error(`LLM HTTP ${resp.status}`);
       const data = await resp.json();
       reply = data.choices?.[0]?.message?.content || '(empty response)';
+      replySource = 'llm';
     }
 
     thinkingEl.remove();
-    appendMsg('assistant', formatReply(reply));
+    const msgEl = appendMsg('assistant', formatReply(reply));
+    msgEl.insertAdjacentHTML('beforeend',
+      `<div style="font-size:10px;color:#94A3B8;margin-top:6px;padding-top:5px;border-top:1px solid #F1F5F9;">
+        ${replySource === 'llm' ? '⚡ via LLM Council' : '🔌 via Worker'}
+      </div>`);
     chatHistory.push({ role: 'assistant', content: reply });
   } catch (e) {
     thinkingEl.remove();
