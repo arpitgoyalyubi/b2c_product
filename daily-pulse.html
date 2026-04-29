@@ -4,33 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aspero Daily Pulse</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 :root {
-  --bg: #0f172a; --surface: #1e293b; --surface2: #293548; --border: #334155;
-  --text: #f1f5f9; --text2: #94a3b8; --text3: #64748b;
-  --green: #22c55e; --green-bg: rgba(34,197,94,.15);
-  --yellow: #eab308; --yellow-bg: rgba(234,179,8,.15);
-  --red: #ef4444; --red-bg: rgba(239,68,68,.15);
-  --blue: #3b82f6; --blue-bg: rgba(59,130,246,.15);
+  --bg: #0d1117; --surface: #161b22; --surface2: #21262d; --border: #30363d;
+  --text: #e6edf3; --text2: #8b949e; --text3: #6e7681;
+  --blue: #58a6ff; --blue-dim: rgba(88,166,255,.12);
+  --violet: #bc8cff; --violet-dim: rgba(188,140,255,.12);
+  --green: #3fb950; --green-dim: rgba(63,185,80,.12);
+  --rose: #ff7b72; --rose-dim: rgba(255,123,114,.12);
+  --yellow: #d29922; --yellow-dim: rgba(210,153,34,.12);
   --radius: 10px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: var(--bg); color: var(--text); min-height: 100vh; }
 
-/* ── Header ── */
-.hdr { background: linear-gradient(135deg,#1e3a8a,#2563eb);
+/* === HEADER === */
+.hdr { background: linear-gradient(135deg,#0d1f3c,#1c3a6a);
   padding: 16px 24px; display: flex; align-items: center;
-  justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-.hdr-left h1 { font-size: 1.1rem; font-weight: 700; }
-.hdr-left .sub { font-size: .72rem; color: rgba(255,255,255,.6); margin-top: 2px; }
+  justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  border-bottom: 1px solid var(--border); }
+.hdr-left h1 { font-size: 1.1rem; font-weight: 700; color: var(--blue); }
+.hdr-left .sub { font-size: .72rem; color: var(--text2); margin-top: 2px; }
 .health-chip { font-size: .72rem; font-weight: 600; border-radius: 100px;
-  padding: 4px 12px; display: flex; align-items: center; gap: 5px; }
-.health-chip.healthy { background: var(--green-bg); color: var(--green); }
-.health-chip.warning { background: var(--yellow-bg); color: var(--yellow); }
-.health-chip.critical { background: var(--red-bg); color: var(--red); }
+  padding: 4px 12px; border: 1px solid; }
+.health-chip.healthy  { background: var(--green-dim);  color: var(--green);  border-color: rgba(63,185,80,.3); }
+.health-chip.warning  { background: var(--yellow-dim); color: var(--yellow); border-color: rgba(210,153,34,.3); }
+.health-chip.critical { background: var(--rose-dim);   color: var(--rose);   border-color: rgba(255,123,114,.3); }
 
-/* ── Tabs ── */
+/* === TABS === */
 .tab-bar { display: flex; border-bottom: 1px solid var(--border);
   background: var(--surface); padding: 0 24px; }
 .tab-btn { padding: 12px 18px; font-size: .82rem; font-weight: 500;
@@ -38,101 +41,133 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   border-bottom: 2px solid transparent; transition: all .15s; }
 .tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
 .tab-btn:hover:not(.active) { color: var(--text); }
-.tab-pane { display: none; padding: 20px 24px 40px; max-width: 1200px; margin: 0 auto; }
+.tab-pane { display: none; padding: 24px 24px 60px; max-width: 1240px; margin: 0 auto; }
 .tab-pane.active { display: block; }
 
-/* ── KPI grid ── */
-.kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap: 12px; margin-bottom: 20px; }
+/* === SECTION TITLE === */
+.sec-title { font-size: .72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--text2); margin-bottom: 12px; }
+
+/* === KPI CARDS === */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 12px; margin-bottom: 24px; }
 .kpi-card { background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 14px 16px; }
+  border-radius: var(--radius); padding: 14px 16px;
+  border-top: 3px solid var(--border); transition: transform .1s; }
+.kpi-card:hover { transform: translateY(-2px); }
+.kpi-card.blue   { border-top-color: var(--blue); }
+.kpi-card.violet { border-top-color: var(--violet); }
+.kpi-card.green  { border-top-color: var(--green); }
+.kpi-card.rose   { border-top-color: var(--rose); }
+.kpi-card.yellow { border-top-color: var(--yellow); }
 .kpi-label { font-size: .65rem; text-transform: uppercase; letter-spacing: .1em;
   color: var(--text3); margin-bottom: 6px; }
 .kpi-val { font-size: 1.5rem; font-weight: 800; letter-spacing: -.03em; margin-bottom: 4px; }
 .kpi-wow { font-size: .72rem; font-weight: 600; }
 .kpi-wow.up   { color: var(--green); }
-.kpi-wow.down { color: var(--red); }
+.kpi-wow.down { color: var(--rose); }
 .kpi-wow.flat { color: var(--text3); }
 .kpi-sub { font-size: .65rem; color: var(--text3); margin-top: 3px; }
 
-/* ── Yesterday bar ── */
+/* === YESTERDAY BAR === */
 .yest-bar { background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 12px 16px; margin-bottom: 20px;
+  border-radius: var(--radius); padding: 12px 16px; margin-bottom: 24px;
   display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .yest-label { font-size: .72rem; color: var(--text2); }
 .yest-val { font-size: .9rem; font-weight: 700; }
 .yest-chip { font-size: .68rem; font-weight: 600; border-radius: 6px; padding: 3px 8px; }
-.yest-chip.healthy { background: var(--green-bg); color: var(--green); }
-.yest-chip.warning { background: var(--yellow-bg); color: var(--yellow); }
-.yest-chip.critical { background: var(--red-bg); color: var(--red); }
+.yest-chip.healthy  { background: var(--green-dim);  color: var(--green); }
+.yest-chip.warning  { background: var(--yellow-dim); color: var(--yellow); }
+.yest-chip.critical { background: var(--rose-dim);   color: var(--rose); }
 
-/* ── Actions ── */
-.section-title { font-size: .8rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .08em; color: var(--text2); margin-bottom: 10px; }
-.actions-list { display: flex; flex-direction: column; gap: 7px; margin-bottom: 20px; }
+/* === ACTIONS === */
+.actions-list { display: flex; flex-direction: column; gap: 7px; margin-bottom: 24px; }
 .action-item { display: flex; align-items: flex-start; gap: 10px;
   background: var(--surface); border-radius: 8px; padding: 10px 14px;
   border-left: 3px solid; }
-.action-item.critical { border-color: var(--red); }
+.action-item.critical { border-color: var(--rose); }
 .action-item.warning  { border-color: var(--yellow); }
 .action-item.win      { border-color: var(--green); }
 .action-sev { font-size: .65rem; font-weight: 700; text-transform: uppercase;
-  border-radius: 4px; padding: 2px 6px; flex-shrink: 0; }
-.action-item.critical .action-sev { background: var(--red-bg); color: var(--red); }
-.action-item.warning  .action-sev { background: var(--yellow-bg); color: var(--yellow); }
-.action-item.win      .action-sev { background: var(--green-bg); color: var(--green); }
+  border-radius: 4px; padding: 2px 6px; flex-shrink: 0; white-space: nowrap; }
+.action-item.critical .action-sev { background: var(--rose-dim);   color: var(--rose); }
+.action-item.warning  .action-sev { background: var(--yellow-dim); color: var(--yellow); }
+.action-item.win      .action-sev { background: var(--green-dim);  color: var(--green); }
 .action-text { font-size: .78rem; line-height: 1.5; color: var(--text); }
 
-/* ── Stage health ── */
-.stage-grid { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 20px; }
+/* === STAGE HEALTH PILLS === */
+.stage-grid { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 24px; }
 .stage-pill { display: flex; flex-direction: column; align-items: center;
-  border-radius: 8px; padding: 8px 12px; min-width: 72px; cursor: default;
-  position: relative; border: 1px solid; transition: transform .1s; }
+  border-radius: 8px; padding: 8px 12px; min-width: 74px; cursor: default;
+  border: 1px solid; transition: transform .1s; }
 .stage-pill:hover { transform: translateY(-2px); }
-.stage-pill.healthy  { background: var(--green-bg); border-color: rgba(34,197,94,.3); }
-.stage-pill.warning  { background: var(--yellow-bg); border-color: rgba(234,179,8,.3); }
-.stage-pill.critical { background: var(--red-bg); border-color: rgba(239,68,68,.3); }
-.stage-pill.unknown  { background: var(--surface); border-color: var(--border); }
-.sp-id   { font-size: .6rem; text-transform: uppercase; letter-spacing: .07em; opacity: .55; }
-.sp-name { font-size: .72rem; font-weight: 600; margin-top: 2px; }
-.sp-conv { font-size: .75rem; font-weight: 700; margin-top: 3px; }
+.stage-pill.healthy  { background: var(--green-dim);  border-color: rgba(63,185,80,.3); }
+.stage-pill.warning  { background: var(--yellow-dim); border-color: rgba(210,153,34,.3); }
+.stage-pill.critical { background: var(--rose-dim);   border-color: rgba(255,123,114,.3); }
+.stage-pill.unknown  { background: var(--surface);    border-color: var(--border); }
+.sp-id   { font-size: .6rem; text-transform: uppercase; letter-spacing: .07em; opacity: .5; }
+.sp-name { font-size: .7rem; font-weight: 600; margin-top: 2px; text-align: center; }
+.sp-conv { font-size: .78rem; font-weight: 700; margin-top: 3px; }
 .sp-wow  { font-size: .65rem; margin-top: 1px; }
 .stage-pill.healthy  .sp-conv { color: var(--green); }
 .stage-pill.warning  .sp-conv { color: var(--yellow); }
-.stage-pill.critical .sp-conv { color: var(--red); }
-.stage-pill.healthy  .sp-wow  { color: rgba(34,197,94,.7); }
-.stage-pill.warning  .sp-wow  { color: rgba(234,179,8,.7); }
-.stage-pill.critical .sp-wow  { color: rgba(239,68,68,.7); }
+.stage-pill.critical .sp-conv { color: var(--rose); }
 
-/* ── Weekly scorecard table ── */
-.wsc-wrap { overflow-x: auto; margin-bottom: 20px; }
+/* === CHART CONTAINER === */
+.chart-wrap { background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px; margin-bottom: 24px; }
+.chart-title { font-size: .78rem; font-weight: 600; color: var(--text2); margin-bottom: 12px; }
+.chart-canvas-wrap { position: relative; height: 200px; }
+
+/* === WEEKLY SCORECARD TABLE === */
+.wsc-wrap { overflow-x: auto; margin-bottom: 24px; }
 .wsc-table { width: 100%; border-collapse: collapse; font-size: .8rem; }
-.wsc-table th, .wsc-table td { padding: 8px 12px; text-align: right; border-bottom: 1px solid var(--border); }
+.wsc-table th, .wsc-table td { padding: 9px 12px; text-align: right; border-bottom: 1px solid var(--border); }
 .wsc-table th:first-child, .wsc-table td:first-child { text-align: left; color: var(--text2); }
 .wsc-table thead th { background: var(--surface2); font-size: .7rem;
   text-transform: uppercase; letter-spacing: .07em; color: var(--text3); }
 .wsc-table .incomplete { color: var(--yellow); }
 .wsc-table .wow-row td { font-size: .72rem; color: var(--text3); border-bottom: none; }
 
-/* ── Accordion (detail tab) ── */
-.acc-item { border: 1px solid var(--border); border-radius: var(--radius);
-  margin-bottom: 10px; overflow: hidden; }
-.acc-head { display: flex; align-items: center; gap: 10px; padding: 13px 16px;
-  cursor: pointer; background: var(--surface); user-select: none; }
-.acc-head:hover { background: var(--surface2); }
-.acc-chevron { font-size: .8rem; transition: transform .2s; color: var(--text3); }
-.acc-item.open .acc-chevron { transform: rotate(90deg); }
-.acc-title { font-weight: 700; font-size: .88rem; flex: 1; }
-.acc-badge { font-size: .7rem; font-weight: 600; border-radius: 6px; padding: 2px 8px; }
-.acc-badge.healthy  { background: var(--green-bg); color: var(--green); }
-.acc-badge.warning  { background: var(--yellow-bg); color: var(--yellow); }
-.acc-badge.critical { background: var(--red-bg); color: var(--red); }
-.acc-badge.unknown  { background: var(--surface2); color: var(--text3); }
-.acc-body { display: none; padding: 14px 16px; border-top: 1px solid var(--border); }
-.acc-item.open .acc-body { display: block; }
+/* === DETAIL: SECTION BANDS === */
+.detail-section { border-radius: var(--radius); margin-bottom: 20px; overflow: hidden; border: 1px solid var(--border); }
+.detail-sec-hdr { display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; cursor: pointer; user-select: none; }
+.detail-sec-hdr:hover { filter: brightness(1.07); }
+.detail-sec-hdr.blue   { background: linear-gradient(135deg,#0d1f3c,#162b52); border-bottom: 1px solid rgba(88,166,255,.2); }
+.detail-sec-hdr.violet { background: linear-gradient(135deg,#1a0d3c,#2a1550); border-bottom: 1px solid rgba(188,140,255,.2); }
+.detail-sec-hdr.green  { background: linear-gradient(135deg,#0d2218,#122e1e); border-bottom: 1px solid rgba(63,185,80,.2); }
+.detail-sec-hdr.rose   { background: linear-gradient(135deg,#2a0d0d,#3a1010); border-bottom: 1px solid rgba(255,123,114,.2); }
+.dsh-left { display: flex; align-items: center; gap: 12px; }
+.dsh-icon { font-size: 1.2rem; }
+.dsh-title { font-size: .92rem; font-weight: 700; }
+.dsh-subtitle { font-size: .72rem; opacity: .65; margin-top: 2px; }
+.dsh-right { display: flex; align-items: center; gap: 10px; }
+.dsh-kpi-val { font-size: 1.1rem; font-weight: 800; }
+.dsh-kpi-lbl { font-size: .65rem; opacity: .6; }
+.dsh-chevron { font-size: .8rem; transition: transform .2s; opacity: .6; }
+.detail-section.open .dsh-chevron { transform: rotate(90deg); }
+.detail-sec-body { display: none; padding: 18px; background: var(--surface); }
+.detail-section.open .detail-sec-body { display: block; }
 
-/* ── Data tables ── */
+/* === STAGE CARDS GRID === */
+.stage-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 10px; margin-bottom: 16px; }
+.stage-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.sc-head { display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; cursor: pointer; }
+.sc-head:hover { background: rgba(255,255,255,.03); }
+.sc-name { font-size: .78rem; font-weight: 600; }
+.sc-meta { display: flex; align-items: center; gap: 8px; }
+.sc-conv { font-size: .82rem; font-weight: 700; }
+.sc-wow  { font-size: .72rem; font-weight: 600; }
+.sc-body { display: none; padding: 0 14px 12px; border-top: 1px solid var(--border); }
+.stage-card.open .sc-body { display: block; }
+.sc-alert { font-size: .72rem; line-height: 1.5; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.sc-alert:last-child { border-bottom: none; }
+.sc-no-alerts { font-size: .72rem; color: var(--text3); padding: 8px 0; }
+
+/* === DATA TABLES === */
 .dt { width: 100%; border-collapse: collapse; font-size: .78rem; }
-.dt th { text-align: right; padding: 6px 10px; font-size: .68rem;
+.dt th { text-align: right; padding: 7px 10px; font-size: .68rem;
   text-transform: uppercase; letter-spacing: .07em; color: var(--text3);
   border-bottom: 1px solid var(--border); background: var(--surface2); }
 .dt th:first-child { text-align: left; }
@@ -140,19 +175,36 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 .dt td:first-child { text-align: left; color: var(--text2); }
 .dt tr:last-child td { border-bottom: none; }
 .up   { color: var(--green); }
-.down { color: var(--red); }
+.down { color: var(--rose); }
 .flat { color: var(--text3); }
-.alert-list { list-style: none; display: flex; flex-direction: column; gap: 5px; margin-top: 10px; }
-.alert-list li { font-size: .76rem; line-height: 1.5; padding: 7px 10px;
-  background: var(--surface2); border-radius: 6px; }
 
-/* ── Misc ── */
+/* === HEAT TABLE (cohort) === */
+.heat-0 { }
+.heat-1 { background: rgba(63,185,80,.08); color: #3fb950; font-weight: 600; }
+.heat-2 { background: rgba(63,185,80,.18); color: #45d458; font-weight: 700; }
+.heat-3 { background: rgba(63,185,80,.30); color: #56e86a; font-weight: 800; }
+
+/* === GTV PROGRESS BAR === */
+.gtv-bar-wrap { margin: 12px 0; }
+.gtv-bar-track { background: var(--surface2); border-radius: 100px; height: 14px;
+  overflow: hidden; border: 1px solid var(--border); }
+.gtv-bar-fill { height: 100%; border-radius: 100px;
+  background: linear-gradient(90deg,#3fb950,#26a641); transition: width .4s; }
+.gtv-bar-labels { display: flex; justify-content: space-between;
+  font-size: .7rem; color: var(--text3); margin-top: 4px; }
+
+/* === MISC === */
 .empty { font-size: .8rem; color: var(--text3); padding: 20px; text-align: center; }
-.tag-incomplete { font-size: .65rem; color: var(--yellow);
-  background: var(--yellow-bg); border-radius: 4px; padding: 1px 5px; }
+.tag-incomplete { font-size: .65rem; color: var(--yellow); background: var(--yellow-dim); border-radius: 4px; padding: 1px 5px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.stat-block { background: var(--surface2); border-radius: 8px; padding: 14px; }
+.stat-val { font-size: 1.4rem; font-weight: 800; }
+.stat-lbl { font-size: .68rem; color: var(--text3); margin-top: 4px; }
+.divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 @media (max-width: 640px) {
-  .tab-pane { padding: 14px 14px 40px; }
+  .tab-pane { padding: 14px 14px 60px; }
   .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .two-col  { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -171,48 +223,137 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   <button class="tab-btn"        onclick="switchTab('detail',this)">🔍 Full Detail</button>
 </div>
 
-<!-- ════════════════════════════════════════════════════
-     TAB 1 · DAILY SCORECARD
-════════════════════════════════════════════════════ -->
+<!-- TAB 1 · DAILY SCORECARD -->
 <div class="tab-pane active" id="tab-scorecard">
   <div style="height:16px"></div>
-
-  <!-- KPI cards -->
   <div class="kpi-grid" id="kpi-grid"></div>
-
-  <!-- Yesterday bar -->
   <div class="yest-bar" id="yest-bar"></div>
-
-  <!-- Actions -->
-  <div class="section-title">🎯 Today's Actions</div>
+  <div class="sec-title">🎯 Today's Actions</div>
   <div class="actions-list" id="actions-list"></div>
-
-  <!-- Stage health -->
-  <div class="section-title">Stage Health (rolling 7d)</div>
+  <div class="sec-title">Stage Health (rolling 7d)</div>
   <div class="stage-grid" id="stage-grid"></div>
-
-  <!-- Weekly Scorecard -->
-  <div class="section-title" style="margin-top:4px">📅 Weekly Scorecard (Mon–Sun)</div>
+  <div class="chart-wrap">
+    <div class="chart-title">📈 3-Week Trend — Signups & Investors (Mon–Sun windows)</div>
+    <div class="chart-canvas-wrap"><canvas id="chart-trend"></canvas></div>
+  </div>
+  <div class="sec-title" style="margin-top:4px">📅 Weekly Scorecard (Mon–Sun)</div>
   <div class="wsc-wrap" id="wsc-wrap"></div>
 </div>
 
-<!-- ════════════════════════════════════════════════════
-     TAB 2 · FULL DETAIL
-════════════════════════════════════════════════════ -->
+<!-- TAB 2 · FULL DETAIL -->
 <div class="tab-pane" id="tab-detail">
   <div style="height:16px"></div>
-  <div id="detail-sections"></div>
+
+  <!-- Signup section -->
+  <div class="detail-section open" id="sec-signup">
+    <div class="detail-sec-hdr blue" onclick="toggleSec('signup')">
+      <div class="dsh-left">
+        <span class="dsh-icon">🟦</span>
+        <div>
+          <div class="dsh-title">Signup Funnel</div>
+          <div class="dsh-subtitle">S1 Signin · S2 Email · S3 PIN — new user acquisition</div>
+        </div>
+      </div>
+      <div class="dsh-right">
+        <div id="dsh-signups" style="text-align:right"></div>
+        <span class="dsh-chevron">▶</span>
+      </div>
+    </div>
+    <div class="detail-sec-body">
+      <div class="stage-cards" id="signup-stage-cards"></div>
+      <div id="s1-tier-section"></div>
+    </div>
+  </div>
+
+  <!-- KYC section -->
+  <div class="detail-section" id="sec-kyc">
+    <div class="detail-sec-hdr violet" onclick="toggleSec('kyc')">
+      <div class="dsh-left">
+        <span class="dsh-icon">🟣</span>
+        <div>
+          <div class="dsh-title">KYC Pipeline</div>
+          <div class="dsh-subtitle">S4 → S10 — compliance & identity verification steps</div>
+        </div>
+      </div>
+      <div class="dsh-right">
+        <div id="dsh-kyc" style="text-align:right"></div>
+        <span class="dsh-chevron">▶</span>
+      </div>
+    </div>
+    <div class="detail-sec-body">
+      <div class="two-col" style="margin-bottom:16px">
+        <div class="stat-block">
+          <div class="stat-val" id="kyc-starters-val">—</div>
+          <div class="stat-lbl">KYC Starters (7d rolling)</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-val" id="kyc-done-val">—</div>
+          <div class="stat-lbl">KYC Done (7d rolling)</div>
+        </div>
+      </div>
+      <div class="chart-wrap" style="margin-bottom:16px">
+        <div class="chart-title">KYC Pipeline Steps — % of Signups</div>
+        <div class="chart-canvas-wrap" style="height:180px"><canvas id="chart-kyc"></canvas></div>
+      </div>
+      <div class="stage-cards" id="kyc-stage-cards"></div>
+    </div>
+  </div>
+
+  <!-- Investment section -->
+  <div class="detail-section" id="sec-invest">
+    <div class="detail-sec-hdr green" onclick="toggleSec('invest')">
+      <div class="dsh-left">
+        <span class="dsh-icon">🟢</span>
+        <div>
+          <div class="dsh-title">Investment Conversion</div>
+          <div class="dsh-subtitle">KYC Done → First Investment — cohort waterfall</div>
+        </div>
+      </div>
+      <div class="dsh-right">
+        <div id="dsh-invest" style="text-align:right"></div>
+        <span class="dsh-chevron">▶</span>
+      </div>
+    </div>
+    <div class="detail-sec-body">
+      <div id="cohort-section"></div>
+      <hr class="divider">
+      <div id="inv-tier-section"></div>
+    </div>
+  </div>
+
+  <!-- GTV section -->
+  <div class="detail-section" id="sec-gtv">
+    <div class="detail-sec-hdr rose" onclick="toggleSec('gtv')">
+      <div class="dsh-left">
+        <span class="dsh-icon">🔴</span>
+        <div>
+          <div class="dsh-title">GTV — Gross Transaction Value</div>
+          <div class="dsh-subtitle">Month-to-date investment volume vs ₹50cr target</div>
+        </div>
+      </div>
+      <div class="dsh-right">
+        <div id="dsh-gtv" style="text-align:right"></div>
+        <span class="dsh-chevron">▶</span>
+      </div>
+    </div>
+    <div class="detail-sec-body">
+      <div id="gtv-section"></div>
+    </div>
+  </div>
 </div>
 
 <script>
-const D = {"generated_at": "Wed Apr 29 · 17:43 IST", "period_label": "Apr 22 – 29, 2026", "health": "healthy", "signups": 3131, "wow_signup_pct": 8.2, "kyc_start_pct": 29.5, "kyc_start_wow_pp": 0.7, "kyc_done_pct": 25.1, "kyc_done_wow_pp": -3.2, "pay_conv_pct": 15.4, "pay_wow_pp": -4.0, "sso_pct": 58.9, "sso_wow_pp": 1.8, "gtv_mtd": 91544425.34, "gtv_pace_pct": 18.9, "gtv_target": 500000000, "yest_signups": 363, "yest_avg": 447, "yest_status": "critical", "actions": [{"sev": "warning", "text": "⚠️ *KYC Completion down 3.2pp* WoW to *25.1%* — *AML Check* step most affected (-12.6pp WoW)"}, {"sev": "warning", "text": "⚠️ Audience mix: Low-LTV devices (<₹22K) *57.4%* · High-LTV devices (₹22K+) *39.7%* — low-LTV dominating, acquisition channels misaligned"}, {"sev": "warning", "text": "⚠️ *Liveness Check vs 8w peak: Step% at 87.9% — ↓5.4pp below 8-week best (93.3%)*"}, {"sev": "warning", "text": "⚠️ *eSign vs 8w peak: Step% at 72.9% — ↓5.4pp below 8-week best (78.3%)*"}, {"sev": "win", "text": "📈 Signups up *+8.2%* WoW (2,893 → 3,131)"}, {"sev": "win", "text": "✅ *SSO at 58.9%* — 40% target reached · SSO users convert at 89.6% vs 69.6% for OTP (4 steps vs 6)"}, {"sev": "win", "text": "✅ *Premium Android (₹40K+)* Email→Signup at *96.4%* — target audience completing registration well"}], "stage_health": [{"id": "s1", "name": "Signin→OTP", "status": "healthy", "conv": 63.8, "wow_pp": -1.4, "n_alerts": 2}, {"id": "s2", "name": "Email Verif", "status": "healthy", "conv": 77.1, "wow_pp": 2.9, "n_alerts": 0}, {"id": "s3", "name": "PIN Setup", "status": "healthy", "conv": 92.8, "wow_pp": 0, "n_alerts": 0}, {"id": "s4", "name": "Basic Details", "status": "healthy", "conv": 35.6, "wow_pp": 2.3, "n_alerts": 1}, {"id": "s5", "name": "Digilocker", "status": "healthy", "conv": 51.5, "wow_pp": -3.4, "n_alerts": 4}, {"id": "s6", "name": "Bank Verif", "status": "warning", "conv": 88.4, "wow_pp": 4.7, "n_alerts": 5}, {"id": "s7", "name": "Liveness", "status": "healthy", "conv": 87.9, "wow_pp": -2.1, "n_alerts": 3}, {"id": "s8", "name": "Wet Sig", "status": "healthy", "conv": 94.4, "wow_pp": -1.1, "n_alerts": 0}, {"id": "s9", "name": "eSign", "status": "healthy", "conv": 72.9, "wow_pp": -2.1, "n_alerts": 4}, {"id": "s10", "name": "Demat", "status": "healthy", "conv": 100.0, "wow_pp": 0, "n_alerts": 0}, {"id": "s11", "name": "Payment", "status": "unknown", "conv": 15.4, "wow_pp": -4.0, "n_alerts": 0}], "scorecard_weeks": {"pw": {"label": "Apr 13 – 19, 2026", "days": null, "signup": 2476, "investors": 151, "kyc_start_pct": 34.9, "kyc_done_pct": 12.4, "kyc_s2d_pct": 35.5, "payment_pct": 49.2, "gtv_cr": 2.23}, "lw": {"label": "Apr 20 – 26, 2026", "days": null, "signup": 2901, "investors": 199, "kyc_start_pct": 33.4, "kyc_done_pct": 8.2, "kyc_s2d_pct": 24.6, "payment_pct": 83.6, "gtv_cr": 3.06}, "cw": {"label": "Apr 27 – 29, 2026", "days": 3, "signup": 1045, "investors": 100, "kyc_start_pct": 38.4, "kyc_done_pct": 15.6, "kyc_s2d_pct": 40.6, "payment_pct": 61.3, "gtv_cr": 1.15}}, "s1_tiers": [{"label": "Low Android", "conv_pct": 64.3, "conv_wow": -2.3, "intent_pct": 69.9, "intent_wow": -2.2, "otp_api_pct": 0}, {"label": "Mid Android", "conv_pct": 65.7, "conv_wow": -2.8, "intent_pct": 69.9, "intent_wow": -2.9, "otp_api_pct": 0}, {"label": "Premium Android", "conv_pct": 65.6, "conv_wow": -1.2, "intent_pct": 67.9, "intent_wow": -3.0, "otp_api_pct": 0}, {"label": "iOS", "conv_pct": 59.3, "conv_wow": 0.6, "intent_pct": 66.0, "intent_wow": -0.7, "otp_api_pct": 0}, {"label": "Web", "conv_pct": 29.6, "conv_wow": -1.4, "intent_pct": 36.2, "intent_wow": -0.6, "otp_api_pct": 0}], "kyc_pipeline": [{"label": "AML Check", "cur_pct": 51.1, "prev_pct": 63.7, "wow_pp": -12.6}, {"label": "Risk Details", "cur_pct": 33.3, "prev_pct": 36.1, "wow_pp": -2.8}, {"label": "Wet Signature", "cur_pct": 13.1, "prev_pct": 15.9, "wow_pp": -2.8}, {"label": "Demat Verify", "cur_pct": 10.0, "prev_pct": 11.9, "wow_pp": -1.9}, {"label": "Email Verify", "cur_pct": 112.7, "prev_pct": 110.0, "wow_pp": 2.7}], "kyc_stages": [{"key": "stage4_basic_details", "name": "S4 · Basic Details", "conv_pct": 35.6, "wow_pp": 2.3, "vs_peak": -0.9, "alerts": ["[behavioral] 📋  Risk profile form abandonment: only 54.3% of screen viewers submitted — check form UX / field complexity"]}, {"key": "stage5_digilocker", "name": "S5 · Digilocker", "conv_pct": 51.5, "wow_pp": -3.4, "vs_peak": -6.7, "alerts": ["[behavioral] 🔴  Digilocker Step% critically low at 51.5% (target ≥75%). Two root causes: (1) navigation gap — users finish Risk Profiling but don't immediately proceed to Aadhaar/PAN screen; (2) CTA hesitation — users reach the screen but don't click the Digilocker redirect. Check sub-steps below for the current breakdown.", "[behavioral] 📉  Stage 5 · Digilocker regression: Step% dropped 6.7pp from high watermark (58.2% → 51.5%) — investigate recent product / traffic changes.", "[behavioral] 🎯  Stage 5 · Digilocker drop concentrated in Web -19.6pp (Step% 50.0%) — investigate tier-specific product or traffic changes.", "📈  Stage 5 · Digilocker improvement insulated in Premium Android +6.0pp — identify what protected this tier to replicate across others."]}, {"key": "stage6_bank", "name": "S6 · Bank Verification", "conv_pct": 88.4, "wow_pp": 4.7, "vs_peak": -1.3, "alerts": ["[third_party] ⚠️  UPI path abandonment: 10.0pp of UPI starters didn't complete via RPD — monitor RPD success rate.", "[third_party] 🔴  Manual path abandonment: 26.5pp of users who entered account number didn't complete via penny drop. Causes: incorrect account number, penny drop failure, or unsupported bank.", "[behavioral] ⚠️  Ops queue elevated: 10.2% of bank verification starters sent to ops manual review (name match = 2, pending approval — not abandoned). Auto-rejected (name match 0–1) make up the remaining unexplained drop.", "[behavioral] 🎯  Stage 6 · Bank Verification drop concentrated in Mid Android -7.3pp (Step% 84.6%) — investigate tier-specific product or traffic changes."]}, {"key": "stage7_liveness", "name": "S7 · Liveness", "conv_pct": 87.9, "wow_pp": -2.1, "vs_peak": -5.4, "alerts": ["[behavioral] 📉  Camera permission rate dropped -5.7pp WoW — permission UX regression?", "[behavioral] 📉  Stage 7 · Liveness Check regression: Step% dropped 5.4pp from high watermark (93.3% → 87.9%) — investigate recent product / traffic changes.", "[behavioral] 🎯  Stage 7 · Liveness Check drop concentrated in Premium Android -14.0pp (Step% 86.0%), iOS -11.8pp (Step% 84.0%) — investigate tier-specific product or traffic changes."]}, {"key": "stage8_wet_signature", "name": "S8 · Wet Signature", "conv_pct": 94.4, "wow_pp": -1.1, "vs_peak": -2.8, "alerts": []}, {"key": "stage9_esign", "name": "S9 · eSign", "conv_pct": 72.9, "wow_pp": -2.1, "vs_peak": -5.4, "alerts": ["[backend_pipeline] 🔴  eSign Step% critically low at 72.9% (target ≥95%). Root cause: users are gated between Wet Signature and eSign by a KRA status check (must be 'KYC Validated') and an AML check — users with KRA status Registered / On Hold / Not Available / etc. are blocked and cannot proceed. Product fix in progress.", "[behavioral] 📉  Stage 9 · eSign regression: Step% dropped 5.4pp from high watermark (78.3% → 72.9%) — investigate recent product / traffic changes.", "[behavioral] 🎯  Stage 9 · eSign drop concentrated in Premium Android -15.4pp (Step% 69.8%) — investigate tier-specific product or traffic changes.", "📈  Stage 9 · eSign improvement insulated in Mid Android +5.9pp — identify what protected this tier to replicate across others."]}, {"key": "stage10_demat", "name": "S10 · Demat", "conv_pct": 100.0, "wow_pp": 0.0, "vs_peak": 0.3, "alerts": []}], "cohort": [{"label": "Apr 27-29", "rtt": 163, "w0": 15.3, "w1": null, "w2": null, "w3": null}, {"label": "Apr 20-26", "rtt": 238, "w0": 17.2, "w1": 21.8, "w2": null, "w3": null}, {"label": "Apr 13-19", "rtt": 307, "w0": 19.9, "w1": 29.3, "w2": 30.0, "w3": null}, {"label": "Apr 6-12", "rtt": 222, "w0": 14.0, "w1": 20.7, "w2": 25.7, "w3": 26.6}], "inv_tiers": [{"label": "Low Android", "inv": 92, "gtv_cr": 1.56, "atv_lakh": 1.1, "inv_wow": -0.1, "gtv_wow": -1.9}, {"label": "Premium Android", "inv": 33, "gtv_cr": 0.53, "atv_lakh": 1.8, "inv_wow": 3.1, "gtv_wow": 6.5}, {"label": "Web", "inv": 23, "gtv_cr": 0.53, "atv_lakh": 1.8, "inv_wow": -1.9, "gtv_wow": -0.1}, {"label": "iOS", "inv": 38, "gtv_cr": 0.43, "atv_lakh": 0.8, "inv_wow": -4.6, "gtv_wow": -7.1}, {"label": "Mid Android", "inv": 40, "gtv_cr": 0.34, "atv_lakh": 1.0, "inv_wow": 1.3, "gtv_wow": 2.6}, {"label": "Unknown", "inv": 29, "gtv_cr": 0.34, "atv_lakh": 1.5, "inv_wow": 2.2, "gtv_wow": 0.0}], "kyc_starters": 925, "kyc_done_count": 232};
+const D = {"generated_at": "Wed Apr 29 · 18:16 IST", "period_label": "Apr 22 – 29, 2026", "health": "healthy", "signups": 3143, "wow_signup_pct": 8.6, "kyc_start_pct": 29.6, "kyc_start_wow_pp": 0.8, "kyc_done_pct": 25.1, "kyc_done_wow_pp": -3.2, "pay_conv_pct": 15.4, "pay_wow_pp": -4.0, "sso_pct": 58.9, "sso_wow_pp": 1.8, "gtv_mtd": 91544425.34, "gtv_pace_pct": 18.9, "gtv_target": 500000000, "yest_signups": 363, "yest_avg": 449, "yest_status": "critical", "actions": [{"sev": "warning", "text": "⚠️ *KYC Completion down 3.2pp* WoW to *25.1%* — *AML Check* step most affected (-12.6pp WoW)"}, {"sev": "warning", "text": "⚠️ Audience mix: Low-LTV devices (<₹22K) *57.4%* · High-LTV devices (₹22K+) *39.7%* — low-LTV dominating, acquisition channels misaligned"}, {"sev": "warning", "text": "⚠️ *Liveness Check vs 8w peak: Step% at 87.9% — ↓5.4pp below 8-week best (93.3%)*"}, {"sev": "warning", "text": "⚠️ *eSign vs 8w peak: Step% at 72.8% — ↓5.5pp below 8-week best (78.3%)*"}, {"sev": "win", "text": "📈 Signups up *+8.6%* WoW (2,893 → 3,143)"}, {"sev": "win", "text": "✅ *SSO at 58.9%* — 40% target reached · SSO users convert at 89.6% vs 69.6% for OTP (4 steps vs 6)"}, {"sev": "win", "text": "✅ *Premium Android (₹40K+)* Email→Signup at *96.5%* — target audience completing registration well"}], "stage_health": [{"id": "s1", "name": "Signin→OTP", "status": "healthy", "conv": 63.8, "wow_pp": -1.4, "n_alerts": 2}, {"id": "s2", "name": "Email Verif", "status": "healthy", "conv": 77.0, "wow_pp": 2.8, "n_alerts": 0}, {"id": "s3", "name": "PIN Setup", "status": "healthy", "conv": 92.8, "wow_pp": 0, "n_alerts": 0}, {"id": "s4", "name": "Basic Details", "status": "healthy", "conv": 35.6, "wow_pp": 2.3, "n_alerts": 1}, {"id": "s5", "name": "Digilocker", "status": "healthy", "conv": 51.4, "wow_pp": -3.5, "n_alerts": 4}, {"id": "s6", "name": "Bank Verif", "status": "warning", "conv": 88.4, "wow_pp": 4.7, "n_alerts": 5}, {"id": "s7", "name": "Liveness", "status": "healthy", "conv": 87.9, "wow_pp": -2.1, "n_alerts": 3}, {"id": "s8", "name": "Wet Sig", "status": "healthy", "conv": 94.5, "wow_pp": -1.0, "n_alerts": 0}, {"id": "s9", "name": "eSign", "status": "healthy", "conv": 72.8, "wow_pp": -2.2, "n_alerts": 4}, {"id": "s10", "name": "Demat", "status": "healthy", "conv": 100.0, "wow_pp": 0, "n_alerts": 0}, {"id": "s11", "name": "Payment", "status": "unknown", "conv": 15.4, "wow_pp": -4.0, "n_alerts": 0}], "scorecard_weeks": {"pw": {"label": "Apr 13 – 19, 2026", "days": null, "signup": 2476, "investors": 151, "kyc_start_pct": 34.9, "kyc_done_pct": 12.4, "kyc_s2d_pct": 35.5, "payment_pct": 49.2, "gtv_cr": 2.23}, "lw": {"label": "Apr 20 – 26, 2026", "days": null, "signup": 2901, "investors": 199, "kyc_start_pct": 33.4, "kyc_done_pct": 8.2, "kyc_s2d_pct": 24.6, "payment_pct": 83.6, "gtv_cr": 3.06}, "cw": {"label": "Apr 27 – 29, 2026", "days": 3, "signup": 1057, "investors": 100, "kyc_start_pct": 38.6, "kyc_done_pct": 15.5, "kyc_s2d_pct": 40.2, "payment_pct": 61.0, "gtv_cr": 1.15}}, "s1_tiers": [{"label": "Low Android", "conv_pct": 64.3, "conv_wow": -2.3, "intent_pct": 69.9, "intent_wow": -2.2, "otp_api_pct": 0}, {"label": "Mid Android", "conv_pct": 65.7, "conv_wow": -2.8, "intent_pct": 69.9, "intent_wow": -2.9, "otp_api_pct": 0}, {"label": "Premium Android", "conv_pct": 65.8, "conv_wow": -1.0, "intent_pct": 68.2, "intent_wow": -2.7, "otp_api_pct": 0}, {"label": "iOS", "conv_pct": 59.3, "conv_wow": 0.6, "intent_pct": 66.0, "intent_wow": -0.7, "otp_api_pct": 0}, {"label": "Web", "conv_pct": 29.5, "conv_wow": -1.5, "intent_pct": 36.1, "intent_wow": -0.7, "otp_api_pct": 0}], "signup_stages": [{"key": "stage1_signin", "name": "S1 · Signin → OTP", "top": 7989, "key_cnt": 5097, "conv_pct": 63.8, "wow_pp": -1.4, "alerts": ["📊 *Low Android Conv% at 64.3%* — below floor (65%) for 5 consecutive weeks. Structural issue, not a WoW regression.", "📊 *Mid Android Conv% at 65.7%* — below floor (68%) for 11 consecutive weeks. Structural issue, not a WoW regression."]}, {"key": "stage2_email", "name": "S2 · Email Verify", "top": 4431, "key_cnt": 3414, "conv_pct": 77.0, "wow_pp": 2.8, "alerts": []}, {"key": "stage3_pin", "name": "S3 · PIN Setup", "top": 3414, "key_cnt": 3167, "conv_pct": 92.8, "wow_pp": 0.0, "alerts": []}], "kyc_pipeline": [{"label": "AML Check", "cur_pct": 51.1, "prev_pct": 63.7, "wow_pp": -12.6}, {"label": "Risk Details", "cur_pct": 33.3, "prev_pct": 36.1, "wow_pp": -2.8}, {"label": "Wet Signature", "cur_pct": 13.1, "prev_pct": 15.9, "wow_pp": -2.8}, {"label": "Demat Verify", "cur_pct": 10.0, "prev_pct": 11.9, "wow_pp": -1.9}, {"label": "Email Verify", "cur_pct": 112.7, "prev_pct": 110.0, "wow_pp": 2.7}], "kyc_stages": [{"key": "stage4_basic_details", "name": "S4 · Basic Details", "conv_pct": 35.6, "wow_pp": 2.3, "vs_peak": -0.9, "alerts": ["[behavioral] 📋  Risk profile form abandonment: only 54.2% of screen viewers submitted — check form UX / field complexity"]}, {"key": "stage5_digilocker", "name": "S5 · Digilocker", "conv_pct": 51.4, "wow_pp": -3.5, "vs_peak": -6.8, "alerts": ["[behavioral] 🔴  Digilocker Step% critically low at 51.4% (target ≥75%). Two root causes: (1) navigation gap — users finish Risk Profiling but don't immediately proceed to Aadhaar/PAN screen; (2) CTA hesitation — users reach the screen but don't click the Digilocker redirect. Check sub-steps below for the current breakdown.", "[behavioral] 📉  Stage 5 · Digilocker regression: Step% dropped 6.8pp from high watermark (58.2% → 51.4%) — investigate recent product / traffic changes.", "[behavioral] 🎯  Stage 5 · Digilocker drop concentrated in Web -21.3pp (Step% 48.3%) — investigate tier-specific product or traffic changes.", "📈  Stage 5 · Digilocker improvement insulated in Premium Android +6.5pp — identify what protected this tier to replicate across others."]}, {"key": "stage6_bank", "name": "S6 · Bank Verification", "conv_pct": 88.4, "wow_pp": 4.7, "vs_peak": -1.3, "alerts": ["[third_party] ⚠️  UPI path abandonment: 10.0pp of UPI starters didn't complete via RPD — monitor RPD success rate.", "[third_party] 🔴  Manual path abandonment: 26.4pp of users who entered account number didn't complete via penny drop. Causes: incorrect account number, penny drop failure, or unsupported bank.", "[behavioral] ⚠️  Ops queue elevated: 10.2% of bank verification starters sent to ops manual review (name match = 2, pending approval — not abandoned). Auto-rejected (name match 0–1) make up the remaining unexplained drop.", "[behavioral] 🎯  Stage 6 · Bank Verification drop concentrated in Mid Android -7.3pp (Step% 84.6%) — investigate tier-specific product or traffic changes."]}, {"key": "stage7_liveness", "name": "S7 · Liveness", "conv_pct": 87.9, "wow_pp": -2.1, "vs_peak": -5.4, "alerts": ["[behavioral] 📉  Camera permission rate dropped -5.6pp WoW — permission UX regression?", "[behavioral] 📉  Stage 7 · Liveness Check regression: Step% dropped 5.4pp from high watermark (93.3% → 87.9%) — investigate recent product / traffic changes.", "[behavioral] 🎯  Stage 7 · Liveness Check drop concentrated in Premium Android -13.7pp (Step% 86.3%), iOS -11.8pp (Step% 84.0%) — investigate tier-specific product or traffic changes."]}, {"key": "stage8_wet_signature", "name": "S8 · Wet Signature", "conv_pct": 94.5, "wow_pp": -1.0, "vs_peak": -2.7, "alerts": []}, {"key": "stage9_esign", "name": "S9 · eSign", "conv_pct": 72.8, "wow_pp": -2.2, "vs_peak": -5.5, "alerts": ["[backend_pipeline] 🔴  eSign Step% critically low at 72.8% (target ≥95%). Root cause: users are gated between Wet Signature and eSign by a KRA status check (must be 'KYC Validated') and an AML check — users with KRA status Registered / On Hold / Not Available / etc. are blocked and cannot proceed. Product fix in progress.", "[behavioral] 📉  Stage 9 · eSign regression: Step% dropped 5.5pp from high watermark (78.3% → 72.8%) — investigate recent product / traffic changes.", "[behavioral] 🎯  Stage 9 · eSign drop concentrated in Premium Android -17.0pp (Step% 68.2%) — investigate tier-specific product or traffic changes.", "📈  Stage 9 · eSign improvement insulated in Mid Android +5.9pp — identify what protected this tier to replicate across others."]}, {"key": "stage10_demat", "name": "S10 · Demat", "conv_pct": 100.0, "wow_pp": 0.0, "vs_peak": 0.3, "alerts": []}], "cohort": [{"label": "Apr 27-29", "rtt": 164, "w0": 15.9, "w1": null, "w2": null, "w3": null}, {"label": "Apr 20-26", "rtt": 238, "w0": 17.2, "w1": 21.8, "w2": null, "w3": null}, {"label": "Apr 13-19", "rtt": 307, "w0": 19.9, "w1": 29.3, "w2": 30.0, "w3": null}, {"label": "Apr 6-12", "rtt": 222, "w0": 14.0, "w1": 20.7, "w2": 25.7, "w3": 26.6}], "inv_tiers": [{"label": "Low Android", "inv": 92, "gtv_cr": 1.56, "atv_lakh": 1.1, "inv_wow": -0.3, "gtv_wow": -1.9}, {"label": "Premium Android", "inv": 33, "gtv_cr": 0.53, "atv_lakh": 1.8, "inv_wow": 3.1, "gtv_wow": 6.5}, {"label": "Web", "inv": 23, "gtv_cr": 0.53, "atv_lakh": 1.8, "inv_wow": -1.9, "gtv_wow": -0.1}, {"label": "iOS", "inv": 38, "gtv_cr": 0.43, "atv_lakh": 0.8, "inv_wow": -4.7, "gtv_wow": -7.1}, {"label": "Mid Android", "inv": 41, "gtv_cr": 0.34, "atv_lakh": 1.0, "inv_wow": 1.6, "gtv_wow": 2.6}, {"label": "Unknown", "inv": 29, "gtv_cr": 0.34, "atv_lakh": 1.5, "inv_wow": 2.1, "gtv_wow": 0.0}], "kyc_starters": 930, "kyc_done_count": 233};
 
-// ── Tab switching ────────────────────────────────────────────────────────
+// ── Tab / section toggle ─────────────────────────────────────────────────
 function switchTab(id, btn) {
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
   btn.classList.add('active');
+}
+function toggleSec(id) {
+  document.getElementById('sec-' + id).classList.toggle('open');
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────
@@ -244,19 +385,19 @@ hc.className   = 'health-chip ' + (D.health || 'healthy');
 
 // ── KPI grid ──────────────────────────────────────────────────────────────
 const kpis = [
-  { label: 'Signups',    val: num(D.signups),        wow: D.wow_signup_pct, wSuf: '%', sub: '7d rolling' },
-  { label: 'KYC Start', val: pct(D.kyc_start_pct),  wow: D.kyc_start_wow_pp, sub: '% of signups' },
-  { label: 'KYC Done',  val: pct(D.kyc_done_pct),   wow: D.kyc_done_wow_pp,  sub: '% of signups' },
-  { label: 'Payment',   val: pct(D.pay_conv_pct),   wow: D.pay_wow_pp,       sub: 'RTT→invest' },
-  { label: 'SSO %',     val: pct(D.sso_pct),        wow: D.sso_wow_pp,       sub: 'of email signups' },
-  { label: 'GTV MTD',   val: '₹' + (D.gtv_mtd||0).toFixed(1) + 'cr',
-    wow: null, sub: D.gtv_pace_pct + '% of target', wSuf: '' },
+  { label: 'Signups',     val: num(D.signups),        wow: D.wow_signup_pct,  wSuf: '%', sub: '7d rolling',      color: 'blue' },
+  { label: 'KYC Start',  val: pct(D.kyc_start_pct),  wow: D.kyc_start_wow_pp, sub: '% of signups',  color: 'violet' },
+  { label: 'KYC Done',   val: pct(D.kyc_done_pct),   wow: D.kyc_done_wow_pp,  sub: '% of signups',  color: 'violet' },
+  { label: 'KYC→Invest', val: pct(D.pay_conv_pct),   wow: D.pay_wow_pp,       sub: '% of KYC done', color: 'green' },
+  { label: 'SSO %',      val: pct(D.sso_pct),        wow: D.sso_wow_pp,       sub: 'of email signups', color: 'yellow' },
+  { label: 'GTV MTD',    val: '₹' + (D.gtv_mtd||0).toFixed(1) + 'cr',
+    wow: null, sub: (D.gtv_pace_pct||0).toFixed(1) + '% of ₹50cr target', wSuf: '', color: 'rose' },
 ];
 const grid = el('kpi-grid');
 kpis.forEach(k => {
-  const wc  = wowClass(k.wow);
-  const ws  = k.wow != null ? wowStr(k.wow, k.wSuf) : '';
-  grid.appendChild(div('kpi-card',
+  const wc = wowClass(k.wow);
+  const ws = k.wow != null ? wowStr(k.wow, k.wSuf) : '';
+  grid.appendChild(div('kpi-card ' + (k.color || ''),
     `<div class="kpi-label">${k.label}</div>
      <div class="kpi-val">${k.val}</div>
      ${ws ? `<div class="kpi-wow ${wc}">${ws} WoW</div>` : ''}
@@ -381,130 +522,262 @@ const sg = el('stage-grid');
 })();
 
 
-// ── DETAIL SECTIONS ───────────────────────────────────────────────────────
-const detailEl = el('detail-sections');
+// ── 3-week trend chart ────────────────────────────────────────────────────
+(function() {
+  const W = D.scorecard_weeks || {};
+  const pw = W.pw || {}, lw = W.lw || {}, cw = W.cw || {};
+  const labels = [
+    pw.label || 'Prior wk',
+    lw.label || 'Last wk',
+    (cw.label || 'This wk') + (cw.days && cw.days < 7 ? ' ⚠' : ''),
+  ];
+  new Chart(el('chart-trend'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Signups',   data: [pw.signup||0, lw.signup||0, cw.signup||0],
+          backgroundColor: 'rgba(88,166,255,.55)', borderColor: '#58a6ff', borderWidth: 1 },
+        { label: 'Investors', data: [pw.investors||0, lw.investors||0, cw.investors||0],
+          backgroundColor: 'rgba(63,185,80,.55)',  borderColor: '#3fb950', borderWidth: 1 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: '#8b949e', font: { size: 11 } } },
+        tooltip: { mode: 'index' },
+      },
+      scales: {
+        x: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { color: '#21262d' } },
+        y: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { color: '#21262d' } },
+      }
+    }
+  });
+})();
 
-function mkAcc(id, title, statusStr, bodyHtml) {
-  const item = document.createElement('div');
-  item.className = 'acc-item';
-  item.id = 'acc-' + id;
-  item.innerHTML = `
-    <div class="acc-head" onclick="toggleAcc('${id}')">
-      <span class="acc-chevron">▶</span>
-      <span class="acc-title">${title}</span>
-      <span class="acc-badge ${statusStr}">${statusStr}</span>
-    </div>
-    <div class="acc-body">${bodyHtml}</div>`;
-  return item;
-}
-function toggleAcc(id) {
-  document.getElementById('acc-' + id).classList.toggle('open');
+// ══════════════════════════════════════════════════════════════════════════
+// FULL DETAIL TAB
+// ══════════════════════════════════════════════════════════════════════════
+
+// ── Card toggle helper ────────────────────────────────────────────────────
+function toggleCard(id) { document.getElementById(id).classList.toggle('open'); }
+
+// ── Heatmap class helper ──────────────────────────────────────────────────
+function heatClass(v) {
+  if (v == null) return '';
+  if (v >= 40) return 'heat-3';
+  if (v >= 20) return 'heat-2';
+  if (v >= 5)  return 'heat-1';
+  return '';
 }
 
-// ── S1: Signin → OTP ──────────────────────────────────────────────────────
+// ── Signup section header KPI ─────────────────────────────────────────────
+el('dsh-signups').innerHTML =
+  `<div class="dsh-kpi-val" style="color:#58a6ff">${num(D.signups)}</div>
+   <div class="dsh-kpi-lbl">signups (7d)</div>`;
+
+// ── Signup Micro Stages (S1/S2/S3) ───────────────────────────────────────
+(function() {
+  const cards = el('signup-stage-cards');
+  const stages = D.signup_stages || [];
+  if (!stages.length) {
+    cards.innerHTML = '<div class="empty">No signup stage data available</div>';
+    return;
+  }
+  stages.forEach((s, i) => {
+    const wc = wowClass(s.wow_pp);
+    const wowHtml = s.wow_pp != null
+      ? `<span class="sc-wow ${wc}">${wowStr(s.wow_pp)}</span>` : '';
+    const alertsHtml = (s.alerts || []).length
+      ? s.alerts.map(a => `<div class="sc-alert">${a}</div>`).join('')
+      : `<div class="sc-no-alerts">✅ No alerts</div>`;
+    const cid = 'signup-card-' + i;
+    const card = document.createElement('div');
+    card.className = 'stage-card';
+    card.id = cid;
+    card.innerHTML = `
+      <div class="sc-head" onclick="toggleCard('${cid}')">
+        <span class="sc-name">${s.name}</span>
+        <span class="sc-meta">
+          <span class="sc-conv" style="color:#58a6ff">${pct(s.conv_pct)}</span>
+          ${wowHtml}
+        </span>
+      </div>
+      <div class="sc-body">${alertsHtml}</div>`;
+    cards.appendChild(card);
+  });
+})();
+
+// ── Stage 1 tier table ────────────────────────────────────────────────────
 (function() {
   const rows = D.s1_tiers || [];
   if (!rows.length) return;
-  const s1_stage = (D.stage_health||[]).find(s => s.id === 's1') || {};
-  let tbl = `<table class="dt">
+  let tbl = `<div class="sec-title" style="margin-bottom:8px">Signin by Device Tier</div>
+  <div style="overflow-x:auto"><table class="dt">
     <thead><tr>${['Tier','Conv%','Conv WoW','Intent%','Intent WoW','OTP API%'].map(th).join('')}</tr></thead>
     <tbody>`;
   rows.forEach(r => {
     const cWc = wowClass(r.conv_wow), iWc = wowClass(r.intent_wow);
     tbl += `<tr>
-      ${td(r.label)}
-      ${td(pct(r.conv_pct))}
+      ${td(r.label)} ${td(pct(r.conv_pct))}
       ${td(`<span class="${cWc}">${wowStr(r.conv_wow)}</span>`)}
       ${td(pct(r.intent_pct))}
       ${td(`<span class="${iWc}">${wowStr(r.intent_wow)}</span>`)}
       ${td(pct(r.otp_api_pct))}
     </tr>`;
   });
-  tbl += '</tbody></table>';
-  detailEl.appendChild(mkAcc('s1', 'Stage 1 · Signin → OTP  (New users by Device Tier)', s1_stage.status || 'unknown', tbl));
+  tbl += '</tbody></table></div>';
+  el('s1-tier-section').innerHTML = tbl;
 })();
 
-// ── KYC Pipeline overview ──────────────────────────────────────────────────
+// ── KYC section header KPI ────────────────────────────────────────────────
+el('dsh-kyc').innerHTML =
+  `<div class="dsh-kpi-val" style="color:#bc8cff">${pct(D.kyc_done_pct)}</div>
+   <div class="dsh-kpi-lbl">KYC Done %</div>`;
+if (D.kyc_starters != null) el('kyc-starters-val').textContent = num(D.kyc_starters);
+if (D.kyc_done_count != null) el('kyc-done-val').textContent   = num(D.kyc_done_count);
+
+// ── KYC pipeline bar chart ────────────────────────────────────────────────
 (function() {
   const rows = D.kyc_pipeline || [];
   if (!rows.length) return;
-  let tbl = `<table class="dt">
-    <thead><tr>${['KYC Step','% of Signups','Prior %','WoW'].map(th).join('')}</tr></thead>
-    <tbody>`;
-  rows.forEach(r => {
-    const wc = wowClass(r.wow_pp);
-    tbl += `<tr>
-      ${td(r.label)}
-      ${td(pct(r.cur_pct))}
-      ${td(pct(r.prev_pct),'flat')}
-      ${td(`<span class="${wc}">${wowStr(r.wow_pp)}</span>`)}
-    </tr>`;
+  new Chart(el('chart-kyc'), {
+    type: 'bar',
+    data: {
+      labels: rows.map(r => r.label),
+      datasets: [
+        { label: 'This week',  data: rows.map(r => r.cur_pct),
+          backgroundColor: 'rgba(188,140,255,.65)', borderColor: '#bc8cff', borderWidth: 1 },
+        { label: 'Prior week', data: rows.map(r => r.prev_pct),
+          backgroundColor: 'rgba(188,140,255,.2)',  borderColor: '#bc8cff', borderWidth: 1 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#8b949e', font: { size: 11 } } } },
+      scales: {
+        x: { ticks: { color: '#8b949e', font: { size: 10 }, maxRotation: 35 }, grid: { color: '#21262d' } },
+        y: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { color: '#21262d' } },
+      }
+    }
   });
-  tbl += '</tbody></table>';
-  const worst = rows.reduce((a,b) => (b.wow_pp < a.wow_pp ? b : a), rows[0]);
-  const overallStatus = worst && worst.wow_pp < -3 ? 'critical' : worst && worst.wow_pp < -1 ? 'warning' : 'healthy';
-  detailEl.appendChild(mkAcc('kyc-pipeline', 'KYC Pipeline Overview  (% of signups by step)', overallStatus, tbl));
 })();
 
-// ── Per-KYC-stage accordion ────────────────────────────────────────────────
-(D.kyc_stages || []).forEach(s => {
-  const wc = wowClass(s.wow_pp);
-  const meta = `Conv: <b>${pct(s.conv_pct)}</b>  <span class="${wc}">${wowStr(s.wow_pp)}</span>` +
-               (s.vs_peak != null ? `  vs peak: <span class="${wowClass(s.vs_peak)}">${wowStr(s.vs_peak)}</span>` : '');
-  let body = `<p style="font-size:.8rem;margin-bottom:10px">${meta}</p>`;
-  if (s.alerts && s.alerts.length) {
-    body += '<ul class="alert-list">' + s.alerts.map(a => `<li>${a}</li>`).join('') + '</ul>';
-  }
-  const status = s.wow_pp != null && s.wow_pp < -3 ? 'critical' : s.wow_pp != null && s.wow_pp < -1 ? 'warning' : 'healthy';
-  detailEl.appendChild(mkAcc(s.key, s.name, status, body));
-});
+// ── KYC Stage Cards (S4–S10) ──────────────────────────────────────────────
+(function() {
+  const cards = el('kyc-stage-cards');
+  const stages = D.kyc_stages || [];
+  if (!stages.length) { cards.innerHTML = '<div class="empty">No KYC stage data</div>'; return; }
+  stages.forEach((s, i) => {
+    const wc = wowClass(s.wow_pp);
+    const wowHtml = s.wow_pp != null ? `<span class="sc-wow ${wc}">${wowStr(s.wow_pp)}</span>` : '';
+    const peakHtml = s.vs_peak != null
+      ? `<div style="font-size:.7rem;color:${s.vs_peak >= 0 ? 'var(--green)' : 'var(--rose)'};margin-top:4px">vs peak: ${s.vs_peak >= 0 ? '▲+' : '▼'}${Math.abs(s.vs_peak).toFixed(1)}pp</div>` : '';
+    const alertsHtml = (s.alerts || []).length
+      ? s.alerts.map(a => `<div class="sc-alert">${a}</div>`).join('')
+      : `<div class="sc-no-alerts">✅ No alerts</div>`;
+    const cid = 'kyc-card-' + i;
+    const card = document.createElement('div');
+    card.className = 'stage-card' + (wc === 'down' ? ' open' : '');
+    card.id = cid;
+    card.innerHTML = `
+      <div class="sc-head" onclick="toggleCard('${cid}')">
+        <span class="sc-name">${s.name}</span>
+        <span class="sc-meta">
+          <span class="sc-conv" style="color:#bc8cff">${pct(s.conv_pct)}</span>
+          ${wowHtml}
+        </span>
+      </div>
+      <div class="sc-body">${peakHtml}${alertsHtml}</div>`;
+    cards.appendChild(card);
+  });
+})();
+
+// ── Investment section header KPI ─────────────────────────────────────────
+el('dsh-invest').innerHTML =
+  `<div class="dsh-kpi-val" style="color:#3fb950">${pct(D.pay_conv_pct)}</div>
+   <div class="dsh-kpi-lbl">KYC→Invest %</div>`;
 
 // ── Cohort Waterfall ──────────────────────────────────────────────────────
 (function() {
   const rows = D.cohort || [];
-  if (!rows.length) return;
-  let tbl = `<table class="dt">
-    <thead><tr>${['KYC Cohort','RTT','Same wk','+ Wk 1','+ Wk 2','+ Wk 3'].map(th).join('')}</tr></thead>
+  const sec = el('cohort-section');
+  if (!rows.length) { sec.innerHTML = '<div class="empty">No cohort data</div>'; return; }
+  let tbl = `<div class="sec-title" style="margin-bottom:8px">RTT → First Investment Cohort Waterfall</div>
+  <div style="overflow-x:auto"><table class="dt">
+    <thead><tr>${['KYC Cohort','RTT','Same wk%','+ Wk 1','+ Wk 2','+ Wk 3'].map(th).join('')}</tr></thead>
     <tbody>`;
   rows.forEach(r => {
     tbl += `<tr>
       ${td(r.label)} ${td(num(r.rtt))}
-      ${td(r.w0 != null ? pct(r.w0) : '—')}
-      ${td(r.w1 != null ? pct(r.w1) : '—')}
-      ${td(r.w2 != null ? pct(r.w2) : '—')}
-      ${td(r.w3 != null ? pct(r.w3) : '—')}
+      <td class="${heatClass(r.w0)}">${r.w0 != null ? pct(r.w0) : '—'}</td>
+      <td class="${heatClass(r.w1)}">${r.w1 != null ? pct(r.w1) : '—'}</td>
+      <td class="${heatClass(r.w2)}">${r.w2 != null ? pct(r.w2) : '—'}</td>
+      <td class="${heatClass(r.w3)}">${r.w3 != null ? pct(r.w3) : '—'}</td>
     </tr>`;
   });
-  tbl += '</tbody></table>';
-  detailEl.appendChild(mkAcc('cohort', 'RTT → First Investment  (Cohort Waterfall)', 'healthy', tbl));
+  tbl += '</tbody></table></div>';
+  sec.innerHTML = tbl;
 })();
 
 // ── Investor Tier Breakdown ───────────────────────────────────────────────
 (function() {
   const rows = D.inv_tiers || [];
+  const sec = el('inv-tier-section');
   if (!rows.length) return;
-  let tbl = `<table class="dt">
+  let tbl = `<div class="sec-title" style="margin-bottom:8px">Investors × GTV by Device Tier</div>
+  <div style="overflow-x:auto"><table class="dt">
     <thead><tr>${['Tier','Investors','GTV (₹cr)','ATV (₹L)','Inv WoW','GTV WoW'].map(th).join('')}</tr></thead>
     <tbody>`;
   rows.forEach(r => {
     const iWc = wowClass(r.inv_wow), gWc = wowClass(r.gtv_wow);
     tbl += `<tr>
-      ${td(r.label)}
-      ${td(num(r.inv))}
-      ${td('₹' + r.gtv_cr.toFixed(2) + 'cr')}
-      ${td('₹' + r.atv_lakh.toFixed(1) + 'L')}
+      ${td(r.label)} ${td(num(r.inv))}
+      ${td('₹' + r.gtv_cr.toFixed(2) + 'cr')} ${td('₹' + r.atv_lakh.toFixed(1) + 'L')}
       ${td(`<span class="${iWc}">${wowStr(r.inv_wow)}</span>`)}
       ${td(`<span class="${gWc}">${wowStr(r.gtv_wow)}</span>`)}
     </tr>`;
   });
-  tbl += '</tbody></table>';
-  detailEl.appendChild(mkAcc('inv-tiers', 'Investor × GTV by Device Tier', 'healthy', tbl));
+  tbl += '</tbody></table></div>';
+  sec.innerHTML = tbl;
 })();
 
-// Auto-open critical/warning stages on load
-document.querySelectorAll('.acc-badge.critical, .acc-badge.warning').forEach(b => {
-  b.closest('.acc-item').classList.add('open');
-});
+// ── GTV section ───────────────────────────────────────────────────────────
+(function() {
+  const gtv    = D.gtv_mtd   || 0;
+  const target = (D.gtv_target || 0) / 1e7;   // rupees → crores
+  const pace   = D.gtv_pace_pct || 0;
+  const fillPct = Math.min(pace, 100).toFixed(1);
+  const barColor = pace >= 100 ? 'var(--green)' : pace >= 60 ? 'var(--yellow)' : 'var(--rose)';
+
+  el('dsh-gtv').innerHTML =
+    `<div class="dsh-kpi-val" style="color:#ff7b72">₹${gtv.toFixed(1)}cr</div>
+     <div class="dsh-kpi-lbl">GTV MTD</div>`;
+
+  el('gtv-section').innerHTML = `
+    <div class="two-col" style="margin-bottom:20px">
+      <div class="stat-block">
+        <div class="stat-val" style="color:#ff7b72">₹${gtv.toFixed(2)}cr</div>
+        <div class="stat-lbl">MTD GTV (investment volume)</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-val">${pace.toFixed(1)}%</div>
+        <div class="stat-lbl">of ₹${target.toFixed(0)}cr monthly target</div>
+      </div>
+    </div>
+    <div class="sec-title" style="margin-bottom:8px">Progress to ₹${target.toFixed(0)}cr Target</div>
+    <div class="gtv-bar-wrap">
+      <div class="gtv-bar-track">
+        <div class="gtv-bar-fill" style="width:${fillPct}%"></div>
+      </div>
+      <div class="gtv-bar-labels">
+        <span>₹0</span>
+        <span style="color:${barColor}">₹${gtv.toFixed(1)}cr (${pace.toFixed(1)}%)</span>
+        <span>₹${target.toFixed(0)}cr</span>
+      </div>
+    </div>`;
+})();
 </script>
 </body>
 </html>
