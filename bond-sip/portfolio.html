@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bond SIP Portfolio — Aspero</title>
+<style>
+  :root {
+    --blue: #1E3A8A;
+    --blue-mid: #2563EB;
+    --blue-lt: #EFF6FF;
+    --green: #16A34A;
+    --green-mid: #059669;
+    --green-lt: #F0FDF4;
+    --amber: #D97706;
+    --amber-lt: #FFFBEB;
+    --red: #DC2626;
+    --red-lt: #FEF2F2;
+    --border: #E2E8F0;
+    --text: #0F172A;
+    --text2: #475569;
+    --text3: #94A3B8;
+    --bg: #F1F5F9;
+    --surface: #FFFFFF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #0EA5E9 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 48px;
+  }
+
+  .top-bar {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    color: rgba(255,255,255,0.8);
+    font-size: 13px;
+  }
+  .top-bar a { color: rgba(255,255,255,0.8); text-decoration: none; }
+  .top-bar a:hover { color: white; }
+
+  .phone {
+    width: 100%;
+    max-width: 390px;
+    background: var(--bg);
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1);
+    min-height: 720px;
+  }
+
+  .status-bar {
+    background: var(--surface);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .app-header {
+    background: var(--surface);
+    padding: 10px 20px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .back-btn {
+    width: 32px; height: 32px;
+    background: var(--bg);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--text);
+    flex-shrink: 0;
+  }
+  .app-header-title { font-size: 16px; font-weight: 700; color: var(--text); }
+  .app-header-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+
+  /* Tabs */
+  .tab-bar {
+    background: var(--surface);
+    display: flex;
+    padding: 0 4px;
+    border-bottom: 1px solid var(--border);
+    gap: 4px;
+  }
+  .tab {
+    flex: 1;
+    padding: 10px 4px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text3);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .tab.active {
+    color: var(--blue-mid);
+    border-bottom-color: var(--blue-mid);
+  }
+
+  .scroll-area {
+    overflow-y: auto;
+    height: 580px;
+    background: var(--bg);
+  }
+
+  /* Summary hero */
+  .summary-hero {
+    background: linear-gradient(160deg, #065F46, #059669);
+    padding: 20px;
+    color: white;
+  }
+  .summary-hero-label {
+    font-size: 11px;
+    opacity: 0.65;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .summary-hero-amount {
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    margin-bottom: 2px;
+  }
+  .summary-hero-sub {
+    font-size: 12px;
+    opacity: 0.75;
+    margin-bottom: 16px;
+  }
+  .summary-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .summary-metric {
+    background: rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 10px 12px;
+  }
+  .sm-label { font-size: 10px; opacity: 0.65; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+  .sm-val { font-size: 16px; font-weight: 800; }
+  .sm-sub { font-size: 10px; opacity: 0.65; margin-top: 1px; }
+
+  /* Status banner */
+  .status-banner {
+    margin: 12px 14px 0;
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--border);
+  }
+  .status-banner-left { display: flex; align-items: center; gap: 8px; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot-green { background: var(--green-mid); }
+  .dot-amber { background: var(--amber); }
+  .dot-red { background: var(--red); }
+  .status-label { font-size: 13px; font-weight: 700; color: var(--text); }
+  .status-sub { font-size: 11px; color: var(--text3); }
+  .status-actions { display: flex; gap: 6px; }
+  .status-btn {
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text2);
+    cursor: pointer;
+  }
+  .status-btn.danger { border-color: #FECACA; color: var(--red); background: var(--red-lt); }
+
+  /* Section headers */
+  .section-head {
+    padding: 16px 14px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .section-title { font-size: 13px; font-weight: 700; color: var(--text); }
+  .section-link { font-size: 12px; color: var(--blue-mid); font-weight: 600; }
+
+  /* Cashflow calendar */
+  .cashflow-card {
+    background: var(--surface);
+    border-radius: 12px;
+    margin: 0 14px 10px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .cashflow-month-header {
+    background: var(--bg);
+    padding: 8px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text3);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .cashflow-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    border-top: 1px solid var(--border);
+    gap: 10px;
+  }
+  .cf-date {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--blue-lt);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .cf-date-day { font-size: 14px; font-weight: 800; color: var(--blue-mid); line-height: 1; }
+  .cf-date-mo { font-size: 9px; color: var(--blue-mid); opacity: 0.7; }
+  .cf-date.coupon { background: var(--green-lt); }
+  .cf-date.coupon .cf-date-day, .cf-date.coupon .cf-date-mo { color: var(--green-mid); }
+  .cf-date.maturity { background: #FEF9C3; }
+  .cf-date.maturity .cf-date-day, .cf-date.maturity .cf-date-mo { color: #92400E; }
+  .cf-info { flex: 1; }
+  .cf-title { font-size: 13px; font-weight: 600; color: var(--text); }
+  .cf-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+  .cf-amount { font-size: 14px; font-weight: 800; }
+  .cf-amount.debit { color: var(--text2); }
+  .cf-amount.credit { color: var(--green-mid); }
+  .cf-amount.maturity { color: #92400E; }
+
+  /* Holdings */
+  .holding-card {
+    background: var(--surface);
+    border-radius: 12px;
+    margin: 0 14px 10px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .holding-header {
+    padding: 12px 14px;
+    background: linear-gradient(135deg, #1E3A8A, #2563EB);
+    color: white;
+  }
+  .holding-issuer { font-size: 13px; font-weight: 800; }
+  .holding-isin { font-size: 10px; opacity: 0.6; margin-top: 1px; }
+  .holding-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+  .holding-metric {
+    background: var(--surface);
+    padding: 10px 12px;
+  }
+  .hm-label { font-size: 10px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+  .hm-val { font-size: 15px; font-weight: 700; color: var(--text); }
+  .hm-val.green { color: var(--green-mid); }
+  .holding-badge-row {
+    padding: 8px 12px 10px;
+    display: flex;
+    gap: 6px;
+  }
+  .hbadge {
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+  }
+  .hb-aa { background: #FEF9C3; color: #92400E; }
+  .hb-sip { background: var(--blue-lt); color: var(--blue-mid); }
+  .hb-cycle { background: var(--green-lt); color: var(--green-mid); }
+
+  /* Instalment history */
+  .history-card {
+    background: var(--surface);
+    border-radius: 12px;
+    margin: 0 14px 10px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .history-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    gap: 10px;
+  }
+  .history-row:last-child { border-bottom: none; }
+  .hist-cycle {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--text2);
+    flex-shrink: 0;
+  }
+  .hist-info { flex: 1; }
+  .hist-title { font-size: 12px; font-weight: 600; color: var(--text); }
+  .hist-sub { font-size: 11px; color: var(--text3); }
+  .hist-right { text-align: right; }
+  .hist-amount { font-size: 13px; font-weight: 700; color: var(--text); }
+  .hist-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 7px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+  .hs-success { background: var(--green-lt); color: var(--green-mid); }
+  .hs-pending { background: var(--amber-lt); color: var(--amber); }
+  .hs-failed { background: var(--red-lt); color: var(--red); }
+
+  /* Tab panels */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; padding-bottom: 20px; }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text3);
+  }
+  .empty-state .icon { font-size: 40px; margin-bottom: 10px; }
+  .empty-state h3 { font-size: 14px; font-weight: 700; color: var(--text2); margin-bottom: 4px; }
+  .empty-state p { font-size: 12px; line-height: 1.5; }
+
+  /* SIP controls drawer */
+  .controls-section {
+    margin: 0 14px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .control-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .control-btn:hover { background: var(--bg); }
+  .control-btn-left { display: flex; align-items: center; gap: 10px; }
+  .control-icon {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .ci-blue { background: var(--blue-lt); }
+  .ci-amber { background: var(--amber-lt); }
+  .ci-red { background: var(--red-lt); }
+  .control-label { font-size: 13px; font-weight: 700; color: var(--text); }
+  .control-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+  .control-arrow { font-size: 16px; color: var(--text3); }
+  .control-btn.danger .control-label { color: var(--red); }
+
+  @media (max-width: 430px) {
+    body { padding: 0; background: var(--bg); }
+    .phone { border-radius: 0; box-shadow: none; max-width: 100%; }
+    .scroll-area { height: auto; min-height: 100vh; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="index.html">← Back to Bond SIP</a>
+  <a href="setup-flow.html" style="color:rgba(255,255,255,0.7);text-decoration:none">Setup flow →</a>
+</div>
+
+<div class="phone">
+
+  <!-- Status bar -->
+  <div class="status-bar">
+    <span>9:41</span>
+    <span>●●●</span>
+  </div>
+
+  <!-- Header -->
+  <div class="app-header">
+    <a class="back-btn" href="index.html">←</a>
+    <div>
+      <div class="app-header-title">Bond SIP Portfolio</div>
+      <div class="app-header-sub">3 active SIP cycles · ₹5,000/month</div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tab-bar">
+    <div class="tab active" onclick="switchTab('overview')">Overview</div>
+    <div class="tab" onclick="switchTab('cashflow')">Cashflows</div>
+    <div class="tab" onclick="switchTab('holdings')">Holdings</div>
+    <div class="tab" onclick="switchTab('history')">History</div>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- OVERVIEW TAB -->
+    <div class="tab-panel active" id="tab-overview">
+
+      <div class="summary-hero">
+        <div class="summary-hero-label">Bond SIP · Total Invested</div>
+        <div class="summary-hero-amount">₹15,000</div>
+        <div class="summary-hero-sub">3 instalments · started May 5, 2026</div>
+        <div class="summary-metrics">
+          <div class="summary-metric">
+            <div class="sm-label">Blended YTM</div>
+            <div class="sm-val">8.83%</div>
+            <div class="sm-sub">Across 3 ISINs</div>
+          </div>
+          <div class="summary-metric">
+            <div class="sm-label">Projected Annual</div>
+            <div class="sm-val">₹71,640</div>
+            <div class="sm-sub">12-month portfolio</div>
+          </div>
+          <div class="summary-metric">
+            <div class="sm-label">Interest Accrued</div>
+            <div class="sm-val" style="color:#6EE7B7">₹368</div>
+            <div class="sm-sub">Last 3 months</div>
+          </div>
+          <div class="summary-metric">
+            <div class="sm-label">Next Debit</div>
+            <div class="sm-val">Aug 5</div>
+            <div class="sm-sub">₹5,000 · 6 days</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIP Status -->
+      <div class="status-banner">
+        <div class="status-banner-left">
+          <div class="status-dot dot-green"></div>
+          <div>
+            <div class="status-label">SIP Active</div>
+            <div class="status-sub">Income Ladder · ₹5,000/month</div>
+          </div>
+        </div>
+        <div class="status-actions">
+          <button class="status-btn" onclick="switchTab('history')">Pause</button>
+          <button class="status-btn danger" onclick="switchTab('history')">Cancel</button>
+        </div>
+      </div>
+
+      <!-- Next Bond Preview -->
+      <div class="section-head">
+        <div class="section-title">Next Bond (Aug 5 cycle)</div>
+        <div class="section-link" onclick="switchTab('cashflow')">Cashflows →</div>
+      </div>
+      <div style="margin: 0 14px 10px;">
+        <div style="background:var(--surface);border-radius:12px;border:1px solid var(--border);overflow:hidden;">
+          <div style="background:linear-gradient(135deg,#1E3A8A,#2563EB);padding:12px 14px;color:white;">
+            <div style="font-size:12px;font-weight:800;">Shriram Finance Ltd</div>
+            <div style="font-size:10px;opacity:0.6;margin-top:1px">ISIN: INE572E07029 · Secured NCD</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;padding:10px 14px;gap:8px;">
+            <div>
+              <div style="font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px">YTM</div>
+              <div style="font-size:15px;font-weight:800;color:var(--green-mid)">9.10%</div>
+            </div>
+            <div>
+              <div style="font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px">Maturity</div>
+              <div style="font-size:15px;font-weight:800;color:var(--text)">Nov 2027</div>
+            </div>
+            <div>
+              <div style="font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px">Units</div>
+              <div style="font-size:15px;font-weight:800;color:var(--text)">5</div>
+            </div>
+          </div>
+          <div style="padding:0 12px 10px;display:flex;gap:6px;">
+            <span class="hbadge hb-aa">AA+</span>
+            <span class="hbadge hb-sip">New rung</span>
+            <span style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:var(--amber-lt);color:var(--amber)">Disclosed 5 days prior</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick controls -->
+      <div class="section-head" style="padding-bottom:6px">
+        <div class="section-title">SIP Controls</div>
+      </div>
+      <div class="controls-section">
+        <div class="control-btn">
+          <div class="control-btn-left">
+            <div class="control-icon ci-blue">⏸</div>
+            <div>
+              <div class="control-label">Pause SIP</div>
+              <div class="control-sub">Skip one or more cycles. Mandate stays active.</div>
+            </div>
+          </div>
+          <div class="control-arrow">›</div>
+        </div>
+        <div class="control-btn">
+          <div class="control-btn-left">
+            <div class="control-icon ci-blue">📅</div>
+            <div>
+              <div class="control-label">Change debit date</div>
+              <div class="control-sub">Currently: 5th of every month</div>
+            </div>
+          </div>
+          <div class="control-arrow">›</div>
+        </div>
+        <div class="control-btn">
+          <div class="control-btn-left">
+            <div class="control-icon ci-amber">🔁</div>
+            <div>
+              <div class="control-label">Maturity reinvestment</div>
+              <div class="control-sub">Auto-reinvest: On (tap to change)</div>
+            </div>
+          </div>
+          <div class="control-arrow">›</div>
+        </div>
+        <div class="control-btn danger">
+          <div class="control-btn-left">
+            <div class="control-icon ci-red">✕</div>
+            <div>
+              <div class="control-label">Cancel SIP</div>
+              <div class="control-sub">Existing bonds held until maturity</div>
+            </div>
+          </div>
+          <div class="control-arrow">›</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CASHFLOW TAB -->
+    <div class="tab-panel" id="tab-cashflow">
+
+      <div style="padding:12px 14px 6px;">
+        <div style="background:var(--surface);border-radius:10px;border:1px solid var(--border);padding:10px 14px;font-size:12px;color:var(--text2);line-height:1.5;">
+          📅 <strong>July–December 2026</strong> projected cashflows. Coupon dates are based on bond terms. Debit dates on the 5th of each month.
+        </div>
+      </div>
+
+      <div class="section-head" style="padding-bottom:0">
+        <div class="section-title">July 2026</div>
+      </div>
+      <div class="cashflow-card">
+        <div class="cashflow-row">
+          <div class="cf-date">
+            <div class="cf-date-day">5</div>
+            <div class="cf-date-mo">JUL</div>
+          </div>
+          <div class="cf-info">
+            <div class="cf-title">SIP debit — Aadhar Housing NCD</div>
+            <div class="cf-sub">Cycle 3 · Income Ladder · AA</div>
+          </div>
+          <div class="cf-amount debit">−₹5,000</div>
+        </div>
+        <div class="cashflow-row">
+          <div class="cf-date coupon">
+            <div class="cf-date-day">18</div>
+            <div class="cf-date-mo">JUL</div>
+          </div>
+          <div class="cf-info">
+            <div class="cf-title">Coupon — IIFL Finance NCD</div>
+            <div class="cf-sub">Annual · May 2026 holding · AA−</div>
+          </div>
+          <div class="cf-amount credit">+₹438</div>
+        </div>
+      </div>
+
+      <div class="section-head" style="padding-bottom:0">
+        <div class="section-title">August 2026</div>
+      </div>
+      <div class="cashflow-card">
+        <div class="cashflow-row" style="background:#ECFDF5">
+          <div class="cf-date">
+            <div class="cf-date-day">5</div>
+            <div class="cf-date-mo">AUG</div>
+          </div>
+          <div class="cf-info">
+            <div class="cf-title">SIP debit — Shriram Finance NCD</div>
+            <div class="cf-sub">Cycle 4 · New rung · AA+ · Upcoming</div>
+          </div>
+          <div class="cf-amount debit">−₹5,000</div>
+        </div>
+        <div class="cashflow-row">
+          <div class="cf-date coupon">
+            <div class="cf-date-day">15</div>
+            <div class="cf-date-mo">AUG</div>
+          </div>
+          <div class="cf-info">
+            <div class="cf-title">Coupon — Aadhar Housing NCD</div>
+            <div class="cf-sub">Annual · June 2026 holding · AA</div>
+          </div>
+          <div class="cf-amount credit">+₹438</div>
+        </div>
+      </div>
+
+      <div class="section-head" style="padding-bottom:0">
+        <div class="section-title">October 2026</div>
+      </div>
+      <div class="cashflow-card">
+        <div class="cashflow-row">
+          <div class="cf-date">
+            <div class="cf-date-day">5</div>
+            <div class="cf-date-mo">OCT</div>
+          </div>
+          <div class="cf-info">
+            <div class="cf-title">SIP debit — Bond TBD</div>
+            <div class="cf-sub">Cycle 6 · Bond disclosed 30 Sep</div>
+          </div>
+          <div class="cf-amount debit">−₹5,000</div>
+        </div>
+        <div class="cashflow-row">
+          <div class="cf-date maturity">
+            <div class="cf-date-day">22</div>
+            <div class="cf-date-mo">OCT</div>
+          </div>
+          <div class="cf-info">
+            <div class="cf-title">Maturity — IIFL Finance NCD</div>
+            <div class="cf-sub">Auto-reinvested next cycle · May 2026 holding</div>
+          </div>
+          <div class="cf-amount maturity">₹5,000 reinvested</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- HOLDINGS TAB -->
+    <div class="tab-panel" id="tab-holdings">
+
+      <div style="padding: 12px 14px 6px;">
+        <div style="background:var(--blue-lt);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--blue-mid);line-height:1.5;">
+          ℹ️ Only bonds purchased via Bond SIP are shown here. Lumpsum holdings are in the main portfolio tab.
+        </div>
+      </div>
+
+      <!-- Holding 1 -->
+      <div class="section-head" style="padding-bottom:4px">
+        <div class="section-title">SIP Holdings (3 ISINs)</div>
+        <div class="section-sub" style="font-size:11px;color:var(--text3)">₹15,000 total</div>
+      </div>
+
+      <div class="holding-card">
+        <div class="holding-header">
+          <div class="holding-issuer">Aadhar Housing Finance Ltd</div>
+          <div class="holding-isin">INE538L07225 · Jun 2026 cycle</div>
+        </div>
+        <div class="holding-metrics">
+          <div class="holding-metric">
+            <div class="hm-label">Units</div>
+            <div class="hm-val">5 units</div>
+          </div>
+          <div class="holding-metric">
+            <div class="hm-label">Face Value</div>
+            <div class="hm-val">₹5,000</div>
+          </div>
+          <div class="holding-metric">
+            <div class="hm-label">Purchase YTM</div>
+            <div class="hm-val green">8.75%</div>
+          </div>
+          <div class="holding-metric">
+            <div class="hm-label">Maturity</div>
+            <div class="hm-val">Apr 2027</div>
+          </div>
+        </div>
+        <div class="holding-badge-row">
+          <span class="hbadge hb-aa">AA</span>
+          <span class="hbadge hb-sip">SIP</span>
+          <span class="hbadge hb-cycle">Cycle 2</span>
+          <span class="hbadge" style="background:var(--green-lt);color:var(--green-mid)">Annual coupon</span>
+        </div>
+      </div>
+
+      <div class="holding-card">
+        <div class="holding-header">
+          <div class="holding-issuer">IIFL Finance Ltd</div>
+          <div class="holding-isin">INE565A07043 · May 2026 cycle</div>
+        </div>
+        <div class="holding-metrics">
+          <div class="holding-metric">
+            <div class="hm-label">Units</div>
+            <div class="hm-val">5 units</div>
+          </div>
+          <div class="holding-metric">
+            <div class="hm-label">Face Value</div>
+            <div class="hm-val">₹5,000</div>
+          </div>
+          <div class="holding-metric">
+            <div class="hm-label">Purchase YTM</div>
+            <div class="hm-val green">8.75%</div>
+          </div>
+          <div class="holding-metric">
+            <div class="hm-label">Maturity</div>
+            <div class="hm-val">Oct 2026</div>
+          </div>
+        </div>
+        <div class="holding-badge-row">
+          <span class="hbadge hb-aa" style="background:#FEF9C3;color:#92400E">AA−</span>
+          <span class="hbadge hb-sip">SIP</span>
+          <span class="hbadge hb-cycle">Cycle 1</span>
+          <span class="hbadge" style="background:var(--amber-lt);color:var(--amber)">Matures Oct 22</span>
+        </div>
+      </div>
+
+      <div class="holding-card">
+        <div class="holding-header">
+          <div class="holding-issuer">Cholamandalam Finance Ltd</div>
+          <div class="holding-isin">INE121A07OM3 · Jul 2026 cycle</div>
+        </div>
+        <div class="holding-metrics">
+          <div class="holding-metric">
+            <div class="hm-label">Units</div>
+            <div class="hm-val">5 units</div>
+          </div>
+          <div class="holding-metric">
+            <div class="hm-label">Face Value</div>
+            <div class="hm-val">₹5,000</div>
+          </div>
+          <div class="holding-metric">
+            <div class="hm-label">Purchase YTM</div>
+            <div class="hm-val green">9.00%</div>
+          </div>
+          <div class="holding-metric">
+            <div class="hm-label">Maturity</div>
+            <div class="hm-val">Jul 2027</div>
+          </div>
+        </div>
+        <div class="holding-badge-row">
+          <span class="hbadge hb-aa">AA</span>
+          <span class="hbadge hb-sip">SIP</span>
+          <span class="hbadge hb-cycle">Cycle 3</span>
+          <span class="hbadge" style="background:var(--green-lt);color:var(--green-mid)">Annual coupon</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- HISTORY TAB -->
+    <div class="tab-panel" id="tab-history">
+
+      <div class="section-head">
+        <div class="section-title">Instalment History</div>
+        <div class="section-link">3 cycles</div>
+      </div>
+
+      <div class="history-card">
+
+        <div class="history-row">
+          <div class="hist-cycle">3</div>
+          <div class="hist-info">
+            <div class="hist-title">Cholamandalam Finance NCD</div>
+            <div class="hist-sub">Jul 5, 2026 · Income Ladder · New rung · AA</div>
+          </div>
+          <div class="hist-right">
+            <div class="hist-amount">₹5,000</div>
+            <div class="hist-status hs-success">✓ Success</div>
+          </div>
+        </div>
+
+        <div class="history-row">
+          <div class="hist-cycle">2</div>
+          <div class="hist-info">
+            <div class="hist-title">Aadhar Housing Finance NCD</div>
+            <div class="hist-sub">Jun 5, 2026 · Income Ladder · New rung · AA</div>
+          </div>
+          <div class="hist-right">
+            <div class="hist-amount">₹5,000</div>
+            <div class="hist-status hs-success">✓ Success</div>
+          </div>
+        </div>
+
+        <div class="history-row">
+          <div class="hist-cycle">1</div>
+          <div class="hist-info">
+            <div class="hist-title">IIFL Finance NCD</div>
+            <div class="hist-sub">May 5, 2026 · Income Ladder · New rung · AA−</div>
+          </div>
+          <div class="hist-right">
+            <div class="hist-amount">₹5,000</div>
+            <div class="hist-status hs-success">✓ Success</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Failed debit example (design state) -->
+      <div class="section-head">
+        <div class="section-title">Failed Debit Flow (Design State)</div>
+      </div>
+      <div style="background:var(--red-lt);border:1px solid #FECACA;border-radius:12px;margin:0 14px 10px;padding:14px;">
+        <div style="font-size:13px;font-weight:800;color:var(--red);margin-bottom:6px;">⚠️ Debit failed — Cycle 4</div>
+        <div style="font-size:12px;color:#991B1B;line-height:1.5;margin-bottom:10px;">
+          Your SIP debit of ₹5,000 on Aug 5 failed (insufficient funds). Retry within 48 hours to maintain this cycle.
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button style="flex:1;padding:8px;background:var(--red);color:white;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer">
+            Retry now →
+          </button>
+          <button style="flex:1;padding:8px;background:var(--surface);color:var(--text2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer">
+            Skip this cycle
+          </button>
+        </div>
+      </div>
+
+      <div style="margin:0 14px;padding:10px 14px;background:var(--surface);border-radius:10px;border:1px solid var(--border);font-size:11px;color:var(--text3);line-height:1.5;">
+        After 3 consecutive failed debits, your SIP will be automatically paused and you will be notified via push + email.
+      </div>
+
+    </div>
+
+  </div><!-- end scroll-area -->
+
+</div><!-- end phone -->
+
+<script>
+  function switchTab(name) {
+    document.querySelectorAll('.tab').forEach((t, i) => {
+      const tabs = ['overview','cashflow','holdings','history'];
+      t.classList.toggle('active', tabs[i] === name);
+    });
+    document.querySelectorAll('.tab-panel').forEach(p => {
+      p.classList.toggle('active', p.id === 'tab-' + name);
+    });
+  }
+</script>
+</body>
+</html>

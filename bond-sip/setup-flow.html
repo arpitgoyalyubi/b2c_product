@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bond SIP Setup — Aspero</title>
+<style>
+  :root {
+    --blue: #1E3A8A;
+    --blue-mid: #2563EB;
+    --blue-lt: #EFF6FF;
+    --green: #16A34A;
+    --green-lt: #F0FDF4;
+    --amber: #D97706;
+    --amber-lt: #FFFBEB;
+    --border: #E2E8F0;
+    --text: #0F172A;
+    --text2: #475569;
+    --text3: #94A3B8;
+    --bg: #F1F5F9;
+    --surface: #FFFFFF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #0EA5E9 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 48px;
+  }
+
+  /* Top nav */
+  .top-bar {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    color: rgba(255,255,255,0.8);
+    font-size: 13px;
+  }
+  .top-bar a { color: rgba(255,255,255,0.8); text-decoration: none; }
+  .top-bar a:hover { color: white; }
+  .persona-pill {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  /* Phone frame */
+  .phone {
+    width: 100%;
+    max-width: 390px;
+    background: var(--bg);
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1);
+    min-height: 720px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* Status bar simulation */
+  .status-bar {
+    background: var(--surface);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  /* Progress bar */
+  .progress-container {
+    background: var(--surface);
+    padding: 8px 20px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .progress-steps {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+  .progress-step {
+    flex: 1;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--border);
+    transition: background 0.3s;
+  }
+  .progress-step.done { background: var(--blue-mid); }
+  .progress-step.active { background: var(--blue-mid); opacity: 0.5; }
+  .progress-label {
+    font-size: 10px;
+    color: var(--text3);
+    text-align: right;
+  }
+
+  /* App header */
+  .app-header {
+    background: var(--surface);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .btn-back {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--bg);
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    color: var(--text);
+    transition: background 0.15s;
+  }
+  .btn-back:hover { background: var(--border); }
+  .app-header-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .app-header-sub {
+    font-size: 11px;
+    color: var(--text3);
+  }
+
+  /* Screen container */
+  .screen-wrap {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+  }
+  .screen {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none;
+  }
+  .screen.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+  .screen.exit-left {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+
+  /* Entry screen */
+  .entry-screen {
+    background: var(--surface);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .entry-hero {
+    background: linear-gradient(160deg, #1E3A8A 0%, #2563EB 100%);
+    padding: 28px 24px 24px;
+    color: white;
+  }
+  .entry-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 8px;
+  }
+  .entry-headline {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.3;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+  .entry-sub {
+    font-size: 13px;
+    opacity: 0.8;
+    line-height: 1.5;
+  }
+  .entry-body {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .feature-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .feature-row:last-of-type { border-bottom: none; }
+  .feature-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--blue-lt);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+  .feature-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .feature-desc { font-size: 12px; color: var(--text2); line-height: 1.4; }
+
+  /* Content area padding */
+  .screen-content {
+    padding: 20px;
+    background: var(--bg);
+    min-height: 100%;
+  }
+
+  /* Step heading */
+  .step-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .step-sub {
+    font-size: 13px;
+    color: var(--text3);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  /* Amount selector */
+  .amount-display {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+  }
+  .amount-label { font-size: 12px; color: var(--text3); margin-bottom: 6px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+  .amount-value {
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--blue-mid);
+    letter-spacing: -0.03em;
+    margin-bottom: 4px;
+  }
+  .amount-value span { font-size: 24px; }
+  .amount-subtext { font-size: 12px; color: var(--text3); }
+  .amount-controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .btn-amt {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--blue-mid);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .btn-amt:hover { background: var(--blue-lt); }
+  .slider-wrap { flex: 1; }
+  input[type=range] {
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    appearance: none;
+    background: linear-gradient(to right, var(--blue-mid) var(--pct), var(--border) var(--pct));
+    cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--blue-mid);
+    box-shadow: 0 2px 6px rgba(37,99,235,0.4);
+    cursor: pointer;
+  }
+  .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 6px;
+  }
+  .preset-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .chip.active, .chip:hover {
+    background: var(--blue-lt);
+    border-color: var(--blue-mid);
+    color: var(--blue-mid);
+  }
+
+  /* Goal cards */
+  .goal-cards { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+  .goal-card {
+    background: var(--surface);
+    border-radius: 14px;
+    border: 2px solid var(--border);
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .goal-card.selected {
+    border-color: var(--blue-mid);
+    background: var(--blue-lt);
+  }
+  .goal-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 4px;
+    background: var(--g-color, var(--blue-mid));
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .goal-card.selected::before { opacity: 1; }
+  .goal-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .goal-icon-wrap {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: var(--g-bg, var(--blue-lt));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  .goal-radio {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .goal-card.selected .goal-radio {
+    background: var(--blue-mid);
+    border-color: var(--blue-mid);
+  }
+  .goal-card.selected .goal-radio::after {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: white;
+    display: block;
+  }
+  .goal-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .goal-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
+  .goal-example { font-size: 11px; color: var(--text3); margin-top: 6px; font-style: italic; }
+
+  /* Bond preview card */
+  .bond-card {
+    background: var(--surface);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .bond-card-header {
+    background: linear-gradient(135deg, #1E3A8A, #2563EB);
+    padding: 16px 16px 14px;
+    color: white;
+  }
+  .bond-issuer { font-size: 13px; font-weight: 800; letter-spacing: -0.01em; }
+  .bond-isin { font-size: 10px; opacity: 0.6; margin-top: 2px; }
+  .bond-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 14px 16px;
+    gap: 12px;
+  }
+  .bond-metric-label { font-size: 10px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+  .bond-metric-val { font-size: 16px; font-weight: 800; color: var(--text); }
+  .bond-metric-val.ytm { color: var(--green); }
+  .bond-badge-row {
+    display: flex;
+    gap: 6px;
+    padding: 0 16px 14px;
+    flex-wrap: wrap;
+  }
+  .bond-badge {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .bb-rating { background: #FEF9C3; color: #92400E; }
+  .bb-type { background: var(--blue-lt); color: var(--blue-mid); }
+  .bb-secured { background: var(--green-lt); color: var(--green); }
+  .bond-note {
+    background: var(--amber-lt);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #92400E;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  /* Date picker */
+  .date-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .date-cell {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .date-cell:hover { background: var(--blue-lt); border-color: var(--blue-mid); color: var(--blue-mid); }
+  .date-cell.selected {
+    background: var(--blue-mid);
+    border-color: var(--blue-mid);
+    color: white;
+  }
+  .date-info {
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: var(--text2);
+    border: 1px solid var(--border);
+  }
+
+  /* Mandate setup */
+  .mandate-hero {
+    background: linear-gradient(135deg, #065F46, #059669);
+    border-radius: 16px;
+    padding: 20px;
+    color: white;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .mandate-icon { font-size: 40px; margin-bottom: 10px; }
+  .mandate-title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .mandate-sub { font-size: 12px; opacity: 0.8; line-height: 1.5; }
+  .input-group { margin-bottom: 12px; }
+  .input-label { font-size: 11px; font-weight: 700; color: var(--text2); margin-bottom: 6px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .input-field {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .input-field:focus { border-color: var(--blue-mid); }
+  .trust-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .trust-pill {
+    background: var(--green-lt);
+    border: 1px solid #BBF7D0;
+    color: var(--green);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* Confirmation */
+  .confirm-hero {
+    background: linear-gradient(160deg, #065F46, #059669);
+    padding: 28px 20px 24px;
+    text-align: center;
+    color: white;
+  }
+  .confirm-check {
+    width: 60px; height: 60px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    margin: 0 auto 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+  }
+  .confirm-title { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+  .confirm-sub { font-size: 13px; opacity: 0.8; }
+  .projection-card {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 18px;
+    margin: 16px 20px 12px;
+    border: 1px solid var(--border);
+  }
+  .proj-label { font-size: 11px; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+  .proj-amount { font-size: 36px; font-weight: 900; color: var(--blue-mid); letter-spacing: -0.03em; margin-bottom: 4px; }
+  .proj-breakdown { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .proj-breakdown span { color: var(--green); font-weight: 700; }
+  .sip-summary {
+    background: var(--surface);
+    border-radius: 14px;
+    margin: 0 20px 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .sip-summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .sip-summary-row:last-child { border-bottom: none; }
+  .sip-summary-label { color: var(--text3); font-weight: 500; }
+  .sip-summary-val { font-weight: 700; color: var(--text); }
+  .confirm-actions { padding: 0 20px 24px; display: flex; flex-direction: column; gap: 10px; }
+
+  /* Bottom CTA */
+  .bottom-cta {
+    padding: 16px 20px 20px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+  .btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #1E3A8A, #2563EB);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+    font-family: inherit;
+  }
+  .btn-primary:hover { opacity: 0.92; }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary.green { background: linear-gradient(135deg, #065F46, #059669); }
+  .btn-secondary {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    color: var(--text2);
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s;
+  }
+  .btn-secondary:hover { background: var(--bg); }
+  .btn-outline {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    color: var(--blue-mid);
+    border: 1px solid var(--blue-mid);
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s;
+  }
+  .btn-outline:hover { background: var(--blue-lt); }
+
+  /* Utility */
+  .info-box {
+    background: var(--blue-lt);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--blue-mid);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  @media (max-width: 430px) {
+    body { padding: 0; background: var(--bg); }
+    .phone { border-radius: 0; box-shadow: none; max-width: 100%; min-height: 100vh; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="index.html">← Back to Bond SIP</a>
+  <span class="persona-pill" id="persona-label">All Personas</span>
+</div>
+
+<div class="phone">
+
+  <!-- Status bar -->
+  <div class="status-bar">
+    <span>9:41</span>
+    <span>●●●</span>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-container" id="progress-container" style="display:none">
+    <div class="progress-steps" id="progress-steps">
+      <div class="progress-step" id="ps0"></div>
+      <div class="progress-step" id="ps1"></div>
+      <div class="progress-step" id="ps2"></div>
+      <div class="progress-step" id="ps3"></div>
+      <div class="progress-step" id="ps4"></div>
+      <div class="progress-step" id="ps5"></div>
+    </div>
+    <div class="progress-label" id="progress-label">Step 1 of 6</div>
+  </div>
+
+  <!-- App header -->
+  <div class="app-header" id="app-header" style="display:none">
+    <button class="btn-back" onclick="prevStep()">←</button>
+    <div>
+      <div class="app-header-title" id="step-header-title">Set up Bond SIP</div>
+      <div class="app-header-sub" id="step-header-sub">Step 1 of 6</div>
+    </div>
+  </div>
+
+  <div class="screen-wrap">
+
+    <!-- SCREEN 0: Entry -->
+    <div class="screen active entry-screen" id="screen-0">
+      <div class="entry-hero" id="entry-hero">
+        <div class="entry-eyebrow" id="entry-eyebrow">Bond SIP</div>
+        <div class="entry-headline" id="entry-headline">Set it once.<br>Your portfolio builds itself.</div>
+        <div class="entry-sub" id="entry-sub">Invest a fixed amount every month. We pick the bonds. You earn while you sleep.</div>
+      </div>
+      <div class="entry-body">
+        <div class="feature-row">
+          <div class="feature-icon">🎯</div>
+          <div>
+            <div class="feature-title">No ISIN research required</div>
+            <div class="feature-desc">Tell us your goal. Our engine selects the right bond every month — income ladder or maximum yield.</div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-icon">📅</div>
+          <div>
+            <div class="feature-title">Bond disclosed 5 days before debit</div>
+            <div class="feature-desc">You'll always know which bond is being purchased before any money moves.</div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-icon">🔁</div>
+          <div>
+            <div class="feature-title">Cancel anytime, one tap</div>
+            <div class="feature-desc">No agent required. Pause, modify, or cancel your SIP fully self-serve — existing bonds stay until maturity.</div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-icon">💰</div>
+          <div>
+            <div class="feature-title">Maturity proceeds auto-reinvested</div>
+            <div class="feature-desc">When a bond matures, proceeds flow back into your SIP cycle by default. Opt out anytime.</div>
+          </div>
+        </div>
+        <div style="margin-top:auto; padding-top: 16px;">
+          <button class="btn-primary" onclick="nextStep()">Get started →</button>
+          <button class="btn-secondary" onclick="window.location.href='index.html'">Not now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 1: Amount -->
+    <div class="screen" id="screen-1">
+      <div class="screen-content">
+        <div class="step-title">How much per month?</div>
+        <div class="step-sub" id="amount-step-sub">Choose a monthly SIP amount that suits you.</div>
+
+        <div class="amount-display">
+          <div class="amount-label">Monthly SIP Amount</div>
+          <div class="amount-value" id="amount-val"><span>₹</span><span id="amount-num">5,000</span></div>
+          <div class="amount-subtext" id="amount-annual-note">₹60,000/year · projected portfolio ₹65,400 in 12 months</div>
+        </div>
+
+        <div class="amount-controls">
+          <button class="btn-amt" onclick="changeAmount(-1000)">−</button>
+          <div class="slider-wrap">
+            <input type="range" id="amount-slider" min="1000" max="100000" step="1000" value="5000"
+              style="--pct: 4%" oninput="onSlider(this)">
+            <div class="slider-labels">
+              <span id="amt-min-lbl">₹1,000</span>
+              <span>₹1,00,000</span>
+            </div>
+          </div>
+          <button class="btn-amt" onclick="changeAmount(1000)">+</button>
+        </div>
+
+        <div class="preset-chips" id="preset-chips">
+          <div class="chip" onclick="setAmount(1000)">₹1K</div>
+          <div class="chip" onclick="setAmount(5000)">₹5K</div>
+          <div class="chip active" onclick="setAmount(10000)">₹10K</div>
+          <div class="chip" onclick="setAmount(25000)">₹25K</div>
+          <div class="chip" onclick="setAmount(50000)">₹50K</div>
+        </div>
+
+        <div class="info-box" style="margin-top:16px">
+          ℹ️ SIP amounts are debited monthly via UPI AutoPay. The mandate is fixed amount — cancel anytime in one tap.
+        </div>
+      </div>
+      <div class="bottom-cta">
+        <button class="btn-primary" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: Goal -->
+    <div class="screen" id="screen-2">
+      <div class="screen-content">
+        <div class="step-title">What's your goal?</div>
+        <div class="step-sub">This shapes how we pick bonds for you each month.</div>
+
+        <div class="goal-cards">
+
+          <div class="goal-card selected" id="goal-ladder" style="--g-color:#2563EB;--g-bg:#EFF6FF" onclick="selectGoal('ladder')">
+            <div class="goal-card-head">
+              <div class="goal-icon-wrap" style="--g-bg:#EFF6FF">🪜</div>
+              <div class="goal-radio" id="radio-ladder"></div>
+            </div>
+            <div class="goal-title">Income Ladder</div>
+            <div class="goal-desc">Build a portfolio where bonds mature on a rolling monthly basis. Recurring cashflows every month.</div>
+            <div class="goal-example">Engine fills maturity gaps: if no bond matures in Month 7, it picks one that does.</div>
+          </div>
+
+          <div class="goal-card" id="goal-growth" style="--g-color:#059669;--g-bg:#F0FDF4" onclick="selectGoal('growth')">
+            <div class="goal-card-head">
+              <div class="goal-icon-wrap" style="--g-bg:#F0FDF4">📈</div>
+              <div class="goal-radio" id="radio-growth"></div>
+            </div>
+            <div class="goal-title">Wealth Growth</div>
+            <div class="goal-desc">Maximise blended portfolio yield over time. Engine selects the highest available YTM within your credit rating floor.</div>
+            <div class="goal-example">Same-ISIN top-up accepted if the rate is still best available.</div>
+          </div>
+
+        </div>
+
+        <div class="info-box">
+          ℹ️ You can change your goal preference anytime from SIP settings — takes effect from the next cycle.
+        </div>
+      </div>
+      <div class="bottom-cta">
+        <button class="btn-primary" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: Bond Preview -->
+    <div class="screen" id="screen-3">
+      <div class="screen-content">
+        <div class="step-title">Your first bond</div>
+        <div class="step-sub">This is what we'll purchase in month 1. Bond selection may vary in future cycles based on your goal.</div>
+
+        <div class="bond-card">
+          <div class="bond-card-header">
+            <div class="bond-issuer" id="bond-issuer">Aadhar Housing Finance Ltd</div>
+            <div class="bond-isin">ISIN: INE 538L07225 · Secured NCD</div>
+          </div>
+          <div class="bond-metrics">
+            <div>
+              <div class="bond-metric-label">YTM</div>
+              <div class="bond-metric-val ytm" id="bond-ytm">8.75%</div>
+            </div>
+            <div>
+              <div class="bond-metric-label">Maturity</div>
+              <div class="bond-metric-val" id="bond-maturity">Apr 2026</div>
+            </div>
+            <div>
+              <div class="bond-metric-label">Face Value</div>
+              <div class="bond-metric-val" id="bond-face">₹1,000</div>
+            </div>
+            <div>
+              <div class="bond-metric-label">Units to buy</div>
+              <div class="bond-metric-val" id="bond-units">5 units</div>
+            </div>
+          </div>
+          <div class="bond-badge-row">
+            <span class="bond-badge bb-rating">AA</span>
+            <span class="bond-badge bb-type">Secured NCD</span>
+            <span class="bond-badge bb-secured">Annual Coupon</span>
+          </div>
+        </div>
+
+        <div class="bond-note" style="margin-bottom:12px">
+          ⚠️ <span>You'll see next month's bond 5 days before your debit date. You can cancel before any deduction is made.</span>
+        </div>
+
+        <div class="info-box">
+          ℹ️ Bond selection is made by our allocation engine based on your goal (Income Ladder / Wealth Growth), available inventory, and credit rating floor.
+        </div>
+      </div>
+      <div class="bottom-cta">
+        <button class="btn-primary" onclick="nextStep()">Looks good →</button>
+        <button class="btn-secondary" onclick="prevStep()">Choose different goal</button>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: Debit Date -->
+    <div class="screen" id="screen-4">
+      <div class="screen-content">
+        <div class="step-title">When should we debit?</div>
+        <div class="step-sub">Pick any date from 1 to 28. Your mandate and bond allocation happen on this date each month.</div>
+
+        <div class="date-grid" id="date-grid"></div>
+
+        <div class="date-info" id="date-info">
+          Select a date above to set your monthly debit day.
+        </div>
+
+        <div class="info-box" style="margin-top:12px">
+          ℹ️ Dates 29–31 are excluded to ensure consistent monthly debits across all months.
+        </div>
+      </div>
+      <div class="bottom-cta">
+        <button class="btn-primary" id="date-cta" onclick="nextStep()" disabled style="opacity:0.5">Select a date to continue</button>
+      </div>
+    </div>
+
+    <!-- SCREEN 5: Mandate -->
+    <div class="screen" id="screen-5">
+      <div class="screen-content">
+        <div class="mandate-hero">
+          <div class="mandate-icon">🔐</div>
+          <div class="mandate-title">Set up UPI AutoPay</div>
+          <div class="mandate-sub">Authorise a recurring debit of <strong id="mandate-amount">₹5,000/month</strong>. Cancel anytime in one tap — no agent needed.</div>
+        </div>
+
+        <div class="trust-row">
+          <span class="trust-pill">✓ Cancel anytime</span>
+          <span class="trust-pill">✓ NPCI regulated</span>
+          <span class="trust-pill">✓ Razorpay secured</span>
+        </div>
+
+        <div class="input-group">
+          <div class="input-label">UPI ID</div>
+          <input type="text" class="input-field" id="upi-input" placeholder="yourname@upi" value="">
+        </div>
+
+        <div class="input-group">
+          <div class="input-label">Linked Bank Account</div>
+          <input type="text" class="input-field" placeholder="HDFC Bank — ••••4521" disabled style="background:#F8FAFC;color:var(--text3)">
+        </div>
+
+        <div class="info-box">
+          ℹ️ This creates a UPI AutoPay mandate for a fixed amount. For step-up SIP, a mandate amendment will be required — available after V1 launch.
+        </div>
+      </div>
+      <div class="bottom-cta">
+        <button class="btn-primary green" onclick="nextStep()">Authorise UPI AutoPay</button>
+        <button class="btn-secondary" onclick="prevStep()">Back</button>
+      </div>
+    </div>
+
+    <!-- SCREEN 6: Confirmation -->
+    <div class="screen" id="screen-6">
+      <div class="confirm-hero">
+        <div class="confirm-check">✓</div>
+        <div class="confirm-title">Bond SIP Activated!</div>
+        <div class="confirm-sub" id="confirm-sub">Your monthly investment plan is live.</div>
+      </div>
+
+      <div class="projection-card">
+        <div class="proj-label">Projected 12-Month Portfolio Value</div>
+        <div class="proj-amount" id="proj-amount">₹65,400</div>
+        <div class="proj-breakdown" id="proj-breakdown">
+          ₹60,000 invested · <span id="proj-interest">₹5,400 interest earned</span> at 8.75% avg YTM
+        </div>
+      </div>
+
+      <div class="sip-summary">
+        <div class="sip-summary-row">
+          <span class="sip-summary-label">Monthly amount</span>
+          <span class="sip-summary-val" id="sum-amount">₹5,000</span>
+        </div>
+        <div class="sip-summary-row">
+          <span class="sip-summary-label">Goal</span>
+          <span class="sip-summary-val" id="sum-goal">Income Ladder</span>
+        </div>
+        <div class="sip-summary-row">
+          <span class="sip-summary-label">Next debit date</span>
+          <span class="sip-summary-val" id="sum-date">5th of every month</span>
+        </div>
+        <div class="sip-summary-row">
+          <span class="sip-summary-label">First bond</span>
+          <span class="sip-summary-val">Aadhar Housing NCD · AA</span>
+        </div>
+        <div class="sip-summary-row">
+          <span class="sip-summary-label">Status</span>
+          <span class="sip-summary-val" style="color:var(--green)">● Active</span>
+        </div>
+      </div>
+
+      <div class="confirm-actions">
+        <button class="btn-primary" onclick="window.location.href='portfolio.html'">View Bond SIP Portfolio →</button>
+        <button class="btn-outline" onclick="window.location.href='index.html'">Back to prototype hub</button>
+      </div>
+    </div>
+
+  </div><!-- end screen-wrap -->
+</div><!-- end phone -->
+
+<script>
+  // ── State ──
+  const state = {
+    step: 0,
+    persona: 'all',
+    amount: 5000,
+    goal: 'ladder',
+    date: null,
+  };
+  const TOTAL_STEPS = 6;
+
+  // ── Persona config ──
+  const PERSONAS = {
+    p2b: {
+      label: 'P2b · Yield Chaser',
+      headline: 'Not ready for ₹50K?\nStart with ₹5K/month.',
+      sub: 'Monthly surplus. No ISIN research. Your bond portfolio builds automatically.',
+      eyebrow: 'Yield Chaser SIP',
+      minAmount: 5000,
+      defaultAmount: 5000,
+    },
+    p6: {
+      label: 'P6 · Young Aspirant',
+      headline: 'Your first bond is working.\nMake it automatic.',
+      sub: 'Keep the momentum going. Start at just ₹1,000/month — your MF SIP habit, now for bonds.',
+      eyebrow: 'Young Aspirant SIP',
+      minAmount: 1000,
+      defaultAmount: 5000,
+    },
+    p7: {
+      label: 'P7 · Passive Explorer',
+      headline: 'Your ₹39,000 just matured.\nDon\'t let it sit idle.',
+      sub: 'Reinvest your maturity payout as a monthly SIP. Amount pre-filled based on your matured bond.',
+      eyebrow: 'Maturity Reinvestment',
+      minAmount: 1000,
+      defaultAmount: 3250,
+    },
+    all: {
+      label: 'All Personas',
+      headline: 'Set it once.\nYour portfolio builds itself.',
+      sub: 'Invest a fixed amount every month. We pick the bonds. You earn while you sleep.',
+      eyebrow: 'Bond SIP',
+      minAmount: 1000,
+      defaultAmount: 5000,
+    },
+  };
+
+  // ── Init ──
+  function init() {
+    const params = new URLSearchParams(window.location.search);
+    const p = params.get('persona') || 'all';
+    state.persona = PERSONAS[p] ? p : 'all';
+    const cfg = PERSONAS[state.persona];
+
+    document.getElementById('persona-label').textContent = cfg.label;
+    document.getElementById('entry-eyebrow').textContent = cfg.eyebrow;
+    document.getElementById('entry-headline').innerHTML = cfg.headline.replace('\n', '<br>');
+    document.getElementById('entry-sub').textContent = cfg.sub;
+
+    state.amount = cfg.defaultAmount;
+    setAmount(cfg.defaultAmount, true);
+    document.getElementById('amt-min-lbl').textContent = '₹' + (cfg.minAmount / 1000) + ',000';
+
+    // P7 — pre-fill bond info
+    if (p === 'p7') {
+      document.getElementById('bond-issuer').textContent = 'ICICI Home Finance Ltd';
+      document.getElementById('bond-ytm').textContent = '8.45%';
+      document.getElementById('bond-maturity').textContent = 'Mar 2027';
+      document.getElementById('bond-face').textContent = '₹1,000';
+      document.getElementById('bond-units').textContent = '3 units';
+      document.getElementById('amount-step-sub').textContent = 'Pre-filled from your matured bond payout (₹39,000 ÷ 12).';
+    } else if (p === 'p6') {
+      document.getElementById('amount-step-sub').textContent = 'Start as low as ₹1,000/month. You can increase anytime.';
+    }
+
+    buildDateGrid();
+  }
+
+  // ── Navigation ──
+  function goToStep(n, direction = 'forward') {
+    const cur = document.getElementById('screen-' + state.step);
+    const next = document.getElementById('screen-' + n);
+
+    cur.classList.remove('active');
+    if (direction === 'forward') cur.classList.add('exit-left');
+    else { cur.style.transform = 'translateX(40px)'; cur.style.opacity = '0'; }
+    setTimeout(() => { cur.classList.remove('exit-left'); cur.style.transform = ''; cur.style.opacity = ''; }, 300);
+
+    if (direction === 'back') {
+      next.style.transform = 'translateX(-40px)';
+      next.style.opacity = '0';
+      next.style.transition = 'none';
+      next.offsetHeight;
+      next.style.transition = '';
+    }
+
+    next.classList.add('active');
+    state.step = n;
+    updateUI();
+  }
+
+  function nextStep() {
+    if (state.step < TOTAL_STEPS) goToStep(state.step + 1, 'forward');
+  }
+
+  function prevStep() {
+    if (state.step > 0) goToStep(state.step - 1, 'back');
+  }
+
+  function updateUI() {
+    const s = state.step;
+    const isEntry = s === 0;
+    const isConfirm = s === TOTAL_STEPS;
+
+    document.getElementById('progress-container').style.display = isEntry ? 'none' : '';
+    document.getElementById('app-header').style.display = isEntry ? 'none' : '';
+
+    if (!isEntry) {
+      for (let i = 0; i < TOTAL_STEPS; i++) {
+        const el = document.getElementById('ps' + i);
+        el.className = 'progress-step ' + (i < s ? 'done' : i === s - 1 ? 'active' : '');
+      }
+      document.getElementById('progress-label').textContent = 'Step ' + s + ' of ' + TOTAL_STEPS;
+
+      const titles = ['', 'Monthly amount', 'Your goal', 'Bond preview', 'Debit date', 'UPI AutoPay', 'All done!'];
+      document.getElementById('step-header-title').textContent = titles[s] || 'Bond SIP';
+      document.getElementById('step-header-sub').textContent = isConfirm ? '' : 'Step ' + s + ' of ' + TOTAL_STEPS;
+    }
+
+    if (s === TOTAL_STEPS) updateConfirmation();
+  }
+
+  // ── Amount ──
+  function setAmount(val, silent) {
+    const cfg = PERSONAS[state.persona];
+    val = Math.max(cfg.minAmount, Math.min(100000, val));
+    state.amount = val;
+
+    const slider = document.getElementById('amount-slider');
+    slider.min = cfg.minAmount;
+    slider.value = val;
+    const pct = ((val - cfg.minAmount) / (100000 - cfg.minAmount) * 100).toFixed(1) + '%';
+    slider.style.setProperty('--pct', pct);
+
+    document.getElementById('amount-num').textContent = formatNum(val);
+    const annual = val * 12;
+    const projected = Math.round(annual * 1.09);
+    document.getElementById('amount-annual-note').textContent = '₹' + formatNum(annual) + '/year · projected portfolio ₹' + formatNum(projected) + ' in 12 months';
+
+    document.getElementById('mandate-amount').textContent = '₹' + formatNum(val) + '/month';
+    document.getElementById('sum-amount').textContent = '₹' + formatNum(val);
+
+    const presets = [1000, 5000, 10000, 25000, 50000];
+    document.querySelectorAll('.chip').forEach((c, i) => {
+      c.classList.toggle('active', presets[i] === val);
+    });
+  }
+
+  function changeAmount(delta) {
+    setAmount(state.amount + delta);
+  }
+
+  function onSlider(el) {
+    setAmount(parseInt(el.value));
+  }
+
+  function formatNum(n) {
+    if (n >= 100000) return (n / 100000).toFixed(n % 100000 === 0 ? 0 : 1) + 'L';
+    if (n >= 1000) return n.toLocaleString('en-IN');
+    return n.toString();
+  }
+
+  // ── Goal ──
+  function selectGoal(g) {
+    state.goal = g;
+    ['ladder','growth'].forEach(id => {
+      document.getElementById('goal-' + id).classList.toggle('selected', id === g);
+      document.getElementById('radio-' + id).classList.toggle('selected', id === g);
+    });
+    document.getElementById('goal-' + g).classList.add('selected');
+    document.getElementById('radio-' + g).classList.add('selected');
+
+    // Update bond preview
+    if (g === 'growth') {
+      document.getElementById('bond-issuer').textContent = 'Muthoot Finance Ltd';
+      document.getElementById('bond-ytm').textContent = '9.25%';
+      document.getElementById('bond-maturity').textContent = 'Sep 2026';
+    } else {
+      document.getElementById('bond-issuer').textContent = 'Aadhar Housing Finance Ltd';
+      document.getElementById('bond-ytm').textContent = '8.75%';
+      document.getElementById('bond-maturity').textContent = 'Apr 2026';
+    }
+    document.getElementById('sum-goal').textContent = g === 'ladder' ? 'Income Ladder' : 'Wealth Growth';
+  }
+
+  // ── Date ──
+  function buildDateGrid() {
+    const grid = document.getElementById('date-grid');
+    grid.innerHTML = '';
+    for (let d = 1; d <= 28; d++) {
+      const cell = document.createElement('div');
+      cell.className = 'date-cell';
+      cell.textContent = d;
+      cell.onclick = () => selectDate(d);
+      cell.id = 'date-' + d;
+      grid.appendChild(cell);
+    }
+  }
+
+  function selectDate(d) {
+    state.date = d;
+    document.querySelectorAll('.date-cell').forEach(c => c.classList.remove('selected'));
+    document.getElementById('date-' + d).classList.add('selected');
+
+    const suffix = d === 1 ? 'st' : d === 2 ? 'nd' : d === 3 ? 'rd' : 'th';
+    document.getElementById('date-info').textContent = '✓ SIP will debit on the ' + d + suffix + ' of every month. Bond allocated on the same day or T+1.';
+    document.getElementById('sum-date').textContent = d + suffix + ' of every month';
+
+    const cta = document.getElementById('date-cta');
+    cta.disabled = false;
+    cta.style.opacity = '1';
+    cta.textContent = 'Set debit date: ' + d + suffix + ' every month →';
+  }
+
+  // ── Confirmation ──
+  function updateConfirmation() {
+    const annual = state.amount * 12;
+    const ytm = state.goal === 'growth' ? 9.25 : 8.75;
+    const interest = Math.round(annual * (ytm / 100) * 0.7);
+    const projected = annual + interest;
+    const d = state.date || 5;
+    const suffix = d === 1 ? 'st' : d === 2 ? 'nd' : d === 3 ? 'rd' : 'th';
+
+    document.getElementById('proj-amount').textContent = '₹' + formatNum(projected);
+    document.getElementById('proj-interest').textContent = '₹' + formatNum(interest) + ' interest earned';
+    document.getElementById('proj-breakdown').innerHTML = '₹' + formatNum(annual) + ' invested · <span id="proj-interest">₹' + formatNum(interest) + ' interest earned</span> at ' + ytm + '% avg YTM';
+    document.getElementById('sum-amount').textContent = '₹' + formatNum(state.amount);
+    document.getElementById('sum-date').textContent = d + suffix + ' of every month';
+  }
+
+  init();
+</script>
+</body>
+</html>

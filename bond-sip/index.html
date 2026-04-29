@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bond SIP Prototype — Aspero</title>
+<style>
+  :root {
+    --blue: #1E3A8A;
+    --blue-mid: #2563EB;
+    --blue-lt: #EFF6FF;
+    --green: #16A34A;
+    --green-lt: #F0FDF4;
+    --amber: #D97706;
+    --amber-lt: #FFFBEB;
+    --purple: #7C3AED;
+    --purple-lt: #F5F3FF;
+    --teal: #0891B2;
+    --teal-lt: #ECFEFF;
+    --gray: #64748B;
+    --border: #E2E8F0;
+    --text: #0F172A;
+    --text2: #475569;
+    --text3: #94A3B8;
+    --bg: #F1F5F9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #0EA5E9 100%);
+    color: white;
+    padding: 48px 32px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -24px; left: 0; right: 0;
+    height: 48px;
+    background: var(--bg);
+    border-radius: 50% 50% 0 0 / 100%;
+  }
+  .back-link {
+    position: absolute;
+    top: 20px; left: 24px;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .back-link:hover { color: white; }
+  .header .eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 12px;
+  }
+  .header h1 {
+    font-size: 34px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    margin-bottom: 10px;
+  }
+  .header .subtitle {
+    font-size: 15px;
+    opacity: 0.8;
+    line-height: 1.6;
+    max-width: 520px;
+    margin: 0 auto 20px;
+  }
+  .header-badges {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .hbadge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* Layout */
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 48px 24px 64px; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Persona cards */
+  .persona-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+
+  .persona-card {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .persona-card:hover {
+    box-shadow: 0 12px 32px rgba(0,0,0,0.10);
+    transform: translateY(-3px);
+  }
+  .persona-card-header {
+    padding: 20px 20px 16px;
+    background: linear-gradient(135deg, var(--ph-from), var(--ph-to));
+    color: white;
+  }
+  .persona-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 6px;
+  }
+  .persona-name {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .persona-trigger-label {
+    font-size: 11px;
+    opacity: 0.7;
+    margin-bottom: 4px;
+  }
+  .persona-trigger {
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.9;
+  }
+  .persona-card-body {
+    padding: 18px 20px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .persona-copy {
+    font-size: 15px;
+    font-style: italic;
+    color: var(--text);
+    font-weight: 600;
+    margin-bottom: 12px;
+    line-height: 1.4;
+    border-left: 3px solid var(--p-color);
+    padding-left: 10px;
+  }
+  .persona-stats {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .persona-stat {
+    flex: 1;
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+  .persona-stat-val {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .persona-stat-lbl {
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 2px;
+  }
+  .persona-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .persona-cta-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--p-color);
+  }
+  .persona-arrow {
+    font-size: 18px;
+    transition: transform 0.15s;
+    color: var(--p-color);
+  }
+  .persona-card:hover .persona-arrow { transform: translateX(4px); }
+
+  /* Flow cards */
+  .flow-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+  .flow-card {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    padding: 24px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.15s, transform 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .flow-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--fc-accent, var(--blue-mid));
+  }
+  .flow-card:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+  }
+  .flow-icon { font-size: 32px; margin-bottom: 14px; }
+  .flow-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .flow-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 16px;
+  }
+  .flow-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-blue { background: var(--blue-lt); color: var(--blue-mid); }
+  .badge-green { background: var(--green-lt); color: var(--green); }
+  .badge-amber { background: var(--amber-lt); color: var(--amber); }
+  .badge-purple { background: var(--purple-lt); color: var(--purple); }
+  .badge-teal { background: var(--teal-lt); color: var(--teal); }
+  .arrow { margin-left: auto; font-size: 18px; color: var(--gray); transition: transform 0.15s; }
+  .flow-card:hover .arrow { transform: translateX(4px); }
+
+  /* Scope table */
+  .scope-table { background: white; border-radius: 14px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 48px; }
+  .scope-table table { width: 100%; border-collapse: collapse; }
+  .scope-table th {
+    background: var(--blue-lt);
+    color: var(--blue-mid);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    text-align: left;
+  }
+  .scope-table td {
+    padding: 11px 16px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text2);
+    vertical-align: top;
+  }
+  .scope-table td:first-child { font-weight: 600; color: var(--text); }
+  .status-dot {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot-blue { background: var(--blue-mid); }
+  .dot-amber { background: var(--amber); }
+  .dot-green { background: var(--green); }
+
+  /* Footer */
+  .footer { text-align: center; color: var(--gray); font-size: 12px; padding-top: 16px; border-top: 1px solid var(--border); }
+
+  @media (max-width: 600px) {
+    .header h1 { font-size: 26px; }
+    .persona-grid, .flow-grid { grid-template-columns: 1fr; }
+    .scope-table { overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a class="back-link" href="../index.html">← Product Hub</a>
+  <div class="eyebrow">Aspero · Bond SIP</div>
+  <h1>Systematic Investment Plan<br>for Bonds</h1>
+  <p class="subtitle">Commit a fixed monthly amount. The platform picks the bonds. Set once, portfolio builds automatically.</p>
+  <div class="header-badges">
+    <span class="hbadge">PRD Draft v1 — Apr 2026</span>
+    <span class="hbadge">Jira ASP-3558</span>
+    <span class="hbadge">Retention · Habit Formation</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- Persona Entry Points -->
+  <div class="section-label">Persona Entry Flows — tap to launch prototype</div>
+  <div class="persona-grid">
+
+    <!-- P2b -->
+    <a class="persona-card" href="setup-flow.html?persona=p2b" style="--ph-from:#1E3A8A;--ph-to:#2563EB;--p-color:#2563EB">
+      <div class="persona-card-header">
+        <div class="persona-label">P2b · Core Cohort</div>
+        <div class="persona-name">Yield Chaser</div>
+        <div class="persona-trigger-label">Entry trigger</div>
+        <div class="persona-trigger">Post-1st transaction success screen · RTT home (new users)</div>
+      </div>
+      <div class="persona-card-body">
+        <div class="persona-copy">"Not ready for ₹50K? Start with ₹5K/month."</div>
+        <div class="persona-stats">
+          <div class="persona-stat">
+            <div class="persona-stat-val">111</div>
+            <div class="persona-stat-lbl">Users (Q1 2026)</div>
+          </div>
+          <div class="persona-stat">
+            <div class="persona-stat-val">₹20K</div>
+            <div class="persona-stat-lbl">Median ATV</div>
+          </div>
+          <div class="persona-stat">
+            <div class="persona-stat-val">₹5K</div>
+            <div class="persona-stat-lbl">SIP Minimum</div>
+          </div>
+        </div>
+        <div class="persona-cta">
+          <span class="persona-cta-text">View P2b entry flow</span>
+          <span class="persona-arrow">→</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- P6 -->
+    <a class="persona-card" href="setup-flow.html?persona=p6" style="--ph-from:#065F46;--ph-to:#059669;--p-color:#059669">
+      <div class="persona-card-header">
+        <div class="persona-label">P6 · Core Cohort</div>
+        <div class="persona-name">Young Aspirant</div>
+        <div class="persona-trigger-label">Entry trigger</div>
+        <div class="persona-trigger">Post-first-investment · 30-day inactivity push</div>
+      </div>
+      <div class="persona-card-body">
+        <div class="persona-copy">"Your first bond is working. Make it automatic."</div>
+        <div class="persona-stats">
+          <div class="persona-stat">
+            <div class="persona-stat-val">208</div>
+            <div class="persona-stat-lbl">Users (Q1 2026)</div>
+          </div>
+          <div class="persona-stat">
+            <div class="persona-stat-val">₹10K</div>
+            <div class="persona-stat-lbl">Median ATV</div>
+          </div>
+          <div class="persona-stat">
+            <div class="persona-stat-val">₹1K</div>
+            <div class="persona-stat-lbl">SIP Minimum</div>
+          </div>
+        </div>
+        <div class="persona-cta">
+          <span class="persona-cta-text">View P6 entry flow</span>
+          <span class="persona-arrow">→</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- P7 -->
+    <a class="persona-card" href="setup-flow.html?persona=p7" style="--ph-from:#92400E;--ph-to:#D97706;--p-color:#D97706">
+      <div class="persona-card-header">
+        <div class="persona-label">P7 · Strong Add-On</div>
+        <div class="persona-name">Passive Explorer</div>
+        <div class="persona-trigger-label">Entry trigger</div>
+        <div class="persona-trigger">Bond maturity event — push + email within 24 hours</div>
+      </div>
+      <div class="persona-card-body">
+        <div class="persona-copy">"Your ₹39,000 just matured. Don't let it sit idle."</div>
+        <div class="persona-stats">
+          <div class="persona-stat">
+            <div class="persona-stat-val">194</div>
+            <div class="persona-stat-lbl">Users (Q1 2026)</div>
+          </div>
+          <div class="persona-stat">
+            <div class="persona-stat-val">₹39K</div>
+            <div class="persona-stat-lbl">Last TXN</div>
+          </div>
+          <div class="persona-stat">
+            <div class="persona-stat-val">÷12</div>
+            <div class="persona-stat-lbl">Pre-filled amount</div>
+          </div>
+        </div>
+        <div class="persona-cta">
+          <span class="persona-cta-text">View P7 maturity flow</span>
+          <span class="persona-arrow">→</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Prototype Screens -->
+  <div class="section-label">Prototype Screens</div>
+  <div class="flow-grid">
+
+    <a class="flow-card" href="setup-flow.html" style="--fc-accent:#2563EB">
+      <div class="flow-icon">🪜</div>
+      <div class="flow-title">SIP Setup Flow</div>
+      <div class="flow-desc">Full 6-step interactive flow — amount selection, goal mode, bond preview, debit date, UPI AutoPay mandate, and confirmation with projected portfolio value.</div>
+      <div class="flow-meta">
+        <span class="badge badge-blue">6 steps</span>
+        <span class="badge badge-green">Interactive</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="flow-card" href="portfolio.html" style="--fc-accent:#059669">
+      <div class="flow-icon">📊</div>
+      <div class="flow-title">Bond SIP Portfolio View</div>
+      <div class="flow-desc">Dedicated portfolio section — blended YTM, projected income, cashflow calendar, instalment history, and per-ISIN holdings breakdown.</div>
+      <div class="flow-meta">
+        <span class="badge badge-green">Portfolio</span>
+        <span class="badge badge-blue">Dashboard</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Scope & Open Items -->
+  <div class="section-label">V1 Scope Summary</div>
+  <div class="scope-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>V1 Scope</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>SIP Setup Flow (6 steps)</td>
+          <td>Amount (₹1K–₹1L), goal, bond preview, date 1–28, UPI AutoPay mandate, confirmation</td>
+          <td><span class="status-dot"><span class="dot dot-blue"></span>In Design</span></td>
+        </tr>
+        <tr>
+          <td>Allocation Engine (V1)</td>
+          <td>Scoring function: YTM weight + maturity fit + availability. No ML. Three modes: top-up / new rung / skip</td>
+          <td><span class="status-dot"><span class="dot dot-amber"></span>Pending O1</span></td>
+        </tr>
+        <tr>
+          <td>Goal Modes</td>
+          <td>Income Ladder (staggered maturities) · Wealth Growth (max YTM)</td>
+          <td><span class="status-dot"><span class="dot dot-blue"></span>In Design</span></td>
+        </tr>
+        <tr>
+          <td>SIP Controls</td>
+          <td>Pause · Resume · Cancel SIP · Cancel mandate — all self-serve</td>
+          <td><span class="status-dot"><span class="dot dot-blue"></span>In Design</span></td>
+        </tr>
+        <tr>
+          <td>Failed Debit Handling</td>
+          <td>Immediate push+email · 48hr manual retry · 3 failures → auto-pause</td>
+          <td><span class="status-dot"><span class="dot dot-blue"></span>Spec Done</span></td>
+        </tr>
+        <tr>
+          <td>Maturity Reinvestment</td>
+          <td>Auto-reinvest by default (opt-out). Pre-maturity alert 5 days prior.</td>
+          <td><span class="status-dot"><span class="dot dot-amber"></span>Open (O5)</span></td>
+        </tr>
+        <tr>
+          <td>Fallback (no bond available)</td>
+          <td>Skip + notify (V1). Liquid MF parking deferred to Phase 2.</td>
+          <td><span class="status-dot"><span class="dot dot-blue"></span>Spec Done</span></td>
+        </tr>
+        <tr>
+          <td>SEBI/PMS Regulatory Clearance</td>
+          <td>Legal must confirm whether Bond SIP falls within OBPP scope or requires PMS license</td>
+          <td><span class="status-dot"><span class="dot dot-amber"></span>🚨 Blocker (O1)</span></td>
+        </tr>
+        <tr>
+          <td>Liquid MF Fallback Parking</td>
+          <td>Phase 2 only</td>
+          <td><span class="status-dot"><span class="dot dot-amber"></span>Phase 2</span></td>
+        </tr>
+        <tr>
+          <td>Step-Up SIP (variable mandate)</td>
+          <td>Phase 2 — pending Razorpay variable mandate support confirmation</td>
+          <td><span class="status-dot"><span class="dot dot-amber"></span>Phase 2</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Success Metrics -->
+  <div class="section-label">Success Metrics (90 days post-launch)</div>
+  <div class="flow-grid" style="margin-bottom: 48px;">
+    <div class="flow-card" style="--fc-accent:#2563EB; cursor:default;">
+      <div class="flow-icon">🎯</div>
+      <div class="flow-title">SIP Activation Rate</div>
+      <div class="flow-desc">% of users shown SIP CTA who complete mandate setup</div>
+      <div class="flow-meta"><span class="badge badge-blue">Target: 15%</span></div>
+    </div>
+    <div class="flow-card" style="--fc-accent:#059669; cursor:default;">
+      <div class="flow-icon">📅</div>
+      <div class="flow-title">D30 SIP Retention</div>
+      <div class="flow-desc">% of SIP users with active mandate at 30 days</div>
+      <div class="flow-meta"><span class="badge badge-green">Target: 70%</span></div>
+    </div>
+    <div class="flow-card" style="--fc-accent:#059669; cursor:default;">
+      <div class="flow-icon">📆</div>
+      <div class="flow-title">D90 SIP Retention</div>
+      <div class="flow-desc">% of SIP users with active mandate at 90 days</div>
+      <div class="flow-meta"><span class="badge badge-green">Target: 50%</span></div>
+    </div>
+    <div class="flow-card" style="--fc-accent:#D97706; cursor:default;">
+      <div class="flow-icon">💰</div>
+      <div class="flow-title">Average SIP Amount</div>
+      <div class="flow-desc">Mean monthly debit across active plans</div>
+      <div class="flow-meta"><span class="badge badge-amber">Target: ₹8,000/month</span></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Aspero Bond SIP Prototype · PRD v1 · April 2026 · <a href="https://goyubi.atlassian.net/browse/ASP-3558" target="_blank" rel="noopener" style="color:var(--blue-mid)">Jira ASP-3558 ↗</a>
+  </div>
+
+</div>
+</body>
+</html>
