@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Biometrics Launch Impact — Aspero B2C</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>if(typeof Chart==='undefined'){document.write('<scr'+'ipt src="https://unpkg.com/chart.js@4.4.0/dist/chart.umd.min.js"><\/scr'+'ipt>');}</script>
 <style>
   :root {
     --blue:    #2563EB;
@@ -897,7 +898,7 @@ function updatePage(d) {
         c.style.display = 'none';
         const msg = document.createElement('p');
         msg.style = 'text-align:center;color:#DC2626;font-size:13px;padding:20px 0';
-        msg.textContent = 'Chart failed to load — try a hard refresh (Cmd+Shift+R).';
+        msg.textContent = 'Chart error: ' + (e && e.message ? e.message : String(e));
         c.parentNode.insertBefore(msg, c.nextSibling);
       }
     });
