@@ -128,19 +128,66 @@
     .listing-count strong { color: #121926; }
     .sort-btn { display: flex; align-items: center; gap: 6px; background: #fff; border: 1px solid #E3E8EF; border-radius: 8px; padding: 7px 12px; font-size: 13px; color: #4B5565; cursor: pointer; }
 
+    /* ── Curated filter chips (Explore page) ── */
+    .curated-chips-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; margin-bottom: 16px; }
+    .curated-chips-row::-webkit-scrollbar { height: 3px; }
+    .curated-chips-row::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 2px; }
+    .curated-chip { background: #fff; border: 1px solid #E3E8EF; border-radius: 20px; padding: 6px 14px; font-size: 13px; font-weight: 500; color: #4B5565; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all 0.15s; }
+    .curated-chip:hover { border-color: #16B364; color: #16B364; }
+    .curated-chip.active { background: #121926; border-color: #121926; color: #fff; font-weight: 600; }
+    .curated-chip.live { border-color: #86EFAC; color: #15803D; background: #F0FDF4; }
+    .view-toggle { display: flex; gap: 6px; }
+    .view-toggle-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid #E3E8EF; border-radius: 6px; cursor: pointer; background: #fff; font-size: 14px; }
+    .view-toggle-btn.active { background: #121926; border-color: #121926; color: #fff; }
+
+    /* ── Bond table — 7-column layout matching BondListRow ── */
     .bond-table { background: #fff; border: 1px solid #E3E8EF; border-radius: 12px; overflow: hidden; }
-    .bond-table-header { display: grid; grid-template-columns: 2.5fr 1fr 1fr 1fr 1fr; padding: 12px 16px; background: #F9FAFB; border-bottom: 1px solid #E3E8EF; }
-    .bond-table-header span { font-size: 12px; font-weight: 600; color: #697586; text-transform: uppercase; letter-spacing: 0.04em; }
-    .bond-row { display: grid; grid-template-columns: 2.5fr 1fr 1fr 1fr 1fr; padding: 14px 16px; border-bottom: 1px solid #F1F5F9; align-items: center; cursor: pointer; transition: background 0.1s; text-decoration: none; color: inherit; }
+    .bond-table-header { display: grid; grid-template-columns: 2.8fr 0.9fr 1fr 1.1fr 1fr 1.5fr 1fr; padding: 10px 16px; background: #F9FAFB; border-bottom: 1px solid #E3E8EF; }
+    .bond-table-header span { font-size: 11px; font-weight: 600; color: #697586; text-transform: uppercase; letter-spacing: 0.05em; }
+    .bond-row { display: grid; grid-template-columns: 2.8fr 0.9fr 1fr 1.1fr 1fr 1.5fr 1fr; height: 80px; border-bottom: 1px solid #F1F5F9; align-items: center; cursor: pointer; text-decoration: none; color: inherit; position: relative; overflow: hidden; padding-left: 0; }
+    .bond-row::before { content: ''; position: absolute; top: 0; left: 0; width: 40%; height: 100%; background: linear-gradient(to right, rgba(112,205,89,0.10), transparent); pointer-events: none; z-index: 0; }
+    .bond-row.sold-out::before { background: linear-gradient(to right, rgba(255,0,0,0.08), transparent); }
+    .bond-row.upcoming::before { background: linear-gradient(to right, rgba(128,152,216,0.12), transparent); }
     .bond-row:hover { background: #F9FAFB; }
     .bond-row:last-child { border-bottom: none; }
-    .bond-name { font-size: 14px; font-weight: 600; color: #121926; }
-    .bond-isin { font-size: 12px; color: #697586; margin-top: 2px; }
-    .bond-cell { font-size: 13px; color: #4B5565; }
-    .bond-cell-center { font-size: 13px; color: #4B5565; text-align: center; }
+    /* Column: Bond name + logo */
+    .bond-col-name { display: flex; align-items: center; gap: 10px; padding: 0 12px 0 16px; position: relative; z-index: 1; }
+    .bond-logo { width: 44px; height: 44px; border: 1px solid #E3E8EF; border-radius: 6px; background: #F9FAFB; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #697586; flex-shrink: 0; }
+    .bond-name { font-size: 13px; font-weight: 600; color: #121926; line-height: 1.4; }
+    .bond-isin { font-size: 11px; color: #9AA4B2; margin-top: 2px; }
+    /* Column: value cells */
+    .bond-cell { font-size: 13px; font-weight: 600; color: #121926; padding: 0 8px; position: relative; z-index: 1; }
+    .bond-cell.ytm { color: #16B364; }
+    .bond-cell.muted { color: #697586; font-weight: 400; font-size: 12px; }
+    /* Repayment priority chip */
+    .repayment-chip { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; background: #F1F5F9; color: #475569; white-space: nowrap; }
+    /* Action cell */
+    .bond-action { padding: 0 8px; position: relative; z-index: 1; }
+    .btn-view-details { background: transparent; border: 1px solid #E3E8EF; border-radius: 6px; padding: 5px 10px; font-size: 12px; font-weight: 600; color: #121926; cursor: pointer; white-space: nowrap; }
+    .btn-view-details:hover { border-color: #16B364; color: #16B364; }
+    .btn-notify { background: transparent; border: 1px solid #E3E8EF; border-radius: 6px; padding: 5px 10px; font-size: 12px; font-weight: 600; color: #697586; cursor: pointer; white-space: nowrap; }
+
     .status-live { display: inline-flex; align-items: center; gap: 4px; background: #DCFCE7; color: #15803D; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
     .status-not-listed { display: inline-flex; align-items: center; gap: 4px; background: #FEF9C3; color: #854D0E; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
     .status-matured { display: inline-flex; align-items: center; gap: 4px; background: #F1F5F9; color: #475569; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+
+    /* ── Issuer Page (Page 6) ── */
+    .issuer-banner { background: linear-gradient(135deg, #0A1628 0%, #1A3358 60%, #0F2645 100%); padding: 40px 32px 32px; }
+    .issuer-banner-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 24px; }
+    .issuer-logo-large { width: 72px; height: 72px; border-radius: 12px; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; color: #121926; flex-shrink: 0; border: 2px solid rgba(255,255,255,0.15); }
+    .issuer-banner-info h1 { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .issuer-banner-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+    .issuer-banner-tag { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #CBD5E1; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+    .issuer-stats-strip { background: #fff; border-bottom: 1px solid #E3E8EF; }
+    .issuer-stats-inner { max-width: 1100px; margin: 0 auto; padding: 20px 32px; display: flex; gap: 48px; }
+    .issuer-stat { }
+    .issuer-stat-value { font-size: 22px; font-weight: 800; color: #121926; }
+    .issuer-stat-value.green { color: #16B364; }
+    .issuer-stat-label { font-size: 12px; color: #697586; margin-top: 2px; }
+    .issuer-highlights { background: #fff; border: 1px solid #E3E8EF; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+    .highlights-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .highlights-list li { font-size: 14px; color: #4B5565; display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; }
+    .highlights-list li::before { content: '✓'; color: #16B364; font-weight: 700; flex-shrink: 0; }
 
     .pagination { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 24px; }
     .page-num { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid #E3E8EF; border-radius: 8px; font-size: 13px; cursor: pointer; background: #fff; color: #4B5565; }
@@ -262,6 +309,7 @@
   <button onclick="showPage('not-listed')">3. ISIN — Not Listed</button>
   <button onclick="showPage('matured')">4. ISIN — Matured</button>
   <button onclick="showPage('live')">5. ISIN — Live on Aspero</button>
+  <button onclick="showPage('issuer')">6. Issuer Page (NTPC)</button>
 </div>
 
 
@@ -396,18 +444,18 @@
       <div style="font-size:11px; color:#15803D; background:#F0FDF4; border:1px solid #86EFAC; border-radius:6px; padding:4px 10px; white-space:nowrap;">📐 Click → Explore page with Issuer pre-selected · Dynamic, sorted by bond count · Recomputed daily · Top 12</div>
     </div>
     <div class="top-issuers">
-      <a class="issuer-chip" href="#" onclick="navigateTo('category',{label:'Adani Enterprises',key:'adani-enterprises',issuer:true,count:'42',url:'/invest/bonds/adani-enterprises-limited/'}); return false;">Adani Enterprises</a>
-      <a class="issuer-chip" href="#" onclick="navigateTo('category',{label:'NTPC Limited',key:'ntpc-limited',issuer:true,count:'38',url:'/invest/bonds/ntpc-limited/'}); return false;">NTPC Limited</a>
-      <a class="issuer-chip" href="#" onclick="navigateTo('category',{label:'HDFC Bank',key:'hdfc-bank',issuer:true,count:'96',url:'/invest/bonds/hdfc-bank-limited/'}); return false;">HDFC Bank</a>
-      <a class="issuer-chip" href="#" onclick="navigateTo('category',{label:'Tata Capital',key:'tata-capital',issuer:true,count:'61',url:'/invest/bonds/tata-capital-financial-services/'}); return false;">Tata Capital</a>
-      <a class="issuer-chip" href="#" onclick="navigateTo('category',{label:'Poonawalla Fincorp',key:'poonawalla-fincorp',issuer:true,count:'14',url:'/invest/bonds/poonawalla-fincorp-limited/'}); return false;">Poonawalla Fincorp</a>
-      <a class="issuer-chip" href="#" onclick="navigateTo('category',{label:'Power Finance Corp',key:'power-finance-corp',issuer:true,count:'54',url:'/invest/bonds/power-finance-corporation/'}); return false;">Power Finance Corp</a>
-      <a class="issuer-chip" href="#" onclick="navigateTo('category',{label:'REC Limited',key:'rec-limited',issuer:true,count:'49',url:'/invest/bonds/rec-limited/'}); return false;">REC Limited</a>
-      <a class="issuer-chip" href="#" onclick="navigateTo('category',{label:'IIFL Finance',key:'iifl-finance',issuer:true,count:'33',url:'/invest/bonds/iifl-finance-limited/'}); return false;">IIFL Finance</a>
-      <a class="issuer-chip" href="#" onclick="navigateTo('category',{label:'Muthoot Finance',key:'muthoot-finance',issuer:true,count:'28',url:'/invest/bonds/muthoot-finance-limited/'}); return false;">Muthoot Finance</a>
-      <a class="issuer-chip" href="#" onclick="navigateTo('category',{label:'Sammaan Capital',key:'sammaan-capital',issuer:true,count:'19',url:'/invest/bonds/sammaan-capital-limited/'}); return false;">Sammaan Capital</a>
-      <a class="issuer-chip" href="#" onclick="navigateTo('category',{label:'Navi Finserv',key:'navi-finserv',issuer:true,count:'11',url:'/invest/bonds/navi-finserv-limited/'}); return false;">Navi Finserv</a>
-      <a class="issuer-chip" href="#" onclick="navigateTo('category',{label:'Moneyboxx Finance',key:'moneyboxx-finance',issuer:true,count:'8',url:'/invest/bonds/moneyboxx-finance-limited/'}); return false;">Moneyboxx Finance</a>
+      <a class="issuer-chip" href="#" onclick="showPage('issuer'); return false;">Adani Enterprises</a>
+      <a class="issuer-chip" href="#" onclick="showPage('issuer'); return false;">NTPC Limited</a>
+      <a class="issuer-chip" href="#" onclick="showPage('issuer'); return false;">HDFC Bank</a>
+      <a class="issuer-chip" href="#" onclick="showPage('issuer'); return false;">Tata Capital</a>
+      <a class="issuer-chip" href="#" onclick="showPage('issuer'); return false;">Poonawalla Fincorp</a>
+      <a class="issuer-chip" href="#" onclick="showPage('issuer'); return false;">Power Finance Corp</a>
+      <a class="issuer-chip" href="#" onclick="showPage('issuer'); return false;">REC Limited</a>
+      <a class="issuer-chip" href="#" onclick="showPage('issuer'); return false;">IIFL Finance</a>
+      <a class="issuer-chip" href="#" onclick="showPage('issuer'); return false;">Muthoot Finance</a>
+      <a class="issuer-chip" href="#" onclick="showPage('issuer'); return false;">Sammaan Capital</a>
+      <a class="issuer-chip" href="#" onclick="showPage('issuer'); return false;">Navi Finserv</a>
+      <a class="issuer-chip" href="#" onclick="showPage('issuer'); return false;">Moneyboxx Finance</a>
     </div>
     <div style="margin-top:20px;">
       <button class="btn-ghost">Browse all 2,400+ issuers →</button>
@@ -535,79 +583,150 @@
 
       <!-- Listing main -->
       <div class="listing-main">
-        <div style="margin-bottom:10px;">
+        <!-- Back link -->
+        <div style="margin-bottom:12px;">
           <a href="#" onclick="showPage('landing'); return false;" style="font-size:12px; color:#697586; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">← Back to Bond Directory</a>
         </div>
-        <div class="listing-header">
-          <div id="cat-count" class="listing-count">Showing <strong>4,218 bonds</strong> · 3 filters active</div>
-          <button class="sort-btn" style="border-color:#16B364; color:#15803D; font-weight:700;">⇩ Coupon Rate (default)</button>
+
+        <!-- Curated chips row — mirrors real Explore page horizontal filter chips -->
+        <div class="curated-chips-row">
+          <div class="curated-chip active" id="chip-all">All Bonds</div>
+          <div class="curated-chip live">● Live (57)</div>
+          <div class="curated-chip">Upcoming (12)</div>
+          <div class="curated-chip">Sold Out (32)</div>
+          <div class="curated-chip">High Yield (&gt;10%)</div>
+          <div class="curated-chip">Short Tenure (&lt;1 yr)</div>
+          <div class="curated-chip">AAA Rated</div>
+          <div class="curated-chip">Senior Secured</div>
         </div>
-        <div style="font-size:11px; color:#9AA4B2; margin-bottom:8px;">💡 Click any bond row to view its full ISIN detail page (State 3, 4, or 5)</div>
+
+        <!-- Listing header: count + view toggle + sort -->
+        <div class="listing-header">
+          <div id="cat-count" class="listing-count">Showing <strong>4,218 bonds</strong> · Instrument Type filter active</div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="view-toggle">
+              <div class="view-toggle-btn" title="Card view">⊞</div>
+              <div class="view-toggle-btn active" title="List view">☰</div>
+            </div>
+            <button class="sort-btn" style="border-color:#16B364; color:#15803D; font-weight:700;">⇩ Max YTM (default)</button>
+          </div>
+        </div>
+        <div style="font-size:11px; color:#9AA4B2; margin-bottom:8px;">💡 Click any row → ISIN detail page &nbsp;·&nbsp; 📐 Matches real <strong>BondListRow</strong> columns from <code>src/screens/bondExplore/components/BondListRow/</code></div>
 
         <div class="bond-table">
+          <!-- Header: 7 columns matching BondListRow component -->
           <div class="bond-table-header">
             <span>Bond / ISIN</span>
+            <span>Max YTM</span>
+            <span>Tenure</span>
+            <span>Min. Investment</span>
             <span>Rating</span>
-            <span>Coupon</span>
-            <span>Maturity</span>
-            <span>Status</span>
+            <span>Repayment Priority</span>
+            <span>Action</span>
           </div>
 
-          <a class="bond-row" href="#" onclick="showPage('live'); return false;" title="Click to view ISIN detail page">
-            <div><div class="bond-name">Poonawalla Fincorp Limited</div><div class="bond-isin">INE511C08AE1 · NCD · Secured</div></div>
+          <a class="bond-row" href="#" onclick="showPage('live'); return false;">
+            <div class="bond-col-name">
+              <div class="bond-logo">PF</div>
+              <div><div class="bond-name">Poonawalla Fincorp Limited</div><div class="bond-isin">INE511C08AE1</div></div>
+            </div>
+            <div class="bond-cell ytm">10.40%</div>
+            <div class="bond-cell">2Y 2M</div>
+            <div class="bond-cell">₹1,043</div>
             <div class="bond-cell"><span class="rating-badge rating-aaa">CRISIL AAA</span></div>
-            <div class="bond-cell">10.40%</div>
-            <div class="bond-cell">24 Jan 2027</div>
-            <div><span class="status-live">● Live</span></div>
+            <div class="bond-cell"><span class="repayment-chip">Senior Secured NCD</span></div>
+            <div class="bond-action"><button class="btn-view-details" onclick="event.stopPropagation();">View Details</button></div>
           </a>
-          <a class="bond-row" href="#" onclick="showPage('not-listed'); return false;" title="Click to view ISIN detail page">
-            <div><div class="bond-name">Adani Enterprises Limited</div><div class="bond-isin">INE423A07500 · NCD · Secured</div></div>
+
+          <a class="bond-row sold-out" href="#" onclick="showPage('not-listed'); return false;">
+            <div class="bond-col-name">
+              <div class="bond-logo">AE</div>
+              <div><div class="bond-name">Adani Enterprises Limited</div><div class="bond-isin">INE423A07500</div></div>
+            </div>
+            <div class="bond-cell ytm">8.50%</div>
+            <div class="bond-cell muted">Not Listed</div>
+            <div class="bond-cell">₹1,000</div>
             <div class="bond-cell"><span class="rating-badge rating-aa">CRISIL AA-</span></div>
-            <div class="bond-cell">8.50%</div>
-            <div class="bond-cell">18 Mar 2026</div>
-            <div><span class="status-not-listed">○ Not Listed</span></div>
+            <div class="bond-cell"><span class="repayment-chip">Senior Secured NCD</span></div>
+            <div class="bond-action"><button class="btn-notify" onclick="event.stopPropagation();">🔔 Notify Me</button></div>
           </a>
-          <a class="bond-row" href="#" onclick="showPage('live'); return false;" title="Click to view ISIN detail page">
-            <div><div class="bond-name">IIFL Samasta Finance Limited</div><div class="bond-isin">INE413U07442 · NCD · Secured</div></div>
+
+          <a class="bond-row" href="#" onclick="showPage('live'); return false;">
+            <div class="bond-col-name">
+              <div class="bond-logo">IS</div>
+              <div><div class="bond-name">IIFL Samasta Finance Ltd</div><div class="bond-isin">INE413U07442</div></div>
+            </div>
+            <div class="bond-cell ytm">11.00%</div>
+            <div class="bond-cell">1Y 2M</div>
+            <div class="bond-cell">₹1,000</div>
             <div class="bond-cell"><span class="rating-badge rating-a">IND A+</span></div>
-            <div class="bond-cell">11.00%</div>
-            <div class="bond-cell">15 Jun 2026</div>
-            <div><span class="status-live">● Live</span></div>
+            <div class="bond-cell"><span class="repayment-chip">Senior Secured NCD</span></div>
+            <div class="bond-action"><button class="btn-view-details" onclick="event.stopPropagation();">View Details</button></div>
           </a>
-          <a class="bond-row" href="#" onclick="showPage('matured'); return false;" title="Click to view ISIN detail page">
-            <div><div class="bond-name">NTPC Limited</div><div class="bond-isin">INE733E07CB1 · Bond · Secured</div></div>
+
+          <a class="bond-row sold-out" href="#" onclick="showPage('matured'); return false;">
+            <div class="bond-col-name">
+              <div class="bond-logo">NT</div>
+              <div><div class="bond-name">NTPC Limited</div><div class="bond-isin">INE733E07CB1</div></div>
+            </div>
+            <div class="bond-cell ytm">11.25%</div>
+            <div class="bond-cell muted">Matured</div>
+            <div class="bond-cell">₹2,00,000</div>
             <div class="bond-cell"><span class="rating-badge rating-aaa">CRISIL AAA</span></div>
-            <div class="bond-cell">11.25%</div>
-            <div class="bond-cell">06 Nov 2023</div>
-            <div><span class="status-matured">◌ Matured</span></div>
+            <div class="bond-cell"><span class="repayment-chip">PSU Bond</span></div>
+            <div class="bond-action"><button class="btn-view-details" onclick="event.stopPropagation();">View Details</button></div>
           </a>
-          <a class="bond-row" href="#" onclick="showPage('live'); return false;" title="Click to view ISIN detail page">
-            <div><div class="bond-name">Muthoot Mcred Limited</div><div class="bond-isin">INE101Q07BX1 · NCD · Secured</div></div>
+
+          <a class="bond-row" href="#" onclick="showPage('live'); return false;">
+            <div class="bond-col-name">
+              <div class="bond-logo">MM</div>
+              <div><div class="bond-name">Muthoot Mcred Limited</div><div class="bond-isin">INE101Q07BX1</div></div>
+            </div>
+            <div class="bond-cell ytm">11.10%</div>
+            <div class="bond-cell">2Y 0M</div>
+            <div class="bond-cell">₹1,000</div>
             <div class="bond-cell"><span class="rating-badge rating-bbb">BBB+</span></div>
-            <div class="bond-cell">11.10%</div>
-            <div class="bond-cell">28 Feb 2027</div>
-            <div><span class="status-live">● Live</span></div>
+            <div class="bond-cell"><span class="repayment-chip">Senior Secured NCD</span></div>
+            <div class="bond-action"><button class="btn-view-details" onclick="event.stopPropagation();">View Details</button></div>
           </a>
-          <a class="bond-row" href="#" onclick="showPage('live'); return false;" title="Click to view ISIN detail page">
-            <div><div class="bond-name">Sammaan Capital Limited</div><div class="bond-isin">INE148I07GL3 · NCD · Secured</div></div>
+
+          <a class="bond-row" href="#" onclick="showPage('live'); return false;">
+            <div class="bond-col-name">
+              <div class="bond-logo">SC</div>
+              <div><div class="bond-name">Sammaan Capital Limited</div><div class="bond-isin">INE148I07GL3</div></div>
+            </div>
+            <div class="bond-cell ytm">9.80%</div>
+            <div class="bond-cell">5M 4D</div>
+            <div class="bond-cell">₹1,047</div>
             <div class="bond-cell"><span class="rating-badge rating-aa">ICRA AA</span></div>
-            <div class="bond-cell">9.80%</div>
-            <div class="bond-cell">12 Sep 2025</div>
-            <div><span class="status-live">● Live</span></div>
+            <div class="bond-cell"><span class="repayment-chip">Senior Secured NCD</span></div>
+            <div class="bond-action"><button class="btn-view-details" onclick="event.stopPropagation();">View Details</button></div>
           </a>
-          <a class="bond-row" href="#" onclick="showPage('not-listed'); return false;" title="Click to view ISIN detail page">
-            <div><div class="bond-name">Moneyboxx Finance Limited</div><div class="bond-isin">INE296Q07142 · NCD · Secured</div></div>
+
+          <a class="bond-row sold-out" href="#" onclick="showPage('not-listed'); return false;">
+            <div class="bond-col-name">
+              <div class="bond-logo">MF</div>
+              <div><div class="bond-name">Moneyboxx Finance Limited</div><div class="bond-isin">INE296Q07142</div></div>
+            </div>
+            <div class="bond-cell ytm">12.06%</div>
+            <div class="bond-cell muted">Not Listed</div>
+            <div class="bond-cell">₹1,000</div>
             <div class="bond-cell"><span class="rating-badge rating-bbb">BBB</span></div>
-            <div class="bond-cell">12.06%</div>
-            <div class="bond-cell">30 Nov 2026</div>
-            <div><span class="status-not-listed">○ Not Listed</span></div>
+            <div class="bond-cell"><span class="repayment-chip">Senior Secured NCD</span></div>
+            <div class="bond-action"><button class="btn-notify" onclick="event.stopPropagation();">🔔 Notify Me</button></div>
           </a>
-          <a class="bond-row" href="#" onclick="showPage('matured'); return false;" title="Click to view ISIN detail page">
-            <div><div class="bond-name">Kotak Mahindra Prime Limited</div><div class="bond-isin">INE916D08DT2 · Bond · Secured</div></div>
+
+          <a class="bond-row sold-out" href="#" onclick="showPage('matured'); return false;">
+            <div class="bond-col-name">
+              <div class="bond-logo">KM</div>
+              <div><div class="bond-name">Kotak Mahindra Prime Ltd</div><div class="bond-isin">INE916D08DT2</div></div>
+            </div>
+            <div class="bond-cell ytm">10.50%</div>
+            <div class="bond-cell muted">Matured</div>
+            <div class="bond-cell">₹1,000</div>
             <div class="bond-cell"><span class="rating-badge rating-aaa">CRISIL AAA</span></div>
-            <div class="bond-cell">10.50%</div>
-            <div class="bond-cell">22 Jun 2023</div>
-            <div><span class="status-matured">◌ Matured</span></div>
+            <div class="bond-cell"><span class="repayment-chip">Corporate Bond</span></div>
+            <div class="bond-action"><button class="btn-view-details" onclick="event.stopPropagation();">View Details</button></div>
           </a>
         </div>
 
@@ -1116,6 +1235,274 @@
 </div><!-- /live -->
 
 
+<!-- ══════════════════════════════════════════════════
+     PAGE 6 — ISSUER PAGE
+     /invest/bonds/ntpc-limited/
+═══════════════════════════════════════════════════ -->
+<div id="issuer" class="page">
+
+  <nav class="nav">
+    <span class="nav-logo">aspero</span>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#" class="active">Explore Bonds</a>
+      <a href="#">Collections</a>
+      <a href="#">Learn</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn-outline">Sign In</button>
+      <button class="nav-btn" onclick="showPage('live')">Invest Now</button>
+    </div>
+  </nav>
+
+  <div class="breadcrumb"><div class="breadcrumb-inner">
+    <a href="#" onclick="showPage('landing'); return false;">Home</a> ›
+    <a href="#" onclick="showPage('landing'); return false;">Bonds</a> ›
+    <span>NTPC Limited</span>
+  </div></div>
+
+  <!-- Dark blue banner -->
+  <div class="issuer-banner">
+    <div class="issuer-banner-inner">
+      <div class="issuer-logo-large">NT</div>
+      <div class="issuer-banner-info">
+        <h1>NTPC Limited</h1>
+        <div class="issuer-banner-tags">
+          <span class="issuer-banner-tag">🏛️ PSU</span>
+          <span class="issuer-banner-tag">⚡ Power Sector</span>
+          <span class="issuer-banner-tag">🏆 Maharatna</span>
+          <span class="issuer-banner-tag" style="background:rgba(22,179,100,0.2);border-color:#16B364;color:#6EE7B7;">★ CRISIL AAA</span>
+          <span class="issuer-banner-tag">NSE: NTPC &nbsp;·&nbsp; BSE: 532555</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats strip -->
+  <div class="issuer-stats-strip">
+    <div class="issuer-stats-inner">
+      <div class="issuer-stat">
+        <div class="issuer-stat-value">38</div>
+        <div class="issuer-stat-label">Bonds Indexed</div>
+      </div>
+      <div class="issuer-stat">
+        <div class="issuer-stat-value green">₹28,000+ Cr</div>
+        <div class="issuer-stat-label">Total Raised (all time)</div>
+      </div>
+      <div class="issuer-stat">
+        <div class="issuer-stat-value">9.67%</div>
+        <div class="issuer-stat-label">Avg Coupon Rate</div>
+      </div>
+      <div class="issuer-stat">
+        <div class="issuer-stat-value">AAA</div>
+        <div class="issuer-stat-label">CRISIL Credit Rating</div>
+      </div>
+      <div class="issuer-stat">
+        <div class="issuer-stat-value green">12</div>
+        <div class="issuer-stat-label">Available on Aspero</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="isin-layout">
+
+      <!-- Left: About + Bond list -->
+      <div>
+
+        <!-- About -->
+        <div class="card card-pad" style="margin-bottom:20px;">
+          <div class="section-title">About NTPC Limited</div>
+          <p style="font-size:14px;color:#4B5565;line-height:1.7;">
+            NTPC Limited (National Thermal Power Corporation) is India's largest power generation company and a Maharatna Central Public Sector Enterprise. Founded in 1975, NTPC has a total installed capacity of over 73 GW across thermal, hydro, solar, and wind segments. The company is listed on NSE (NTPC) and BSE (532555), and is a constituent of both Nifty 50 and Sensex.
+          </p>
+          <p style="font-size:14px;color:#4B5565;line-height:1.7;margin-top:10px;">
+            NTPC bonds are backed by the Government of India's 51%+ equity stake, making them among the safest fixed-income instruments for retail investors. All outstanding NTPC debt is rated <strong>CRISIL AAA / ICRA AAA</strong> with a Stable outlook.
+          </p>
+        </div>
+
+        <!-- Bonds table header -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div class="section-title" style="margin-bottom:0;">Bonds by NTPC Limited</div>
+          <div class="listing-count"><strong>38</strong> bonds indexed &nbsp;·&nbsp; sorted by coupon ↓</div>
+        </div>
+
+        <!-- Design annotation -->
+        <div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:#15803D;display:flex;align-items:center;gap:8px;">
+          <span style="font-weight:700;">📐 Design note:</span>
+          <span>Same 7-col table as Explore page (<code style="background:#DCFCE7;padding:1px 4px;border-radius:3px;">BondListRow</code>). Green gradient = available, blue = upcoming, grey = matured.</span>
+        </div>
+
+        <div class="bond-table">
+          <div class="bond-table-header">
+            <span>Bond / ISIN</span>
+            <span>Max YTM</span>
+            <span>Tenure</span>
+            <span>Min. Investment</span>
+            <span>Rating</span>
+            <span>Repayment Priority</span>
+            <span>Action</span>
+          </div>
+
+          <a class="bond-row" href="#" onclick="showPage('live'); return false;">
+            <div class="bond-col-name">
+              <div class="bond-logo">NT</div>
+              <div><div class="bond-name">NTPC Limited</div><div class="bond-isin">INE733E07CD7</div></div>
+            </div>
+            <div class="bond-cell ytm">9.90%</div>
+            <div class="bond-cell">5Y 3M</div>
+            <div class="bond-cell">₹10,000</div>
+            <div class="bond-cell"><span class="rating-badge rating-aaa">CRISIL AAA</span></div>
+            <div class="bond-cell"><span class="repayment-chip">Senior Unsecured</span></div>
+            <div class="bond-action"><button class="btn-view-details" onclick="event.stopPropagation();">View Details</button></div>
+          </a>
+
+          <a class="bond-row" href="#" onclick="showPage('live'); return false;">
+            <div class="bond-col-name">
+              <div class="bond-logo">NT</div>
+              <div><div class="bond-name">NTPC Limited</div><div class="bond-isin">INE733E07XY1</div></div>
+            </div>
+            <div class="bond-cell ytm">9.67%</div>
+            <div class="bond-cell">3Y 8M</div>
+            <div class="bond-cell">₹10,000</div>
+            <div class="bond-cell"><span class="rating-badge rating-aaa">CRISIL AAA</span></div>
+            <div class="bond-cell"><span class="repayment-chip">Senior Unsecured</span></div>
+            <div class="bond-action"><button class="btn-view-details" onclick="event.stopPropagation();">View Details</button></div>
+          </a>
+
+          <a class="bond-row" href="#" onclick="showPage('live'); return false;">
+            <div class="bond-col-name">
+              <div class="bond-logo">NT</div>
+              <div><div class="bond-name">NTPC Limited</div><div class="bond-isin">INE733E07AB3</div></div>
+            </div>
+            <div class="bond-cell ytm">9.67%</div>
+            <div class="bond-cell">7Y 1M</div>
+            <div class="bond-cell">₹10,000</div>
+            <div class="bond-cell"><span class="rating-badge rating-aaa">CRISIL AAA</span></div>
+            <div class="bond-cell"><span class="repayment-chip">Senior Unsecured</span></div>
+            <div class="bond-action"><button class="btn-view-details" onclick="event.stopPropagation();">View Details</button></div>
+          </a>
+
+          <a class="bond-row upcoming" href="#" onclick="showPage('not-listed'); return false;">
+            <div class="bond-col-name">
+              <div class="bond-logo">NT</div>
+              <div><div class="bond-name">NTPC Limited</div><div class="bond-isin">INE733E07BC2</div></div>
+            </div>
+            <div class="bond-cell ytm" style="color:#8098D8;">9.50%</div>
+            <div class="bond-cell">10Y 0M</div>
+            <div class="bond-cell">₹10,000</div>
+            <div class="bond-cell"><span class="rating-badge rating-aaa">CRISIL AAA</span></div>
+            <div class="bond-cell"><span class="repayment-chip">Senior Unsecured</span></div>
+            <div class="bond-action"><button class="btn-notify" onclick="event.stopPropagation();">🔔 Notify Me</button></div>
+          </a>
+
+          <a class="bond-row sold-out" href="#" onclick="showPage('matured'); return false;">
+            <div class="bond-col-name">
+              <div class="bond-logo">NT</div>
+              <div><div class="bond-name">NTPC Limited</div><div class="bond-isin">INE733E07CB1</div></div>
+            </div>
+            <div class="bond-cell muted">11.25%</div>
+            <div class="bond-cell muted">Matured</div>
+            <div class="bond-cell muted">₹10,000</div>
+            <div class="bond-cell"><span class="rating-badge rating-aaa">CRISIL AAA</span></div>
+            <div class="bond-cell"><span class="repayment-chip">Senior Unsecured</span></div>
+            <div class="bond-action"><button class="btn-view-details" onclick="event.stopPropagation();">View Details</button></div>
+          </a>
+
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <div class="page-num active">1</div>
+          <div class="page-num">2</div>
+          <div class="page-num">3</div>
+          <div class="page-num">4</div>
+          <span style="font-size:13px;color:#697586;padding:0 4px;">···</span>
+          <div class="page-num">8</div>
+          <div class="page-num" style="width:auto;padding:0 14px;">Next →</div>
+        </div>
+
+        <!-- FAQs -->
+        <div class="section-title" style="margin-top:28px;">FAQs — NTPC Bonds</div>
+        <div class="faq-section">
+          <div class="faq-item open">
+            <div class="faq-q">Are NTPC bonds safe to invest in? <span>›</span></div>
+            <div class="faq-a">Yes. NTPC bonds are rated CRISIL AAA / ICRA AAA (Stable) — the highest credit quality tier. The Government of India holds a 51.1% stake, providing implicit sovereign backing. There has been no coupon default in NTPC's 49+ year history.</div>
+          </div>
+          <div class="faq-item"><div class="faq-q">What is the current coupon rate on NTPC bonds? <span>›</span></div></div>
+          <div class="faq-item"><div class="faq-q">What is the minimum investment in NTPC bonds on Aspero? <span>›</span></div></div>
+          <div class="faq-item"><div class="faq-q">Are NTPC bond returns taxable? <span>›</span></div></div>
+          <div class="faq-item"><div class="faq-q">How frequently does NTPC pay interest? <span>›</span></div></div>
+          <div class="faq-item"><div class="faq-q">How do NTPC bonds compare to NTPC Fixed Deposits or NTPC shares? <span>›</span></div></div>
+        </div>
+
+      </div>
+
+      <!-- Right sidebar -->
+      <div class="isin-sidebar">
+
+        <!-- Invest CTA -->
+        <div class="sidebar-card" style="background:#F0FDF4;border-color:#86EFAC;">
+          <div class="sidebar-title" style="color:#15803D;">✅ 12 NTPC bonds on Aspero</div>
+          <div style="font-size:24px;font-weight:800;color:#16B364;margin:4px 0;">Up to 9.90%</div>
+          <div style="font-size:13px;color:#4B5565;margin-bottom:4px;">Maximum YTM · Min ₹10,000</div>
+          <div style="font-size:12px;color:#697586;margin-bottom:12px;">CRISIL AAA · Govt. backed</div>
+          <button class="btn-primary" style="width:100%;justify-content:center;" onclick="showPage('live')">Invest in NTPC Bonds →</button>
+        </div>
+
+        <!-- Key Highlights -->
+        <div class="issuer-highlights">
+          <div class="section-title" style="font-size:14px;margin-bottom:12px;">Key Highlights</div>
+          <ul class="highlights-list">
+            <li>India's largest power company — 73+ GW installed capacity</li>
+            <li>Maharatna PSU — GoI holds 51.1% equity stake</li>
+            <li>CRISIL AAA / ICRA AAA — zero coupon default history</li>
+            <li>FY24 Revenue ₹1,78,920 Cr · Net Profit ₹17,115 Cr</li>
+            <li>Nifty 50 + Sensex constituent · NSE & BSE listed</li>
+            <li>₹28,000+ Cr raised through bonds across 38 issuances</li>
+          </ul>
+        </div>
+
+        <!-- Quick Facts -->
+        <div class="sidebar-card">
+          <div class="sidebar-title">Quick Facts</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;font-size:13px;border-bottom:1px solid #F1F5F9;padding-bottom:6px;">
+              <span style="color:#697586;">Founded</span><span style="font-weight:600;">1975</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;border-bottom:1px solid #F1F5F9;padding-bottom:6px;">
+              <span style="color:#697586;">Sector</span><span style="font-weight:600;">Power Generation</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;border-bottom:1px solid #F1F5F9;padding-bottom:6px;">
+              <span style="color:#697586;">HQ</span><span style="font-weight:600;">New Delhi</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;border-bottom:1px solid #F1F5F9;padding-bottom:6px;">
+              <span style="color:#697586;">Issuer Type</span><span style="font-weight:600;">PSU · Central Govt</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;">
+              <span style="color:#697586;">CRISIL Rating</span><span class="rating-badge rating-aaa">AAA Stable</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Similar issuers -->
+        <div class="sidebar-card">
+          <div class="sidebar-title">Similar PSU Issuers</div>
+          <div class="sidebar-category-list">
+            <a class="sidebar-cat-item" href="#" onclick="showPage('issuer'); return false;">Power Finance Corp <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#" onclick="showPage('issuer'); return false;">REC Limited <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'Tax-Free Bonds',key:'tax-free-bonds',count:'156',url:'/invest/bonds/?instrument_type=tax-free-bonds'}); return false;">NHAI / REC Tax-Free <span class="sidebar-cat-arrow">↗</span></a>
+            <a class="sidebar-cat-item" href="#" onclick="navigateTo('category',{label:'Government Bonds',key:'government-bonds',count:'2,100',url:'/invest/bonds/?instrument_type=government-bonds'}); return false;">Government Bonds <span class="sidebar-cat-arrow">↗</span></a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div><!-- /issuer -->
+
+
 <script>
   function showPage(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1130,10 +1517,10 @@
 
   // ── Autocomplete data ──
   const AC_DATA = [
-    { type:'issuer', name:'Adani Enterprises Limited',      bonds:42, page:'category' },
-    { type:'issuer', name:'NTPC Limited',                   bonds:38, page:'category' },
-    { type:'issuer', name:'HDFC Bank',                      bonds:96, page:'category' },
-    { type:'issuer', name:'Tata Capital Financial Services',bonds:61, page:'category' },
+    { type:'issuer', name:'Adani Enterprises Limited',      bonds:42, page:'issuer' },
+    { type:'issuer', name:'NTPC Limited',                   bonds:38, page:'issuer' },
+    { type:'issuer', name:'HDFC Bank',                      bonds:96, page:'issuer' },
+    { type:'issuer', name:'Tata Capital Financial Services',bonds:61, page:'issuer' },
     { type:'issuer', name:'Poonawalla Fincorp',             bonds:14, page:'category' },
     { type:'issuer', name:'Power Finance Corporation',      bonds:54, page:'category' },
     { type:'issuer', name:'REC Limited',                    bonds:49, page:'category' },
