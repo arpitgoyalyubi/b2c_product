@@ -393,37 +393,7 @@
   #chat-send:hover { background: #4338CA; }
   #chat-send:disabled { background: #CBD5E1; cursor: not-allowed; }
 
-  .api-key-banner {
-    background: #FFFBEB;
-    border: 1px solid #FCD34D;
-    border-radius: 10px;
-    padding: 12px 14px;
-    font-size: 12.5px;
-    color: #92400E;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-self: stretch;
-    max-width: 100%;
-  }
-  .api-key-banner input {
-    border: 1px solid #FCD34D;
-    border-radius: 7px;
-    padding: 7px 10px;
-    font-size: 13px;
-    width: 100%;
-    font-family: monospace;
-  }
-  .api-key-banner button {
-    background: #D97706;
-    color: white;
-    border: none;
-    border-radius: 7px;
-    padding: 7px 14px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-  }
+
 </style>
 </head>
 <body>
@@ -888,14 +858,16 @@ function toggleChat() {
 }
 document.getElementById('chat-btn').addEventListener('click', toggleChat);
 
+// ── LLM Council config ────────────────────────────────────────────────────────
+const LLM_BASE = 'https://llmproxy.go-yubi.in/chat/completions';
+const LLM_KEY  = 'sk-5wJPukqGUr_yz7c2JORgtA';
+const LLM_MODEL = 'bedrock-claude-sonnet-4.6-(US)';
+
 // ── Send ─────────────────────────────────────────────────────────────────────
 async function sendMessage(text) {
   const input = document.getElementById('chat-input');
   const userText = text || input.value.trim();
   if (!userText || isTyping) return;
-
-  const apiKey = getApiKey();
-  if (!apiKey) { showApiKeyPrompt(); return; }
 
   input.value = '';
   autoResize(input);
@@ -909,38 +881,29 @@ async function sendMessage(text) {
   isTyping = true;
 
   try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    const resp = await fetch(LLM_BASE, {
       method: 'POST',
       headers: {
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true',
-        'content-type': 'application/json',
+        'Authorization': `Bearer ${LLM_KEY}`,
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
+        model: LLM_MODEL,
         max_tokens: 600,
-        system: SYSTEM_PROMPT,
-        messages: chatHistory,
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          ...chatHistory,
+        ],
       }),
     });
 
     if (!resp.ok) {
       const err = await resp.json().catch(() => ({}));
-      if (resp.status === 401) {
-        localStorage.removeItem('anthropic_key');
-        thinkingEl.remove();
-        showApiKeyPrompt('Invalid API key. Enter a valid Anthropic key:');
-        chatHistory.pop();
-        isTyping = false;
-        document.getElementById('chat-send').disabled = false;
-        return;
-      }
       throw new Error(err.error?.message || `HTTP ${resp.status}`);
     }
 
     const data = await resp.json();
-    const reply = data.content?.[0]?.text || '(empty response)';
+    const reply = data.choices?.[0]?.message?.content || '(empty response)';
     thinkingEl.remove();
     appendMsg('assistant', formatReply(reply));
     chatHistory.push({ role: 'assistant', content: reply });
@@ -955,31 +918,6 @@ async function sendMessage(text) {
 }
 
 function askSuggested(q) { sendMessage(q); }
-
-// ── API key management ───────────────────────────────────────────────────────
-function getApiKey() { return localStorage.getItem('anthropic_key'); }
-
-function showApiKeyPrompt(msg) {
-  const messages = document.getElementById('chat-messages');
-  const div = document.createElement('div');
-  div.className = 'api-key-banner';
-  div.innerHTML = `
-    <div>${msg || '🔑 Enter your Anthropic API key to chat. Stored only in your browser.'}</div>
-    <input type="password" id="key-input" placeholder="sk-ant-…" />
-    <button onclick="saveKey()">Save & Continue</button>
-    <div style="font-size:11px;opacity:.7">Get a key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></div>`;
-  messages.appendChild(div);
-  scrollToBottom();
-  setTimeout(() => document.getElementById('key-input')?.focus(), 100);
-}
-
-function saveKey() {
-  const val = document.getElementById('key-input')?.value.trim();
-  if (!val || !val.startsWith('sk-')) { alert('Key must start with sk-'); return; }
-  localStorage.setItem('anthropic_key', val);
-  document.querySelector('.api-key-banner')?.remove();
-  appendMsg('assistant', 'Key saved! Ask me anything about the biometrics data. 🚀');
-}
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function appendMsg(role, html) {
