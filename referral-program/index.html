@@ -703,6 +703,9 @@
   <div class="sn-item" id="sn-referral" onclick="showPage('page-referral')">
     <span>📤</span> Invitee Share Page
   </div>
+  <div class="sn-item" id="sn-signup" onclick="showPage('page-signup')">
+    <span>📲</span> Invitee Signup Flow
+  </div>
 
   <hr class="sn-divider">
 
@@ -1020,7 +1023,7 @@
           <div class="pstat-l">Investors</div>
         </div>
         <div class="pstat">
-          <div class="pstat-v">4.8 ★</div>
+          <div class="pstat-v">3.9 ★</div>
           <div class="pstat-l">App Rating</div>
         </div>
         <div class="pstat">
@@ -1958,6 +1961,216 @@
   </div>
 </div>
 </div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     PAGE: INVITEE SIGNUP FLOW — Link attribution + code fallback
+═══════════════════════════════════════════════════════════════════════════ -->
+<div id="page-signup" class="page">
+<div class="tp-page">
+  <div class="tp-header">
+    <div class="tp-tag">Core Referral Flow · Invitee Side</div>
+    <div class="tp-h">Invitee Signup — Link-First Attribution</div>
+    <div class="tp-sub">What the invited friend experiences after tapping the referral link. The referral code is captured automatically via Branch deferred deep link — the invitee never needs to type it. A manual code entry field exists as a fallback for iOS ATT failures and web signups (~25–30% of cases).</div>
+  </div>
+
+  <div style="display:flex;gap:32px;flex-wrap:wrap;justify-content:center;align-items:flex-start">
+
+    <!-- State A: Link attribution path (primary) -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+      <div style="font-size:12px;font-weight:700;color:var(--g);letter-spacing:.05em;text-transform:uppercase">Primary path — tapped the referral link</div>
+      <!-- Phone frame -->
+      <div style="width:300px;background:#fff;border-radius:32px;border:2px solid #E5E7EB;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.10)">
+        <!-- Status bar -->
+        <div style="background:#0D1F16;padding:10px 20px 0;display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:10px;color:rgba(255,255,255,.5)">9:41</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.4)">●●●</div>
+        </div>
+        <!-- Invited banner — auto-populated from Branch param -->
+        <div style="background:#0D1F16;padding:12px 20px 20px">
+          <div style="background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.2);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--g);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0">A</div>
+            <div>
+              <div style="font-size:11px;font-weight:700;color:#4ADE80">Invited by Arpit Goyal</div>
+              <div style="font-size:10px;color:rgba(255,255,255,.5)">Referral captured automatically ✓</div>
+            </div>
+          </div>
+        </div>
+        <!-- Signup form -->
+        <div style="padding:20px;background:#F9FAFB">
+          <div style="font-size:16px;font-weight:800;color:#111827;margin-bottom:4px">Create your account</div>
+          <div style="font-size:12px;color:#6B7280;margin-bottom:20px">Enter your mobile number to get started</div>
+
+          <!-- Phone input -->
+          <div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div style="font-size:13px;font-weight:600;color:#374151;border-right:1px solid #E5E7EB;padding-right:10px">+91</div>
+            <div style="font-size:13px;color:#9CA3AF">Enter mobile number</div>
+          </div>
+
+          <!-- Referral attribution (no code field shown — captured via link) -->
+          <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:10px 12px;margin-bottom:16px;display:flex;align-items:center;gap:8px">
+            <div style="font-size:14px">✅</div>
+            <div>
+              <div style="font-size:11px;font-weight:700;color:#15803D">Referral by Arpit Goyal applied</div>
+              <div style="font-size:10px;color:#166534">Code ARPIT2026 · captured from your link</div>
+            </div>
+          </div>
+
+          <button class="btn btn-green" style="width:100%;justify-content:center;padding:13px">Continue →</button>
+
+          <div style="text-align:center;margin-top:10px;font-size:10px;color:#9CA3AF">By continuing you agree to Aspero's Terms & Privacy Policy</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#6B7280;text-align:center;max-width:240px">No code entry needed. Branch deferred deep link auto-populates the referral on first app open.</div>
+    </div>
+
+    <!-- State B: Code fallback path -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+      <div style="font-size:12px;font-weight:700;color:#D97706;letter-spacing:.05em;text-transform:uppercase">Fallback — link attribution failed</div>
+      <div style="width:300px;background:#fff;border-radius:32px;border:2px solid #E5E7EB;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.10)">
+        <div style="background:#0D1F16;padding:10px 20px 6px;display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:10px;color:rgba(255,255,255,.5)">9:41</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.4)">●●●</div>
+        </div>
+        <div style="background:#0D1F16;padding:8px 20px 18px">
+          <div style="font-size:16px;font-weight:800;color:#fff">aspero<span style="color:#4ADE80">.</span></div>
+        </div>
+        <div style="padding:20px;background:#F9FAFB">
+          <div style="font-size:16px;font-weight:800;color:#111827;margin-bottom:4px">Create your account</div>
+          <div style="font-size:12px;color:#6B7280;margin-bottom:20px">Enter your mobile number to get started</div>
+
+          <div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div style="font-size:13px;font-weight:600;color:#374151;border-right:1px solid #E5E7EB;padding-right:10px">+91</div>
+            <div style="font-size:13px;color:#9CA3AF">Enter mobile number</div>
+          </div>
+
+          <!-- Collapsible code field -->
+          <div id="codeToggleWrap" style="margin-bottom:16px">
+            <button onclick="toggleCodeField()" style="background:none;border:none;font-size:12px;color:var(--g);font-weight:600;padding:0;cursor:pointer;display:flex;align-items:center;gap:4px">
+              <span id="codeToggleIcon">＋</span> Have a referral code?
+            </button>
+            <div id="codeFieldWrap" style="display:none;margin-top:10px">
+              <div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                <input id="codeInput" type="text" placeholder="e.g. ARPIT2026" maxlength="12"
+                  style="flex:1;border:none;outline:none;font-size:14px;font-weight:700;letter-spacing:2px;color:#111827;background:transparent;text-transform:uppercase"
+                  oninput="validateCode(this.value)" />
+                <div id="codeStatus" style="font-size:16px"></div>
+              </div>
+              <div id="codeMsg" style="font-size:11px;color:#6B7280;padding-left:4px"></div>
+            </div>
+          </div>
+
+          <button class="btn btn-green" style="width:100%;justify-content:center;padding:13px">Continue →</button>
+          <div style="text-align:center;margin-top:10px;font-size:10px;color:#9CA3AF">By continuing you agree to Aspero's Terms & Privacy Policy</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#6B7280;text-align:center;max-width:240px">iOS ATT opt-out, manual App Store install, or web signup — fallback code field handles these cases.</div>
+    </div>
+
+  </div>
+
+  <!-- Attribution decision table -->
+  <div style="margin-top:36px;background:#fff;border-radius:16px;border:1.5px solid #E5E7EB;padding:24px;max-width:700px">
+    <div style="font-size:15px;font-weight:800;color:#111827;margin-bottom:16px">How attribution works — decision tree</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead>
+        <tr style="background:#F9FAFB">
+          <th style="text-align:left;padding:10px 12px;font-weight:700;color:#374151;border-bottom:1px solid #E5E7EB">Scenario</th>
+          <th style="text-align:left;padding:10px 12px;font-weight:700;color:#374151;border-bottom:1px solid #E5E7EB">Attribution method</th>
+          <th style="text-align:left;padding:10px 12px;font-weight:700;color:#374151;border-bottom:1px solid #E5E7EB">Invitee action</th>
+          <th style="text-align:left;padding:10px 12px;font-weight:700;color:#374151;border-bottom:1px solid #E5E7EB">Coverage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:10px 12px;color:#374151;border-bottom:1px solid #F3F4F6">Tapped referral link → installed</td>
+          <td style="padding:10px 12px;color:#374151;border-bottom:1px solid #F3F4F6">Branch deferred deep link</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #F3F4F6"><span style="background:#DCFCE7;color:#15803D;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600">None — auto-captured</span></td>
+          <td style="padding:10px 12px;color:#374151;border-bottom:1px solid #F3F4F6">~70% of Android, ~60% of iOS</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 12px;color:#374151;border-bottom:1px solid #F3F4F6">iOS ATT declined — link clicked</td>
+          <td style="padding:10px 12px;color:#374151;border-bottom:1px solid #F3F4F6">No attribution data</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #F3F4F6"><span style="background:#FEF3C7;color:#D97706;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600">Manual code field</span></td>
+          <td style="padding:10px 12px;color:#374151;border-bottom:1px solid #F3F4F6">~25–30% of iOS</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 12px;color:#374151;border-bottom:1px solid #F3F4F6">Searched App Store manually</td>
+          <td style="padding:10px 12px;color:#374151;border-bottom:1px solid #F3F4F6">No attribution data</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #F3F4F6"><span style="background:#FEF3C7;color:#D97706;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600">Manual code field</span></td>
+          <td style="padding:10px 12px;color:#374151;border-bottom:1px solid #F3F4F6">Edge case</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 12px;color:#374151;border-bottom:1px solid #F3F4F6">Signed up on web (aspero.in)</td>
+          <td style="padding:10px 12px;color:#374151;border-bottom:1px solid #F3F4F6">URL query param `?ref=ARPIT2026`</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #F3F4F6"><span style="background:#DCFCE7;color:#15803D;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600">None — auto-captured</span></td>
+          <td style="padding:10px 12px;color:#374151;border-bottom:1px solid #F3F4F6">All web signups</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 12px;color:#374151">Signed up late (code not entered at signup)</td>
+          <td style="padding:10px 12px;color:#374151">Grace window</td>
+          <td style="padding:10px 12px"><span style="background:#FEF3C7;color:#D97706;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600">Enter code within 7 days</span></td>
+          <td style="padding:10px 12px;color:#374151">Captures late-stage code share</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tp-callouts" style="margin-top:24px;max-width:700px">
+    <div class="tp-callout">
+      <div class="tp-callout-num">!</div>
+      <div class="tp-callout-txt">
+        <strong>Never block signup for missing/invalid code</strong>
+        <span>If attribution fails and the user doesn't enter a code, signup proceeds normally. The referral is simply unattributed. Blocking or alerting heavily on a missing code would cause more drop-off than the unattributed referral is worth.</span>
+      </div>
+    </div>
+    <div class="tp-callout">
+      <div class="tp-callout-num">✓</div>
+      <div class="tp-callout-txt">
+        <strong>7-day grace window</strong>
+        <span>Users who signed up without a code can enter one within 7 days of signup. This covers the common scenario where someone installs, signs up, then contacts their friend to ask for the code.</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+function toggleCodeField() {
+  var wrap = document.getElementById('codeFieldWrap');
+  var icon = document.getElementById('codeToggleIcon');
+  if (wrap.style.display === 'none') {
+    wrap.style.display = 'block';
+    icon.textContent = '－';
+  } else {
+    wrap.style.display = 'none';
+    icon.textContent = '＋';
+    document.getElementById('codeInput').value = '';
+    document.getElementById('codeStatus').textContent = '';
+    document.getElementById('codeMsg').textContent = '';
+  }
+}
+function validateCode(val) {
+  var status = document.getElementById('codeStatus');
+  var msg = document.getElementById('codeMsg');
+  var clean = val.toUpperCase().replace(/[^A-Z0-9]/g,'');
+  document.getElementById('codeInput').value = clean;
+  if (clean.length === 0) { status.textContent=''; msg.textContent=''; return; }
+  if (clean.length < 4) { status.textContent=''; msg.textContent=''; return; }
+  // Simulate valid code check
+  if (clean === 'ARPIT2026') {
+    status.textContent = '✅';
+    msg.style.color = '#16A34A';
+    msg.textContent = 'Invited by Arpit Goyal';
+  } else if (clean.length >= 8) {
+    status.textContent = '❌';
+    msg.style.color = '#DC2626';
+    msg.textContent = 'Code not found — double-check with your friend';
+  } else {
+    status.textContent = '';
+    msg.textContent = '';
+  }
+}
+</script>
 
 </body>
 </html>
