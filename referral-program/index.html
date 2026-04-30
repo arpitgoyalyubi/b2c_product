@@ -728,6 +728,9 @@
   <div class="sn-item" id="sn-pushnotif" onclick="showPage('page-pushnotif')">
     <span>🔔</span> Push Notification
   </div>
+  <div class="sn-item" id="sn-payment-nudge" onclick="showPage('page-payment-nudge')">
+    <span>💡</span> Payment Nudge (Referee)
+  </div>
 </aside>
 
 <!-- Main content wrapper -->
@@ -1164,7 +1167,8 @@
     'page-postinvest': 'sn-postinvest',
     'page-profile':    'sn-profile',
     'page-wallet':     'sn-wallet',
-    'page-pushnotif':  'sn-pushnotif',
+    'page-pushnotif':    'sn-pushnotif',
+    'page-payment-nudge':'sn-payment-nudge',
   };
 
   function showPage(id) {
@@ -2134,6 +2138,128 @@
 </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════════════════════════
+     REFEREE TOUCHPOINT: PAYMENT SCREEN — MINIMUM INVESTMENT NUDGE
+═══════════════════════════════════════════════════════════════════════════ -->
+<div id="page-payment-nudge" class="page">
+<div class="tp-page">
+  <div class="tp-header">
+    <div class="tp-tag">Referee Touchpoint</div>
+    <div class="tp-h">Payment Screen — Minimum Investment Nudge</div>
+    <div class="tp-sub">When a referred user (invitee) enters an investment amount below ₹10,000, a friendly inline nudge appears — letting them know their referrer earns a reward if they invest ₹10,000 or more. Personalised with the referrer's first name. Disappears dynamically once the threshold is met, replaced by a live commission preview. Try changing the amount below.</div>
+  </div>
+
+  <div class="tp-phone">
+    <div class="tp-phone-inner">
+      <div class="tp-statusbar"><div class="tp-notch"></div></div>
+      <div class="tp-screen" style="height:680px;overflow-y:auto">
+        <div class="app-topbar">
+          <div style="font-size:18px;color:#374151;cursor:pointer">←</div>
+          <div class="app-topbar-title">Invest</div>
+          <div></div>
+        </div>
+
+        <div style="padding:16px 16px 32px">
+          <!-- Bond info card -->
+          <div style="background:#F8FAFC;border-radius:16px;padding:14px 16px;margin-bottom:16px;border:1.5px solid #E2E8F0">
+            <div style="font-size:12px;font-weight:600;color:#6B7280;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Bond</div>
+            <div style="font-size:15px;font-weight:800;color:#0F172A;margin-bottom:8px">Shriram Finance NCD</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <span style="background:#ECFDF5;color:#15803D;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700">14.2% YTM</span>
+              <span style="background:#EFF6FF;color:#1D4ED8;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600">AA-</span>
+              <span style="background:#F8FAFC;color:#374151;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600">3 yr</span>
+            </div>
+          </div>
+
+          <!-- Amount input -->
+          <div style="margin-bottom:6px">
+            <div style="font-size:12px;font-weight:600;color:#374151;margin-bottom:8px">Investment Amount</div>
+            <div style="background:#fff;border:1.5px solid #E2E8F0;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:8px">
+              <span style="font-size:18px;font-weight:700;color:#6B7280">₹</span>
+              <input id="nudge-amount" type="number" value="5000" min="1000"
+                style="border:none;outline:none;font-size:22px;font-weight:800;color:#0F172A;width:100%;font-family:inherit"
+                oninput="updatePaymentNudge(this.value)" />
+            </div>
+            <div style="font-size:11px;color:#9CA3AF;margin-top:6px">Min. ₹1,000 per bond · Commission qualifies at ₹10,000+</div>
+          </div>
+
+          <!-- TOUCHPOINT 1: Nudge — shown when amount < 10000 -->
+          <div id="referral-nudge-banner" class="tp-highlight" style="border-radius:12px;position:relative;margin-top:10px;margin-bottom:14px">
+            <div style="background:#ECFDF5;border:1.5px solid #86EFAC;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px">
+              <div style="font-size:22px;flex-shrink:0">🎉</div>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:#15803D">Arpit earns a reward if you invest ₹10,000+</div>
+                <div style="font-size:11px;color:#6B7280;margin-top:2px;line-height:1.4">Your referral is active — Arpit gets 1% when you cross ₹10K per bond</div>
+              </div>
+            </div>
+            <div class="tp-badge" style="top:-8px;right:-8px">1</div>
+          </div>
+
+          <!-- TOUCHPOINT 2: Threshold met — shown when amount >= 10000 -->
+          <div id="referral-threshold-met" style="display:none;background:#ECFDF5;border:1.5px solid #86EFAC;border-radius:12px;padding:12px 14px;align-items:center;gap:10px;margin-top:10px;margin-bottom:14px;position:relative">
+            <div class="tp-badge" style="top:-8px;right:-8px">2</div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="font-size:22px;flex-shrink:0">✅</div>
+              <div style="font-size:13px;font-weight:700;color:#15803D">Arpit will earn ₹<span id="referral-commission-amount">500</span> from this investment 🎉</div>
+            </div>
+          </div>
+
+          <!-- Yield preview -->
+          <div style="background:#fff;border-radius:14px;padding:14px 16px;border:1.5px solid #E2E8F0;margin-bottom:16px">
+            <div style="font-size:12px;font-weight:600;color:#6B7280;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Estimated Returns</div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+              <span style="font-size:13px;color:#374151">Monthly coupon</span>
+              <span style="font-size:13px;font-weight:700;color:#0F172A" id="monthly-coupon">~₹59</span>
+            </div>
+            <div style="display:flex;justify-content:space-between">
+              <span style="font-size:13px;color:#374151">Annual return</span>
+              <span style="font-size:13px;font-weight:700;color:#15803D" id="annual-return">~₹710</span>
+            </div>
+          </div>
+
+          <!-- CTA -->
+          <div style="background:#0D1F16;border-radius:14px;padding:15px;text-align:center;cursor:pointer">
+            <div style="font-size:15px;font-weight:800;color:#fff">Confirm Investment</div>
+          </div>
+        </div>
+
+        <div class="app-tab-bar">
+          <div class="app-tab"><div class="app-tab-icon">🏠</div>Home</div>
+          <div class="app-tab active"><div class="app-tab-icon">🔍</div>Explore</div>
+          <div class="app-tab"><div class="app-tab-icon">📊</div>Portfolio</div>
+          <div class="app-tab"><div class="app-tab-icon">👤</div>Profile</div>
+        </div>
+      </div>
+      <div class="tp-home-bar"><div class="tp-home-ind"></div></div>
+    </div>
+  </div>
+
+  <div class="tp-callouts">
+    <div class="tp-callout">
+      <div class="tp-callout-num">1</div>
+      <div class="tp-callout-txt">
+        <strong>Below ₹10,000 — referrer name nudge</strong>
+        <span>Inline green banner below the amount input, referencing the referrer by first name. Explains the reward mechanic without blocking the flow or implying investment advice. Only shown when referral attribution exists. If no code is attributed, the banner never appears.</span>
+      </div>
+    </div>
+    <div class="tp-callout">
+      <div class="tp-callout-num">2</div>
+      <div class="tp-callout-txt">
+        <strong>At ₹10,000+ — live commission confirmation</strong>
+        <span>The nudge is replaced by "Arpit will earn ₹X" — showing the exact commission dynamically as the user types. Turns motivation into positive reinforcement. Resets back to the nudge if the user edits the amount below ₹10,000. Try it: change the amount in the mock above.</span>
+      </div>
+    </div>
+    <div class="tp-callout">
+      <div class="tp-callout-num">!</div>
+      <div class="tp-callout-txt">
+        <strong>Legal framing rule</strong>
+        <span>Copy references the referrer's reward — not investment advice. "Arpit earns a reward if you invest ₹10,000+" is safe. "₹10,000 is a recommended minimum" implies advice and needs SEBI/legal sign-off before shipping.</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
 <script>
 function toggleCodeField() {
   var wrap = document.getElementById('codeFieldWrap');
@@ -2149,6 +2275,29 @@ function toggleCodeField() {
     document.getElementById('codeMsg').textContent = '';
   }
 }
+function updatePaymentNudge(val) {
+  var amount = parseInt(val) || 0;
+  var nudge = document.getElementById('referral-nudge-banner');
+  var met = document.getElementById('referral-threshold-met');
+  var commissionEl = document.getElementById('referral-commission-amount');
+  var monthlyCouponEl = document.getElementById('monthly-coupon');
+  var annualReturnEl = document.getElementById('annual-return');
+
+  var monthly = amount > 0 ? Math.round(amount * 0.142 / 12) : 0;
+  var annual = amount > 0 ? Math.round(amount * 0.142) : 0;
+  monthlyCouponEl.textContent = monthly > 0 ? '~₹' + monthly.toLocaleString('en-IN') : '—';
+  annualReturnEl.textContent = annual > 0 ? '~₹' + annual.toLocaleString('en-IN') : '—';
+
+  if (amount >= 10000) {
+    nudge.style.display = 'none';
+    commissionEl.textContent = Math.round(amount * 0.01).toLocaleString('en-IN');
+    met.style.display = 'flex';
+  } else {
+    nudge.style.display = 'block';
+    met.style.display = 'none';
+  }
+}
+
 function validateCode(val) {
   var status = document.getElementById('codeStatus');
   var msg = document.getElementById('codeMsg');
