@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aspero SEO Dashboard — Organic Growth</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --blue:#2563EB; --green:#10B981; --orange:#F59E0B; --red:#EF4444;
+    --purple:#8B5CF6; --bg:#F8FAFC; --card:#FFFFFF;
+    --text:#0F172A; --text2:#475569; --border:#E2E8F0;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); }
+  .page { max-width:1140px; margin:0 auto; padding:28px 20px 60px; }
+
+  /* header */
+  .hdr { background:linear-gradient(135deg,#1E3A8A 0%,#2563EB 100%); border-radius:16px; padding:28px 32px; color:#fff; margin-bottom:28px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+  .hdr h1 { font-size:22px; font-weight:800; }
+  .hdr .meta { font-size:12px; opacity:.8; margin-top:4px; }
+  .hdr .pill { background:rgba(255,255,255,.15); border-radius:20px; padding:5px 14px; font-size:12px; }
+
+  /* section */
+  .section-title { font-size:16px; font-weight:700; color:var(--text); margin:28px 0 14px; display:flex; align-items:center; gap:8px; }
+  .section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+
+  /* summary cards */
+  .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:4px; }
+  @media(max-width:700px){ .cards{ grid-template-columns:repeat(2,1fr); } }
+  .card { background:var(--card); border-radius:12px; border:1px solid var(--border); padding:18px 20px; }
+  .card .label { font-size:11px; font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
+  .card .value { font-size:26px; font-weight:800; color:var(--text); }
+  .card .sub { font-size:11px; color:var(--text2); margin-top:3px; }
+  .card .dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:5px; }
+
+  /* epic progress */
+  .epic-bar-wrap { background:var(--card); border-radius:12px; border:1px solid var(--border); padding:20px 24px; margin-bottom:14px; }
+  .epic-bar-track { background:#E2E8F0; border-radius:8px; height:14px; margin:10px 0; overflow:hidden; }
+  .epic-bar-fill { background:linear-gradient(90deg,#10B981,#2563EB); border-radius:8px; height:100%; transition:width .4s; }
+  .epic-pills { display:flex; gap:16px; flex-wrap:wrap; margin-top:10px; }
+  .epic-pill { font-size:12px; display:flex; align-items:center; gap:5px; }
+
+  /* tickets table */
+  .tbl-wrap { background:var(--card); border-radius:12px; border:1px solid var(--border); overflow:hidden; margin-bottom:14px; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th { background:#F1F5F9; padding:9px 14px; text-align:left; font-size:11px; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:.4px; border-bottom:1px solid var(--border); }
+  td { padding:9px 14px; border-bottom:1px solid #F1F5F9; vertical-align:middle; }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:#F8FAFC; }
+  .tbadge { font-size:11px; font-weight:600; padding:2px 8px; border-radius:20px; white-space:nowrap; }
+  .tbadge.live { background:#D1FAE5; color:#065F46; }
+  .tbadge.inprog { background:#DBEAFE; color:#1E40AF; }
+  .tbadge.todo { background:#F1F5F9; color:#64748B; }
+
+  /* charts grid */
+  .charts-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:4px; }
+  @media(max-width:700px){ .charts-grid{ grid-template-columns:1fr; } }
+  .chart-card { background:var(--card); border-radius:12px; border:1px solid var(--border); padding:18px 20px; }
+  .chart-card .chart-title { font-size:13px; font-weight:700; margin-bottom:2px; }
+  .chart-card .chart-sub { font-size:11px; color:var(--text2); margin-bottom:12px; }
+  .chart-card canvas { max-height:160px; }
+
+  /* ISIN coverage */
+  .isin-grid { display:grid; grid-template-columns:200px 1fr; gap:16px; align-items:start; }
+  @media(max-width:600px){ .isin-grid{ grid-template-columns:1fr; } }
+  .donut-card { background:var(--card); border-radius:12px; border:1px solid var(--border); padding:18px; text-align:center; }
+  .donut-card canvas { max-height:160px; }
+  .donut-label { font-size:22px; font-weight:800; margin-top:8px; }
+  .donut-sub { font-size:11px; color:var(--text2); }
+
+  /* view-all */
+  .view-all-wrap { text-align:center; padding:10px 0 4px; }
+  .view-all-btn { background:none; border:1px solid var(--border); color:var(--blue); border-radius:20px; padding:5px 16px; font-size:12px; font-weight:600; cursor:pointer; }
+  .view-all-btn:hover { background:#EFF6FF; }
+
+  /* organic mobile funnel */
+  .funnel-row { display:flex; align-items:center; gap:0; flex-wrap:wrap; margin:14px 0; }
+  .funnel-step { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 16px; text-align:center; min-width:110px; flex:1; }
+  .funnel-step .fs-num { font-size:22px; font-weight:800; }
+  .funnel-step .fs-label { font-size:11px; color:var(--text2); font-weight:600; text-transform:uppercase; letter-spacing:.4px; margin-top:3px; }
+  .funnel-arrow { font-size:13px; color:var(--text2); padding:0 6px; text-align:center; white-space:nowrap; flex-shrink:0; }
+  .funnel-arrow .fa-rate { font-size:11px; font-weight:700; display:block; }
+  .rate-cards { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:4px; }
+  @media(max-width:700px){ .rate-cards{ grid-template-columns:repeat(2,1fr); } }
+
+  /* ahrefs sections */
+  .auth-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:4px; }
+  @media(max-width:700px){ .auth-row{ grid-template-columns:repeat(2,1fr); } }
+  .dr-card { background:var(--card); border-radius:12px; border:1px solid var(--border); padding:16px 18px; }
+  .dr-card .dr-label { font-size:11px; font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .dr-card .dr-num { font-size:32px; font-weight:800; line-height:1; margin:4px 0; }
+  .dr-card .dr-sub { font-size:11px; color:var(--text2); margin-top:2px; }
+  .kw-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:4px; }
+  @media(max-width:700px){ .kw-cards{ grid-template-columns:1fr; } }
+  .mover-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:4px; }
+  @media(max-width:700px){ .mover-grid{ grid-template-columns:1fr; } }
+  .mover-card { background:var(--card); border-radius:12px; border:1px solid var(--border); overflow:hidden; }
+  .mover-card .mover-hdr { padding:10px 16px; font-size:13px; font-weight:700; border-bottom:1px solid var(--border); }
+
+  /* footer */
+  .footer { text-align:center; color:var(--text2); font-size:12px; margin-top:48px; padding-top:24px; border-top:1px solid var(--border); }
+  .footer a { color:var(--blue); text-decoration:none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="hdr">
+    <div>
+      <h1>Aspero SEO — Organic Growth Dashboard</h1>
+      <div class="meta">Data source: Google Search Console &nbsp;·&nbsp; Generated 05 May 2026, 11:11 AM IST</div>
+    </div>
+    <div class="pill">📅 8 Mar – 3 May 2026</div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="section-title">📊 Last 7 Days</div>
+  <div class="cards">
+    <div class="card">
+      <div class="label">Organic Clicks</div>
+      <div class="value">610</div>
+      <div class="sub">All pages · last 7d</div>
+    </div>
+    <div class="card">
+      <div class="label">Impressions</div>
+      <div class="value">62,163</div>
+      <div class="sub">All pages · last 7d</div>
+    </div>
+    <div class="card">
+      <div class="label">Pages in GSC</div>
+      <div class="value">504</div>
+      <div class="sub">Pages with ≥1 impression</div>
+    </div>
+    <div class="card">
+      <div class="label">ISINs in GSC</div>
+      <div class="value">109</div>
+      <div class="sub">of 143 in sitemap · 28d</div>
+    </div>
+  </div>
+
+  <!-- Epic Progress -->
+  <div class="section-title">🎯 SEO Epic Progress — ASP-3429</div>
+  <div class="epic-bar-wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div style="font-size:14px;font-weight:700">64% complete &nbsp;<span style="font-size:12px;color:var(--text2);font-weight:400">(14 of 22 tickets live)</span></div>
+      <a href="https://goyubi.atlassian.net/browse/ASP-3429" target="_blank" style="font-size:12px;color:var(--blue);text-decoration:none">View in Jira →</a>
+    </div>
+    <div class="epic-bar-track"><div class="epic-bar-fill" style="width:64%"></div></div>
+    <div class="epic-pills">
+      <div class="epic-pill"><span class="dot" style="background:#10B981"></span>✅ Live: 14</div>
+      <div class="epic-pill"><span class="dot" style="background:#2563EB"></span>🔄 In Progress: 0</div>
+      <div class="epic-pill"><span class="dot" style="background:#E2E8F0"></span>❌ To Do: 8</div>
+      
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Ticket</th><th>Priority</th><th>Summary</th><th>Assignee</th><th>Status</th></tr></thead>
+      <tbody id="ticketBody">
+        <tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3453" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3453</a></td>
+          <td><span style="background:#EF4444;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P0</span></td>
+          <td style="font-size:12px">SSR: Server-Side Rendering implementation across all public-facing pag…</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3430" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3430</a></td>
+          <td><span style="background:#EF4444;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P0</span></td>
+          <td style="font-size:12px">Fix: Move Bond Data Fetch to Server-Side (True SSR Fix)</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3435" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3435</a></td>
+          <td><span style="background:#F59E0B;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P1</span></td>
+          <td style="font-size:12px">Fix: 301 Redirect invest.aspero.in/bond_detail?bondId=X to New URLs</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3431" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3431</a></td>
+          <td><span style="background:#EF4444;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P0</span></td>
+          <td style="font-size:12px">Fix: Auto-generate Dynamic Meta Title + Description Per Bond Page (via…</td>
+          <td style="font-size:12px;color:var(--text2)">Saravanan S</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3434" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3434</a></td>
+          <td><span style="background:#EF4444;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P0</span></td>
+          <td style="font-size:12px">Fix: Add h1, h2, h3 header tags; Bond Name to All Bond Detail Pages</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3436" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3436</a></td>
+          <td><span style="background:#EF4444;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P0</span></td>
+          <td style="font-size:12px">Fix: Add Self-Referential Canonical URL Tag to Every Bond Page</td>
+          <td style="font-size:12px;color:var(--text2)">Saravanan S</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3432" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3432</a></td>
+          <td><span style="background:#EF4444;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P0</span></td>
+          <td style="font-size:12px">Fix: Fundamental Details — Convert Modal to Accordion</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3438" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3438</a></td>
+          <td><span style="background:#F59E0B;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P1</span></td>
+          <td style="font-size:12px">Fix: Add noindex to Redirection Partner Subdomain Pages</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3437" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3437</a></td>
+          <td><span style="background:#EF4444;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P0</span></td>
+          <td style="font-size:12px">Sitemap auto-update + robots.txt hardening</td>
+          <td style="font-size:12px;color:var(--text2)">Saravanan S</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3439" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3439</a></td>
+          <td><span style="background:#8B5CF6;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P2</span></td>
+          <td style="font-size:12px">Feature: ISIN Indexing — Bond Directory</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge todo">❌ To Do</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3440" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3440</a></td>
+          <td><span style="background:#F59E0B;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P1</span></td>
+          <td style="font-size:12px">SEO: SSR internal linking — 'More bonds from same issuer' as anchor hr…</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3441" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3441</a></td>
+          <td><span style="background:#8B5CF6;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P2</span></td>
+          <td style="font-size:12px">SEO: Visible breadcrumb nav on bond detail, issuer, and collections pa…</td>
+          <td style="font-size:12px;color:var(--text2)">Arpit Goyal</td>
+          <td><span class="tbadge todo">❌ To Do</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3433" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3433</a></td>
+          <td><span style="background:#EF4444;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P0</span></td>
+          <td style="font-size:12px">Fix: Replace Generic FAQs with Bond-Specific FAQs</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3449" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3449</a></td>
+          <td><span style="background:#F59E0B;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P1</span></td>
+          <td style="font-size:12px">Enhancement: Add JSON-LD Structured Data Per Bond Page</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3442" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3442</a></td>
+          <td><span style="background:#8B5CF6;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P2</span></td>
+          <td style="font-size:12px">SEO: WebSite + SearchAction schema on homepage (Sitelinks eligibility)</td>
+          <td style="font-size:12px;color:var(--text2)">Somya Jain</td>
+          <td><span class="tbadge todo">❌ To Do</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3444" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3444</a></td>
+          <td><span style="background:#8B5CF6;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P2</span></td>
+          <td style="font-size:12px">SEO: VideoObject JSON-LD schema on bond pages with embedded video</td>
+          <td style="font-size:12px;color:var(--text2)">Govind Rao Kamath H M</td>
+          <td><span class="tbadge todo">❌ To Do</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3592" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3592</a></td>
+          <td><span style="background:#F59E0B;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P1</span></td>
+          <td style="font-size:12px">SEO: Issuer-level aggregator pages</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3593" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3593</a></td>
+          <td><span style="background:#8B5CF6;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P2</span></td>
+          <td style="font-size:12px">SEO: AggregateRating JSON-LD schema on /testimonials/</td>
+          <td style="font-size:12px;color:var(--text2)">Somya Jain</td>
+          <td><span class="tbadge todo">❌ To Do</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3594" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3594</a></td>
+          <td><span style="background:#8B5CF6;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P2</span></td>
+          <td style="font-size:12px">SEO: Cashflow schedule + bond calculator on bond detail pages</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3595" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3595</a></td>
+          <td><span style="background:#64748B;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P3</span></td>
+          <td style="font-size:12px">SEO: Blog category consolidation and pillar page structure</td>
+          <td style="font-size:12px;color:var(--text2)">Somya Jain</td>
+          <td><span class="tbadge todo">❌ To Do</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3596" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3596</a></td>
+          <td><span style="background:#8B5CF6;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P2</span></td>
+          <td style="font-size:12px">SEO: Missing category landing pages (/bonds/ncd/, /bonds/sgb/, etc.)</td>
+          <td style="font-size:12px;color:var(--text2)">Somya Jain</td>
+          <td><span class="tbadge todo">❌ To Do</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3597" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3597</a></td>
+          <td><span style="background:#8B5CF6;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P2</span></td>
+          <td style="font-size:12px">SEO: Bonds vs Fixed Deposit comparison page</td>
+          <td style="font-size:12px;color:var(--text2)">Somya Jain</td>
+          <td><span class="tbadge todo">❌ To Do</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="view-all-wrap"><button class="view-all-btn" onclick="toggleRows('ticketBody',6,this)">View All (16 more) ▾</button></div>
+
+  <!-- Traffic Charts -->
+  <div class="section-title">📈 Organic Traffic by Page Type (8 weeks)</div>
+  
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">Bond Detail Pages</div>
+      <div class="chart-sub">/invest/bond/* · Clicks + Impressions</div>
+      <canvas id="chartBond"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Marketing Site</div>
+      <div class="chart-sub">aspero.in/* (homepage, /bonds/, /bond-ipo/, /testimonials/, etc.) · Clicks + Impressions</div>
+      <canvas id="chartMkt"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">/invest/home</div>
+      <div class="chart-sub">App home page · Clicks + Impressions</div>
+      <canvas id="chartHome"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">/invest/explore</div>
+      <div class="chart-sub">Bond listing page · Clicks + Impressions</div>
+      <canvas id="chartExplore"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Blog</div>
+      <div class="chart-sub">aspero.in/blog/* · Clicks + Impressions</div>
+      <canvas id="chartBlog"></canvas>
+    </div>
+  </div>
+
+  <!-- ISIN Coverage -->
+  <div class="section-title">🔍 ISIN Indexing Coverage (28 days)</div>
+  <div class="isin-grid">
+    <div class="donut-card">
+      <canvas id="chartDonut"></canvas>
+      <div class="donut-label">109 <span style="font-size:13px;color:var(--text2)">/ 143</span></div>
+      <div class="donut-sub">ISINs with organic impressions</div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>ISIN</th><th style="text-align:right">Impr.</th><th style="text-align:right">Clicks</th><th style="text-align:right">Pos.</th><th>Bar</th></tr></thead>
+        <tbody id="isinBody"><tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/muthoot-mcred-limited/ine101q07bx1/3058" target="_blank" style="color:var(--blue);text-decoration:none">INE101Q07BX1</a>
+          </td>
+          <td style="text-align:right">786</td>
+          <td style="text-align:right">14</td>
+          <td style="text-align:right">7.3</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:100%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/navi-finserv-limited/INE342T07668/2716" target="_blank" style="color:var(--blue);text-decoration:none">INE342T07668</a>
+          </td>
+          <td style="text-align:right">289</td>
+          <td style="text-align:right">15</td>
+          <td style="text-align:right">9</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:36%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/navi-finserv-limited/INE342T07635/3254" target="_blank" style="color:var(--blue);text-decoration:none">INE342T07635</a>
+          </td>
+          <td style="text-align:right">235</td>
+          <td style="text-align:right">1</td>
+          <td style="text-align:right">9.1</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:29%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/earlysalary-services-private-limited/ine01yl07417/2173" target="_blank" style="color:var(--blue);text-decoration:none">INE01YL07417</a>
+          </td>
+          <td style="text-align:right">134</td>
+          <td style="text-align:right">10</td>
+          <td style="text-align:right">6.5</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:17%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/hari-and-company-investments-madras-private-limited/ine01hv07536/864" target="_blank" style="color:var(--blue);text-decoration:none">INE01HV07536</a>
+          </td>
+          <td style="text-align:right">125</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">9</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:15%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/iifl-samasta-finance-limited/ine413u07442/2111" target="_blank" style="color:var(--blue);text-decoration:none">INE413U07442</a>
+          </td>
+          <td style="text-align:right">122</td>
+          <td style="text-align:right">4</td>
+          <td style="text-align:right">13.3</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:15%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/akara-capital-advisors-private-limited/ine08xp07423/1792" target="_blank" style="color:var(--blue);text-decoration:none">INE08XP07423</a>
+          </td>
+          <td style="text-align:right">115</td>
+          <td style="text-align:right">4</td>
+          <td style="text-align:right">10.6</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:14%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/mufin-green-finance-limited/ine08kj07175/2203" target="_blank" style="color:var(--blue);text-decoration:none">INE08KJ07175</a>
+          </td>
+          <td style="text-align:right">96</td>
+          <td style="text-align:right">10</td>
+          <td style="text-align:right">9.7</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:12%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/stl-networks-limited/INE1VXE07015/2207" target="_blank" style="color:var(--blue);text-decoration:none">INE1VXE07015</a>
+          </td>
+          <td style="text-align:right">88</td>
+          <td style="text-align:right">5</td>
+          <td style="text-align:right">12.8</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:11%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/keertana-finserv-limited/ine0nes07279/2983" target="_blank" style="color:var(--blue);text-decoration:none">INE0NES07279</a>
+          </td>
+          <td style="text-align:right">80</td>
+          <td style="text-align:right">4</td>
+          <td style="text-align:right">7.3</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:10%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/mufin-green-finance-limited/ine08kj07183/2631" target="_blank" style="color:var(--blue);text-decoration:none">INE08KJ07183</a>
+          </td>
+          <td style="text-align:right">79</td>
+          <td style="text-align:right">4</td>
+          <td style="text-align:right">9</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:10%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/andhra-pradesh-state-beverages-corporation-limited/ine0m2307362/2469" target="_blank" style="color:var(--blue);text-decoration:none">INE0M2307362</a>
+          </td>
+          <td style="text-align:right">78</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">10.2</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:9%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/incred-financial-services-limited/ine321n07632/2953" target="_blank" style="color:var(--blue);text-decoration:none">INE321N07632</a>
+          </td>
+          <td style="text-align:right">77</td>
+          <td style="text-align:right">1</td>
+          <td style="text-align:right">13.2</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:9%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/earlysalary-services-private-limited/ine01yl07433/2971" target="_blank" style="color:var(--blue);text-decoration:none">INE01YL07433</a>
+          </td>
+          <td style="text-align:right">69</td>
+          <td style="text-align:right">7</td>
+          <td style="text-align:right">8.2</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:8%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/aye-finance-limited/ine501x07729/1486" target="_blank" style="color:var(--blue);text-decoration:none">INE501X07729</a>
+          </td>
+          <td style="text-align:right">67</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">7.0</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:8%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/indel-money-limited/ine0bus07ck0/3040" target="_blank" style="color:var(--blue);text-decoration:none">INE0BUS07CK0</a>
+          </td>
+          <td style="text-align:right">64</td>
+          <td style="text-align:right">4</td>
+          <td style="text-align:right">5.4</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:8%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/iifl-samasta-finance-limited/ine413u07426/1243" target="_blank" style="color:var(--blue);text-decoration:none">INE413U07426</a>
+          </td>
+          <td style="text-align:right">63</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">12.9</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:8%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/profectus-capital-private-limited/INE389Z07104/3265" target="_blank" style="color:var(--blue);text-decoration:none">INE389Z07104</a>
+          </td>
+          <td style="text-align:right">63</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">7.7</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:8%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/muthoot-fincorp-limited/ine549k07hd3/1924" target="_blank" style="color:var(--blue);text-decoration:none">INE549K07HD3</a>
+          </td>
+          <td style="text-align:right">62</td>
+          <td style="text-align:right">1</td>
+          <td style="text-align:right">8.2</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:7%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/shri-ram-finance-corporation-private-limited/ine08e807084/1492" target="_blank" style="color:var(--blue);text-decoration:none">INE08E807084</a>
+          </td>
+          <td style="text-align:right">55</td>
+          <td style="text-align:right">1</td>
+          <td style="text-align:right">24.7</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:6%"></div>
+            </div>
+          </td>
+        </tr></tbody>
+      </table>
+      <div class="view-all-wrap"><button class="view-all-btn" onclick="toggleRows('isinBody',8,this)">View All (12 more) ▾</button></div>
+    </div>
+  </div>
+
+  <!-- Top Search Queries -->
+  <div class="section-title">🔎 Top Search Queries (28 days)</div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Query</th><th style="text-align:right">Clicks</th><th style="text-align:right">Impressions</th><th style="text-align:right">CTR</th><th style="text-align:right">Avg Position</th></tr></thead>
+      <tbody id="queryBody"><tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero</td>
+          <td style="text-align:right;font-weight:600">547</td>
+          <td style="text-align:right">1,927</td>
+          <td style="text-align:right">28.4%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">3.7</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero bonds</td>
+          <td style="text-align:right;font-weight:600">305</td>
+          <td style="text-align:right">831</td>
+          <td style="text-align:right">36.7%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1.0</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero partner login</td>
+          <td style="text-align:right;font-weight:600">123</td>
+          <td style="text-align:right">147</td>
+          <td style="text-align:right">83.7%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1.1</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero login</td>
+          <td style="text-align:right;font-weight:600">69</td>
+          <td style="text-align:right">73</td>
+          <td style="text-align:right">94.5%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero markets private limited</td>
+          <td style="text-align:right;font-weight:600">40</td>
+          <td style="text-align:right">100</td>
+          <td style="text-align:right">40.0%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero yubi</td>
+          <td style="text-align:right;font-weight:600">21</td>
+          <td style="text-align:right">34</td>
+          <td style="text-align:right">61.8%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">partner.aspero</td>
+          <td style="text-align:right;font-weight:600">19</td>
+          <td style="text-align:right">23</td>
+          <td style="text-align:right">82.6%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero app</td>
+          <td style="text-align:right;font-weight:600">16</td>
+          <td style="text-align:right">103</td>
+          <td style="text-align:right">15.5%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1.4</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero bonds review</td>
+          <td style="text-align:right;font-weight:600">16</td>
+          <td style="text-align:right">217</td>
+          <td style="text-align:right">7.4%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1.2</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero fixed income</td>
+          <td style="text-align:right;font-weight:600">15</td>
+          <td style="text-align:right">36</td>
+          <td style="text-align:right">41.7%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">how to buy municipal bonds in india</td>
+          <td style="text-align:right;font-weight:600">12</td>
+          <td style="text-align:right">182</td>
+          <td style="text-align:right">6.6%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1.6</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">municipal bonds india</td>
+          <td style="text-align:right;font-weight:600">9</td>
+          <td style="text-align:right">678</td>
+          <td style="text-align:right">1.3%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">4.3</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">ine01yl07417</td>
+          <td style="text-align:right;font-weight:600">8</td>
+          <td style="text-align:right">85</td>
+          <td style="text-align:right">9.4%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">5.5</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">is aspero sebi registered</td>
+          <td style="text-align:right;font-weight:600">8</td>
+          <td style="text-align:right">48</td>
+          <td style="text-align:right">16.7%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1.2</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">ine01yl07433</td>
+          <td style="text-align:right;font-weight:600">7</td>
+          <td style="text-align:right">51</td>
+          <td style="text-align:right">13.7%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">8</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">ine342t07668</td>
+          <td style="text-align:right;font-weight:600">7</td>
+          <td style="text-align:right">97</td>
+          <td style="text-align:right">7.2%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">5.6</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">akara capital bonds</td>
+          <td style="text-align:right;font-weight:600">6</td>
+          <td style="text-align:right">250</td>
+          <td style="text-align:right">2.4%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">6.1</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">asparo</td>
+          <td style="text-align:right;font-weight:600">6</td>
+          <td style="text-align:right">101</td>
+          <td style="text-align:right">5.9%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">3.6</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">ine08kj07175</td>
+          <td style="text-align:right;font-weight:600">6</td>
+          <td style="text-align:right">43</td>
+          <td style="text-align:right">14.0%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">6.1</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">akara capital advisors private limited</td>
+          <td style="text-align:right;font-weight:600">5</td>
+          <td style="text-align:right">311</td>
+          <td style="text-align:right">1.6%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">4.2</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero customer care number</td>
+          <td style="text-align:right;font-weight:600">5</td>
+          <td style="text-align:right">11</td>
+          <td style="text-align:right">45.5%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">krazybee</td>
+          <td style="text-align:right;font-weight:600">5</td>
+          <td style="text-align:right">1,713</td>
+          <td style="text-align:right">0.3%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">2.4</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">tax free bonds</td>
+          <td style="text-align:right;font-weight:600">5</td>
+          <td style="text-align:right">664</td>
+          <td style="text-align:right">0.8%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">7.5</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aespero</td>
+          <td style="text-align:right;font-weight:600">4</td>
+          <td style="text-align:right">11</td>
+          <td style="text-align:right">36.4%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1.5</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">akara capital</td>
+          <td style="text-align:right;font-weight:600">4</td>
+          <td style="text-align:right">103</td>
+          <td style="text-align:right">3.9%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">4.7</span>
+          </td>
+        </tr></tbody>
+    </table>
+    <div class="view-all-wrap"><button class="view-all-btn" onclick="toggleRows('queryBody',8,this)">View All (17 more) ▾</button></div>
+  </div>
+
+  
+  <div class="section-title">⚡ Quick Win Keywords — Already Ranking 4–20, Optimize to Reach Top 3</div>
+  <div style="font-size:12px;color:#64748B;margin:-8px 0 12px;padding:6px 12px;background:#F0FDF4;border-radius:6px;border-left:3px solid #10B981;">These queries already appear in search results but aren't in top 3. Improving the page (title, H1, content depth) could move them up and multiply clicks without writing new content.</div>
+  <div class="tbl-wrap"><table><thead><tr><th>Query</th><th style="text-align:right">Impr (28d)</th><th style="text-align:right">Pos</th><th style="text-align:right">CTR</th><th style="text-align:right">Clicks</th></tr></thead><tbody id="qwBody"><tr><td style="font-size:12px;max-width:240px;word-break:break-word">municipal bonds india</td><td style="text-align:right">678</td><td style="text-align:right;font-weight:700;color:#10B981">4.3</td><td style="text-align:right;color:#475569">1.3%</td><td style="text-align:right">9</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">tax free bonds</td><td style="text-align:right">664</td><td style="text-align:right;font-weight:700;color:#F59E0B">7.5</td><td style="text-align:right;color:#475569">0.8%</td><td style="text-align:right">5</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">rbi bonds</td><td style="text-align:right">596</td><td style="text-align:right;font-weight:700;color:#F59E0B">9.1</td><td style="text-align:right;color:#475569">0.5%</td><td style="text-align:right">3</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">debentures</td><td style="text-align:right">527</td><td style="text-align:right;font-weight:700;color:#F59E0B">8.2</td><td style="text-align:right;color:#475569">0.2%</td><td style="text-align:right">1</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">how to buy rbi bonds from sbi</td><td style="text-align:right">338</td><td style="text-align:right;font-weight:700;color:#F59E0B">8.8</td><td style="text-align:right;color:#475569">0.3%</td><td style="text-align:right">1</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">akara capital advisors private limited</td><td style="text-align:right">311</td><td style="text-align:right;font-weight:700;color:#10B981">4.2</td><td style="text-align:right;color:#475569">1.6%</td><td style="text-align:right">5</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">tax free bonds india</td><td style="text-align:right">305</td><td style="text-align:right;font-weight:700;color:#10B981">5.4</td><td style="text-align:right;color:#475569">0.3%</td><td style="text-align:right">1</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">akara capital bonds</td><td style="text-align:right">250</td><td style="text-align:right;font-weight:700;color:#10B981">6.1</td><td style="text-align:right;color:#475569">2.4%</td><td style="text-align:right">6</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">nsdl dp id</td><td style="text-align:right">237</td><td style="text-align:right;font-weight:700;color:#10B981">5.1</td><td style="text-align:right;color:#475569">1.3%</td><td style="text-align:right">3</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">muthoot mcred bond</td><td style="text-align:right">232</td><td style="text-align:right;font-weight:700;color:#10B981">4.9</td><td style="text-align:right;color:#475569">0.9%</td><td style="text-align:right">2</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">aaa rated bonds</td><td style="text-align:right">206</td><td style="text-align:right;font-weight:700;color:#F59E0B">11.7</td><td style="text-align:right;color:#475569">0%</td><td style="text-align:right">0</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">secured debt instruments</td><td style="text-align:right">159</td><td style="text-align:right;font-weight:700;color:#F59E0B">10.6</td><td style="text-align:right;color:#475569">0.6%</td><td style="text-align:right">1</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">krazybee services private limited</td><td style="text-align:right">151</td><td style="text-align:right;font-weight:700;color:#10B981">5.5</td><td style="text-align:right;color:#475569">1.3%</td><td style="text-align:right">2</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">secured bonds in india</td><td style="text-align:right">148</td><td style="text-align:right;font-weight:700;color:#F59E0B">7.4</td><td style="text-align:right;color:#475569">1.4%</td><td style="text-align:right">2</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">cmr copy</td><td style="text-align:right">145</td><td style="text-align:right;font-weight:700;color:#F59E0B">9.2</td><td style="text-align:right;color:#475569">0.7%</td><td style="text-align:right">1</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">dp id in nsdl</td><td style="text-align:right">125</td><td style="text-align:right;font-weight:700;color:#10B981">5.1</td><td style="text-align:right;color:#475569">0.8%</td><td style="text-align:right">1</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">nsdl id</td><td style="text-align:right">124</td><td style="text-align:right;font-weight:700;color:#10B981">6.5</td><td style="text-align:right;color:#475569">1.6%</td><td style="text-align:right">2</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">government of india bonds</td><td style="text-align:right">123</td><td style="text-align:right;font-weight:700;color:#F59E0B">8.9</td><td style="text-align:right;color:#475569">0.8%</td><td style="text-align:right">1</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">dp id and client id</td><td style="text-align:right">116</td><td style="text-align:right;font-weight:700;color:#F59E0B">9.5</td><td style="text-align:right;color:#475569">0.9%</td><td style="text-align:right">1</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">best bond investment platform in india</td><td style="text-align:right">115</td><td style="text-align:right;font-weight:700;color:#EF4444">14.1</td><td style="text-align:right;color:#475569">0.9%</td><td style="text-align:right">1</td></tr></tbody></table><div class="view-all-wrap"><button class="view-all-btn" onclick="toggleRows('qwBody',8,this)">View All (12 more) ▾</button></div></div>
+
+  
+  <div class="section-title">📱 Organic Investor Funnel — AppsFlyer (7 Apr – 4 May 2026)</div>
+  <div class="funnel-row"><div class="funnel-step"><div class="fs-num">2,955</div><div class="fs-label">Organic Installs</div></div><div class="funnel-arrow"><span>→</span><span class="fa-rate" style="color:#F59E0B">16.4%</span></div><div class="funnel-step"><div class="fs-num">486</div><div class="fs-label">App Sign-ups</div></div><div class="funnel-arrow"><span>→</span><span class="fa-rate" style="color:#F59E0B">29.8%</span></div><div class="funnel-step"><div class="fs-num">145</div><div class="fs-label">Bank Verified</div></div><div class="funnel-arrow"><span>→</span><span class="fa-rate" style="color:#10B981">35.9%</span></div><div class="funnel-step"><div class="fs-num">2</div><div class="fs-label">KYC Complete</div></div></div>
+  <div class="rate-cards"><div class="card"><div class="label">Monthly Organic Investors</div><div class="value" style="color:#F59E0B">52</div><div class="sub">Target: 100 · 52% achieved</div><div style="background:#E2E8F0;border-radius:4px;height:6px;margin-top:8px"><div style="background:#F59E0B;border-radius:4px;height:6px;width:52%"></div></div></div><div class="card"><div class="label">Install → Sign-up</div><div class="value" style="color:#F59E0B">16.4%</div><div class="sub">Organic installs that register</div></div><div class="card"><div class="label">KYC Completion</div><div class="value" style="color:#F59E0B">29.8%</div><div class="sub">Sign-ups that complete KYC</div></div><div class="card"><div class="label">KYC → First Invest</div><div class="value" style="color:#10B981">35.9%</div><div class="sub">KYC-done users who invest · need 40%</div></div></div>
+  <div style="font-size:12px;color:#64748B;margin:10px 0 4px;padding:6px 12px;background:#F8FAFC;border-radius:6px;">To hit <strong>100 organic investors/month</strong>: need ~<strong>5,556</strong> organic installs/month at current conversion rates. End-to-end rate: <strong>1.8%</strong> (install → investor).</div>
+
+  
+  <div class="section-title">🏛 Domain Authority — Aspero vs Competitors</div>
+  <div class="auth-row">
+    <div class="dr-card">
+      <div class="dr-label">Aspero.in (you)</div>
+      <div class="dr-num" style="color:#F59E0B">29</div>
+      <div class="dr-sub">0 referring domains</div>
+    </div><div class="dr-card"><div class="dr-label">wintwealth.com</div><div class="dr-num" style="color:#64748B">44</div><div class="dr-sub">162,830 est. visits/mo</div></div><div class="dr-card"><div class="dr-label">gripinvest.in</div><div class="dr-num" style="color:#64748B">47</div><div class="dr-sub">76,674 est. visits/mo</div></div><div class="dr-card"><div class="dr-label">stablemoney.com</div><div class="dr-num" style="color:#64748B">0</div><div class="dr-sub">0 est. visits/mo</div></div>
+  </div>
+  <div class="section-title">🔑 Organic Keyword Health</div>
+  <div class="kw-cards">
+    <div class="card"><div class="label">Total Organic Keywords</div><div class="value">250</div><div class="sub">Ahrefs ranking keywords</div></div>
+    <div class="card"><div class="label">Non-Branded Keywords</div><div class="value">248</div><div class="sub">Excludes aspero / yubi brand terms</div></div>
+    <div class="card"><div class="label">Est. Organic Traffic</div><div class="value">1,651</div><div class="sub">Monthly estimate · Ahrefs</div></div>
+  </div>
+  <div class="section-title">🔗 New Referring Domains — Last 7 Days</div>
+  <div class="tbl-wrap"><table><thead><tr><th>Domain</th><th style="text-align:right">DR</th></tr></thead><tbody><tr><td style="font-size:12px">activeshop.shop</td><td style="text-align:right;font-weight:600">35</td></tr><tr><td style="font-size:12px">theseohighranking.shop</td><td style="text-align:right;font-weight:600">35</td></tr><tr><td style="font-size:12px">shop-inframe.shop</td><td style="text-align:right;font-weight:600">35</td></tr><tr><td style="font-size:12px">ranklinkerpro.shop</td><td style="text-align:right;font-weight:600">43</td></tr><tr><td style="font-size:12px">agroinsursas.com</td><td style="text-align:right;font-weight:600">8</td></tr><tr><td style="font-size:12px">seohighranking.shop</td><td style="text-align:right;font-weight:600">35</td></tr><tr><td style="font-size:12px">acquire.co.in</td><td style="text-align:right;font-weight:600">2</td></tr><tr><td style="font-size:12px">kawaiishop.shop</td><td style="text-align:right;font-weight:600">35</td></tr><tr><td style="font-size:12px">addurl.in</td><td style="text-align:right;font-weight:600">2</td></tr><tr><td style="font-size:12px">therankinghighseo.shop</td><td style="text-align:right;font-weight:600">35</td></tr></tbody></table></div>
+  <div class="section-title">📈 Position Movers — Week over Week</div>
+  <div class="mover-grid">
+    <div class="mover-card">
+      <div class="mover-hdr" style="color:#10B981">↑ Improved Positions</div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr><th style="padding:7px 14px;font-size:11px;font-weight:700;color:#475569;text-align:left;background:#F1F5F9;border-bottom:1px solid #E2E8F0">Keyword</th><th style="padding:7px 14px;font-size:11px;font-weight:700;color:#475569;text-align:right;background:#F1F5F9;border-bottom:1px solid #E2E8F0">Δ</th><th style="padding:7px 14px;font-size:11px;font-weight:700;color:#475569;text-align:right;background:#F1F5F9;border-bottom:1px solid #E2E8F0">Pos</th></tr></thead><tbody><tr><td style="font-size:12px">akara capital advisors private limited</td><td style="text-align:right;color:#10B981;font-weight:700">+5</td><td style="text-align:right;color:#475569">17→12</td></tr><tr><td style="font-size:12px">indel money ncd</td><td style="text-align:right;color:#10B981;font-weight:700">+4</td><td style="text-align:right;color:#475569">9→5</td></tr></tbody></table>
+    </div>
+    <div class="mover-card">
+      <div class="mover-hdr" style="color:#EF4444">↓ Declined Positions</div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr><th style="padding:7px 14px;font-size:11px;font-weight:700;color:#475569;text-align:left;background:#F1F5F9;border-bottom:1px solid #E2E8F0">Keyword</th><th style="padding:7px 14px;font-size:11px;font-weight:700;color:#475569;text-align:right;background:#F1F5F9;border-bottom:1px solid #E2E8F0">Δ</th><th style="padding:7px 14px;font-size:11px;font-weight:700;color:#475569;text-align:right;background:#F1F5F9;border-bottom:1px solid #E2E8F0">Pos</th></tr></thead><tbody><tr><td style="font-size:12px">redeemable debentures</td><td style="text-align:right;color:#EF4444;font-weight:700">-14</td><td style="text-align:right;color:#475569">10→24</td></tr><tr><td style="font-size:12px">what is secured debenture</td><td style="text-align:right;color:#EF4444;font-weight:700">-11</td><td style="text-align:right;color:#475569">1→12</td></tr><tr><td style="font-size:12px">buy bonds</td><td style="text-align:right;color:#EF4444;font-weight:700">-7</td><td style="text-align:right;color:#475569">20→27</td></tr><tr><td style="font-size:12px">different types of debentures</td><td style="text-align:right;color:#EF4444;font-weight:700">-6</td><td style="text-align:right;color:#475569">1→7</td></tr><tr><td style="font-size:12px">tax saver fd</td><td style="text-align:right;color:#EF4444;font-weight:700">-5</td><td style="text-align:right;color:#475569">23→28</td></tr><tr><td style="font-size:12px">cmr copy means</td><td style="text-align:right;color:#EF4444;font-weight:700">-4</td><td style="text-align:right;color:#475569">5→9</td></tr><tr><td style="font-size:12px">psu bond</td><td style="text-align:right;color:#EF4444;font-weight:700">-4</td><td style="text-align:right;color:#475569">8→12</td></tr><tr><td style="font-size:12px">municipal bonds in india</td><td style="text-align:right;color:#EF4444;font-weight:700">-4</td><td style="text-align:right;color:#475569">8→12</td></tr></tbody></table>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Data source: Google Search Console (organic only · no paid) &nbsp;·&nbsp; AppsFlyer (organic funnel) &nbsp;·&nbsp; Ahrefs (authority · keywords · backlinks) &nbsp;·&nbsp;
+    GSC data lags ~2 days &nbsp;·&nbsp;
+    <a href="https://arpitgoyalyubi.github.io/b2c_product/seo-release.html" target="_blank">SEO Release Note Apr 2026</a> &nbsp;·&nbsp;
+    <a href="https://arpitgoyalyubi.github.io/b2c_product/" target="_blank">Product Hub</a> &nbsp;·&nbsp;
+    Generated 05 May 2026, 11:11 AM IST
+  </div>
+</div>
+
+<script>
+const D = {"series": {"bond": {"9 Mar": {"clicks": 3, "impressions": 108}, "16 Mar": {"clicks": 0, "impressions": 111}, "23 Mar": {"clicks": 14, "impressions": 131}, "30 Mar": {"clicks": 7, "impressions": 275}, "6 Apr": {"clicks": 31, "impressions": 892}, "13 Apr": {"clicks": 29, "impressions": 892}, "20 Apr": {"clicks": 30, "impressions": 1106}, "27 Apr": {"clicks": 24, "impressions": 1216}}, "home": {"9 Mar": {"clicks": 1, "impressions": 97}, "16 Mar": {"clicks": 0, "impressions": 58}, "23 Mar": {"clicks": 1, "impressions": 98}, "30 Mar": {"clicks": 19, "impressions": 644}, "6 Apr": {"clicks": 7, "impressions": 417}, "13 Apr": {"clicks": 4, "impressions": 497}, "20 Apr": {"clicks": 6, "impressions": 735}, "27 Apr": {"clicks": 5, "impressions": 556}}, "explore": {"9 Mar": {"clicks": 1, "impressions": 46}, "16 Mar": {"clicks": 3, "impressions": 27}, "23 Mar": {"clicks": 2, "impressions": 22}, "30 Mar": {"clicks": 1, "impressions": 85}, "6 Apr": {"clicks": 2, "impressions": 91}, "13 Apr": {"clicks": 1, "impressions": 119}, "20 Apr": {"clicks": 0, "impressions": 102}, "27 Apr": {"clicks": 0, "impressions": 86}}, "blog": {"9 Mar": {"clicks": 243, "impressions": 87385}, "16 Mar": {"clicks": 200, "impressions": 79544}, "23 Mar": {"clicks": 193, "impressions": 93423}, "30 Mar": {"clicks": 152, "impressions": 71211}, "6 Apr": {"clicks": 139, "impressions": 57149}, "13 Apr": {"clicks": 132, "impressions": 55304}, "20 Apr": {"clicks": 146, "impressions": 46899}, "27 Apr": {"clicks": 106, "impressions": 36322}}, "mkt": {"9 Mar": {"clicks": 22, "impressions": 539}, "16 Mar": {"clicks": 10, "impressions": 379}, "23 Mar": {"clicks": 14, "impressions": 416}, "30 Mar": {"clicks": 1, "impressions": 325}, "6 Apr": {"clicks": 0, "impressions": 293}, "13 Apr": {"clicks": 0, "impressions": 265}, "20 Apr": {"clicks": 2, "impressions": 444}, "27 Apr": {"clicks": 2, "impressions": 260}}}, "isinData": [{"isin": "INE101Q07BX1", "clicks": 14, "impressions": 786, "position": 7.3, "url": "https://www.aspero.in/invest/bond/muthoot-mcred-limited/ine101q07bx1/3058"}, {"isin": "INE342T07668", "clicks": 15, "impressions": 289, "position": 9, "url": "https://www.aspero.in/invest/bond/navi-finserv-limited/INE342T07668/2716"}, {"isin": "INE342T07635", "clicks": 1, "impressions": 235, "position": 9.1, "url": "https://www.aspero.in/invest/bond/navi-finserv-limited/INE342T07635/3254"}, {"isin": "INE01YL07417", "clicks": 10, "impressions": 134, "position": 6.5, "url": "https://www.aspero.in/invest/bond/earlysalary-services-private-limited/ine01yl07417/2173"}, {"isin": "INE01HV07536", "clicks": 0, "impressions": 125, "position": 9, "url": "https://www.aspero.in/invest/bond/hari-and-company-investments-madras-private-limited/ine01hv07536/864"}, {"isin": "INE413U07442", "clicks": 4, "impressions": 122, "position": 13.3, "url": "https://www.aspero.in/invest/bond/iifl-samasta-finance-limited/ine413u07442/2111"}, {"isin": "INE08XP07423", "clicks": 4, "impressions": 115, "position": 10.6, "url": "https://www.aspero.in/invest/bond/akara-capital-advisors-private-limited/ine08xp07423/1792"}, {"isin": "INE08KJ07175", "clicks": 10, "impressions": 96, "position": 9.7, "url": "https://www.aspero.in/invest/bond/mufin-green-finance-limited/ine08kj07175/2203"}, {"isin": "INE1VXE07015", "clicks": 5, "impressions": 88, "position": 12.8, "url": "https://www.aspero.in/invest/bond/stl-networks-limited/INE1VXE07015/2207"}, {"isin": "INE0NES07279", "clicks": 4, "impressions": 80, "position": 7.3, "url": "https://www.aspero.in/invest/bond/keertana-finserv-limited/ine0nes07279/2983"}, {"isin": "INE08KJ07183", "clicks": 4, "impressions": 79, "position": 9, "url": "https://www.aspero.in/invest/bond/mufin-green-finance-limited/ine08kj07183/2631"}, {"isin": "INE0M2307362", "clicks": 0, "impressions": 78, "position": 10.2, "url": "https://www.aspero.in/invest/bond/andhra-pradesh-state-beverages-corporation-limited/ine0m2307362/2469"}, {"isin": "INE321N07632", "clicks": 1, "impressions": 77, "position": 13.2, "url": "https://www.aspero.in/invest/bond/incred-financial-services-limited/ine321n07632/2953"}, {"isin": "INE01YL07433", "clicks": 7, "impressions": 69, "position": 8.2, "url": "https://www.aspero.in/invest/bond/earlysalary-services-private-limited/ine01yl07433/2971"}, {"isin": "INE501X07729", "clicks": 0, "impressions": 67, "position": 7.0, "url": "https://www.aspero.in/invest/bond/aye-finance-limited/ine501x07729/1486"}, {"isin": "INE0BUS07CK0", "clicks": 4, "impressions": 64, "position": 5.4, "url": "https://www.aspero.in/invest/bond/indel-money-limited/ine0bus07ck0/3040"}, {"isin": "INE413U07426", "clicks": 0, "impressions": 63, "position": 12.9, "url": "https://www.aspero.in/invest/bond/iifl-samasta-finance-limited/ine413u07426/1243"}, {"isin": "INE389Z07104", "clicks": 0, "impressions": 63, "position": 7.7, "url": "https://www.aspero.in/invest/bond/profectus-capital-private-limited/INE389Z07104/3265"}, {"isin": "INE549K07HD3", "clicks": 1, "impressions": 62, "position": 8.2, "url": "https://www.aspero.in/invest/bond/muthoot-fincorp-limited/ine549k07hd3/1924"}, {"isin": "INE08E807084", "clicks": 1, "impressions": 55, "position": 24.7, "url": "https://www.aspero.in/invest/bond/shri-ram-finance-corporation-private-limited/ine08e807084/1492"}], "partial_week_label": null, "partial_week_days": 7};
+
+function buildChart(id, seriesObj, color) {
+  const rawLabels = Object.keys(seriesObj);
+  const partial = D.partial_week_label;
+  const partialDays = D.partial_week_days || 7;
+  // Mark the current incomplete week in the x-axis label
+  const labels = rawLabels.map(k => (partial && k === partial) ? k + ' (' + partialDays + '/7d)' : k);
+  const clicks = rawLabels.map(k => seriesObj[k].clicks);
+  const impressions = rawLabels.map(k => seriesObj[k].impressions);
+  // Dim the partial week bar so it's visually distinct
+  const bgColors = rawLabels.map((k, i) =>
+    (partial && k === partial) ? color + '1A' : color + '33'
+  );
+  const borderColors = rawLabels.map((k, i) =>
+    (partial && k === partial) ? color + '66' : color
+  );
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  new Chart(ctx, {
+    data: {
+      labels,
+      datasets: [
+        {
+          type: 'bar',
+          label: 'Clicks',
+          data: clicks,
+          backgroundColor: bgColors,
+          borderColor: borderColors,
+          borderWidth: 1.5,
+          yAxisID: 'y',
+          borderRadius: 3,
+        },
+        {
+          type: 'line',
+          label: 'Impressions',
+          data: impressions,
+          borderColor: '#94A3B8',
+          backgroundColor: 'transparent',
+          borderWidth: 1.5,
+          pointRadius: 3,
+          tension: 0.3,
+          yAxisID: 'y1',
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { labels: { font: { size: 11 }, boxWidth: 12, padding: 10 } } },
+      scales: {
+        x: { ticks: { font: { size: 10 }, maxRotation: 45 }, grid: { display: false } },
+        y: {
+          position: 'left',
+          title: { display: false },
+          ticks: { font: { size: 10 } },
+          grid: { color: '#F1F5F9' },
+        },
+        y1: {
+          position: 'right',
+          grid: { display: false },
+          ticks: { font: { size: 10 } },
+        },
+      },
+    },
+  });
+}
+
+buildChart('chartBond',    D.series.bond,    '#2563EB');
+buildChart('chartMkt',     D.series.mkt,     '#10B981');
+buildChart('chartHome',    D.series.home,    '#8B5CF6');
+buildChart('chartExplore', D.series.explore, '#F59E0B');
+buildChart('chartBlog',    D.series.blog,    '#EF4444');
+
+// ISIN donut
+(function() {
+  const gsc = 109;
+  const total = 143;
+  new Chart(document.getElementById('chartDonut'), {
+    type: 'doughnut',
+    data: {
+      labels: ['In GSC', 'Not yet indexed'],
+      datasets: [{ data: [gsc, Math.max(0, total - gsc)], backgroundColor: ['#2563EB', '#E2E8F0'], borderWidth: 0 }],
+    },
+    options: {
+      cutout: '70%',
+      plugins: { legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 10, padding: 8 } } },
+    },
+  });
+})();
+
+// Row toggle
+function toggleRows(tbodyId, visibleCount, btn) {
+  const tbody = document.getElementById(tbodyId);
+  if (!tbody) return;
+  const rows = tbody.querySelectorAll('tr');
+  const expanded = btn.dataset.expanded === 'true';
+  rows.forEach((r, i) => { if (i >= visibleCount) r.style.display = expanded ? 'none' : ''; });
+  const hidden = rows.length - visibleCount;
+  btn.dataset.expanded = expanded ? 'false' : 'true';
+  btn.textContent = expanded ? 'View All (' + hidden + ' more) ▾' : 'Show Less ▴';
+}
+
+// Init hidden rows
+(function() {
+  [['ticketBody',6],['isinBody',8],['queryBody',8],['qwBody',8]].forEach(([id, n]) => {
+    const tbody = document.getElementById(id);
+    if (!tbody) return;
+    tbody.querySelectorAll('tr').forEach((r, i) => { if (i >= n) r.style.display = 'none'; });
+  });
+})();
+</script>
+</body>
+</html>
