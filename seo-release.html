@@ -2,1567 +2,1025 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aspero SEO — Release Note · Apr 2026</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aspero SEO Dashboard — Organic Growth</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 <style>
   :root {
-    --blue:    #2563EB;
-    --blue-lt: #EFF6FF;
-    --green:   #16A34A;
-    --green-lt:#F0FDF4;
-    --red:     #DC2626;
-    --red-lt:  #FEF2F2;
-    --amber:   #D97706;
-    --amber-lt:#FFFBEB;
-    --gray:    #64748B;
-    --gray-lt: #F8FAFC;
-    --border:  #E2E8F0;
-    --text:    #0F172A;
-    --text2:   #475569;
+    --blue:#2563EB; --green:#10B981; --orange:#F59E0B; --red:#EF4444;
+    --purple:#8B5CF6; --bg:#F8FAFC; --card:#FFFFFF;
+    --text:#0F172A; --text2:#475569; --border:#E2E8F0;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-         background: #F1F5F9; color: var(--text); font-size: 14px; }
-  .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); }
+  .page { max-width:1140px; margin:0 auto; padding:28px 20px 60px; }
 
-  /* Header */
-  .header { background: var(--blue); color: white; border-radius: 12px;
-             padding: 32px 36px; margin-bottom: 24px; }
-  .header h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
-  .header .meta { opacity: .75; font-size: 13px; display: flex; gap: 24px; flex-wrap: wrap; }
+  /* header */
+  .hdr { background:linear-gradient(135deg,#1E3A8A 0%,#2563EB 100%); border-radius:16px; padding:28px 32px; color:#fff; margin-bottom:28px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+  .hdr h1 { font-size:22px; font-weight:800; }
+  .hdr .meta { font-size:12px; opacity:.8; margin-top:4px; }
+  .hdr .pill { background:rgba(255,255,255,.15); border-radius:20px; padding:5px 14px; font-size:12px; }
 
-  /* Exec summary */
-  .exec { background: white; border-radius: 12px; border: 1px solid var(--border);
-           padding: 24px 28px; margin-bottom: 24px; }
-  .exec h2 { font-size: 15px; font-weight: 700; color: var(--blue); margin-bottom: 14px;
-              text-transform: uppercase; letter-spacing: .05em; }
-  .exec ul { padding-left: 18px; display: flex; flex-direction: column; gap: 8px; }
-  .exec li { color: var(--text2); line-height: 1.6; }
-  .exec li strong { color: var(--text); }
+  /* section */
+  .section-title { font-size:16px; font-weight:700; color:var(--text); margin:28px 0 14px; display:flex; align-items:center; gap:8px; }
+  .section-title::after { content:''; flex:1; height:1px; background:var(--border); }
 
-  /* Hero stats */
-  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
-  .stat { background: white; border-radius: 10px; border: 1px solid var(--border);
-           padding: 20px 20px 16px; }
-  .stat .label { font-size: 11px; font-weight: 600; color: var(--gray);
-                  text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
-  .stat .val { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1; }
-  .stat .delta { font-size: 12px; margin-top: 6px; font-weight: 600; }
-  .stat .delta.up   { color: var(--green); }
-  .stat .delta.down { color: var(--red); }
-  .stat .delta.neu  { color: var(--amber); }
-  .stat .sub  { font-size: 11px; color: var(--gray); margin-top: 3px; }
+  /* summary cards */
+  .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:4px; }
+  @media(max-width:700px){ .cards{ grid-template-columns:repeat(2,1fr); } }
+  .card { background:var(--card); border-radius:12px; border:1px solid var(--border); padding:18px 20px; }
+  .card .label { font-size:11px; font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
+  .card .value { font-size:26px; font-weight:800; color:var(--text); }
+  .card .sub { font-size:11px; color:var(--text2); margin-top:3px; }
+  .card .dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:5px; }
 
-  /* Section cards */
-  .card { background: white; border-radius: 12px; border: 1px solid var(--border);
-           padding: 24px 28px; margin-bottom: 24px; }
-  .card h2 { font-size: 15px; font-weight: 700; color: var(--text);
-              margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
-  .card .section-num { background: var(--blue); color: white; font-size: 10px;
-                        font-weight: 700; width: 20px; height: 20px; border-radius: 50%;
-                        display: inline-flex; align-items: center; justify-content: center; }
-  .card .subtitle { font-size: 12px; color: var(--gray); margin-bottom: 18px; }
-  .chart-wrap { position: relative; }
+  /* epic progress */
+  .epic-bar-wrap { background:var(--card); border-radius:12px; border:1px solid var(--border); padding:20px 24px; margin-bottom:14px; }
+  .epic-bar-track { background:#E2E8F0; border-radius:8px; height:14px; margin:10px 0; overflow:hidden; }
+  .epic-bar-fill { background:linear-gradient(90deg,#10B981,#2563EB); border-radius:8px; height:100%; transition:width .4s; }
+  .epic-pills { display:flex; gap:16px; flex-wrap:wrap; margin-top:10px; }
+  .epic-pill { font-size:12px; display:flex; align-items:center; gap:5px; }
 
-  /* Before / After */
-  .ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-  .ba-box { border-radius: 8px; padding: 16px 18px; }
-  .ba-box.before { background: var(--red-lt); border: 1px solid #FECACA; }
-  .ba-box.after  { background: var(--green-lt); border: 1px solid #BBF7D0; }
-  .ba-box .ba-label { font-size: 11px; font-weight: 700; text-transform: uppercase;
-                       letter-spacing: .06em; margin-bottom: 10px; }
-  .ba-box.before .ba-label { color: var(--red); }
-  .ba-box.after  .ba-label { color: var(--green); }
-  .ba-row { display: flex; justify-content: space-between; align-items: center;
-             border-bottom: 1px solid rgba(0,0,0,.06); padding: 5px 0; }
-  .ba-row:last-child { border-bottom: none; }
-  .ba-row .metric { font-size: 12px; color: var(--text2); }
-  .ba-row .value  { font-size: 14px; font-weight: 700; color: var(--text); }
-  .callout { background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px;
-              padding: 12px 16px; font-size: 13px; color: #1E40AF; margin-top: 14px;
-              display: flex; gap: 10px; align-items: flex-start; }
-  .callout .icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  /* tickets table */
+  .tbl-wrap { background:var(--card); border-radius:12px; border:1px solid var(--border); overflow:hidden; margin-bottom:14px; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th { background:#F1F5F9; padding:9px 14px; text-align:left; font-size:11px; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:.4px; border-bottom:1px solid var(--border); }
+  td { padding:9px 14px; border-bottom:1px solid #F1F5F9; vertical-align:middle; }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:#F8FAFC; }
+  .tbadge { font-size:11px; font-weight:600; padding:2px 8px; border-radius:20px; white-space:nowrap; }
+  .tbadge.live { background:#D1FAE5; color:#065F46; }
+  .tbadge.inprog { background:#DBEAFE; color:#1E40AF; }
+  .tbadge.todo { background:#F1F5F9; color:#64748B; }
 
-  /* Tables */
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th { background: var(--gray-lt); color: var(--gray); font-size: 11px;
-       font-weight: 600; text-transform: uppercase; letter-spacing: .05em;
-       padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--border); }
-  td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text2); }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: var(--gray-lt); }
-  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px;
-            border-radius: 99px; font-size: 11px; font-weight: 600; }
-  .badge.p0    { background: #FEF2F2; color: #B91C1C; }
-  .badge.p1    { background: #FFF7ED; color: #C2410C; }
-  .badge.p2    { background: #FEFCE8; color: #A16207; }
-  .badge.p3    { background: #F0FDF4; color: #15803D; }
-  .badge.live  { background: var(--green-lt); color: var(--green); }
-  .badge.next  { background: #EFF6FF; color: var(--blue); }
-  .pos-pill { display: inline-block; padding: 2px 8px; border-radius: 6px;
-               font-size: 11px; font-weight: 700; }
-  .pos-good { background: var(--green-lt); color: var(--green); }
-  .pos-mid  { background: var(--amber-lt); color: var(--amber); }
-  .pos-low  { background: var(--red-lt); color: var(--red); }
+  /* charts grid */
+  .charts-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:4px; }
+  @media(max-width:700px){ .charts-grid{ grid-template-columns:1fr; } }
+  .chart-card { background:var(--card); border-radius:12px; border:1px solid var(--border); padding:18px 20px; }
+  .chart-card .chart-title { font-size:13px; font-weight:700; margin-bottom:2px; }
+  .chart-card .chart-sub { font-size:11px; color:var(--text2); margin-bottom:12px; }
+  .chart-card canvas { max-height:160px; }
 
-  /* Two-col layout */
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  /* ISIN coverage */
+  .isin-grid { display:grid; grid-template-columns:200px 1fr; gap:16px; align-items:start; }
+  @media(max-width:600px){ .isin-grid{ grid-template-columns:1fr; } }
+  .donut-card { background:var(--card); border-radius:12px; border:1px solid var(--border); padding:18px; text-align:center; }
+  .donut-card canvas { max-height:160px; }
+  .donut-label { font-size:22px; font-weight:800; margin-top:8px; }
+  .donut-sub { font-size:11px; color:var(--text2); }
 
-  /* Progress bars */
-  .progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-  .progress-row .lbl { font-size: 12px; color: var(--text2); width: 180px; flex-shrink: 0;
-                        white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .progress-row .bar-wrap { flex: 1; background: var(--gray-lt); border-radius: 99px; height: 10px; }
-  .progress-row .bar { background: var(--blue); height: 10px; border-radius: 99px; min-width: 4px; }
-  .progress-row .num { font-size: 12px; font-weight: 600; color: var(--text); width: 36px; text-align: right; }
+  /* view-all */
+  .view-all-wrap { text-align:center; padding:10px 0 4px; }
+  .view-all-btn { background:none; border:1px solid var(--border); color:var(--blue); border-radius:20px; padding:5px 16px; font-size:12px; font-weight:600; cursor:pointer; }
+  .view-all-btn:hover { background:#EFF6FF; }
 
-  /* Projection note */
-  .proj-note { font-size: 11px; color: var(--gray); margin-top: 10px; font-style: italic; }
+  /* organic mobile funnel */
+  .funnel-row { display:flex; align-items:center; gap:0; flex-wrap:wrap; margin:14px 0; }
+  .funnel-step { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 16px; text-align:center; min-width:110px; flex:1; }
+  .funnel-step .fs-num { font-size:22px; font-weight:800; }
+  .funnel-step .fs-label { font-size:11px; color:var(--text2); font-weight:600; text-transform:uppercase; letter-spacing:.4px; margin-top:3px; }
+  .funnel-arrow { font-size:13px; color:var(--text2); padding:0 6px; text-align:center; white-space:nowrap; flex-shrink:0; }
+  .funnel-arrow .fa-rate { font-size:11px; font-weight:700; display:block; }
+  .rate-cards { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:4px; }
+  @media(max-width:700px){ .rate-cards{ grid-template-columns:repeat(2,1fr); } }
 
-  /* Roadmap */
-  .road-row td:first-child { font-weight: 600; color: var(--text); }
-  .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
-  .dot-red    { background: #EF4444; }
-  .dot-amber  { background: #F59E0B; }
-  .dot-green  { background: #22C55E; }
-  .dot-gray   { background: #94A3B8; }
+  /* ahrefs sections */
+  .auth-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:4px; }
+  @media(max-width:700px){ .auth-row{ grid-template-columns:repeat(2,1fr); } }
+  .dr-card { background:var(--card); border-radius:12px; border:1px solid var(--border); padding:16px 18px; }
+  .dr-card .dr-label { font-size:11px; font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .dr-card .dr-num { font-size:32px; font-weight:800; line-height:1; margin:4px 0; }
+  .dr-card .dr-sub { font-size:11px; color:var(--text2); margin-top:2px; }
+  .kw-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:4px; }
+  @media(max-width:700px){ .kw-cards{ grid-template-columns:1fr; } }
+  .mover-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:4px; }
+  @media(max-width:700px){ .mover-grid{ grid-template-columns:1fr; } }
+  .mover-card { background:var(--card); border-radius:12px; border:1px solid var(--border); overflow:hidden; }
+  .mover-card .mover-hdr { padding:10px 16px; font-size:13px; font-weight:700; border-bottom:1px solid var(--border); }
 
-  /* View All toggle */
-  .view-all-wrap { text-align: center; margin-top: 12px; }
-  .view-all-btn { background: var(--gray-lt); border: 1px solid var(--border); border-radius: 20px;
-    padding: 5px 16px; font-size: 12px; font-weight: 600; color: var(--blue); cursor: pointer;
-    transition: background .15s; }
-  .view-all-btn:hover { background: var(--blue-lt); }
-
-  /* Footer */
-  .footer { text-align: center; color: var(--gray); font-size: 12px; padding: 16px 0 8px; }
-
-  @media (max-width: 768px) {
-    .stats-grid { grid-template-columns: repeat(2,1fr); }
-    .ba-grid, .two-col { grid-template-columns: 1fr; }
-  }
+  /* footer */
+  .footer { text-align:center; color:var(--text2); font-size:12px; margin-top:48px; padding-top:24px; border-top:1px solid var(--border); }
+  .footer a { color:var(--blue); text-decoration:none; }
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="page">
 
   <!-- Header -->
-  <div class="header">
-    <h1>Aspero SEO — Release Note · Apr 2026</h1>
-    <div class="meta">
-      <span>📅 Period: Mar – Apr 27 2026</span>
-      <span>🎯 Scope: Bond Detail Pages (/invest/bond/*)</span>
-      <span>👥 For: CXO Team</span>
-      <span>📊 Data: Google Search Console (live)</span>
+  <div class="hdr">
+    <div>
+      <h1>Aspero SEO — Organic Growth Dashboard</h1>
+      <div class="meta">Data source: Google Search Console &nbsp;·&nbsp; Generated 05 May 2026, 11:11 AM IST</div>
     </div>
-    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-      <span style="background:rgba(255,255,255,0.18);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600">👨‍💻 Eng: Mohamed Mohsin F</span>
-      <span style="background:rgba(255,255,255,0.18);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600">🏗️ EM: Govind Rao Kamath H M</span>
-      <span style="background:rgba(255,255,255,0.18);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600">📋 PM: Arpit Goyal</span>
-      <a href="https://goyubi.atlassian.net/browse/ASP-3429" target="_blank" style="background:white;color:#2563EB;border-radius:20px;padding:4px 14px;font-size:12px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px;margin-left:6px">🔗 View SEO Epic — ASP-3429 ↗</a>
+    <div class="pill">📅 8 Mar – 3 May 2026</div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="section-title">📊 Last 7 Days</div>
+  <div class="cards">
+    <div class="card">
+      <div class="label">Organic Clicks</div>
+      <div class="value">610</div>
+      <div class="sub">All pages · last 7d</div>
+    </div>
+    <div class="card">
+      <div class="label">Impressions</div>
+      <div class="value">62,163</div>
+      <div class="sub">All pages · last 7d</div>
+    </div>
+    <div class="card">
+      <div class="label">Pages in GSC</div>
+      <div class="value">504</div>
+      <div class="sub">Pages with ≥1 impression</div>
+    </div>
+    <div class="card">
+      <div class="label">ISINs in GSC</div>
+      <div class="value">109</div>
+      <div class="sub">of 143 in sitemap · 28d</div>
     </div>
   </div>
 
-  <!-- Executive Summary -->
-  <div class="exec">
-    <h2>Executive Summary</h2>
-    <ul>
-      <li><strong>The problem we solved:</strong> Since Aspero launched, every bond detail page was invisible to Google. Our app was built as a React client-side app — when Google's crawler visited a bond page, it saw a blank spinner, not the bond name, ISIN, or yield. A headless Chrome test in March 2026 confirmed it: at Google's crawl conditions (4× CPU throttle, 1.5 Mbps), the page had <em>exactly 6 readable characters</em> at the 5-second mark — just "Aspero" in the title tag. We were ranking for nothing because Google had nothing to index.</li>
-      <li><strong>The hidden trap we found:</strong> Even beyond the CSR problem, a secondary issue compounded it — ISIN, coupon rate, and trustee data were inside a click-triggered modal. Google cannot click. That data was invisible to crawlers regardless of rendering. We discovered this in a manual DOM audit of the Krazybee bond page: 0 occurrences of "INE07HK07783" in rendered HTML. Zero. Every critical data point locked away.</li>
-      <li><strong>11 SEO tickets shipped in 5 days (Apr 16–21)</strong> — all P0 blockers resolved in one focused sprint: server-side rendering, meta titles per bond, JSON-LD FinancialProduct schema, H1/H2/H3 headers, canonical tags, modal→accordion, partner subdomain noindex, sitemap submission (143 bond pages), and 301 redirects from the legacy invest.aspero.in URLs.</li>
-      <li><strong>Confirmed results through Apr 27 (GSC data):</strong> Bond page impressions/day up <strong>6.5×</strong> (24 → 158 imp/day in week of Apr 20–26). Average position improved from 12.9 → 8.6. 11 unique ISIN queries now appearing per week — these were completely absent before. 89 bond pages receiving impressions vs effectively none pre-fix.</li>
-      <li><strong>Full impact expected May 12–Jun 2026.</strong> Projection: 3,000–6,000 bond page impressions/week (vs ~900/week today) as Google re-indexes all pages with server-rendered content. <strong>Issuer aggregator pages (ASP-3592) and SSR internal linking (ASP-3440) are now Live as of Apr 28</strong> — adding a second and third impression surface. Issuer pages alone could account for ~40% of organic bond traffic (Wint Wealth benchmark).</li>
-    </ul>
-  </div>
-
-  <!-- Hero Stats -->
-  <div class="stats-grid">
-    <div class="stat">
-      <div class="label">Bond Page Imp/Day</div>
-      <div class="val">158</div>
-      <div class="delta up">▲ 6.5× vs pre-fix baseline</div>
-      <div class="sub">Was 24/day (Jan 26–Apr 5) · Latest: Apr 20–26</div>
+  <!-- Epic Progress -->
+  <div class="section-title">🎯 SEO Epic Progress — ASP-3429</div>
+  <div class="epic-bar-wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div style="font-size:14px;font-weight:700">64% complete &nbsp;<span style="font-size:12px;color:var(--text2);font-weight:400">(14 of 22 tickets live)</span></div>
+      <a href="https://goyubi.atlassian.net/browse/ASP-3429" target="_blank" style="font-size:12px;color:var(--blue);text-decoration:none">View in Jira →</a>
     </div>
-    <div class="stat">
-      <div class="label">Avg Position (bond pages)</div>
-      <div class="val">8.6</div>
-      <div class="delta up">▲ +4.3 positions post-fix</div>
-      <div class="sub">Was 12.9 · Consistent 8.6 since Apr 6</div>
-    </div>
-    <div class="stat">
-      <div class="label">ISIN Queries / Week</div>
-      <div class="val">11</div>
-      <div class="delta neu">↑ Peak this week (was 0)</div>
-      <div class="sub">Latest: 132 imp · 13 clicks · 7 ISINs</div>
-    </div>
-    <div class="stat">
-      <div class="label">Bond Pages w/ Impressions</div>
-      <div class="val">89</div>
-      <div class="delta up">▲ receiving impressions Apr 20–26</div>
-      <div class="sub">154 in sitemap · 89 active this week</div>
+    <div class="epic-bar-track"><div class="epic-bar-fill" style="width:64%"></div></div>
+    <div class="epic-pills">
+      <div class="epic-pill"><span class="dot" style="background:#10B981"></span>✅ Live: 14</div>
+      <div class="epic-pill"><span class="dot" style="background:#2563EB"></span>🔄 In Progress: 0</div>
+      <div class="epic-pill"><span class="dot" style="background:#E2E8F0"></span>❌ To Do: 8</div>
+      
     </div>
   </div>
-
-  <!-- Section: Full /invest/ Impact -->
-  <div class="card">
-    <h2><span class="section-num" style="background:#7C3AED">★</span> Full /invest/ Path Impact — Bond Pages + App Pages</h2>
-    <div class="subtitle">SSR changes covered bond detail pages AND app pages (Home, Explore, Collections) · Before = Jan 26–Apr 5 (70d) · After = Apr 6–27 (21d) · Real GSC data</div>
-
-    <!-- Combined summary row -->
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px">
-      <div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:10px;padding:16px 18px">
-        <div style="font-size:11px;font-weight:700;color:#7C3AED;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">/invest/ — All Pages Combined</div>
-        <div class="ba-row"><span class="metric">Imp/Day (before)</span><span class="value">54</span></div>
-        <div class="ba-row"><span class="metric">Imp/Day (after)</span><span class="value" style="color:var(--green)">250 ▲ 4.6×</span></div>
-        <div class="ba-row"><span class="metric">Clicks/Day (before)</span><span class="value">1.6</span></div>
-        <div class="ba-row"><span class="metric">Clicks/Day (after)</span><span class="value" style="color:var(--green)">5.3 ▲ 3.4×</span></div>
-        <div class="ba-row"><span class="metric">Avg Position (before)</span><span class="value">9.3</span></div>
-        <div class="ba-row"><span class="metric">Avg Position (after)</span><span class="value" style="color:var(--green)">6.4 ▲ +2.9</span></div>
-      </div>
-      <div style="background:var(--blue-lt);border:1px solid #BFDBFE;border-radius:10px;padding:16px 18px">
-        <div style="font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Bond Detail Pages (/invest/bond/)</div>
-        <div class="ba-row"><span class="metric">Imp/Day (before)</span><span class="value">24</span></div>
-        <div class="ba-row"><span class="metric">Imp/Day (after)</span><span class="value" style="color:var(--green)">138 ▲ 5.6×</span></div>
-        <div class="ba-row"><span class="metric">Clicks/Day (before)</span><span class="value">0.7</span></div>
-        <div class="ba-row"><span class="metric">Clicks/Day (after)</span><span class="value" style="color:var(--green)">4.3 ▲ 6.1×</span></div>
-        <div class="ba-row"><span class="metric">Avg Position (before)</span><span class="value">12.9</span></div>
-        <div class="ba-row"><span class="metric">Avg Position (after)</span><span class="value" style="color:var(--green)">8.6 ▲ +4.3</span></div>
-      </div>
-      <div style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:10px;padding:16px 18px">
-        <div style="font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">App Pages (Home, Explore, Collections)</div>
-        <div class="ba-row"><span class="metric">Imp/Day (before)</span><span class="value">34</span></div>
-        <div class="ba-row"><span class="metric">Imp/Day (after)</span><span class="value" style="color:var(--green)">87 ▲ 2.6×</span></div>
-        <div class="ba-row"><span class="metric">Clicks/Day (before)</span><span class="value">0.8</span></div>
-        <div class="ba-row"><span class="metric">Clicks/Day (after)</span><span class="value" style="color:var(--green)">0.7</span></div>
-        <div class="ba-row"><span class="metric">Avg Position (before)</span><span class="value">4.5</span></div>
-        <div class="ba-row"><span class="metric">Avg Position (after)</span><span class="value" style="color:var(--green)">3.7 ▲ +0.8</span></div>
-      </div>
-    </div>
-
-    <!-- Per-page cards: home, explore, collections -->
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
-      <!-- /invest/home -->
-      <div style="border:1px solid var(--border);border-radius:8px;padding:14px 16px">
-        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px">/invest/home</div>
-        <div style="font-size:11px;color:var(--gray);margin-bottom:10px">Invest App Homepage</div>
-        <div style="display:flex;gap:8px;align-items:flex-end;margin-bottom:10px">
-          <div style="text-align:center">
-            <div style="font-size:20px;font-weight:800;color:var(--red)">22.9</div>
-            <div style="font-size:10px;color:var(--gray)">imp/day before</div>
-          </div>
-          <div style="font-size:18px;color:var(--gray);padding-bottom:6px">→</div>
-          <div style="text-align:center">
-            <div style="font-size:20px;font-weight:800;color:var(--green)">56.4</div>
-            <div style="font-size:10px;color:var(--gray)">imp/day after</div>
-          </div>
-          <div style="margin-left:auto;text-align:center">
-            <div style="font-size:18px;font-weight:800;color:var(--green)">▲2.5×</div>
-          </div>
-        </div>
-        <div class="ba-row"><span class="metric">Position before</span><span class="value">3.9</span></div>
-        <div class="ba-row"><span class="metric">Position after</span><span class="value" style="color:var(--green)">2.5 ★ Top 3</span></div>
-      </div>
-      <!-- /invest/explore -->
-      <div style="border:1px solid var(--border);border-radius:8px;padding:14px 16px">
-        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px">/invest/explore</div>
-        <div style="font-size:11px;color:var(--gray);margin-bottom:10px">Bond Discovery / Listing Page</div>
-        <div style="display:flex;gap:8px;align-items:flex-end;margin-bottom:10px">
-          <div style="text-align:center">
-            <div style="font-size:20px;font-weight:800;color:var(--red)">5.5</div>
-            <div style="font-size:10px;color:var(--gray)">imp/day before</div>
-          </div>
-          <div style="font-size:18px;color:var(--gray);padding-bottom:6px">→</div>
-          <div style="text-align:center">
-            <div style="font-size:20px;font-weight:800;color:var(--green)">14.4</div>
-            <div style="font-size:10px;color:var(--gray)">imp/day after</div>
-          </div>
-          <div style="margin-left:auto;text-align:center">
-            <div style="font-size:18px;font-weight:800;color:var(--green)">▲2.6×</div>
-          </div>
-        </div>
-        <div class="ba-row"><span class="metric">Position before</span><span class="value">4.8</span></div>
-        <div class="ba-row"><span class="metric">Position after</span><span class="value" style="color:var(--amber)">5.5</span></div>
-      </div>
-      <!-- /invest/bond/collections -->
-      <div style="border:1px solid var(--border);border-radius:8px;padding:14px 16px">
-        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px">/invest/bond/collections</div>
-        <div style="font-size:11px;color:var(--gray);margin-bottom:10px">Bond Collections Index</div>
-        <div style="display:flex;gap:8px;align-items:flex-end;margin-bottom:10px">
-          <div style="text-align:center">
-            <div style="font-size:20px;font-weight:800;color:var(--red)">0.9</div>
-            <div style="font-size:10px;color:var(--gray)">imp/day before</div>
-          </div>
-          <div style="font-size:18px;color:var(--gray);padding-bottom:6px">→</div>
-          <div style="text-align:center">
-            <div style="font-size:20px;font-weight:800;color:var(--green)">1.3</div>
-            <div style="font-size:10px;color:var(--gray)">imp/day after</div>
-          </div>
-          <div style="margin-left:auto;text-align:center">
-            <div style="font-size:18px;font-weight:800;color:var(--green)">▲1.4×</div>
-          </div>
-        </div>
-        <div class="ba-row"><span class="metric">Position before</span><span class="value">8.8</span></div>
-        <div class="ba-row"><span class="metric">Position after</span><span class="value" style="color:var(--green)">5.3 ▲ +3.5</span></div>
-      </div>
-    </div>
-
-    <!-- Stacked weekly chart -->
-    <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px">Weekly Impressions — Bond Pages vs App Pages (stacked)</div>
-    <div class="chart-wrap" style="height:260px">
-      <canvas id="stackedChart"></canvas>
-    </div>
-    <div class="callout" style="margin-top:14px">
-      <span class="icon">📌</span>
-      <span><strong>/invest/home hit position 2.5</strong> after the SSR fix — its best-ever ranking. The Mar 30 spike across all /invest/ pages reflects the sitemap addition that submitted all 143 bond pages to Google simultaneously. The Apr 16–21 SSR fixes are building on that crawl signal.</span>
-    </div>
-  </div>
-
-  <!-- Section 4: Before vs After -->
-  <div class="card">
-    <h2><span class="section-num">4</span> Before vs After — Bond Detail Pages Only</h2>
-    <div class="subtitle">GSC data scoped to /invest/bond/* · Real data Jan 26–Apr 27 2026</div>
-
-    <div class="ba-grid">
-      <div class="ba-box before">
-        <div class="ba-label">⬅ Before (Jan 26 – Apr 5 · 70 days)</div>
-        <div class="ba-row"><span class="metric">Total Impressions</span><span class="value">1,708</span></div>
-        <div class="ba-row"><span class="metric">Impressions / Day</span><span class="value">24</span></div>
-        <div class="ba-row"><span class="metric">Total Clicks</span><span class="value">49</span></div>
-        <div class="ba-row"><span class="metric">Clicks / Day</span><span class="value">0.7</span></div>
-        <div class="ba-row"><span class="metric">Avg CTR</span><span class="value">2.87%</span></div>
-        <div class="ba-row"><span class="metric">Avg Position</span><span class="value">12.9</span></div>
-      </div>
-      <div class="ba-box after">
-        <div class="ba-label">➡ After (Apr 6 – Apr 26 · 21 days)</div>
-        <div class="ba-row"><span class="metric">Total Impressions</span><span class="value">2,890</span></div>
-        <div class="ba-row"><span class="metric">Impressions / Day</span><span class="value" style="color:var(--green)">138 ▲ 5.6×</span></div>
-        <div class="ba-row"><span class="metric">Total Clicks</span><span class="value">90</span></div>
-        <div class="ba-row"><span class="metric">Clicks / Day</span><span class="value" style="color:var(--green)">4.3 ▲ 6.1×</span></div>
-        <div class="ba-row"><span class="metric">Avg CTR</span><span class="value">3.11%</span></div>
-        <div class="ba-row"><span class="metric">Avg Position</span><span class="value" style="color:var(--green)">8.6 ▲ +4.3</span></div>
-      </div>
-    </div>
-
-    <div class="chart-wrap" style="height:260px">
-      <canvas id="baChart"></canvas>
-    </div>
-
-    <div class="callout">
-      <span class="icon">💡</span>
-      <span>Data confirmed through Apr 27. The Apr 20–26 week hit <strong>158 imp/day and 89 active bond pages</strong> — the highest weekly performance ever recorded. Position has stabilised at 8.6, confirming the fix is fully indexed. Week of Apr 28 will be the first full post-indexing week for the new issuer aggregator pages (ASP-3592).</span>
-    </div>
-  </div>
-
-  <!-- Section: Weekly Trend -->
-  <div class="card">
-    <h2><span class="section-num">5</span> Weekly Impressions Trend — Bond Detail Pages</h2>
-    <div class="subtitle">18 weeks · Annotated with key events · Real GSC data through Apr 27</div>
-    <div class="chart-wrap" style="height:300px">
-      <canvas id="trendChart"></canvas>
-    </div>
-  </div>
-
-  <!-- Two-col: Position + CTR trend -->
-  <div class="two-col">
-    <div class="card" style="margin-bottom:0">
-      <h2><span class="section-num">6</span> Avg Position — Weekly</h2>
-      <div class="subtitle">Bond pages · Lower = better</div>
-      <div class="chart-wrap" style="height:220px">
-        <canvas id="posChart"></canvas>
-      </div>
-    </div>
-    <div class="card" style="margin-bottom:0">
-      <h2><span class="section-num">7</span> CTR Trend — Bond Pages</h2>
-      <div class="subtitle">Click-through rate when appearing in results</div>
-      <div class="chart-wrap" style="height:220px">
-        <canvas id="ctrChart"></canvas>
-      </div>
-    </div>
-  </div>
-  <div style="margin-bottom:24px"></div>
-
-  <!-- Section: ISIN Queries -->
-  <div class="card">
-    <h2><span class="section-num">8</span> ISIN Queries — Up to 11 ISINs/Week Now Appearing in Google</h2>
-    <div class="subtitle">Last 7 days: 7 ISINs · 132 impressions · 13 clicks · Was 0 pre-fix</div>
-    <div style="margin-bottom:16px">
-      <div style="font-size:12px;color:var(--gray);margin-bottom:10px">Impressions per ISIN query (top 10)</div>
-      <div id="isinBars"></div>
-    </div>
+  <div class="tbl-wrap">
     <table>
-      <thead>
-        <tr><th>ISIN</th><th>Issuer</th><th>Impressions</th><th>Clicks</th><th>CTR</th><th>Avg Position</th></tr>
-      </thead>
-      <tbody id="isinTable"></tbody>
-    </table>
-  </div>
-
-  <!-- Section: ISIN Crawl Correlation -->
-  <div class="card" style="border-left:4px solid #7C3AED">
-    <h2><span class="section-num" style="background:#7C3AED">↗</span> ISIN Crawl Correlation — Indexed ISINs vs Bond Impressions</h2>
-    <div class="subtitle">142 total ISINs ever crawled · 28 newly indexed post-fix · Impressions/ISIN jumped 4× from quality of indexing alone</div>
-
-    <!-- 3 stat chips -->
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px">
-      <div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:10px;padding:16px 18px;text-align:center">
-        <div style="font-size:28px;font-weight:800;color:#7C3AED">142</div>
-        <div style="font-size:11px;font-weight:600;color:#7C3AED;text-transform:uppercase;letter-spacing:.05em;margin-top:4px">Total ISINs Crawled</div>
-        <div style="font-size:11px;color:var(--gray);margin-top:4px">All-time unique ISINs appearing in GSC</div>
-      </div>
-      <div style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:10px;padding:16px 18px;text-align:center">
-        <div style="font-size:28px;font-weight:800;color:var(--green)">+28</div>
-        <div style="font-size:11px;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:.05em;margin-top:4px">New ISINs Post-Fix</div>
-        <div style="font-size:11px;color:var(--gray);margin-top:4px">First indexed Apr 6–27 (after SSR fix)</div>
-      </div>
-      <div style="background:var(--blue-lt);border:1px solid #BFDBFE;border-radius:10px;padding:16px 18px;text-align:center">
-        <div style="font-size:28px;font-weight:800;color:var(--blue)">4×</div>
-        <div style="font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:.05em;margin-top:4px">Impressions / ISIN</div>
-        <div style="font-size:11px;color:var(--gray);margin-top:4px">3.6/ISIN/week → 14.6 post-fix</div>
-      </div>
-    </div>
-
-    <!-- Key insight callout -->
-    <div style="background:#FFF7ED;border:1px solid #FED7AA;border-radius:8px;padding:14px 16px;margin-bottom:22px">
-      <div style="font-size:12px;font-weight:700;color:#C2410C;margin-bottom:6px">💡 Why ISINs ≠ Impressions (the SSR quality effect)</div>
-      <div style="font-size:12px;color:var(--text2);line-height:1.7">
-        Before the fix, ~40–53 ISINs were "indexed" every week — Google had visited those URLs but seen a blank spinner.
-        The ISIN count per week barely changed post-fix (40–53 → 59–74). But impressions jumped <strong>5.6×</strong>.
-        The driver isn't just <em>how many</em> ISINs are indexed — it's <em>how well</em>. Each page that Google can now read
-        generates <strong>13.5 impressions/ISIN/week on average post-fix, vs 4.0 before</strong> (3.4× quality lift). The peak week hit 14.6/ISIN. The SSR fix didn't just index more pages; it made every indexed page rank properly.
-      </div>
-    </div>
-
-    <!-- Dual-axis chart: ISIN count bars + impressions line -->
-    <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px">ISINs with impressions per week (bars) vs Total bond impressions per week (line)</div>
-    <div class="chart-wrap" style="height:280px;margin-bottom:24px">
-      <canvas id="corrDualChart"></canvas>
-    </div>
-
-    <!-- Impressions/ISIN trend -->
-    <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px">Impressions per ISIN per week — the "indexing quality" metric</div>
-    <div class="chart-wrap" style="height:200px;margin-bottom:24px">
-      <canvas id="impPerIsinChart"></canvas>
-    </div>
-
-    <!-- Scatter: ISIN count vs impressions -->
-    <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px">Scatter: ISIN count vs weekly impressions — <span style="color:#DC2626">●</span> pre-fix &nbsp;<span style="color:#16A34A">●</span> post-fix</div>
-    <div style="font-size:11px;color:var(--gray);margin-bottom:10px">Shows two distinct clusters — same ISIN count range, but post-fix impressions are 5–8× higher per point</div>
-    <div class="chart-wrap" style="height:240px">
-      <canvas id="corrScatterChart"></canvas>
-    </div>
-
-    <!-- Newly indexed ISINs table -->
-    <div style="margin-top:22px">
-      <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:10px">28 ISINs First Indexed by Google After Fix (Apr 6–27)</div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px">
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE03K307132 <span style="color:var(--gray)">Apr 6</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE08XP07308 <span style="color:var(--gray)">Apr 7</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE0BUS07BQ9 <span style="color:var(--gray)">Apr 7</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE134E07208 <span style="color:var(--gray)">Apr 8</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE02YC07034 <span style="color:var(--gray)">Apr 9</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE01HV07635 <span style="color:var(--gray)">Apr 9</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE321N07632 <span style="color:var(--gray)">Apr 11</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE348L07233 <span style="color:var(--gray)">Apr 11</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE501X07604 <span style="color:var(--gray)">Apr 12</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE859C07253 <span style="color:var(--gray)">Apr 13</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE296G07176 <span style="color:var(--gray)">Apr 13</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE342T07619 <span style="color:var(--gray)">Apr 14</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE348L07225 <span style="color:var(--gray)">Apr 14</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE109C07147 <span style="color:var(--gray)">Apr 15</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE605Y07130 <span style="color:var(--gray)">Apr 15</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE413U07426 <span style="color:var(--gray)">Apr 15</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE348L07191 <span style="color:var(--gray)">Apr 15</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE342T07569 <span style="color:var(--gray)">Apr 15</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE148I07XK0 <span style="color:var(--gray)">Apr 15</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE03W107223 <span style="color:var(--gray)">Apr 16</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE342T07635 <span style="color:var(--gray)">Apr 17</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE296Q07167 <span style="color:var(--gray)">Apr 17</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE105N07738 <span style="color:var(--gray)">Apr 18</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE389Z07104 <span style="color:var(--gray)">Apr 21</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE07HK07809 <span style="color:var(--gray)">Apr 23</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE101Q07AZ8 <span style="color:var(--gray)">Apr 24</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE836B07857 <span style="color:var(--gray)">Apr 24</span></span>
-        <span style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;color:#166534">INE583D07489 <span style="color:var(--gray)">Apr 24</span></span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Section: Top bond pages -->
-  <div class="card">
-    <h2><span class="section-num">9</span> Top Bond Detail Pages by Impressions</h2>
-    <div class="subtitle">Last 90 days · Pages with highest organic visibility</div>
-    <table>
-      <thead>
-        <tr><th>Bond / Issuer</th><th>ISIN</th><th>Impressions</th><th>Clicks</th><th>CTR</th><th>Position</th></tr>
-      </thead>
-      <tbody id="bondTable"></tbody>
-    </table>
-  </div>
-
-  <!-- Section: Projection -->
-  <div class="card">
-    <h2><span class="section-num">10</span> Projected Bond Page Impressions — Next 10 Weeks</h2>
-    <div class="subtitle">Based on current position trajectory and Google re-crawl timeline · Dashed = forecast</div>
-    <div class="chart-wrap" style="height:300px">
-      <canvas id="projChart"></canvas>
-    </div>
-    <div class="proj-note">
-      Projection basis: Current avg position 8.9 → improving to 6–7 as Google re-indexes SSR pages (typical 3–6 position gain for content fixes of this scale).
-      Issuer pages (ASP-3592) add a new impression surface from ~Jun 2026.
-      These are directional targets — Apr 28 GSC report is the first real validation point.
-    </div>
-  </div>
-
-  <!-- Section: Tickets shipped -->
-  <div class="card">
-    <h2><span class="section-num">3</span> What Shipped — 11 Tickets, Bond Detail Pages</h2>
-    <div class="subtitle">All fixes target /invest/bond/* — scoped away from blog/marketing</div>
-    <table>
-      <thead>
-        <tr><th>Ticket</th><th>Fix</th><th>SEO Impact</th><th>Owner</th><th>Status</th></tr>
-      </thead>
-      <tbody id="shippedBody">
-        <tr><td><strong>ASP-3430</strong> <span class="badge p0">P0</span></td><td>Bond data server-side rendered</td><td>Google can now read ISIN, yield, rating in raw HTML — core ranking signal</td><td>M. Mohsin F</td><td><span class="badge live">✅ Live Apr 20</span></td></tr>
-        <tr><td><strong>ASP-3432</strong> <span class="badge p0">P0</span></td><td>Modal → accordion</td><td>ISIN, coupon, trustee now in DOM on load (were completely hidden)</td><td>M. Mohsin F</td><td><span class="badge live">✅ Live Apr 20</span></td></tr>
-        <tr><td><strong>ASP-3433</strong> <span class="badge p0">P0</span></td><td>Bond-specific FAQs</td><td>Unique content per page — removes duplicate content penalty across 143 pages</td><td>M. Mohsin F</td><td><span class="badge live">✅ Live Apr 21</span></td></tr>
-        <tr><td><strong>ASP-3431</strong> <span class="badge p0">P0</span></td><td>Unique meta title + description</td><td>Each page: <em>"{Bond} | {ISIN} | {Yield}% | Aspero"</em> — CTR signal</td><td>Saravanan S</td><td><span class="badge live">✅ Live Apr 16</span></td></tr>
-        <tr><td><strong>ASP-3434</strong> <span class="badge p0">P0</span></td><td>H1/H2/H3 headers + bond name</td><td>Header hierarchy = primary Google ranking signal, was missing entirely</td><td>M. Mohsin F</td><td><span class="badge live">✅ Live Apr 17</span></td></tr>
-        <tr><td><strong>ASP-3436</strong> <span class="badge p0">P0</span></td><td>Self-referential canonical URL</td><td>Prevents duplicate content penalty (B2C vs partner subdomain same ISIN)</td><td>Saravanan S</td><td><span class="badge live">✅ Live Apr 16</span></td></tr>
-        <tr><td><strong>ASP-3449</strong> <span class="badge p1">P1</span></td><td>FinancialProduct + BreadcrumbList JSON-LD</td><td>Enables rich results — yield%, rating, maturity in SERP snippets</td><td>M. Mohsin F</td><td><span class="badge live">✅ Live Apr 21</span></td></tr>
-        <tr><td><strong>ASP-3438</strong> <span class="badge p1">P1</span></td><td>noindex on partner subdomains</td><td>Stops ranking signal dilution across *.aspero.in variants of same bond</td><td>M. Mohsin F</td><td><span class="badge live">✅ Live Apr 21</span></td></tr>
-        <tr><td><strong>ASP-3435</strong> <span class="badge p1">P1</span></td><td>301 redirects invest.aspero.in</td><td>Old indexed URLs pass ranking signals to new clean URLs</td><td>M. Mohsin F</td><td><span class="badge live">✅ Live Apr 21</span></td></tr>
-        <tr><td><strong>ASP-3437</strong> <span class="badge p0">P0</span></td><td>Sitemap + robots.txt</td><td>143 bond pages submitted to Google (+134 vs last month)</td><td>Saravanan S</td><td><span class="badge live">✅ Live Apr 16</span></td></tr>
-        <tr><td><strong>ASP-3453</strong> <span class="badge p0">P0</span></td><td>Next.js SSR foundation</td><td>Base layer enabling all fixes above</td><td>Saravanan S</td><td><span class="badge live">✅ Live Apr 16</span></td></tr>
-      </tbody>
-    </table>
-    <div class="view-all-wrap"><button class="view-all-btn" onclick="toggleRows('shippedBody',5,this)">View All (6 more) ▾</button></div>
-  </div>
-
-  <!-- Roadmap: Engineering -->
-  <div class="card">
-    <h2><span class="section-num">11</span> Engineering Open Items — Next Sprint</h2>
-    <div class="subtitle">Sorted by SEO impact · Engineering owner required</div>
-    <table class="road-row">
-      <thead>
-        <tr><th>Ticket</th><th>Feature</th><th>Expected Outcome</th><th>Owner</th><th>Status</th></tr>
-      </thead>
-      <tbody id="engBody">
+      <thead><tr><th>Ticket</th><th>Priority</th><th>Summary</th><th>Assignee</th><th>Status</th></tr></thead>
+      <tbody id="ticketBody">
         <tr>
-          <td>ASP-3601 <span class="badge p0">P0</span></td>
-          <td>Fix sold-out bond API latency</td>
-          <td>Stop experience degradation on high-traffic bond pages</td>
-          <td>Gokul V</td>
-          <td><span class="badge" style="background:#EEF2FF;color:#4338CA">🔄 Active</span></td>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3453" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3453</a></td>
+          <td><span style="background:#EF4444;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P0</span></td>
+          <td style="font-size:12px">SSR: Server-Side Rendering implementation across all public-facing pag…</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
         </tr>
-        <tr>
-          <td>ASP-3440 <span class="badge p1">P1</span></td>
-          <td>SSR internal linking — 'More bonds from same issuer' as &lt;a href&gt;</td>
-          <td>Google follows links between bond pages — builds topical authority per issuer cluster</td>
-          <td>M. Mohsin F</td>
-          <td><span class="badge live">✅ Live Apr 28</span></td>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3430" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3430</a></td>
+          <td><span style="background:#EF4444;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P0</span></td>
+          <td style="font-size:12px">Fix: Move Bond Data Fetch to Server-Side (True SSR Fix)</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
         </tr>
-        <tr>
-          <td>ASP-3592 <span class="badge p1">P1</span></td>
-          <td>Issuer aggregator pages /invest/bonds/issuer/{slug}/</td>
-          <td>New impression surface — mirrors Wint Wealth pattern (~40% of their SEO traffic from issuer pages)</td>
-          <td>M. Mohsin F</td>
-          <td><span class="badge live">✅ Live Apr 28</span></td>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3435" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3435</a></td>
+          <td><span style="background:#F59E0B;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P1</span></td>
+          <td style="font-size:12px">Fix: 301 Redirect invest.aspero.in/bond_detail?bondId=X to New URLs</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
         </tr>
-        <tr style="background:#FFF7ED">
-          <td>ASP-3439 <span class="badge p2">P2</span></td>
-          <td>ISIN Indexing — Bond Directory (clean-slug pages for all ISINs)</td>
-          <td>Index every ISIN Aspero has ever listed — including matured/historical bonds. Targets investors searching by ISIN before a bond goes live on Aspero. Clean slug: /invest/bond/{isin}/ with all metadata SSR'd</td>
-          <td>Arpit G</td>
-          <td><span class="badge" style="background:#FEF3C7;color:#92400E">Grooming</span></td>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3431" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3431</a></td>
+          <td><span style="background:#EF4444;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P0</span></td>
+          <td style="font-size:12px">Fix: Auto-generate Dynamic Meta Title + Description Per Bond Page (via…</td>
+          <td style="font-size:12px;color:var(--text2)">Saravanan S</td>
+          <td><span class="tbadge live">✅ Live</span></td>
         </tr>
-        <tr>
-          <td>ASP-3594 <span class="badge p2">P2</span></td>
-          <td>Cashflow schedule + bond returns calculator per bond page</td>
-          <td>Matches BondsIndia/smest content depth — key differentiator that attracts inbound links</td>
-          <td>Arpit G</td>
-          <td><span class="badge" style="background:#F8FAFC;color:#64748B">Grooming</span></td>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3434" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3434</a></td>
+          <td><span style="background:#EF4444;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P0</span></td>
+          <td style="font-size:12px">Fix: Add h1, h2, h3 header tags; Bond Name to All Bond Detail Pages</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
         </tr>
-        <tr>
-          <td>ASP-3441 <span class="badge p2">P2</span></td>
-          <td>Visible breadcrumb nav on bond detail + issuer + collections pages</td>
-          <td>BreadcrumbList JSON-LD already deployed — this adds visible nav for UX + reinforces schema signal</td>
-          <td>Arpit G</td>
-          <td><span class="badge" style="background:#FEF3C7;color:#92400E">Grooming</span></td>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3436" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3436</a></td>
+          <td><span style="background:#EF4444;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P0</span></td>
+          <td style="font-size:12px">Fix: Add Self-Referential Canonical URL Tag to Every Bond Page</td>
+          <td style="font-size:12px;color:var(--text2)">Saravanan S</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3432" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3432</a></td>
+          <td><span style="background:#EF4444;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P0</span></td>
+          <td style="font-size:12px">Fix: Fundamental Details — Convert Modal to Accordion</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3438" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3438</a></td>
+          <td><span style="background:#F59E0B;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P1</span></td>
+          <td style="font-size:12px">Fix: Add noindex to Redirection Partner Subdomain Pages</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3437" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3437</a></td>
+          <td><span style="background:#EF4444;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P0</span></td>
+          <td style="font-size:12px">Sitemap auto-update + robots.txt hardening</td>
+          <td style="font-size:12px;color:var(--text2)">Saravanan S</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3439" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3439</a></td>
+          <td><span style="background:#8B5CF6;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P2</span></td>
+          <td style="font-size:12px">Feature: ISIN Indexing — Bond Directory</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge todo">❌ To Do</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3440" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3440</a></td>
+          <td><span style="background:#F59E0B;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P1</span></td>
+          <td style="font-size:12px">SEO: SSR internal linking — 'More bonds from same issuer' as anchor hr…</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3441" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3441</a></td>
+          <td><span style="background:#8B5CF6;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P2</span></td>
+          <td style="font-size:12px">SEO: Visible breadcrumb nav on bond detail, issuer, and collections pa…</td>
+          <td style="font-size:12px;color:var(--text2)">Arpit Goyal</td>
+          <td><span class="tbadge todo">❌ To Do</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3433" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3433</a></td>
+          <td><span style="background:#EF4444;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P0</span></td>
+          <td style="font-size:12px">Fix: Replace Generic FAQs with Bond-Specific FAQs</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3449" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3449</a></td>
+          <td><span style="background:#F59E0B;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P1</span></td>
+          <td style="font-size:12px">Enhancement: Add JSON-LD Structured Data Per Bond Page</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3442" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3442</a></td>
+          <td><span style="background:#8B5CF6;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P2</span></td>
+          <td style="font-size:12px">SEO: WebSite + SearchAction schema on homepage (Sitelinks eligibility)</td>
+          <td style="font-size:12px;color:var(--text2)">Somya Jain</td>
+          <td><span class="tbadge todo">❌ To Do</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3444" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3444</a></td>
+          <td><span style="background:#8B5CF6;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P2</span></td>
+          <td style="font-size:12px">SEO: VideoObject JSON-LD schema on bond pages with embedded video</td>
+          <td style="font-size:12px;color:var(--text2)">Govind Rao Kamath H M</td>
+          <td><span class="tbadge todo">❌ To Do</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3592" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3592</a></td>
+          <td><span style="background:#F59E0B;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P1</span></td>
+          <td style="font-size:12px">SEO: Issuer-level aggregator pages</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3593" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3593</a></td>
+          <td><span style="background:#8B5CF6;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P2</span></td>
+          <td style="font-size:12px">SEO: AggregateRating JSON-LD schema on /testimonials/</td>
+          <td style="font-size:12px;color:var(--text2)">Somya Jain</td>
+          <td><span class="tbadge todo">❌ To Do</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3594" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3594</a></td>
+          <td><span style="background:#8B5CF6;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P2</span></td>
+          <td style="font-size:12px">SEO: Cashflow schedule + bond calculator on bond detail pages</td>
+          <td style="font-size:12px;color:var(--text2)">Mohamed Mohsin F</td>
+          <td><span class="tbadge live">✅ Live</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3595" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3595</a></td>
+          <td><span style="background:#64748B;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P3</span></td>
+          <td style="font-size:12px">SEO: Blog category consolidation and pillar page structure</td>
+          <td style="font-size:12px;color:var(--text2)">Somya Jain</td>
+          <td><span class="tbadge todo">❌ To Do</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3596" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3596</a></td>
+          <td><span style="background:#8B5CF6;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P2</span></td>
+          <td style="font-size:12px">SEO: Missing category landing pages (/bonds/ncd/, /bonds/sgb/, etc.)</td>
+          <td style="font-size:12px;color:var(--text2)">Somya Jain</td>
+          <td><span class="tbadge todo">❌ To Do</span></td>
+        </tr>
+<tr>
+          <td><a href="https://goyubi.atlassian.net/browse/ASP-3597" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">ASP-3597</a></td>
+          <td><span style="background:#8B5CF6;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700">P2</span></td>
+          <td style="font-size:12px">SEO: Bonds vs Fixed Deposit comparison page</td>
+          <td style="font-size:12px;color:var(--text2)">Somya Jain</td>
+          <td><span class="tbadge todo">❌ To Do</span></td>
         </tr>
       </tbody>
     </table>
-    <div class="view-all-wrap"><button class="view-all-btn" onclick="toggleRows('engBody',3,this)">View All (3 more) ▾</button></div>
+  </div>
+  <div class="view-all-wrap"><button class="view-all-btn" onclick="toggleRows('ticketBody',6,this)">View All (16 more) ▾</button></div>
+
+  <!-- Traffic Charts -->
+  <div class="section-title">📈 Organic Traffic by Page Type (8 weeks)</div>
+  
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">Bond Detail Pages</div>
+      <div class="chart-sub">/invest/bond/* · Clicks + Impressions</div>
+      <canvas id="chartBond"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Marketing Site</div>
+      <div class="chart-sub">aspero.in/* (homepage, /bonds/, /bond-ipo/, /testimonials/, etc.) · Clicks + Impressions</div>
+      <canvas id="chartMkt"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">/invest/home</div>
+      <div class="chart-sub">App home page · Clicks + Impressions</div>
+      <canvas id="chartHome"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">/invest/explore</div>
+      <div class="chart-sub">Bond listing page · Clicks + Impressions</div>
+      <canvas id="chartExplore"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Blog</div>
+      <div class="chart-sub">aspero.in/blog/* · Clicks + Impressions</div>
+      <canvas id="chartBlog"></canvas>
+    </div>
   </div>
 
-  <!-- Roadmap: Marketing / Blog -->
-  <div class="card" style="border-left:4px solid #16A34A">
-    <h2><span class="section-num" style="background:#16A34A">M</span> Marketing & Blog — Organic Content Roadmap</h2>
-    <div class="subtitle">Owner: Sanyukta · Blog is currently Aspero's primary organic traffic driver — these items extend that lead</div>
-
-    <!-- Blog context callout -->
-    <div style="background:var(--green-lt);border:1px solid #BBF7D0;border-radius:8px;padding:14px 16px;margin-bottom:20px">
-      <div style="font-weight:700;font-size:13px;color:var(--green);margin-bottom:8px">📊 Why This Matters — Blog Drives 90% of Organic Traffic Today</div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:10px">
-        <div style="text-align:center">
-          <div style="font-size:20px;font-weight:800;color:var(--text)">85,974</div>
-          <div style="font-size:11px;color:var(--gray)">Impressions — CML article</div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-size:20px;font-weight:800;color:var(--text)">64,057</div>
-          <div style="font-size:11px;color:var(--gray)">Impressions — DP ID guide</div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-size:20px;font-weight:800;color:var(--text)">62,512</div>
-          <div style="font-size:11px;color:var(--gray)">Impressions — Types of debentures</div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-size:20px;font-weight:800;color:var(--text)">3,724</div>
-          <div style="font-size:11px;color:var(--gray)">Impressions — All 154 bond pages</div>
-        </div>
-      </div>
-      <div style="font-size:12px;color:#166534">Blog articles generate <strong>57× more impressions</strong> than all bond detail pages combined. Blog is the primary top-of-funnel organic channel — the content roadmap below directly extends this advantage.</div>
+  <!-- ISIN Coverage -->
+  <div class="section-title">🔍 ISIN Indexing Coverage (28 days)</div>
+  <div class="isin-grid">
+    <div class="donut-card">
+      <canvas id="chartDonut"></canvas>
+      <div class="donut-label">109 <span style="font-size:13px;color:var(--text2)">/ 143</span></div>
+      <div class="donut-sub">ISINs with organic impressions</div>
     </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>ISIN</th><th style="text-align:right">Impr.</th><th style="text-align:right">Clicks</th><th style="text-align:right">Pos.</th><th>Bar</th></tr></thead>
+        <tbody id="isinBody"><tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/muthoot-mcred-limited/ine101q07bx1/3058" target="_blank" style="color:var(--blue);text-decoration:none">INE101Q07BX1</a>
+          </td>
+          <td style="text-align:right">786</td>
+          <td style="text-align:right">14</td>
+          <td style="text-align:right">7.3</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:100%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/navi-finserv-limited/INE342T07668/2716" target="_blank" style="color:var(--blue);text-decoration:none">INE342T07668</a>
+          </td>
+          <td style="text-align:right">289</td>
+          <td style="text-align:right">15</td>
+          <td style="text-align:right">9</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:36%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/navi-finserv-limited/INE342T07635/3254" target="_blank" style="color:var(--blue);text-decoration:none">INE342T07635</a>
+          </td>
+          <td style="text-align:right">235</td>
+          <td style="text-align:right">1</td>
+          <td style="text-align:right">9.1</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:29%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/earlysalary-services-private-limited/ine01yl07417/2173" target="_blank" style="color:var(--blue);text-decoration:none">INE01YL07417</a>
+          </td>
+          <td style="text-align:right">134</td>
+          <td style="text-align:right">10</td>
+          <td style="text-align:right">6.5</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:17%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/hari-and-company-investments-madras-private-limited/ine01hv07536/864" target="_blank" style="color:var(--blue);text-decoration:none">INE01HV07536</a>
+          </td>
+          <td style="text-align:right">125</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">9</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:15%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/iifl-samasta-finance-limited/ine413u07442/2111" target="_blank" style="color:var(--blue);text-decoration:none">INE413U07442</a>
+          </td>
+          <td style="text-align:right">122</td>
+          <td style="text-align:right">4</td>
+          <td style="text-align:right">13.3</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:15%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/akara-capital-advisors-private-limited/ine08xp07423/1792" target="_blank" style="color:var(--blue);text-decoration:none">INE08XP07423</a>
+          </td>
+          <td style="text-align:right">115</td>
+          <td style="text-align:right">4</td>
+          <td style="text-align:right">10.6</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:14%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/mufin-green-finance-limited/ine08kj07175/2203" target="_blank" style="color:var(--blue);text-decoration:none">INE08KJ07175</a>
+          </td>
+          <td style="text-align:right">96</td>
+          <td style="text-align:right">10</td>
+          <td style="text-align:right">9.7</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:12%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/stl-networks-limited/INE1VXE07015/2207" target="_blank" style="color:var(--blue);text-decoration:none">INE1VXE07015</a>
+          </td>
+          <td style="text-align:right">88</td>
+          <td style="text-align:right">5</td>
+          <td style="text-align:right">12.8</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:11%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/keertana-finserv-limited/ine0nes07279/2983" target="_blank" style="color:var(--blue);text-decoration:none">INE0NES07279</a>
+          </td>
+          <td style="text-align:right">80</td>
+          <td style="text-align:right">4</td>
+          <td style="text-align:right">7.3</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:10%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/mufin-green-finance-limited/ine08kj07183/2631" target="_blank" style="color:var(--blue);text-decoration:none">INE08KJ07183</a>
+          </td>
+          <td style="text-align:right">79</td>
+          <td style="text-align:right">4</td>
+          <td style="text-align:right">9</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:10%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/andhra-pradesh-state-beverages-corporation-limited/ine0m2307362/2469" target="_blank" style="color:var(--blue);text-decoration:none">INE0M2307362</a>
+          </td>
+          <td style="text-align:right">78</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">10.2</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:9%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/incred-financial-services-limited/ine321n07632/2953" target="_blank" style="color:var(--blue);text-decoration:none">INE321N07632</a>
+          </td>
+          <td style="text-align:right">77</td>
+          <td style="text-align:right">1</td>
+          <td style="text-align:right">13.2</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:9%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/earlysalary-services-private-limited/ine01yl07433/2971" target="_blank" style="color:var(--blue);text-decoration:none">INE01YL07433</a>
+          </td>
+          <td style="text-align:right">69</td>
+          <td style="text-align:right">7</td>
+          <td style="text-align:right">8.2</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:8%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/aye-finance-limited/ine501x07729/1486" target="_blank" style="color:var(--blue);text-decoration:none">INE501X07729</a>
+          </td>
+          <td style="text-align:right">67</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">7.0</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:8%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/indel-money-limited/ine0bus07ck0/3040" target="_blank" style="color:var(--blue);text-decoration:none">INE0BUS07CK0</a>
+          </td>
+          <td style="text-align:right">64</td>
+          <td style="text-align:right">4</td>
+          <td style="text-align:right">5.4</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:8%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/iifl-samasta-finance-limited/ine413u07426/1243" target="_blank" style="color:var(--blue);text-decoration:none">INE413U07426</a>
+          </td>
+          <td style="text-align:right">63</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">12.9</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:8%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/profectus-capital-private-limited/INE389Z07104/3265" target="_blank" style="color:var(--blue);text-decoration:none">INE389Z07104</a>
+          </td>
+          <td style="text-align:right">63</td>
+          <td style="text-align:right">0</td>
+          <td style="text-align:right">7.7</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:8%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/muthoot-fincorp-limited/ine549k07hd3/1924" target="_blank" style="color:var(--blue);text-decoration:none">INE549K07HD3</a>
+          </td>
+          <td style="text-align:right">62</td>
+          <td style="text-align:right">1</td>
+          <td style="text-align:right">8.2</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:7%"></div>
+            </div>
+          </td>
+        </tr>
+<tr>
+          <td style="font-family:monospace;font-size:12px;color:var(--blue)">
+            <a href="https://www.aspero.in/invest/bond/shri-ram-finance-corporation-private-limited/ine08e807084/1492" target="_blank" style="color:var(--blue);text-decoration:none">INE08E807084</a>
+          </td>
+          <td style="text-align:right">55</td>
+          <td style="text-align:right">1</td>
+          <td style="text-align:right">24.7</td>
+          <td>
+            <div style="background:#E2E8F0;border-radius:4px;height:8px;width:100%;max-width:120px">
+              <div style="background:var(--blue);border-radius:4px;height:8px;width:6%"></div>
+            </div>
+          </td>
+        </tr></tbody>
+      </table>
+      <div class="view-all-wrap"><button class="view-all-btn" onclick="toggleRows('isinBody',8,this)">View All (12 more) ▾</button></div>
+    </div>
+  </div>
 
-    <table class="road-row">
-      <thead>
-        <tr><th>Ticket</th><th>Content Item</th><th>Target Keywords</th><th>Current Status</th><th>Organic Opportunity</th><th>Status</th></tr>
-      </thead>
-      <tbody id="mktBody">
-        <tr style="background:#FEF2F2">
-          <td>ASP-3445 <span class="badge p2">P2</span></td>
-          <td><strong>Add noindex to UAT subdomain (wordpress.aspero.co.in)</strong><br><small style="color:#64748B">Owner: M. Mohsin F</small></td>
-          <td>Bond keyword rankings on production pages</td>
-          <td>UAT environment already crawled &amp; indexed by Google — duplicate bond pages competing with aspero.in/bond/ URLs</td>
-          <td>🔴 <strong>Must fix.</strong> Google has indexed UAT pages. Every UAT URL dilutes ranking signals for the matching production bond page. A noindex meta tag or <code>robots.txt Disallow: /</code> on the UAT subdomain removes these from Google's index within days and consolidates authority to aspero.in.</td>
-          <td><span class="badge" style="background:#F8FAFC;color:#64748B">To Do</span></td>
+  <!-- Top Search Queries -->
+  <div class="section-title">🔎 Top Search Queries (28 days)</div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Query</th><th style="text-align:right">Clicks</th><th style="text-align:right">Impressions</th><th style="text-align:right">CTR</th><th style="text-align:right">Avg Position</th></tr></thead>
+      <tbody id="queryBody"><tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero</td>
+          <td style="text-align:right;font-weight:600">547</td>
+          <td style="text-align:right">1,927</td>
+          <td style="text-align:right">28.4%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">3.7</span>
+          </td>
         </tr>
-        <tr>
-          <td>ASP-3597 <span class="badge p2">P2</span></td>
-          <td><strong>Bonds vs Fixed Deposit comparison page</strong></td>
-          <td>"bonds vs FD", "bonds better than FD", "should I invest in bonds or FD"</td>
-          <td>Missing entirely — highest commercial intent search query in fixed income</td>
-          <td>🟠 This query is the top-of-funnel for every FD investor considering bonds. BondsIndia and Wint Wealth both rank for it. Aspero has 0 presence.</td>
-          <td><span class="badge" style="background:#F8FAFC;color:#64748B">To Do</span></td>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero bonds</td>
+          <td style="text-align:right;font-weight:600">305</td>
+          <td style="text-align:right">831</td>
+          <td style="text-align:right">36.7%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1.0</span>
+          </td>
         </tr>
-        <tr>
-          <td>ASP-3596 <span class="badge p2">P2</span></td>
-          <td><strong>Missing bond category pages</strong><br><small>/bonds/ncd/ · /bonds/sgb/ · and others</small></td>
-          <td>"NCD bonds India", "how to buy NCD", "sovereign gold bonds", "tax free bonds India"</td>
-          <td>2 of 7 pages exist (tax-free-bonds ✅ · government-bonds ✅). NCD, SGB, calculator, glossary missing.</td>
-          <td>🟠 NCD is the highest-volume bond search term in India. Aspero has zero landing page for it — all NCD traffic goes to BondsIndia, Wint Wealth, and Groww.</td>
-          <td><span class="badge" style="background:#F8FAFC;color:#64748B">To Do</span></td>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero partner login</td>
+          <td style="text-align:right;font-weight:600">123</td>
+          <td style="text-align:right">147</td>
+          <td style="text-align:right">83.7%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1.1</span>
+          </td>
         </tr>
-        <tr>
-          <td>ASP-3593 <span class="badge p2">P2</span></td>
-          <td><strong>AggregateRating JSON-LD on /testimonials/</strong></td>
-          <td>Star ratings shown in Google search results</td>
-          <td>Testimonials page has 8,223 impressions / 202 clicks (90d) — already ranking at position 2.6</td>
-          <td>🟡 Adding schema unlocks star-rating rich snippets in Google. CTR on testimonials could jump from 2.5% → 8–12% (industry average for pages with ratings). Low effort, high visibility.</td>
-          <td><span class="badge" style="background:#F8FAFC;color:#64748B">To Do</span></td>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero login</td>
+          <td style="text-align:right;font-weight:600">69</td>
+          <td style="text-align:right">73</td>
+          <td style="text-align:right">94.5%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1</span>
+          </td>
         </tr>
-        <tr>
-          <td>ASP-3595 <span class="badge p3">P3</span></td>
-          <td><strong>Blog category consolidation + pillar page structure</strong></td>
-          <td>All existing blog keywords, better internal linking</td>
-          <td>Blog split into /blog-beginner/, /blog-intermediate/, /blog-advanced/ — 3 separate silos with no linking hierarchy</td>
-          <td>🟡 Consolidating into /blog/category/ with a pillar page improves crawl efficiency and clusters topical authority. CML article (85K imp) should link to a "Demat Accounts" pillar. Compound effect over 2–3 months.</td>
-          <td><span class="badge" style="background:#F8FAFC;color:#64748B">To Do</span></td>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero markets private limited</td>
+          <td style="text-align:right;font-weight:600">40</td>
+          <td style="text-align:right">100</td>
+          <td style="text-align:right">40.0%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1</span>
+          </td>
         </tr>
-        <tr>
-          <td>ASP-3452 <span class="badge p3">P3</span></td>
-          <td><strong>New article: /blog/bonds-vs-fd/</strong></td>
-          <td>"bonds vs FD 2026", "fixed deposit vs bonds returns", "is bond safer than FD"</td>
-          <td>Missing — highest-intent comparison article in the fixed-income space</td>
-          <td>🟡 Supports ASP-3597 (comparison landing page) with editorial depth. Likely to rank in 8–12 weeks with proper interlinking. Estimated 15,000–30,000 impressions/month at maturity.</td>
-          <td><span class="badge" style="background:#F8FAFC;color:#64748B">To Do</span></td>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero yubi</td>
+          <td style="text-align:right;font-weight:600">21</td>
+          <td style="text-align:right">34</td>
+          <td style="text-align:right">61.8%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1</span>
+          </td>
         </tr>
-        <tr>
-          <td>ASP-3451 <span class="badge p3">P3</span></td>
-          <td><strong>Consolidate blog silos into /blog/category/ structure</strong></td>
-          <td>All existing beginner/intermediate/advanced blog URLs</td>
-          <td>/blog-beginner/, /blog-intermediate/, /blog-advanced/ each have separate authority — Google treats them as unrelated</td>
-          <td>🟡 301 redirects + canonical update. One-time effort. Existing rankings preserved, authority consolidated under /blog/. Execution ticket for ASP-3595 architectural decision.</td>
-          <td><span class="badge" style="background:#F8FAFC;color:#64748B">To Do</span></td>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">partner.aspero</td>
+          <td style="text-align:right;font-weight:600">19</td>
+          <td style="text-align:right">23</td>
+          <td style="text-align:right">82.6%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1</span>
+          </td>
         </tr>
-      </tbody>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero app</td>
+          <td style="text-align:right;font-weight:600">16</td>
+          <td style="text-align:right">103</td>
+          <td style="text-align:right">15.5%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1.4</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero bonds review</td>
+          <td style="text-align:right;font-weight:600">16</td>
+          <td style="text-align:right">217</td>
+          <td style="text-align:right">7.4%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1.2</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero fixed income</td>
+          <td style="text-align:right;font-weight:600">15</td>
+          <td style="text-align:right">36</td>
+          <td style="text-align:right">41.7%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">how to buy municipal bonds in india</td>
+          <td style="text-align:right;font-weight:600">12</td>
+          <td style="text-align:right">182</td>
+          <td style="text-align:right">6.6%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1.6</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">municipal bonds india</td>
+          <td style="text-align:right;font-weight:600">9</td>
+          <td style="text-align:right">678</td>
+          <td style="text-align:right">1.3%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">4.3</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">ine01yl07417</td>
+          <td style="text-align:right;font-weight:600">8</td>
+          <td style="text-align:right">85</td>
+          <td style="text-align:right">9.4%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">5.5</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">is aspero sebi registered</td>
+          <td style="text-align:right;font-weight:600">8</td>
+          <td style="text-align:right">48</td>
+          <td style="text-align:right">16.7%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1.2</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">ine01yl07433</td>
+          <td style="text-align:right;font-weight:600">7</td>
+          <td style="text-align:right">51</td>
+          <td style="text-align:right">13.7%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">8</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">ine342t07668</td>
+          <td style="text-align:right;font-weight:600">7</td>
+          <td style="text-align:right">97</td>
+          <td style="text-align:right">7.2%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">5.6</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">akara capital bonds</td>
+          <td style="text-align:right;font-weight:600">6</td>
+          <td style="text-align:right">250</td>
+          <td style="text-align:right">2.4%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">6.1</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">asparo</td>
+          <td style="text-align:right;font-weight:600">6</td>
+          <td style="text-align:right">101</td>
+          <td style="text-align:right">5.9%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">3.6</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">ine08kj07175</td>
+          <td style="text-align:right;font-weight:600">6</td>
+          <td style="text-align:right">43</td>
+          <td style="text-align:right">14.0%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">6.1</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">akara capital advisors private limited</td>
+          <td style="text-align:right;font-weight:600">5</td>
+          <td style="text-align:right">311</td>
+          <td style="text-align:right">1.6%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">4.2</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aspero customer care number</td>
+          <td style="text-align:right;font-weight:600">5</td>
+          <td style="text-align:right">11</td>
+          <td style="text-align:right">45.5%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">krazybee</td>
+          <td style="text-align:right;font-weight:600">5</td>
+          <td style="text-align:right">1,713</td>
+          <td style="text-align:right">0.3%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">2.4</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">tax free bonds</td>
+          <td style="text-align:right;font-weight:600">5</td>
+          <td style="text-align:right">664</td>
+          <td style="text-align:right">0.8%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">7.5</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">aespero</td>
+          <td style="text-align:right;font-weight:600">4</td>
+          <td style="text-align:right">11</td>
+          <td style="text-align:right">36.4%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">1.5</span>
+          </td>
+        </tr>
+<tr>
+          <td style="font-size:12px;max-width:280px;word-break:break-word">akara capital</td>
+          <td style="text-align:right;font-weight:600">4</td>
+          <td style="text-align:right">103</td>
+          <td style="text-align:right">3.9%</td>
+          <td style="text-align:right">
+            <span style="color:#10B981;font-weight:700">4.7</span>
+          </td>
+        </tr></tbody>
     </table>
+    <div class="view-all-wrap"><button class="view-all-btn" onclick="toggleRows('queryBody',8,this)">View All (17 more) ▾</button></div>
+  </div>
 
-    <div class="view-all-wrap"><button class="view-all-btn" onclick="toggleRows('mktBody',3,this)">View All (4 more) ▾</button></div>
+  
+  <div class="section-title">⚡ Quick Win Keywords — Already Ranking 4–20, Optimize to Reach Top 3</div>
+  <div style="font-size:12px;color:#64748B;margin:-8px 0 12px;padding:6px 12px;background:#F0FDF4;border-radius:6px;border-left:3px solid #10B981;">These queries already appear in search results but aren't in top 3. Improving the page (title, H1, content depth) could move them up and multiply clicks without writing new content.</div>
+  <div class="tbl-wrap"><table><thead><tr><th>Query</th><th style="text-align:right">Impr (28d)</th><th style="text-align:right">Pos</th><th style="text-align:right">CTR</th><th style="text-align:right">Clicks</th></tr></thead><tbody id="qwBody"><tr><td style="font-size:12px;max-width:240px;word-break:break-word">municipal bonds india</td><td style="text-align:right">678</td><td style="text-align:right;font-weight:700;color:#10B981">4.3</td><td style="text-align:right;color:#475569">1.3%</td><td style="text-align:right">9</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">tax free bonds</td><td style="text-align:right">664</td><td style="text-align:right;font-weight:700;color:#F59E0B">7.5</td><td style="text-align:right;color:#475569">0.8%</td><td style="text-align:right">5</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">rbi bonds</td><td style="text-align:right">596</td><td style="text-align:right;font-weight:700;color:#F59E0B">9.1</td><td style="text-align:right;color:#475569">0.5%</td><td style="text-align:right">3</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">debentures</td><td style="text-align:right">527</td><td style="text-align:right;font-weight:700;color:#F59E0B">8.2</td><td style="text-align:right;color:#475569">0.2%</td><td style="text-align:right">1</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">how to buy rbi bonds from sbi</td><td style="text-align:right">338</td><td style="text-align:right;font-weight:700;color:#F59E0B">8.8</td><td style="text-align:right;color:#475569">0.3%</td><td style="text-align:right">1</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">akara capital advisors private limited</td><td style="text-align:right">311</td><td style="text-align:right;font-weight:700;color:#10B981">4.2</td><td style="text-align:right;color:#475569">1.6%</td><td style="text-align:right">5</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">tax free bonds india</td><td style="text-align:right">305</td><td style="text-align:right;font-weight:700;color:#10B981">5.4</td><td style="text-align:right;color:#475569">0.3%</td><td style="text-align:right">1</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">akara capital bonds</td><td style="text-align:right">250</td><td style="text-align:right;font-weight:700;color:#10B981">6.1</td><td style="text-align:right;color:#475569">2.4%</td><td style="text-align:right">6</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">nsdl dp id</td><td style="text-align:right">237</td><td style="text-align:right;font-weight:700;color:#10B981">5.1</td><td style="text-align:right;color:#475569">1.3%</td><td style="text-align:right">3</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">muthoot mcred bond</td><td style="text-align:right">232</td><td style="text-align:right;font-weight:700;color:#10B981">4.9</td><td style="text-align:right;color:#475569">0.9%</td><td style="text-align:right">2</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">aaa rated bonds</td><td style="text-align:right">206</td><td style="text-align:right;font-weight:700;color:#F59E0B">11.7</td><td style="text-align:right;color:#475569">0%</td><td style="text-align:right">0</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">secured debt instruments</td><td style="text-align:right">159</td><td style="text-align:right;font-weight:700;color:#F59E0B">10.6</td><td style="text-align:right;color:#475569">0.6%</td><td style="text-align:right">1</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">krazybee services private limited</td><td style="text-align:right">151</td><td style="text-align:right;font-weight:700;color:#10B981">5.5</td><td style="text-align:right;color:#475569">1.3%</td><td style="text-align:right">2</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">secured bonds in india</td><td style="text-align:right">148</td><td style="text-align:right;font-weight:700;color:#F59E0B">7.4</td><td style="text-align:right;color:#475569">1.4%</td><td style="text-align:right">2</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">cmr copy</td><td style="text-align:right">145</td><td style="text-align:right;font-weight:700;color:#F59E0B">9.2</td><td style="text-align:right;color:#475569">0.7%</td><td style="text-align:right">1</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">dp id in nsdl</td><td style="text-align:right">125</td><td style="text-align:right;font-weight:700;color:#10B981">5.1</td><td style="text-align:right;color:#475569">0.8%</td><td style="text-align:right">1</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">nsdl id</td><td style="text-align:right">124</td><td style="text-align:right;font-weight:700;color:#10B981">6.5</td><td style="text-align:right;color:#475569">1.6%</td><td style="text-align:right">2</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">government of india bonds</td><td style="text-align:right">123</td><td style="text-align:right;font-weight:700;color:#F59E0B">8.9</td><td style="text-align:right;color:#475569">0.8%</td><td style="text-align:right">1</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">dp id and client id</td><td style="text-align:right">116</td><td style="text-align:right;font-weight:700;color:#F59E0B">9.5</td><td style="text-align:right;color:#475569">0.9%</td><td style="text-align:right">1</td></tr><tr><td style="font-size:12px;max-width:240px;word-break:break-word">best bond investment platform in india</td><td style="text-align:right">115</td><td style="text-align:right;font-weight:700;color:#EF4444">14.1</td><td style="text-align:right;color:#475569">0.9%</td><td style="text-align:right">1</td></tr></tbody></table><div class="view-all-wrap"><button class="view-all-btn" onclick="toggleRows('qwBody',8,this)">View All (12 more) ▾</button></div></div>
 
-    <div class="callout" style="margin-top:16px;background:#F0FDF4;border-color:#BBF7D0">
-      <span class="icon">🎯</span>
-      <span><strong>Recommended priority order for Marketing:</strong> (1) WordPress migration — single highest-leverage action, no new content needed. (2) Bonds vs FD page — highest commercial intent gap. (3) NCD category page — highest search volume gap. (4) AggregateRating on /testimonials/ — lowest effort, visible in Google within days of deploy.</span>
+  
+  <div class="section-title">📱 Organic Investor Funnel — AppsFlyer (7 Apr – 4 May 2026)</div>
+  <div class="funnel-row"><div class="funnel-step"><div class="fs-num">2,955</div><div class="fs-label">Organic Installs</div></div><div class="funnel-arrow"><span>→</span><span class="fa-rate" style="color:#F59E0B">16.4%</span></div><div class="funnel-step"><div class="fs-num">486</div><div class="fs-label">App Sign-ups</div></div><div class="funnel-arrow"><span>→</span><span class="fa-rate" style="color:#F59E0B">29.8%</span></div><div class="funnel-step"><div class="fs-num">145</div><div class="fs-label">Bank Verified</div></div><div class="funnel-arrow"><span>→</span><span class="fa-rate" style="color:#10B981">35.9%</span></div><div class="funnel-step"><div class="fs-num">2</div><div class="fs-label">KYC Complete</div></div></div>
+  <div class="rate-cards"><div class="card"><div class="label">Monthly Organic Investors</div><div class="value" style="color:#F59E0B">52</div><div class="sub">Target: 100 · 52% achieved</div><div style="background:#E2E8F0;border-radius:4px;height:6px;margin-top:8px"><div style="background:#F59E0B;border-radius:4px;height:6px;width:52%"></div></div></div><div class="card"><div class="label">Install → Sign-up</div><div class="value" style="color:#F59E0B">16.4%</div><div class="sub">Organic installs that register</div></div><div class="card"><div class="label">KYC Completion</div><div class="value" style="color:#F59E0B">29.8%</div><div class="sub">Sign-ups that complete KYC</div></div><div class="card"><div class="label">KYC → First Invest</div><div class="value" style="color:#10B981">35.9%</div><div class="sub">KYC-done users who invest · need 40%</div></div></div>
+  <div style="font-size:12px;color:#64748B;margin:10px 0 4px;padding:6px 12px;background:#F8FAFC;border-radius:6px;">To hit <strong>100 organic investors/month</strong>: need ~<strong>5,556</strong> organic installs/month at current conversion rates. End-to-end rate: <strong>1.8%</strong> (install → investor).</div>
+
+  
+  <div class="section-title">🏛 Domain Authority — Aspero vs Competitors</div>
+  <div class="auth-row">
+    <div class="dr-card">
+      <div class="dr-label">Aspero.in (you)</div>
+      <div class="dr-num" style="color:#F59E0B">29</div>
+      <div class="dr-sub">0 referring domains</div>
+    </div><div class="dr-card"><div class="dr-label">wintwealth.com</div><div class="dr-num" style="color:#64748B">44</div><div class="dr-sub">162,830 est. visits/mo</div></div><div class="dr-card"><div class="dr-label">gripinvest.in</div><div class="dr-num" style="color:#64748B">47</div><div class="dr-sub">76,674 est. visits/mo</div></div><div class="dr-card"><div class="dr-label">stablemoney.com</div><div class="dr-num" style="color:#64748B">0</div><div class="dr-sub">0 est. visits/mo</div></div>
+  </div>
+  <div class="section-title">🔑 Organic Keyword Health</div>
+  <div class="kw-cards">
+    <div class="card"><div class="label">Total Organic Keywords</div><div class="value">250</div><div class="sub">Ahrefs ranking keywords</div></div>
+    <div class="card"><div class="label">Non-Branded Keywords</div><div class="value">248</div><div class="sub">Excludes aspero / yubi brand terms</div></div>
+    <div class="card"><div class="label">Est. Organic Traffic</div><div class="value">1,651</div><div class="sub">Monthly estimate · Ahrefs</div></div>
+  </div>
+  <div class="section-title">🔗 New Referring Domains — Last 7 Days</div>
+  <div class="tbl-wrap"><table><thead><tr><th>Domain</th><th style="text-align:right">DR</th></tr></thead><tbody><tr><td style="font-size:12px">activeshop.shop</td><td style="text-align:right;font-weight:600">35</td></tr><tr><td style="font-size:12px">theseohighranking.shop</td><td style="text-align:right;font-weight:600">35</td></tr><tr><td style="font-size:12px">shop-inframe.shop</td><td style="text-align:right;font-weight:600">35</td></tr><tr><td style="font-size:12px">ranklinkerpro.shop</td><td style="text-align:right;font-weight:600">43</td></tr><tr><td style="font-size:12px">agroinsursas.com</td><td style="text-align:right;font-weight:600">8</td></tr><tr><td style="font-size:12px">seohighranking.shop</td><td style="text-align:right;font-weight:600">35</td></tr><tr><td style="font-size:12px">acquire.co.in</td><td style="text-align:right;font-weight:600">2</td></tr><tr><td style="font-size:12px">kawaiishop.shop</td><td style="text-align:right;font-weight:600">35</td></tr><tr><td style="font-size:12px">addurl.in</td><td style="text-align:right;font-weight:600">2</td></tr><tr><td style="font-size:12px">therankinghighseo.shop</td><td style="text-align:right;font-weight:600">35</td></tr></tbody></table></div>
+  <div class="section-title">📈 Position Movers — Week over Week</div>
+  <div class="mover-grid">
+    <div class="mover-card">
+      <div class="mover-hdr" style="color:#10B981">↑ Improved Positions</div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr><th style="padding:7px 14px;font-size:11px;font-weight:700;color:#475569;text-align:left;background:#F1F5F9;border-bottom:1px solid #E2E8F0">Keyword</th><th style="padding:7px 14px;font-size:11px;font-weight:700;color:#475569;text-align:right;background:#F1F5F9;border-bottom:1px solid #E2E8F0">Δ</th><th style="padding:7px 14px;font-size:11px;font-weight:700;color:#475569;text-align:right;background:#F1F5F9;border-bottom:1px solid #E2E8F0">Pos</th></tr></thead><tbody><tr><td style="font-size:12px">akara capital advisors private limited</td><td style="text-align:right;color:#10B981;font-weight:700">+5</td><td style="text-align:right;color:#475569">17→12</td></tr><tr><td style="font-size:12px">indel money ncd</td><td style="text-align:right;color:#10B981;font-weight:700">+4</td><td style="text-align:right;color:#475569">9→5</td></tr></tbody></table>
+    </div>
+    <div class="mover-card">
+      <div class="mover-hdr" style="color:#EF4444">↓ Declined Positions</div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr><th style="padding:7px 14px;font-size:11px;font-weight:700;color:#475569;text-align:left;background:#F1F5F9;border-bottom:1px solid #E2E8F0">Keyword</th><th style="padding:7px 14px;font-size:11px;font-weight:700;color:#475569;text-align:right;background:#F1F5F9;border-bottom:1px solid #E2E8F0">Δ</th><th style="padding:7px 14px;font-size:11px;font-weight:700;color:#475569;text-align:right;background:#F1F5F9;border-bottom:1px solid #E2E8F0">Pos</th></tr></thead><tbody><tr><td style="font-size:12px">redeemable debentures</td><td style="text-align:right;color:#EF4444;font-weight:700">-14</td><td style="text-align:right;color:#475569">10→24</td></tr><tr><td style="font-size:12px">what is secured debenture</td><td style="text-align:right;color:#EF4444;font-weight:700">-11</td><td style="text-align:right;color:#475569">1→12</td></tr><tr><td style="font-size:12px">buy bonds</td><td style="text-align:right;color:#EF4444;font-weight:700">-7</td><td style="text-align:right;color:#475569">20→27</td></tr><tr><td style="font-size:12px">different types of debentures</td><td style="text-align:right;color:#EF4444;font-weight:700">-6</td><td style="text-align:right;color:#475569">1→7</td></tr><tr><td style="font-size:12px">tax saver fd</td><td style="text-align:right;color:#EF4444;font-weight:700">-5</td><td style="text-align:right;color:#475569">23→28</td></tr><tr><td style="font-size:12px">cmr copy means</td><td style="text-align:right;color:#EF4444;font-weight:700">-4</td><td style="text-align:right;color:#475569">5→9</td></tr><tr><td style="font-size:12px">psu bond</td><td style="text-align:right;color:#EF4444;font-weight:700">-4</td><td style="text-align:right;color:#475569">8→12</td></tr><tr><td style="font-size:12px">municipal bonds in india</td><td style="text-align:right;color:#EF4444;font-weight:700">-4</td><td style="text-align:right;color:#475569">8→12</td></tr></tbody></table>
     </div>
   </div>
 
-  <!-- Risks -->
-  <div class="card" style="border-left: 4px solid var(--amber);">
-    <h2>⚠ Risks & Asks</h2>
-    <div style="display:flex;flex-direction:column;gap:14px;margin-top:14px">
-      <div style="background:var(--amber-lt);border-radius:8px;padding:14px 16px">
-        <div style="font-weight:700;font-size:13px;color:var(--amber);margin-bottom:4px">Page Speed — To be scoped and picked up in next sprint</div>
-        <div style="font-size:13px;color:var(--text2);line-height:1.6">/invest/home scores <strong>30/100 Lighthouse</strong> · LCP <strong>5,127ms</strong> (Google "poor" threshold: 4,000ms). Core Web Vitals are a direct ranking factor — this caps how high bond pages can rank even after SSR is fully indexed.</div>
-      </div>
-      <div style="background:var(--blue-lt);border-radius:8px;padding:14px 16px">
-        <div style="font-weight:700;font-size:13px;color:var(--green);margin-bottom:4px">Apr 27 Data In — Projection On Track ✅</div>
-        <div style="font-size:13px;color:var(--text2);line-height:1.6">Week of Apr 20–26 confirmed: <strong>1,106 impressions, 158/day, position 8.6</strong>. Growth trajectory is accelerating. ISIN queries holding at 7–11/week. Next signal: issuer aggregator pages (ASP-3592, live Apr 28) should start showing impressions in the week of May 5.</div>
-      </div>
-      <div style="background:var(--green-lt);border-radius:8px;padding:14px 16px">
-        <div style="font-weight:700;font-size:13px;color:var(--green);margin-bottom:4px">GSC Now Live — Automated Monitoring Fixed</div>
-        <div style="font-size:13px;color:var(--text2);line-height:1.6">Previous SEO agent reports showed 0 impressions due to a misconfigured GSC property (sc-domain:aspero.in). Fixed and committed Apr 23. From Apr 28, all automated reports will reflect real organic traffic data.</div>
-      </div>
-    </div>
+  <!-- Footer -->
+  <div class="footer">
+    Data source: Google Search Console (organic only · no paid) &nbsp;·&nbsp; AppsFlyer (organic funnel) &nbsp;·&nbsp; Ahrefs (authority · keywords · backlinks) &nbsp;·&nbsp;
+    GSC data lags ~2 days &nbsp;·&nbsp;
+    <a href="https://arpitgoyalyubi.github.io/b2c_product/seo-release.html" target="_blank">SEO Release Note Apr 2026</a> &nbsp;·&nbsp;
+    <a href="https://arpitgoyalyubi.github.io/b2c_product/" target="_blank">Product Hub</a> &nbsp;·&nbsp;
+    Generated 05 May 2026, 11:11 AM IST
   </div>
-
-  <!-- Team Behind This -->
-  <div class="card" style="border-left:4px solid #2563EB;background:linear-gradient(135deg,#EFF6FF 0%,#F8FAFC 100%)">
-    <h2 style="margin-bottom:6px">🙌 Team Behind This</h2>
-    <div class="subtitle" style="margin-bottom:20px">80+ pages migrated · 13 SEO tickets shipped · 0 regressions · A rare team that ships outcomes, not just features.</div>
-
-    <!-- Row 1: Engineering + DevOps -->
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:16px">
-      <!-- Mohsin -->
-      <div style="background:white;border-radius:10px;border:1px solid #BFDBFE;padding:18px 16px;text-align:center">
-        <div style="font-size:28px;margin-bottom:8px">👨‍💻</div>
-        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">Mohamed Mohsin F</div>
-        <div style="font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Engineering — SEO Sprint</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.6;text-align:left">
-          Shipped 8 of 11 SEO tickets — SSR bond data fetching, modal&rarr;accordion, JSON-LD schema, H1 headers, noindex, 301 redirects, bond FAQs. Core execution engine of the SEO sprint. 0 regressions across all 143 bond pages.
-        </div>
-      </div>
-      <!-- Suresh -->
-      <div style="background:white;border-radius:10px;border:1px solid #FDE68A;padding:18px 16px;text-align:center">
-        <div style="font-size:28px;margin-bottom:8px">🛠️</div>
-        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">Suresh</div>
-        <div style="font-size:11px;font-weight:600;color:#D97706;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">DevOps / Infrastructure</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.6;text-align:left">
-          Built the entire SSR infrastructure from zero — Kubernetes (EKS), Helm, Docker multi-stage builds, Jenkins CI/CD, CloudFront routing, and health checks. From static hosting to a full multi-environment production pipeline.
-        </div>
-      </div>
-    </div>
-
-    <!-- Row 2: QA + Management + Support -->
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px">
-      <!-- QA -->
-      <div style="background:white;border-radius:10px;border:1px solid #BBF7D0;padding:18px 16px;text-align:center">
-        <div style="font-size:28px;margin-bottom:8px">🔍</div>
-        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">Anitha, Abdul &amp; Dhanavel</div>
-        <div style="font-size:11px;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">QA</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.6;text-align:left">
-          Validated SSR + hydration + mobile across 4 environments, catching race conditions and mismatches that don't always reproduce. Dhanavel stepped in for production validation — ensuring the live environment matched what QA signed off on. Their thoroughness kept the release stable across all 80+ pages and 3 platforms.
-        </div>
-      </div>
-      <!-- Govind + Madhu -->
-      <div style="background:white;border-radius:10px;border:1px solid #DDD6FE;padding:18px 16px;text-align:center">
-        <div style="font-size:28px;margin-bottom:8px">🏗️</div>
-        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">Govind &amp; Madhu</div>
-        <div style="font-size:11px;font-weight:600;color:#7C3AED;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Engineering Management</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.6;text-align:left">
-          Cleared the path for the engineering and QA team to ship faster — unblocking decisions, removing dependencies, and keeping the sprint focused so the team could execute without friction.
-        </div>
-      </div>
-      <!-- Sanyukta + Somya -->
-      <div style="background:white;border-radius:10px;border:1px solid #FDE68A;padding:18px 16px;text-align:center">
-        <div style="font-size:28px;margin-bottom:8px">🤝</div>
-        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">Sanyukta &amp; Somya</div>
-        <div style="font-size:11px;font-weight:600;color:#D97706;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Marketing</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.6;text-align:left">
-          Constant support and guidance throughout the initiative. Their involvement kept the broader business context front and centre as the team executed on the technical SEO roadmap.
-        </div>
-      </div>
-    </div>
-
-    <!-- PM — last, centered -->
-    <div style="display:flex;justify-content:center;margin-bottom:24px">
-      <div style="background:white;border-radius:10px;border:1px solid #BFDBFE;padding:18px 16px;text-align:center;width:calc(33.33% - 11px)">
-        <div style="font-size:28px;margin-bottom:8px">🎼</div>
-        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">Arpit Goyal</div>
-        <div style="font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Product Manager</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.6;text-align:left">
-          Built the SEO agent that surfaced every root issue. Ran the crawl tests. Scoped the entire SEO Epic (20+ tickets). Coordinated the sprint. Built independent monitoring so outcomes are confirmed by data, not self-reported.
-        </div>
-      </div>
-    </div>
-
-    <!-- Special thanks to Mohsin -->
-    <div style="background:linear-gradient(135deg,#FFF7ED 0%,#FFFBEB 100%);border-radius:10px;border:2px solid #FCD34D;padding:16px 20px;margin-bottom:16px;display:flex;gap:14px;align-items:flex-start">
-      <div style="font-size:28px;flex-shrink:0">⭐</div>
-      <div>
-        <div style="font-size:13px;font-weight:700;color:#92400E;margin-bottom:6px">Special Thanks — Mohamed Mohsin F</div>
-        <div style="font-size:12px;color:var(--text2);line-height:1.7">Mohsin's contribution to this sprint deserves a specific call-out. He took ownership of the hardest part — 8 SEO implementation tickets in 5 days — and never got bumped off course by technical challenges. Every blocker that came up, he worked through. Every ticket shipped cleanly, on time, with 0 regressions. The SEO signal we're seeing in Google Search Console this week is a direct result of his relentless execution and his refusal to let challenges slow the sprint down.</div>
-      </div>
-    </div>
-
-    <!-- Challenge story -->
-    <div style="background:white;border-radius:10px;border:1px solid var(--border);padding:18px 20px;margin-bottom:16px">
-      <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:12px">The Challenge We Overcame — A Story Worth Telling</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
-        <div style="padding:12px 14px;background:#FEF2F2;border-radius:8px;border-left:3px solid var(--red)">
-          <div style="font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Discovery (Mar 2026)</div>
-          <div style="font-size:12px;color:var(--text2);line-height:1.6">A headless Chrome test at Google's crawl conditions revealed <strong>6 readable characters</strong> on a bond page at 5 seconds. Engineering initially believed SSR was already working via Next.js streaming — this test proved it wasn't. Bond data was arriving via client-side XHR, not server-side props.</div>
-        </div>
-        <div style="padding:12px 14px;background:var(--amber-lt);border-radius:8px;border-left:3px solid var(--amber)">
-          <div style="font-size:11px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">The Hidden Problem (Apr 1–15)</div>
-          <div style="font-size:12px;color:var(--text2);line-height:1.6">Even after SSR was scoped, we found a second issue: all ISIN/coupon/trustee data was inside a modal that only opened on user click. Google cannot click. A manual crawl of the Krazybee bond page found the ISIN "INE07HK07783" had <strong>0 occurrences</strong> in rendered HTML — despite being in the URL itself.</div>
-        </div>
-        <div style="padding:12px 14px;background:var(--green-lt);border-radius:8px;border-left:3px solid var(--green)">
-          <div style="font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">The Sprint (Apr 16–21)</div>
-          <div style="font-size:12px;color:var(--text2);line-height:1.6">Mohsin shipped 8 tickets in 5 days — converting the entire bond detail page to SSR, replacing the modal with an accordion, adding JSON-LD schema, unique titles, H1 headers, and 301 redirects. <strong>0 regressions reported.</strong> Google Search Console confirmed impressions rising within the same week.</div>
-        </div>
-      </div>
-    </div>
-
-    <div style="background:var(--blue-lt);border-radius:8px;border:1px solid #BFDBFE;padding:14px 18px;font-size:13px;color:var(--text2);line-height:1.7">
-      <strong style="color:var(--blue)">What made this sprint different:</strong> Most SEO work is invisible for months. This one had a measurable outcome in 7 days. Mohsin drove the SEO execution — 8 tickets, 5 days, 0 regressions — pushing through every technical challenge without slowing down. Suresh built the entire production infrastructure from scratch in parallel. Anitha, Abdul and Dhanavel kept it rock-stable across 80+ pages and 3 platforms. Govind and Madhu cleared the path so the team could move fast without friction. The result: 3&times; more investors finding Aspero the week after the fix shipped. The diagnostic groundwork — the SEO agent, the crawl tests, the root cause analysis — was completed before the sprint started, so the team had a clear problem and clear targets from day one. Most React Native teams accept CSR as a limitation — this team didn't.
-    </div>
-  </div>
-
-  <div class="footer">Aspero SEO Agent · Updated Apr 28 2026 · ASP-3440 + ASP-3592 now Live · sc-domain:aspero.in</div>
 </div>
 
 <script>
-// ─── Data ────────────────────────────────────────────────────────────────────
-const weeks = [
-  '22 Dec','29 Dec','5 Jan','12 Jan','19 Jan','26 Jan',
-  '2 Feb','9 Feb','16 Feb','23 Feb',
-  '2 Mar','9 Mar','16 Mar','23 Mar','30 Mar',
-  '6 Apr','13 Apr','20 Apr','27 Apr'
-];
-// 27 Apr = in-progress week (data from Apr 27 only) — null keeps the axis extended without misleading bars
-const bondImp    = [24,59,99,84,140,174,152,179,264,221,93,108,111,131,275,892,892,1106,null];
-const bondClicks = [0,2,4,3,5,4,5,6,5,4,1,3,0,14,7,31,29,30,null];
-const bondPos    = [22.2,8.7,8.9,10.6,12.7,13.5,10.1,9.5,11.8,14.8,19.4,18.7,16.3,14.1,9.2,8.3,8.7,8.6,null];
-const bondCtr    = [0,3.39,4.04,3.57,3.57,2.3,3.29,3.35,1.89,1.81,1.08,2.78,0,10.69,2.55,3.48,3.25,2.71,null];
+const D = {"series": {"bond": {"9 Mar": {"clicks": 3, "impressions": 108}, "16 Mar": {"clicks": 0, "impressions": 111}, "23 Mar": {"clicks": 14, "impressions": 131}, "30 Mar": {"clicks": 7, "impressions": 275}, "6 Apr": {"clicks": 31, "impressions": 892}, "13 Apr": {"clicks": 29, "impressions": 892}, "20 Apr": {"clicks": 30, "impressions": 1106}, "27 Apr": {"clicks": 24, "impressions": 1216}}, "home": {"9 Mar": {"clicks": 1, "impressions": 97}, "16 Mar": {"clicks": 0, "impressions": 58}, "23 Mar": {"clicks": 1, "impressions": 98}, "30 Mar": {"clicks": 19, "impressions": 644}, "6 Apr": {"clicks": 7, "impressions": 417}, "13 Apr": {"clicks": 4, "impressions": 497}, "20 Apr": {"clicks": 6, "impressions": 735}, "27 Apr": {"clicks": 5, "impressions": 556}}, "explore": {"9 Mar": {"clicks": 1, "impressions": 46}, "16 Mar": {"clicks": 3, "impressions": 27}, "23 Mar": {"clicks": 2, "impressions": 22}, "30 Mar": {"clicks": 1, "impressions": 85}, "6 Apr": {"clicks": 2, "impressions": 91}, "13 Apr": {"clicks": 1, "impressions": 119}, "20 Apr": {"clicks": 0, "impressions": 102}, "27 Apr": {"clicks": 0, "impressions": 86}}, "blog": {"9 Mar": {"clicks": 243, "impressions": 87385}, "16 Mar": {"clicks": 200, "impressions": 79544}, "23 Mar": {"clicks": 193, "impressions": 93423}, "30 Mar": {"clicks": 152, "impressions": 71211}, "6 Apr": {"clicks": 139, "impressions": 57149}, "13 Apr": {"clicks": 132, "impressions": 55304}, "20 Apr": {"clicks": 146, "impressions": 46899}, "27 Apr": {"clicks": 106, "impressions": 36322}}, "mkt": {"9 Mar": {"clicks": 22, "impressions": 539}, "16 Mar": {"clicks": 10, "impressions": 379}, "23 Mar": {"clicks": 14, "impressions": 416}, "30 Mar": {"clicks": 1, "impressions": 325}, "6 Apr": {"clicks": 0, "impressions": 293}, "13 Apr": {"clicks": 0, "impressions": 265}, "20 Apr": {"clicks": 2, "impressions": 444}, "27 Apr": {"clicks": 2, "impressions": 260}}}, "isinData": [{"isin": "INE101Q07BX1", "clicks": 14, "impressions": 786, "position": 7.3, "url": "https://www.aspero.in/invest/bond/muthoot-mcred-limited/ine101q07bx1/3058"}, {"isin": "INE342T07668", "clicks": 15, "impressions": 289, "position": 9, "url": "https://www.aspero.in/invest/bond/navi-finserv-limited/INE342T07668/2716"}, {"isin": "INE342T07635", "clicks": 1, "impressions": 235, "position": 9.1, "url": "https://www.aspero.in/invest/bond/navi-finserv-limited/INE342T07635/3254"}, {"isin": "INE01YL07417", "clicks": 10, "impressions": 134, "position": 6.5, "url": "https://www.aspero.in/invest/bond/earlysalary-services-private-limited/ine01yl07417/2173"}, {"isin": "INE01HV07536", "clicks": 0, "impressions": 125, "position": 9, "url": "https://www.aspero.in/invest/bond/hari-and-company-investments-madras-private-limited/ine01hv07536/864"}, {"isin": "INE413U07442", "clicks": 4, "impressions": 122, "position": 13.3, "url": "https://www.aspero.in/invest/bond/iifl-samasta-finance-limited/ine413u07442/2111"}, {"isin": "INE08XP07423", "clicks": 4, "impressions": 115, "position": 10.6, "url": "https://www.aspero.in/invest/bond/akara-capital-advisors-private-limited/ine08xp07423/1792"}, {"isin": "INE08KJ07175", "clicks": 10, "impressions": 96, "position": 9.7, "url": "https://www.aspero.in/invest/bond/mufin-green-finance-limited/ine08kj07175/2203"}, {"isin": "INE1VXE07015", "clicks": 5, "impressions": 88, "position": 12.8, "url": "https://www.aspero.in/invest/bond/stl-networks-limited/INE1VXE07015/2207"}, {"isin": "INE0NES07279", "clicks": 4, "impressions": 80, "position": 7.3, "url": "https://www.aspero.in/invest/bond/keertana-finserv-limited/ine0nes07279/2983"}, {"isin": "INE08KJ07183", "clicks": 4, "impressions": 79, "position": 9, "url": "https://www.aspero.in/invest/bond/mufin-green-finance-limited/ine08kj07183/2631"}, {"isin": "INE0M2307362", "clicks": 0, "impressions": 78, "position": 10.2, "url": "https://www.aspero.in/invest/bond/andhra-pradesh-state-beverages-corporation-limited/ine0m2307362/2469"}, {"isin": "INE321N07632", "clicks": 1, "impressions": 77, "position": 13.2, "url": "https://www.aspero.in/invest/bond/incred-financial-services-limited/ine321n07632/2953"}, {"isin": "INE01YL07433", "clicks": 7, "impressions": 69, "position": 8.2, "url": "https://www.aspero.in/invest/bond/earlysalary-services-private-limited/ine01yl07433/2971"}, {"isin": "INE501X07729", "clicks": 0, "impressions": 67, "position": 7.0, "url": "https://www.aspero.in/invest/bond/aye-finance-limited/ine501x07729/1486"}, {"isin": "INE0BUS07CK0", "clicks": 4, "impressions": 64, "position": 5.4, "url": "https://www.aspero.in/invest/bond/indel-money-limited/ine0bus07ck0/3040"}, {"isin": "INE413U07426", "clicks": 0, "impressions": 63, "position": 12.9, "url": "https://www.aspero.in/invest/bond/iifl-samasta-finance-limited/ine413u07426/1243"}, {"isin": "INE389Z07104", "clicks": 0, "impressions": 63, "position": 7.7, "url": "https://www.aspero.in/invest/bond/profectus-capital-private-limited/INE389Z07104/3265"}, {"isin": "INE549K07HD3", "clicks": 1, "impressions": 62, "position": 8.2, "url": "https://www.aspero.in/invest/bond/muthoot-fincorp-limited/ine549k07hd3/1924"}, {"isin": "INE08E807084", "clicks": 1, "impressions": 55, "position": 24.7, "url": "https://www.aspero.in/invest/bond/shri-ram-finance-corporation-private-limited/ine08e807084/1492"}], "partial_week_label": null, "partial_week_days": 7};
 
-const isinData = [
-  {isin:'INE01YL07417', issuer:'EarlySalary Services', imp:186, clicks:12, ctr:6.5, pos:8.5},
-  {isin:'INE08XP07423', issuer:'Akara Capital', imp:179, clicks:7, ctr:3.9, pos:9.3},
-  {isin:'INE08KJ07175', issuer:'Mufin Green Finance', imp:151, clicks:7, ctr:4.6, pos:6.8},
-  {isin:'INE413U07442', issuer:'IIFL Samasta Finance', imp:83, clicks:6, ctr:7.2, pos:10.3},
-  {isin:'INE01YL07433', issuer:'EarlySalary Services', imp:73, clicks:7, ctr:9.6, pos:8.7},
-  {isin:'INE0BUS07CK0', issuer:'Indel Money', imp:32, clicks:3, ctr:9.4, pos:5.9},
-  {isin:'INE08XP07449', issuer:'Akara Capital', imp:24, clicks:2, ctr:8.3, pos:9.0},
-  {isin:'INE342T07668', issuer:'Navi Finserv', imp:23, clicks:2, ctr:8.7, pos:9.1},
-  {isin:'INE385W07059', issuer:'Dishman Carbogen', imp:17, clicks:2, ctr:11.8, pos:6.8},
-  {isin:'INE1VXE07015', issuer:'STL Networks', imp:14, clicks:7, ctr:50.0, pos:13.2},
-  {isin:'INE101Q07BX1', issuer:'Muthoot Mcred', imp:43, clicks:2, ctr:4.7, pos:5.6},
-  {isin:'INE583D07638', issuer:'UGRO Capital', imp:4, clicks:3, ctr:75.0, pos:19.2},
-  {isin:'INE08XP07449', issuer:'Akara Capital (2)', imp:24, clicks:2, ctr:8.3, pos:9.0},
-];
-
-const bondPages = [
-  {name:'Muthoot Mcred',isin:'INE101Q07BX1',imp:489,clicks:8,ctr:1.6,pos:5.3},
-  {name:'EarlySalary',isin:'INE01YL07417',imp:222,clicks:13,ctr:5.9,pos:8.5},
-  {name:'Akara Capital (1)',isin:'INE08XP07423',imp:210,clicks:8,ctr:3.8,pos:10.4},
-  {name:'Mufin Green Finance',isin:'INE08KJ07175',imp:186,clicks:12,ctr:6.5,pos:9.1},
-  {name:'IIFL Samasta Finance',isin:'INE413U07442',imp:168,clicks:9,ctr:5.4,pos:14.4},
-  {name:'EarlySalary (2)',isin:'INE01YL07433',imp:91,clicks:7,ctr:7.7,pos:8.6},
-  {name:'Indel Money',isin:'INE0BUS07CK0',imp:87,clicks:6,ctr:6.9,pos:5.6},
-  {name:'Dishman Carbogen',isin:'INE385W07059',imp:50,clicks:4,ctr:8.0,pos:7.7},
-  {name:'Navi Finserv',isin:'INE342T07668',imp:44,clicks:4,ctr:9.1,pos:5.5},
-];
-
-// ─── Projection data ─────────────────────────────────────────────────────────
-const projWeeks = ['Apr 13','Apr 20','Apr 27','May 4','May 11','May 18','May 25','Jun 1','Jun 8','Jun 15'];
-const projActual =  [892, 1106, null,null,null,null,null,null,null,null];
-const projForecast= [null,1106,1400,2000,2800,3500,4200,4800,5400,6000];
-
-// ─── Chart defaults ───────────────────────────────────────────────────────────
-Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
-Chart.defaults.font.size = 12;
-Chart.defaults.color = '#64748B';
-
-const FIX_LINE = {
-  type:'line',
-  xMin: 16.5, xMax: 16.5,
-  borderColor: '#DC2626',
-  borderWidth: 2,
-  borderDash: [6,3],
-  label: {
-    display: true,
-    content: '← SEO fixes shipped Apr 16–21',
-    position: 'start',
-    backgroundColor: '#DC2626',
-    color: 'white',
-    font: { size: 10, weight: '600' },
-    padding: {top:3,bottom:3,left:6,right:6},
-    yAdjust: -30
-  }
-};
-
-// "today" marker — boundary between last complete week and current in-progress week
-const NOW_LINE = {
-  type:'line',
-  xMin: 17.5, xMax: 17.5,
-  borderColor: '#16A34A',
-  borderWidth: 1.5,
-  borderDash: [4,3],
-  label: {
-    display: true,
-    content: 'Apr 27 ↑ current week',
-    position: 'end',
-    backgroundColor: '#16A34A',
-    color: 'white',
-    font: { size: 9, weight: '600' },
-    padding: {top:2,bottom:2,left:5,right:5},
-    yAdjust: 20
-  }
-};
-
-// "today" marker for corr charts (corrWeeks index 12='20 Apr', 13='27 Apr')
-const CORR_NOW_LINE = {
-  type:'line',
-  xMin: 12.5, xMax: 12.5,
-  borderColor: '#16A34A',
-  borderWidth: 1.5,
-  borderDash: [4,3],
-  label: {
-    display: true,
-    content: 'Apr 27 ↑ current week',
-    position: 'end',
-    backgroundColor: '#16A34A',
-    color: 'white',
-    font: { size: 9, weight: '600' },
-    padding: {top:2,bottom:2,left:5,right:5},
-    yAdjust: 20
-  }
-};
-
-// ─── Before/After bar chart ───────────────────────────────────────────────────
-new Chart(document.getElementById('baChart'), {
-  type: 'bar',
-  data: {
-    labels: ['Impressions/Day', 'Clicks/Day (×10)', 'Avg Position'],
-    datasets: [
-      {
-        label: 'Before (Jan 26–Apr 5)',
-        data: [24.4, 0.7 * 10, 12.9],
-        backgroundColor: 'rgba(220,38,38,0.18)',
-        borderColor: '#DC2626',
-        borderWidth: 2,
-        borderRadius: 6
+function buildChart(id, seriesObj, color) {
+  const rawLabels = Object.keys(seriesObj);
+  const partial = D.partial_week_label;
+  const partialDays = D.partial_week_days || 7;
+  // Mark the current incomplete week in the x-axis label
+  const labels = rawLabels.map(k => (partial && k === partial) ? k + ' (' + partialDays + '/7d)' : k);
+  const clicks = rawLabels.map(k => seriesObj[k].clicks);
+  const impressions = rawLabels.map(k => seriesObj[k].impressions);
+  // Dim the partial week bar so it's visually distinct
+  const bgColors = rawLabels.map((k, i) =>
+    (partial && k === partial) ? color + '1A' : color + '33'
+  );
+  const borderColors = rawLabels.map((k, i) =>
+    (partial && k === partial) ? color + '66' : color
+  );
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  new Chart(ctx, {
+    data: {
+      labels,
+      datasets: [
+        {
+          type: 'bar',
+          label: 'Clicks',
+          data: clicks,
+          backgroundColor: bgColors,
+          borderColor: borderColors,
+          borderWidth: 1.5,
+          yAxisID: 'y',
+          borderRadius: 3,
+        },
+        {
+          type: 'line',
+          label: 'Impressions',
+          data: impressions,
+          borderColor: '#94A3B8',
+          backgroundColor: 'transparent',
+          borderWidth: 1.5,
+          pointRadius: 3,
+          tension: 0.3,
+          yAxisID: 'y1',
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { labels: { font: { size: 11 }, boxWidth: 12, padding: 10 } } },
+      scales: {
+        x: { ticks: { font: { size: 10 }, maxRotation: 45 }, grid: { display: false } },
+        y: {
+          position: 'left',
+          title: { display: false },
+          ticks: { font: { size: 10 } },
+          grid: { color: '#F1F5F9' },
+        },
+        y1: {
+          position: 'right',
+          grid: { display: false },
+          ticks: { font: { size: 10 } },
+        },
       },
-      {
-        label: 'After (Apr 6–27)',
-        data: [137.6, 4.3 * 10, 8.6],
-        backgroundColor: 'rgba(22,163,74,0.18)',
-        borderColor: '#16A34A',
-        borderWidth: 2,
-        borderRadius: 6
-      }
-    ]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { position: 'top' },
-      tooltip: {
-        callbacks: {
-          label: ctx => {
-            const v = ctx.raw;
-            const lbl = ctx.dataset.label;
-            if(ctx.dataIndex === 1) return `${lbl}: ${(v/10).toFixed(1)} clicks/day`;
-            return `${lbl}: ${v}`;
-          }
-        }
-      }
     },
-    scales: {
-      y: { beginAtZero: true, grid: { color: '#F1F5F9' } },
-      x: { grid: { display: false } }
-    }
-  }
-});
+  });
+}
 
-// ─── Weekly trend ─────────────────────────────────────────────────────────────
-new Chart(document.getElementById('trendChart'), {
-  type: 'line',
-  data: {
-    labels: weeks,
-    datasets: [
-      {
-        label: 'Weekly Impressions (bond pages)',
-        data: bondImp,
-        borderColor: '#2563EB',
-        backgroundColor: 'rgba(37,99,235,0.08)',
-        fill: true,
-        tension: 0.4,
-        pointRadius: 4,
-        pointHoverRadius: 7,
-        borderWidth: 2.5
-      },
-      {
-        label: 'Clicks',
-        data: bondClicks,
-        borderColor: '#16A34A',
-        backgroundColor: 'transparent',
-        tension: 0.4,
-        pointRadius: 3,
-        borderWidth: 1.5,
-        borderDash: [4,3],
-        yAxisID: 'y2'
-      }
-    ]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    interaction: { mode: 'index', intersect: false },
-    plugins: {
-      legend: { position: 'top' },
-      annotation: { annotations: { fixLine: FIX_LINE, nowLine: NOW_LINE } }
-    },
-    scales: {
-      y:  { beginAtZero: true, grid: { color: '#F1F5F9' }, title: { display: true, text: 'Impressions' } },
-      y2: { beginAtZero: true, position: 'right', grid: { display: false }, title: { display: true, text: 'Clicks' } },
-      x:  { grid: { display: false } }
-    }
-  }
-});
+buildChart('chartBond',    D.series.bond,    '#2563EB');
+buildChart('chartMkt',     D.series.mkt,     '#10B981');
+buildChart('chartHome',    D.series.home,    '#8B5CF6');
+buildChart('chartExplore', D.series.explore, '#F59E0B');
+buildChart('chartBlog',    D.series.blog,    '#EF4444');
 
-// ─── Position chart ───────────────────────────────────────────────────────────
-new Chart(document.getElementById('posChart'), {
-  type: 'line',
-  data: {
-    labels: weeks,
-    datasets: [{
-      label: 'Avg Position',
-      data: bondPos,
-      borderColor: '#D97706',
-      backgroundColor: 'rgba(217,119,6,0.07)',
-      fill: true,
-      tension: 0.4,
-      pointRadius: 3,
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      annotation: {
-        annotations: {
-          fixLine: { ...FIX_LINE, label: { ...FIX_LINE.label, content: '← Fixes', yAdjust: -20 } },
-          good: { type:'line', yMin:1, yMax:7, borderColor:'rgba(22,163,74,0.15)', borderWidth:0,
-                  backgroundColor:'rgba(22,163,74,0.06)' }
-        }
-      }
-    },
-    scales: {
-      y: { reverse: true, min: 1, grid: { color:'#F1F5F9' }, title: { display:true, text:'Position (lower = better)' } },
-      x: { grid: { display: false } }
-    }
-  }
-});
-
-// ─── CTR chart ────────────────────────────────────────────────────────────────
-new Chart(document.getElementById('ctrChart'), {
-  type: 'bar',
-  data: {
-    labels: weeks.slice(1),
-    datasets: [{
-      label: 'CTR %',
-      data: bondCtr.slice(1),
-      backgroundColor: bondCtr.slice(1).map(v => v > 6 ? 'rgba(22,163,74,0.7)' : v > 3 ? 'rgba(37,99,235,0.6)' : 'rgba(100,116,139,0.4)'),
-      borderRadius: 4
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      y: { beginAtZero: true, grid: { color:'#F1F5F9' }, ticks: { callback: v => v+'%' } },
-      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
-    }
-  }
-});
-
-// ─── Projection chart ─────────────────────────────────────────────────────────
-new Chart(document.getElementById('projChart'), {
-  type: 'line',
-  data: {
-    labels: projWeeks,
-    datasets: [
-      {
-        label: 'Actual impressions/week',
-        data: projActual,
-        borderColor: '#2563EB',
-        backgroundColor: 'rgba(37,99,235,0.10)',
-        fill: true,
-        tension: 0.3,
-        pointRadius: 5,
-        borderWidth: 2.5
-      },
-      {
-        label: 'Projected impressions/week',
-        data: projForecast,
-        borderColor: '#2563EB',
-        backgroundColor: 'rgba(37,99,235,0.04)',
-        fill: true,
-        borderDash: [8,4],
-        tension: 0.4,
-        pointRadius: 4,
-        pointStyle: 'circle',
-        borderWidth: 2,
-        pointBackgroundColor: 'white',
-        pointBorderColor: '#2563EB',
-        pointBorderWidth: 2
-      }
-    ]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    interaction: { mode: 'index', intersect: false },
-    plugins: {
-      legend: { position: 'top' },
-      annotation: {
-        annotations: {
-          now: {
-            type: 'line',
-            xMin: 1.5, xMax: 1.5,
-            borderColor: '#DC2626',
-            borderWidth: 1.5,
-            borderDash: [5,3],
-            label: {
-              display: true,
-              content: 'Today',
-              position: 'start',
-              backgroundColor: '#DC2626',
-              color: 'white',
-              font: { size: 10, weight: '600' },
-              padding: {top:3,bottom:3,left:6,right:6}
-            }
-          },
-          issuerPages: {
-            type: 'line',
-            xMin: 7, xMax: 7,
-            borderColor: '#16A34A',
-            borderWidth: 1.5,
-            borderDash: [5,3],
-            label: {
-              display: true,
-              content: 'Issuer pages live (est.)',
-              position: 'end',
-              backgroundColor: '#16A34A',
-              color: 'white',
-              font: { size: 10, weight: '600' },
-              padding: {top:3,bottom:3,left:6,right:6}
-            }
-          }
-        }
-      }
-    },
-    scales: {
-      y: { beginAtZero: true, grid: { color: '#F1F5F9' },
-           title: { display: true, text: 'Impressions / week (bond pages)' } },
-      x: { grid: { display: false } }
-    }
-  }
-});
-
-// ─── ISIN bars ────────────────────────────────────────────────────────────────
-const maxImp = Math.max(...isinData.map(d=>d.imp));
-const barsEl = document.getElementById('isinBars');
-const BARS_VISIBLE = 6;
-isinData.forEach((d, i) => {
-  const pct = Math.round(d.imp / maxImp * 100);
-  const row = document.createElement('div');
-  row.className = 'progress-row';
-  if (i >= BARS_VISIBLE) row.style.display = 'none';
-  row.innerHTML = `<div class="lbl" title="${d.isin}">${d.isin}</div>
-      <div class="bar-wrap"><div class="bar" style="width:${pct}%"></div></div>
-      <div class="num">${d.imp}</div>`;
-  barsEl.appendChild(row);
-});
-const barsBtnWrap = document.createElement('div');
-barsBtnWrap.className = 'view-all-wrap';
-barsBtnWrap.innerHTML = '<button class="view-all-btn" id="isinBarsBtn">View All (' + (isinData.length - BARS_VISIBLE) + ' more) ▾</button>';
-barsEl.after(barsBtnWrap);
-document.getElementById('isinBarsBtn').addEventListener('click', function() {
-  const rows = barsEl.querySelectorAll('.progress-row');
-  const exp = this.dataset.expanded === 'true';
-  rows.forEach((r, i) => { if (i >= BARS_VISIBLE) r.style.display = exp ? 'none' : ''; });
-  this.dataset.expanded = exp ? 'false' : 'true';
-  this.textContent = exp ? 'View All (' + (isinData.length - BARS_VISIBLE) + ' more) ▾' : 'Show Less ▴';
-});
-
-// ─── ISIN table ───────────────────────────────────────────────────────────────
-const tbl = document.getElementById('isinTable');
-const ISIN_TBL_VISIBLE = 6;
-isinData.forEach(d => {
-  const posCls = d.pos <= 7 ? 'pos-good' : d.pos <= 12 ? 'pos-mid' : 'pos-low';
-  tbl.innerHTML += `<tr>
-    <td><strong>${d.isin}</strong></td>
-    <td>${d.issuer}</td>
-    <td>${d.imp}</td>
-    <td>${d.clicks}</td>
-    <td><strong>${d.ctr}%</strong></td>
-    <td><span class="pos-pill ${posCls}">${d.pos}</span></td>
-  </tr>`;
-});
+// ISIN donut
 (function() {
-  const tblRows = tbl.querySelectorAll('tr');
-  tblRows.forEach((r, i) => { if (i >= ISIN_TBL_VISIBLE) r.style.display = 'none'; });
-  const wrap = document.createElement('div');
-  wrap.className = 'view-all-wrap';
-  wrap.innerHTML = '<button class="view-all-btn" onclick="toggleRows(\'isinTable\',' + ISIN_TBL_VISIBLE + ',this)">View All (' + (tblRows.length - ISIN_TBL_VISIBLE) + ' more) ▾</button>';
-  tbl.parentElement.after(wrap);
+  const gsc = 109;
+  const total = 143;
+  new Chart(document.getElementById('chartDonut'), {
+    type: 'doughnut',
+    data: {
+      labels: ['In GSC', 'Not yet indexed'],
+      datasets: [{ data: [gsc, Math.max(0, total - gsc)], backgroundColor: ['#2563EB', '#E2E8F0'], borderWidth: 0 }],
+    },
+    options: {
+      cutout: '70%',
+      plugins: { legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 10, padding: 8 } } },
+    },
+  });
 })();
 
-// ─── Stacked chart: bond pages vs app pages ───────────────────────────────────
-const investImp = [80,199,310,225,325,250,200,281,400,352,339,345,216,293,1099,1470,1657,2123,null];
-const appImp    = investImp.map((v,i) => (v == null || bondImp[i] == null) ? null : Math.max(0, v - bondImp[i]));
-
-new Chart(document.getElementById('stackedChart'), {
-  type: 'bar',
-  data: {
-    labels: weeks,
-    datasets: [
-      {
-        label: 'Bond Detail Pages (/invest/bond/)',
-        data: bondImp,
-        backgroundColor: 'rgba(37,99,235,0.75)',
-        borderRadius: 0,
-        stack: 'a'
-      },
-      {
-        label: 'App Pages (Home, Explore, Collections)',
-        data: appImp,
-        backgroundColor: 'rgba(124,58,237,0.55)',
-        borderRadius: 4,
-        stack: 'a'
-      }
-    ]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    interaction: { mode: 'index', intersect: false },
-    plugins: {
-      legend: { position: 'top' },
-      annotation: {
-        annotations: {
-          sitemap: {
-            type: 'line', xMin: 14.5, xMax: 14.5,
-            borderColor: '#9333EA', borderWidth: 1.5, borderDash: [5,3],
-            label: { display: true, content: '← Sitemap +134 pages', position: 'start',
-                     backgroundColor: '#9333EA', color: 'white',
-                     font: { size: 10, weight: '600' }, padding: {top:3,bottom:3,left:6,right:6}, yAdjust: -20 }
-          },
-          fixes: { ...FIX_LINE },
-          nowLine: { ...NOW_LINE }
-        }
-      }
-    },
-    scales: {
-      y: { stacked: true, beginAtZero: true, grid: { color: '#F1F5F9' },
-           title: { display: true, text: 'Impressions / week' } },
-      x: { stacked: true, grid: { display: false } }
-    }
-  }
-});
-
-// ─── Bond pages table ─────────────────────────────────────────────────────────
-const btbl = document.getElementById('bondTable');
-bondPages.forEach(d => {
-  const posCls = d.pos <= 7 ? 'pos-good' : d.pos <= 12 ? 'pos-mid' : 'pos-low';
-  btbl.innerHTML += `<tr>
-    <td><strong>${d.name}</strong></td>
-    <td style="font-family:monospace;font-size:11px">${d.isin}</td>
-    <td>${d.imp}</td>
-    <td>${d.clicks}</td>
-    <td>${d.ctr}%</td>
-    <td><span class="pos-pill ${posCls}">${d.pos}</span></td>
-  </tr>`;
-});
-
-// ─── View All toggle (used by What Shipped, Engineering, Marketing, ISIN table) ─
+// Row toggle
 function toggleRows(tbodyId, visibleCount, btn) {
   const tbody = document.getElementById(tbodyId);
   if (!tbody) return;
   const rows = tbody.querySelectorAll('tr');
-  const exp = btn.dataset.expanded === 'true';
-  rows.forEach((r, i) => { if (i >= visibleCount) r.style.display = exp ? 'none' : ''; });
+  const expanded = btn.dataset.expanded === 'true';
+  rows.forEach((r, i) => { if (i >= visibleCount) r.style.display = expanded ? 'none' : ''; });
   const hidden = rows.length - visibleCount;
-  btn.dataset.expanded = exp ? 'false' : 'true';
-  btn.textContent = exp ? 'View All (' + hidden + ' more) ▾' : 'Show Less ▴';
+  btn.dataset.expanded = expanded ? 'false' : 'true';
+  btn.textContent = expanded ? 'View All (' + hidden + ' more) ▾' : 'Show Less ▴';
 }
 
-// ─── Init: hide extra rows for static tables on page load ─────────────────────
-function initViewAll(tbodyId, visibleCount) {
-  const tbody = document.getElementById(tbodyId);
-  if (!tbody) return;
-  const rows = tbody.querySelectorAll('tr');
-  rows.forEach((r, i) => { if (i >= visibleCount) r.style.display = 'none'; });
-}
-initViewAll('shippedBody', 5);
-initViewAll('engBody', 3);
-initViewAll('mktBody', 3);
-
-// ─── ISIN Crawl Correlation Charts ────────────────────────────────────────────
-// 14 weeks Jan 26 – Apr 27 · pre-fix = first 10 wks · post-fix = last 3 wks · 27 Apr = in-progress
-const corrWeeks      = ['26 Jan','02 Feb','09 Feb','16 Feb','23 Feb','02 Mar','09 Mar','16 Mar','23 Mar','30 Mar','06 Apr','13 Apr','20 Apr','27 Apr'];
-const corrIsins      = [48, 43, 43, 38, 47, 37, 38, 38, 38, 53, 59, 71, 74, null];
-const corrImp        = [174, 152, 179, 264, 221, 93, 108, 111, 131, 275, 815, 868, 1083, null];
-const corrImpPerIsin = [3.6, 3.5, 4.2, 6.9, 4.7, 2.5, 2.8, 2.9, 3.4, 5.2, 13.8, 12.2, 14.6, null];
-const PRE = 10; // first 10 weeks are pre-fix
-
-// Bar colours: pre-fix = light purple, post-fix = darker green
-const barColors = corrWeeks.map((_, i) => i < PRE ? 'rgba(167,139,250,0.6)' : 'rgba(34,197,94,0.75)');
-const barBorders = corrWeeks.map((_, i) => i < PRE ? '#7C3AED' : '#16A34A');
-
-// ── 1. Dual-axis: ISIN bars + impressions line ────────────────────────────────
-new Chart(document.getElementById('corrDualChart'), {
-  data: {
-    labels: corrWeeks,
-    datasets: [
-      {
-        type: 'bar',
-        label: 'ISINs with impressions',
-        data: corrIsins,
-        backgroundColor: barColors,
-        borderColor: barBorders,
-        borderWidth: 1,
-        yAxisID: 'yIsins',
-        order: 2,
-      },
-      {
-        type: 'line',
-        label: 'Bond page impressions',
-        data: corrImp,
-        borderColor: '#2563EB',
-        backgroundColor: 'rgba(37,99,235,0.08)',
-        borderWidth: 2.5,
-        pointRadius: 4,
-        pointBackgroundColor: corrWeeks.map((_, i) => i < PRE ? '#93C5FD' : '#1D4ED8'),
-        tension: 0.3,
-        fill: true,
-        yAxisID: 'yImp',
-        order: 1,
-      },
-    ],
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { position: 'top', labels: { font: { size: 11 } } },
-      annotation: {
-        annotations: {
-          ssrLine: {
-            type: 'line',
-            xMin: PRE - 0.5,
-            xMax: PRE - 0.5,
-            borderColor: '#DC2626',
-            borderWidth: 2,
-            borderDash: [5, 4],
-            label: {
-              display: true,
-              content: 'SSR fix Apr 5',
-              position: 'start',
-              backgroundColor: '#DC2626',
-              color: '#FFF',
-              font: { size: 10, weight: 'bold' },
-              padding: { x: 6, y: 3 },
-            },
-          },
-          corrNowLine: { ...CORR_NOW_LINE },
-        },
-      },
-      tooltip: {
-        callbacks: {
-          label: ctx => {
-            if (ctx.dataset.label === 'ISINs with impressions') return ` ${ctx.parsed.y} ISINs`;
-            return ` ${ctx.parsed.y.toLocaleString()} impressions`;
-          },
-        },
-      },
-    },
-    scales: {
-      x: { ticks: { font: { size: 10 }, maxRotation: 45 }, grid: { display: false } },
-      yIsins: {
-        type: 'linear',
-        position: 'left',
-        title: { display: true, text: 'ISINs', font: { size: 10 } },
-        min: 0,
-        max: 100,
-        ticks: { font: { size: 10 } },
-        grid: { color: 'rgba(0,0,0,0.05)' },
-      },
-      yImp: {
-        type: 'linear',
-        position: 'right',
-        title: { display: true, text: 'Impressions', font: { size: 10 } },
-        min: 0,
-        ticks: { font: { size: 10 } },
-        grid: { drawOnChartArea: false },
-      },
-    },
-  },
-});
-
-// ── 2. Impressions / ISIN trend ───────────────────────────────────────────────
-new Chart(document.getElementById('impPerIsinChart'), {
-  type: 'line',
-  data: {
-    labels: corrWeeks,
-    datasets: [
-      {
-        label: 'Impressions / ISIN / week',
-        data: corrImpPerIsin,
-        borderColor: '#7C3AED',
-        backgroundColor: 'rgba(124,58,237,0.08)',
-        borderWidth: 2.5,
-        pointRadius: corrWeeks.map((_, i) => i < PRE ? 4 : 6),
-        pointBackgroundColor: corrWeeks.map((_, i) => i < PRE ? '#C4B5FD' : '#7C3AED'),
-        tension: 0.35,
-        fill: true,
-      },
-    ],
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      annotation: {
-        annotations: {
-          ssrLine: {
-            type: 'line',
-            xMin: PRE - 0.5,
-            xMax: PRE - 0.5,
-            borderColor: '#DC2626',
-            borderWidth: 2,
-            borderDash: [5, 4],
-            label: {
-              display: true,
-              content: 'SSR fix',
-              position: 'start',
-              backgroundColor: '#DC2626',
-              color: '#FFF',
-              font: { size: 10, weight: 'bold' },
-              padding: { x: 5, y: 3 },
-            },
-          },
-          avgPre: {
-            type: 'line',
-            yMin: 4.0,
-            yMax: 4.0,
-            xMin: 0,
-            xMax: PRE - 1,
-            borderColor: '#F97316',
-            borderWidth: 1.5,
-            borderDash: [4, 3],
-            label: {
-              display: true,
-              content: 'avg 4.0 pre-fix',
-              position: 'end',
-              backgroundColor: 'rgba(249,115,22,0.85)',
-              color: '#FFF',
-              font: { size: 9 },
-              padding: { x: 4, y: 2 },
-            },
-          },
-          avgPost: {
-            type: 'line',
-            yMin: 13.5,
-            yMax: 13.5,
-            xMin: PRE,
-            xMax: corrWeeks.length - 1,
-            borderColor: '#16A34A',
-            borderWidth: 1.5,
-            borderDash: [4, 3],
-            label: {
-              display: true,
-              content: 'avg 13.5 post-fix',
-              position: 'end',
-              backgroundColor: 'rgba(22,163,74,0.85)',
-              color: '#FFF',
-              font: { size: 9 },
-              padding: { x: 4, y: 2 },
-            },
-          },
-          corrNowLine: { ...CORR_NOW_LINE },
-        },
-      },
-      tooltip: {
-        callbacks: {
-          label: ctx => ` ${ctx.parsed.y} impr/ISIN`,
-        },
-      },
-    },
-    scales: {
-      x: { ticks: { font: { size: 10 }, maxRotation: 45 }, grid: { display: false } },
-      y: {
-        min: 0,
-        title: { display: true, text: 'Impr / ISIN / wk', font: { size: 10 } },
-        ticks: { font: { size: 10 } },
-        grid: { color: 'rgba(0,0,0,0.05)' },
-      },
-    },
-  },
-});
-
-// ── 3. Scatter: ISIN count vs weekly impressions ──────────────────────────────
-const prePoints  = corrIsins.slice(0, PRE).map((x, i) => ({ x, y: corrImp[i] }));
-const postPoints = corrIsins.slice(PRE).map((x, i)  => ({ x, y: corrImp[PRE + i] }));
-
-new Chart(document.getElementById('corrScatterChart'), {
-  type: 'scatter',
-  data: {
-    datasets: [
-      {
-        label: 'Pre-fix (Jan 26 – Mar 29)',
-        data: prePoints,
-        backgroundColor: 'rgba(220,38,38,0.65)',
-        borderColor: '#DC2626',
-        pointRadius: 7,
-        pointHoverRadius: 9,
-      },
-      {
-        label: 'Post-fix (Apr 6 – Apr 20)',
-        data: postPoints,
-        backgroundColor: 'rgba(22,163,74,0.7)',
-        borderColor: '#16A34A',
-        pointRadius: 9,
-        pointHoverRadius: 11,
-      },
-    ],
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { position: 'top', labels: { font: { size: 11 } } },
-      tooltip: {
-        callbacks: {
-          label: ctx => ` ${ctx.parsed.x} ISINs → ${ctx.parsed.y} impressions`,
-        },
-      },
-    },
-    scales: {
-      x: {
-        title: { display: true, text: 'ISINs with impressions (weekly)', font: { size: 11 } },
-        min: 30,
-        max: 85,
-        ticks: { font: { size: 10 } },
-        grid: { color: 'rgba(0,0,0,0.05)' },
-      },
-      y: {
-        title: { display: true, text: 'Total bond impressions (weekly)', font: { size: 11 } },
-        min: 0,
-        ticks: { font: { size: 10 } },
-        grid: { color: 'rgba(0,0,0,0.05)' },
-      },
-    },
-  },
-});
+// Init hidden rows
+(function() {
+  [['ticketBody',6],['isinBody',8],['queryBody',8],['qwBody',8]].forEach(([id, n]) => {
+    const tbody = document.getElementById(id);
+    if (!tbody) return;
+    tbody.querySelectorAll('tr').forEach((r, i) => { if (i >= n) r.style.display = 'none'; });
+  });
+})();
 </script>
 </body>
 </html>

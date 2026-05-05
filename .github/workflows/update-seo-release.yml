@@ -1,0 +1,55 @@
+name: Daily SEO Release Page Refresh
+
+on:
+  schedule:
+    - cron: '45 3 * * *'   # 9:15 AM IST (UTC+5:30) — after SEO agent run
+  workflow_dispatch:         # allow manual trigger from GitHub UI
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout b2c_product
+        uses: actions/checkout@v4
+
+      - name: Checkout yubi-b2c-product-spec
+        uses: actions/checkout@v4
+        with:
+          repository: arpitgoyalyubi/yubi-b2c-product-spec
+          token: ${{ secrets.PRODUCT_SPEC_PAT }}
+          path: product-spec
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install SEO agent dependencies
+        run: pip install requests google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client beautifulsoup4
+
+      - name: Generate SEO dashboard
+        env:
+          GSC_SITE_URL:            sc-domain:aspero.in
+          GOOGLE_CLIENT_ID:        ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET:    ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN:    ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          PAGESPEED_API_KEY:       ${{ secrets.PAGESPEED_API_KEY }}
+          JIRA_BASE:               https://goyubi.atlassian.net
+          JIRA_EMAIL:              ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN:          ${{ secrets.JIRA_API_TOKEN }}
+        run: |
+          cd product-spec/ampl-seo-agent/agent
+          python3 generate_seo_dashboard.py
+
+      - name: Copy dashboard to seo-release.html
+        run: cp product-spec/ampl-seo-agent/exports/seo_dashboard.html seo-release.html
+
+      - name: Commit updated page
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add seo-release.html
+          git diff --cached --quiet || git commit -m "chore: refresh SEO release page [$(date -u '+%Y-%m-%d')]"
+          git push
