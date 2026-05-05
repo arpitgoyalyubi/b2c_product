@@ -43,13 +43,13 @@ jobs:
           cd product-spec/ampl-seo-agent/agent
           python3 generate_seo_dashboard.py
 
-      - name: Copy dashboard to seo-release.html
-        run: cp product-spec/ampl-seo-agent/exports/seo_dashboard.html seo-release.html
+      - name: Copy dashboard to seo-dashboard.html
+        run: cp product-spec/ampl-seo-agent/exports/seo_dashboard.html seo-dashboard.html
 
-      - name: Commit updated page
+      - name: Commit updated dashboard
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add seo-release.html
-          git diff --cached --quiet || git commit -m "chore: refresh SEO release page [$(date -u '+%Y-%m-%d')]"
+          git add seo-dashboard.html
+          git diff --cached --quiet || git commit -m "chore: refresh SEO dashboard [$(date -u '+%Y-%m-%d')]"
           git push
