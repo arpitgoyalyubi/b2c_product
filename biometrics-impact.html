@@ -694,7 +694,7 @@
     <span style="display:flex;align-items:center;gap:4px;color:#16A34A;">✅ Live data</span>
     <span style="display:flex;align-items:center;gap:4px;color:#2563EB;">🔢 Derived from existing data</span>
     <span style="display:flex;align-items:center;gap:4px;color:#D97706;">🔲 Amplitude query needed</span>
-    <span style="display:flex;align-items:center;gap:4px;color:#7C3AED;">🗓 Cohort data now available</span>
+    <span style="display:flex;align-items:center;gap:4px;color:#16A34A;">✅ Cohort data live (May 7)</span>
   </div>
 
   <!-- 4-metric grid -->
@@ -715,9 +715,28 @@
       <div class="sub">est. mirrors forgot-PIN rate drop; confirm with VERIFY_SECURE_PIN_FAILED query</div>
     </div>
     <div class="kpi" style="border-left:4px solid #7C3AED;background:#F5F3FF;">
-      <div class="label" style="color:#7C3AED;">🗓 D7 Return Rate (Bio vs Non-Bio)</div>
-      <div class="val" style="color:#7C3AED;">Ready</div>
-      <div class="sub">Apr 21 cohort hit D7 on Apr 28 — add cohort comparison query to next report</div>
+      <div class="label" style="color:#7C3AED;">✅ D7 Return Rate (Bio vs Non-Bio)</div>
+      <div class="val" style="color:#7C3AED;">+1.8pp</div>
+      <div class="sub">Enrolled 11.8% vs deferred 10.0% — bio users return more</div>
+    </div>
+  </div>
+
+  <!-- Bio active usage KPI -->
+  <div class="kpi-grid" style="margin-bottom:20px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));">
+    <div class="kpi" style="border-left:4px solid #16A34A;background:#F0FDF4;">
+      <div class="label" style="color:#16A34A;">✅ Bio Login Active Usage (16d)</div>
+      <div class="val" style="color:#16A34A;">32.6%</div>
+      <div class="sub">1,570 of 4,820 enrolled users used bio login ≥1× within 16 days of launch</div>
+    </div>
+    <div class="kpi" style="border-left:4px solid #7C3AED;background:#F5F3FF;">
+      <div class="label" style="color:#7C3AED;">✅ D14 Return Rate (Bio vs Non-Bio)</div>
+      <div class="val" style="color:#7C3AED;">+1.6pp</div>
+      <div class="sub">Enrolled 10.7% vs deferred 9.1% — gap holds at two weeks</div>
+    </div>
+    <div class="kpi" style="border-left:4px solid #7C3AED;background:#F5F3FF;">
+      <div class="label" style="color:#7C3AED;">✅ 16-Day Return (Apr 21 – May 6)</div>
+      <div class="val" style="color:#7C3AED;">+1.7pp</div>
+      <div class="sub">Enrolled 10.1% vs deferred 8.4% — consistent advantage across all windows</div>
     </div>
   </div>
 
@@ -763,23 +782,33 @@
       </tr>
       <tr>
         <td class="metric-col">D7 return rate — bio enrolled vs not</td>
-        <td style="font-size:13px;color:var(--text2);">User cohort: enrolled Apr 21 vs not enrolled</td>
-        <td style="font-size:13px;color:var(--text2);">Baseline TBD</td>
+        <td style="font-size:13px;color:var(--text2);">VERIFY_OTP_SUCCESS funnel<br><small>Enrolled Apr 21–28 cohort</small></td>
         <td style="font-size:13px;color:var(--text2);">—</td>
-        <td><span class="badge flat" style="background:#F5F3FF;color:#6D28D9;">🗓 Add query</span></td>
+        <td style="font-size:13px;font-weight:700;color:#7C3AED;">Enrolled 11.8% vs deferred 10.0%<br><small style="font-weight:400;color:#64748B;">+1.8pp in favour of enrolled</small></td>
+        <td><span class="badge up" style="background:#F5F3FF;color:#6D28D9;">✅ Live</span></td>
       </tr>
       <tr>
         <td class="metric-col">D14 return rate — bio enrolled vs not</td>
-        <td style="font-size:13px;color:var(--text2);">User cohort: enrolled Apr 21</td>
-        <td style="font-size:13px;color:var(--text2);">Baseline TBD</td>
+        <td style="font-size:13px;color:var(--text2);">VERIFY_OTP_SUCCESS funnel<br><small>Enrolled Apr 21 – May 5 cohort</small></td>
         <td style="font-size:13px;color:var(--text2);">—</td>
-        <td><span class="badge flat" style="background:#F5F3FF;color:#6D28D9;">🗓 Available May 5</span></td>
+        <td style="font-size:13px;font-weight:700;color:#7C3AED;">Enrolled 10.7% vs deferred 9.1%<br><small style="font-weight:400;color:#64748B;">+1.6pp in favour of enrolled</small></td>
+        <td><span class="badge up" style="background:#F5F3FF;color:#6D28D9;">✅ Live</span></td>
+      </tr>
+      <tr>
+        <td class="metric-col">Bio login active usage (16d)</td>
+        <td style="font-size:13px;color:var(--text2);">BIOMETRIC_LOGIN_CHALLENGE_VERIFIED<br><small>Apr 21 – May 6</small></td>
+        <td style="font-size:13px;color:var(--text2);">—</td>
+        <td style="font-size:13px;font-weight:700;color:#16A34A;">32.6% of enrolled used bio ≥1×<br><small style="font-weight:400;color:#64748B;">1,570 of 4,820 enrolled users</small></td>
+        <td><span class="badge up">✅ Live</span></td>
       </tr>
     </tbody>
   </table>
 
-  <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:12px;padding:14px 18px;font-size:13px;color:#1E40AF;line-height:1.6;">
+  <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:12px;padding:14px 18px;font-size:13px;color:#1E40AF;line-height:1.6;margin-bottom:12px;">
     <strong>📌 Deriving returning-user PIN views:</strong> Using <code>forgot_PIN_clicks ÷ forgot_PIN_rate</code> — before: 25.1 ÷ 0.1014 = <strong>248/day</strong>; after: 19.6 ÷ 0.0517 = <strong>379/day total</strong>. The total went up because new signups grew 16% (each new signup hits the PIN <em>setup</em> screen). Removing the new-signup delta (~57/day × 85% reach ≈ 48 extra setup screens): returning-user PIN login screens ≈ <strong>233/day</strong> — confirming bio is already diverting ~15/day of returning-user PIN encounters, trending up as the enrolled base grows.
+  </div>
+  <div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:12px;padding:14px 18px;font-size:13px;color:#4C1D95;line-height:1.6;">
+    <strong>📌 Cohort return rate methodology:</strong> Measured via Amplitude Funnel API — <code>SECURITY_BIOMETRICS_ENABLED → VERIFY_OTP_SUCCESS</code> (enrolled cohort) and <code>SECURITY_SETUP_SKIPPED → VERIFY_OTP_SUCCESS</code> (deferred cohort) across the post-launch window. Denominator includes all users who enrolled/deferred within the window, not just Apr 21 specifically — absolute rates (10–12%) appear low because many users enrolled recently and haven't had time to return. The <strong>+1.7–1.8pp gap</strong> between enrolled and deferred is the meaningful signal. Bio active usage (32.6%) counts enrolled users who fired <code>BIOMETRIC_LOGIN_CHALLENGE_VERIFIED</code> at least once — confirming 1 in 3 enrolled users is actively using it, not just enrolled and forgotten. Queried May 7 2026.
   </div>
 
   <!-- Daily Trend Chart -->
