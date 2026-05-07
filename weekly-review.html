@@ -903,8 +903,9 @@ const TEAL = '#14b8a6';
   }, 0) / mature.length;
   const swShare = avgFull > 0 ? Math.round(avgSW / avgFull * 100) : 0;
 
+  const oldestSW = ((curve[0] || [])[0]) || 0;
   insights('ins-s4t', [
-    { color: TEAL,      txt: `~${swShare}% of all first-trade conversions happen same-week as RTT — curves are flat after Wk 0` },
+    { color: TEAL,      txt: `~${swShare}% of eventual first-trades convert same-week (W0) for mature cohorts — W1 is the next biggest activation window (+3–5pp), not flat · W0 improving: ${pct(oldestSW)} (Mar) → ${pct(thisSW)} (latest)` },
     { color: '#94a3b8', txt: `Shorter lines = recent cohorts with less elapsed time — they will mature rightward in future weeks` },
   ]);
 })();
