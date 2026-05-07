@@ -247,6 +247,10 @@
   }
   .dot-btn.active { background: #fff; transform: scale(1.35); }
 
+  /* ── Slide 10 left-panel insight text (white on dark bg) */
+  #ins-s10 { border-top-color: rgba(255,255,255,0.2); }
+  #ins-s10 .ins-chip { color: rgba(255,255,255,0.82); }
+
   /* ── Slide 10 support issue table ───────────────────── */
   .s10-tbl    { width:100%; border-collapse:collapse; font-size:.68rem; }
   .s10-tbl th { text-align:left; padding:4px 6px; color:#64748b; font-weight:600;
@@ -583,12 +587,11 @@
       </div>
       <div class="insight-row" id="ins-s10"></div>
     </div>
-    <div class="right-panel" style="overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:8px;">
-      <div style="height:130px;position:relative;flex-shrink:0;">
+    <div class="right-panel" style="overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:14px;">
+      <div style="height:175px;position:relative;flex-shrink:0;">
         <canvas id="chart-support-trend"></canvas>
       </div>
       <div id="support-issue-table"></div>
-      <div style="font-size:.5rem;color:#94a3b8;margin-top:2px;">† May 4–7 partial week &nbsp;·&nbsp; 65% merge-dupe rate applied &nbsp;·&nbsp; Categories from ticket content analysis, not form dropdown</div>
     </div>
   </div>
 
