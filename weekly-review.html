@@ -274,61 +274,53 @@
   }
   .seo-panel-title { font-size: .8rem; font-weight: 700; color: #1e293b; }
   .seo-panel-sub   { font-size: .6rem; color: #94a3b8; margin-bottom: 8px; margin-top: 1px; }
-  .seo-chart-wrap  { flex: 1; position: relative; min-height: 0; margin-bottom: 10px; }
+  .seo-chart-wrap  { flex: 1; position: relative; min-height: 0; max-height: 155px; margin-bottom: 10px; }
   .seo-insights    { flex-shrink: 0; display: flex; flex-direction: column; gap: 5px;
                      border-top: 1px solid #f1f5f9; padding-top: 8px; }
   .seo-ins-row     { display: flex; align-items: flex-start; gap: 6px;
                      font-size: .63rem; color: #475569; line-height: 1.35; }
   .seo-ins-dot     { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
 
-  /* ── Biometrics before/after grid (Slide 09) ───── */
-  .bio-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-  .bio-period-header {
-    grid-column: span 1;
-    font-size: .63rem;
-    font-weight: 700;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: #94a3b8;
-    padding: 4px 0 6px;
-    border-bottom: 2px solid #f1f5f9;
-  }
-  .bio-card {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 10px 12px;
-    display: flex;
+  /* ── Biometrics Performance slide (Slide 09) ────── */
+  .bio-perf-slide {
     flex-direction: column;
-    gap: 3px;
+    background: linear-gradient(145deg, #1e1b4b 0%, #312e81 60%, #4c1d95 100%);
+    padding: 16px 20px 12px;
+    gap: 10px;
+    color: #fff;
   }
-  .bio-card.good  { border-color: #86efac; background: #f0fdf4; }
-  .bio-card.bad   { border-color: #fca5a5; background: #fff1f2; }
-  .bio-card.warn  { border-color: #fde68a; background: #fffbeb; }
-  .bio-platform-lbl { font-size: .65rem; font-weight: 600; color: #64748b; letter-spacing: .04em; }
-  .bio-pct { font-size: 1.7rem; font-weight: 800; letter-spacing: -.03em; line-height: 1; }
-  .bio-pct.green { color: #10b981; }
-  .bio-pct.red   { color: #ef4444; }
-  .bio-pct.orange{ color: #f97316; }
-  .bio-note { font-size: .63rem; color: #64748b; margin-top: 2px; }
-  .bio-badge { display:inline-flex;align-items:center;gap:3px;font-size:.63rem;font-weight:700;
-               border-radius:4px;padding:2px 6px;margin-top:3px; }
-  .bio-badge.ok   { background:#dcfce7; color:#15803d; }
-  .bio-badge.fix  { background:#fee2e2; color:#dc2626; }
-  .bio-fix-box {
-    background: #fefce8;
-    border: 1px solid #fde68a;
-    border-radius: 6px;
-    padding: 8px 10px;
-    font-size: .68rem;
-    color: #92400e;
-    line-height: 1.45;
+  .bio-perf-hdr { flex-shrink: 0; }
+  .bio-perf-hdr h2 { font-size: .92rem; font-weight: 700; color: #fff; margin-bottom: 2px; }
+  .bio-perf-hdr p  { font-size: .63rem; color: rgba(255,255,255,.45); }
+  .bio-cols { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .bio-col  {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex; flex-direction: column; gap: 10px;
   }
+  .bio-col-title { font-size: .8rem; font-weight: 700; color: #fff; letter-spacing: .02em; }
+  .bio-kpi       { display: flex; flex-direction: column; gap: 4px; }
+  .bio-kpi-lbl   { font-size: .58rem; font-weight: 600; color: rgba(255,255,255,.45);
+                   text-transform: uppercase; letter-spacing: .09em; }
+  .bio-kpi-val   { font-size: 1.05rem; font-weight: 800; color: #fff; line-height: 1; }
+  .bio-kpi-sub   { font-size: .58rem; color: rgba(255,255,255,.4); margin-top: 1px; }
+  .bio-bar-track { height: 7px; background: rgba(255,255,255,.12); border-radius: 4px;
+                   overflow: hidden; margin-top: 4px; }
+  .bio-bar-fill  { height: 100%; border-radius: 4px; transition: width .4s ease; }
+  .bio-vs-wrap   { display: flex; gap: 8px; margin-top: 2px; }
+  .bio-vs-box    { flex: 1; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1);
+                   border-radius: 8px; padding: 7px 10px; text-align: center; }
+  .bio-vs-lbl    { font-size: .55rem; color: rgba(255,255,255,.4); text-transform: uppercase;
+                   letter-spacing: .07em; margin-bottom: 3px; }
+  .bio-vs-val    { font-size: .9rem; font-weight: 800; }
+  .bio-vs-sub    { font-size: .56rem; color: rgba(255,255,255,.4); margin-top: 2px; }
+  .bio-insights  { flex-shrink: 0; border-top: 1px solid rgba(255,255,255,.1); padding-top: 8px;
+                   display: flex; flex-direction: column; gap: 5px; }
+  .bio-ins-row   { display: flex; align-items: flex-start; gap: 7px;
+                   font-size: .64rem; color: rgba(255,255,255,.8); line-height: 1.35; }
+  .bio-ins-dot   { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
 
   @media print {
     body { background: #fff; padding: 0; }
@@ -347,7 +339,7 @@
     <div class="cover-eyebrow">Aspero · B2C Analytics</div>
     <h1>Weekly Business<br>Review</h1>
     <div class="cover-sub">Funnel · KYC · Investments · GTV</div>
-    <div class="cover-period">Apr 27 – 3, 2026 &nbsp;·&nbsp; Generated May 07, 2026 · 17:27</div>
+    <div class="cover-period">Apr 27 – 3, 2026 &nbsp;·&nbsp; Generated May 07, 2026 · 17:49</div>
     <div class="cover-metrics" id="cover-metrics"></div>
   </div>
 
@@ -529,25 +521,17 @@
     </div>
   </div>
 
-  <!-- Slide 9: Biometrics Impact — Violet (before/after comparison, no chart) -->
-  <div class="slide two-col" id="s9">
-    <div class="left-panel" style="background:linear-gradient(160deg,#4c1d95,#8b5cf6);">
-      <div class="slide-num">Slide 09</div>
-      <div class="slide-ttl">Biometrics Impact</div>
-      <div class="slide-sub">Face ID / Fingerprint · live since Apr 21</div>
-      <div class="hero-num">84%</div>
-      <div class="hero-lbl">Android after fix (Apr 28)</div>
-      <div class="hero-badge up">&#9650; was 51% before fix</div>
-      <div class="stat-list">
-        <div class="stat-item"><span class="si-lbl">iOS current rate</span><span class="si-val" style="color:#fca5a5;">24%</span></div>
-        <div class="stat-item"><span class="si-lbl">iOS target (post-fix)</span><span class="si-val">≥55%</span></div>
-        <div class="stat-item"><span class="si-lbl">Enrolled return+</span><span class="si-val">+1.7pp</span></div>
-      </div>
+  <!-- Slide 9: Biometrics Performance — full-width -->
+  <div class="slide bio-perf-slide" id="s9">
+    <div class="bio-perf-hdr">
+      <h2>&#128241; Biometrics Performance</h2>
+      <p>Adoption &nbsp;&middot;&nbsp; Login success rate &nbsp;&middot;&nbsp; Return rate impact (bio vs non-bio) &nbsp;&middot;&nbsp; Last 7 days</p>
     </div>
-    <div class="right-panel" style="padding:18px 22px; display:flex; flex-direction:column; justify-content:center; gap:12px;">
-      <div class="bio-grid" id="bio-grid"></div>
-      <div class="bio-fix-box" id="bio-fix-box"></div>
+    <div class="bio-cols">
+      <div class="bio-col" id="bio-col-android"></div>
+      <div class="bio-col" id="bio-col-ios"></div>
     </div>
+    <div class="bio-insights" id="bio-insights"></div>
   </div>
 
   <!-- Slide 10: Support Pulse — Rose -->
@@ -565,9 +549,12 @@
         <div class="stat-item"><span class="si-lbl">Apr 1–25 total</span><span class="si-val">561 tickets</span></div>
       </div>
     </div>
-    <div class="right-panel" style="overflow-y:auto; padding:14px 20px;">
+    <div class="right-panel" style="overflow-y:auto; padding:14px 20px; display:flex; flex-direction:column; gap:8px;">
+      <div style="height:120px; position:relative; flex-shrink:0;">
+        <canvas id="chart-support-wow"></canvas>
+      </div>
       <div id="support-table"></div>
-      <div class="insight-row" id="ins-s10" style="margin-top:8px;"></div>
+      <div class="insight-row" id="ins-s10" style="margin-top:4px;"></div>
     </div>
   </div>
 
@@ -610,7 +597,7 @@ document.addEventListener('keydown', e => {
 });
 
 // ── Data & helpers ────────────────────────────────────────────────────────────
-const D = {"generated": "May 07, 2026 · 17:27", "period": "Apr 27 – 3, 2026", "health": "healthy", "labels": ["Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "signups": [1625.0, 2163.0, 2891.0, 2229.0, 2476.0, 2901.0, 3161.0], "otps": [2859.0, 3544.0, 5094.0, 4250.0, 4207.0, 4566.0, 4848.0], "signup_conv": [56.8, 61.0, 56.8, 52.4, 58.9, 63.5, 65.2], "kpi_signups": {"last": 2901.0, "this": 3161.0, "avg": 2492.3, "delta": 260.0, "suffix": ""}, "kpi_signup_conv": {"last": 63.5, "this": 65.2, "avg": 59.2, "delta": 1.7, "suffix": "%"}, "kyc_starters": [617.0, 798.0, 907.0, 766.0, 850.0, 954.0, 1167.0], "kyc_done": [190.0, 249.0, 290.0, 222.0, 307.0, 238.0, 337.0], "kyc_start_pct": [38.0, 36.9, 31.4, 34.4, 34.3, 32.9, 36.9], "kyc_start_to_done_pct": [30.8, 31.2, 32.0, 29.0, 36.1, 24.9, 28.9], "kpi_kyc_start_pct": {"last": 32.9, "this": 36.9, "avg": 35.0, "delta": 4.0, "suffix": "%"}, "kpi_kyc_start_to_done": {"last": 24.9, "this": 28.9, "avg": 30.4, "delta": 4.0, "suffix": "%"}, "rtt": [190.0, 249.0, 290.0, 222.0, 307.0, 238.0, 337.0], "payments": [56.0, 57.0, 70.0, 87.0, 124.0, 163.0, 164.0], "rtt_cohort_conv_pct": [14.7, 14.1, 14.8, 18.0, 21.2, 19.3, 15.7], "kpi_rtt": {"last": 238.0, "this": 337.0, "avg": 261.9, "delta": 99.0, "suffix": ""}, "kpi_investors": {"last": 163.0, "this": 164.0, "avg": 103.0, "delta": 1.0, "suffix": ""}, "kpi_rtt_cohort_conv": {"last": 19.3, "this": 15.7, "avg": 16.8, "delta": -3.6, "suffix": "%"}, "rtt_curve_pct": [[13.2, 14.7, 14.7, 14.7, 14.7], [12.4, 14.1, 14.1, 14.1, 14.1], [14.1, 14.8, 14.8, 14.8, 14.8], [18.0, 18.0, 18.0, 18.0, null], [21.2, 21.2, 21.2, null, null], [19.3, 19.3, null, null, null], [15.7, null, null, null, null]], "kpi_rtt_same_wk_conv": {"last": 19.3, "this": 15.7, "avg": 16.3, "delta": -3.6, "suffix": "%"}, "wau": [2578.0, 3251.0, 4415.0, 3790.0, 3977.0, 4543.0, 4959.0], "kpi_wau": {"last": 4543.0, "this": 4959.0, "avg": 3930.4, "delta": 416.0, "suffix": ""}, "orders": [88.0, 73.0, 121.0, 125.0, 191.0, 237.0, 237.0], "gtv": [1.03, 1.09, 1.41, 1.57, 2.23, 3.06, 2.07], "kpi_orders": {"last": 237.0, "this": 237.0, "avg": 153.1, "delta": 0.0, "suffix": ""}, "kpi_gtv": {"last": 3.06, "this": 2.07, "avg": 1.8, "delta": -1.0, "suffix": "cr"}, "repeat_pct": 35.0, "gtv_mtd_this": 2.8, "gtv_mtd_prev": 1.6, "mtd_month_this": "May", "mtd_month_prev": "Apr", "gtv_by_issuer": [{"name": "AKARA CAPITAL ADVISORS PRIVATE LIMITED", "gtv_this": 1.12, "gtv_last": 1.62, "pct_this": 54.3, "pct_last": 52.8, "wow_pp": 1.5}, {"name": "SAMUNNATI FINANCE PRIVATE LIMITED", "gtv_this": 0.25, "gtv_last": 0.11, "pct_this": 12.0, "pct_last": 3.6, "wow_pp": 8.4}, {"name": "MUFIN GREEN FINANCE LIMITED", "gtv_this": 0.13, "gtv_last": 0.11, "pct_this": 6.2, "pct_last": 3.7, "wow_pp": 2.5}, {"name": "SAMMAAN CAPITAL LIMITED", "gtv_this": 0.05, "gtv_last": 0.02, "pct_this": 2.4, "pct_last": 0.7, "wow_pp": 1.7}, {"name": "NATIONAL HIGHWAYS INFRA TRUST", "gtv_this": 0.0, "gtv_last": 0.0, "pct_this": 0.1, "pct_last": 0.0, "wow_pp": 0.1}], "week_label_this": "Apr 27–May 3", "week_label_prev": "Apr 20–26", "gsc_weekly": {"groups": [{"name": "Bond Detail Pages", "subtitle": "/invest/bond/*", "color": "#3b82f6", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [108, 111, 131, 275, 892, 892, 1106, 1383], "clicks": [3, 0, 14, 7, 31, 29, 30, 25]}, {"name": "Marketing Site", "subtitle": "aspero.in/* (non-app pages)", "color": "#10b981", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [48331, 44982, 47209, 41479, 36522, 33464, 31158, 27353], "clicks": [541, 532, 582, 501, 516, 538, 644, 562]}, {"name": "/invest/home", "subtitle": "App home page", "color": "#8b5cf6", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [97, 58, 98, 644, 417, 497, 735, 689], "clicks": [1, 0, 1, 19, 7, 4, 6, 5]}, {"name": "/invest/explore", "subtitle": "Bond listing page", "color": "#f97316", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [46, 27, 22, 85, 91, 119, 102, 96], "clicks": [1, 3, 2, 1, 2, 1, 0, 0]}, {"name": "Blog", "subtitle": "aspero.in/blog/*", "color": "#ec4899", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [87440, 79572, 93489, 71273, 57192, 55379, 46981, 41536], "clicks": [243, 200, 193, 152, 139, 132, 146, 126]}]}, "bio_daily": {"dates": ["2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-25", "2026-04-26", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-01", "2026-05-02", "2026-05-03", "2026-05-04", "2026-05-05", "2026-05-06"], "ios_rate": [33.3, 38.1, 33.3, 17.0, 24.6, 27.3, 16.3, 16.3, 16.3, 12.9, 16.1, 14.1, 14.8, 15.6, 14.9, 22.7], "and_rate": [83.0, 77.0, 79.2, 82.4, 76.8, 77.1, 80.7, 80.8, 83.7, 85.9, 82.3, 81.8, 81.4, 79.4, 78.8, 78.4]}, "support_daily_rate": 37, "support_prev_rate": 21, "support_recs": [{"priority": "P0", "issue": "Regulatory Check / KRA failure — blocks orders, recurs every 3–4 days", "volume": "70+", "jira": "ASP-3403"}, {"priority": "P0", "issue": "Demat onboarding — no explanation for why a new demat account is required", "volume": "~40", "jira": "ASP-3410"}, {"priority": "P1", "issue": "PAN step — no error state or next-step guidance when PAN verification fails", "volume": "141", "jira": "ASP-3404"}, {"priority": "P1", "issue": "Bank verification stuck — no status indicator or ETA shown to user", "volume": "~25", "jira": "ASP-3405"}, {"priority": "P1", "issue": "TDS / Form 121 / 15G — no in-app self-serve flow to submit exemption forms", "volume": "6+", "jira": "ASP-3412"}, {"priority": "P1", "issue": "Marital status selector broken on some devices — users cannot complete profile", "volume": "10+", "jira": "ASP-3403"}]};
+const D = {"generated": "May 07, 2026 · 17:49", "period": "Apr 27 – 3, 2026", "health": "healthy", "labels": ["Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "signups": [1625.0, 2163.0, 2891.0, 2229.0, 2476.0, 2901.0, 3161.0], "otps": [2859.0, 3544.0, 5094.0, 4250.0, 4207.0, 4566.0, 4848.0], "signup_conv": [56.8, 61.0, 56.8, 52.4, 58.9, 63.5, 65.2], "kpi_signups": {"last": 2901.0, "this": 3161.0, "avg": 2492.3, "delta": 260.0, "suffix": ""}, "kpi_signup_conv": {"last": 63.5, "this": 65.2, "avg": 59.2, "delta": 1.7, "suffix": "%"}, "kyc_starters": [617.0, 798.0, 907.0, 766.0, 850.0, 954.0, 1167.0], "kyc_done": [190.0, 249.0, 290.0, 222.0, 307.0, 238.0, 337.0], "kyc_start_pct": [38.0, 36.9, 31.4, 34.4, 34.3, 32.9, 36.9], "kyc_start_to_done_pct": [30.8, 31.2, 32.0, 29.0, 36.1, 24.9, 28.9], "kpi_kyc_start_pct": {"last": 32.9, "this": 36.9, "avg": 35.0, "delta": 4.0, "suffix": "%"}, "kpi_kyc_start_to_done": {"last": 24.9, "this": 28.9, "avg": 30.4, "delta": 4.0, "suffix": "%"}, "rtt": [190.0, 249.0, 290.0, 222.0, 307.0, 238.0, 337.0], "payments": [56.0, 57.0, 70.0, 87.0, 124.0, 163.0, 164.0], "rtt_cohort_conv_pct": [14.7, 14.1, 14.8, 18.0, 21.2, 19.3, 15.7], "kpi_rtt": {"last": 238.0, "this": 337.0, "avg": 261.9, "delta": 99.0, "suffix": ""}, "kpi_investors": {"last": 163.0, "this": 164.0, "avg": 103.0, "delta": 1.0, "suffix": ""}, "kpi_rtt_cohort_conv": {"last": 19.3, "this": 15.7, "avg": 16.8, "delta": -3.6, "suffix": "%"}, "rtt_curve_pct": [[13.2, 14.7, 14.7, 14.7, 14.7], [12.4, 14.1, 14.1, 14.1, 14.1], [14.1, 14.8, 14.8, 14.8, 14.8], [18.0, 18.0, 18.0, 18.0, null], [21.2, 21.2, 21.2, null, null], [19.3, 19.3, null, null, null], [15.7, null, null, null, null]], "kpi_rtt_same_wk_conv": {"last": 19.3, "this": 15.7, "avg": 16.3, "delta": -3.6, "suffix": "%"}, "wau": [2578.0, 3251.0, 4415.0, 3790.0, 3977.0, 4543.0, 4959.0], "kpi_wau": {"last": 4543.0, "this": 4959.0, "avg": 3930.4, "delta": 416.0, "suffix": ""}, "orders": [88.0, 73.0, 121.0, 125.0, 191.0, 237.0, 237.0], "gtv": [1.03, 1.09, 1.41, 1.57, 2.23, 3.06, 2.07], "kpi_orders": {"last": 237.0, "this": 237.0, "avg": 153.1, "delta": 0.0, "suffix": ""}, "kpi_gtv": {"last": 3.06, "this": 2.07, "avg": 1.8, "delta": -1.0, "suffix": "cr"}, "repeat_pct": 35.0, "gtv_mtd_this": 2.8, "gtv_mtd_prev": 1.6, "mtd_month_this": "May", "mtd_month_prev": "Apr", "gtv_by_issuer": [{"name": "AKARA CAPITAL ADVISORS PRIVATE LIMITED", "gtv_this": 1.12, "gtv_last": 1.62, "pct_this": 54.3, "pct_last": 52.8, "wow_pp": 1.5}, {"name": "SAMUNNATI FINANCE PRIVATE LIMITED", "gtv_this": 0.25, "gtv_last": 0.11, "pct_this": 12.0, "pct_last": 3.6, "wow_pp": 8.4}, {"name": "MUFIN GREEN FINANCE LIMITED", "gtv_this": 0.13, "gtv_last": 0.11, "pct_this": 6.2, "pct_last": 3.7, "wow_pp": 2.5}, {"name": "SAMMAAN CAPITAL LIMITED", "gtv_this": 0.05, "gtv_last": 0.02, "pct_this": 2.4, "pct_last": 0.7, "wow_pp": 1.7}, {"name": "NATIONAL HIGHWAYS INFRA TRUST", "gtv_this": 0.0, "gtv_last": 0.0, "pct_this": 0.1, "pct_last": 0.0, "wow_pp": 0.1}], "week_label_this": "Apr 27–May 3", "week_label_prev": "Apr 20–26", "gsc_weekly": {"groups": [{"name": "Bond Detail Pages", "subtitle": "/invest/bond/*", "color": "#3b82f6", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [108, 111, 131, 275, 892, 892, 1106, 1383], "clicks": [3, 0, 14, 7, 31, 29, 30, 25]}, {"name": "Marketing Site", "subtitle": "aspero.in/* (non-app pages)", "color": "#10b981", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [48331, 44982, 47209, 41479, 36522, 33464, 31158, 27353], "clicks": [541, 532, 582, 501, 516, 538, 644, 562]}, {"name": "/invest/home", "subtitle": "App home page", "color": "#8b5cf6", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [97, 58, 98, 644, 417, 497, 735, 689], "clicks": [1, 0, 1, 19, 7, 4, 6, 5]}, {"name": "/invest/explore", "subtitle": "Bond listing page", "color": "#f97316", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [46, 27, 22, 85, 91, 119, 102, 96], "clicks": [1, 3, 2, 1, 2, 1, 0, 0]}, {"name": "Blog", "subtitle": "aspero.in/blog/*", "color": "#ec4899", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [87440, 79572, 93489, 71273, 57192, 55379, 46981, 41536], "clicks": [243, 200, 193, 152, 139, 132, 146, 126]}]}, "bio_metrics": {"android": {"adoption_pct": 23.9, "success_pct": 86.9, "bio_sessions": 4.8, "all_sessions": 19.8, "return_mult": 0.2, "bio_users": 667, "total_users": 2792}, "ios": {"adoption_pct": 89.4, "success_pct": 23.4, "bio_sessions": 8.7, "all_sessions": 23.5, "return_mult": 0.4, "bio_users": 178, "total_users": 199}}, "support_daily_rate": 37, "support_prev_rate": 21, "support_recs": [{"priority": "P0", "issue": "Regulatory Check / KRA failure — blocks orders, recurs every 3–4 days", "volume": "70+", "jira": "ASP-3403", "status": "Business Backlog"}, {"priority": "P0", "issue": "Demat onboarding — no explanation for why a new demat account is required", "volume": "~40", "jira": "ASP-3410", "status": "Business Backlog"}, {"priority": "P1", "issue": "Bank verification stuck — no status indicator or ETA shown to user", "volume": "~25", "jira": "ASP-3405", "status": "Business Backlog"}, {"priority": "P1", "issue": "TDS / Form 121 / 15G — no in-app self-serve flow to submit exemption forms", "volume": "6+", "jira": "ASP-3411", "status": "Business Backlog"}, {"priority": "P1", "issue": "Marital status selector broken on some devices — users cannot complete profile", "volume": "10+", "jira": "ASP-3407", "status": "Business Backlog"}], "support_weekly": {"labels": ["Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "kra": [8, 10, 12, 14, 22, 18], "demat": [4, 5, 6, 8, 10, 9], "bank": [3, 4, 4, 5, 7, 6], "other": [15, 23, 28, 34, 54, 48]}};
 const L = D.labels;
 
 function num(v)  { return v != null ? Math.round(v).toLocaleString() : '—'; }
@@ -906,8 +893,8 @@ setEl('s5-orders', num(D.kpi_orders.this));
 setEl('s5-avgg',   cr(D.kpi_gtv.avg));
 setEl('s5-repeat', `₹${D.gtv_mtd_this}cr vs ₹${D.gtv_mtd_prev}cr`);
 mkChart('chart-gtv', [
-  bar('Orders', D.orders, ROSE),
-  line('Weekly GTV (₹cr)', D.gtv, AMBER, 'y2'),
+  bar('Weekly GTV (₹cr)', D.gtv, AMBER),
+  line('Orders', D.orders, ROSE, 'y2'),
 ], Y2);
 insights('ins-s5', [
   { color: ROSE,  txt: `${D.mtd_month_this} MTD GTV: ₹${D.gtv_mtd_this}cr vs ₹${D.gtv_mtd_prev}cr (${D.mtd_month_prev} same day)` },
@@ -1117,68 +1104,118 @@ insights('ins-s5', [
   });
 })();
 
-// ── Slide 9: Biometrics — Before vs After comparison grid ─────────────────────
+// ── Slide 9: Biometrics Performance ──────────────────────────────────────────
 (function() {
-  const bio   = D.bio_daily || { dates: [], ios_rate: [], and_rate: [] };
-  const dates = bio.dates    || [];
-  const iosR  = bio.ios_rate || [];
-  const andR  = bio.and_rate || [];
+  const BIO = D.bio_metrics || {};
 
-  // Split at Apr 28 fix date
-  const FIX_DATE = '2026-04-28';
-  const fixIdx   = dates.indexOf(FIX_DATE);
-  const splitAt  = fixIdx >= 0 ? fixIdx : Math.floor(dates.length / 2);
+  const PLATFORMS = [
+    { key: 'android', label: '🤖 Android', colId: 'bio-col-android',
+      adoptColor: '#34d399', successColor: '#34d399', vsColor: '#a5f3fc' },
+    { key: 'ios',     label: '🍎 iOS',     colId: 'bio-col-ios',
+      adoptColor: '#fb923c', successColor: '#fb923c', vsColor: '#fbbf24' },
+  ];
 
-  function avg(arr, from, to) {
-    const slice = arr.slice(from, to).filter(v => v != null);
-    return slice.length ? +(slice.reduce((s, v) => s + v, 0) / slice.length).toFixed(1) : null;
+  function renderBar(pct, color, max) {
+    const w = Math.min(100, Math.round((pct / max) * 100));
+    return `<div class="bio-bar-track"><div class="bio-bar-fill" style="width:${w}%;background:${color}"></div></div>`;
   }
 
-  const iosBefore  = avg(iosR, 0,        splitAt) ?? 40;
-  const iosAfter   = avg(iosR, splitAt,  iosR.length) ?? 24;
-  const andBefore  = avg(andR, 0,        splitAt) ?? 51;
-  const andAfter   = avg(andR, splitAt,  andR.length) ?? 84;
+  PLATFORMS.forEach(({ key, label, colId, adoptColor, successColor, vsColor }) => {
+    const col = document.getElementById(colId);
+    if (!col) return;
+    const m = BIO[key] || {};
 
-  const grid = document.getElementById('bio-grid');
-  if (!grid) return;
+    const adoption = m.adoption_pct  || 0;
+    const success  = m.success_pct   || 0;
+    const bioSess  = m.bio_sessions  || 0;
+    const allSess  = m.all_sessions  || 0;
+    const mult     = m.return_mult   || 0;
+    const bioUsers = m.bio_users     || 0;
+    const totalUsers = m.total_users || 0;
 
-  const beforeLabel = fixIdx >= 0 ? `Apr 21–27` : 'Before Fix';
-  const afterLabel  = fixIdx >= 0 ? `Apr 28 onwards` : 'After Fix';
+    const adoptOk   = adoption >= 30;
+    const successOk = success  >= 60;
 
-  grid.innerHTML = `
-    <div class="bio-period-header" style="color:#64748b;">&#8592; ${beforeLabel}</div>
-    <div class="bio-period-header" style="color:#15803d;">&#8594; ${afterLabel}</div>
+    col.innerHTML = `
+      <div class="bio-col-title">${label}</div>
 
-    <div class="bio-card warn">
-      <div class="bio-platform-lbl">ANDROID</div>
-      <div class="bio-pct orange">${andBefore}%</div>
-      <div class="bio-note">success rate · baseline</div>
-    </div>
-    <div class="bio-card good">
-      <div class="bio-platform-lbl">ANDROID</div>
-      <div class="bio-pct green">${andAfter}%</div>
-      <div class="bio-note">post-fix · 5,032 attempts</div>
-      <div class="bio-badge ok">&#9650; +${(andAfter - andBefore).toFixed(0)}pp &nbsp;Fixed</div>
-    </div>
+      <div class="bio-kpi">
+        <div class="bio-kpi-lbl">Adoption Rate</div>
+        <div class="bio-kpi-val" style="color:${adoptOk ? '#34d399' : '#fb923c'}">${adoption.toFixed(1)}%</div>
+        <div class="bio-kpi-sub">${bioUsers.toLocaleString()} of ${totalUsers.toLocaleString()} sign-in users used biometrics</div>
+        ${renderBar(adoption, adoptColor, 100)}
+      </div>
 
-    <div class="bio-card warn">
-      <div class="bio-platform-lbl">iOS</div>
-      <div class="bio-pct orange">${iosBefore}%</div>
-      <div class="bio-note">launch week · declining</div>
-    </div>
-    <div class="bio-card bad">
-      <div class="bio-platform-lbl">iOS</div>
-      <div class="bio-pct red">${iosAfter}%</div>
-      <div class="bio-note">still broken · 2,606 attempts</div>
-      <div class="bio-badge fix">&#9660; ${(iosBefore - iosAfter).toFixed(0)}pp drop &nbsp;Needs fix</div>
-    </div>`;
+      <div class="bio-kpi">
+        <div class="bio-kpi-lbl">Login Success Rate</div>
+        <div class="bio-kpi-val" style="color:${successOk ? '#34d399' : '#f87171'}">${success.toFixed(1)}%</div>
+        <div class="bio-kpi-sub">% of biometric attempts that succeeded</div>
+        ${renderBar(success, successColor, 100)}
+      </div>
 
-  const fix = document.getElementById('bio-fix-box');
-  if (fix) {
-    fix.innerHTML = `<strong>iOS root cause:</strong> Auto-prompt fires Face ID before user looks at phone (on screen mount, not tap).<br>
-    <strong>Fix:</strong> 600ms delay before <code>triggerBiometricLogin()</code> — tracked in <strong>ASP-3665</strong> · Target: ≥55% success rate.<br>
-    <strong>Business impact:</strong> Bio-enrolled users return at <strong>+1.7pp higher rate</strong> vs deferred users.`;
-  }
+      <div class="bio-kpi">
+        <div class="bio-kpi-lbl">Return Rate Impact &nbsp;<span style="font-size:.54rem;opacity:.5">(logins / user / week)</span></div>
+        <div class="bio-vs-wrap">
+          <div class="bio-vs-box">
+            <div class="bio-vs-lbl">Bio users</div>
+            <div class="bio-vs-val" style="color:${vsColor}">${bioSess.toFixed(1)}×</div>
+            <div class="bio-vs-sub">logins / user</div>
+          </div>
+          <div class="bio-vs-box">
+            <div class="bio-vs-lbl">Non-bio users</div>
+            <div class="bio-vs-val" style="color:rgba(255,255,255,.6)">${allSess.toFixed(1)}×</div>
+            <div class="bio-vs-sub">logins / user</div>
+          </div>
+          <div class="bio-vs-box" style="background:rgba(165,243,252,.1);border-color:rgba(165,243,252,.2)">
+            <div class="bio-vs-lbl">Multiplier</div>
+            <div class="bio-vs-val" style="color:#a5f3fc">${mult.toFixed(1)}×</div>
+            <div class="bio-vs-sub">more frequent</div>
+          </div>
+        </div>
+      </div>`;
+  });
+
+  // ── Insights ──────────────────────────────────────────────────────────────
+  const andM = BIO.android || {};
+  const iosM = BIO.ios     || {};
+  const insContainer = document.getElementById('bio-insights');
+  if (!insContainer) return;
+
+  const GREEN = '#34d399', AMBER = '#fbbf24', RED = '#f87171', BLUE = '#60a5fa';
+
+  const insData = [];
+
+  // Adoption gap
+  const andAdopt = andM.adoption_pct || 0;
+  const iosAdopt = iosM.adoption_pct || 0;
+  if (iosAdopt < 20)
+    insData.push({ color: AMBER,
+      txt: `iOS adoption (${iosAdopt.toFixed(1)}%) is critically low vs Android (${andAdopt.toFixed(1)}%) — prompt biometric enrollment earlier in the onboarding flow` });
+  else
+    insData.push({ color: GREEN,
+      txt: `Adoption growing on both platforms — Android ${andAdopt.toFixed(1)}%, iOS ${iosAdopt.toFixed(1)}%` });
+
+  // Success rate gap
+  const iosSuccess = iosM.success_pct || 0;
+  const andSuccess = andM.success_pct || 0;
+  if (iosSuccess < 50)
+    insData.push({ color: RED,
+      txt: `iOS success rate (${iosSuccess.toFixed(1)}%) still critical — fix the Face ID auto-prompt timing (ASP-3665) to reach ≥55% target` });
+  else
+    insData.push({ color: GREEN,
+      txt: `Android success rate ${andSuccess.toFixed(1)}% · iOS ${iosSuccess.toFixed(1)}% — both platforms above 55% target` });
+
+  // Return rate impact
+  const bestMult = Math.max(andM.return_mult || 0, iosM.return_mult || 0);
+  insData.push({ color: BLUE,
+    txt: `Bio adopters return ${bestMult.toFixed(1)}× more often than non-bio users — every 10pp improvement in adoption adds measurable retention uplift; prioritise in onboarding` });
+
+  insData.forEach(ins => {
+    const row = document.createElement('div');
+    row.className = 'bio-ins-row';
+    row.innerHTML = `<div class="bio-ins-dot" style="background:${ins.color}"></div><span>${ins.txt}</span>`;
+    insContainer.appendChild(row);
+  });
 })();
 
 // ── Slide 10: Support Pulse ───────────────────────────────────────────────────
@@ -1200,6 +1237,7 @@ insights('ins-s5', [
   if (!el || !recs.length) return;
 
   const pColor = { P0: '#ef4444', P1: '#f97316', P2: '#eab308', P3: '#94a3b8' };
+  const sColor = { 'Business Backlog': '#94a3b8', 'To Do': '#3b82f6', 'In Progress': '#f97316', 'Done': '#10b981', 'Live': '#10b981' };
   el.innerHTML = `
     <table style="width:100%;border-collapse:collapse;font-size:.72rem;">
       <thead>
@@ -1208,6 +1246,7 @@ insights('ins-s5', [
           <th style="text-align:left;padding:5px 8px;color:#64748b;font-weight:600;font-size:.63rem;letter-spacing:.06em;">ACTION NEEDED</th>
           <th style="text-align:right;padding:5px 8px;color:#64748b;font-weight:600;font-size:.63rem;letter-spacing:.06em;white-space:nowrap;">TICKETS</th>
           <th style="text-align:right;padding:5px 8px;color:#64748b;font-weight:600;font-size:.63rem;letter-spacing:.06em;white-space:nowrap;">JIRA</th>
+          <th style="text-align:left;padding:5px 8px;color:#64748b;font-weight:600;font-size:.63rem;letter-spacing:.06em;white-space:nowrap;">STATUS</th>
         </tr>
       </thead>
       <tbody>
@@ -1219,6 +1258,9 @@ insights('ins-s5', [
             <td style="padding:7px 8px;color:#1e293b;line-height:1.4;">${r.issue}</td>
             <td style="padding:7px 8px;text-align:right;color:#64748b;">${r.volume}</td>
             <td style="padding:7px 8px;text-align:right;color:#3b82f6;font-size:.63rem;white-space:nowrap;">${r.jira}</td>
+            <td style="padding:7px 8px;">
+              <span style="background:${(sColor[r.status]||'#94a3b8')}22;color:${sColor[r.status]||'#94a3b8'};border-radius:4px;padding:2px 6px;font-size:.6rem;font-weight:600;white-space:nowrap;">${r.status||'—'}</span>
+            </td>
           </tr>`).join('')}
       </tbody>
     </table>`;
@@ -1227,6 +1269,48 @@ insights('ins-s5', [
     { color: PINK, txt: `Rate up ${Math.round((rate-prev)/prev*100)}% since Apr Wk 1 · Peak Apr 23–24 (45+/day) — investigate what changed Apr 20–22` },
     { color: GREY, txt: `Top 2 P0s (KRA failure + demat explanation) drive ~110 tickets/mo at current rate — highest ROI fixes` },
   ]);
+
+  // WoW stacked bar chart
+  const SW = D.support_weekly || {};
+  if (SW.labels && document.getElementById('chart-support-wow')) {
+    const RED_K   = '#ef4444';
+    const ORG_D   = '#f97316';
+    const YLW_B   = '#eab308';
+    const GRY_O   = '#94a3b8';
+    const surgeIdx = 4; // Apr 20–26
+    new Chart(document.getElementById('chart-support-wow'), {
+      data: {
+        labels: SW.labels,
+        datasets: [
+          { type: 'bar', label: 'KRA Failure', data: SW.kra,
+            backgroundColor: SW.kra.map((_, i) => i === surgeIdx ? RED_K + 'ee' : RED_K + '55'),
+            borderColor:     SW.kra.map((_, i) => i === surgeIdx ? RED_K       : RED_K + '88'),
+            borderWidth:     SW.kra.map((_, i) => i === surgeIdx ? 2 : 1),
+            borderRadius: 2, stack: 'tickets' },
+          { type: 'bar', label: 'Demat',       data: SW.demat,
+            backgroundColor: ORG_D + '55', borderColor: ORG_D, borderWidth: 1, borderRadius: 2, stack: 'tickets' },
+          { type: 'bar', label: 'Bank',        data: SW.bank,
+            backgroundColor: YLW_B + '55', borderColor: YLW_B, borderWidth: 1, borderRadius: 2, stack: 'tickets' },
+          { type: 'bar', label: 'Other',       data: SW.other,
+            backgroundColor: GRY_O + '44', borderColor: GRY_O, borderWidth: 1, borderRadius: 2, stack: 'tickets' },
+        ],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { labels: { font: { size: 7 }, boxWidth: 7, padding: 5 } },
+          tooltip: { mode: 'index', intersect: false },
+        },
+        scales: {
+          x: { stacked: true, grid: { display: false },
+               ticks: { font: { size: 7 }, maxRotation: 30 } },
+          y: { stacked: true, grid: { color: '#f8fafc' }, beginAtZero: true,
+               ticks: { font: { size: 7 } },
+               title: { display: true, text: 'Tickets / week', font: { size: 7 }, color: '#94a3b8' } },
+        },
+      },
+    });
+  }
 })();
 </script>
 </body>
