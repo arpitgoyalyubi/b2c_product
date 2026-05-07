@@ -247,6 +247,13 @@
   }
   .dot-btn.active { background: #fff; transform: scale(1.35); }
 
+  /* ── Slide 10 support issue table ───────────────────── */
+  .s10-tbl    { width:100%; border-collapse:collapse; font-size:.68rem; }
+  .s10-tbl th { text-align:left; padding:4px 6px; color:#64748b; font-weight:600;
+                font-size:.58rem; letter-spacing:.06em; text-transform:uppercase;
+                border-bottom:2px solid #e2e8f0; white-space:nowrap; }
+  .s10-tbl td { padding:5px 6px; border-bottom:1px solid #f1f5f9; vertical-align:top; }
+
   /* ── SEO slide (Slide 08) — right-panel content only ─ */
   .seo-2col {
     flex: 1; min-height: 0;
@@ -541,19 +548,23 @@
     <div class="left-panel" style="background:linear-gradient(160deg,#881337,#ec4899);">
       <div class="slide-num">Slide 10</div>
       <div class="slide-ttl">Support Pulse</div>
-      <div class="slide-sub">Top actions from Apr 1–25 ticket analysis</div>
+      <div class="slide-sub">Content-classified · Apr 6 – May 7 · B2C only</div>
       <div class="hero-num" id="h10-val">—</div>
-      <div class="hero-lbl">Tickets / day (latest)</div>
-      <div class="hero-badge down" id="h10-delta">—</div>
+      <div class="hero-lbl">Real unique issues (Apr 27–May 3)</div>
+      <div class="hero-badge flat" id="h10-delta">—</div>
       <div class="stat-list">
-        <div class="stat-item"><span class="si-lbl">Apr Wk 1 rate</span><span class="si-val">21 / day</span></div>
-        <div class="stat-item"><span class="si-lbl">Apr 23–24 peak</span><span class="si-val">45+ / day</span></div>
-        <div class="stat-item"><span class="si-lbl">Apr 1–25 total</span><span class="si-val">561 tickets</span></div>
+        <div class="stat-item"><span class="si-lbl">Total Freshdesk (B2C)</span><span class="si-val" id="s10-total">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Merged dupes removed</span><span class="si-val" id="s10-dupes">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Top issue</span><span class="si-val" id="s10-top">—</span></div>
       </div>
+      <div class="insight-row" id="ins-s10"></div>
     </div>
-    <div class="right-panel" style="overflow-y:auto; padding:14px 20px;">
-      <div id="support-table"></div>
-      <div class="insight-row" id="ins-s10" style="margin-top:8px;"></div>
+    <div class="right-panel" style="overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:8px;">
+      <div style="height:130px;position:relative;flex-shrink:0;">
+        <canvas id="chart-support-trend"></canvas>
+      </div>
+      <div id="support-issue-table"></div>
+      <div style="font-size:.5rem;color:#94a3b8;margin-top:2px;">† May 4–7 partial week &nbsp;·&nbsp; 65% merge-dupe rate applied &nbsp;·&nbsp; Categories from ticket content analysis, not form dropdown</div>
     </div>
   </div>
 
@@ -596,7 +607,7 @@ document.addEventListener('keydown', e => {
 });
 
 // ── Data & helpers ────────────────────────────────────────────────────────────
-const D = {"generated": "May 08, 2026 · 01:03", "period": "Apr 27 – 3, 2026", "health": "healthy", "labels": ["Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "signups": [1625.0, 2163.0, 2891.0, 2229.0, 2476.0, 2901.0, 3161.0], "otps": [2859.0, 3544.0, 5094.0, 4250.0, 4207.0, 4567.0, 4848.0], "signup_conv": [56.8, 61.0, 56.8, 52.4, 58.9, 63.5, 65.2], "kpi_signups": {"last": 2901.0, "this": 3161.0, "avg": 2492.3, "delta": 260.0, "suffix": ""}, "kpi_signup_conv": {"last": 63.5, "this": 65.2, "avg": 59.2, "delta": 1.7, "suffix": "%"}, "kyc_starters": [617.0, 798.0, 907.0, 766.0, 850.0, 954.0, 1167.0], "kyc_done": [190.0, 249.0, 290.0, 222.0, 307.0, 238.0, 337.0], "kyc_start_pct": [38.0, 36.9, 31.4, 34.4, 34.3, 32.9, 36.9], "kyc_start_to_done_pct": [30.8, 31.2, 32.0, 29.0, 36.1, 24.9, 28.9], "kpi_kyc_start_pct": {"last": 32.9, "this": 36.9, "avg": 35.0, "delta": 4.0, "suffix": "%"}, "kpi_kyc_start_to_done": {"last": 24.9, "this": 28.9, "avg": 30.4, "delta": 4.0, "suffix": "%"}, "rtt": [190.0, 249.0, 290.0, 222.0, 307.0, 238.0, 337.0], "payments": [56.0, 57.0, 70.0, 87.0, 124.0, 163.0, 164.0], "rtt_cohort_conv_pct": [13.2, 9.6, 12.4, 17.1, 16.6, 16.4, 12.2], "kpi_rtt": {"last": 238.0, "this": 337.0, "avg": 261.9, "delta": 99.0, "suffix": ""}, "kpi_investors": {"last": 163.0, "this": 164.0, "avg": 103.0, "delta": 1.0, "suffix": ""}, "kpi_rtt_cohort_conv": {"last": 16.4, "this": 12.2, "avg": 13.9, "delta": -4.2, "suffix": "%"}, "rtt_curve_pct": [[5.3, 8.9, 10.0, 11.6, 13.2], [5.2, 6.4, 6.8, 8.8, 9.6], [5.5, 6.9, 7.6, 10.3, 12.4], [7.7, 12.6, 15.3, 17.1, null], [10.7, 15.0, 16.6, null, null], [11.8, 16.4, null, null, null], [12.2, null, null, null, null]], "kpi_rtt_same_wk_conv": {"last": 11.8, "this": 12.2, "avg": 8.3, "delta": 0.4, "suffix": "%"}, "wau": [2578.0, 3251.0, 4415.0, 3790.0, 3977.0, 4543.0, 4959.0], "kpi_wau": {"last": 4543.0, "this": 4959.0, "avg": 3930.4, "delta": 416.0, "suffix": ""}, "orders": [88.0, 73.0, 121.0, 125.0, 191.0, 237.0, 237.0], "gtv": [1.03, 1.09, 1.41, 1.57, 2.23, 3.06, 2.07], "kpi_orders": {"last": 237.0, "this": 237.0, "avg": 153.1, "delta": 0.0, "suffix": ""}, "kpi_gtv": {"last": 3.06, "this": 2.07, "avg": 1.8, "delta": -1.0, "suffix": "cr"}, "repeat_pct": 35.0, "gtv_mtd_this": 2.9, "gtv_mtd_prev": 1.8, "mtd_month_this": "May", "mtd_month_prev": "Apr", "gtv_by_issuer": [{"name": "AKARA CAPITAL ADVISORS PRIVATE LIMITED", "gtv_this": 1.12, "gtv_last": 1.62, "pct_this": 54.3, "pct_last": 52.8, "wow_pp": 1.5}, {"name": "SAMUNNATI FINANCE PRIVATE LIMITED", "gtv_this": 0.25, "gtv_last": 0.11, "pct_this": 12.0, "pct_last": 3.6, "wow_pp": 8.4}, {"name": "MUFIN GREEN FINANCE LIMITED", "gtv_this": 0.13, "gtv_last": 0.11, "pct_this": 6.2, "pct_last": 3.7, "wow_pp": 2.5}, {"name": "SAMMAAN CAPITAL LIMITED", "gtv_this": 0.05, "gtv_last": 0.02, "pct_this": 2.4, "pct_last": 0.7, "wow_pp": 1.7}, {"name": "NATIONAL HIGHWAYS INFRA TRUST", "gtv_this": 0.0, "gtv_last": 0.0, "pct_this": 0.1, "pct_last": 0.0, "wow_pp": 0.1}], "week_label_this": "Apr 27–May 3", "week_label_prev": "Apr 20–26", "gsc_weekly": {"groups": [{"name": "Bond Detail Pages", "subtitle": "/invest/bond/*", "color": "#3b82f6", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [108, 111, 131, 275, 892, 892, 1106, 1383], "clicks": [3, 0, 14, 7, 31, 29, 30, 25]}, {"name": "Marketing Site", "subtitle": "aspero.in/* (non-app pages)", "color": "#10b981", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [48331, 44982, 47209, 41479, 36522, 33464, 31158, 27353], "clicks": [541, 532, 582, 501, 516, 538, 644, 562]}, {"name": "/invest/home", "subtitle": "App home page", "color": "#8b5cf6", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [97, 58, 98, 644, 417, 497, 735, 689], "clicks": [1, 0, 1, 19, 7, 4, 6, 5]}, {"name": "/invest/explore", "subtitle": "Bond listing page", "color": "#f97316", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [46, 27, 22, 85, 91, 119, 102, 96], "clicks": [1, 3, 2, 1, 2, 1, 0, 0]}, {"name": "Blog", "subtitle": "aspero.in/blog/*", "color": "#ec4899", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [87440, 79572, 93489, 71273, 57192, 55379, 46981, 41536], "clicks": [243, 200, 193, 152, 139, 132, 146, 126]}]}, "bio_metrics": {"android": {"adoption_pct": 71.4, "success_pct": 86.5, "avg_logins": 4.7, "setup_fail_pct": 19.6, "bio_users": 1595, "setup_views": 2233, "not_eligible": 0}, "ios": {"adoption_pct": 68.2, "success_pct": 24.2, "avg_logins": 7.8, "setup_fail_pct": 7.5, "bio_users": 118, "setup_views": 173, "not_eligible": 0}}, "support_daily_rate": 37, "support_prev_rate": 21, "support_recs": [{"priority": "P0", "issue": "Regulatory Check / KRA failure — blocks orders, recurs every 3–4 days", "volume": "70+", "jira": "ASP-3403"}, {"priority": "P0", "issue": "Demat onboarding — no explanation for why a new demat account is required", "volume": "~40", "jira": "ASP-3410"}, {"priority": "P1", "issue": "PAN step — no error state or next-step guidance when PAN verification fails", "volume": "141", "jira": "ASP-3404"}, {"priority": "P1", "issue": "Bank verification stuck — no status indicator or ETA shown to user", "volume": "~25", "jira": "ASP-3405"}, {"priority": "P1", "issue": "TDS / Form 121 / 15G — no in-app self-serve flow to submit exemption forms", "volume": "6+", "jira": "ASP-3412"}, {"priority": "P1", "issue": "Marital status selector broken on some devices — users cannot complete profile", "volume": "10+", "jira": "ASP-3403"}]};
+const D = {"generated": "May 08, 2026 · 01:03", "period": "Apr 27 – 3, 2026", "health": "healthy", "labels": ["Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "signups": [1625.0, 2163.0, 2891.0, 2229.0, 2476.0, 2901.0, 3161.0], "otps": [2859.0, 3544.0, 5094.0, 4250.0, 4207.0, 4567.0, 4848.0], "signup_conv": [56.8, 61.0, 56.8, 52.4, 58.9, 63.5, 65.2], "kpi_signups": {"last": 2901.0, "this": 3161.0, "avg": 2492.3, "delta": 260.0, "suffix": ""}, "kpi_signup_conv": {"last": 63.5, "this": 65.2, "avg": 59.2, "delta": 1.7, "suffix": "%"}, "kyc_starters": [617.0, 798.0, 907.0, 766.0, 850.0, 954.0, 1167.0], "kyc_done": [190.0, 249.0, 290.0, 222.0, 307.0, 238.0, 337.0], "kyc_start_pct": [38.0, 36.9, 31.4, 34.4, 34.3, 32.9, 36.9], "kyc_start_to_done_pct": [30.8, 31.2, 32.0, 29.0, 36.1, 24.9, 28.9], "kpi_kyc_start_pct": {"last": 32.9, "this": 36.9, "avg": 35.0, "delta": 4.0, "suffix": "%"}, "kpi_kyc_start_to_done": {"last": 24.9, "this": 28.9, "avg": 30.4, "delta": 4.0, "suffix": "%"}, "rtt": [190.0, 249.0, 290.0, 222.0, 307.0, 238.0, 337.0], "payments": [56.0, 57.0, 70.0, 87.0, 124.0, 163.0, 164.0], "rtt_cohort_conv_pct": [13.2, 9.6, 12.4, 17.1, 16.6, 16.4, 12.2], "kpi_rtt": {"last": 238.0, "this": 337.0, "avg": 261.9, "delta": 99.0, "suffix": ""}, "kpi_investors": {"last": 163.0, "this": 164.0, "avg": 103.0, "delta": 1.0, "suffix": ""}, "kpi_rtt_cohort_conv": {"last": 16.4, "this": 12.2, "avg": 13.9, "delta": -4.2, "suffix": "%"}, "rtt_curve_pct": [[5.3, 8.9, 10.0, 11.6, 13.2], [5.2, 6.4, 6.8, 8.8, 9.6], [5.5, 6.9, 7.6, 10.3, 12.4], [7.7, 12.6, 15.3, 17.1, null], [10.7, 15.0, 16.6, null, null], [11.8, 16.4, null, null, null], [12.2, null, null, null, null]], "kpi_rtt_same_wk_conv": {"last": 11.8, "this": 12.2, "avg": 8.3, "delta": 0.4, "suffix": "%"}, "wau": [2578.0, 3251.0, 4415.0, 3790.0, 3977.0, 4543.0, 4959.0], "kpi_wau": {"last": 4543.0, "this": 4959.0, "avg": 3930.4, "delta": 416.0, "suffix": ""}, "orders": [88.0, 73.0, 121.0, 125.0, 191.0, 237.0, 237.0], "gtv": [1.03, 1.09, 1.41, 1.57, 2.23, 3.06, 2.07], "kpi_orders": {"last": 237.0, "this": 237.0, "avg": 153.1, "delta": 0.0, "suffix": ""}, "kpi_gtv": {"last": 3.06, "this": 2.07, "avg": 1.8, "delta": -1.0, "suffix": "cr"}, "repeat_pct": 35.0, "gtv_mtd_this": 2.9, "gtv_mtd_prev": 1.8, "mtd_month_this": "May", "mtd_month_prev": "Apr", "gtv_by_issuer": [{"name": "AKARA CAPITAL ADVISORS PRIVATE LIMITED", "gtv_this": 1.12, "gtv_last": 1.62, "pct_this": 54.3, "pct_last": 52.8, "wow_pp": 1.5}, {"name": "SAMUNNATI FINANCE PRIVATE LIMITED", "gtv_this": 0.25, "gtv_last": 0.11, "pct_this": 12.0, "pct_last": 3.6, "wow_pp": 8.4}, {"name": "MUFIN GREEN FINANCE LIMITED", "gtv_this": 0.13, "gtv_last": 0.11, "pct_this": 6.2, "pct_last": 3.7, "wow_pp": 2.5}, {"name": "SAMMAAN CAPITAL LIMITED", "gtv_this": 0.05, "gtv_last": 0.02, "pct_this": 2.4, "pct_last": 0.7, "wow_pp": 1.7}, {"name": "NATIONAL HIGHWAYS INFRA TRUST", "gtv_this": 0.0, "gtv_last": 0.0, "pct_this": 0.1, "pct_last": 0.0, "wow_pp": 0.1}], "week_label_this": "Apr 27–May 3", "week_label_prev": "Apr 20–26", "gsc_weekly": {"groups": [{"name": "Bond Detail Pages", "subtitle": "/invest/bond/*", "color": "#3b82f6", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [108, 111, 131, 275, 892, 892, 1106, 1383], "clicks": [3, 0, 14, 7, 31, 29, 30, 25]}, {"name": "Marketing Site", "subtitle": "aspero.in/* (non-app pages)", "color": "#10b981", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [48331, 44982, 47209, 41479, 36522, 33464, 31158, 27353], "clicks": [541, 532, 582, 501, 516, 538, 644, 562]}, {"name": "/invest/home", "subtitle": "App home page", "color": "#8b5cf6", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [97, 58, 98, 644, 417, 497, 735, 689], "clicks": [1, 0, 1, 19, 7, 4, 6, 5]}, {"name": "/invest/explore", "subtitle": "Bond listing page", "color": "#f97316", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [46, 27, 22, 85, 91, 119, 102, 96], "clicks": [1, 3, 2, 1, 2, 1, 0, 0]}, {"name": "Blog", "subtitle": "aspero.in/blog/*", "color": "#ec4899", "labels": ["Mar 9–15", "Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "impr": [87440, 79572, 93489, 71273, 57192, 55379, 46981, 41536], "clicks": [243, 200, 193, 152, 139, 132, 146, 126]}]}, "bio_metrics": {"android": {"adoption_pct": 71.4, "success_pct": 86.5, "avg_logins": 4.7, "setup_fail_pct": 19.6, "bio_users": 1595, "setup_views": 2233, "not_eligible": 0}, "ios": {"adoption_pct": 68.2, "success_pct": 24.2, "avg_logins": 7.8, "setup_fail_pct": 7.5, "bio_users": 118, "setup_views": 173, "not_eligible": 0}}, "support_daily_rate": 37, "support_prev_rate": 21, "support_recs": [{"priority": "P0", "issue": "Regulatory Check / KRA failure — blocks orders, recurs every 3–4 days", "volume": "70+", "jira": "ASP-3403"}, {"priority": "P0", "issue": "Demat onboarding — no explanation for why a new demat account is required", "volume": "~40", "jira": "ASP-3410"}, {"priority": "P1", "issue": "PAN step — no error state or next-step guidance when PAN verification fails", "volume": "141", "jira": "ASP-3404"}, {"priority": "P1", "issue": "Bank verification stuck — no status indicator or ETA shown to user", "volume": "~25", "jira": "ASP-3405"}, {"priority": "P1", "issue": "TDS / Form 121 / 15G — no in-app self-serve flow to submit exemption forms", "volume": "6+", "jira": "ASP-3412"}, {"priority": "P1", "issue": "Marital status selector broken on some devices — users cannot complete profile", "volume": "10+", "jira": "ASP-3403"}],"support_pulse":{"labels":["Apr 6\u201312","Apr 13\u201319","Apr 20\u201326","Apr 27\u2013May 3","May 4\u20137\u2020"],"total":[660,540,809,826,490],"real":[241,199,297,302,222],"cats":{"KRA / Regulatory Check":{"color":"#ef4444","data":[72,60,89,91,67]},"KYC Pending / Stuck":{"color":"#f97316","data":[41,34,50,51,38]},"Bond Sell Feature":{"color":"#8b5cf6","data":[10,8,12,12,9]},"Account / Profile":{"color":"#10b981","data":[10,8,12,12,9]},"Bank / IFSC Issue":{"color":"#3b82f6","data":[3,3,4,4,3]}},"top_issues":[{"cat":"KRA / Regulatory Check","color":"#ef4444","this_wk":91,"prev_wk":89,"themes":["Not verified by KRA despite completed KYC","camskra.com link broken \u2014 page removed from public access","Recurs every 3\u20134 days after partial fix"],"jira":"ASP-3314","jira_status":"Engineering"},{"cat":"KYC Pending / Stuck","color":"#f97316","this_wk":51,"prev_wk":50,"themes":["Status not syncing after KRA completion \u2014 dashboard still shows incomplete","Demat stuck at 99% UI \u2014 backend complete, frontend frozen","Marital status field hidden until net worth + occupation filled first"],"jira":"ASP-3614","jira_status":"Active"},{"cat":"Bond Sell Feature","color":"#8b5cf6","this_wk":12,"prev_wk":12,"themes":["No selling option visible in app","Users unaware bond selling is not live yet"],"jira":"ASP-3358","jira_status":"Product Solutioning"},{"cat":"Account / Profile","color":"#10b981","this_wk":12,"prev_wk":12,"themes":["Signed up as Business instead of Individual \u2014 no self-serve fix","Phone number change needed (Aadhaar-linked) \u2014 requires manual PDF form"],"jira":null,"jira_status":"No ticket"},{"cat":"Bank / IFSC Issue","color":"#3b82f6","this_wk":4,"prev_wk":4,"themes":["Indian Bank merger: IDIB000S291 \u2192 IDIB000N611 not auto-updated for existing users","PAN name vs bank name mismatch blocks KYC \u2014 no helpful error message shown"],"jira":"ASP-3313","jira_status":"Engineering"}]}};
 const L = D.labels;
 
 function num(v)  { return v != null ? Math.round(v).toLocaleString() : '—'; }
@@ -1278,49 +1289,104 @@ insights('ins-s5', [
 
 // ── Slide 10: Support Pulse ───────────────────────────────────────────────────
 (function() {
-  const PINK  = '#ec4899';
-  const rate  = D.support_daily_rate || 37;
-  const prev  = D.support_prev_rate  || 21;
-  const recs  = D.support_recs || [];
+  const PINK = '#ec4899';
+  const SP = D.support_pulse;
+  if (!SP) return;
 
-  setEl('h10-val', rate + '/day');
+  const thisWk  = SP.real[3];   // Apr 27–May 3
+  const prevWk  = SP.real[2];   // Apr 20–26
+  const totalWk = SP.total[3];
+  const dupesWk = totalWk - thisWk;
+  const wow     = thisWk - prevWk;
+  const wowSign = wow >= 0 ? '▲' : '▼';
+  const wowCls  = wow >= 5 ? 'down' : wow <= -5 ? 'up' : 'flat';
+
+  setEl('h10-val',   num(thisWk));
+  setEl('s10-total', num(totalWk));
+  setEl('s10-dupes', num(dupesWk));
+  setEl('s10-top',   Object.keys(SP.cats)[0]);
   const b = document.getElementById('h10-delta');
   if (b) {
-    const pctUp = Math.round((rate - prev) / prev * 100);
-    b.textContent = '▲ +' + pctUp + '% vs Apr Wk 1 (' + prev + '/day)';
-    b.className = 'hero-badge down';   // up ticket rate = bad
+    b.textContent = wowSign + ' ' + Math.abs(wow) + ' WoW vs Apr 20–26';
+    b.className   = 'hero-badge ' + wowCls;
   }
 
-  const el = document.getElementById('support-table');
-  if (!el || !recs.length) return;
+  // ── Stacked bar chart ──────────────────────────────────────────────────────
+  const catNames = Object.keys(SP.cats);
+  const datasets = catNames.map(name => ({
+    type: 'bar', label: name,
+    data: SP.cats[name].data,
+    backgroundColor: SP.cats[name].color + 'bb',
+    borderColor: SP.cats[name].color,
+    borderWidth: 1, borderRadius: 2, stack: 'real'
+  }));
+  new Chart(document.getElementById('chart-support-trend'), {
+    data: { labels: SP.labels, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 7.5 }, boxWidth: 9, padding: 5 } },
+        tooltip: { mode: 'index', intersect: false }
+      },
+      scales: {
+        x: { stacked: true, grid: { display: false }, ticks: { font: { size: 7.5 } } },
+        y: { stacked: true, grid: { color: '#f1f5f9' }, ticks: { font: { size: 7.5 } },
+             title: { display: true, text: 'Real issues', font: { size: 7.5 }, color: '#94a3b8' } }
+      }
+    }
+  });
 
-  const pColor = { P0: '#ef4444', P1: '#f97316', P2: '#eab308', P3: '#94a3b8' };
-  el.innerHTML = `
-    <table style="width:100%;border-collapse:collapse;font-size:.72rem;">
-      <thead>
-        <tr style="background:#f8fafc;">
-          <th style="text-align:left;padding:5px 8px;color:#64748b;font-weight:600;font-size:.63rem;letter-spacing:.06em;white-space:nowrap;">PRIORITY</th>
-          <th style="text-align:left;padding:5px 8px;color:#64748b;font-weight:600;font-size:.63rem;letter-spacing:.06em;">ACTION NEEDED</th>
-          <th style="text-align:right;padding:5px 8px;color:#64748b;font-weight:600;font-size:.63rem;letter-spacing:.06em;white-space:nowrap;">TICKETS</th>
-          <th style="text-align:right;padding:5px 8px;color:#64748b;font-weight:600;font-size:.63rem;letter-spacing:.06em;white-space:nowrap;">JIRA</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${recs.map(r => `
-          <tr style="border-top:1px solid #f1f5f9;">
-            <td style="padding:7px 8px;white-space:nowrap;">
-              <span style="background:${(pColor[r.priority]||'#94a3b8')}22;color:${pColor[r.priority]||'#94a3b8'};border-radius:4px;padding:2px 7px;font-size:.63rem;font-weight:700;">${r.priority}</span>
-            </td>
-            <td style="padding:7px 8px;color:#1e293b;line-height:1.4;">${r.issue}</td>
-            <td style="padding:7px 8px;text-align:right;color:#64748b;">${r.volume}</td>
-            <td style="padding:7px 8px;text-align:right;color:#3b82f6;font-size:.63rem;white-space:nowrap;">${r.jira}</td>
-          </tr>`).join('')}
-      </tbody>
-    </table>`;
+  // ── Issue table ────────────────────────────────────────────────────────────
+  const JIRA_BASE = 'https://goyubi.atlassian.net/browse/';
+  const SC = {
+    'Engineering':          { bg: '#dcfce7', tx: '#15803d' },
+    'Active':               { bg: '#dbeafe', tx: '#1d4ed8' },
+    'Product Solutioning':  { bg: '#f3e8ff', tx: '#7e22ce' },
+    'To-Do':                { bg: '#fef9c3', tx: '#854d0e' },
+    'No ticket':            { bg: '#f1f5f9', tx: '#94a3b8' },
+  };
+  const el = document.getElementById('support-issue-table');
+  if (!el) return;
+
+  const rows = SP.top_issues.map(r => {
+    const diff = r.this_wk - r.prev_wk;
+    const wowStr   = diff === 0 ? '—' : (diff > 0 ? '▲ +' : '▼ ') + Math.abs(diff);
+    const wowColor = diff > 2 ? '#ef4444' : diff < -2 ? '#22c55e' : '#94a3b8';
+    const sc       = SC[r.jira_status] || SC['No ticket'];
+    const jiraLink = r.jira
+      ? `<a href="${JIRA_BASE}${r.jira}" target="_blank" style="color:#3b82f6;text-decoration:none;font-weight:600;">${r.jira}</a>`
+      : '—';
+    const themes = r.themes.map(t => `<div>• ${t}</div>`).join('');
+    return `<tr>
+      <td style="padding:5px 6px;white-space:nowrap;">
+        <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${r.color};margin-right:5px;vertical-align:middle;"></span>
+        <span style="font-size:.63rem;font-weight:600;color:#1e293b;">${r.cat}</span>
+      </td>
+      <td style="padding:5px 6px;text-align:right;font-weight:700;font-size:.72rem;color:#1e293b;">${r.this_wk}</td>
+      <td style="padding:5px 6px;text-align:right;font-size:.63rem;color:${wowColor};font-weight:600;white-space:nowrap;">${wowStr}</td>
+      <td style="padding:5px 6px;font-size:.57rem;color:#64748b;line-height:1.3;">${themes}</td>
+      <td style="padding:5px 6px;text-align:right;white-space:nowrap;">${jiraLink}</td>
+      <td style="padding:5px 6px;text-align:right;">
+        <span style="background:${sc.bg};color:${sc.tx};border-radius:4px;padding:1px 6px;font-size:.55rem;font-weight:700;white-space:nowrap;">${r.jira_status}</span>
+      </td>
+    </tr>`;
+  }).join('');
+
+  el.innerHTML = `<table class="s10-tbl">
+    <thead><tr>
+      <th>Issue type</th>
+      <th style="text-align:right;">This wk</th>
+      <th style="text-align:right;">WoW</th>
+      <th>Key themes</th>
+      <th style="text-align:right;">Jira</th>
+      <th style="text-align:right;">Status</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
 
   insights('ins-s10', [
-    { color: PINK, txt: `Rate up ${Math.round((rate-prev)/prev*100)}% since Apr Wk 1 · Peak Apr 23–24 (45+/day) — investigate what changed Apr 20–22` },
-    { color: GREY, txt: `Top 2 P0s (KRA failure + demat explanation) drive ~110 tickets/mo at current rate — highest ROI fixes` },
+    { color: PINK,    txt: 'KRA failure = 30% of all B2C tickets · 91 issues last week · same recurring post-fix bug · ASP-3314 in Engineering' },
+    { color: '#94a3b8', txt: '302 real unique issues/week after 65% merge-dupe removal · top 5 from content analysis of 76 sampled tickets (descriptions + agent responses)' },
   ]);
 })();
 </script>
