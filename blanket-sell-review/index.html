@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blanket Sell — Design Review · Aspero</title>
+<style>
+  :root {
+    --blue:      #2563EB;
+    --blue-mid:  #1E3A8A;
+    --blue-lt:   #EFF6FF;
+    --green:     #16A34A;
+    --green-lt:  #F0FDF4;
+    --amber:     #D97706;
+    --amber-lt:  #FFFBEB;
+    --red:       #DC2626;
+    --red-lt:    #FEF2F2;
+    --purple:    #7C3AED;
+    --purple-lt: #F5F3FF;
+    --gray:      #64748B;
+    --gray-lt:   #F8FAFC;
+    --border:    #E2E8F0;
+    --text:      #0F172A;
+    --text2:     #475569;
+    --text3:     #94A3B8;
+    --bg:        #F1F5F9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  /* ── Header ── */
+  .header {
+    background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 55%, #2563EB 100%);
+    color: white;
+    padding: 52px 32px 64px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -28px; left: 0; right: 0;
+    height: 56px;
+    background: var(--bg);
+    border-radius: 52% 52% 0 0 / 100%;
+  }
+  .back-link {
+    position: absolute;
+    top: 20px; left: 24px;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex; align-items: center; gap: 5px;
+    transition: color .15s;
+    z-index: 2;
+  }
+  .back-link:hover { color: white; }
+  .header .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.55;
+    margin-bottom: 14px;
+  }
+  .header h1 {
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    margin-bottom: 10px;
+    position: relative; z-index: 1;
+  }
+  .header .subtitle {
+    font-size: 15px;
+    opacity: 0.75;
+    max-width: 540px;
+    margin: 0 auto 24px;
+    line-height: 1.65;
+  }
+  .header-links {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative; z-index: 1;
+  }
+  .header-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all .15s;
+  }
+  .link-prd {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+  .link-prd:hover { background: rgba(255,255,255,0.25); }
+  .link-figma {
+    background: #1ABCFE22;
+    color: #7DD3FC;
+    border: 1px solid #1ABCFE44;
+  }
+  .link-figma:hover { background: #1ABCFE33; color: white; }
+
+  /* ── Layout ── */
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* ── Score banner ── */
+  .score-banner {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 36px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 24px;
+    align-items: center;
+  }
+  @media (max-width: 680px) {
+    .score-banner { grid-template-columns: 1fr 1fr; }
+  }
+  .score-item { text-align: center; }
+  .score-num {
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .score-label {
+    font-size: 12px;
+    color: var(--text2);
+    font-weight: 500;
+  }
+  .score-present .score-num { color: var(--green); }
+  .score-missing .score-num { color: var(--red); }
+  .score-partial .score-num { color: var(--amber); }
+  .score-coverage .score-num { color: var(--blue); }
+
+  .coverage-bar-wrap {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 28px;
+    margin-bottom: 36px;
+  }
+  .coverage-bar-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .coverage-bar-label span { font-size: 13px; font-weight: 600; color: var(--text2); }
+  .coverage-bar-label strong { font-size: 14px; color: var(--text); }
+  .bar-outer {
+    height: 12px;
+    background: #E2E8F0;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    gap: 2px;
+  }
+  .bar-seg {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 1s ease;
+  }
+  .bar-green  { background: #22C55E; }
+  .bar-amber  { background: #F59E0B; }
+  .bar-red    { background: #EF4444; }
+  .bar-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .bar-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+  .bar-legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── Color semantics strip ── */
+  .semantics-section {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 36px;
+  }
+  .semantics-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 16px;
+  }
+  .color-strips {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 600px) {
+    .color-strips { grid-template-columns: 1fr 1fr; }
+  }
+  .color-strip {
+    border-radius: 10px;
+    padding: 14px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .color-strip::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+  }
+  .cs-green  { background: #F0FDF4; border: 1px solid #BBF7D0; }
+  .cs-green::before  { background: #22C55E; }
+  .cs-amber  { background: #FFFBEB; border: 1px solid #FDE68A; }
+  .cs-amber::before  { background: #F59E0B; }
+  .cs-blue   { background: #EFF6FF; border: 1px solid #BFDBFE; }
+  .cs-blue::before   { background: #3B82F6; }
+  .cs-gray   { background: #F8FAFC; border: 1px solid #E2E8F0; }
+  .cs-gray::before   { background: #94A3B8; }
+  .cs-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+  .cs-green .cs-label  { color: #15803D; }
+  .cs-amber .cs-label  { color: #B45309; }
+  .cs-blue .cs-label   { color: #1D4ED8; }
+  .cs-gray .cs-label   { color: #475569; }
+  .cs-meaning {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .cs-cohorts {
+    font-size: 11px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+
+  /* ── Filter tabs ── */
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+    align-items: center;
+  }
+  .filter-label {
+    font-size: 12px;
+    color: var(--text3);
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .filter-btn {
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: white;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all .15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .filter-btn:hover { border-color: var(--blue); color: var(--blue); }
+  .filter-btn.active {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: white;
+  }
+  .filter-btn .count {
+    background: rgba(0,0,0,0.12);
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: 11px;
+  }
+  .filter-btn.active .count { background: rgba(255,255,255,0.25); }
+
+  /* ── Journey section ── */
+  .journey-section { margin-bottom: 40px; }
+  .journey-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .journey-icon { font-size: 22px; }
+  .journey-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .journey-sub {
+    font-size: 12px;
+    color: var(--text3);
+    font-weight: 500;
+    margin-top: 1px;
+  }
+  .journey-pill {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+  .pill-ok   { background: var(--green-lt); color: var(--green); }
+  .pill-warn { background: var(--amber-lt); color: var(--amber); }
+  .pill-bad  { background: var(--red-lt);   color: var(--red); }
+
+  /* ── Item cards ── */
+  .items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+  }
+  .item-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: box-shadow .15s, transform .15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .item-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transform: translateY(-1px);
+  }
+  .item-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    border-radius: 12px 0 0 12px;
+  }
+  .item-card.present::before { background: #22C55E; }
+  .item-card.partial::before { background: #F59E0B; }
+  .item-card.missing::before { background: #EF4444; }
+  .item-card.suggestion::before { background: #7C3AED; }
+
+  .item-card.hidden { display: none; }
+
+  .item-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .status-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .item-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.4;
+    flex: 1;
+  }
+  .severity-badge {
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    align-self: flex-start;
+  }
+  .sev-high   { background: #FEE2E2; color: #B91C1C; }
+  .sev-medium { background: #FEF3C7; color: #92400E; }
+  .sev-low    { background: #E0E7FF; color: #3730A3; }
+
+  .item-body {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.55;
+    padding-left: 26px;
+    display: none;
+  }
+  .item-card.open .item-body { display: block; }
+  .item-card.open { box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+
+  .item-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    padding-left: 26px;
+    margin-top: 8px;
+  }
+  .tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 8px;
+  }
+  .tag-journey  { background: #EFF6FF; color: #1D4ED8; }
+  .tag-cohort   { background: #F5F3FF; color: #6D28D9; }
+  .tag-surface  { background: #F0FDF4; color: #15803D; }
+
+  /* ── Suggestions section ── */
+  .suggestions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 14px;
+  }
+  .suggestion-card {
+    background: white;
+    border: 1px solid #DDD6FE;
+    border-radius: 12px;
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow .15s;
+  }
+  .suggestion-card:hover { box-shadow: 0 4px 16px rgba(124,58,237,0.1); }
+  .suggestion-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: #7C3AED;
+    border-radius: 12px 0 0 12px;
+  }
+  .suggestion-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px; height: 24px;
+    background: var(--purple-lt);
+    color: var(--purple);
+    font-size: 12px;
+    font-weight: 800;
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }
+  .suggestion-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .suggestion-body {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  /* ── Summary table ── */
+  .table-wrap {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 48px;
+  }
+  .table-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .table-header h3 {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th {
+    background: var(--gray-lt);
+    color: var(--text2);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 11px 20px;
+    border-bottom: 1px solid #F1F5F9;
+    color: var(--text);
+    vertical-align: middle;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #FAFBFC; }
+  .tbl-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+    white-space: nowrap;
+  }
+  .tbl-present { background: var(--green-lt); color: var(--green); }
+  .tbl-partial { background: var(--amber-lt); color: var(--amber); }
+  .tbl-missing { background: var(--red-lt); color: #B91C1C; }
+  .tbl-sev {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .tbl-sev-high { color: #B91C1C; }
+  .tbl-sev-med  { color: #92400E; }
+  .tbl-sev-na   { color: var(--text3); }
+
+  /* ── Section labels ── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 18px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    color: var(--text3);
+    font-size: 12px;
+    padding: 20px 0 0;
+    border-top: 1px solid var(--border);
+  }
+  .footer a { color: var(--blue); text-decoration: none; }
+
+  @media (max-width: 640px) {
+    .header h1 { font-size: 26px; }
+    .items-grid { grid-template-columns: 1fr; }
+    .suggestions-grid { grid-template-columns: 1fr; }
+    table { font-size: 12px; }
+    th, td { padding: 10px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<div class="header">
+  <a class="back-link" href="../index.html">← Product Hub</a>
+  <div class="eyebrow">Portfolio · Blanket Sell</div>
+  <h1>Design Review</h1>
+  <p class="subtitle">PRD requirements mapped against Figma V3 (Nov 2025). What's in, what's out, and what needs fixing before handoff.</p>
+  <div class="header-links">
+    <a class="link-prd" href="https://goyubi.atlassian.net/wiki/x/CIBqfg" target="_blank" rel="noopener">📄 View PRD ↗</a>
+    <a class="link-figma" href="https://www.figma.com/design/yZKtJQY4bPfTJciH8MT7Us/07-Portfolio?m=dev" target="_blank" rel="noopener">🎨 View Figma ↗</a>
+  </div>
+</div>
+
+<!-- ── Main content ── -->
+<div class="wrap">
+
+  <!-- Score banner -->
+  <div class="score-banner">
+    <div class="score-item score-present">
+      <div class="score-num">10</div>
+      <div class="score-label">Requirements present</div>
+    </div>
+    <div class="score-item score-partial">
+      <div class="score-num">2</div>
+      <div class="score-label">Partial / copy gap</div>
+    </div>
+    <div class="score-item score-missing">
+      <div class="score-num">14</div>
+      <div class="score-label">Requirements missing</div>
+    </div>
+    <div class="score-item score-coverage">
+      <div class="score-num">37%</div>
+      <div class="score-label">Design coverage</div>
+    </div>
+  </div>
+
+  <!-- Coverage bar -->
+  <div class="coverage-bar-wrap">
+    <div class="coverage-bar-label">
+      <span>Design Coverage by Requirement</span>
+      <strong>10 present · 2 partial · 14 missing out of 26</strong>
+    </div>
+    <div class="bar-outer">
+      <div class="bar-seg bar-green"  style="width:38.5%"></div>
+      <div class="bar-seg bar-amber"  style="width:7.7%"></div>
+      <div class="bar-seg bar-red"    style="width:53.8%"></div>
+    </div>
+    <div class="bar-legend">
+      <div class="bar-legend-item"><div class="bar-legend-dot" style="background:#22C55E"></div>Present (10)</div>
+      <div class="bar-legend-item"><div class="bar-legend-dot" style="background:#F59E0B"></div>Partial (2)</div>
+      <div class="bar-legend-item"><div class="bar-legend-dot" style="background:#EF4444"></div>Missing (14)</div>
+    </div>
+  </div>
+
+  <!-- PRD Color semantics -->
+  <div class="semantics-section">
+    <div class="semantics-title">PRD Color Semantic System (non-negotiable)</div>
+    <div class="color-strips">
+      <div class="color-strip cs-green">
+        <div class="cs-label">Green</div>
+        <div class="cs-meaning">Ready · Available · Complete</div>
+        <div class="cs-cohorts">A1 (DDPI authorised) · Sell-A (post day 90) · Post-settlement confirmed</div>
+      </div>
+      <div class="color-strip cs-amber">
+        <div class="cs-label">Amber</div>
+        <div class="cs-meaning">Urgent · Limited · In-Progress</div>
+        <div class="cs-cohorts">A2 (DDPI pending) · Sell-B (external demat) · Near-cutoff nudge · Sell in progress</div>
+      </div>
+      <div class="color-strip cs-blue">
+        <div class="cs-label">Blue</div>
+        <div class="cs-meaning">Patience · Waiting · GTC queue</div>
+        <div class="cs-cohorts">Sell-Cooling (0–90 days) · Cohort C (no KYC) · GTC queue state</div>
+      </div>
+      <div class="color-strip cs-gray">
+        <div class="cs-label">Gray</div>
+        <div class="cs-meaning">Kill switch only</div>
+        <div class="cs-cohorts">Admin-disabled sells · No user action available</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter tabs -->
+  <div class="filter-row">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">All <span class="count">26</span></button>
+    <button class="filter-btn" data-filter="present" onclick="setFilter('present')">✅ Present <span class="count">10</span></button>
+    <button class="filter-btn" data-filter="partial" onclick="setFilter('partial')">🟡 Partial <span class="count">2</span></button>
+    <button class="filter-btn" data-filter="missing" onclick="setFilter('missing')">❌ Missing <span class="count">14</span></button>
+  </div>
+
+  <!-- ── Journey 1: Portfolio Overview ── -->
+  <div class="journey-section">
+    <div class="journey-header">
+      <div class="journey-icon">📊</div>
+      <div>
+        <div class="journey-title">Portfolio Overview</div>
+        <div class="journey-sub">Holdings list, summary bar, empty states, KYC gating</div>
+      </div>
+      <span class="journey-pill pill-ok">4 / 4 present</span>
+    </div>
+    <div class="items-grid" id="grid-1">
+
+      <div class="item-card present" data-status="present" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">✅</span>
+          <span class="item-title">Holdings list — bond rows with XIRR, units, amounts</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-surface">Portfolio</span></div>
+        <div class="item-body">Shriram Finance, Navi Technologies, Avanti Finance, Bhanix visible with units, XIRR, invested/current amount, maturity date, and interest/principal type badges. Matches PRD holding card requirements for Cohort A1 fully-invested state.</div>
+      </div>
+
+      <div class="item-card present" data-status="present" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">✅</span>
+          <span class="item-title">Portfolio summary bar — current value, invested, gains, repaid</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-surface">Portfolio</span></div>
+        <div class="item-body">Leaderboard widget present across multiple frames showing portfolio-level current value, invested value, repaid, and gains. Benchmark comparison widget ("Your returns vs benchmark") also present.</div>
+      </div>
+
+      <div class="item-card present" data-status="present" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">✅</span>
+          <span class="item-title">KYC-incomplete empty state ("Complete your KYC")</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-surface">Portfolio</span><span class="tag tag-cohort">Cohort C</span></div>
+        <div class="item-body">Portfolio Mobile 14/27 show the empty/zero state: "You are not investment ready yet / Complete your KYC". Correctly maps to Cohort C (no KYC) from the PRD, which uses blue color language.</div>
+      </div>
+
+      <div class="item-card present" data-status="present" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">✅</span>
+          <span class="item-title">Portfolio tabs — Holdings, Returns, Orders, Cashflow</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-surface">Portfolio</span></div>
+        <div class="item-body">All four tab sections are present in the design. Orders section shows order IDs, amounts, rates, units, and dates. Cashflow tab is represented. Returns tab with chart/graph component present.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Journey 2: Sell Flow (Scenarios A/B/C) ── -->
+  <div class="journey-section">
+    <div class="journey-header">
+      <div class="journey-icon">💸</div>
+      <div>
+        <div class="journey-title">Sell Flow — Initiation &amp; Confirmation</div>
+        <div class="journey-sub">3 scenarios: A (full funds), B (partial), C (GTC queue)</div>
+      </div>
+      <span class="journey-pill pill-warn">3 / 8 present</span>
+    </div>
+    <div class="items-grid">
+
+      <div class="item-card present" data-status="present" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">✅</span>
+          <span class="item-title">Sell initiation screen — Scenario A (full funds)</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-journey">Scenario A</span><span class="tag tag-surface">Sell Screen</span></div>
+        <div class="item-body">Frames named "regular bond | without differential | post kyc" cover the sell initiation for full-fund scenarios. Sell order summary and payout breakdown sections are present.</div>
+      </div>
+
+      <div class="item-card partial" data-status="partial" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">🟡</span>
+          <span class="item-title">Post-sell confirmation screen</span>
+          <span class="severity-badge sev-medium">Copy gap</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-journey">Scenario A</span><span class="tag tag-surface">Confirmation</span></div>
+        <div class="item-body"><strong>Present but needs copy fix:</strong> Figma shows "Sell order successful" + "Order details shared with exchange" + "Amount will be transferred to bank account" with timestamps. PRD mandates the headline be <strong>"Sell order placed"</strong> (not submitted, not successful). The "What's next?" section needs to align with PRD's exact copy guidance on user confidence language.</div>
+      </div>
+
+      <div class="item-card present" data-status="present" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">✅</span>
+          <span class="item-title">Payout details section</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-surface">Sell Screen</span></div>
+        <div class="item-body">Payout breakdown frame present in the Figma. Shows settlement-related financial details for the sell transaction.</div>
+      </div>
+
+      <div class="item-card missing" data-status="missing" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">❌</span>
+          <span class="item-title">Scenario B — Partial funds split-panel</span>
+          <span class="severity-badge sev-high">High</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-journey">Scenario B</span></div>
+        <div class="item-body">The two-panel green/amber split screen (immediate units in green + GTC-queued units in amber) is a novel UI pattern. No Figma frame covers this. This is one of three core sell scenarios and its absence means engineering has no handoff material for ~30% of sell interactions.</div>
+      </div>
+
+      <div class="item-card missing" data-status="missing" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">❌</span>
+          <span class="item-title">Scenario C — GTC queue sell initiation</span>
+          <span class="severity-badge sev-high">High</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-journey">Scenario C</span></div>
+        <div class="item-body">Blue panel + "Queue sell request" CTA for when AMPL has zero liquidity. No frame in Figma. This scenario requires a completely different visual tone (blue = patience) vs Scenarios A/B (green/amber). Not a minor omission — it's an entirely different user story.</div>
+      </div>
+
+      <div class="item-card missing" data-status="missing" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">❌</span>
+          <span class="item-title">Near-cutoff amber nudge (3:00–3:30 PM IST only)</span>
+          <span class="severity-badge sev-medium">Medium</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-surface">Sell Screen</span></div>
+        <div class="item-body">Conditional inline note: "Orders placed after 3:30 PM today will settle on T+2." Only shown during 3:00–3:30 PM window. Requires a time-conditional UI state. No frame or overlay designed for this.</div>
+      </div>
+
+      <div class="item-card missing" data-status="missing" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">❌</span>
+          <span class="item-title">Error states — inline red error, network failure</span>
+          <span class="severity-badge sev-high">High</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-surface">Sell Screen</span></div>
+        <div class="item-body">PRD specifies: inline red error below CTA (not navigate away), explicit "not placed" copy on failure, "Your units are safe" fallback after 2 consecutive failures with support link. None of these states are designed. Critical for user confidence.</div>
+      </div>
+
+      <div class="item-card missing" data-status="missing" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">❌</span>
+          <span class="item-title">Loading state — inline spinner on confirm CTA</span>
+          <span class="severity-badge sev-medium">Medium</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-surface">Sell Screen</span></div>
+        <div class="item-body">PRD mandates inline spinner on confirm CTA (no full-screen loader). This micro-interaction prevents double-taps and feels native. Absent from Figma. Engineering will default to a full-screen loader without this spec.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Journey 3: Portfolio Card Sell States ── -->
+  <div class="journey-section">
+    <div class="journey-header">
+      <div class="journey-icon">🃏</div>
+      <div>
+        <div class="journey-title">Portfolio Card Sell Strip States</div>
+        <div class="journey-sub">7 cohort-specific card states driven by the PRD color system</div>
+      </div>
+      <span class="journey-pill pill-bad">0 / 7 identifiable</span>
+    </div>
+    <div class="items-grid">
+
+      <div class="item-card missing" data-status="missing" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">❌</span>
+          <span class="item-title">Blue cooling strip with 90-day progress bar</span>
+          <span class="severity-badge sev-high">High</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-cohort">Sell-Cooling</span></div>
+        <div class="item-body">"61 of 90 days" progress bar on the holding card. Blue = patience. Transitions to green on Day 90. This is the primary trust-building mechanism during the holding period. No frame is labeled or identifiable as this state.</div>
+      </div>
+
+      <div class="item-card missing" data-status="missing" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">❌</span>
+          <span class="item-title">Green sell-ready strip ("Sell →" CTA)</span>
+          <span class="severity-badge sev-high">High</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-cohort">Sell-A · A1</span></div>
+        <div class="item-body">Day 90 color transition: blue strip → green strip with "Sell →" CTA. The most important state in the sell discovery journey. No Figma frame is named or can be identified as this state. Buy/Sell filter tags exist but the card strip itself is absent.</div>
+      </div>
+
+      <div class="item-card missing" data-status="missing" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">❌</span>
+          <span class="item-title">Amber "Sell in progress" strip</span>
+          <span class="severity-badge sev-high">High</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-cohort">All post-sell</span></div>
+        <div class="item-body">After sell order is placed, card shows amber strip: "Sell in progress · Funds expected [date]". This is the primary feedback mechanism between order placement and settlement. Entirely absent.</div>
+      </div>
+
+      <div class="item-card missing" data-status="missing" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">❌</span>
+          <span class="item-title">Gray kill switch strip (no CTA)</span>
+          <span class="severity-badge sev-high">High</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-cohort">Kill switch</span></div>
+        <div class="item-body">Admin-disabled sell state. Gray color, no CTA, no explanation. PRD is explicit: gray = only state where user has zero actionable path. No Figma frame exists for this.</div>
+      </div>
+
+      <div class="item-card missing" data-status="missing" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">❌</span>
+          <span class="item-title">Amber external demat strip (Sell-B, "Open demat" CTA)</span>
+          <span class="severity-badge sev-high">High</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-cohort">Sell-B</span></div>
+        <div class="item-body">Permanent sell block for pre-Mar 10 2026 holders using external demat. Amber strip with "Open demat" CTA to convert. No frame designed. This cohort likely represents a meaningful slice of early adopters.</div>
+      </div>
+
+      <div class="item-card missing" data-status="missing" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">❌</span>
+          <span class="item-title">GTC expiry — portfolio card recovery state</span>
+          <span class="severity-badge sev-medium">Medium</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-cohort">Scenario C</span></div>
+        <div class="item-body">When GTC sell order expires, units are "returned" (PRD is explicit: never "cancelled"). Card reverts to green sell-ready state. No frame designed. Copy precision here is critical — "returned" vs "cancelled" affects user trust.</div>
+      </div>
+
+      <div class="item-card partial" data-status="partial" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">🟡</span>
+          <span class="item-title">Buy/Sell filter tags on holdings list</span>
+          <span class="severity-badge sev-low">Low</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-surface">Portfolio</span></div>
+        <div class="item-body"><strong>Partially present:</strong> "tags_v3" component with Buy/Sell text is in the Figma. However, the card-level strip states that drive whether a bond shows "Sell →" are undesigned — so the tag alone can't communicate sell eligibility without the strip context.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Journey 4: Buy Flow (Sell Signal Seeding) ── -->
+  <div class="journey-section">
+    <div class="journey-header">
+      <div class="journey-icon">🛒</div>
+      <div>
+        <div class="journey-title">Buy Flow — Sell Signal Seeding</div>
+        <div class="journey-sub">Setting expectations during purchase: sell date, terms, confirmation</div>
+      </div>
+      <span class="journey-pill pill-bad">0 / 3 present</span>
+    </div>
+    <div class="items-grid">
+
+      <div class="item-card missing" data-status="missing" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">❌</span>
+          <span class="item-title">Units Selection — sell signal pill with eligible date</span>
+          <span class="severity-badge sev-high">High</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-journey">Buy Flow</span><span class="tag tag-cohort">A1 / A2</span></div>
+        <div class="item-body">First moment sell eligibility enters the buy journey. Green pill (A1) or amber pill (A2) showing exact sell-eligible date. No frame in the Portfolio Figma. If in a separate Figma file, the cross-file reference is untracked.</div>
+      </div>
+
+      <div class="item-card missing" data-status="missing" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">❌</span>
+          <span class="item-title">Order Review — "Sell Terms" section</span>
+          <span class="severity-badge sev-high">High</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-journey">Buy Flow</span></div>
+        <div class="item-body">PRD's key competitive differentiator: explicit "Sell terms" row on the order review screen. Shows sell-eligible date, market price on sell date, and Aspero buyback commitment. Creates trust at the moment of purchase. Completely absent from design.</div>
+      </div>
+
+      <div class="item-card missing" data-status="missing" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">❌</span>
+          <span class="item-title">Post-Purchase Confirmation — green unlock box + sell date</span>
+          <span class="severity-badge sev-high">High</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-journey">Buy Flow</span></div>
+        <div class="item-body">After purchase, user should see: green unlock box with sell-eligible date + blue info note about 90-day countdown. The Figma's "Payment confirmation screen" is the post-<em>sell</em> screen, not post-<em>buy</em>. These are two different screens.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Journey 5: Push Notifications ── -->
+  <div class="journey-section">
+    <div class="journey-header">
+      <div class="journey-icon">🔔</div>
+      <div>
+        <div class="journey-title">Push Notification Arc</div>
+        <div class="journey-sub">8 notification events across the full sell lifecycle</div>
+      </div>
+      <span class="journey-pill pill-bad">0 / 8 designed</span>
+    </div>
+    <div class="items-grid">
+
+      <div class="item-card missing" data-status="missing" onclick="toggleCard(this)">
+        <div class="item-top">
+          <span class="status-icon">❌</span>
+          <span class="item-title">All 8 push notification templates missing</span>
+          <span class="severity-badge sev-medium">Medium</span>
+        </div>
+        <div class="item-tags"><span class="tag tag-surface">Push</span></div>
+        <div class="item-body">
+          The PRD defines a complete communication arc:<br><br>
+          • <strong>sell_approaching</strong> — Day 60 pre-unlock (blue)<br>
+          • <strong>sell_unlocked</strong> — Day 90 unlock (green)<br>
+          • <strong>sell_executed</strong> — Funds credited (green)<br>
+          • <strong>sell_partial</strong> — Partial fill + GTC queued (amber)<br>
+          • <strong>sell_queued</strong> — Full GTC queue (blue)<br>
+          • <strong>sell_cap_lifted</strong> — AMPL capacity restored (green)<br>
+          • <strong>sell_expired</strong> — GTC expired, units returned (blue → green)<br>
+          • <strong>sell_order_held_rating</strong> — Rating downgrade hold (amber)<br><br>
+          None have notification design frames in the Figma. Copy tone and color for each must match the PRD semantic system.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Suggestions ── -->
+  <div class="section-label" style="margin-top: 48px;">Design & Handoff Suggestions</div>
+  <div class="suggestions-grid" style="margin-bottom: 48px;">
+
+    <div class="suggestion-card">
+      <div class="suggestion-letter">A</div>
+      <div class="suggestion-title">Rename frames to reflect cohort state, not sequence</div>
+      <div class="suggestion-body">Frames named "Portfolio Mobile 16–53" are unhandable. Rename to e.g. <code>Holdings / Cooling Period (Blue Strip, Day 61)</code> or <code>Holdings / Sell Ready (Green A1)</code>. Engineers cannot map by number alone.</div>
+    </div>
+
+    <div class="suggestion-card">
+      <div class="suggestion-letter">B</div>
+      <div class="suggestion-title">Build a multi-state component for the sell strip</div>
+      <div class="suggestion-body">The portfolio card strip has 7+ distinct states (blue cooling, green ready, amber in-progress, amber external demat, gray kill switch, green funds credited, blue GTC queued). Make it one Figma component with named variants — not 7 separate frames.</div>
+    </div>
+
+    <div class="suggestion-card">
+      <div class="suggestion-letter">C</div>
+      <div class="suggestion-title">Add a color semantics reference frame to Figma</div>
+      <div class="suggestion-body">The 4-color language (Green = ready, Amber = urgent, Blue = patience, Gray = kill switch) is non-negotiable per the PRD. Add a reference frame in Figma that documents this. Any designer or engineer joining later will break the system without it.</div>
+    </div>
+
+    <div class="suggestion-card">
+      <div class="suggestion-letter">D</div>
+      <div class="suggestion-title">The buy flow is missing entirely — link or design it</div>
+      <div class="suggestion-body">Units Selection → Order Review → Payment are where sell eligibility is first surfaced to users. These aren't in the Portfolio Figma and there's no cross-file link. The "sell as a buy incentive" story can't be shipped without these 3 screens.</div>
+    </div>
+
+    <div class="suggestion-card">
+      <div class="suggestion-letter">E</div>
+      <div class="suggestion-title">Fix post-sell copy to match PRD exactly</div>
+      <div class="suggestion-body">Figma shows "Sell order successful." PRD mandates "Sell order placed." Not cosmetic — "placed" sets accurate expectations (not yet settled), while "successful" implies immediate completion and could cause support tickets.</div>
+    </div>
+
+    <div class="suggestion-card">
+      <div class="suggestion-letter">F</div>
+      <div class="suggestion-title">Design the sell-cashflow interaction explicitly</div>
+      <div class="suggestion-body">When a user sells mid-coupon cycle, what happens to upcoming coupon payments on the cashflow tab? The Figma shows cashflow for regular coupon bonds but the sell flow doesn't address this. Users will ask.</div>
+    </div>
+
+    <div class="suggestion-card">
+      <div class="suggestion-letter">G</div>
+      <div class="suggestion-title">DDPI auth flow needs entry + return states</div>
+      <div class="suggestion-body">Multiple cohort states (A2) trigger "Authorise DDPI →". The Figma has only a Digio placeholder. The Aspero-side pre/post states (entering DDPI auth, returning from Digio success or failure) need designed transitions — otherwise A2 users hit a dead end.</div>
+    </div>
+
+    <div class="suggestion-card">
+      <div class="suggestion-letter">H</div>
+      <div class="suggestion-title">Accessibility: add icons alongside color signaling</div>
+      <div class="suggestion-body">The PRD's 4-color system communicates state entirely through color — a WCAG accessibility violation. The PRD already uses "⏰" and "●" in copy. Confirm Figma bakes these icons into the strip designs, not just the text spec.</div>
+    </div>
+
+    <div class="suggestion-card">
+      <div class="suggestion-letter">I</div>
+      <div class="suggestion-title">Scope the request-callback widget away from sell flows</div>
+      <div class="suggestion-body">The "Clear doubts over call!" widget is a general support touchpoint. Surfacing it mid-sell flow (especially Scenario C GTC queue) will cause abandonment. The PRD's error handling already includes a "Contact support" link — the callback widget placement relative to sell screens needs explicit scoping.</div>
+    </div>
+
+  </div>
+
+  <!-- ── Summary Table ── -->
+  <div class="section-label">Full Requirements Coverage Table</div>
+  <div class="table-wrap">
+    <div class="table-header">
+      <h3>26 PRD Requirements</h3>
+      <span style="font-size:13px; color:var(--text2)">10 present · 2 partial · 14 missing</span>
+    </div>
+    <div style="overflow-x:auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Requirement</th>
+          <th>Journey</th>
+          <th>Status</th>
+          <th>Severity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Holdings list (bond rows)</td><td>Portfolio Overview</td><td><span class="tbl-status tbl-present">✅ Present</span></td><td class="tbl-sev tbl-sev-na">—</td></tr>
+        <tr><td>Portfolio summary bar</td><td>Portfolio Overview</td><td><span class="tbl-status tbl-present">✅ Present</span></td><td class="tbl-sev tbl-sev-na">—</td></tr>
+        <tr><td>KYC-incomplete empty state</td><td>Portfolio Overview</td><td><span class="tbl-status tbl-present">✅ Present</span></td><td class="tbl-sev tbl-sev-na">—</td></tr>
+        <tr><td>Portfolio tabs (Holdings/Returns/Orders/Cashflow)</td><td>Portfolio Overview</td><td><span class="tbl-status tbl-present">✅ Present</span></td><td class="tbl-sev tbl-sev-na">—</td></tr>
+        <tr><td>Risk appetite + benchmark widgets</td><td>Portfolio Overview</td><td><span class="tbl-status tbl-present">✅ Present</span></td><td class="tbl-sev tbl-sev-na">—</td></tr>
+        <tr><td>Sell initiation screen (Scenario A)</td><td>Sell Flow</td><td><span class="tbl-status tbl-present">✅ Present</span></td><td class="tbl-sev tbl-sev-na">—</td></tr>
+        <tr><td>Sell order summary + payout details</td><td>Sell Flow</td><td><span class="tbl-status tbl-present">✅ Present</span></td><td class="tbl-sev tbl-sev-na">—</td></tr>
+        <tr><td>Demat setup widget</td><td>Portfolio Overview</td><td><span class="tbl-status tbl-present">✅ Present</span></td><td class="tbl-sev tbl-sev-na">—</td></tr>
+        <tr><td>Orders section</td><td>Portfolio Overview</td><td><span class="tbl-status tbl-present">✅ Present</span></td><td class="tbl-sev tbl-sev-na">—</td></tr>
+        <tr><td>Buy/Sell filter tags</td><td>Portfolio Card</td><td><span class="tbl-status tbl-present">✅ Present</span></td><td class="tbl-sev tbl-sev-na">—</td></tr>
+        <tr><td>Post-sell confirmation screen</td><td>Sell Flow</td><td><span class="tbl-status tbl-partial">🟡 Partial</span></td><td class="tbl-sev tbl-sev-med">Medium</td></tr>
+        <tr><td>Portfolio card sell strip states (7 cohorts)</td><td>Portfolio Card</td><td><span class="tbl-status tbl-partial">🟡 Partial</span></td><td class="tbl-sev tbl-sev-med">Medium</td></tr>
+        <tr><td>90-day cooling strip (blue, progress bar)</td><td>Portfolio Card</td><td><span class="tbl-status tbl-missing">❌ Missing</span></td><td class="tbl-sev tbl-sev-high">High</td></tr>
+        <tr><td>Green sell-ready strip ("Sell →" CTA)</td><td>Portfolio Card</td><td><span class="tbl-status tbl-missing">❌ Missing</span></td><td class="tbl-sev tbl-sev-high">High</td></tr>
+        <tr><td>Amber "Sell in progress" strip</td><td>Portfolio Card</td><td><span class="tbl-status tbl-missing">❌ Missing</span></td><td class="tbl-sev tbl-sev-high">High</td></tr>
+        <tr><td>Gray kill switch strip</td><td>Portfolio Card</td><td><span class="tbl-status tbl-missing">❌ Missing</span></td><td class="tbl-sev tbl-sev-high">High</td></tr>
+        <tr><td>Amber external demat strip (Sell-B)</td><td>Portfolio Card</td><td><span class="tbl-status tbl-missing">❌ Missing</span></td><td class="tbl-sev tbl-sev-high">High</td></tr>
+        <tr><td>Sell Scenario B — partial funds split-panel</td><td>Sell Flow</td><td><span class="tbl-status tbl-missing">❌ Missing</span></td><td class="tbl-sev tbl-sev-high">High</td></tr>
+        <tr><td>Sell Scenario C — GTC queue initiation</td><td>Sell Flow</td><td><span class="tbl-status tbl-missing">❌ Missing</span></td><td class="tbl-sev tbl-sev-high">High</td></tr>
+        <tr><td>Units Selection — sell signal pill</td><td>Buy Flow</td><td><span class="tbl-status tbl-missing">❌ Missing</span></td><td class="tbl-sev tbl-sev-high">High</td></tr>
+        <tr><td>Order Review — "Sell Terms" section</td><td>Buy Flow</td><td><span class="tbl-status tbl-missing">❌ Missing</span></td><td class="tbl-sev tbl-sev-high">High</td></tr>
+        <tr><td>Post-purchase confirmation — sell date seeding</td><td>Buy Flow</td><td><span class="tbl-status tbl-missing">❌ Missing</span></td><td class="tbl-sev tbl-sev-high">High</td></tr>
+        <tr><td>Error states (inline + network failure)</td><td>Sell Flow</td><td><span class="tbl-status tbl-missing">❌ Missing</span></td><td class="tbl-sev tbl-sev-high">High</td></tr>
+        <tr><td>Near-cutoff amber nudge (3–3:30 PM)</td><td>Sell Flow</td><td><span class="tbl-status tbl-missing">❌ Missing</span></td><td class="tbl-sev tbl-sev-med">Medium</td></tr>
+        <tr><td>Loading state — inline CTA spinner</td><td>Sell Flow</td><td><span class="tbl-status tbl-missing">❌ Missing</span></td><td class="tbl-sev tbl-sev-med">Medium</td></tr>
+        <tr><td>Push notification templates (8 events)</td><td>Push Arc</td><td><span class="tbl-status tbl-missing">❌ Missing</span></td><td class="tbl-sev tbl-sev-med">Medium</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="footer">
+    Aspero B2C · Blanket Sell Design Review · May 7 2026 ·
+    <a href="../index.html">← Product Hub</a> ·
+    <a href="https://goyubi.atlassian.net/wiki/x/CIBqfg" target="_blank" rel="noopener">PRD ↗</a> ·
+    <a href="https://www.figma.com/design/yZKtJQY4bPfTJciH8MT7Us/07-Portfolio?m=dev" target="_blank" rel="noopener">Figma ↗</a>
+  </div>
+</div>
+
+<script>
+  // Toggle card expand/collapse
+  function toggleCard(el) {
+    el.classList.toggle('open');
+  }
+
+  // Filter items
+  function setFilter(type) {
+    // Update buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.filter === type);
+    });
+
+    // Show/hide cards
+    document.querySelectorAll('.item-card').forEach(card => {
+      if (type === 'all') {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.toggle('hidden', card.dataset.status !== type);
+      }
+    });
+
+    // Show/hide journey sections that become empty
+    document.querySelectorAll('.journey-section').forEach(section => {
+      const grid = section.querySelector('.items-grid');
+      if (!grid) return;
+      const visible = [...grid.querySelectorAll('.item-card')].filter(c => !c.classList.contains('hidden'));
+      section.style.display = visible.length === 0 ? 'none' : '';
+    });
+  }
+
+  // Animate bar on load
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.bar-seg').forEach(seg => {
+      const w = seg.style.width;
+      seg.style.width = '0';
+      setTimeout(() => { seg.style.width = w; }, 100);
+    });
+  });
+</script>
+</body>
+</html>
