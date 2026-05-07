@@ -251,8 +251,8 @@
   .seo-2col {
     flex: 1; min-height: 0;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    grid-template-rows: 1fr 1fr;
+    gap: 8px;
   }
   .seo-panel {
     background: #f8fafc;
@@ -279,10 +279,13 @@
     border: 1px solid #e2e8f0;
     border-radius: 10px;
     padding: 12px 14px;
-    display: flex; flex-direction: column; justify-content: space-between;
+    display: flex; flex-direction: column; gap: 0;
   }
-  .bio-col-title { font-size: .8rem; font-weight: 700; color: #1e293b; letter-spacing: .01em; }
-  .bio-kpi       { display: flex; flex-direction: column; gap: 3px; }
+  .bio-col-title { font-size: .8rem; font-weight: 700; color: #1e293b; letter-spacing: .01em;
+                   padding-bottom: 8px; border-bottom: 1px solid #e2e8f0; margin-bottom: 0; }
+  .bio-kpi       { flex: 1; display: flex; flex-direction: column; gap: 3px;
+                   padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
+  .bio-kpi:last-child { border-bottom: none; }
   .bio-kpi-lbl   { font-size: .57rem; font-weight: 600; color: #64748b;
                    text-transform: uppercase; letter-spacing: .08em; }
   .bio-kpi-val   { font-size: 1.0rem; font-weight: 800; color: #1e293b; line-height: 1; }
