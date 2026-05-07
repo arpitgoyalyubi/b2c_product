@@ -238,7 +238,7 @@
     <div class="cover-eyebrow">Aspero · B2C Analytics</div>
     <h1>Weekly Business<br>Review</h1>
     <div class="cover-sub">Funnel · KYC · Investments · GTV</div>
-    <div class="cover-period">Apr 27 – 3, 2026 &nbsp;·&nbsp; Generated May 07, 2026 · 10:57</div>
+    <div class="cover-period">Apr 27 – 3, 2026 &nbsp;·&nbsp; Generated May 07, 2026 · 12:00</div>
     <div class="cover-metrics" id="cover-metrics"></div>
   </div>
 
@@ -305,10 +305,31 @@
     </div>
   </div>
 
-  <!-- Slide 4: Weekly Active Users — Amber -->
+  <!-- Slide 4: RTT Cohort Timing — Teal -->
   <div class="slide two-col" id="s4">
-    <div class="left-panel" style="background:linear-gradient(160deg,#78350f,#f59e0b);">
+    <div class="left-panel" style="background:linear-gradient(160deg,#134e4a,#14b8a6);">
       <div class="slide-num">Slide 04</div>
+      <div class="slide-ttl">First-Trade Timing</div>
+      <div class="slide-sub">When RTT cohorts invest · by onboarding week</div>
+      <div class="hero-num" id="h4t-val">—</div>
+      <div class="hero-lbl">Same-week conv% (last cohort)</div>
+      <div class="hero-badge flat" id="h4t-delta">—</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">Prior Cohort Same-Wk%</span><span class="si-val" id="s4t-prior">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Later Converters%</span><span class="si-val" id="s4t-later">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Still Pending%</span><span class="si-val" id="s4t-pending">—</span></div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div class="chart-area"><canvas id="chart-rtt-timing"></canvas></div>
+      <div class="insight-row" id="ins-s4t"></div>
+    </div>
+  </div>
+
+  <!-- Slide 5: Weekly Active Users — Amber -->
+  <div class="slide two-col" id="s5">
+    <div class="left-panel" style="background:linear-gradient(160deg,#78350f,#f59e0b);">
+      <div class="slide-num">Slide 05</div>
       <div class="slide-ttl">Weekly Active Users</div>
       <div class="slide-sub">Unique users who started a signin</div>
       <div class="hero-num" id="h4-val">—</div>
@@ -326,10 +347,10 @@
     </div>
   </div>
 
-  <!-- Slide 5: Orders & GTV — Rose -->
-  <div class="slide two-col" id="s5">
+  <!-- Slide 6: Orders & GTV — Rose -->
+  <div class="slide two-col" id="s6">
     <div class="left-panel" style="background:linear-gradient(160deg,#881337,#ec4899);">
-      <div class="slide-num">Slide 05</div>
+      <div class="slide-num">Slide 06</div>
       <div class="slide-ttl">Orders &amp; GTV</div>
       <div class="slide-sub">New &amp; repeat · MTD vs last month</div>
       <div class="hero-num" id="h5-val">—</div>
@@ -348,10 +369,10 @@
   </div>
 
 
-  <!-- Slide 6: GTV by Issuer — Indigo -->
-  <div class="slide two-col" id="s6">
+  <!-- Slide 7: GTV by Issuer — Indigo -->
+  <div class="slide two-col" id="s7">
     <div class="left-panel" style="background:linear-gradient(160deg,#312e81,#6366f1);">
-      <div class="slide-num">Slide 06</div>
+      <div class="slide-num">Slide 07</div>
       <div class="slide-ttl">GTV by Issuer</div>
       <div class="slide-sub">Last week · top bonds by ₹ invested</div>
       <div class="hero-num" id="h6-val">—</div>
@@ -408,7 +429,7 @@ document.addEventListener('keydown', e => {
 });
 
 // ── Data & helpers ────────────────────────────────────────────────────────────
-const D = {"generated": "May 07, 2026 · 10:57", "period": "Apr 27 – 3, 2026", "health": "healthy", "labels": ["Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "signups": [1625.0, 2163.0, 2891.0, 2229.0, 2476.0, 2901.0, 3161.0], "otps": [2859.0, 3544.0, 5094.0, 4250.0, 4207.0, 4566.0, 4848.0], "signup_conv": [56.8, 61.0, 56.8, 52.4, 58.9, 63.5, 65.2], "kpi_signups": {"last": 2901.0, "this": 3161.0, "avg": 2492.3, "delta": 260.0, "suffix": ""}, "kpi_signup_conv": {"last": 63.5, "this": 65.2, "avg": 59.2, "delta": 1.7, "suffix": "%"}, "kyc_starters": [617.0, 798.0, 907.0, 766.0, 850.0, 954.0, 1167.0], "kyc_done": [190.0, 249.0, 290.0, 222.0, 307.0, 238.0, 337.0], "kyc_start_pct": [38.0, 36.9, 31.4, 34.4, 34.3, 32.9, 36.9], "kyc_start_to_done_pct": [30.8, 31.2, 32.0, 29.0, 36.1, 24.9, 28.9], "kpi_kyc_start_pct": {"last": 32.9, "this": 36.9, "avg": 35.0, "delta": 4.0, "suffix": "%"}, "kpi_kyc_start_to_done": {"last": 24.9, "this": 28.9, "avg": 30.4, "delta": 4.0, "suffix": "%"}, "rtt": [190.0, 249.0, 290.0, 222.0, 307.0, 238.0, 337.0], "payments": [56.0, 57.0, 70.0, 87.0, 124.0, 163.0, 164.0], "rtt_cohort_conv_pct": [14.7, 14.1, 14.8, 18.0, 21.2, 19.3, 15.7], "kpi_rtt": {"last": 238.0, "this": 337.0, "avg": 261.9, "delta": 99.0, "suffix": ""}, "kpi_investors": {"last": 163.0, "this": 164.0, "avg": 103.0, "delta": 1.0, "suffix": ""}, "kpi_rtt_cohort_conv": {"last": 19.3, "this": 15.7, "avg": 16.8, "delta": -3.6, "suffix": "%"}, "wau": [2578.0, 3251.0, 4415.0, 3790.0, 3977.0, 4543.0, 4959.0], "kpi_wau": {"last": 4543.0, "this": 4959.0, "avg": 3930.4, "delta": 416.0, "suffix": ""}, "orders": [88.0, 73.0, 121.0, 125.0, 191.0, 237.0, 237.0], "gtv": [1.03, 1.09, 1.41, 1.57, 2.23, 3.06, 2.07], "kpi_orders": {"last": 237.0, "this": 237.0, "avg": 153.1, "delta": 0.0, "suffix": ""}, "kpi_gtv": {"last": 3.06, "this": 2.07, "avg": 1.8, "delta": -1.0, "suffix": "cr"}, "repeat_pct": 34.5, "gtv_mtd_this": 2.7, "gtv_mtd_prev": 1.6, "mtd_month_this": "May", "mtd_month_prev": "Apr", "gtv_by_issuer": [{"name": "AKARA CAPITAL ADVISORS PRIVATE LIMITED", "gtv_this": 1.12, "gtv_last": 1.62, "pct_this": 54.3, "pct_last": 52.8, "wow_pp": 1.5}, {"name": "SAMUNNATI FINANCE PRIVATE LIMITED", "gtv_this": 0.25, "gtv_last": 0.11, "pct_this": 12.0, "pct_last": 3.6, "wow_pp": 8.4}, {"name": "MUFIN GREEN FINANCE LIMITED", "gtv_this": 0.13, "gtv_last": 0.11, "pct_this": 6.2, "pct_last": 3.7, "wow_pp": 2.5}, {"name": "SAMMAAN CAPITAL LIMITED", "gtv_this": 0.05, "gtv_last": 0.02, "pct_this": 2.4, "pct_last": 0.7, "wow_pp": 1.7}, {"name": "NATIONAL HIGHWAYS INFRA TRUST", "gtv_this": 0.0, "gtv_last": 0.0, "pct_this": 0.1, "pct_last": 0.0, "wow_pp": 0.1}]};
+const D = {"generated": "May 07, 2026 · 12:00", "period": "Apr 27 – 3, 2026", "health": "healthy", "labels": ["Mar 16–22", "Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3"], "signups": [1625.0, 2163.0, 2891.0, 2229.0, 2476.0, 2901.0, 3161.0], "otps": [2859.0, 3544.0, 5094.0, 4250.0, 4207.0, 4566.0, 4848.0], "signup_conv": [56.8, 61.0, 56.8, 52.4, 58.9, 63.5, 65.2], "kpi_signups": {"last": 2901.0, "this": 3161.0, "avg": 2492.3, "delta": 260.0, "suffix": ""}, "kpi_signup_conv": {"last": 63.5, "this": 65.2, "avg": 59.2, "delta": 1.7, "suffix": "%"}, "kyc_starters": [617.0, 798.0, 907.0, 766.0, 850.0, 954.0, 1167.0], "kyc_done": [190.0, 249.0, 290.0, 222.0, 307.0, 238.0, 337.0], "kyc_start_pct": [38.0, 36.9, 31.4, 34.4, 34.3, 32.9, 36.9], "kyc_start_to_done_pct": [30.8, 31.2, 32.0, 29.0, 36.1, 24.9, 28.9], "kpi_kyc_start_pct": {"last": 32.9, "this": 36.9, "avg": 35.0, "delta": 4.0, "suffix": "%"}, "kpi_kyc_start_to_done": {"last": 24.9, "this": 28.9, "avg": 30.4, "delta": 4.0, "suffix": "%"}, "rtt": [190.0, 249.0, 290.0, 222.0, 307.0, 238.0, 337.0], "payments": [56.0, 57.0, 70.0, 87.0, 124.0, 163.0, 164.0], "rtt_cohort_conv_pct": [14.7, 14.1, 14.8, 18.0, 21.2, 19.3, 15.7], "kpi_rtt": {"last": 238.0, "this": 337.0, "avg": 261.9, "delta": 99.0, "suffix": ""}, "kpi_investors": {"last": 163.0, "this": 164.0, "avg": 103.0, "delta": 1.0, "suffix": ""}, "kpi_rtt_cohort_conv": {"last": 19.3, "this": 15.7, "avg": 16.8, "delta": -3.6, "suffix": "%"}, "_rtt_tot": [28, 35, 43, 40, 65, 46, 53], "_rtt_sw": [25, 31, 41, 40, 65, 46, 53], "rtt_conv_same_wk_pct": [13.2, 12.4, 14.1, 18.0, 21.2, 19.3, 15.7], "rtt_conv_later_pct": [1.6, 1.6, 0.7, 0.0, 0.0, 0.0, 0.0], "rtt_pending_pct": [85.3, 85.9, 85.2, 82.0, 78.8, 80.7, 84.3], "kpi_rtt_same_wk_conv": {"last": 19.3, "this": 15.7, "avg": 16.3, "delta": -3.6, "suffix": "%"}, "wau": [2578.0, 3251.0, 4415.0, 3790.0, 3977.0, 4543.0, 4959.0], "kpi_wau": {"last": 4543.0, "this": 4959.0, "avg": 3930.4, "delta": 416.0, "suffix": ""}, "orders": [88.0, 73.0, 121.0, 125.0, 191.0, 237.0, 237.0], "gtv": [1.03, 1.09, 1.41, 1.57, 2.23, 3.06, 2.07], "kpi_orders": {"last": 237.0, "this": 237.0, "avg": 153.1, "delta": 0.0, "suffix": ""}, "kpi_gtv": {"last": 3.06, "this": 2.07, "avg": 1.8, "delta": -1.0, "suffix": "cr"}, "repeat_pct": 35.0, "gtv_mtd_this": 2.7, "gtv_mtd_prev": 1.6, "mtd_month_this": "May", "mtd_month_prev": "Apr", "gtv_by_issuer": [{"name": "AKARA CAPITAL ADVISORS PRIVATE LIMITED", "gtv_this": 1.12, "gtv_last": 1.62, "pct_this": 54.3, "pct_last": 52.8, "wow_pp": 1.5}, {"name": "SAMUNNATI FINANCE PRIVATE LIMITED", "gtv_this": 0.25, "gtv_last": 0.11, "pct_this": 12.0, "pct_last": 3.6, "wow_pp": 8.4}, {"name": "MUFIN GREEN FINANCE LIMITED", "gtv_this": 0.13, "gtv_last": 0.11, "pct_this": 6.2, "pct_last": 3.7, "wow_pp": 2.5}, {"name": "SAMMAAN CAPITAL LIMITED", "gtv_this": 0.05, "gtv_last": 0.02, "pct_this": 2.4, "pct_last": 0.7, "wow_pp": 1.7}, {"name": "NATIONAL HIGHWAYS INFRA TRUST", "gtv_this": 0.0, "gtv_last": 0.0, "pct_this": 0.1, "pct_last": 0.0, "wow_pp": 0.1}]};
 const L = D.labels;
 
 function num(v)  { return v != null ? Math.round(v).toLocaleString() : '—'; }
@@ -549,7 +570,69 @@ insights('ins-s3', [
   { color: AMBER, txt: `Last-wk RTT cohort conv: ${pct(D.kpi_rtt_cohort_conv.this)} to-date · prior wk cohort: ${pct(D.kpi_rtt_cohort_conv.last)} (older cohort, naturally higher)` },
 ]);
 
-// ── Slide 4: WAU ──────────────────────────────────────────────────────────────
+// ── Slide 4: RTT Cohort Timing ────────────────────────────────────────────────
+const TEAL = '#14b8a6';
+(function() {
+  const lastIdx   = D.rtt_conv_same_wk_pct.length - 1;
+  const prevIdx   = Math.max(0, lastIdx - 1);
+  const thisSW    = D.rtt_conv_same_wk_pct[lastIdx];
+  const prevSW    = D.rtt_conv_same_wk_pct[prevIdx];
+  const delta     = +(thisSW - prevSW).toFixed(1);
+
+  setHero('h4t-val', 'h4t-delta', pct(thisSW), delta, 'pp');
+  setEl('s4t-prior',   pct(prevSW));
+  setEl('s4t-later',   pct(D.rtt_conv_later_pct[lastIdx]));
+  setEl('s4t-pending', pct(D.rtt_pending_pct[lastIdx]));
+
+  new Chart(document.getElementById('chart-rtt-timing'), {
+    type: 'bar',
+    data: {
+      labels: L,
+      datasets: [
+        { label: 'Same-week (%)', data: D.rtt_conv_same_wk_pct,
+          backgroundColor: TEAL + 'cc', borderColor: TEAL,
+          borderWidth: 1, borderRadius: 3, stack: 'rtt' },
+        { label: 'Later (%)',     data: D.rtt_conv_later_pct,
+          backgroundColor: BLUE + 'bb', borderColor: BLUE,
+          borderWidth: 1, borderRadius: 3, stack: 'rtt' },
+        { label: 'Pending (%)',   data: D.rtt_pending_pct,
+          backgroundColor: '#94a3b833', borderColor: '#94a3b8',
+          borderWidth: 1, borderRadius: 3, stack: 'rtt' },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { font: { size: 9 }, boxWidth: 9, padding: 10 } },
+        tooltip: {
+          mode: 'index', intersect: false,
+          callbacks: {
+            footer: (items) => {
+              const idx = items[0].dataIndex;
+              const sw  = D._rtt_sw[idx]  || 0;
+              const tot = D._rtt_tot[idx] || 0;
+              const rtt = D.rtt[idx]       || 0;
+              return `RTT: ${num(rtt)}  ·  Same-wk: ${num(sw)}  ·  Total invested: ${num(tot)}`;
+            },
+          },
+        },
+      },
+      scales: {
+        x: { stacked: true, grid: { display: false },
+             ticks: { font: { size: 8 }, maxRotation: 30, minRotation: 0 } },
+        y: { stacked: true, grid: { color: '#f8fafc' },
+             ticks: { font: { size: 8 } }, beginAtZero: true, max: 100 },
+      },
+    },
+  });
+
+  insights('ins-s4t', [
+    { color: TEAL,   txt: `Same-week conv: ${pct(thisSW)} of RTT users invest in the same Mon–Sun week` },
+    { color: '#94a3b8', txt: `Pending% is naturally higher for recent cohorts — less time has elapsed since RTT` },
+  ]);
+})();
+
+// ── Slide 5: WAU ──────────────────────────────────────────────────────────────
 setHero('h4-val', 'h4-delta', num(D.kpi_wau.this), D.kpi_wau.delta, '');
 setEl('s4-last', num(D.kpi_wau.last));
 setEl('s4-avg',  Math.round(D.kpi_wau.avg).toLocaleString());
@@ -564,7 +647,7 @@ insights('ins-s4', [
   { color: GREY,  txt: `WoW: ${D.kpi_wau.delta >= 0 ? '+' : ''}${D.kpi_wau.delta.toLocaleString()} users` },
 ]);
 
-// ── Slide 5: Orders & GTV ─────────────────────────────────────────────────────
+// ── Slide 6: Orders & GTV ─────────────────────────────────────────────────────
 setHero('h5-val', 'h5-delta', cr(D.kpi_gtv.this), null, '');
 setEl('s5-orders', num(D.kpi_orders.this));
 setEl('s5-avgg',   cr(D.kpi_gtv.avg));
@@ -578,7 +661,7 @@ insights('ins-s5', [
   { color: AMBER, txt: `7-wk avg GTV: ${cr(D.kpi_gtv.avg)} · orders prior wk: ${num(D.kpi_orders.last)}` },
 ]);
 
-// ── Slide 6: GTV by Issuer — WoW grouped bars ──────────────────────────────
+// ── Slide 7: GTV by Issuer — WoW grouped bars ──────────────────────────────
 (function() {
   const INDIGO      = '#6366f1';
   const INDIGO_LITE = '#a5b4fc';
