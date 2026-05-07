@@ -498,8 +498,8 @@
       <div class="hero-badge flat" id="h8-delta">—</div>
       <div class="stat-list">
         <div class="stat-item"><span class="si-lbl">Bond Detail clicks</span><span class="si-val" id="s8-bd-clicks">—</span></div>
-        <div class="stat-item"><span class="si-lbl">Blog impressions</span><span class="si-val" id="s8-bl-impr">—</span></div>
-        <div class="stat-item"><span class="si-lbl">Blog clicks</span><span class="si-val" id="s8-bl-clicks">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Mktg Site impressions</span><span class="si-val" id="s8-bl-impr">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Blog impressions</span><span class="si-val" id="s8-bl-clicks">—</span></div>
       </div>
     </div>
     <div class="right-panel" style="padding:14px 16px 12px;">
@@ -511,8 +511,8 @@
           <div class="seo-insights" id="seo-ins-bd"></div>
         </div>
         <div class="seo-panel">
-          <div class="seo-panel-title" id="seo-t1">Blog</div>
-          <div class="seo-panel-sub" id="seo-s1">aspero.in/blog/*</div>
+          <div class="seo-panel-title" id="seo-t1">Marketing Site &amp; Blog</div>
+          <div class="seo-panel-sub" id="seo-s1">Both declining · aspero.in/* (non-app) + /blog/*</div>
           <div class="seo-chart-wrap"><canvas id="chart-seo-bl"></canvas></div>
           <div class="seo-insights" id="seo-ins-bl"></div>
         </div>
@@ -1020,146 +1020,136 @@ insights('ins-s5', [
   insights('ins-s6', ins);
 })();
 
-// ── Slide 8: SEO Visibility — Bond Detail + Blog ─────────────────────────────
+// ── Slide 8: SEO Visibility — Bond Detail vs Marketing/Blog ──────────────────
 (function() {
   const groups = (D.gsc_weekly || {}).groups || [];
   if (!groups.length) return;
 
-  // ── Left panel KPIs ──────────────────────────────────────────────────────
+  // groups[0]=Bond Detail, groups[1]=Marketing Site, groups[4]=Blog
   const bdG  = groups[0] || {};
-  const blG  = groups[4] || groups[groups.length - 1] || {};
-  const bdImpr   = bdG.impr   || [];
-  const bdClicks = bdG.clicks || [];
-  const blImpr   = blG.impr   || [];
-  const blClicks = blG.clicks || [];
-  const lastBdImpr   = bdImpr[bdImpr.length - 1]     || 0;
-  const prevBdImpr   = bdImpr[bdImpr.length - 2]     || 0;
-  const lastBdClicks = bdClicks[bdClicks.length - 1] || 0;
-  const lastBlImpr   = blImpr[blImpr.length - 1]     || 0;
-  const lastBlClicks = blClicks[blClicks.length - 1] || 0;
-  const bdWow = prevBdImpr > 0 ? Math.round((lastBdImpr - prevBdImpr) / prevBdImpr * 100) : 0;
+  const mktG = groups[1] || {};
+  const blG  = groups[4] || {};
 
-  setEl('h8-val', lastBdImpr.toLocaleString());
+  const bdImpr   = bdG.impr    || [];
+  const bdClicks = bdG.clicks  || [];
+  const mktImpr  = mktG.impr   || [];
+  const mktClks  = mktG.clicks || [];
+  const blImpr   = blG.impr    || [];
+  const blClks   = blG.clicks  || [];
+
+  const last = arr => arr[arr.length - 1] || 0;
+  const prev = arr => arr[arr.length - 2] || 0;
+  const wow  = arr => prev(arr) > 0 ? Math.round((last(arr) - prev(arr)) / prev(arr) * 100) : 0;
+  const avg4 = arr => arr.slice(-4).reduce((s, v) => s + (v || 0), 0) / 4;
+  const trend8 = arr => avg4(arr.slice(0, 4)) > 0
+    ? Math.round((avg4(arr.slice(-4)) - avg4(arr.slice(0, 4))) / avg4(arr.slice(0, 4)) * 100) : 0;
+  const fmtK = v => v >= 1000 ? (v / 1000).toFixed(0) + 'K' : String(v);
+
+  const bdWow  = wow(bdImpr);
+  const mktWow = wow(mktImpr);
+  const blWow  = wow(blImpr);
+
+  // ── Left panel ───────────────────────────────────────────────────────────────
+  setEl('h8-val', last(bdImpr).toLocaleString());
   const h8Badge = document.getElementById('h8-delta');
   if (h8Badge) {
-    h8Badge.textContent = (bdWow >= 0 ? '\u25b2 +' : '\u25bc ') + Math.abs(bdWow) + '% WoW';
+    h8Badge.textContent = (bdWow >= 0 ? '▲ +' : '▼ ') + Math.abs(bdWow) + '% WoW';
     h8Badge.className = 'hero-badge ' + (bdWow >= 0 ? 'up' : 'down');
   }
-  setEl('s8-bd-clicks', lastBdClicks.toLocaleString());
-  setEl('s8-bl-impr',   (lastBlImpr   >= 1000 ? (lastBlImpr / 1000).toFixed(0) + 'K' : lastBlImpr.toLocaleString()));
-  setEl('s8-bl-clicks', lastBlClicks.toLocaleString());
+  setEl('s8-bd-clicks', last(bdClicks).toLocaleString());
+  setEl('s8-bl-impr',  fmtK(last(mktImpr)) + ' (' + (mktWow >= 0 ? '+' : '') + mktWow + '% WoW)');
+  setEl('s8-bl-clicks', fmtK(last(blImpr))  + ' (' + (blWow  >= 0 ? '+' : '') + blWow  + '% WoW)');
 
-  // Bond Detail = index 0, Blog = index 4 (order matches fetch_gsc_weekly PAGE_GROUPS)
-  const PANELS = [
-    { g: groups[0], chartId: 'chart-seo-bd', insId: 'seo-ins-bd' },
-    { g: groups[4] || groups[groups.length - 1], chartId: 'chart-seo-bl', insId: 'seo-ins-bl' },
+  // ── Chart 1: Bond Detail — bar (impressions) + line (clicks) ─────────────────
+  new Chart(document.getElementById('chart-seo-bd'), {
+    data: {
+      labels: bdG.labels,
+      datasets: [
+        { type: 'bar',  label: 'Impressions', data: bdImpr,
+          backgroundColor: '#3b82f6aa', borderColor: '#3b82f6',
+          borderWidth: 1, borderRadius: 3, yAxisID: 'y' },
+        { type: 'line', label: 'Clicks', data: bdClicks,
+          borderColor: '#64748b', backgroundColor: 'transparent',
+          borderWidth: 2, pointRadius: 3, tension: 0.3,
+          pointBackgroundColor: '#64748b', yAxisID: 'y2' },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { font: { size: 8 }, boxWidth: 8, padding: 6 } },
+        tooltip: { mode: 'index', intersect: false },
+      },
+      scales: {
+        x:  { grid: { display: false }, ticks: { font: { size: 8 }, maxRotation: 30, maxTicksLimit: 8 } },
+        y:  { grid: { color: '#f1f5f9' }, beginAtZero: true, ticks: { font: { size: 8 } },
+              title: { display: true, text: 'Impressions', font: { size: 8 }, color: '#94a3b8' } },
+        y2: { position: 'right', grid: { display: false }, ticks: { font: { size: 8 } },
+              title: { display: true, text: 'Clicks', font: { size: 8 }, color: '#64748b' } },
+      },
+    },
+  });
+
+  // Bond Detail insights
+  const bdCTR  = last(bdImpr) > 0 ? (last(bdClicks) / last(bdImpr) * 100).toFixed(1) : '0.0';
+  const ctrOk  = parseFloat(bdCTR) >= 1.5;
+  const bd8wk  = trend8(bdImpr);
+  const bdIns  = [
+    { color: '#10b981', txt: `Bond Detail impressions ▲${bd8wk}% over 8 weeks — SSR driving organic discovery` },
+    { color: ctrOk ? '#10b981' : '#f59e0b',
+      txt: `CTR = ${bdCTR}% (${last(bdClicks)} clicks / ${last(bdImpr).toLocaleString()} impr) — ${ctrOk ? 'above 1.5% benchmark ✓' : 'add JSON-LD structured data to lift CTR toward 2%+'}` },
+    { color: '#3b82f6', txt: 'Expand SSR to issuer pages + collections for long-tail keyword capture' },
   ];
+  const bdInsEl = document.getElementById('seo-ins-bd');
+  if (bdInsEl) bdIns.forEach(ins => {
+    const row = document.createElement('div'); row.className = 'seo-ins-row';
+    row.innerHTML = '<div class="seo-ins-dot" style="background:' + ins.color + '"></div><span>' + ins.txt + '</span>';
+    bdInsEl.appendChild(row);
+  });
 
-  function buildInsights(g) {
-    const impr   = g.impr   || [];
-    const clicks = g.clicks || [];
-    const n      = impr.length;
-    if (!n) return [];
-
-    const lastImpr   = impr[n - 1]   || 0;
-    const prevImpr   = impr[n - 2]   || 0;
-    const lastClicks = clicks[n - 1] || 0;
-    const lastCTR    = lastImpr > 0 ? (lastClicks / lastImpr * 100) : 0;
-
-    // 8-week trend: avg of last 4 vs first 4
-    const avg4 = arr => arr.slice(-4).reduce((s, v) => s + (v || 0), 0) / 4;
-    const trendPct = avg4(impr.slice(0, 4)) > 0
-      ? Math.round((avg4(impr.slice(-4)) - avg4(impr.slice(0, 4))) / avg4(impr.slice(0, 4)) * 100)
-      : 0;
-    const wowPct = prevImpr > 0 ? Math.round((lastImpr - prevImpr) / prevImpr * 100) : 0;
-
-    const isBond = g.name && g.name.toLowerCase().includes('bond');
-    const GREEN  = '#10b981', RED = '#f87171', BLUE = '#3b82f6', AMBER = '#f59e0b';
-
-    const ins = [];
-
-    // 1 — Impression trend
-    const trendDir  = trendPct >= 0 ? '▲' : '▼';
-    const trendColor = trendPct >= 0 ? GREEN : RED;
-    ins.push({ color: trendColor,
-      txt: `Impressions ${trendDir}${Math.abs(trendPct)}% over 8 weeks — ${lastImpr.toLocaleString()} last week (WoW ${wowPct >= 0 ? '+' : ''}${wowPct}%)` });
-
-    // 2 — CTR signal
-    const ctrBench = isBond ? 1.5 : 0.4;
-    const ctrFmt   = lastCTR.toFixed(1);
-    const ctrOk    = lastCTR >= ctrBench;
-    ins.push({ color: ctrOk ? GREEN : AMBER,
-      txt: `CTR = ${ctrFmt}% (${lastClicks} clicks / ${lastImpr.toLocaleString()} impressions) — ${ctrOk ? 'on track' : 'below ' + ctrBench + '% benchmark'}` });
-
-    // 3 — Recommendation
-    let rec, recColor = BLUE;
-    if (isBond) {
-      if (!ctrOk)
-        rec = 'Add JSON-LD structured data on bond detail pages to lift CTR toward 2%+';
-      else if (trendPct > 20)
-        rec = 'Bond impressions growing fast — expand coverage to issuer pages and collections for more long-tail capture';
-      else
-        rec = 'Publish bond-specific FAQs and H1/H2 headers to accelerate impression growth';
-    } else {
-      if (trendPct < -10)
-        rec = 'Blog impressions declining — refresh the top 5 posts with 2026 data and updated FAQs';
-      else if (!ctrOk)
-        rec = 'Strong impressions but low CTR — improve meta titles with yield and tenor specifics (e.g. "10% p.a. 2-year bond")';
-      else
-        rec = 'Add internal links from blog posts to bond detail pages to convert readers into investors';
-    }
-    ins.push({ color: recColor, txt: rec });
-
-    return ins;
-  }
-
-  PANELS.forEach(({ g, chartId, insId }) => {
-    if (!g) return;
-    const color = g.color || '#3b82f6';
-
-    new Chart(document.getElementById(chartId), {
-      data: {
-        labels: g.labels,
-        datasets: [
-          { type: 'bar',  label: 'Impressions',
-            data: g.impr,
-            backgroundColor: color + 'aa', borderColor: color,
-            borderWidth: 1, borderRadius: 3, yAxisID: 'y' },
-          { type: 'line', label: 'Clicks',
-            data: g.clicks,
-            borderColor: '#64748b', backgroundColor: 'transparent',
-            borderWidth: 2, pointRadius: 3, tension: 0.3,
-            pointBackgroundColor: '#64748b', yAxisID: 'y2' },
-        ],
+  // ── Chart 2: Marketing Site + Blog — dual declining lines ────────────────────
+  new Chart(document.getElementById('chart-seo-bl'), {
+    type: 'line',
+    data: {
+      labels: mktG.labels || blG.labels,
+      datasets: [
+        { label: 'Marketing Site', data: mktImpr,
+          borderColor: '#10b981', backgroundColor: '#10b98118',
+          borderWidth: 2, pointRadius: 3, tension: 0.3, fill: false },
+        { label: 'Blog', data: blImpr,
+          borderColor: '#ec4899', backgroundColor: '#ec489918',
+          borderWidth: 2, pointRadius: 3, tension: 0.3, fill: false },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { font: { size: 8 }, boxWidth: 8, padding: 6 } },
+        tooltip: { mode: 'index', intersect: false },
       },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: {
-          legend: { labels: { font: { size: 8 }, boxWidth: 8, padding: 6 } },
-          tooltip: { mode: 'index', intersect: false },
-        },
-        scales: {
-          x:  { grid: { display: false },
-                ticks: { font: { size: 8 }, maxRotation: 30, maxTicksLimit: 8 } },
-          y:  { grid: { color: '#f1f5f9' }, beginAtZero: true,
-                ticks: { font: { size: 8 } },
-                title: { display: true, text: 'Impressions', font: { size: 8 }, color: '#94a3b8' } },
-          y2: { position: 'right', grid: { display: false },
-                ticks: { font: { size: 8 } },
-                title: { display: true, text: 'Clicks', font: { size: 8 }, color: '#64748b' } },
-        },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 8 }, maxRotation: 30, maxTicksLimit: 8 } },
+        y: { grid: { color: '#f1f5f9' }, beginAtZero: true, ticks: { font: { size: 8 } },
+             title: { display: true, text: 'Impressions', font: { size: 8 }, color: '#94a3b8' } },
       },
-    });
+    },
+  });
 
-    const insContainer = document.getElementById(insId);
-    if (!insContainer) return;
-    buildInsights(g).forEach(ins => {
-      const row = document.createElement('div');
-      row.className = 'seo-ins-row';
-      row.innerHTML = '<div class="seo-ins-dot" style="background:' + ins.color + '"></div>'
-                    + '<span>' + ins.txt + '</span>';
-      insContainer.appendChild(row);
-    });
+  // Marketing + Blog insights
+  const mkt8wk  = trend8(mktImpr);
+  const bl8wk   = trend8(blImpr);
+  const mktCTR  = last(mktImpr) > 0 ? (last(mktClks) / last(mktImpr) * 100).toFixed(1) : '0.0';
+  const blCTR   = last(blImpr)  > 0 ? (last(blClks)  / last(blImpr)  * 100).toFixed(1) : '0.0';
+  const orgIns  = [
+    { color: '#f87171', txt: `Marketing Site ▼${Math.abs(mkt8wk)}% over 8 weeks — ${fmtK(last(mktImpr))} impr last wk, CTR ${mktCTR}%` },
+    { color: '#f87171', txt: `Blog ▼${Math.abs(bl8wk)}% over 8 weeks — ${fmtK(last(blImpr))} impr last wk, CTR ${blCTR}% · refresh top posts with 2026 data` },
+    { color: '#3b82f6', txt: 'Add internal links from top blog posts → bond detail pages to convert organic readers' },
+  ];
+  const orgInsEl = document.getElementById('seo-ins-bl');
+  if (orgInsEl) orgIns.forEach(ins => {
+    const row = document.createElement('div'); row.className = 'seo-ins-row';
+    row.innerHTML = '<div class="seo-ins-dot" style="background:' + ins.color + '"></div><span>' + ins.txt + '</span>';
+    orgInsEl.appendChild(row);
   });
 })();
 
