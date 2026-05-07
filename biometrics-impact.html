@@ -418,7 +418,7 @@
   <a href="index.html" class="back-link">← Product Hub</a>
 
   <!-- Top KPIs (post-launch) -->
-  <h2><span class="dot" style="background:#7C3AED"></span>8-Day Post-Launch Summary</h2>
+  <h2><span class="dot" style="background:#7C3AED"></span><span id="summary-days">8</span>-Day Post-Launch Summary</h2>
   <div class="kpi-grid">
     <div class="kpi purple">
       <div class="label">Users Enrolled</div>
@@ -449,7 +449,7 @@
       <tr>
         <th class="metric-col">Metric</th>
         <th>Before Launch<br><small style="font-weight:400;text-transform:none">Mar 24 – Apr 19 (27 days)</small></th>
-        <th>After Launch<br><small style="font-weight:400;text-transform:none">Apr 20 – Apr 27 (8 days)</small></th>
+        <th>After Launch<br><small id="ba-after-label" style="font-weight:400;text-transform:none">Apr 20 – Apr 27 (8 days)</small></th>
         <th>Change</th>
       </tr>
     </thead>
@@ -457,19 +457,19 @@
       <tr>
         <td class="metric-col">Signin Page Views / day</td>
         <td class="before-col">1,036</td>
-        <td class="after-col">1,074</td>
+        <td class="after-col" id="ba-signin-after">1,074</td>
         <td><span class="badge up">↑ +3.7%</span></td>
       </tr>
       <tr>
         <td class="metric-col">OTP Conv Rate (Signin → Verified)</td>
         <td class="before-col">63.3%</td>
-        <td class="after-col">61.9%</td>
+        <td class="after-col" id="ba-otp-after">61.9%</td>
         <td><span class="badge flat">−1.4pp (noise)</span></td>
       </tr>
       <tr>
         <td class="metric-col">New Signups / day</td>
         <td class="before-col">352</td>
-        <td class="after-col">409</td>
+        <td class="after-col" id="ba-signup-after">409</td>
         <td><span class="badge up">↑ +16.2%</span></td>
       </tr>
       <tr>
@@ -481,7 +481,7 @@
       <tr>
         <td class="metric-col">Re-login Method</td>
         <td class="before-col">PIN only</td>
-        <td class="after-col">PIN + Biometrics<br><small style="font-weight:400;color:#64748B">60.6% bio success rate</small></td>
+        <td class="after-col">PIN + Biometrics<br><small style="font-weight:400;color:#64748B"><span id="ba-biosuccess">60.6%</span> bio success rate</small></td>
         <td><span class="badge up">✓ New path</span></td>
       </tr>
       <tr>
@@ -510,30 +510,30 @@
       <div class="funnel-row">
         <div class="row-head">
           <div class="row-label">Shown setup screen</div>
-          <div class="row-nums"><span class="n">2,893</span> &nbsp; 100%</div>
+          <div class="row-nums"><span class="n" id="funnel-sv-n">2,893</span> &nbsp; 100%</div>
         </div>
         <div class="bar-track"><div class="bar-fill" style="background:#6366F1;width:100%"></div></div>
       </div>
       <div class="funnel-row">
         <div class="row-head">
           <div class="row-label">✅ Enrolled biometrics</div>
-          <div class="row-nums"><span class="n" style="color:#16A34A">1,976</span> &nbsp; 68.3%</div>
+          <div class="row-nums"><span class="n" style="color:#16A34A" id="funnel-en-n">1,976</span> &nbsp; <span id="funnel-en-pct">68.3%</span></div>
         </div>
-        <div class="bar-track"><div class="bar-fill" style="background:#16A34A;width:68.3%"></div></div>
+        <div class="bar-track"><div id="bar-enroll" class="bar-fill" style="background:#16A34A;width:68.3%"></div></div>
       </div>
       <div class="funnel-row">
         <div class="row-head">
           <div class="row-label">⏳ Deferred (Set Up Later)</div>
-          <div class="row-nums"><span class="n" style="color:#D97706">839</span> &nbsp; 29.0%</div>
+          <div class="row-nums"><span class="n" style="color:#D97706" id="funnel-df-n">839</span> &nbsp; <span id="funnel-df-pct">29.0%</span></div>
         </div>
-        <div class="bar-track"><div class="bar-fill" style="background:#F59E0B;width:29.0%"></div></div>
+        <div class="bar-track"><div id="bar-defer" class="bar-fill" style="background:#F59E0B;width:29.0%"></div></div>
       </div>
       <div class="funnel-row">
         <div class="row-head">
           <div class="row-label">❌ Enrollment failed</div>
-          <div class="row-nums"><span class="n" style="color:#DC2626">199</span> &nbsp; 6.9%</div>
+          <div class="row-nums"><span class="n" style="color:#DC2626" id="funnel-fl-n">199</span> &nbsp; <span id="funnel-fl-pct">6.9%</span></div>
         </div>
-        <div class="bar-track"><div class="bar-fill" style="background:#EF4444;width:6.9%"></div></div>
+        <div class="bar-track"><div id="bar-fail" class="bar-fill" style="background:#EF4444;width:6.9%"></div></div>
       </div>
       <div style="font-size:12px;color:#64748B;margin-top:14px;padding-top:12px;border-top:1px solid #E2E8F0;">
         Deferred users are re-prompted after 3 days — expect enrollment to climb to ~75–80% over the next 2 weeks.
@@ -546,37 +546,37 @@
       <div class="funnel-row">
         <div class="row-head">
           <div class="row-label">Tapped biometric button</div>
-          <div class="row-nums"><span class="n">1,296</span> &nbsp; 100%</div>
+          <div class="row-nums"><span class="n" id="login-cl-n">1,296</span> &nbsp; 100%</div>
         </div>
         <div class="bar-track"><div class="bar-fill" style="background:#6366F1;width:100%"></div></div>
       </div>
       <div class="funnel-row">
         <div class="row-head">
           <div class="row-label">✅ Verified (backend)</div>
-          <div class="row-nums"><span class="n" style="color:#16A34A">786</span> &nbsp; 60.6%</div>
+          <div class="row-nums"><span class="n" style="color:#16A34A" id="login-vr-n">786</span> &nbsp; <span id="login-vr-pct">60.6%</span></div>
         </div>
-        <div class="bar-track"><div class="bar-fill" style="background:#16A34A;width:60.6%"></div></div>
+        <div class="bar-track"><div id="bar-login-vr" class="bar-fill" style="background:#16A34A;width:60.6%"></div></div>
       </div>
       <div class="funnel-row">
         <div class="row-head">
           <div class="row-label">❌ OS prompt failed</div>
-          <div class="row-nums"><span class="n" style="color:#D97706">454</span> &nbsp; 35.0%</div>
+          <div class="row-nums"><span class="n" style="color:#D97706" id="login-os-n">454</span> &nbsp; <span id="login-os-pct">35.0%</span></div>
         </div>
-        <div class="bar-track"><div class="bar-fill" style="background:#F59E0B;width:35.0%"></div></div>
+        <div class="bar-track"><div id="bar-login-os" class="bar-fill" style="background:#F59E0B;width:35.0%"></div></div>
       </div>
       <div class="funnel-row">
         <div class="row-head">
           <div class="row-label">❌ Backend challenge failed</div>
-          <div class="row-nums"><span class="n">24</span> &nbsp; 1.9%</div>
+          <div class="row-nums"><span class="n" id="login-bk-n">24</span> &nbsp; <span id="login-bk-pct">1.9%</span></div>
         </div>
-        <div class="bar-track"><div class="bar-fill" style="background:#EF4444;width:1.9%"></div></div>
+        <div class="bar-track"><div id="bar-login-bk" class="bar-fill" style="background:#EF4444;width:1.9%"></div></div>
       </div>
       <div class="funnel-row">
         <div class="row-head">
           <div class="row-label">🔁 Fell back to PIN</div>
-          <div class="row-nums"><span class="n">2</span> &nbsp; &lt;0.1%</div>
+          <div class="row-nums"><span class="n" id="login-fb-n">2</span> &nbsp; &lt;0.1%</div>
         </div>
-        <div class="bar-track"><div class="bar-fill" style="background:#94A3B8;width:0.2%"></div></div>
+        <div class="bar-track"><div id="bar-login-fb" class="bar-fill" style="background:#94A3B8;width:0.2%"></div></div>
       </div>
       <div style="font-size:12px;color:#64748B;margin-top:14px;padding-top:12px;border-top:1px solid #E2E8F0;">
         35% OS failure rate is expected early — includes Face ID / fingerprint mismatches and user cancels. Only 2 users hit the 3-strike PIN fallback.
@@ -594,21 +594,21 @@
         <span style="font-size:26px;">🍎</span>
         <div>
           <div style="font-size:16px;font-weight:700;">iOS</div>
-          <div style="font-size:12px;color:var(--gray);">252 setup views · 337 login attempts</div>
+          <div id="ios-subtitle" style="font-size:12px;color:var(--gray);">252 setup views · 337 login attempts</div>
         </div>
       </div>
       <div style="margin-bottom:14px;">
         <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--gray);margin-bottom:10px;">Enrollment</div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">Enrolled</span><span style="font-weight:700;color:#16A34A;">173 (68.7%)</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">Deferred</span><span style="font-weight:600;">58 (23.0%)</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text2);">Failed</span><span style="font-weight:600;">9 (3.6%)</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">Enrolled</span><span id="ios-enrolled" style="font-weight:700;color:#16A34A;">173 (68.7%)</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">Deferred</span><span id="ios-deferred" style="font-weight:600;">58 (23.0%)</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text2);">Failed</span><span id="ios-enroll-failed" style="font-weight:600;">9 (3.6%)</span></div>
       </div>
       <div style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px;">
-        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--gray);margin-bottom:10px;">Login (8 days post-launch)</div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">Bio taps</span><span style="font-weight:600;">337</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">Verified</span><span style="font-weight:700;color:#DC2626;">118 (35.0%) ⚠️</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">OS prompt failed</span><span style="font-weight:600;color:#DC2626;">257 (76.3%)</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text2);">PIN fallback</span><span style="font-weight:600;">0</span></div>
+        <div id="ios-login-label" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--gray);margin-bottom:10px;">Login (8 days post-launch)</div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">Bio taps</span><span id="ios-bio-taps" style="font-weight:600;">337</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">Verified</span><span id="ios-verified" style="font-weight:700;color:#DC2626;">118 (35.0%) ⚠️</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">OS prompt failed</span><span id="ios-os-failed" style="font-weight:600;color:#DC2626;">257 (76.3%)</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text2);">PIN fallback</span><span id="ios-pin-fallback" style="font-weight:600;">0</span></div>
       </div>
       <div style="margin-top:14px;padding:10px 12px;background:#FEF2F2;border-radius:8px;font-size:12px;color:#991B1B;line-height:1.5;">
         Face ID OS failure rate is high (76%). Likely cause: lighting conditions, glasses, mask, or user cancels. Pre-prompt tip ("Look at your phone") could halve this.
@@ -621,21 +621,21 @@
         <span style="font-size:26px;">🤖</span>
         <div>
           <div style="font-size:16px;font-weight:700;">Android</div>
-          <div style="font-size:12px;color:var(--gray);">2,641 setup views · 962 login attempts</div>
+          <div id="android-subtitle" style="font-size:12px;color:var(--gray);">2,641 setup views · 962 login attempts</div>
         </div>
       </div>
       <div style="margin-bottom:14px;">
         <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--gray);margin-bottom:10px;">Enrollment</div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">Enrolled</span><span style="font-weight:700;color:#16A34A;">1,803 (68.3%)</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">Deferred</span><span style="font-weight:600;">781 (29.6%)</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text2);">Failed</span><span style="font-weight:600;">190 (7.2%)</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">Enrolled</span><span id="android-enrolled" style="font-weight:700;color:#16A34A;">1,803 (68.3%)</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">Deferred</span><span id="android-deferred" style="font-weight:600;">781 (29.6%)</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text2);">Failed</span><span id="android-enroll-failed" style="font-weight:600;">190 (7.2%)</span></div>
       </div>
       <div style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px;">
-        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--gray);margin-bottom:10px;">Login (8 days post-launch)</div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">Bio taps</span><span style="font-weight:600;">962</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">Verified</span><span style="font-weight:700;color:#16A34A;">668 (69.4%) ✅</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">OS prompt failed</span><span style="font-weight:600;">200 (20.8%)</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text2);">PIN fallback</span><span style="font-weight:600;">2</span></div>
+        <div id="android-login-label" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--gray);margin-bottom:10px;">Login (8 days post-launch)</div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">Bio taps</span><span id="android-bio-taps" style="font-weight:600;">962</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">Verified</span><span id="android-verified" style="font-weight:700;color:#16A34A;">668 (69.4%) ✅</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text2);">OS prompt failed</span><span id="android-os-failed" style="font-weight:600;">200 (20.8%)</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text2);">PIN fallback</span><span id="android-pin-fallback" style="font-weight:600;">2</span></div>
       </div>
       <div style="margin-top:14px;padding:10px 12px;background:#F0FDF4;border-radius:8px;font-size:12px;color:#166534;line-height:1.5;">
         Fingerprint auth working well. 20.8% OS failure is normal — includes partial fingerprint reads and user cancels. No action needed.
@@ -985,6 +985,11 @@ function fmtDate(s) {
   return s;
 }
 
+function r1(v) { return Math.round(v * 10) / 10; }
+function setText(id, val) { const e = document.getElementById(id); if (e) e.textContent = val; }
+function setHtml(id, val) { const e = document.getElementById(id); if (e) e.innerHTML = val; }
+function setWidth(id, pct) { const e = document.getElementById(id); if (e) e.style.width = pct + '%'; }
+
 function updatePage(d) {
   // Format dates for charts
   if (d.daily && d.daily.dates) {
@@ -993,29 +998,100 @@ function updatePage(d) {
 
   // KPI cards
   const s = d.setup, l = d.login;
-  document.getElementById('kpi-enrolled').textContent    = fmt(s.enrolled);
-  document.getElementById('kpi-screen-views').textContent = fmt(s.screen_views);
-  document.getElementById('kpi-enroll-rate').textContent  = s.enrollment_rate + '%';
-  document.getElementById('kpi-logins').textContent       = fmt(l.verified);
-  document.getElementById('kpi-login-rate').textContent   = l.success_rate + '%';
-  document.getElementById('kpi-login-clicks').textContent = fmt(l.clicked);
+  setText('kpi-enrolled',     fmt(s.enrolled));
+  setText('kpi-screen-views', fmt(s.screen_views));
+  setText('kpi-enroll-rate',  s.enrollment_rate + '%');
+  setText('kpi-logins',       fmt(l.verified));
+  setText('kpi-login-rate',   l.success_rate + '%');
+  setText('kpi-login-clicks', fmt(l.clicked));
 
   // Header date range + last updated
-  const end = d.period.after_end;
-  const endFmt = end ? `${end.slice(4,6)}/${end.slice(6,8)}` : '';
-  const adays  = d.period.after_days;
-  if (endFmt) {
-    const mo = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const end   = d.period.after_end;
+  const adays = d.period.after_days;
+  const mo    = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  if (end) {
     const m = parseInt(end.slice(4,6)), day = parseInt(end.slice(6,8));
     const mname = mo[m] || '';
-    document.getElementById('meta-after-period').textContent =
-      `📅 After: Apr 20 – ${mname} ${day} (${adays} days)`;
+    setText('meta-after-period', `📅 After: Apr 20 – ${mname} ${day} (${adays} days)`);
+    setText('summary-days', adays);
+    setText('ba-after-label',  `Apr 20 – ${mname} ${day} (${adays} days)`);
+    const loginLabel = `Login (${adays} days post-launch)`;
+    setText('ios-login-label',     loginLabel);
+    setText('android-login-label', loginLabel);
   }
   if (d.generated_at) {
     const dt = new Date(d.generated_at);
-    document.getElementById('last-updated').textContent =
-      `⟳ Data refreshed daily · Last update: ${dt.toUTCString().slice(0,16)} UTC`;
+    setText('last-updated', `⟳ Data refreshed daily · Last update: ${dt.toUTCString().slice(0,16)} UTC`);
   }
+
+  // Before/After table — after column
+  const ba = d.before_after;
+  if (ba) {
+    setText('ba-signin-after', fmt(ba.signin_per_day_after));
+    setText('ba-otp-after',    (ba.otp_cr_after || 0) + '%');
+    setText('ba-signup-after', fmt(ba.signup_per_day_after));
+    setText('ba-biosuccess',   l.success_rate + '%');
+  }
+
+  // Enrollment funnel bars
+  const sv = s.screen_views, en = s.enrolled, df = s.deferred, fl = s.failed;
+  const enPct = s.enrollment_rate;
+  const dfPct = sv ? r1(df / sv * 100) : 0;
+  const flPct = sv ? r1(fl / sv * 100) : 0;
+  setText('funnel-sv-n',  fmt(sv));
+  setText('funnel-en-n',  fmt(en));  setText('funnel-en-pct', enPct + '%');
+  setText('funnel-df-n',  fmt(df));  setText('funnel-df-pct', dfPct + '%');
+  setText('funnel-fl-n',  fmt(fl));  setText('funnel-fl-pct', flPct + '%');
+  setWidth('bar-enroll', enPct);
+  setWidth('bar-defer',  dfPct);
+  setWidth('bar-fail',   flPct);
+
+  // Login funnel bars
+  const cl = l.clicked, vr = l.verified, os = l.os_failed, bk = l.bk_failed, fb = l.fallback;
+  const vrPct = l.success_rate;
+  const osPct = cl ? r1(os / cl * 100) : 0;
+  const bkPct = cl ? r1(bk / cl * 100) : 0;
+  const fbPct = cl ? r1(fb / cl * 100) : 0;
+  setText('login-cl-n', fmt(cl));
+  setText('login-vr-n', fmt(vr));  setText('login-vr-pct', vrPct + '%');
+  setText('login-os-n', fmt(os));  setText('login-os-pct', osPct + '%');
+  setText('login-bk-n', fmt(bk));  setText('login-bk-pct', bkPct + '%');
+  setText('login-fb-n', fmt(fb));
+  setWidth('bar-login-vr', vrPct);
+  setWidth('bar-login-os', osPct);
+  setWidth('bar-login-bk', Math.max(bkPct, 0.2));
+  setWidth('bar-login-fb', Math.max(fbPct, 0.1));
+
+  // Platform cards — iOS
+  const ios = (d.platform || {}).iOS || {};
+  const iSV = ios.screen_views || 0, iCL = ios.login_clicks || 0;
+  const iDfPct = iSV ? r1((ios.deferred  || 0) / iSV * 100) : 0;
+  const iFlPct = iSV ? r1((ios.enroll_failed || 0) / iSV * 100) : 0;
+  setText('ios-subtitle',      `${fmt(iSV)} setup views · ${fmt(iCL)} login attempts`);
+  setText('ios-enrolled',      `${fmt(ios.enrolled)} (${ios.enrollment_rate}%)`);
+  setText('ios-deferred',      `${fmt(ios.deferred)} (${iDfPct}%)`);
+  setText('ios-enroll-failed', `${fmt(ios.enroll_failed)} (${iFlPct}%)`);
+  setText('ios-bio-taps',      fmt(iCL));
+  const iSucc = ios.login_success_rate || 0;
+  setHtml('ios-verified',  `<span style="font-weight:700;color:#DC2626;">${fmt(ios.login_verified)} (${iSucc}%) ⚠️</span>`);
+  setHtml('ios-os-failed', `<span style="font-weight:600;color:#DC2626;">${fmt(ios.os_failed)} (${ios.os_fail_rate}%)</span>`);
+  setText('ios-pin-fallback', fmt(ios.pin_fallback));
+
+  // Platform cards — Android
+  const and = (d.platform || {}).Android || {};
+  const aSV = and.screen_views || 0, aCL = and.login_clicks || 0;
+  const aDfPct = aSV ? r1((and.deferred      || 0) / aSV * 100) : 0;
+  const aFlPct = aSV ? r1((and.enroll_failed || 0) / aSV * 100) : 0;
+  setText('android-subtitle',      `${fmt(aSV)} setup views · ${fmt(aCL)} login attempts`);
+  setText('android-enrolled',      `${fmt(and.enrolled)} (${and.enrollment_rate}%)`);
+  setText('android-deferred',      `${fmt(and.deferred)} (${aDfPct}%)`);
+  setText('android-enroll-failed', `${fmt(and.enroll_failed)} (${aFlPct}%)`);
+  setText('android-bio-taps',      fmt(aCL));
+  const aSucc = and.login_success_rate || 0;
+  const aColor = aSucc >= 60 ? '#16A34A' : '#D97706';
+  setHtml('android-verified',  `<span style="font-weight:700;color:${aColor};">${fmt(and.login_verified)} (${aSucc}%) ✅</span>`);
+  setText('android-os-failed', `${fmt(and.os_failed)} (${and.os_fail_rate}%)`);
+  setText('android-pin-fallback', fmt(and.pin_fallback));
 
   renderCharts(d);
 }
