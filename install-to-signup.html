@@ -99,7 +99,13 @@ tr:hover td { background:rgba(255,255,255,.025); }
 .legend dt { float:left; font-weight:700; color:var(--text); width:130px; }
 .legend dd { margin-left:140px; margin-bottom:4px; }
 .legend dl::after { content:""; display:table; clear:both; }
+
+/* trend chart */
+.chart-card { background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:20px 24px; margin-bottom:28px; }
+.chart-wrap { position:relative; height:260px; }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -107,7 +113,7 @@ tr:hover td { background:rgba(255,255,255,.025); }
   <div class="hdr-left">
     <h1>📲 Install → Signup Funnel</h1>
     <div class="sub">
-      CUR: 2026-04-12 → 2026-05-11 · PREV: 2026-03-13 → 2026-04-11 · generated 2026-05-12 10:27 IST
+      CUR: 2026-04-12 → 2026-05-11 · PREV: 2026-03-13 → 2026-04-11 · generated 2026-05-12 10:40 IST
     </div>
   </div>
   <a class="back-link" href="index.html">← Product Hub</a>
@@ -148,6 +154,51 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <div class="kpi-sub">end-to-end · 30d</div>
         </div></div>
 
+
+  <div class="sec-title">WoW Trend · I→Signup % by Device Tier (4 weeks)</div>
+  <div class="chart-card">
+    <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+    <p style="font-size:.68rem;color:var(--text3);margin-top:10px">
+      Each data point = one 7-day window · iOS dashed = AppsFlyer install data unreliable ·
+      Web line = Signin PV → Signup (no install event)
+    </p>
+  </div>
+  <script>
+    (function(){
+      var ctx = document.getElementById('trendChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: { labels: ["Apr 14\u201320", "Apr 21\u201327", "Apr 28\u20134", "May 5\u201311"], datasets: [{"label": "Android Premium", "data": [40.6, 59.8, 40.9, 29.2], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Android Mid", "data": [41.2, 54.6, 50.5, 30.9], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Android Low", "data": [42.3, 59.5, 51.3, 27.1], "borderColor": "#d29922", "backgroundColor": "#d29922", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "iOS", "data": [67.7, null, null, null], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [4,4], "spanGaps": true}, {"label": "Web", "data": [23.9, 26.3, 26.0, 25.4], "borderColor": "#8b949e", "backgroundColor": "#8b949e", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [2,4], "spanGaps": true}] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { labels: { color: '#8b949e', boxWidth: 12, font: { size: 11 } } },
+            tooltip: {
+              backgroundColor: '#161b22', borderColor: '#30363d', borderWidth: 1,
+              titleColor: '#e6edf3', bodyColor: '#8b949e',
+              callbacks: {
+                label: function(ctx) {
+                  var v = ctx.parsed.y;
+                  return ' ' + ctx.dataset.label + ': ' + (v === null ? '—' : v.toFixed(1) + '%');
+                }
+              }
+            }
+          },
+          scales: {
+            x: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { color: '#21262d' } },
+            y: {
+              ticks: { color: '#8b949e', font: { size: 11 },
+                callback: function(v) { return v + '%'; } },
+              grid: { color: '#21262d' },
+              min: 0,
+              title: { display: true, text: 'I→Signup %', color: '#8b949e', font: { size: 11 } }
+            }
+          }
+        }
+      });
+    })();
+  </script>
   <div class="sec-title">Full Funnel by Device Tier</div>
   <div class="tbl-wrap">
     <table>
