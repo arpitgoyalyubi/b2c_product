@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Install → Signup Funnel · Aspero</title>
+<title>App Activation → Signup Funnel · Aspero</title>
 <style>
 :root {
-  --bg:#0d1117; --surface:#161b22; --surface2:#21262d; --border:#30363d;
-  --text:#e6edf3; --text2:#8b949e; --text3:#6e7681;
-  --blue:#58a6ff; --blue-dim:rgba(88,166,255,.12);
-  --violet:#bc8cff; --violet-dim:rgba(188,140,255,.12);
-  --green:#3fb950; --green-dim:rgba(63,185,80,.12);
-  --rose:#ff7b72; --rose-dim:rgba(255,123,114,.12);
-  --yellow:#d29922; --yellow-dim:rgba(210,153,34,.12);
+  --bg:#0d1117; --surface:#ffffff; --surface2:#f8fafc; --border:#e2e8f0;
+  --text:#1e293b; --text2:#64748b; --text3:#94a3b8;
+  --blue:#3b82f6; --blue-dim:rgba(59,130,246,.10);
+  --violet:#8b5cf6; --violet-dim:rgba(139,92,246,.10);
+  --green:#059669; --green-dim:rgba(5,150,105,.10);
+  --rose:#f87171; --rose-dim:rgba(248,113,113,.10);
+  --yellow:#d97706; --yellow-dim:rgba(217,119,6,.10);
   --radius:10px;
 }
 * { box-sizing:border-box; margin:0; padding:0; }
@@ -23,14 +23,25 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 .hdr { background:linear-gradient(135deg,#0d1f3c,#1c3a6a);
   padding:16px 24px; display:flex; align-items:center;
   justify-content:space-between; flex-wrap:wrap; gap:8px;
-  border-bottom:1px solid var(--border); }
-.hdr-left h1 { font-size:1.1rem; font-weight:700; color:var(--blue); }
-.hdr-left .sub { font-size:.72rem; color:var(--text2); margin-top:2px; }
-.back-link { font-size:.75rem; color:var(--blue); text-decoration:none; opacity:.8; }
+  border-bottom:1px solid #30363d; border-radius:14px 14px 0 0; }
+.hdr-left h1 { font-size:1.1rem; font-weight:700; color:#93c5fd; }
+.hdr-left .sub { font-size:.72rem; color:#94a3b8; margin-top:2px; }
+.back-link { font-size:.75rem; color:#93c5fd; text-decoration:none; opacity:.8; }
 .back-link:hover { opacity:1; }
 
-/* body wrap */
-.wrap { max-width:1200px; margin:0 auto; padding:24px 24px 60px; }
+/* body wrap — white panel on dark outer */
+.wrap { max-width:1200px; margin:0 auto; padding:0 0 60px;
+  background:var(--surface);
+  box-shadow:0 30px 90px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.06);
+  border-radius:14px; }
+
+.wrap-inner { padding:24px 24px 0; }
+
+/* proxy notice */
+.proxy-notice { background:#fffbeb; border:1px solid #fcd34d;
+  border-radius:8px; padding:10px 16px; margin-bottom:20px;
+  font-size:.78rem; color:#92400e; }
+.proxy-notice strong { color:#78350f; }
 
 /* section label */
 .sec-title { font-size:.72rem; font-weight:700; text-transform:uppercase;
@@ -39,7 +50,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 /* KPI cards */
 .kpi-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
   gap:12px; margin-bottom:28px; }
-.kpi-card { background:var(--surface); border:1px solid var(--border);
+.kpi-card { background:var(--surface2); border:1px solid var(--border);
   border-radius:var(--radius); padding:14px 16px;
   border-top:3px solid var(--border); }
 .kpi-card.blue   { border-top-color:var(--blue); }
@@ -49,7 +60,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 .kpi-card.yellow { border-top-color:var(--yellow); }
 .kpi-label { font-size:.65rem; text-transform:uppercase; letter-spacing:.1em;
   color:var(--text3); margin-bottom:6px; }
-.kpi-val { font-size:1.5rem; font-weight:800; letter-spacing:-.03em; margin-bottom:4px; }
+.kpi-val { font-size:1.5rem; font-weight:800; letter-spacing:-.03em; margin-bottom:4px; color:var(--text); }
 .kpi-wow { font-size:.72rem; font-weight:600; }
 .kpi-wow.up  { color:var(--green); }
 .kpi-wow.down { color:var(--rose); }
@@ -64,10 +75,10 @@ th { padding:10px 14px; text-align:right; font-size:.68rem; font-weight:600;
   text-transform:uppercase; letter-spacing:.06em; color:var(--text2);
   border-bottom:1px solid var(--border); white-space:nowrap; }
 th:first-child { text-align:left; }
-td { padding:9px 14px; text-align:right; border-bottom:1px solid rgba(48,54,61,.6); }
+td { padding:9px 14px; text-align:right; border-bottom:1px solid #f1f5f9; }
 td:first-child { text-align:left; }
 tr:last-child td { border-bottom:none; }
-tr:hover td { background:rgba(255,255,255,.025); }
+tr:hover td { background:rgba(0,0,0,.02); }
 .total-row td { font-weight:700; background:var(--surface2); border-top:1px solid var(--border); border-bottom:none; }
 .tier-name { font-weight:600; color:var(--text); }
 .dim { color:var(--text3); }
@@ -86,9 +97,9 @@ tr:hover td { background:rgba(255,255,255,.025); }
 .rate-dim  { font-size:.72rem; color:var(--text3); margin-left:4px; }
 
 /* stage header band */
-.stage-hdr-s1  { background:rgba(88,166,255,.08);  color:var(--blue);   font-size:.68rem; text-align:center; padding:5px 8px; border-bottom:1px solid var(--border); }
-.stage-hdr-s2  { background:rgba(188,140,255,.08); color:var(--violet); font-size:.68rem; text-align:center; padding:5px 8px; border-bottom:1px solid var(--border); }
-.stage-hdr-ovr { background:rgba(255,123,114,.08); color:var(--rose);   font-size:.68rem; text-align:center; padding:5px 8px; border-bottom:1px solid var(--border); }
+.stage-hdr-s1  { background:rgba(59,130,246,.06);  color:var(--blue);   font-size:.68rem; text-align:center; padding:5px 8px; border-bottom:1px solid var(--border); }
+.stage-hdr-s2  { background:rgba(139,92,246,.06);  color:var(--violet); font-size:.68rem; text-align:center; padding:5px 8px; border-bottom:1px solid var(--border); }
+.stage-hdr-ovr { background:rgba(248,113,113,.07); color:#dc2626;       font-size:.68rem; text-align:center; padding:5px 8px; border-bottom:1px solid var(--border); }
 
 /* drops */
 .drops-card { background:var(--surface); border:1px solid var(--border);
@@ -98,20 +109,20 @@ tr:hover td { background:rgba(255,255,255,.025); }
 .drop-row:last-child { border-bottom:none; }
 .drop-tier { font-weight:700; min-width:140px; }
 .drop-chip { font-size:.7rem; font-weight:700; border-radius:6px; padding:2px 8px; }
-.drop-chip.critical { background:var(--rose-dim); color:var(--rose); }
+.drop-chip.critical { background:var(--rose-dim); color:#dc2626; }
 .drop-chip.warning  { background:var(--yellow-dim); color:var(--yellow); }
 .drop-loss { font-weight:700; min-width:80px; }
 .drop-hint { color:var(--text2); font-size:.78rem; }
 
 /* legend */
-.legend { background:var(--surface); border:1px solid var(--border);
+.legend { background:var(--surface2); border:1px solid var(--border);
   border-radius:var(--radius); padding:16px 20px; font-size:.78rem; color:var(--text2); }
 .legend dt { float:left; font-weight:700; color:var(--text); width:130px; }
 .legend dd { margin-left:140px; margin-bottom:4px; }
 .legend dl::after { content:""; display:table; clear:both; }
 
 /* trend chart */
-.chart-card { background:var(--surface); border:1px solid var(--border);
+.chart-card { background:var(--surface2); border:1px solid var(--border);
   border-radius:var(--radius); padding:20px 24px; margin-bottom:28px; }
 .chart-wrap { position:relative; height:260px; }
 </style>
@@ -119,31 +130,32 @@ tr:hover td { background:rgba(255,255,255,.025); }
 </head>
 <body>
 
+<div class="wrap">
 <div class="hdr">
   <div class="hdr-left">
-    <h1>📲 Install → Signup Funnel</h1>
+    <h1>📲 App Activation → Signup Funnel</h1>
     <div class="sub">
-      CUR: 2026-04-12 → 2026-05-11 · PREV: 2026-03-13 → 2026-04-11 · generated 2026-05-12 13:22 IST
+      CUR: 2026-04-12 → 2026-05-11 · PREV: 2026-03-13 → 2026-04-11 · generated 2026-05-12 13:57 IST
     </div>
   </div>
   <a class="back-link" href="index.html">← Product Hub</a>
 </div>
 
-<div class="wrap">
+<div class="wrap-inner">
+  <div class="proxy-notice" style="margin-top:16px">
+    <strong>⚠ Proxy metric in use:</strong> AppsFlyer install data has been excluded due to attribution gaps (iOS ATT, reinstalls).
+    <strong>MOBILE_LAUNCH_VIEW unique users</strong> is used as the install proxy throughout this report — all
+    <em>LV Users*</em> and <em>LV→Signup %</em> metrics are based on this count.
+    Interpret as "users who opened the pre-signup screen" rather than fresh installs.
+  </div>
 
-  <div class="sec-title" style="margin-top:4px">Mobile KPIs · Last 30 days</div>
+  <div class="sec-title" style="margin-top:20px">Mobile KPIs · Last 30 days</div>
   <div class="kpi-grid">
         <div class="kpi-card blue">
-          <div class="kpi-label">Total Installs</div>
-          <div class="kpi-val">27,606</div>
+          <div class="kpi-label">LV Users*</div>
+          <div class="kpi-val">62,101</div>
           
-          <div class="kpi-sub">mobile · excl. iOS (unreliable) · 30d</div>
-        </div>
-        <div class="kpi-card violet">
-          <div class="kpi-label">Sessions/Install</div>
-          <div class="kpi-val">2.0×</div>
-          
-          <div class="kpi-sub">avg launch-screen opens per installer (1.0× = first open → signup)</div>
+          <div class="kpi-sub">MOBILE_LAUNCH_VIEW unique users · proxy for installs · all mobile · 30d</div>
         </div>
         <div class="kpi-card violet">
           <div class="kpi-label">Views/User</div>
@@ -161,7 +173,7 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <div class="kpi-label">Unique CTR</div>
           <div class="kpi-val">64.7%</div>
           
-          <div class="kpi-sub">funnel-API: unique users who tapped CTA ÷ unique users who saw LV · all mobile</div>
+          <div class="kpi-sub">funnel-API: unique users who tapped CTA ÷ who saw LV · all mobile</div>
         </div>
         <div class="kpi-card yellow">
           <div class="kpi-label">CTA→Signin</div>
@@ -182,10 +194,10 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <div class="kpi-sub">Stage 2 entry rate · new users</div>
         </div>
         <div class="kpi-card rose">
-          <div class="kpi-label">Install→Signup</div>
-          <div class="kpi-val">39.1%</div>
-          <div class="kpi-wow down">-31.1pp WoW</div>
-          <div class="kpi-sub">end-to-end · 30d</div>
+          <div class="kpi-label">LV→Signup</div>
+          <div class="kpi-val">18.3%</div>
+          <div class="kpi-wow down">-12.3pp WoW</div>
+          <div class="kpi-sub">end-to-end (LV proxy) · 30d</div>
         </div></div>
 
 
@@ -203,15 +215,15 @@ tr:hover td { background:rgba(255,255,255,.025); }
       var ctx = document.getElementById('trendChart').getContext('2d');
       new Chart(ctx, {
         type: 'line',
-        data: { labels: ["Apr 13\u201319", "Apr 20\u201326", "Apr 27\u2013May 3", "May 4\u201310"], datasets: [{"label": "Android Premium", "data": [43.8, 54.9, 45.7, 26.0], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Android Mid", "data": [41.5, 51.6, 53.1, 29.8], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Android Low", "data": [44.5, 52.7, 55.4, 25.8], "borderColor": "#d29922", "backgroundColor": "#d29922", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "iOS", "data": [70.1, null, null, null], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [4,4], "spanGaps": true}, {"label": "Web", "data": [20.9, 24.0, 23.6, 24.6], "borderColor": "#8b949e", "backgroundColor": "#8b949e", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [2,4], "spanGaps": true}] },
+        data: { labels: ["Apr 13\u201319", "Apr 20\u201326", "Apr 27\u2013May 3", "May 4\u201310"], datasets: [{"label": "Android Premium", "data": [23.8, 23.1, 17.8, 11.1], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Android Mid", "data": [27.3, 26.4, 25.1, 16.0], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Android Low", "data": [28.5, 24.5, 22.5, 13.4], "borderColor": "#d29922", "backgroundColor": "#d29922", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "iOS", "data": [7.4, 9.4, 10.2, 6.4], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [4,4], "spanGaps": true}, {"label": "Web", "data": [20.9, 24.0, 23.6, 24.6], "borderColor": "#8b949e", "backgroundColor": "#8b949e", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [2,4], "spanGaps": true}] },
         options: {
           responsive: true, maintainAspectRatio: false,
           interaction: { mode: 'index', intersect: false },
           plugins: {
-            legend: { labels: { color: '#8b949e', boxWidth: 12, font: { size: 11 } } },
+            legend: { labels: { color: '#64748b', boxWidth: 12, font: { size: 11 } } },
             tooltip: {
-              backgroundColor: '#161b22', borderColor: '#30363d', borderWidth: 1,
-              titleColor: '#e6edf3', bodyColor: '#8b949e',
+              backgroundColor: '#1e293b', borderColor: '#e2e8f0', borderWidth: 1,
+              titleColor: '#f8fafc', bodyColor: '#94a3b8',
               callbacks: {
                 label: function(ctx) {
                   var v = ctx.parsed.y;
@@ -221,13 +233,13 @@ tr:hover td { background:rgba(255,255,255,.025); }
             }
           },
           scales: {
-            x: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { color: '#21262d' } },
+            x: { ticks: { color: '#64748b', font: { size: 11 } }, grid: { color: '#e2e8f0' } },
             y: {
-              ticks: { color: '#8b949e', font: { size: 11 },
+              ticks: { color: '#64748b', font: { size: 11 },
                 callback: function(v) { return v + '%'; } },
-              grid: { color: '#21262d' },
+              grid: { color: '#e2e8f0' },
               min: 0,
-              title: { display: true, text: 'I→Signup %', color: '#8b949e', font: { size: 11 } }
+              title: { display: true, text: 'I→Signup %', color: '#64748b', font: { size: 11 } }
             }
           }
         }
@@ -253,15 +265,15 @@ tr:hover td { background:rgba(255,255,255,.025); }
       var ctx2 = document.getElementById('stageChart').getContext('2d');
       new Chart(ctx2, {
         type: 'line',
-        data: { labels: ["Apr 13\u201319", "Apr 20\u201326", "Apr 27\u2013May 3", "May 4\u201310"], datasets: [{"label": "Launch View \u2192 CTA % (pre-signup, mobile total)", "data": [60.0, 57.7, 55.9, 44.6], "borderColor": "#f0883e", "backgroundColor": "#f0883e", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Signin \u2192 OTP \u2713 (new users)", "data": [69.5, 65.5, 62.5, 62.8], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "OTP \u2713 \u2192 Email PV \u207a (directional)", "data": [99.3, 99.5, 99.5, 98.7], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [4,4], "spanGaps": true}, {"label": "Email PV \u2192 Signup", "data": [72.4, 73.1, 73.1, 69.7], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "SSO path % of OTP \u2713 (Google Sign-In)", "data": [43.1, 45.2, 44.0, 51.0], "borderColor": "#ff7b72", "backgroundColor": "#ff7b72", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [6,3], "spanGaps": true}] },
+        data: { labels: ["Apr 13\u201319", "Apr 20\u201326", "Apr 27\u2013May 3", "May 4\u201310"], datasets: [{"label": "Launch View \u2192 CTA % (pre-signup, mobile total)", "data": [60.0, 57.7, 55.9, 44.6], "borderColor": "#f0883e", "backgroundColor": "#f0883e", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Signin \u2192 OTP \u2713 (new users)", "data": [69.5, 65.5, 62.5, 62.8], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "OTP \u2713 \u2192 Email PV \u207a (directional)", "data": [99.3, 99.6, 99.6, 98.7], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [4,4], "spanGaps": true}, {"label": "Email PV \u2192 Signup", "data": [72.5, 73.1, 73.1, 69.7], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "SSO path % of OTP \u2713 (Google Sign-In)", "data": [43.1, 45.2, 44.1, 51.0], "borderColor": "#ff7b72", "backgroundColor": "#ff7b72", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [6,3], "spanGaps": true}] },
         options: {
           responsive: true, maintainAspectRatio: false,
           interaction: { mode: 'index', intersect: false },
           plugins: {
-            legend: { labels: { color: '#8b949e', boxWidth: 12, font: { size: 11 } } },
+            legend: { labels: { color: '#64748b', boxWidth: 12, font: { size: 11 } } },
             tooltip: {
-              backgroundColor: '#161b22', borderColor: '#30363d', borderWidth: 1,
-              titleColor: '#e6edf3', bodyColor: '#8b949e',
+              backgroundColor: '#1e293b', borderColor: '#e2e8f0', borderWidth: 1,
+              titleColor: '#f8fafc', bodyColor: '#94a3b8',
               callbacks: {
                 label: function(ctx) {
                   var v = ctx.parsed.y;
@@ -271,13 +283,13 @@ tr:hover td { background:rgba(255,255,255,.025); }
             }
           },
           scales: {
-            x: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { color: '#21262d' } },
+            x: { ticks: { color: '#64748b', font: { size: 11 } }, grid: { color: '#e2e8f0' } },
             y: {
-              ticks: { color: '#8b949e', font: { size: 11 },
+              ticks: { color: '#64748b', font: { size: 11 },
                 callback: function(v) { return v + '%'; } },
-              grid:  { color: '#21262d' },
+              grid:  { color: '#e2e8f0' },
               min: 0,
-              title: { display: true, text: 'Conv %', color: '#8b949e', font: { size: 11 } }
+              title: { display: true, text: 'Conv %', color: '#64748b', font: { size: 11 } }
             }
           }
         }
@@ -303,10 +315,10 @@ tr:hover td { background:rgba(255,255,255,.025); }
           responsive: true, maintainAspectRatio: false,
           interaction: { mode: 'index', intersect: false },
           plugins: {
-            legend: { labels: { color: '#8b949e', boxWidth: 12, font: { size: 11 } } },
+            legend: { labels: { color: '#64748b', boxWidth: 12, font: { size: 11 } } },
             tooltip: {
-              backgroundColor: '#161b22', borderColor: '#30363d', borderWidth: 1,
-              titleColor: '#e6edf3', bodyColor: '#8b949e',
+              backgroundColor: '#1e293b', borderColor: '#e2e8f0', borderWidth: 1,
+              titleColor: '#f8fafc', bodyColor: '#94a3b8',
               callbacks: {
                 label: function(ctx) {
                   var v = ctx.parsed.y;
@@ -317,17 +329,17 @@ tr:hover td { background:rgba(255,255,255,.025); }
           },
           scales: {
             x: {
-              ticks: { color: '#8b949e', font: { size: 10 },
+              ticks: { color: '#64748b', font: { size: 10 },
                 maxTicksLimit: 20,
                 maxRotation: 45 },
-              grid: { color: '#21262d' }
+              grid: { color: '#e2e8f0' }
             },
             y: {
-              ticks: { color: '#8b949e', font: { size: 11 },
+              ticks: { color: '#64748b', font: { size: 11 },
                 callback: function(v) { return v + '%'; } },
-              grid: { color: '#21262d' },
+              grid: { color: '#e2e8f0' },
               min: 0, max: 100,
-              title: { display: true, text: 'LV→CTA %', color: '#8b949e', font: { size: 11 } }
+              title: { display: true, text: 'LV→CTA %', color: '#64748b', font: { size: 11 } }
             }
           }
         }
@@ -340,8 +352,8 @@ tr:hover td { background:rgba(255,255,255,.025); }
       <thead>
         <tr>
           <th rowspan="2" style="text-align:left">Tier</th>
-          <th rowspan="2" title="[AppsFlyer] Install — mobile only">Install</th>
-          <th colspan="3" class="stage-hdr-ovr">
+          <th rowspan="2" title="MOBILE_LAUNCH_VIEW unique users — used as install proxy (AppsFlyer data excluded). Marked * throughout.">LV Users*<br/><span style="font-size:.6rem;color:var(--text3)">(proxy)</span></th>
+          <th colspan="2" class="stage-hdr-ovr">
             ← Pre-Signup · App Activation →
           </th>
           <th colspan="5" class="stage-hdr-s1">
@@ -353,7 +365,6 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <th colspan="2" class="stage-hdr-ovr">Overall</th>
         </tr>
         <tr>
-          <th title="MOBILE_LAUNCH_VIEW — pre-signup launch screen. Shows avg sessions per installer (can be >1 since screen fires on every cold start until signup). 1.0× = converted on first open.">Launch View<br/><span style="font-size:.62rem;color:var(--text3)">(per install)</span></th>
           <th title="Views/User = metric=totals (every LAUNCH_VIEW firing) ÷ metric=uniques (daily-unique sum). Shows avg times app is opened to launch screen per unique user per period.">Views/User<br/><span style="font-size:.62rem;color:var(--text3)">(totals÷uniq)</span></th>
           <th title="MOBILE_LAUNCH_CTA_CLICKED — Session CTR = sum-of-daily-unique CTA ÷ LV. Unique CTR (sub-row) = funnel-API true unique users who tapped CTA ÷ who saw LV.">Launch CTA<br/><span style="font-size:.62rem;color:var(--text3)">(session / uniq CTR)</span></th>
           <th title="SIGNIN_PAGE_VIEW (new users) — conv% = Signin PV ÷ Launch CTA">Signin PV<br/><span style="font-size:.62rem;color:var(--text3)">(CTA→Si%)</span></th>
@@ -363,15 +374,14 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <th title="VERIFY_OTP_SUCCESS — OTP verified — conv% = Verified ÷ Entered">OTP ✓<br/><span style="font-size:.62rem;color:var(--text3)">(Ent→✓%)</span></th>
           <th title="EMAIL_PAGE_VIEW — Stage 2 entry, fires only on first-time reg — conv% = Email ÷ OTP✓">Email PV<br/><span style="font-size:.62rem;color:var(--text3)">(OTP✓→Em%)</span></th>
           <th title="SETUP_SECURE_PIN_SUCCESS — registration complete — conv% = Signup ÷ Email PV">Signup<br/><span style="font-size:.62rem;color:var(--text3)">(Em→Sg%)</span></th>
-          <th title="Signup ÷ Install (end-to-end)">I→Signup</th>
-          <th title="I→Signup current 30d vs prior 30d">WoW</th>
+          <th title="Signup ÷ LV Users* (end-to-end, proxy)">LV*→Signup</th>
+          <th title="LV*→Signup current 30d vs prior 30d">WoW</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td class="tier-name">Android Premium</td>
-          <td class="step-cell"><span class="cnt">2,659</span></td>
-          <td class="step-cell"><span class="cnt">6,180</span><span class="rate-warn" title="avg launch-screen sessions per installer"> 2.3×</span></td>
+          <td class="step-cell"><span class="cnt">6,180</span><span class="dim" style="font-size:.65rem;margin-left:3px" title="Proxy: MOBILE_LAUNCH_VIEW unique users (AppsFlyer install data excluded)">*</span></td>
           <td style="text-align:right"><span class="rate-warn" title="avg MOBILE_LAUNCH_VIEW firings per unique user (totals ÷ daily-uniques)">1.8×</span></td>
           <td class="step-cell"><span class="cnt">2,879</span><span class="rate-bad" title="Session CTR: sum-of-daily-unique CTA ÷ LV"> 46.6%</span><br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR: funnel-API unique users (true unique)">uniq: <span class="rate-bad">58.3%</span></span></td>
           <td class="step-cell"><span class="cnt">2,113</span><span class="rate-bad"> 73.4%</span></td>
@@ -379,15 +389,14 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <td class="step-cell"><span class="cnt">1,394</span><span class="rate-good"> 100.0%</span></td>
           <td class="step-cell"><span class="cnt">1,357</span><span class="rate-good"> 97.3%</span></td>
           <td class="step-cell"><span class="cnt">1,346</span><span class="rate-good"> 99.2%</span></td>
-          <td class="step-cell"><span class="cnt">1,324</span><span class="rate-good"> 98.4%</span></td>
-          <td class="step-cell"><span class="cnt">1,036</span><span class="rate-warn"> 78.2%</span></td>
-          <td style="text-align:right;font-weight:700">39.0%</td>
-          <td><span class="wow down">-49.5pp</span></td>
+          <td class="step-cell"><span class="cnt">1,325</span><span class="rate-good"> 98.4%</span></td>
+          <td class="step-cell"><span class="cnt">1,037</span><span class="rate-warn"> 78.3%</span></td>
+          <td style="text-align:right;font-weight:700">16.8%</td>
+          <td><span class="wow down">-13.1pp</span></td>
         </tr>
         <tr>
           <td class="tier-name">Android Mid</td>
-          <td class="step-cell"><span class="cnt">7,272</span></td>
-          <td class="step-cell"><span class="cnt">13,778</span><span class="rate-warn" title="avg launch-screen sessions per installer"> 1.9×</span></td>
+          <td class="step-cell"><span class="cnt">13,778</span><span class="dim" style="font-size:.65rem;margin-left:3px" title="Proxy: MOBILE_LAUNCH_VIEW unique users (AppsFlyer install data excluded)">*</span></td>
           <td style="text-align:right"><span class="rate-warn" title="avg MOBILE_LAUNCH_VIEW firings per unique user (totals ÷ daily-uniques)">1.7×</span></td>
           <td class="step-cell"><span class="cnt">7,429</span><span class="rate-bad" title="Session CTR: sum-of-daily-unique CTA ÷ LV"> 53.9%</span><br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR: funnel-API unique users (true unique)">uniq: <span class="rate-bad">63.6%</span></span></td>
           <td class="step-cell"><span class="cnt">5,881</span><span class="rate-warn"> 79.2%</span></td>
@@ -395,15 +404,14 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <td class="step-cell"><span class="cnt">4,109</span><span class="rate-good"> 100.0%</span></td>
           <td class="step-cell"><span class="cnt">3,964</span><span class="rate-good"> 96.5%</span></td>
           <td class="step-cell"><span class="cnt">3,926</span><span class="rate-good"> 99.0%</span></td>
-          <td class="step-cell"><span class="cnt">3,901</span><span class="rate-good"> 99.4%</span></td>
-          <td class="step-cell"><span class="cnt">2,934</span><span class="rate-warn"> 75.2%</span></td>
-          <td style="text-align:right;font-weight:700">40.3%</td>
-          <td><span class="wow down">-34.6pp</span></td>
+          <td class="step-cell"><span class="cnt">3,902</span><span class="rate-good"> 99.4%</span></td>
+          <td class="step-cell"><span class="cnt">2,935</span><span class="rate-warn"> 75.2%</span></td>
+          <td style="text-align:right;font-weight:700">21.3%</td>
+          <td><span class="wow down">-14.5pp</span></td>
         </tr>
         <tr>
           <td class="tier-name">Android Low</td>
-          <td class="step-cell"><span class="cnt">17,675</span></td>
-          <td class="step-cell"><span class="cnt">35,411</span><span class="rate-warn" title="avg launch-screen sessions per installer"> 2.0×</span></td>
+          <td class="step-cell"><span class="cnt">35,411</span><span class="dim" style="font-size:.65rem;margin-left:3px" title="Proxy: MOBILE_LAUNCH_VIEW unique users (AppsFlyer install data excluded)">*</span></td>
           <td style="text-align:right"><span class="rate-warn" title="avg MOBILE_LAUNCH_VIEW firings per unique user (totals ÷ daily-uniques)">1.9×</span></td>
           <td class="step-cell"><span class="cnt">19,622</span><span class="rate-bad" title="Session CTR: sum-of-daily-unique CTA ÷ LV"> 55.4%</span><br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR: funnel-API unique users (true unique)">uniq: <span class="rate-bad">65.9%</span></span></td>
           <td class="step-cell"><span class="cnt">15,723</span><span class="rate-warn"> 80.1%</span></td>
@@ -411,15 +419,14 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <td class="step-cell"><span class="cnt">10,448</span><span class="rate-good"> 100.0%</span></td>
           <td class="step-cell"><span class="cnt">9,984</span><span class="rate-good"> 95.6%</span></td>
           <td class="step-cell"><span class="cnt">9,853</span><span class="rate-good"> 98.7%</span></td>
-          <td class="step-cell"><span class="cnt">9,785</span><span class="rate-good"> 99.3%</span></td>
-          <td class="step-cell"><span class="cnt">6,834</span><span class="rate-bad"> 69.8%</span></td>
-          <td style="text-align:right;font-weight:700">38.7%</td>
-          <td><span class="wow down">-27.7pp</span></td>
+          <td class="step-cell"><span class="cnt">9,789</span><span class="rate-good"> 99.4%</span></td>
+          <td class="step-cell"><span class="cnt">6,837</span><span class="rate-bad"> 69.8%</span></td>
+          <td style="text-align:right;font-weight:700">19.3%</td>
+          <td><span class="wow down">-14.9pp</span></td>
         </tr>
         <tr>
           <td class="tier-name">iOS</td>
-          <td class="step-cell"><span class="cnt">418</span><span class="rate-bad" title="AppsFlyer massively under-counts installs for this tier (iOS ATT / privacy). Install-based rates are invalid."> ⚠ low</span></td>
-          <td class="step-cell"><span class="cnt">6,732</span><span class="dim"> —</span></td>
+          <td class="step-cell"><span class="cnt">6,732</span><span class="dim" style="font-size:.65rem;margin-left:3px" title="Proxy: MOBILE_LAUNCH_VIEW unique users (AppsFlyer install data excluded)">*</span></td>
           <td style="text-align:right"><span class="rate-warn" title="avg MOBILE_LAUNCH_VIEW firings per unique user (totals ÷ daily-uniques)">1.7×</span></td>
           <td class="step-cell"><span class="cnt">2,028</span><span class="rate-bad" title="Session CTR: sum-of-daily-unique CTA ÷ LV"> 30.1%</span><br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR: funnel-API unique users (true unique)">uniq: <span class="rate-bad">67.2%</span></span></td>
           <td class="step-cell"><span class="cnt">1,487</span><span class="rate-bad"> 73.3%</span></td>
@@ -427,14 +434,13 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <td class="step-cell"><span class="cnt">963</span><span class="rate-good"> 100.0%</span></td>
           <td class="step-cell"><span class="cnt">912</span><span class="rate-good"> 94.7%</span></td>
           <td class="step-cell"><span class="cnt">900</span><span class="rate-good"> 98.7%</span></td>
-          <td class="step-cell"><span class="cnt">882</span><span class="rate-good"> 98.0%</span></td>
-          <td class="step-cell"><span class="cnt">542</span><span class="rate-bad"> 61.5%</span></td>
-          <td style="text-align:right;font-weight:700">—</td>
-          <td><span class="wow flat">—</span></td>
+          <td class="step-cell"><span class="cnt">883</span><span class="rate-good"> 98.1%</span></td>
+          <td class="step-cell"><span class="cnt">543</span><span class="rate-bad"> 61.5%</span></td>
+          <td style="text-align:right;font-weight:700">8.1%</td>
+          <td><span class="wow down">-3.5pp</span></td>
         </tr>
         <tr>
           <td class="tier-name">Web</td>
-          <td class="dim" style="text-align:right">(web)</td>
           <td class="dim" style="text-align:right">(web)</td>
           <td class="dim" style="text-align:right">(web)</td>
           <td class="dim" style="text-align:right">(web)</td>
@@ -449,22 +455,21 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <td><span class="wow up">+3.7pp</span></td>
         </tr>
         <tr class="total-row">
-          <td class="tier-name">Mobile Total <span style="font-size:.62rem;color:var(--yellow);font-weight:400">* excl. iOS (install unreliable)</span></td>
-          <td style="text-align:right">27,606 <span style="font-size:.62rem;color:var(--text3)">*</span></td>
-          <td class="step-cell"><span class="cnt">55,369</span><span class="rate-warn" title="avg launch-screen sessions per installer"> 2.0×</span></td>
+          <td class="tier-name">Mobile Total</td>
+          <td class="step-cell"><span class="cnt">62,101</span><span class="dim" style="font-size:.65rem;margin-left:3px">*</span></td>
           <td style="text-align:right"><span class="rate-warn" title="avg LV firings per unique user (totals ÷ daily-uniques)">1.8×</span></td>
-          <td class="step-cell"><span class="cnt">29,930</span>
-            <span class="rate-bad" title="Session CTR"> 54.1%</span>
+          <td class="step-cell"><span class="cnt">31,958</span>
+            <span class="rate-bad" title="Session CTR"> 51.5%</span>
             <br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR">uniq: <span class="rate-bad">64.7%</span></span></td>
-          <td class="step-cell"><span class="cnt">23,717</span><span class="rate-warn"> 79.2%</span></td>
+          <td class="step-cell"><span class="cnt">25,204</span><span class="rate-warn"> 78.9%</span></td>
           <td class="step-cell"><span class="cnt">16,918</span><span class="rate-warn"> 67.1%</span></td>
           <td class="step-cell"><span class="cnt">16,914</span><span class="rate-good"> 100.0%</span></td>
           <td class="step-cell"><span class="cnt">16,217</span><span class="rate-good"> 95.9%</span></td>
           <td class="step-cell"><span class="cnt">16,025</span><span class="rate-good"> 98.8%</span></td>
-          <td class="step-cell"><span class="cnt">15,892</span><span class="rate-good"> 99.2%</span></td>
-          <td class="step-cell"><span class="cnt">11,346</span><span class="rate-warn"> 71.4%</span></td>
-          <td style="text-align:right;font-weight:700">39.1%</td>
-          <td><span class="wow down">-31.1pp</span></td>
+          <td class="step-cell"><span class="cnt">15,899</span><span class="rate-good"> 99.2%</span></td>
+          <td class="step-cell"><span class="cnt">11,352</span><span class="rate-warn"> 71.4%</span></td>
+          <td style="text-align:right;font-weight:700">18.3%</td>
+          <td><span class="wow down">-12.3pp</span></td>
         </tr></tbody>
     </table>
   </div>
@@ -473,34 +478,34 @@ tr:hover td { background:rgba(255,255,255,.025); }
   <div class="drops-card">
         <div class="drop-row">
           <span class="drop-tier">Android Premium</span>
-          <span class="drop-chip critical">Launch View → CTA</span>
-          <span class="drop-loss">53.4pp</span>
-          <span class="drop-hint">pre-signup screen drop-off — users see launch screen but don't tap CTA (check CTA copy, visibility, placement)</span>
+          <span class="drop-chip critical">Install → Signin</span>
+          <span class="drop-loss">65.8pp</span>
+          <span class="drop-hint">pre-funnel: installs not opening app (low intent / background restart)</span>
         </div>
         <div class="drop-row">
           <span class="drop-tier">Android Mid</span>
-          <span class="drop-chip critical">Launch View → CTA</span>
-          <span class="drop-loss">46.1pp</span>
-          <span class="drop-hint">pre-signup screen drop-off — users see launch screen but don't tap CTA (check CTA copy, visibility, placement)</span>
+          <span class="drop-chip critical">Install → Signin</span>
+          <span class="drop-loss">57.3pp</span>
+          <span class="drop-hint">pre-funnel: installs not opening app (low intent / background restart)</span>
         </div>
         <div class="drop-row">
           <span class="drop-tier">Android Low</span>
-          <span class="drop-chip critical">Launch View → CTA</span>
-          <span class="drop-loss">44.6pp</span>
-          <span class="drop-hint">pre-signup screen drop-off — users see launch screen but don't tap CTA (check CTA copy, visibility, placement)</span>
+          <span class="drop-chip critical">Install → Signin</span>
+          <span class="drop-loss">55.6pp</span>
+          <span class="drop-hint">pre-funnel: installs not opening app (low intent / background restart)</span>
         </div>
         <div class="drop-row">
-          <span class="drop-tier">iOS <span style="font-size:.68rem;color:var(--text3)">(install data unreliable — pre-signup rates still valid)</span></span>
-          <span class="drop-chip critical">Launch View → CTA</span>
-          <span class="drop-loss">69.9pp</span>
-          <span class="drop-hint">pre-signup screen drop-off — users see launch screen but don't tap CTA (check CTA copy, visibility, placement)</span>
+          <span class="drop-tier">iOS</span>
+          <span class="drop-chip critical">Install → Signin</span>
+          <span class="drop-loss">77.9pp</span>
+          <span class="drop-hint">pre-funnel: installs not opening app (low intent / background restart)</span>
         </div></div>
 
   <div class="sec-title">Column Glossary</div>
   <div class="legend">
     <dl>
-      <dt>Install</dt><dd>[AppsFlyer] Install — fires once on fresh app install (mobile only; web has no install event)</dd>
-      <dt>Launch View</dt><dd>MOBILE_LAUNCH_VIEW — pre-signup launch screen comes into focus (mobile only, fires before sign-in). All-user count (no new-user filter needed — fires only pre-signup).</dd>
+      <dt>LV Users*</dt><dd>MOBILE_LAUNCH_VIEW unique users — proxy for installs. AppsFlyer install data excluded due to iOS ATT attribution gaps and reinstall inflation. Treat as "users who opened the pre-signup launch screen" rather than fresh installs.</dd>
+      <dt>Views/User</dt><dd>metric=totals ÷ metric=uniques — avg times MOBILE_LAUNCH_VIEW fires per unique user over the period. &gt;2× indicates many users return to the launch screen before signing up.</dd>
       <dt>Launch CTA</dt><dd>MOBILE_LAUNCH_CTA_CLICKED — user taps the CTA button on the pre-signup launch screen. Drop here = users seeing the screen but not engaging with the CTA.</dd>
       <dt>Signin PV</dt><dd>SIGNIN_PAGE_VIEW · new users only (new_active segment — same as Iris Pulse Stage 1)</dd>
       <dt>OTP Sent</dt><dd>SIGNIN_PAGE_VERIFY_API_SUCCESS — phone number submitted &amp; OTP dispatched by backend</dd>
@@ -510,16 +515,13 @@ tr:hover td { background:rgba(255,255,255,.025); }
       <dt>Email PV</dt><dd>EMAIL_PAGE_VIEW — Stage 2 entry · fetched with same new_active segment as Stage 1 funnel so OTP✓→Email% is consistent with the Stage 1 population</dd>
       <dt>SSO path %</dt><dd>SSO_VERIFICATION_SUCCESS ÷ OTP ✓ — share of new users who verified via Google Sign-In. <strong>Google SSO launched Mar 6 2026.</strong> SSO users skip EMAIL_PAGE_VIEW entirely — rising SSO adoption will reduce Email PV counts even if total registrations are stable or growing.</dd>
       <dt>Signup</dt><dd>SETUP_SECURE_PIN_SUCCESS — registration complete</dd>
-      <dt>I→Signup</dt><dd>Signup ÷ Install — end-to-end install→registration rate (Web: Signin PV → Signup)</dd>
-      <dt>WoW</dt><dd>I→Signup current 30d vs previous 30d in percentage points</dd>
+      <dt>LV*→Signup</dt><dd>Signup ÷ LV Users* — end-to-end proxy rate (Web: Signin PV → Signup)</dd>
+      <dt>WoW</dt><dd>LV*→Signup current 30d vs previous 30d in percentage points</dd>
       <dt>Colour coding</dt><dd>Each step shows conv% from the prior step · <span style="color:var(--green)">green</span> = on target · <span style="color:var(--yellow)">amber</span> = watch · <span style="color:var(--rose)">red</span> = investigate</dd>
     </dl>
-    <p style="margin-top:10px;font-size:.72rem;color:var(--text3)">
-      ⚠️ iOS install data from AppsFlyer may under-report (verify against App Store Connect).
-      WoW may be noisy if AppsFlyer integration was recently activated.
-    </p>
   </div>
 
-</div>
+</div><!-- /.wrap-inner -->
+</div><!-- /.wrap -->
 </body>
 </html>
