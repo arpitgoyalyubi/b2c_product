@@ -166,6 +166,52 @@ tr:hover td { background:rgba(0,0,0,.02); }
         </div>
 
 
+  <div class="sec-title">WoW Trend &middot; I&rarr;Signup % by Device Tier (Mon&ndash;Sun calendar weeks)</div>
+  <div class="chart-card">
+    <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+    <p style="font-size:.68rem;color:var(--text3);margin-top:10px">
+      Each data point = one Mon&ndash;Sun calendar week &middot;
+      iOS dashed = AppsFlyer install data unreliable &middot;
+      Web line = Signin PV &rarr; Signup (no install event)
+    </p>
+  </div>
+  <script>
+    (function(){
+      var ctx = document.getElementById('trendChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: { labels: ["Apr 13\u201319", "Apr 20\u201326", "Apr 27\u2013May 3", "May 4\u201310"], datasets: [{"label": "Android Premium", "data": [36.8, 32.1, 26.0, 24.3], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Android Mid", "data": [38.1, 34.3, 33.8, 29.9], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Android Low", "data": [39.9, 32.8, 30.3, 25.9], "borderColor": "#d29922", "backgroundColor": "#d29922", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "iOS", "data": [26.4, 29.5, 30.7, 22.1], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [4,4], "spanGaps": true}, {"label": "Web", "data": [20.9, 24.0, 23.6, 24.6], "borderColor": "#8b949e", "backgroundColor": "#8b949e", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [2,4], "spanGaps": true}] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { labels: { color: '#64748b', boxWidth: 12, font: { size: 11 } } },
+            tooltip: {
+              backgroundColor: '#1e293b', borderColor: '#e2e8f0', borderWidth: 1,
+              titleColor: '#f8fafc', bodyColor: '#94a3b8',
+              callbacks: {
+                label: function(ctx) {
+                  var v = ctx.parsed.y;
+                  return ' ' + ctx.dataset.label + ': ' + (v === null ? '—' : v.toFixed(1) + '%');
+                }
+              }
+            }
+          },
+          scales: {
+            x: { ticks: { color: '#64748b', font: { size: 11 } }, grid: { color: '#e2e8f0' } },
+            y: {
+              ticks: { color: '#64748b', font: { size: 11 },
+                callback: function(v) { return v + '%'; } },
+              grid: { color: '#e2e8f0' },
+              min: 0,
+              title: { display: true, text: 'I\u2192Signup %', color: '#64748b', font: { size: 11 } }
+            }
+          }
+        }
+      });
+    })();
+  </script>
+
   <div style="display:none"><!-- Stage Conversion Trends hidden: data needs review -->
   <div class="sec-title">Stage Conversion Trends &middot; Mobile Total (Mon&ndash;Sun weeks)</div>
   <div class="chart-card">
