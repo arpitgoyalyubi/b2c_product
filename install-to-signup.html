@@ -123,7 +123,7 @@ tr:hover td { background:rgba(255,255,255,.025); }
   <div class="hdr-left">
     <h1>📲 Install → Signup Funnel</h1>
     <div class="sub">
-      CUR: 2026-04-12 → 2026-05-11 · PREV: 2026-03-13 → 2026-04-11 · generated 2026-05-12 12:50 IST
+      CUR: 2026-04-12 → 2026-05-11 · PREV: 2026-03-13 → 2026-04-11 · generated 2026-05-12 13:22 IST
     </div>
   </div>
   <a class="back-link" href="index.html">← Product Hub</a>
@@ -143,13 +143,25 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <div class="kpi-label">Sessions/Install</div>
           <div class="kpi-val">2.0×</div>
           
-          <div class="kpi-sub">avg launch-screen opens per installer (1.0× = clicked through on first open)</div>
+          <div class="kpi-sub">avg launch-screen opens per installer (1.0× = first open → signup)</div>
         </div>
         <div class="kpi-card violet">
-          <div class="kpi-label">Launch→CTA</div>
+          <div class="kpi-label">Views/User</div>
+          <div class="kpi-val">1.8×</div>
+          
+          <div class="kpi-sub">avg MOBILE_LAUNCH_VIEW firings per unique user (totals ÷ daily-uniques) · all mobile</div>
+        </div>
+        <div class="kpi-card violet">
+          <div class="kpi-label">Session CTR</div>
           <div class="kpi-val">51.5%</div>
           
-          <div class="kpi-sub">CTA click rate on pre-signup screen · all mobile</div>
+          <div class="kpi-sub">sum-of-daily-unique CTA ÷ LV · all mobile (session-level)</div>
+        </div>
+        <div class="kpi-card violet">
+          <div class="kpi-label">Unique CTR</div>
+          <div class="kpi-val">64.7%</div>
+          
+          <div class="kpi-sub">funnel-API: unique users who tapped CTA ÷ unique users who saw LV · all mobile</div>
         </div>
         <div class="kpi-card yellow">
           <div class="kpi-label">CTA→Signin</div>
@@ -241,7 +253,7 @@ tr:hover td { background:rgba(255,255,255,.025); }
       var ctx2 = document.getElementById('stageChart').getContext('2d');
       new Chart(ctx2, {
         type: 'line',
-        data: { labels: ["Apr 13\u201319", "Apr 20\u201326", "Apr 27\u2013May 3", "May 4\u201310"], datasets: [{"label": "Launch View \u2192 CTA % (pre-signup, mobile total)", "data": [60.0, 57.7, 55.9, 44.6], "borderColor": "#f0883e", "backgroundColor": "#f0883e", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Signin \u2192 OTP \u2713 (new users)", "data": [69.5, 65.4, 62.5, 62.8], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "OTP \u2713 \u2192 Email PV \u207a (directional)", "data": [99.3, 99.6, 99.6, 98.7], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [4,4], "spanGaps": true}, {"label": "Email PV \u2192 Signup", "data": [72.4, 73.1, 73.1, 69.7], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "SSO path % of OTP \u2713 (Google Sign-In)", "data": [43.1, 45.2, 44.1, 51.1], "borderColor": "#ff7b72", "backgroundColor": "#ff7b72", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [6,3], "spanGaps": true}] },
+        data: { labels: ["Apr 13\u201319", "Apr 20\u201326", "Apr 27\u2013May 3", "May 4\u201310"], datasets: [{"label": "Launch View \u2192 CTA % (pre-signup, mobile total)", "data": [60.0, 57.7, 55.9, 44.6], "borderColor": "#f0883e", "backgroundColor": "#f0883e", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Signin \u2192 OTP \u2713 (new users)", "data": [69.5, 65.5, 62.5, 62.8], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "OTP \u2713 \u2192 Email PV \u207a (directional)", "data": [99.3, 99.5, 99.5, 98.7], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [4,4], "spanGaps": true}, {"label": "Email PV \u2192 Signup", "data": [72.4, 73.1, 73.1, 69.7], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "SSO path % of OTP \u2713 (Google Sign-In)", "data": [43.1, 45.2, 44.0, 51.0], "borderColor": "#ff7b72", "backgroundColor": "#ff7b72", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [6,3], "spanGaps": true}] },
         options: {
           responsive: true, maintainAspectRatio: false,
           interaction: { mode: 'index', intersect: false },
@@ -272,6 +284,56 @@ tr:hover td { background:rgba(255,255,255,.025); }
       });
     })();
   </script>
+
+  <div class="sec-title">Daily Launch View &rarr; CTA % by Device Tier (Mar&nbsp;15&nbsp;&ndash;&nbsp;May&nbsp;12)</div>
+  <div class="chart-card">
+    <div class="chart-wrap"><canvas id="dailyCtrChart"></canvas></div>
+    <p style="font-size:.68rem;color:var(--text3);margin-top:10px">
+      Session CTR per day = daily-unique CTA clicks &divide; daily-unique Launch Views per device tier &middot;
+      iOS dashed &middot; capped at 100% &middot; null = no launch views that day
+    </p>
+  </div>
+  <script>
+    (function(){
+      var ctx3 = document.getElementById('dailyCtrChart').getContext('2d');
+      new Chart(ctx3, {
+        type: 'line',
+        data: { labels: ["2026-03-15", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-21", "2026-03-22", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-28", "2026-03-29", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03", "2026-04-04", "2026-04-05", "2026-04-06", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-11", "2026-04-12", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-18", "2026-04-19", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-25", "2026-04-26", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-01", "2026-05-02", "2026-05-03", "2026-05-04", "2026-05-05", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10", "2026-05-11", "2026-05-12"], datasets: [{"label": "Android Premium", "data": [null, null, null, null, 88.9, 79.5, 85.7, 70.6, 64.6, 73.3, 52.1, 51.7, 49.3, 66.2, 59.7, 60.3, 63.0, 62.8, 56.2, 54.4, 57.8, 59.7, 62.0, 61.0, 62.9, 60.3, 66.7, 61.1, 66.7, 64.0, 66.0, 55.9, 59.4, 62.1, 56.3, 58.9, 54.1, 51.2, 59.6, 57.0, 53.9, 52.1, 51.7, 43.6, 43.4, 54.0, 45.4, 46.3, 51.0, 44.4, 40.6, 45.2, 40.1, 38.9, 37.1, 40.8, 38.8, 30.8, 30.1], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "Android Mid", "data": [100.0, 100.0, 0.0, 15.8, 82.6, 82.2, 86.0, 74.0, 71.6, 62.9, 72.3, 64.9, 68.7, 63.4, 68.4, 68.8, 80.5, 71.5, 69.0, 68.0, 63.6, 71.7, 69.4, 65.7, 71.3, 72.7, 75.5, 68.1, 71.8, 66.5, 68.3, 69.4, 63.6, 63.2, 64.3, 64.9, 65.6, 66.2, 56.8, 55.8, 60.3, 56.8, 58.4, 57.4, 54.8, 56.7, 61.2, 59.6, 55.8, 58.1, 50.9, 50.7, 54.1, 42.6, 44.2, 43.5, 43.1, 40.8, 44.9], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "Android Low", "data": [100.0, 66.7, 50.0, 8.3, 86.7, 87.6, 82.3, 78.1, 72.4, 67.4, 74.1, 65.5, 67.2, 66.4, 68.9, 69.5, 82.3, 76.1, 71.9, 68.3, 63.2, 65.9, 66.9, 71.2, 72.2, 76.8, 74.9, 71.6, 68.5, 72.7, 73.0, 70.7, 67.7, 71.3, 69.6, 63.1, 60.2, 66.2, 63.0, 63.2, 60.9, 64.0, 62.4, 59.0, 58.3, 59.3, 62.0, 61.5, 59.9, 62.2, 50.8, 50.7, 50.9, 44.3, 44.4, 46.5, 45.5, 43.3, 46.0], "borderColor": "#d29922", "backgroundColor": "#d29922", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "iOS", "data": [null, null, null, null, null, null, null, 0.0, 100.0, 100.0, 85.7, 77.7, 67.4, 64.7, 61.8, 52.6, 52.0, 41.2, 43.9, 25.1, 29.5, 25.3, 28.3, 28.6, 28.2, 28.1, 30.3, 30.2, 32.7, 28.9, 33.3, 30.7, 37.3, 28.2, 22.2, 33.5, 37.1, 33.5, 35.7, 30.1, 32.2, 35.4, 30.4, 32.1, 29.0, 27.3, 33.7, 37.3, 32.2, 37.4, 27.4, 25.1, 24.7, 26.3, 26.1, 25.4, 30.7, 24.8, 31.8], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [4,4], "spanGaps": true}] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { labels: { color: '#8b949e', boxWidth: 12, font: { size: 11 } } },
+            tooltip: {
+              backgroundColor: '#161b22', borderColor: '#30363d', borderWidth: 1,
+              titleColor: '#e6edf3', bodyColor: '#8b949e',
+              callbacks: {
+                label: function(ctx) {
+                  var v = ctx.parsed.y;
+                  return ' ' + ctx.dataset.label + ': ' + (v === null ? '—' : v.toFixed(1) + '%');
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: '#8b949e', font: { size: 10 },
+                maxTicksLimit: 20,
+                maxRotation: 45 },
+              grid: { color: '#21262d' }
+            },
+            y: {
+              ticks: { color: '#8b949e', font: { size: 11 },
+                callback: function(v) { return v + '%'; } },
+              grid: { color: '#21262d' },
+              min: 0, max: 100,
+              title: { display: true, text: 'LV→CTA %', color: '#8b949e', font: { size: 11 } }
+            }
+          }
+        }
+      });
+    })();
+  </script>
   <div class="sec-title">Full Funnel by Device Tier</div>
   <div class="tbl-wrap">
     <table>
@@ -279,7 +341,7 @@ tr:hover td { background:rgba(255,255,255,.025); }
         <tr>
           <th rowspan="2" style="text-align:left">Tier</th>
           <th rowspan="2" title="[AppsFlyer] Install — mobile only">Install</th>
-          <th colspan="2" class="stage-hdr-ovr">
+          <th colspan="3" class="stage-hdr-ovr">
             ← Pre-Signup · App Activation →
           </th>
           <th colspan="5" class="stage-hdr-s1">
@@ -292,7 +354,8 @@ tr:hover td { background:rgba(255,255,255,.025); }
         </tr>
         <tr>
           <th title="MOBILE_LAUNCH_VIEW — pre-signup launch screen. Shows avg sessions per installer (can be >1 since screen fires on every cold start until signup). 1.0× = converted on first open.">Launch View<br/><span style="font-size:.62rem;color:var(--text3)">(per install)</span></th>
-          <th title="MOBILE_LAUNCH_CTA_CLICKED — user tapped CTA on pre-signup screen — conv% = CTA ÷ Launch View">Launch CTA<br/><span style="font-size:.62rem;color:var(--text3)">(LV→CTA%)</span></th>
+          <th title="Views/User = metric=totals (every LAUNCH_VIEW firing) ÷ metric=uniques (daily-unique sum). Shows avg times app is opened to launch screen per unique user per period.">Views/User<br/><span style="font-size:.62rem;color:var(--text3)">(totals÷uniq)</span></th>
+          <th title="MOBILE_LAUNCH_CTA_CLICKED — Session CTR = sum-of-daily-unique CTA ÷ LV. Unique CTR (sub-row) = funnel-API true unique users who tapped CTA ÷ who saw LV.">Launch CTA<br/><span style="font-size:.62rem;color:var(--text3)">(session / uniq CTR)</span></th>
           <th title="SIGNIN_PAGE_VIEW (new users) — conv% = Signin PV ÷ Launch CTA">Signin PV<br/><span style="font-size:.62rem;color:var(--text3)">(CTA→Si%)</span></th>
           <th title="SIGNIN_PAGE_VERIFY_API_SUCCESS — number submitted, OTP dispatched — conv% = Sent ÷ Signin PV">OTP Sent<br/><span style="font-size:.62rem;color:var(--text3)">(Si→Sent%)</span></th>
           <th title="VERIFY_OTP_PAGE_VIEW — OTP entry screen reached — conv% = Screen ÷ Sent">OTP Screen<br/><span style="font-size:.62rem;color:var(--text3)">(Sent→Scr%)</span></th>
@@ -309,7 +372,8 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <td class="tier-name">Android Premium</td>
           <td class="step-cell"><span class="cnt">2,659</span></td>
           <td class="step-cell"><span class="cnt">6,180</span><span class="rate-warn" title="avg launch-screen sessions per installer"> 2.3×</span></td>
-          <td class="step-cell"><span class="cnt">2,879</span><span class="rate-bad"> 46.6%</span></td>
+          <td style="text-align:right"><span class="rate-warn" title="avg MOBILE_LAUNCH_VIEW firings per unique user (totals ÷ daily-uniques)">1.8×</span></td>
+          <td class="step-cell"><span class="cnt">2,879</span><span class="rate-bad" title="Session CTR: sum-of-daily-unique CTA ÷ LV"> 46.6%</span><br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR: funnel-API unique users (true unique)">uniq: <span class="rate-bad">58.3%</span></span></td>
           <td class="step-cell"><span class="cnt">2,113</span><span class="rate-bad"> 73.4%</span></td>
           <td class="step-cell"><span class="cnt">1,394</span><span class="rate-warn"> 66.0%</span></td>
           <td class="step-cell"><span class="cnt">1,394</span><span class="rate-good"> 100.0%</span></td>
@@ -324,7 +388,8 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <td class="tier-name">Android Mid</td>
           <td class="step-cell"><span class="cnt">7,272</span></td>
           <td class="step-cell"><span class="cnt">13,778</span><span class="rate-warn" title="avg launch-screen sessions per installer"> 1.9×</span></td>
-          <td class="step-cell"><span class="cnt">7,429</span><span class="rate-bad"> 53.9%</span></td>
+          <td style="text-align:right"><span class="rate-warn" title="avg MOBILE_LAUNCH_VIEW firings per unique user (totals ÷ daily-uniques)">1.7×</span></td>
+          <td class="step-cell"><span class="cnt">7,429</span><span class="rate-bad" title="Session CTR: sum-of-daily-unique CTA ÷ LV"> 53.9%</span><br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR: funnel-API unique users (true unique)">uniq: <span class="rate-bad">63.6%</span></span></td>
           <td class="step-cell"><span class="cnt">5,881</span><span class="rate-warn"> 79.2%</span></td>
           <td class="step-cell"><span class="cnt">4,109</span><span class="rate-warn"> 69.9%</span></td>
           <td class="step-cell"><span class="cnt">4,109</span><span class="rate-good"> 100.0%</span></td>
@@ -339,7 +404,8 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <td class="tier-name">Android Low</td>
           <td class="step-cell"><span class="cnt">17,675</span></td>
           <td class="step-cell"><span class="cnt">35,411</span><span class="rate-warn" title="avg launch-screen sessions per installer"> 2.0×</span></td>
-          <td class="step-cell"><span class="cnt">19,622</span><span class="rate-bad"> 55.4%</span></td>
+          <td style="text-align:right"><span class="rate-warn" title="avg MOBILE_LAUNCH_VIEW firings per unique user (totals ÷ daily-uniques)">1.9×</span></td>
+          <td class="step-cell"><span class="cnt">19,622</span><span class="rate-bad" title="Session CTR: sum-of-daily-unique CTA ÷ LV"> 55.4%</span><br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR: funnel-API unique users (true unique)">uniq: <span class="rate-bad">65.9%</span></span></td>
           <td class="step-cell"><span class="cnt">15,723</span><span class="rate-warn"> 80.1%</span></td>
           <td class="step-cell"><span class="cnt">10,452</span><span class="rate-warn"> 66.5%</span></td>
           <td class="step-cell"><span class="cnt">10,448</span><span class="rate-good"> 100.0%</span></td>
@@ -354,7 +420,8 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <td class="tier-name">iOS</td>
           <td class="step-cell"><span class="cnt">418</span><span class="rate-bad" title="AppsFlyer massively under-counts installs for this tier (iOS ATT / privacy). Install-based rates are invalid."> ⚠ low</span></td>
           <td class="step-cell"><span class="cnt">6,732</span><span class="dim"> —</span></td>
-          <td class="step-cell"><span class="cnt">2,028</span><span class="rate-bad"> 30.1%</span></td>
+          <td style="text-align:right"><span class="rate-warn" title="avg MOBILE_LAUNCH_VIEW firings per unique user (totals ÷ daily-uniques)">1.7×</span></td>
+          <td class="step-cell"><span class="cnt">2,028</span><span class="rate-bad" title="Session CTR: sum-of-daily-unique CTA ÷ LV"> 30.1%</span><br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR: funnel-API unique users (true unique)">uniq: <span class="rate-bad">67.2%</span></span></td>
           <td class="step-cell"><span class="cnt">1,487</span><span class="rate-bad"> 73.3%</span></td>
           <td class="step-cell"><span class="cnt">963</span><span class="rate-bad"> 64.8%</span></td>
           <td class="step-cell"><span class="cnt">963</span><span class="rate-good"> 100.0%</span></td>
@@ -367,6 +434,7 @@ tr:hover td { background:rgba(255,255,255,.025); }
         </tr>
         <tr>
           <td class="tier-name">Web</td>
+          <td class="dim" style="text-align:right">(web)</td>
           <td class="dim" style="text-align:right">(web)</td>
           <td class="dim" style="text-align:right">(web)</td>
           <td class="dim" style="text-align:right">(web)</td>
@@ -384,7 +452,10 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <td class="tier-name">Mobile Total <span style="font-size:.62rem;color:var(--yellow);font-weight:400">* excl. iOS (install unreliable)</span></td>
           <td style="text-align:right">27,606 <span style="font-size:.62rem;color:var(--text3)">*</span></td>
           <td class="step-cell"><span class="cnt">55,369</span><span class="rate-warn" title="avg launch-screen sessions per installer"> 2.0×</span></td>
-          <td class="step-cell"><span class="cnt">29,930</span><span class="rate-bad"> 54.1%</span></td>
+          <td style="text-align:right"><span class="rate-warn" title="avg LV firings per unique user (totals ÷ daily-uniques)">1.8×</span></td>
+          <td class="step-cell"><span class="cnt">29,930</span>
+            <span class="rate-bad" title="Session CTR"> 54.1%</span>
+            <br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR">uniq: <span class="rate-bad">64.7%</span></span></td>
           <td class="step-cell"><span class="cnt">23,717</span><span class="rate-warn"> 79.2%</span></td>
           <td class="step-cell"><span class="cnt">16,918</span><span class="rate-warn"> 67.1%</span></td>
           <td class="step-cell"><span class="cnt">16,914</span><span class="rate-good"> 100.0%</span></td>
