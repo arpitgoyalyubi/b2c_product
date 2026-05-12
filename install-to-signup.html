@@ -135,7 +135,7 @@ tr:hover td { background:rgba(0,0,0,.02); }
   <div class="hdr-left">
     <h1>📲 App Activation → Signup Funnel</h1>
     <div class="sub">
-      CUR: 2026-04-12 → 2026-05-11 · PREV: 2026-03-13 → 2026-04-11 · generated 2026-05-12 13:57 IST
+      CUR: 2026-04-12 → 2026-05-11 · PREV: 2026-03-13 → 2026-04-11 · generated 2026-05-12 14:24 IST
     </div>
   </div>
   <a class="back-link" href="index.html">← Product Hub</a>
@@ -153,7 +153,7 @@ tr:hover td { background:rgba(0,0,0,.02); }
   <div class="kpi-grid">
         <div class="kpi-card blue">
           <div class="kpi-label">LV Users*</div>
-          <div class="kpi-val">62,101</div>
+          <div class="kpi-val">62,124</div>
           
           <div class="kpi-sub">MOBILE_LAUNCH_VIEW unique users · proxy for installs · all mobile · 30d</div>
         </div>
@@ -165,7 +165,7 @@ tr:hover td { background:rgba(0,0,0,.02); }
         </div>
         <div class="kpi-card violet">
           <div class="kpi-label">Session CTR</div>
-          <div class="kpi-val">51.5%</div>
+          <div class="kpi-val">51.4%</div>
           
           <div class="kpi-sub">sum-of-daily-unique CTA ÷ LV · all mobile (session-level)</div>
         </div>
@@ -253,11 +253,11 @@ tr:hover td { background:rgba(0,0,0,.02); }
     <p style="font-size:.68rem;color:var(--text3);margin-top:10px">
       <strong style="color:#f0883e">Launch View&nbsp;&rarr;&nbsp;CTA&nbsp;%</strong> = MOBILE_LAUNCH_CTA_CLICKED &divide; MOBILE_LAUNCH_VIEW (all users, mobile total) &middot;
       <strong style="color:var(--text2)">Signin&nbsp;&rarr;&nbsp;OTP&nbsp;&#10003;</strong> uses new_active segment (new users only &mdash; same as Iris&nbsp;Pulse) &middot;
-      <strong style="color:var(--violet)">OTP&nbsp;&#10003;&nbsp;&rarr;&nbsp;Email</strong> and
-      <strong style="color:var(--green)">Email&nbsp;&rarr;&nbsp;Signup</strong> are directional only (EMAIL_PAGE_VIEW has no new-user filter; may exceed 100%) &middot;
-      <strong style="color:var(--rose)">SSO&nbsp;path&nbsp;%</strong> = users who verified via Google&nbsp;SSO &divide; OTP&nbsp;&#10003; &mdash;
-      SSO launched <strong>Mar&nbsp;6&nbsp;2026</strong>; rising SSO adoption reduces Email&nbsp;PV counts
-      because SSO users skip EMAIL_PAGE_VIEW entirely.
+      <strong style="color:var(--violet)">OTP&nbsp;&#10003;&nbsp;&rarr;&nbsp;Email&nbsp;(directional)</strong>: fetched via Amplitude Segmentation API with EMAIL_PAGE_VIEW event count,
+      <em>not</em> via an ordered cohort funnel &mdash; so numbers differ from Iris&nbsp;Pulse which uses an ordered funnel on the same new_active cohort.
+      The line is directional (right order of magnitude) but may exceed 100% &middot;
+      <strong style="color:var(--green)">Email&nbsp;&rarr;&nbsp;Signup</strong> is also directional for the same reason.
+      Note: SSO users (Google Sign-In, launched Mar&nbsp;6&nbsp;2026) skip EMAIL_PAGE_VIEW entirely &mdash; rising SSO share will depress this line even if total registrations grow.
     </p>
   </div>
   <script>
@@ -265,7 +265,7 @@ tr:hover td { background:rgba(0,0,0,.02); }
       var ctx2 = document.getElementById('stageChart').getContext('2d');
       new Chart(ctx2, {
         type: 'line',
-        data: { labels: ["Apr 13\u201319", "Apr 20\u201326", "Apr 27\u2013May 3", "May 4\u201310"], datasets: [{"label": "Launch View \u2192 CTA % (pre-signup, mobile total)", "data": [60.0, 57.7, 55.9, 44.6], "borderColor": "#f0883e", "backgroundColor": "#f0883e", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Signin \u2192 OTP \u2713 (new users)", "data": [69.5, 65.5, 62.5, 62.8], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "OTP \u2713 \u2192 Email PV \u207a (directional)", "data": [99.3, 99.6, 99.6, 98.7], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [4,4], "spanGaps": true}, {"label": "Email PV \u2192 Signup", "data": [72.5, 73.1, 73.1, 69.7], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "SSO path % of OTP \u2713 (Google Sign-In)", "data": [43.1, 45.2, 44.1, 51.0], "borderColor": "#ff7b72", "backgroundColor": "#ff7b72", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [6,3], "spanGaps": true}] },
+        data: { labels: ["Apr 13\u201319", "Apr 20\u201326", "Apr 27\u2013May 3", "May 4\u201310"], datasets: [{"label": "Launch View \u2192 CTA % (pre-signup, mobile total)", "data": [60.0, 57.7, 55.9, 44.6], "borderColor": "#f0883e", "backgroundColor": "#f0883e", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Signin \u2192 OTP \u2713 (new users)", "data": [69.5, 65.5, 62.5, 62.8], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "OTP \u2713 \u2192 Email PV \u207a (directional \u2014 see note)", "data": [99.3, 99.6, 99.6, 98.7], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [4,4], "spanGaps": true}, {"label": "Email PV \u2192 Signup", "data": [72.5, 73.1, 73.1, 69.7], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}] },
         options: {
           responsive: true, maintainAspectRatio: false,
           interaction: { mode: 'index', intersect: false },
@@ -299,10 +299,11 @@ tr:hover td { background:rgba(0,0,0,.02); }
 
   <div class="sec-title">Daily Launch View &rarr; CTA % by Device Tier (Mar&nbsp;15&nbsp;&ndash;&nbsp;May&nbsp;12)</div>
   <div class="chart-card">
-    <div class="chart-wrap"><canvas id="dailyCtrChart"></canvas></div>
+    <div class="chart-wrap" style="height:320px"><canvas id="dailyCtrChart"></canvas></div>
     <p style="font-size:.68rem;color:var(--text3);margin-top:10px">
       Session CTR per day = daily-unique CTA clicks &divide; daily-unique Launch Views per device tier &middot;
-      iOS dashed &middot; capped at 100% &middot; null = no launch views that day
+      iOS dashed &middot; capped at 100% &middot; null = no launch views that day &middot;
+      <strong style="color:#94a3b8">Grey area</strong> = Mobile total LV unique users (right axis, scale context)
     </p>
   </div>
   <script>
@@ -310,7 +311,7 @@ tr:hover td { background:rgba(0,0,0,.02); }
       var ctx3 = document.getElementById('dailyCtrChart').getContext('2d');
       new Chart(ctx3, {
         type: 'line',
-        data: { labels: ["2026-03-15", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-21", "2026-03-22", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-28", "2026-03-29", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03", "2026-04-04", "2026-04-05", "2026-04-06", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-11", "2026-04-12", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-18", "2026-04-19", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-25", "2026-04-26", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-01", "2026-05-02", "2026-05-03", "2026-05-04", "2026-05-05", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10", "2026-05-11", "2026-05-12"], datasets: [{"label": "Android Premium", "data": [null, null, null, null, 88.9, 79.5, 85.7, 70.6, 64.6, 73.3, 52.1, 51.7, 49.3, 66.2, 59.7, 60.3, 63.0, 62.8, 56.2, 54.4, 57.8, 59.7, 62.0, 61.0, 62.9, 60.3, 66.7, 61.1, 66.7, 64.0, 66.0, 55.9, 59.4, 62.1, 56.3, 58.9, 54.1, 51.2, 59.6, 57.0, 53.9, 52.1, 51.7, 43.6, 43.4, 54.0, 45.4, 46.3, 51.0, 44.4, 40.6, 45.2, 40.1, 38.9, 37.1, 40.8, 38.8, 30.8, 30.1], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "Android Mid", "data": [100.0, 100.0, 0.0, 15.8, 82.6, 82.2, 86.0, 74.0, 71.6, 62.9, 72.3, 64.9, 68.7, 63.4, 68.4, 68.8, 80.5, 71.5, 69.0, 68.0, 63.6, 71.7, 69.4, 65.7, 71.3, 72.7, 75.5, 68.1, 71.8, 66.5, 68.3, 69.4, 63.6, 63.2, 64.3, 64.9, 65.6, 66.2, 56.8, 55.8, 60.3, 56.8, 58.4, 57.4, 54.8, 56.7, 61.2, 59.6, 55.8, 58.1, 50.9, 50.7, 54.1, 42.6, 44.2, 43.5, 43.1, 40.8, 44.9], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "Android Low", "data": [100.0, 66.7, 50.0, 8.3, 86.7, 87.6, 82.3, 78.1, 72.4, 67.4, 74.1, 65.5, 67.2, 66.4, 68.9, 69.5, 82.3, 76.1, 71.9, 68.3, 63.2, 65.9, 66.9, 71.2, 72.2, 76.8, 74.9, 71.6, 68.5, 72.7, 73.0, 70.7, 67.7, 71.3, 69.6, 63.1, 60.2, 66.2, 63.0, 63.2, 60.9, 64.0, 62.4, 59.0, 58.3, 59.3, 62.0, 61.5, 59.9, 62.2, 50.8, 50.7, 50.9, 44.3, 44.4, 46.5, 45.5, 43.3, 46.0], "borderColor": "#d29922", "backgroundColor": "#d29922", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "iOS", "data": [null, null, null, null, null, null, null, 0.0, 100.0, 100.0, 85.7, 77.7, 67.4, 64.7, 61.8, 52.6, 52.0, 41.2, 43.9, 25.1, 29.5, 25.3, 28.3, 28.6, 28.2, 28.1, 30.3, 30.2, 32.7, 28.9, 33.3, 30.7, 37.3, 28.2, 22.2, 33.5, 37.1, 33.5, 35.7, 30.1, 32.2, 35.4, 30.4, 32.1, 29.0, 27.3, 33.7, 37.3, 32.2, 37.4, 27.4, 25.1, 24.7, 26.3, 26.1, 25.4, 30.7, 24.8, 31.8], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [4,4], "spanGaps": true}] },
+        data: { labels: ["March 15", "March 16", "March 17", "March 18", "March 19", "March 20", "March 21", "March 22", "March 23", "March 24", "March 25", "March 26", "March 27", "March 28", "March 29", "March 30", "March 31", "April 1", "April 2", "April 3", "April 4", "April 5", "April 6", "April 7", "April 8", "April 9", "April 10", "April 11", "April 12", "April 13", "April 14", "April 15", "April 16", "April 17", "April 18", "April 19", "April 20", "April 21", "April 22", "April 23", "April 24", "April 25", "April 26", "April 27", "April 28", "April 29", "April 30", "May 1", "May 2", "May 3", "May 4", "May 5", "May 6", "May 7", "May 8", "May 9", "May 10", "May 11", "May 12"], datasets: [{"label": "Android Premium", "data": [null, null, null, null, 88.9, 79.5, 85.7, 70.6, 64.6, 73.3, 52.1, 51.7, 49.3, 66.2, 59.7, 60.3, 63.0, 62.8, 56.2, 54.4, 57.8, 59.7, 62.0, 61.0, 62.9, 60.3, 66.7, 61.1, 66.7, 64.0, 66.0, 55.9, 59.4, 62.1, 56.3, 58.9, 54.1, 51.2, 59.6, 57.0, 53.9, 52.1, 51.7, 43.6, 43.4, 54.0, 45.4, 46.3, 51.0, 44.4, 40.6, 45.2, 40.1, 38.9, 37.1, 40.8, 38.8, 30.8, 30.1], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "Android Mid", "data": [100.0, 100.0, 0.0, 15.8, 82.6, 82.2, 86.0, 74.0, 71.6, 62.9, 72.3, 64.9, 68.7, 63.4, 68.4, 68.8, 80.5, 71.5, 69.0, 68.0, 63.6, 71.7, 69.4, 65.7, 71.3, 72.7, 75.5, 68.1, 71.8, 66.5, 68.3, 69.4, 63.6, 63.2, 64.3, 64.9, 65.6, 66.2, 56.8, 55.8, 60.3, 56.8, 58.4, 57.4, 54.8, 56.7, 61.2, 59.6, 55.8, 58.1, 50.9, 50.7, 54.1, 42.6, 44.2, 43.5, 43.1, 40.8, 44.9], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "Android Low", "data": [100.0, 66.7, 50.0, 8.3, 86.7, 87.6, 82.3, 78.1, 72.4, 67.4, 74.1, 65.5, 67.2, 66.4, 68.9, 69.5, 82.3, 76.1, 71.9, 68.3, 63.2, 65.9, 66.9, 71.2, 72.2, 76.8, 74.9, 71.6, 68.5, 72.7, 73.0, 70.7, 67.7, 71.3, 69.6, 63.1, 60.2, 66.2, 63.0, 63.2, 60.9, 64.0, 62.4, 59.0, 58.3, 59.3, 62.0, 61.5, 59.9, 62.2, 50.8, 50.7, 50.9, 44.3, 44.4, 46.5, 45.5, 43.3, 46.0], "borderColor": "#d29922", "backgroundColor": "#d29922", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "iOS", "data": [null, null, null, null, null, null, null, 0.0, 100.0, 100.0, 85.7, 77.7, 67.4, 64.7, 61.8, 52.6, 52.0, 41.2, 43.9, 25.1, 29.5, 25.3, 28.3, 28.6, 28.2, 28.1, 30.3, 30.2, 32.7, 28.9, 33.3, 30.7, 37.3, 28.2, 22.2, 33.5, 37.1, 33.5, 35.7, 30.1, 32.2, 35.4, 30.4, 32.1, 29.0, 27.3, 33.7, 37.3, 32.2, 37.4, 27.4, 25.1, 24.7, 26.3, 26.1, 25.4, 30.7, 24.8, 31.8], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [4,4], "spanGaps": true}, {"label": "Mobile LV Users (total, right axis)", "data": [5, 5, 6, 31, 199, 371, 395, 593, 659, 848, 710, 891, 889, 860, 905, 844, 1883, 1593, 1408, 1402, 1316, 1489, 1481, 1378, 1388, 1330, 1410, 1418, 1140, 1265, 1253, 1349, 1080, 1430, 1298, 1325, 1266, 1678, 1558, 1533, 1635, 1517, 1619, 1500, 1733, 1633, 1820, 1872, 2145, 2011, 1971, 2917, 3068, 4544, 4597, 3971, 3607, 3740, 1843], "borderColor": "#94a3b8", "backgroundColor": "rgba(148,163,184,0.08)", "pointRadius": 1, "pointHoverRadius": 4, "borderWidth": 1, "tension": 0.2, "borderDash": [3,3], "spanGaps": true, "yAxisID": "y1", "fill": true}] },
         options: {
           responsive: true, maintainAspectRatio: false,
           interaction: { mode: 'index', intersect: false },
@@ -322,6 +323,9 @@ tr:hover td { background:rgba(0,0,0,.02); }
               callbacks: {
                 label: function(ctx) {
                   var v = ctx.parsed.y;
+                  if (ctx.dataset.yAxisID === 'y1') {
+                    return ' ' + ctx.dataset.label + ': ' + (v === null ? '—' : v.toLocaleString());
+                  }
                   return ' ' + ctx.dataset.label + ': ' + (v === null ? '—' : v.toFixed(1) + '%');
                 }
               }
@@ -335,11 +339,123 @@ tr:hover td { background:rgba(0,0,0,.02); }
               grid: { color: '#e2e8f0' }
             },
             y: {
+              position: 'left',
               ticks: { color: '#64748b', font: { size: 11 },
                 callback: function(v) { return v + '%'; } },
               grid: { color: '#e2e8f0' },
               min: 0, max: 100,
               title: { display: true, text: 'LV→CTA %', color: '#64748b', font: { size: 11 } }
+            },
+            y1: {
+              position: 'right',
+              ticks: { color: '#94a3b8', font: { size: 10 },
+                callback: function(v) { return (v/1000).toFixed(0) + 'k'; } },
+              grid: { drawOnChartArea: false },
+              title: { display: true, text: 'LV Unique Users', color: '#94a3b8', font: { size: 10 } }
+            }
+          }
+        }
+      });
+    })();
+  </script>
+
+
+  <div class="sec-title">Daily Views per User &middot; MOBILE_LAUNCH_VIEW (Mar&nbsp;15&nbsp;&ndash;&nbsp;May&nbsp;12)</div>
+  <div class="chart-card">
+    <div class="chart-wrap" style="height:280px"><canvas id="dailyVpuChart"></canvas></div>
+    <p style="font-size:.68rem;color:var(--text3);margin-top:10px">
+      Views per user per day = total MOBILE_LAUNCH_VIEW firings &divide; unique MOBILE_LAUNCH_VIEW users &middot;
+      A rising VPU with falling CTR suggests repeated non-converting impressions (user opens app but doesn&rsquo;t tap CTA) &middot;
+      iOS dashed
+    </p>
+  </div>
+  <script>
+    (function(){
+      var ctx5 = document.getElementById('dailyVpuChart').getContext('2d');
+      new Chart(ctx5, {
+        type: 'line',
+        data: { labels: ["March 15", "March 16", "March 17", "March 18", "March 19", "March 20", "March 21", "March 22", "March 23", "March 24", "March 25", "March 26", "March 27", "March 28", "March 29", "March 30", "March 31", "April 1", "April 2", "April 3", "April 4", "April 5", "April 6", "April 7", "April 8", "April 9", "April 10", "April 11", "April 12", "April 13", "April 14", "April 15", "April 16", "April 17", "April 18", "April 19", "April 20", "April 21", "April 22", "April 23", "April 24", "April 25", "April 26", "April 27", "April 28", "April 29", "April 30", "May 1", "May 2", "May 3", "May 4", "May 5", "May 6", "May 7", "May 8", "May 9", "May 10", "May 11", "May 12"], datasets: [{"label": "Android Premium (VPU)", "data": [null, null, null, null, 1.28, 1.14, 1.0, 1.34, 1.4, 1.28, 1.3, 1.29, 1.39, 1.23, 1.11, 1.14, 1.15, 1.13, 1.24, 1.43, 1.33, 1.31, 1.22, 1.2, 1.17, 1.23, 1.08, 1.14, 1.11, 1.22, 1.12, 1.15, 1.11, 1.07, 1.15, 1.15, 1.17, 1.68, 1.9, 2.28, 2.14, 2.21, 2.24, 2.26, 2.35, 2.19, 2.32, 2.39, 2.38, 2.3, 1.65, 1.45, 1.44, 1.85, 1.75, 1.64, 1.7, 1.56, 1.43], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "Android Mid (VPU)", "data": [1.0, 1.0, 6.0, 2.0, 1.26, 1.12, 1.13, 1.17, 1.33, 1.28, 1.2, 1.4, 1.35, 1.22, 1.21, 1.15, 1.17, 1.23, 1.25, 1.36, 1.38, 1.34, 1.2, 1.15, 1.21, 1.16, 1.17, 1.11, 1.13, 1.11, 1.17, 1.15, 1.19, 1.14, 1.14, 1.17, 1.13, 1.8, 1.9, 2.06, 2.15, 2.18, 2.23, 2.14, 2.22, 2.31, 2.24, 2.31, 2.24, 2.28, 1.6, 1.51, 1.42, 1.85, 1.79, 1.53, 1.63, 1.53, 1.52], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "Android Low (VPU)", "data": [1.75, 1.0, 1.5, 2.0, 1.22, 1.18, 1.18, 1.23, 1.44, 1.39, 1.27, 1.37, 1.38, 1.3, 1.34, 1.29, 1.26, 1.26, 1.29, 1.34, 1.41, 1.44, 1.24, 1.22, 1.23, 1.2, 1.2, 1.18, 1.15, 1.17, 1.16, 1.23, 1.27, 1.2, 1.22, 1.21, 1.19, 1.85, 2.06, 2.23, 2.24, 2.32, 2.38, 2.38, 2.37, 2.41, 2.48, 2.43, 2.38, 2.41, 1.71, 1.5, 1.43, 2.15, 2.03, 1.8, 1.88, 1.61, 1.62], "borderColor": "#f0883e", "backgroundColor": "#f0883e", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "iOS (VPU)", "data": [null, null, null, null, null, null, null, 1.0, 2.0, 1.19, 1.11, 1.22, 1.24, 1.17, 1.17, 1.2, 1.29, 1.26, 1.27, 1.36, 1.5, 1.41, 1.49, 1.45, 1.53, 1.56, 1.5, 1.46, 1.29, 1.35, 1.47, 1.42, 1.31, 1.45, 1.41, 1.44, 1.37, 1.37, 1.81, 2.05, 2.29, 2.39, 2.32, 2.38, 2.46, 2.32, 2.42, 2.37, 2.21, 2.33, 2.16, 1.92, 1.78, 1.51, 1.37, 1.54, 1.36, 1.36, 1.4], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [4,4], "spanGaps": true}] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { labels: { color: '#64748b', boxWidth: 12, font: { size: 11 } } },
+            tooltip: {
+              backgroundColor: '#1e293b', borderColor: '#e2e8f0', borderWidth: 1,
+              titleColor: '#f8fafc', bodyColor: '#94a3b8',
+              callbacks: {
+                label: function(ctx) {
+                  var v = ctx.parsed.y;
+                  return ' ' + ctx.dataset.label + ': ' + (v === null ? '—' : v.toFixed(2));
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: '#64748b', font: { size: 10 }, maxTicksLimit: 20, maxRotation: 45 },
+              grid: { color: '#e2e8f0' }
+            },
+            y: {
+              ticks: { color: '#64748b', font: { size: 11 } },
+              grid: { color: '#e2e8f0' },
+              min: 1,
+              title: { display: true, text: 'Views / User', color: '#64748b', font: { size: 11 } }
+            }
+          }
+        }
+      });
+    })();
+  </script>
+
+  <div class="sec-title">Google Ads Spend vs CTR &middot; Daily (Mar&nbsp;12&nbsp;&ndash;&nbsp;May&nbsp;12)</div>
+  <div class="chart-card">
+    <div class="chart-wrap" style="height:280px"><canvas id="adwordsChart"></canvas></div>
+    <p style="font-size:.68rem;color:var(--text3);margin-top:10px">
+      <strong style="color:#3b82f6">Blue area</strong> = Google Ads daily spend (₹, right axis) &middot;
+      <strong style="color:#f0883e">Orange line</strong> = Mobile-total LV&rarr;CTA % (left axis) &middot;
+      Correlation: if spend spikes correlate with CTR drops, paid traffic quality may be diluting organic conversion
+    </p>
+  </div>
+  <script>
+    (function(){
+      var ctx6 = document.getElementById('adwordsChart').getContext('2d');
+      new Chart(ctx6, {
+        type: 'line',
+        data: { labels: ["March 15", "March 16", "March 17", "March 18", "March 19", "March 20", "March 21", "March 22", "March 23", "March 24", "March 25", "March 26", "March 27", "March 28", "March 29", "March 30", "March 31", "April 1", "April 2", "April 3", "April 4", "April 5", "April 6", "April 7", "April 8", "April 9", "April 10", "April 11", "April 12", "April 13", "April 14", "April 15", "April 16", "April 17", "April 18", "April 19", "April 20", "April 21", "April 22", "April 23", "April 24", "April 25", "April 26", "April 27", "April 28", "April 29", "April 30", "May 1", "May 2", "May 3", "May 4", "May 5", "May 6", "May 7", "May 8", "May 9", "May 10", "May 11", "May 12"], datasets: [{"label": "Mobile Total CTR % (left)", "data": [100.0, 80.0, 33.3, 12.9, 85.9, 85.2, 83.5, 76.1, 71.5, 67.8, 72.5, 66.0, 66.0, 65.3, 67.0, 65.4, 78.8, 71.1, 66.9, 60.0, 56.9, 58.6, 58.9, 58.3, 60.1, 61.6, 63.3, 60.1, 60.8, 60.1, 61.9, 60.3, 59.6, 61.5, 59.2, 57.9, 57.3, 61.1, 57.8, 56.6, 56.5, 57.5, 56.9, 53.9, 53.3, 55.4, 57.0, 57.5, 56.2, 57.4, 47.9, 47.0, 47.4, 42.3, 42.5, 43.8, 43.4, 40.5, 43.4], "borderColor": "#f0883e", "backgroundColor": "#f0883e", "pointRadius": 2, "borderWidth": 1.5, "tension": 0.2, "spanGaps": true, "yAxisID": "y"}, {"label": "Google Ads Spend \u20b9 (right)", "data": [32801.0, 33569.0, 54649.0, 39581.0, 42436.0, 44655.0, 44796.0, 64587.0, 78683.0, 85228.0, 66995.0, 110918.0, 88546.0, 82689.0, 79507.0, 66655.0, 114822.0, 115292.0, 101522.0, 84552.0, 112491.0, 130329.0, 122636.0, 152529.0, 130596.0, 111587.0, 131299.0, 145602.0, 155453.0, 147668.0, 131334.0, 163219.0, 172332.0, 216700.0, 192619.0, 208619.0, 227810.0, 263171.0, 219698.0, 235818.0, 292727.0, 239351.0, 249039.0, 232090.0, 291604.0, 245177.0, 255687.0, 352973.0, 396994.0, 355863.0, 358124.0, 376829.0, 401466.0, 526229.0, 500631.0, 420769.0, 374190.0, 357714.0, 229385.0], "borderColor": "#3b82f6", "backgroundColor": "rgba(59,130,246,0.12)", "pointRadius": 2, "borderWidth": 1.5, "tension": 0.2, "spanGaps": true, "yAxisID": "y1", "fill": true}] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { labels: { color: '#64748b', boxWidth: 12, font: { size: 11 } } },
+            tooltip: {
+              backgroundColor: '#1e293b', borderColor: '#e2e8f0', borderWidth: 1,
+              titleColor: '#f8fafc', bodyColor: '#94a3b8',
+              callbacks: {
+                label: function(ctx) {
+                  var v = ctx.parsed.y;
+                  if (ctx.dataset.yAxisID === 'y1') {
+                    return ' ' + ctx.dataset.label + ': ₹' + (v === null ? '—' : v.toLocaleString('en-IN'));
+                  }
+                  return ' ' + ctx.dataset.label + ': ' + (v === null ? '—' : v.toFixed(1) + '%');
+                }
+              }
+            }
+          },
+          scales: {
+            x: { ticks: { color: '#64748b', font: { size: 10 }, maxTicksLimit: 20, maxRotation: 45 }, grid: { color: '#e2e8f0' } },
+            y: {
+              position: 'left',
+              ticks: { color: '#64748b', callback: function(v) { return v + '%'; } },
+              grid: { color: '#e2e8f0' },
+              min: 0, max: 100,
+              title: { display: true, text: 'LV→CTA %', color: '#64748b', font: { size: 11 } }
+            },
+            y1: {
+              position: 'right',
+              ticks: { color: '#3b82f6', callback: function(v) { return '₹' + (v/1000).toFixed(0) + 'k'; } },
+              grid: { drawOnChartArea: false },
+              title: { display: true, text: 'Ad Spend (₹)', color: '#3b82f6', font: { size: 10 } }
             }
           }
         }
@@ -381,7 +497,7 @@ tr:hover td { background:rgba(0,0,0,.02); }
       <tbody>
         <tr>
           <td class="tier-name">Android Premium</td>
-          <td class="step-cell"><span class="cnt">6,180</span><span class="dim" style="font-size:.65rem;margin-left:3px" title="Proxy: MOBILE_LAUNCH_VIEW unique users (AppsFlyer install data excluded)">*</span></td>
+          <td class="step-cell"><span class="cnt">6,179</span><span class="dim" style="font-size:.65rem;margin-left:3px" title="Proxy: MOBILE_LAUNCH_VIEW unique users (AppsFlyer install data excluded)">*</span></td>
           <td style="text-align:right"><span class="rate-warn" title="avg MOBILE_LAUNCH_VIEW firings per unique user (totals ÷ daily-uniques)">1.8×</span></td>
           <td class="step-cell"><span class="cnt">2,879</span><span class="rate-bad" title="Session CTR: sum-of-daily-unique CTA ÷ LV"> 46.6%</span><br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR: funnel-API unique users (true unique)">uniq: <span class="rate-bad">58.3%</span></span></td>
           <td class="step-cell"><span class="cnt">2,113</span><span class="rate-bad"> 73.4%</span></td>
@@ -396,9 +512,9 @@ tr:hover td { background:rgba(0,0,0,.02); }
         </tr>
         <tr>
           <td class="tier-name">Android Mid</td>
-          <td class="step-cell"><span class="cnt">13,778</span><span class="dim" style="font-size:.65rem;margin-left:3px" title="Proxy: MOBILE_LAUNCH_VIEW unique users (AppsFlyer install data excluded)">*</span></td>
+          <td class="step-cell"><span class="cnt">13,783</span><span class="dim" style="font-size:.65rem;margin-left:3px" title="Proxy: MOBILE_LAUNCH_VIEW unique users (AppsFlyer install data excluded)">*</span></td>
           <td style="text-align:right"><span class="rate-warn" title="avg MOBILE_LAUNCH_VIEW firings per unique user (totals ÷ daily-uniques)">1.7×</span></td>
-          <td class="step-cell"><span class="cnt">7,429</span><span class="rate-bad" title="Session CTR: sum-of-daily-unique CTA ÷ LV"> 53.9%</span><br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR: funnel-API unique users (true unique)">uniq: <span class="rate-bad">63.6%</span></span></td>
+          <td class="step-cell"><span class="cnt">7,430</span><span class="rate-bad" title="Session CTR: sum-of-daily-unique CTA ÷ LV"> 53.9%</span><br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR: funnel-API unique users (true unique)">uniq: <span class="rate-bad">63.6%</span></span></td>
           <td class="step-cell"><span class="cnt">5,881</span><span class="rate-warn"> 79.2%</span></td>
           <td class="step-cell"><span class="cnt">4,109</span><span class="rate-warn"> 69.9%</span></td>
           <td class="step-cell"><span class="cnt">4,109</span><span class="rate-good"> 100.0%</span></td>
@@ -411,9 +527,9 @@ tr:hover td { background:rgba(0,0,0,.02); }
         </tr>
         <tr>
           <td class="tier-name">Android Low</td>
-          <td class="step-cell"><span class="cnt">35,411</span><span class="dim" style="font-size:.65rem;margin-left:3px" title="Proxy: MOBILE_LAUNCH_VIEW unique users (AppsFlyer install data excluded)">*</span></td>
+          <td class="step-cell"><span class="cnt">35,426</span><span class="dim" style="font-size:.65rem;margin-left:3px" title="Proxy: MOBILE_LAUNCH_VIEW unique users (AppsFlyer install data excluded)">*</span></td>
           <td style="text-align:right"><span class="rate-warn" title="avg MOBILE_LAUNCH_VIEW firings per unique user (totals ÷ daily-uniques)">1.9×</span></td>
-          <td class="step-cell"><span class="cnt">19,622</span><span class="rate-bad" title="Session CTR: sum-of-daily-unique CTA ÷ LV"> 55.4%</span><br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR: funnel-API unique users (true unique)">uniq: <span class="rate-bad">65.9%</span></span></td>
+          <td class="step-cell"><span class="cnt">19,623</span><span class="rate-bad" title="Session CTR: sum-of-daily-unique CTA ÷ LV"> 55.4%</span><br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR: funnel-API unique users (true unique)">uniq: <span class="rate-bad">65.9%</span></span></td>
           <td class="step-cell"><span class="cnt">15,723</span><span class="rate-warn"> 80.1%</span></td>
           <td class="step-cell"><span class="cnt">10,452</span><span class="rate-warn"> 66.5%</span></td>
           <td class="step-cell"><span class="cnt">10,448</span><span class="rate-good"> 100.0%</span></td>
@@ -426,7 +542,7 @@ tr:hover td { background:rgba(0,0,0,.02); }
         </tr>
         <tr>
           <td class="tier-name">iOS</td>
-          <td class="step-cell"><span class="cnt">6,732</span><span class="dim" style="font-size:.65rem;margin-left:3px" title="Proxy: MOBILE_LAUNCH_VIEW unique users (AppsFlyer install data excluded)">*</span></td>
+          <td class="step-cell"><span class="cnt">6,736</span><span class="dim" style="font-size:.65rem;margin-left:3px" title="Proxy: MOBILE_LAUNCH_VIEW unique users (AppsFlyer install data excluded)">*</span></td>
           <td style="text-align:right"><span class="rate-warn" title="avg MOBILE_LAUNCH_VIEW firings per unique user (totals ÷ daily-uniques)">1.7×</span></td>
           <td class="step-cell"><span class="cnt">2,028</span><span class="rate-bad" title="Session CTR: sum-of-daily-unique CTA ÷ LV"> 30.1%</span><br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR: funnel-API unique users (true unique)">uniq: <span class="rate-bad">67.2%</span></span></td>
           <td class="step-cell"><span class="cnt">1,487</span><span class="rate-bad"> 73.3%</span></td>
@@ -456,10 +572,10 @@ tr:hover td { background:rgba(0,0,0,.02); }
         </tr>
         <tr class="total-row">
           <td class="tier-name">Mobile Total</td>
-          <td class="step-cell"><span class="cnt">62,101</span><span class="dim" style="font-size:.65rem;margin-left:3px">*</span></td>
+          <td class="step-cell"><span class="cnt">62,124</span><span class="dim" style="font-size:.65rem;margin-left:3px">*</span></td>
           <td style="text-align:right"><span class="rate-warn" title="avg LV firings per unique user (totals ÷ daily-uniques)">1.8×</span></td>
-          <td class="step-cell"><span class="cnt">31,958</span>
-            <span class="rate-bad" title="Session CTR"> 51.5%</span>
+          <td class="step-cell"><span class="cnt">31,960</span>
+            <span class="rate-bad" title="Session CTR"> 51.4%</span>
             <br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR">uniq: <span class="rate-bad">64.7%</span></span></td>
           <td class="step-cell"><span class="cnt">25,204</span><span class="rate-warn"> 78.9%</span></td>
           <td class="step-cell"><span class="cnt">16,918</span><span class="rate-warn"> 67.1%</span></td>
