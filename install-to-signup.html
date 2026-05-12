@@ -123,7 +123,7 @@ tr:hover td { background:rgba(255,255,255,.025); }
   <div class="hdr-left">
     <h1>📲 Install → Signup Funnel</h1>
     <div class="sub">
-      CUR: 2026-04-12 → 2026-05-11 · PREV: 2026-03-13 → 2026-04-11 · generated 2026-05-12 11:04 IST
+      CUR: 2026-04-12 → 2026-05-11 · PREV: 2026-03-13 → 2026-04-11 · generated 2026-05-12 11:17 IST
     </div>
   </div>
   <a class="back-link" href="index.html">← Product Hub</a>
@@ -166,17 +166,18 @@ tr:hover td { background:rgba(255,255,255,.025); }
         <div class="kpi-card rose">
           <div class="kpi-label">Install→Signup</div>
           <div class="kpi-val">42.3%</div>
-          
+          <div class="kpi-wow down">-33.0pp WoW</div>
           <div class="kpi-sub">end-to-end · 30d</div>
         </div></div>
 
 
-  <div class="sec-title">WoW Trend · I→Signup % by Device Tier (4 weeks)</div>
+  <div class="sec-title">WoW Trend &middot; I&rarr;Signup % by Device Tier (Mon&ndash;Sun calendar weeks)</div>
   <div class="chart-card">
     <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
     <p style="font-size:.68rem;color:var(--text3);margin-top:10px">
-      Each data point = one 7-day window · iOS dashed = AppsFlyer install data unreliable ·
-      Web line = Signin PV → Signup (no install event)
+      Each data point = one Mon&ndash;Sun calendar week &middot;
+      iOS dashed = AppsFlyer install data unreliable &middot;
+      Web line = Signin PV &rarr; Signup (no install event)
     </p>
   </div>
   <script>
@@ -184,7 +185,7 @@ tr:hover td { background:rgba(255,255,255,.025); }
       var ctx = document.getElementById('trendChart').getContext('2d');
       new Chart(ctx, {
         type: 'line',
-        data: { labels: ["Apr 14\u201320", "Apr 21\u201327", "Apr 28\u20134", "May 5\u201311"], datasets: [{"label": "Android Premium", "data": [40.6, 59.8, 40.9, 29.2], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Android Mid", "data": [41.2, 54.6, 50.5, 30.9], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Android Low", "data": [42.3, 59.5, 51.3, 27.1], "borderColor": "#d29922", "backgroundColor": "#d29922", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "iOS", "data": [67.7, null, null, null], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [4,4], "spanGaps": true}, {"label": "Web", "data": [23.9, 26.3, 26.0, 25.4], "borderColor": "#8b949e", "backgroundColor": "#8b949e", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [2,4], "spanGaps": true}] },
+        data: { labels: ["Apr 13\u201319", "Apr 20\u201326", "Apr 27\u2013May 3", "May 4\u201310"], datasets: [{"label": "Android Premium", "data": [45.4, 56.7, 46.7, 28.7], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Android Mid", "data": [43.2, 52.1, 54.6, 31.9], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Android Low", "data": [46.0, 54.2, 56.8, 27.5], "borderColor": "#d29922", "backgroundColor": "#d29922", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "iOS", "data": [73.2, null, null, null], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [4,4], "spanGaps": true}, {"label": "Web", "data": [23.0, 24.9, 26.1, 26.2], "borderColor": "#8b949e", "backgroundColor": "#8b949e", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [2,4], "spanGaps": true}] },
         options: {
           responsive: true, maintainAspectRatio: false,
           interaction: { mode: 'index', intersect: false },
@@ -209,6 +210,55 @@ tr:hover td { background:rgba(255,255,255,.025); }
               grid: { color: '#21262d' },
               min: 0,
               title: { display: true, text: 'I→Signup %', color: '#8b949e', font: { size: 11 } }
+            }
+          }
+        }
+      });
+    })();
+  </script>
+
+  <div class="sec-title">Stage Conversion Trends &middot; Mobile Total (Mon&ndash;Sun weeks)</div>
+  <div class="chart-card">
+    <div class="chart-wrap"><canvas id="stageChart"></canvas></div>
+    <p style="font-size:.68rem;color:var(--text3);margin-top:10px">
+      <strong style="color:var(--text2)">Signin&nbsp;&rarr;&nbsp;OTP&nbsp;&#10003;</strong> uses new_active segment (new users only &mdash; same as Iris&nbsp;Pulse) &middot;
+      <strong style="color:var(--violet)">OTP&nbsp;&#10003;&nbsp;&rarr;&nbsp;Email</strong> and
+      <strong style="color:var(--green)">Email&nbsp;&rarr;&nbsp;Signup</strong> are directional only (EMAIL_PAGE_VIEW has no new-user filter; may exceed 100%) &middot;
+      <strong style="color:var(--rose)">SSO&nbsp;path&nbsp;%</strong> = users who verified via Google&nbsp;SSO &divide; OTP&nbsp;&#10003; &mdash;
+      SSO launched <strong>Mar&nbsp;6&nbsp;2026</strong>; rising SSO adoption reduces Email&nbsp;PV counts
+      because SSO users skip EMAIL_PAGE_VIEW entirely.
+    </p>
+  </div>
+  <script>
+    (function(){
+      var ctx2 = document.getElementById('stageChart').getContext('2d');
+      new Chart(ctx2, {
+        type: 'line',
+        data: { labels: ["Apr 13\u201319", "Apr 20\u201326", "Apr 27\u2013May 3", "May 4\u201310"], datasets: [{"label": "Signin \u2192 OTP \u2713 (new users)", "data": [69.5, 65.4, 62.5, 62.8], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "OTP \u2713 \u2192 Email PV \u207a (directional)", "data": [105.4, 105.0, 104.6, 112.6], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [4,4], "spanGaps": true}, {"label": "Email PV \u2192 Signup", "data": [70.8, 71.1, 71.3, 65.3], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "SSO path % of OTP \u2713 (Google Sign-In)", "data": [44.2, 46.4, 45.1, 55.1], "borderColor": "#ff7b72", "backgroundColor": "#ff7b72", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [6,3], "spanGaps": true}] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { labels: { color: '#8b949e', boxWidth: 12, font: { size: 11 } } },
+            tooltip: {
+              backgroundColor: '#161b22', borderColor: '#30363d', borderWidth: 1,
+              titleColor: '#e6edf3', bodyColor: '#8b949e',
+              callbacks: {
+                label: function(ctx) {
+                  var v = ctx.parsed.y;
+                  return ' ' + ctx.dataset.label + ': ' + (v === null ? '—' : v.toFixed(1) + '%');
+                }
+              }
+            }
+          },
+          scales: {
+            x: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { color: '#21262d' } },
+            y: {
+              ticks: { color: '#8b949e', font: { size: 11 },
+                callback: function(v) { return v + '%'; } },
+              grid:  { color: '#21262d' },
+              min: 0,
+              title: { display: true, text: 'Conv %', color: '#8b949e', font: { size: 11 } }
             }
           }
         }
@@ -254,7 +304,7 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <td class="step-cell"><span class="cnt">1,407</span><span class="rate-good"> 104.7%</span></td>
           <td class="step-cell"><span class="cnt">1,076</span><span class="rate-warn"> 76.5%</span></td>
           <td style="text-align:right;font-weight:700">40.5%</td>
-          <td><span class="wow flat">—</span></td>
+          <td><span class="wow down">-52.7pp</span></td>
         </tr>
         <tr>
           <td class="tier-name">Android Mid</td>
@@ -267,7 +317,7 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <td class="step-cell"><span class="cnt">4,146</span><span class="rate-good"> 105.6%</span></td>
           <td class="step-cell"><span class="cnt">3,062</span><span class="rate-warn"> 73.9%</span></td>
           <td style="text-align:right;font-weight:700">42.1%</td>
-          <td><span class="wow flat">—</span></td>
+          <td><span class="wow down">-34.9pp</span></td>
         </tr>
         <tr>
           <td class="tier-name">Android Low</td>
@@ -280,7 +330,7 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <td class="step-cell"><span class="cnt">10,646</span><span class="rate-good"> 108.1%</span></td>
           <td class="step-cell"><span class="cnt">7,139</span><span class="rate-bad"> 67.1%</span></td>
           <td style="text-align:right;font-weight:700">40.4%</td>
-          <td><span class="wow flat">—</span></td>
+          <td><span class="wow down">-28.0pp</span></td>
         </tr>
         <tr>
           <td class="tier-name">iOS</td>
@@ -293,7 +343,7 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <td class="step-cell"><span class="cnt">922</span><span class="rate-good"> 102.6%</span></td>
           <td class="step-cell"><span class="cnt">565</span><span class="rate-bad"> 61.3%</span></td>
           <td style="text-align:right;font-weight:700">135.2%</td>
-          <td><span class="wow flat">—</span></td>
+          <td><span class="wow down">-64.8pp</span></td>
         </tr>
         <tr>
           <td class="tier-name">Web</td>
@@ -306,7 +356,7 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <td class="step-cell"><span class="cnt">315</span><span class="rate-good"> 110.1%</span></td>
           <td class="step-cell"><span class="cnt">231</span><span class="rate-warn"> 73.3%</span></td>
           <td style="text-align:right;font-weight:700">24.5%</td>
-          <td><span class="wow up">+24.5pp</span></td>
+          <td><span class="wow up">+1.4pp</span></td>
         </tr>
         <tr class="total-row">
           <td class="tier-name">Mobile Total</td>
@@ -319,7 +369,7 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <td class="step-cell"><span class="cnt">17,121</span><span class="rate-good"> 106.9%</span></td>
           <td class="step-cell"><span class="cnt">11,842</span><span class="rate-bad"> 69.2%</span></td>
           <td style="text-align:right;font-weight:700">42.3%</td>
-          <td><span class="wow flat">—</span></td>
+          <td><span class="wow down">-33.0pp</span></td>
         </tr></tbody>
     </table>
   </div>
@@ -361,6 +411,7 @@ tr:hover td { background:rgba(255,255,255,.025); }
       <dt>OTP Entered</dt><dd>VERIFY_OTP_ENTERED — user typed an OTP code</dd>
       <dt>OTP ✓</dt><dd>VERIFY_OTP_SUCCESS — OTP verified (Mobile OTP ✓ — Iris Pulse Stage 1 key outcome)</dd>
       <dt>Email PV</dt><dd>EMAIL_PAGE_VIEW — Stage 2 entry; fires only on first-time registration · <em>Note: fetched without new-user segment filter, so OTP✓→Email% may exceed 100% — use as directional only</em></dd>
+      <dt>SSO path %</dt><dd>SSO_VERIFICATION_SUCCESS ÷ OTP ✓ — share of new users who verified via Google Sign-In. <strong>Google SSO launched Mar 6 2026.</strong> SSO users skip EMAIL_PAGE_VIEW entirely — rising SSO adoption will reduce Email PV counts even if total registrations are stable or growing.</dd>
       <dt>Signup</dt><dd>SETUP_SECURE_PIN_SUCCESS — registration complete</dd>
       <dt>I→Signup</dt><dd>Signup ÷ Install — end-to-end install→registration rate (Web: Signin PV → Signup)</dd>
       <dt>WoW</dt><dd>I→Signup current 30d vs previous 30d in percentage points</dd>
