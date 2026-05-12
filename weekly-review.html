@@ -199,6 +199,7 @@
     flex-direction: column;
     background: #fff;
     padding: 20px 24px 14px;
+    overflow: hidden;
   }
   .chart-area { flex: 1; position: relative; min-height: 0; }
   .insight-row {
@@ -265,7 +266,7 @@
   }
   .seo-panel-title { font-size: .78rem; font-weight: 700; color: #1e293b; }
   .seo-panel-sub   { font-size: .58rem; color: #94a3b8; margin-bottom: 6px; margin-top: 1px; }
-  .seo-chart-wrap  { flex: 1; position: relative; min-height: 0; margin-bottom: 8px; }
+  .seo-chart-wrap  { flex: 1; position: relative; min-height: 110px; overflow: hidden; margin-bottom: 8px; }
   .seo-insights    { flex-shrink: 0; display: flex; flex-direction: column; gap: 4px;
                      border-top: 1px solid #e2e8f0; padding-top: 7px; }
   .seo-ins-row     { display: flex; align-items: flex-start; gap: 6px;
@@ -585,6 +586,12 @@ function showSlide(n) {
   document.querySelectorAll('.dot-btn').forEach((d, i) => d.classList.toggle('active', i === n));
   document.getElementById('btn-prev').disabled = (n === 0);
   document.getElementById('btn-next').disabled = (n === total - 1);
+  // Resize Chart.js instances after slide becomes visible (fixes zero-height init)
+  requestAnimationFrame(() => {
+    if (window.Chart && Chart.instances) {
+      Object.values(Chart.instances).forEach(c => { try { c.resize(); } catch(e) {} });
+    }
+  });
 }
 function navigate(dir) {
   current = Math.max(0, Math.min(total - 1, current + dir));
@@ -987,7 +994,14 @@ insights('ins-s5', [
 // ── Slide 8: SEO Visibility — Bond Detail + Blog ─────────────────────────────
 (function() {
   const groups = (D.gsc_weekly || {}).groups || [];
-  if (!groups.length) return;
+  if (!groups.length) {
+    // Show a "no data" placeholder in each SEO panel
+    ['seo-ins-bd', 'seo-ins-bl'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = '<div class="seo-ins-row" style="color:#94a3b8;font-style:italic;font-size:.63rem;">⚠ GSC data unavailable — check GOOGLE_REFRESH_TOKEN secret in GitHub Actions</div>';
+    });
+    return;
+  }
 
   // ── Left panel KPIs ──────────────────────────────────────────────────────
   const bdG  = groups[0] || {};
