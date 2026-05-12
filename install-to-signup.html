@@ -46,6 +46,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 .kpi-card.violet { border-top-color:var(--violet); }
 .kpi-card.green  { border-top-color:var(--green); }
 .kpi-card.rose   { border-top-color:var(--rose); }
+.kpi-card.yellow { border-top-color:var(--yellow); }
 .kpi-label { font-size:.65rem; text-transform:uppercase; letter-spacing:.1em;
   color:var(--text3); margin-bottom:6px; }
 .kpi-val { font-size:1.5rem; font-weight:800; letter-spacing:-.03em; margin-bottom:4px; }
@@ -76,9 +77,18 @@ tr:hover td { background:rgba(255,255,255,.025); }
 .bad  { color:var(--rose); font-weight:600; }
 .warn { color:var(--yellow); font-weight:600; }
 
-/* group header row */
-.step-header { background:var(--surface2); }
-.step-header th { color:var(--blue); font-size:.7rem; text-align:center; padding:6px 14px; }
+/* step-cell: count + inline rate */
+.step-cell { text-align:right; }
+.cnt { font-variant-numeric:tabular-nums; }
+.rate-good { font-size:.72rem; font-weight:600; color:var(--green); margin-left:4px; }
+.rate-warn { font-size:.72rem; font-weight:600; color:var(--yellow); margin-left:4px; }
+.rate-bad  { font-size:.72rem; font-weight:600; color:var(--rose);   margin-left:4px; }
+.rate-dim  { font-size:.72rem; color:var(--text3); margin-left:4px; }
+
+/* stage header band */
+.stage-hdr-s1  { background:rgba(88,166,255,.08);  color:var(--blue);   font-size:.68rem; text-align:center; padding:5px 8px; border-bottom:1px solid var(--border); }
+.stage-hdr-s2  { background:rgba(188,140,255,.08); color:var(--violet); font-size:.68rem; text-align:center; padding:5px 8px; border-bottom:1px solid var(--border); }
+.stage-hdr-ovr { background:rgba(255,123,114,.08); color:var(--rose);   font-size:.68rem; text-align:center; padding:5px 8px; border-bottom:1px solid var(--border); }
 
 /* drops */
 .drops-card { background:var(--surface); border:1px solid var(--border);
@@ -113,7 +123,7 @@ tr:hover td { background:rgba(255,255,255,.025); }
   <div class="hdr-left">
     <h1>📲 Install → Signup Funnel</h1>
     <div class="sub">
-      CUR: 2026-04-12 → 2026-05-11 · PREV: 2026-03-13 → 2026-04-11 · generated 2026-05-12 10:40 IST
+      CUR: 2026-04-12 → 2026-05-11 · PREV: 2026-03-13 → 2026-04-11 · generated 2026-05-12 11:04 IST
     </div>
   </div>
   <a class="back-link" href="index.html">← Product Hub</a>
@@ -133,19 +143,25 @@ tr:hover td { background:rgba(255,255,255,.025); }
           <div class="kpi-label">Install→Signin</div>
           <div class="kpi-val">89.9%</div>
           
-          <div class="kpi-sub">% reaching login screen</div>
+          <div class="kpi-sub">% opening app after install</div>
         </div>
         <div class="kpi-card violet">
-          <div class="kpi-label">Signin→OTP</div>
-          <div class="kpi-val">63.6%</div>
+          <div class="kpi-label">Signin→OTP Sent</div>
+          <div class="kpi-val">67.1%</div>
           
-          <div class="kpi-sub">Iris Pulse Stage 1 Conv%</div>
+          <div class="kpi-sub">number submitted rate</div>
+        </div>
+        <div class="kpi-card yellow">
+          <div class="kpi-label">OTP Sent→Verified</div>
+          <div class="kpi-val">94.7%</div>
+          
+          <div class="kpi-sub">OTP sent → verified (all sub-steps)</div>
         </div>
         <div class="kpi-card green">
-          <div class="kpi-label">OTP→Signup</div>
-          <div class="kpi-val">73.9%</div>
+          <div class="kpi-label">OTP✓→Email PV</div>
+          <div class="kpi-val">106.9%</div>
           
-          <div class="kpi-sub">post-OTP registration rate</div>
+          <div class="kpi-sub">Stage 2 entry rate</div>
         </div>
         <div class="kpi-card rose">
           <div class="kpi-label">Install→Signup</div>
@@ -204,95 +220,105 @@ tr:hover td { background:rgba(255,255,255,.025); }
     <table>
       <thead>
         <tr>
-          <th rowspan="2">Tier</th>
-          <th rowspan="2" title="[AppsFlyer] Install — fresh install via AppsFlyer SDK">Installs</th>
-          <th colspan="3" style="text-align:center;border-left:1px solid var(--border);border-right:1px solid var(--border);color:var(--violet)">
-            Stage 1 — same logic as Iris Pulse
+          <th rowspan="2" style="text-align:left">Tier</th>
+          <th rowspan="2" title="[AppsFlyer] Install — mobile only">Install</th>
+          <th colspan="5" class="stage-hdr-s1">
+            ← Stage 1 · OTP Verification (new users, Iris Pulse segment) →
           </th>
-          <th rowspan="2" title="SETUP_SECURE_PIN_SUCCESS">Signup</th>
-          <th rowspan="2" title="Signin PV / Installs">I→Signin</th>
-          <th rowspan="2" title="VERIFY_OTP_SUCCESS / SIGNIN_PAGE_VIEW (new users) — Iris Pulse Stage 1 Conv%">Signin→OTP</th>
-          <th rowspan="2" title="Signup / VERIFY_OTP_SUCCESS">OTP→Sgn</th>
-          <th rowspan="2" title="Signup / Installs (end-to-end)">I→Signup</th>
-          <th rowspan="2" title="I→Signup WoW delta vs prior 30d">WoW</th>
+          <th colspan="2" class="stage-hdr-s2">
+            Stage 2 · Registration →
+          </th>
+          <th colspan="2" class="stage-hdr-ovr">Overall</th>
         </tr>
         <tr>
-          <th style="border-left:1px solid var(--border);color:var(--text3)">Signin PV</th>
-          <th style="color:var(--text3)">Mob OTP✓</th>
-          <th style="border-right:1px solid var(--border);color:var(--text3)" title="VERIFY_OTP_SUCCESS / SIGNIN_PAGE_VIEW">(Conv%)</th>
+          <th title="SIGNIN_PAGE_VIEW (new users) — conv% = Signin PV ÷ Install">Signin PV<br/><span style="font-size:.62rem;color:var(--text3)">(I→Signin%)</span></th>
+          <th title="SIGNIN_PAGE_VERIFY_API_SUCCESS — number submitted, OTP dispatched — conv% = Sent ÷ Signin PV">OTP Sent<br/><span style="font-size:.62rem;color:var(--text3)">(Si→Sent%)</span></th>
+          <th title="VERIFY_OTP_PAGE_VIEW — OTP entry screen reached — conv% = Screen ÷ Sent">OTP Screen<br/><span style="font-size:.62rem;color:var(--text3)">(Sent→Scr%)</span></th>
+          <th title="VERIFY_OTP_ENTERED — user entered an OTP — conv% = Entered ÷ Screen">OTP Entered<br/><span style="font-size:.62rem;color:var(--text3)">(Scr→Ent%)</span></th>
+          <th title="VERIFY_OTP_SUCCESS — OTP verified — conv% = Verified ÷ Entered">OTP ✓<br/><span style="font-size:.62rem;color:var(--text3)">(Ent→✓%)</span></th>
+          <th title="EMAIL_PAGE_VIEW — Stage 2 entry, fires only on first-time reg — conv% = Email ÷ OTP✓">Email PV<br/><span style="font-size:.62rem;color:var(--text3)">(OTP✓→Em%)</span></th>
+          <th title="SETUP_SECURE_PIN_SUCCESS — registration complete — conv% = Signup ÷ Email PV">Signup<br/><span style="font-size:.62rem;color:var(--text3)">(Em→Sg%)</span></th>
+          <th title="Signup ÷ Install (end-to-end)">I→Signup</th>
+          <th title="I→Signup current 30d vs prior 30d">WoW</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td class="tier-name">Android Premium</td>
-          <td>2,657</td>
-          <td>2,113</td>
-          <td>1,344</td>
-          <td>1,076</td>
-          <td>79.5%</td>
-          <td class="warn">63.6%</td>
-          <td>80.1%</td>
-          <td>40.5%</td>
+          <td class="step-cell"><span class="cnt">2,657</span></td>
+          <td class="step-cell"><span class="cnt">2,113</span><span class="rate-good"> 79.5%</span></td>
+          <td class="step-cell"><span class="cnt">1,392</span><span class="rate-warn"> 65.9%</span></td>
+          <td class="step-cell"><span class="cnt">1,392</span><span class="rate-good"> 100.0%</span></td>
+          <td class="step-cell"><span class="cnt">1,355</span><span class="rate-good"> 97.3%</span></td>
+          <td class="step-cell"><span class="cnt">1,344</span><span class="rate-good"> 99.2%</span></td>
+          <td class="step-cell"><span class="cnt">1,407</span><span class="rate-good"> 104.7%</span></td>
+          <td class="step-cell"><span class="cnt">1,076</span><span class="rate-warn"> 76.5%</span></td>
+          <td style="text-align:right;font-weight:700">40.5%</td>
           <td><span class="wow flat">—</span></td>
         </tr>
         <tr>
           <td class="tier-name">Android Mid</td>
-          <td>7,272</td>
-          <td>5,876</td>
-          <td>3,925</td>
-          <td>3,062</td>
-          <td>80.8%</td>
-          <td class="warn">66.8%</td>
-          <td>78.0%</td>
-          <td>42.1%</td>
+          <td class="step-cell"><span class="cnt">7,272</span></td>
+          <td class="step-cell"><span class="cnt">5,876</span><span class="rate-good"> 80.8%</span></td>
+          <td class="step-cell"><span class="cnt">4,108</span><span class="rate-warn"> 69.9%</span></td>
+          <td class="step-cell"><span class="cnt">4,108</span><span class="rate-good"> 100.0%</span></td>
+          <td class="step-cell"><span class="cnt">3,963</span><span class="rate-good"> 96.5%</span></td>
+          <td class="step-cell"><span class="cnt">3,925</span><span class="rate-good"> 99.0%</span></td>
+          <td class="step-cell"><span class="cnt">4,146</span><span class="rate-good"> 105.6%</span></td>
+          <td class="step-cell"><span class="cnt">3,062</span><span class="rate-warn"> 73.9%</span></td>
+          <td style="text-align:right;font-weight:700">42.1%</td>
           <td><span class="wow flat">—</span></td>
         </tr>
         <tr>
           <td class="tier-name">Android Low</td>
-          <td>17,677</td>
-          <td>15,721</td>
-          <td>9,848</td>
-          <td>7,139</td>
-          <td>88.9%</td>
-          <td class="warn">62.6%</td>
-          <td class="warn">72.5%</td>
-          <td>40.4%</td>
+          <td class="step-cell"><span class="cnt">17,677</span></td>
+          <td class="step-cell"><span class="cnt">15,721</span><span class="rate-good"> 88.9%</span></td>
+          <td class="step-cell"><span class="cnt">10,447</span><span class="rate-warn"> 66.5%</span></td>
+          <td class="step-cell"><span class="cnt">10,443</span><span class="rate-good"> 100.0%</span></td>
+          <td class="step-cell"><span class="cnt">9,979</span><span class="rate-good"> 95.6%</span></td>
+          <td class="step-cell"><span class="cnt">9,848</span><span class="rate-good"> 98.7%</span></td>
+          <td class="step-cell"><span class="cnt">10,646</span><span class="rate-good"> 108.1%</span></td>
+          <td class="step-cell"><span class="cnt">7,139</span><span class="rate-bad"> 67.1%</span></td>
+          <td style="text-align:right;font-weight:700">40.4%</td>
           <td><span class="wow flat">—</span></td>
         </tr>
         <tr>
           <td class="tier-name">iOS</td>
-          <td>418</td>
-          <td>1,487</td>
-          <td>899</td>
-          <td>565</td>
-          <td>355.7%</td>
-          <td class="warn">60.5%</td>
-          <td class="warn">62.8%</td>
-          <td>135.2%</td>
+          <td class="step-cell"><span class="cnt">418</span></td>
+          <td class="step-cell"><span class="cnt">1,487</span><span class="rate-good"> 355.7%</span></td>
+          <td class="step-cell"><span class="cnt">963</span><span class="rate-bad"> 64.8%</span></td>
+          <td class="step-cell"><span class="cnt">963</span><span class="rate-good"> 100.0%</span></td>
+          <td class="step-cell"><span class="cnt">911</span><span class="rate-good"> 94.6%</span></td>
+          <td class="step-cell"><span class="cnt">899</span><span class="rate-good"> 98.7%</span></td>
+          <td class="step-cell"><span class="cnt">922</span><span class="rate-good"> 102.6%</span></td>
+          <td class="step-cell"><span class="cnt">565</span><span class="rate-bad"> 61.3%</span></td>
+          <td style="text-align:right;font-weight:700">135.2%</td>
           <td><span class="wow flat">—</span></td>
         </tr>
         <tr>
           <td class="tier-name">Web</td>
-          <td class="dim">(web)</td>
-          <td>943</td>
-          <td>286</td>
-          <td>231</td>
-          <td class="dim">(n/a)</td>
-          <td class="bad">30.3%</td>
-          <td>80.8%</td>
-          <td class="bad">24.5%</td>
+          <td class="dim" style="text-align:right">(web)</td>
+          <td class="step-cell"><span class="cnt">943</span><span class="dim"> —</span></td>
+          <td class="step-cell"><span class="cnt">341</span><span class="rate-bad"> 36.2%</span></td>
+          <td class="step-cell"><span class="cnt">340</span><span class="rate-good"> 99.7%</span></td>
+          <td class="step-cell"><span class="cnt">305</span><span class="rate-good"> 89.7%</span></td>
+          <td class="step-cell"><span class="cnt">286</span><span class="rate-good"> 93.8%</span></td>
+          <td class="step-cell"><span class="cnt">315</span><span class="rate-good"> 110.1%</span></td>
+          <td class="step-cell"><span class="cnt">231</span><span class="rate-warn"> 73.3%</span></td>
+          <td style="text-align:right;font-weight:700">24.5%</td>
           <td><span class="wow up">+24.5pp</span></td>
         </tr>
         <tr class="total-row">
           <td class="tier-name">Mobile Total</td>
-          <td>28,024</td>
-          <td>25,197</td>
-          <td>16,016</td>
-          <td>11,842</td>
-          <td>89.9%</td>
-          <td>63.6%</td>
-          <td>73.9%</td>
-          <td>42.3%</td>
+          <td style="text-align:right">28,024</td>
+          <td class="step-cell"><span class="cnt">25,197</span><span class="rate-good"> 89.9%</span></td>
+          <td class="step-cell"><span class="cnt">16,910</span><span class="rate-warn"> 67.1%</span></td>
+          <td class="step-cell"><span class="cnt">16,906</span><span class="rate-good"> 100.0%</span></td>
+          <td class="step-cell"><span class="cnt">16,208</span><span class="rate-good"> 95.9%</span></td>
+          <td class="step-cell"><span class="cnt">16,016</span><span class="rate-good"> 98.8%</span></td>
+          <td class="step-cell"><span class="cnt">17,121</span><span class="rate-good"> 106.9%</span></td>
+          <td class="step-cell"><span class="cnt">11,842</span><span class="rate-bad"> 69.2%</span></td>
+          <td style="text-align:right;font-weight:700">42.3%</td>
           <td><span class="wow flat">—</span></td>
         </tr></tbody>
     </table>
@@ -302,41 +328,43 @@ tr:hover td { background:rgba(255,255,255,.025); }
   <div class="drops-card">
         <div class="drop-row">
           <span class="drop-tier">Android Premium</span>
-          <span class="drop-chip warning">Signin → Mobile OTP</span>
-          <span class="drop-loss">36.4pp lost</span>
-          <span class="drop-hint">Stage 1: OTP delivery / number entry</span>
+          <span class="drop-chip warning">Signin → OTP Sent</span>
+          <span class="drop-loss">34.1pp</span>
+          <span class="drop-hint">number entry friction — users not submitting phone number (check CTA / Phone Hint fallback)</span>
         </div>
         <div class="drop-row">
           <span class="drop-tier">Android Mid</span>
-          <span class="drop-chip warning">Signin → Mobile OTP</span>
-          <span class="drop-loss">33.2pp lost</span>
-          <span class="drop-hint">Stage 1: OTP delivery / number entry</span>
+          <span class="drop-chip warning">Signin → OTP Sent</span>
+          <span class="drop-loss">30.1pp</span>
+          <span class="drop-hint">number entry friction — users not submitting phone number (check CTA / Phone Hint fallback)</span>
         </div>
         <div class="drop-row">
           <span class="drop-tier">Android Low</span>
-          <span class="drop-chip warning">Signin → Mobile OTP</span>
-          <span class="drop-loss">37.4pp lost</span>
-          <span class="drop-hint">Stage 1: OTP delivery / number entry</span>
+          <span class="drop-chip warning">Signin → OTP Sent</span>
+          <span class="drop-loss">33.5pp</span>
+          <span class="drop-hint">number entry friction — users not submitting phone number (check CTA / Phone Hint fallback)</span>
         </div>
         <div class="drop-row">
           <span class="drop-tier">iOS</span>
-          <span class="drop-chip warning">Signin → Mobile OTP</span>
-          <span class="drop-loss">39.5pp lost</span>
-          <span class="drop-hint">Stage 1: OTP delivery / number entry</span>
+          <span class="drop-chip warning">Email PV → Signup</span>
+          <span class="drop-loss">38.7pp</span>
+          <span class="drop-hint">Stage 2 abandon — email OTP failure or PIN setup drop-off</span>
         </div></div>
 
   <div class="sec-title">Column Glossary</div>
   <div class="legend">
     <dl>
-      <dt>Installs</dt><dd>[AppsFlyer] Install — fires once on fresh app install (mobile only; web has no install event)</dd>
-      <dt>Signin PV</dt><dd>SIGNIN_PAGE_VIEW for <strong>new users only</strong> (new_active segment — same as Iris Pulse Stage 1 denominator)</dd>
-      <dt>Mob OTP✓</dt><dd>VERIFY_OTP_SUCCESS for new users — Mobile OTP Verified (Iris Pulse Stage 1 key outcome)</dd>
+      <dt>Install</dt><dd>[AppsFlyer] Install — fires once on fresh app install (mobile only; web has no install event)</dd>
+      <dt>Signin PV</dt><dd>SIGNIN_PAGE_VIEW · new users only (new_active segment — same as Iris Pulse Stage 1)</dd>
+      <dt>OTP Sent</dt><dd>SIGNIN_PAGE_VERIFY_API_SUCCESS — phone number submitted &amp; OTP dispatched by backend</dd>
+      <dt>OTP Screen</dt><dd>VERIFY_OTP_PAGE_VIEW — user reached the OTP entry screen</dd>
+      <dt>OTP Entered</dt><dd>VERIFY_OTP_ENTERED — user typed an OTP code</dd>
+      <dt>OTP ✓</dt><dd>VERIFY_OTP_SUCCESS — OTP verified (Mobile OTP ✓ — Iris Pulse Stage 1 key outcome)</dd>
+      <dt>Email PV</dt><dd>EMAIL_PAGE_VIEW — Stage 2 entry; fires only on first-time registration · <em>Note: fetched without new-user segment filter, so OTP✓→Email% may exceed 100% — use as directional only</em></dd>
       <dt>Signup</dt><dd>SETUP_SECURE_PIN_SUCCESS — registration complete</dd>
-      <dt>I→Signin</dt><dd>Signin PV ÷ Installs — % of installs that reached the login screen</dd>
-      <dt>Signin→OTP</dt><dd>Mob OTP✓ ÷ Signin PV — <strong>identical to Iris Pulse Stage 1 Conv%</strong></dd>
-      <dt>OTP→Sgn</dt><dd>Signup ÷ Mob OTP✓ — post-OTP registration completion (Stages 2+3)</dd>
-      <dt>I→Signup</dt><dd>Signup ÷ Installs — end-to-end install→registration rate</dd>
+      <dt>I→Signup</dt><dd>Signup ÷ Install — end-to-end install→registration rate (Web: Signin PV → Signup)</dd>
       <dt>WoW</dt><dd>I→Signup current 30d vs previous 30d in percentage points</dd>
+      <dt>Colour coding</dt><dd>Each step shows conv% from the prior step · <span style="color:var(--green)">green</span> = on target · <span style="color:var(--yellow)">amber</span> = watch · <span style="color:var(--rose)">red</span> = investigate</dd>
     </dl>
     <p style="margin-top:10px;font-size:.72rem;color:var(--text3)">
       ⚠️ iOS install data from AppsFlyer may under-report (verify against App Store Connect).
