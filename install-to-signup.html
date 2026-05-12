@@ -123,7 +123,7 @@ tr:hover td { background:rgba(255,255,255,.025); }
   <div class="hdr-left">
     <h1>📲 Install → Signup Funnel</h1>
     <div class="sub">
-      CUR: 2026-04-12 → 2026-05-11 · PREV: 2026-03-13 → 2026-04-11 · generated 2026-05-12 12:34 IST
+      CUR: 2026-04-12 → 2026-05-11 · PREV: 2026-03-13 → 2026-04-11 · generated 2026-05-12 12:50 IST
     </div>
   </div>
   <a class="back-link" href="index.html">← Product Hub</a>
@@ -227,6 +227,7 @@ tr:hover td { background:rgba(255,255,255,.025); }
   <div class="chart-card">
     <div class="chart-wrap"><canvas id="stageChart"></canvas></div>
     <p style="font-size:.68rem;color:var(--text3);margin-top:10px">
+      <strong style="color:#f0883e">Launch View&nbsp;&rarr;&nbsp;CTA&nbsp;%</strong> = MOBILE_LAUNCH_CTA_CLICKED &divide; MOBILE_LAUNCH_VIEW (all users, mobile total) &middot;
       <strong style="color:var(--text2)">Signin&nbsp;&rarr;&nbsp;OTP&nbsp;&#10003;</strong> uses new_active segment (new users only &mdash; same as Iris&nbsp;Pulse) &middot;
       <strong style="color:var(--violet)">OTP&nbsp;&#10003;&nbsp;&rarr;&nbsp;Email</strong> and
       <strong style="color:var(--green)">Email&nbsp;&rarr;&nbsp;Signup</strong> are directional only (EMAIL_PAGE_VIEW has no new-user filter; may exceed 100%) &middot;
@@ -240,7 +241,7 @@ tr:hover td { background:rgba(255,255,255,.025); }
       var ctx2 = document.getElementById('stageChart').getContext('2d');
       new Chart(ctx2, {
         type: 'line',
-        data: { labels: ["Apr 13\u201319", "Apr 20\u201326", "Apr 27\u2013May 3", "May 4\u201310"], datasets: [{"label": "Signin \u2192 OTP \u2713 (new users)", "data": [69.5, 65.4, 62.5, 62.8], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "OTP \u2713 \u2192 Email PV \u207a (directional)", "data": [99.3, 99.6, 99.6, 98.7], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [4,4], "spanGaps": true}, {"label": "Email PV \u2192 Signup", "data": [72.4, 73.1, 73.1, 69.7], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "SSO path % of OTP \u2713 (Google Sign-In)", "data": [43.1, 45.2, 44.1, 51.1], "borderColor": "#ff7b72", "backgroundColor": "#ff7b72", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [6,3], "spanGaps": true}] },
+        data: { labels: ["Apr 13\u201319", "Apr 20\u201326", "Apr 27\u2013May 3", "May 4\u201310"], datasets: [{"label": "Launch View \u2192 CTA % (pre-signup, mobile total)", "data": [60.0, 57.7, 55.9, 44.6], "borderColor": "#f0883e", "backgroundColor": "#f0883e", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Signin \u2192 OTP \u2713 (new users)", "data": [69.5, 65.4, 62.5, 62.8], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "OTP \u2713 \u2192 Email PV \u207a (directional)", "data": [99.3, 99.6, 99.6, 98.7], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [4,4], "spanGaps": true}, {"label": "Email PV \u2192 Signup", "data": [72.4, 73.1, 73.1, 69.7], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "SSO path % of OTP \u2713 (Google Sign-In)", "data": [43.1, 45.2, 44.1, 51.1], "borderColor": "#ff7b72", "backgroundColor": "#ff7b72", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [6,3], "spanGaps": true}] },
         options: {
           responsive: true, maintainAspectRatio: false,
           interaction: { mode: 'index', intersect: false },
