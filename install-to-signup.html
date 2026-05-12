@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Install → Signup Funnel · Aspero</title>
+<style>
+:root {
+  --bg:#0d1117; --surface:#161b22; --surface2:#21262d; --border:#30363d;
+  --text:#e6edf3; --text2:#8b949e; --text3:#6e7681;
+  --blue:#58a6ff; --blue-dim:rgba(88,166,255,.12);
+  --violet:#bc8cff; --violet-dim:rgba(188,140,255,.12);
+  --green:#3fb950; --green-dim:rgba(63,185,80,.12);
+  --rose:#ff7b72; --rose-dim:rgba(255,123,114,.12);
+  --yellow:#d29922; --yellow-dim:rgba(210,153,34,.12);
+  --radius:10px;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--bg); color:var(--text); min-height:100vh; }
+
+/* header */
+.hdr { background:linear-gradient(135deg,#0d1f3c,#1c3a6a);
+  padding:16px 24px; display:flex; align-items:center;
+  justify-content:space-between; flex-wrap:wrap; gap:8px;
+  border-bottom:1px solid var(--border); }
+.hdr-left h1 { font-size:1.1rem; font-weight:700; color:var(--blue); }
+.hdr-left .sub { font-size:.72rem; color:var(--text2); margin-top:2px; }
+.back-link { font-size:.75rem; color:var(--blue); text-decoration:none; opacity:.8; }
+.back-link:hover { opacity:1; }
+
+/* body wrap */
+.wrap { max-width:1200px; margin:0 auto; padding:24px 24px 60px; }
+
+/* section label */
+.sec-title { font-size:.72rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--text2); margin-bottom:12px; }
+
+/* KPI cards */
+.kpi-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:12px; margin-bottom:28px; }
+.kpi-card { background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:14px 16px;
+  border-top:3px solid var(--border); }
+.kpi-card.blue   { border-top-color:var(--blue); }
+.kpi-card.violet { border-top-color:var(--violet); }
+.kpi-card.green  { border-top-color:var(--green); }
+.kpi-card.rose   { border-top-color:var(--rose); }
+.kpi-label { font-size:.65rem; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--text3); margin-bottom:6px; }
+.kpi-val { font-size:1.5rem; font-weight:800; letter-spacing:-.03em; margin-bottom:4px; }
+.kpi-wow { font-size:.72rem; font-weight:600; }
+.kpi-wow.up  { color:var(--green); }
+.kpi-wow.down { color:var(--rose); }
+.kpi-sub { font-size:.65rem; color:var(--text3); margin-top:3px; }
+
+/* table */
+.tbl-wrap { background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); overflow:auto; margin-bottom:28px; }
+table { width:100%; border-collapse:collapse; font-size:.82rem; }
+thead tr { background:var(--surface2); }
+th { padding:10px 14px; text-align:right; font-size:.68rem; font-weight:600;
+  text-transform:uppercase; letter-spacing:.06em; color:var(--text2);
+  border-bottom:1px solid var(--border); white-space:nowrap; }
+th:first-child { text-align:left; }
+td { padding:9px 14px; text-align:right; border-bottom:1px solid rgba(48,54,61,.6); }
+td:first-child { text-align:left; }
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:rgba(255,255,255,.025); }
+.total-row td { font-weight:700; background:var(--surface2); border-top:1px solid var(--border); border-bottom:none; }
+.tier-name { font-weight:600; color:var(--text); }
+.dim { color:var(--text3); }
+.wow.up   { color:var(--green); font-weight:600; }
+.wow.down { color:var(--rose);  font-weight:600; }
+.wow.flat { color:var(--text3); }
+.bad  { color:var(--rose); font-weight:600; }
+.warn { color:var(--yellow); font-weight:600; }
+
+/* group header row */
+.step-header { background:var(--surface2); }
+.step-header th { color:var(--blue); font-size:.7rem; text-align:center; padding:6px 14px; }
+
+/* drops */
+.drops-card { background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:16px 20px; margin-bottom:28px; }
+.drop-row { display:flex; align-items:center; gap:10px; padding:6px 0;
+  border-bottom:1px solid var(--border); font-size:.82rem; flex-wrap:wrap; }
+.drop-row:last-child { border-bottom:none; }
+.drop-tier { font-weight:700; min-width:140px; }
+.drop-chip { font-size:.7rem; font-weight:700; border-radius:6px; padding:2px 8px; }
+.drop-chip.critical { background:var(--rose-dim); color:var(--rose); }
+.drop-chip.warning  { background:var(--yellow-dim); color:var(--yellow); }
+.drop-loss { font-weight:700; min-width:80px; }
+.drop-hint { color:var(--text2); font-size:.78rem; }
+
+/* legend */
+.legend { background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:16px 20px; font-size:.78rem; color:var(--text2); }
+.legend dt { float:left; font-weight:700; color:var(--text); width:130px; }
+.legend dd { margin-left:140px; margin-bottom:4px; }
+.legend dl::after { content:""; display:table; clear:both; }
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-left">
+    <h1>📲 Install → Signup Funnel</h1>
+    <div class="sub">
+      CUR: 2026-04-12 → 2026-05-11 · PREV: 2026-03-13 → 2026-04-11 · generated 2026-05-12 10:27 IST
+    </div>
+  </div>
+  <a class="back-link" href="index.html">← Product Hub</a>
+</div>
+
+<div class="wrap">
+
+  <div class="sec-title" style="margin-top:4px">Mobile KPIs · Last 30 days</div>
+  <div class="kpi-grid">
+        <div class="kpi-card blue">
+          <div class="kpi-label">Total Installs</div>
+          <div class="kpi-val">28,024</div>
+          
+          <div class="kpi-sub">mobile only · 30d</div>
+        </div>
+        <div class="kpi-card violet">
+          <div class="kpi-label">Install→Signin</div>
+          <div class="kpi-val">89.9%</div>
+          
+          <div class="kpi-sub">% reaching login screen</div>
+        </div>
+        <div class="kpi-card violet">
+          <div class="kpi-label">Signin→OTP</div>
+          <div class="kpi-val">63.6%</div>
+          
+          <div class="kpi-sub">Iris Pulse Stage 1 Conv%</div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-label">OTP→Signup</div>
+          <div class="kpi-val">73.9%</div>
+          
+          <div class="kpi-sub">post-OTP registration rate</div>
+        </div>
+        <div class="kpi-card rose">
+          <div class="kpi-label">Install→Signup</div>
+          <div class="kpi-val">42.3%</div>
+          
+          <div class="kpi-sub">end-to-end · 30d</div>
+        </div></div>
+
+  <div class="sec-title">Full Funnel by Device Tier</div>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th rowspan="2">Tier</th>
+          <th rowspan="2" title="[AppsFlyer] Install — fresh install via AppsFlyer SDK">Installs</th>
+          <th colspan="3" style="text-align:center;border-left:1px solid var(--border);border-right:1px solid var(--border);color:var(--violet)">
+            Stage 1 — same logic as Iris Pulse
+          </th>
+          <th rowspan="2" title="SETUP_SECURE_PIN_SUCCESS">Signup</th>
+          <th rowspan="2" title="Signin PV / Installs">I→Signin</th>
+          <th rowspan="2" title="VERIFY_OTP_SUCCESS / SIGNIN_PAGE_VIEW (new users) — Iris Pulse Stage 1 Conv%">Signin→OTP</th>
+          <th rowspan="2" title="Signup / VERIFY_OTP_SUCCESS">OTP→Sgn</th>
+          <th rowspan="2" title="Signup / Installs (end-to-end)">I→Signup</th>
+          <th rowspan="2" title="I→Signup WoW delta vs prior 30d">WoW</th>
+        </tr>
+        <tr>
+          <th style="border-left:1px solid var(--border);color:var(--text3)">Signin PV</th>
+          <th style="color:var(--text3)">Mob OTP✓</th>
+          <th style="border-right:1px solid var(--border);color:var(--text3)" title="VERIFY_OTP_SUCCESS / SIGNIN_PAGE_VIEW">(Conv%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tier-name">Android Premium</td>
+          <td>2,657</td>
+          <td>2,113</td>
+          <td>1,344</td>
+          <td>1,076</td>
+          <td>79.5%</td>
+          <td class="warn">63.6%</td>
+          <td>80.1%</td>
+          <td>40.5%</td>
+          <td><span class="wow flat">—</span></td>
+        </tr>
+        <tr>
+          <td class="tier-name">Android Mid</td>
+          <td>7,272</td>
+          <td>5,876</td>
+          <td>3,925</td>
+          <td>3,062</td>
+          <td>80.8%</td>
+          <td class="warn">66.8%</td>
+          <td>78.0%</td>
+          <td>42.1%</td>
+          <td><span class="wow flat">—</span></td>
+        </tr>
+        <tr>
+          <td class="tier-name">Android Low</td>
+          <td>17,677</td>
+          <td>15,721</td>
+          <td>9,848</td>
+          <td>7,139</td>
+          <td>88.9%</td>
+          <td class="warn">62.6%</td>
+          <td class="warn">72.5%</td>
+          <td>40.4%</td>
+          <td><span class="wow flat">—</span></td>
+        </tr>
+        <tr>
+          <td class="tier-name">iOS</td>
+          <td>418</td>
+          <td>1,487</td>
+          <td>899</td>
+          <td>565</td>
+          <td>355.7%</td>
+          <td class="warn">60.5%</td>
+          <td class="warn">62.8%</td>
+          <td>135.2%</td>
+          <td><span class="wow flat">—</span></td>
+        </tr>
+        <tr>
+          <td class="tier-name">Web</td>
+          <td class="dim">(web)</td>
+          <td>943</td>
+          <td>286</td>
+          <td>231</td>
+          <td class="dim">(n/a)</td>
+          <td class="bad">30.3%</td>
+          <td>80.8%</td>
+          <td class="bad">24.5%</td>
+          <td><span class="wow up">+24.5pp</span></td>
+        </tr>
+        <tr class="total-row">
+          <td class="tier-name">Mobile Total</td>
+          <td>28,024</td>
+          <td>25,197</td>
+          <td>16,016</td>
+          <td>11,842</td>
+          <td>89.9%</td>
+          <td>63.6%</td>
+          <td>73.9%</td>
+          <td>42.3%</td>
+          <td><span class="wow flat">—</span></td>
+        </tr></tbody>
+    </table>
+  </div>
+
+  <div class="sec-title">Biggest Drop per Tier</div>
+  <div class="drops-card">
+        <div class="drop-row">
+          <span class="drop-tier">Android Premium</span>
+          <span class="drop-chip warning">Signin → Mobile OTP</span>
+          <span class="drop-loss">36.4pp lost</span>
+          <span class="drop-hint">Stage 1: OTP delivery / number entry</span>
+        </div>
+        <div class="drop-row">
+          <span class="drop-tier">Android Mid</span>
+          <span class="drop-chip warning">Signin → Mobile OTP</span>
+          <span class="drop-loss">33.2pp lost</span>
+          <span class="drop-hint">Stage 1: OTP delivery / number entry</span>
+        </div>
+        <div class="drop-row">
+          <span class="drop-tier">Android Low</span>
+          <span class="drop-chip warning">Signin → Mobile OTP</span>
+          <span class="drop-loss">37.4pp lost</span>
+          <span class="drop-hint">Stage 1: OTP delivery / number entry</span>
+        </div>
+        <div class="drop-row">
+          <span class="drop-tier">iOS</span>
+          <span class="drop-chip warning">Signin → Mobile OTP</span>
+          <span class="drop-loss">39.5pp lost</span>
+          <span class="drop-hint">Stage 1: OTP delivery / number entry</span>
+        </div></div>
+
+  <div class="sec-title">Column Glossary</div>
+  <div class="legend">
+    <dl>
+      <dt>Installs</dt><dd>[AppsFlyer] Install — fires once on fresh app install (mobile only; web has no install event)</dd>
+      <dt>Signin PV</dt><dd>SIGNIN_PAGE_VIEW for <strong>new users only</strong> (new_active segment — same as Iris Pulse Stage 1 denominator)</dd>
+      <dt>Mob OTP✓</dt><dd>VERIFY_OTP_SUCCESS for new users — Mobile OTP Verified (Iris Pulse Stage 1 key outcome)</dd>
+      <dt>Signup</dt><dd>SETUP_SECURE_PIN_SUCCESS — registration complete</dd>
+      <dt>I→Signin</dt><dd>Signin PV ÷ Installs — % of installs that reached the login screen</dd>
+      <dt>Signin→OTP</dt><dd>Mob OTP✓ ÷ Signin PV — <strong>identical to Iris Pulse Stage 1 Conv%</strong></dd>
+      <dt>OTP→Sgn</dt><dd>Signup ÷ Mob OTP✓ — post-OTP registration completion (Stages 2+3)</dd>
+      <dt>I→Signup</dt><dd>Signup ÷ Installs — end-to-end install→registration rate</dd>
+      <dt>WoW</dt><dd>I→Signup current 30d vs previous 30d in percentage points</dd>
+    </dl>
+    <p style="margin-top:10px;font-size:.72rem;color:var(--text3)">
+      ⚠️ iOS install data from AppsFlyer may under-report (verify against App Store Connect).
+      WoW may be noisy if AppsFlyer integration was recently activated.
+    </p>
+  </div>
+
+</div>
+</body>
+</html>
