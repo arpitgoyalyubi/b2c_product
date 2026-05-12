@@ -493,6 +493,7 @@ tr:hover td { background:rgba(0,0,0,.02); }
 
 
 
+  <div style="display:none"><!-- Full Funnel by Device Tier hidden: data under review -->
   <div class="sec-title">Full Funnel by Device Tier</div>
   <div class="tbl-wrap">
     <table>
@@ -620,7 +621,15 @@ tr:hover td { background:rgba(0,0,0,.02); }
         </tr></tbody>
     </table>
   </div>
+  </div><!-- /Full Funnel hidden -->
 
+  <div class="sec-title">CTA% by Marketing Attribution (Channel · Campaign · Ad Group)</div>
+  <div class="proxy-notice">
+    <strong>⚠ Data not yet available via Amplitude:</strong> AppsFlyer attribution properties
+    (<code>[AppsFlyer] channel</code>, <code>[AppsFlyer] campaign</code>, <code>[AppsFlyer] adgroup_name</code>)
+    are stored in user profiles but are not queryable via Amplitude's Segmentation API <code>group_by</code> in this project.
+    Use <strong>AppsFlyer dashboard → Conversion Events</strong> for LV→CTA breakdown by channel / campaign / ad group.
+  </div>
 
   <div class="sec-title">Column Glossary</div>
   <div class="legend">
