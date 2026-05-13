@@ -169,7 +169,7 @@ tr:hover td { background:rgba(0,0,0,.02); }
   <div class="hdr-left">
     <h1>📲 App Activation → Signup Funnel</h1>
     <div class="sub">
-      CUR: 2026-04-13 → 2026-05-12 · PREV: 2026-03-14 → 2026-04-12 · generated 2026-05-13 19:24 IST
+      CUR: 2026-04-13 → 2026-05-12 · PREV: 2026-03-14 → 2026-04-12 · generated 2026-05-13 19:43 IST
     </div>
   </div>
   <a class="back-link" href="index.html">← Product Hub</a>
@@ -348,13 +348,92 @@ tr:hover td { background:rgba(0,0,0,.02); }
   </script>
 
 
-  <div class="sec-title" style="margin-top:28px">AF Attribution CTA% Trends</div>
-  <div class="chart-card" style="padding:16px 20px;margin-bottom:28px">
-    <p style="font-size:.8rem;color:var(--text3)">
-      &#9888; AppsFlyer data unavailable &mdash; set <code>APPSFLYER_API_TOKEN</code>,
-      <code>APPSFLYER_APP_ID_ANDROID</code>, and <code>APPSFLYER_APP_ID_IOS</code> to enable this section.
+  <div class="sec-title" style="margin-top:28px">AF Attribution CTA% Trends &middot; Rolling 60d (AppsFlyer Direct API)</div>
+  <div class="chart-card" style="padding:20px 24px 24px;margin-bottom:28px">
+    <div class="af-tabs"><button class="af-tab active" data-tab="media_source" onclick="switchAfTab('media_source')">Media Source</button><button class="af-tab" data-tab="campaign" onclick="switchAfTab('campaign')">Campaign</button></div>
+<div class="af-panel" id="afPanel_media_source" data-tab="media_source" style="display:block"><div class="chip-row"><div class="chip"><span class="chip-name">googleadwords_int</span><span class="chip-stat">7d: 60.1% &middot; 14d: 61.0% &middot; 30d: 64.8%</span></div><div class="chip"><span class="chip-name">Facebook Ads</span><span class="chip-stat">7d: 93.9% &middot; 14d: 93.2% &middot; 30d: 93.7%</span></div><div class="chip"><span class="chip-name">Organic</span><span class="chip-stat">7d: 55.3% &middot; 14d: 58.0% &middot; 30d: 68.0%</span></div><div class="chip"><span class="chip-name">Zomato_CPI</span><span class="chip-stat">7d: 93.7% &middot; 14d: 91.1% &middot; 30d: 93.7%</span></div></div><div class="chart-wrap" style="height:220px"><canvas id="afCta_media_source"></canvas></div><div class="chart-wrap" style="height:160px;margin-top:6px"><canvas id="afLv_media_source"></canvas></div></div><div class="af-panel" id="afPanel_campaign" data-tab="campaign" style="display:none"><div class="chip-row"><div class="chip"><span class="chip-name">ADS_IND_APP_AOS_PaymentSuccess_t</span><span class="chip-stat">7d: 54.3% &middot; 14d: 55.4% &middot; 30d: 59.6%</span></div><div class="chip"><span class="chip-name">HM_App_AAA_HM_Purchase_07022026</span><span class="chip-stat">7d: 89.9% &middot; 14d: 91.4% &middot; 30d: 91.4%</span></div><div class="chip"><span class="chip-name">ADS_IND_APP_AOS_BankVerified_tcp</span><span class="chip-stat">7d: 97.8% &middot; 14d: 97.6% &middot; 30d: 97.9%</span></div><div class="chip"><span class="chip-name">(unknown)</span><span class="chip-stat">7d: 55.7% &middot; 14d: 58.6% &middot; 30d: 68.4%</span></div></div><div class="chart-wrap" style="height:220px"><canvas id="afCta_campaign"></canvas></div><div class="chart-wrap" style="height:160px;margin-top:6px"><canvas id="afLv_campaign"></canvas></div></div>
+    <p style="font-size:.68rem;color:var(--text3);margin-top:12px">
+      All attributed users &mdash; includes returning users from earlier installs. Not new-only. &middot;
+      Top 4 values by LV unique volume over 60d. CTA% null when daily LV &lt; 10. Source: AppsFlyer partners&#95;by&#95;date&#95;report/v5.
     </p>
   </div>
+  <script>
+  (function() {
+    var AF_DATA = {"media_source":{"labels":["March 12", "March 13", "March 14", "March 15", "March 16", "March 17", "March 18", "March 19", "March 20", "March 21", "March 22", "March 23", "March 24", "March 25", "March 26", "March 27", "March 28", "March 29", "March 30", "March 31", "April 1", "April 2", "April 3", "April 4", "April 5", "April 6", "April 7", "April 8", "April 9", "April 10", "April 11", "April 12", "April 13", "April 14", "April 15", "April 16", "April 17", "April 18", "April 19", "April 20", "April 21", "April 22", "April 23", "April 24", "April 25", "April 26", "April 27", "April 28", "April 29", "April 30", "May 1", "May 2", "May 3", "May 4", "May 5", "May 6", "May 7", "May 8", "May 9", "May 10", "May 11", "May 12"],"ctaDs":[{"label": "googleadwords_int", "data": [65.4, 47.6, 64.7, 63.6, 42.9, 56.4, 59.1, 88.9, 88.0, 85.6, 84.0, 91.7, 85.7, 88.6, 84.1, 89.5, 84.6, 86.2, 91.3, 95.5, 94.7, 92.8, 92.7, 89.4, 87.5, 86.3, 84.8, 83.6, 85.2, 86.0, 83.4, 79.8, 83.5, 84.4, 78.2, 70.1, 78.2, 78.6, 73.9, 71.7, 67.4, 64.7, 68.5, 66.8, 65.1, 66.8, 62.1, 63.1, 65.0, 66.6, 66.1, 64.2, 59.8, 56.6, 56.3, 60.7, 59.8, 60.9, 60.8, 59.6, 59.7, 59.2], "borderColor": "#4285F4", "backgroundColor": "#4285F4", "pointRadius": 2, "borderWidth": 2, "tension": 0.3, "spanGaps": true, "fill": false}, {"label": "Facebook Ads", "data": [null, null, 66.7, 83.3, 60.0, 73.5, 56.1, 81.7, 88.8, 88.2, 92.6, 92.3, 94.0, 97.4, 100.0, 89.8, 98.2, 92.3, 100.0, 91.1, 90.3, 85.8, 87.5, 93.2, 94.4, 92.3, 95.2, 87.4, 97.8, 96.5, 97.7, 99.3, 98.7, 98.9, 96.5, 91.7, 100.0, null, null, 97.2, 100.0, 92.5, 94.3, 86.7, 83.8, 90.1, 89.3, 92.0, 89.9, 90.4, 91.9, 94.2, 93.4, 95.2, 93.5, 89.3, 97.7, 91.8, 96.6, 100.0, 92.2, 93.3], "borderColor": "#ea4335", "backgroundColor": "#ea4335", "pointRadius": 2, "borderWidth": 2, "tension": 0.3, "spanGaps": true, "fill": false}, {"label": "Organic", "data": [64.3, 70.0, null, 50.0, null, 20.0, null, null, 72.0, 46.2, 83.3, 58.8, 73.7, 84.7, 92.8, 81.7, 90.7, 85.1, 79.7, 94.1, 85.7, 87.4, 81.0, 71.1, 94.3, 95.0, 100.0, 78.0, 83.0, 100.0, 100.0, 100.0, 100.0, 100.0, 96.4, 88.3, 81.7, 92.5, 84.5, 98.8, 80.3, 73.3, 81.1, 79.0, 76.4, 81.9, 62.2, 59.1, 57.0, 66.7, 69.8, 65.5, 67.9, 56.3, 48.2, 46.9, 56.2, 62.3, 68.9, 50.7, 58.6, 44.9], "borderColor": "#fbbc04", "backgroundColor": "#fbbc04", "pointRadius": 2, "borderWidth": 2, "tension": 0.3, "spanGaps": true, "fill": false}, {"label": "Zomato_CPI", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 100.0, 96.4, 100.0, 94.7, 83.3, 95.8, 81.0, 100.0, 100.0, 86.7, 89.5, null, null, 81.2, 90.9, 95.5, 82.9, 92.3, null, null, null, 95.2, null, 100.0, 87.0, 84.4], "borderColor": "#34a853", "backgroundColor": "#34a853", "pointRadius": 2, "borderWidth": 2, "tension": 0.3, "spanGaps": true, "fill": false}],"lvDs":[{"label": "googleadwords_int", "data": [26, 21, 34, 33, 35, 55, 44, 189, 249, 257, 281, 264, 286, 280, 333, 287, 299, 370, 298, 1319, 845, 582, 386, 398, 510, 644, 541, 549, 472, 584, 536, 476, 492, 488, 625, 479, 770, 852, 729, 736, 1087, 875, 968, 1126, 908, 1021, 941, 1161, 1032, 1141, 1267, 1517, 1312, 1297, 1391, 1520, 1516, 1331, 1346, 1125, 1243, 1209], "borderColor": "#4285F4", "backgroundColor": "rgba(66,133,244,0.35)", "pointRadius": 0, "borderWidth": 1, "tension": 0.3, "fill": true}, {"label": "Facebook Ads", "data": [9, 8, 42, 24, 25, 34, 41, 60, 80, 102, 148, 65, 167, 117, 95, 118, 171, 169, 129, 192, 134, 155, 144, 118, 126, 13, 62, 127, 134, 113, 171, 139, 158, 174, 142, 156, 96, 1, 7, 106, 174, 174, 140, 98, 136, 121, 103, 100, 149, 167, 136, 191, 211, 124, 153, 178, 131, 134, 116, 48, 64, 119], "borderColor": "#ea4335", "backgroundColor": "rgba(234,67,53,0.35)", "pointRadius": 0, "borderWidth": 1, "tension": 0.3, "fill": true}, {"label": "Organic", "data": [14, 10, 8, 10, 7, 10, 7, 9, 25, 13, 24, 17, 38, 98, 125, 82, 86, 74, 69, 152, 84, 95, 42, 38, 35, 40, 45, 50, 53, 47, 52, 46, 60, 50, 55, 77, 71, 53, 71, 85, 76, 86, 74, 81, 72, 83, 98, 88, 93, 96, 116, 113, 109, 119, 114, 145, 128, 151, 135, 148, 128, 147], "borderColor": "#fbbc04", "backgroundColor": "rgba(251,188,4,0.35)", "pointRadius": 0, "borderWidth": 1, "tension": 0.3, "fill": true}, {"label": "Zomato_CPI", "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 6, 12, 28, 32, 19, 18, 24, 21, 14, 30, 30, 19, 6, 1, 16, 22, 22, 41, 39, 2, 7, 3, 21, 8, 65, 23, 32], "borderColor": "#34a853", "backgroundColor": "rgba(52,168,83,0.35)", "pointRadius": 0, "borderWidth": 1, "tension": 0.3, "fill": true}]},"campaign":{"labels":["March 12", "March 13", "March 14", "March 15", "March 16", "March 17", "March 18", "March 19", "March 20", "March 21", "March 22", "March 23", "March 24", "March 25", "March 26", "March 27", "March 28", "March 29", "March 30", "March 31", "April 1", "April 2", "April 3", "April 4", "April 5", "April 6", "April 7", "April 8", "April 9", "April 10", "April 11", "April 12", "April 13", "April 14", "April 15", "April 16", "April 17", "April 18", "April 19", "April 20", "April 21", "April 22", "April 23", "April 24", "April 25", "April 26", "April 27", "April 28", "April 29", "April 30", "May 1", "May 2", "May 3", "May 4", "May 5", "May 6", "May 7", "May 8", "May 9", "May 10", "May 11", "May 12"],"ctaDs":[{"label": "ADS_IND_APP_AOS_PaymentSuccess_tcpa_22ndSept25", "data": [58.8, 37.5, 50.0, 60.7, 42.9, 56.8, 45.5, 81.5, 81.1, 79.2, 78.1, 87.3, 77.8, 82.2, 78.1, 83.8, 78.2, 78.9, 87.3, 95.0, 93.2, 90.4, 89.3, 87.1, 84.7, 82.3, 79.6, 78.2, 81.4, 80.7, 77.4, 74.6, 78.0, 80.0, 73.1, 64.8, 71.1, 75.4, 68.6, 66.8, 64.1, 60.5, 64.3, 61.1, 60.2, 61.6, 55.3, 59.9, 61.0, 60.4, 61.9, 60.1, 53.3, 51.6, 48.2, 54.8, 55.9, 56.0, 54.6, 53.1, 52.3, 52.0], "borderColor": "#4285F4", "backgroundColor": "#4285F4", "pointRadius": 2, "borderWidth": 2, "tension": 0.3, "spanGaps": true, "fill": false}, {"label": "HM_App_AAA_HM_Purchase_07022026", "data": [null, null, 66.7, 83.3, 58.3, 75.8, 57.5, 81.0, 88.5, 87.9, 92.4, 92.2, 96.8, 97.7, 98.7, 89.9, 100.0, 94.6, 100.0, 91.9, 89.9, 90.7, 89.4, 92.6, 91.9, null, 90.0, 86.3, 93.3, 91.7, 95.8, 93.2, 95.5, 93.9, 90.2, 90.3, 96.2, null, null, 95.6, 97.8, 89.0, 93.5, 88.5, 81.5, 89.7, 92.2, 88.8, 91.5, 91.2, 92.2, 92.5, 91.7, 92.7, 95.0, 87.1, 93.4, 91.1, 92.6, 92.9, 86.0, 86.9], "borderColor": "#ea4335", "backgroundColor": "#ea4335", "pointRadius": 2, "borderWidth": 2, "tension": 0.3, "spanGaps": true, "fill": false}, {"label": "ADS_IND_APP_AOS_BankVerified_tcpa_4dec25", "data": [null, null, 91.7, null, null, 54.5, 100.0, 98.8, 98.0, 97.8, 97.8, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 99.2, 98.8, 97.5, 100.0, 98.9, 98.0, 97.4, 100.0, 99.0, 98.7, 99.0, 100.0, 99.0, 100.0, 99.4, 97.1, 98.0, 100.0, 96.7, 96.2, 98.1, 93.4, 98.8, 98.6, 98.9, 96.6, 100.0, 96.4, 97.8, 95.6, 95.9, 96.3, 99.4, 98.1, 97.8, 96.7, 98.5, 97.1, 97.0, 99.1], "borderColor": "#fbbc04", "backgroundColor": "#fbbc04", "pointRadius": 2, "borderWidth": 2, "tension": 0.3, "spanGaps": true, "fill": false}, {"label": "(unknown)", "data": [64.3, 70.0, null, 54.5, null, 18.2, null, 72.7, 74.1, 56.2, 85.2, 61.1, 73.8, 84.6, 93.8, 82.4, 90.9, 85.5, 79.7, 94.8, 85.9, 87.8, 81.8, 70.0, 92.1, 95.0, 100.0, 78.8, 83.3, 100.0, 100.0, 100.0, 100.0, 100.0, 96.4, 88.5, 82.2, 92.5, 84.5, 98.8, 80.8, 73.9, 80.3, 78.3, 76.4, 82.6, 62.0, 60.0, 58.3, 68.6, 69.5, 65.5, 69.0, 56.7, 48.7, 46.9, 55.8, 62.1, 70.0, 51.4, 58.6, 46.4], "borderColor": "#34a853", "backgroundColor": "#34a853", "pointRadius": 2, "borderWidth": 2, "tension": 0.3, "spanGaps": true, "fill": false}],"lvDs":[{"label": "ADS_IND_APP_AOS_PaymentSuccess_tcpa_22ndSept25", "data": [17, 16, 22, 28, 28, 44, 33, 108, 148, 168, 187, 158, 180, 185, 247, 197, 220, 247, 197, 1232, 751, 480, 262, 311, 419, 537, 450, 440, 392, 472, 429, 390, 382, 390, 520, 449, 608, 741, 622, 648, 987, 794, 857, 914, 779, 867, 765, 1040, 907, 955, 1097, 1322, 1058, 1063, 1113, 1251, 1260, 1081, 1044, 858, 960, 919], "borderColor": "#4285F4", "backgroundColor": "rgba(66,133,244,0.35)", "pointRadius": 0, "borderWidth": 1, "tension": 0.3, "fill": true}, {"label": "HM_App_AAA_HM_Purchase_07022026", "data": [9, 8, 42, 24, 24, 33, 40, 58, 78, 99, 145, 64, 125, 86, 75, 79, 110, 111, 91, 160, 99, 118, 104, 81, 99, 9, 40, 95, 105, 84, 120, 103, 112, 131, 122, 144, 79, 1, 6, 68, 137, 154, 123, 87, 130, 107, 90, 89, 129, 136, 115, 161, 180, 110, 141, 155, 122, 123, 95, 42, 57, 99], "borderColor": "#ea4335", "backgroundColor": "rgba(234,67,53,0.35)", "pointRadius": 0, "borderWidth": 1, "tension": 0.3, "fill": true}, {"label": "ADS_IND_APP_AOS_BankVerified_tcpa_4dec25", "data": [9, 5, 12, 5, 7, 11, 11, 81, 101, 89, 91, 104, 103, 95, 86, 89, 78, 121, 97, 87, 93, 100, 124, 81, 81, 99, 87, 101, 76, 100, 97, 79, 102, 92, 96, 25, 158, 105, 102, 83, 92, 78, 108, 76, 85, 73, 89, 58, 76, 112, 93, 113, 123, 107, 160, 159, 136, 120, 135, 136, 133, 115], "borderColor": "#fbbc04", "backgroundColor": "rgba(251,188,4,0.35)", "pointRadius": 0, "borderWidth": 1, "tension": 0.3, "fill": true}, {"label": "(unknown)", "data": [14, 10, 8, 11, 8, 11, 8, 11, 27, 16, 27, 18, 42, 104, 128, 85, 88, 76, 69, 154, 85, 98, 44, 40, 38, 40, 46, 52, 54, 47, 53, 51, 61, 53, 55, 78, 73, 53, 71, 86, 78, 88, 76, 83, 72, 86, 100, 90, 96, 102, 118, 116, 113, 120, 117, 145, 129, 153, 140, 148, 128, 151], "borderColor": "#34a853", "backgroundColor": "rgba(52,168,83,0.35)", "pointRadius": 0, "borderWidth": 1, "tension": 0.3, "fill": true}]}};
+    var _afInited = {};
+    var _afCharts = {};
+    window.switchAfTab = function(key) {
+      document.querySelectorAll('.af-tab').forEach(function(t) {
+        t.classList.toggle('active', t.dataset.tab === key);
+      });
+      document.querySelectorAll('.af-panel').forEach(function(p) {
+        p.style.display = p.dataset.tab === key ? 'block' : 'none';
+      });
+      if (!_afInited[key]) { _initAfCharts(key); _afInited[key] = true; }
+    };
+    function _initAfCharts(key) {
+      var d = AF_DATA[key];
+      if (!d) return;
+      var xCfg = {
+        ticks: {color:'#64748b', font:{size:10}, maxTicksLimit:15, maxRotation:45},
+        grid: {color:'#e2e8f0'}
+      };
+      new Chart(document.getElementById('afCta_' + key).getContext('2d'), {
+        type: 'line',
+        data: {labels: d.labels, datasets: d.ctaDs},
+        options: {
+          responsive:true, maintainAspectRatio:false,
+          interaction:{mode:'index',intersect:false},
+          plugins:{
+            legend:{labels:{color:'#64748b',boxWidth:12,font:{size:11}}},
+            tooltip:{
+              backgroundColor:'#1e293b',borderColor:'#e2e8f0',borderWidth:1,
+              titleColor:'#f8fafc',bodyColor:'#94a3b8',
+              callbacks:{label:function(c){
+                var v=c.parsed.y;
+                return ' '+c.dataset.label+': '+(v===null?'—':v.toFixed(1)+'%');
+              }}
+            }
+          },
+          scales:{
+            x:xCfg,
+            y:{ticks:{color:'#64748b',font:{size:11},callback:function(v){return v+'%';}},
+               grid:{color:'#e2e8f0'},
+               title:{display:true,text:'LV→CTA %',color:'#64748b',font:{size:11}}}
+          }
+        }
+      });
+      new Chart(document.getElementById('afLv_' + key).getContext('2d'), {
+        type: 'line',
+        data: {labels: d.labels, datasets: d.lvDs},
+        options: {
+          responsive:true, maintainAspectRatio:false,
+          interaction:{mode:'index',intersect:false},
+          plugins:{
+            legend:{labels:{color:'#64748b',boxWidth:12,font:{size:10}}},
+            tooltip:{
+              backgroundColor:'#1e293b',borderColor:'#e2e8f0',borderWidth:1,
+              titleColor:'#f8fafc',bodyColor:'#94a3b8',
+              callbacks:{label:function(c){
+                var v=c.parsed.y;
+                return ' '+c.dataset.label+': '+(v===null?'—':v.toLocaleString('en-IN'));
+              }}
+            }
+          },
+          scales:{
+            x:xCfg,
+            y:{stacked:true,
+               ticks:{color:'#64748b',font:{size:11},callback:function(v){return v>=1000?(v/1000).toFixed(0)+'k':v;}},
+               grid:{color:'#e2e8f0'},
+               title:{display:true,text:'LV Uniques',color:'#64748b',font:{size:11}}}
+          }
+        }
+      });
+    }
+    _initAfCharts('media_source');
+    _afInited['media_source'] = true;
+  })();
+  </script>
 
   <div class="sec-title" style="margin-top:32px">CTA% Drop &middot; Root Cause Hypothesis Ranking</div>
   <div class="chart-card" style="padding:20px 24px 24px;margin-bottom:28px">
