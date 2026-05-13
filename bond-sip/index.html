@@ -6,1080 +6,708 @@
 <title>Bond SIP Mocks — Aspero</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,'SF Pro Display','Helvetica Neue',sans-serif;background:#F0F2F5;padding:0}
+body{font-family:-apple-system,'SF Pro Display','Helvetica Neue',sans-serif;background:#0F1824;display:flex;height:100vh;overflow:hidden}
 
-/* ── NAV ── */
-.top-nav{position:sticky;top:0;z-index:100;background:#030916;padding:12px 16px 0;overflow-x:auto;white-space:nowrap;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.top-nav::-webkit-scrollbar{height:3px}.top-nav::-webkit-scrollbar-thumb{background:#00B9C6;border-radius:2px}
-.nav-tab{display:inline-block;color:#9AA4B2;font-size:11px;font-weight:500;padding:8px 14px 10px;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;letter-spacing:0.3px}
-.nav-tab:hover{color:#fff}.nav-tab.active{color:#00B9C6;border-bottom-color:#00B9C6}
-.nav-title{color:#fff;font-size:13px;font-weight:700;padding:12px 16px 4px;letter-spacing:0.5px}
+/* ── SIDEBAR ── */
+.sidebar{width:220px;background:#0F1824;border-right:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;height:100vh;overflow-y:auto;flex-shrink:0}
+.sidebar::-webkit-scrollbar{width:3px}.sidebar::-webkit-scrollbar-thumb{background:#1E3A5F;border-radius:2px}
+.sidebar-header{padding:20px 16px 14px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.sidebar-logo{color:#fff;font-size:14px;font-weight:700;letter-spacing:0.3px}
+.sidebar-sub{color:rgba(255,255,255,0.35);font-size:11px;margin-top:3px}
+.nav-section{padding:14px 0 4px}
+.nav-section-label{padding:0 16px 6px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,0.25)}
+.nav-item{display:flex;align-items:center;padding:8px 16px;cursor:pointer;font-size:12px;color:rgba(255,255,255,0.5);gap:9px;border-left:2px solid transparent;transition:all .15s;line-height:1.3}
+.nav-item:hover{background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.8)}
+.nav-item.active{background:rgba(0,185,198,0.08);color:#00B9C6;border-left-color:#00B9C6}
+.nav-item .num{font-size:10px;color:rgba(255,255,255,0.2);flex-shrink:0;width:16px}
+.nav-item.active .num{color:rgba(0,185,198,0.5)}
+.nav-divider{height:1px;background:rgba(255,255,255,0.06);margin:6px 16px}
 
-/* ── PAGE LAYOUT ── */
-.page-title{padding:24px 24px 8px;font-size:22px;font-weight:700;color:#121926}
-.page-sub{padding:0 24px 20px;font-size:14px;color:#4B5565}
-.screens-grid{display:flex;flex-wrap:wrap;gap:32px;padding:24px;justify-content:flex-start}
-.screen-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
-.screen-label{font-size:12px;font-weight:600;color:#4B5565;text-transform:uppercase;letter-spacing:0.5px;text-align:center}
-.screen-num{font-size:10px;color:#9AA4B2;text-align:center}
+/* ── MAIN AREA ── */
+.main{flex:1;overflow:hidden;display:flex;flex-direction:column;background:#161E2D}
+.main-header{padding:16px 28px;border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.screen-title{font-size:15px;font-weight:600;color:#fff}
+.screen-subtitle{font-size:12px;color:rgba(255,255,255,0.35);margin-top:2px}
+.nav-arrows{display:flex;gap:6px}
+.arrow-btn{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.arrow-btn:hover{background:rgba(255,255,255,0.1);color:#fff}
+.content-area{flex:1;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:24px}
 
 /* ── PHONE FRAME ── */
-.phone{width:375px;background:#fff;border-radius:40px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.22),0 0 0 1px rgba(0,0,0,0.08);position:relative;flex-shrink:0}
-.screen{height:812px;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column}
+.phone{width:375px;height:700px;background:#fff;border-radius:40px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.06);position:relative;flex-shrink:0}
+.screen{height:100%;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column}
 .screen::-webkit-scrollbar{display:none}
+
+/* phone pages — only active visible */
+.phone-page{display:none;height:100%;flex-direction:column}
+.phone-page.active{display:flex}
 
 /* ── STATUS BAR ── */
 .status-bar{height:44px;background:#030916;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0}
 .status-bar.light{background:#fff;border-bottom:1px solid #E3E8EF}
-.status-bar.light .status-time,.status-bar.light .status-icon{color:#121926}
+.status-bar.light .status-time{color:#121926}
 .status-time{color:#fff;font-size:15px;font-weight:600}
-.status-icons{display:flex;gap:6px;align-items:center}
-.status-icon{color:white;font-size:12px}
+.status-icons{display:flex;gap:6px;align-items:center;font-size:12px}
 
 /* ── BOTTOM NAV ── */
-.bottom-nav{height:82px;background:#fff;border-top:1px solid #E3E8EF;display:flex;align-items:flex-start;justify-content:space-around;padding-top:12px;flex-shrink:0;margin-top:auto}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex:1}
-.nav-item svg{width:22px;height:22px}
-.nav-item span{font-size:10px;color:#9AA4B2;font-weight:500}
-.nav-item.active span{color:#00B9C6}
-.nav-item.active svg path{fill:#00B9C6}
-.nav-icon-path{fill:#9AA4B2}
+.bottom-nav{height:72px;background:#fff;border-top:1px solid #E3E8EF;display:flex;align-items:flex-start;justify-content:space-around;padding-top:10px;flex-shrink:0;margin-top:auto}
+.nav-item-b{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;flex:1}
+.nav-item-b svg{width:20px;height:20px}
+.nav-item-b span{font-size:9px;color:#9AA4B2;font-weight:500}
+.nav-item-b.active span{color:#00B9C6}
+.ni{fill:#9AA4B2}
 
-/* ── COMMON COMPONENTS ── */
-.section-bg{background:#F0F2F5;flex:1;padding:16px}
-.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
-.chip{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+/* ── COMPONENTS ── */
+.section-bg{background:#F0F2F5;flex:1;padding:14px 16px;overflow-y:auto}
+.section-bg::-webkit-scrollbar{width:3px}.section-bg::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:2px}
+.card{background:#fff;border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.chip{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
 .chip-green{background:#D1FAE5;color:#065F46}
 .chip-teal{background:#CCFBF1;color:#0F766E}
 .chip-amber{background:#FEF3C7;color:#92400E}
-.chip-red{background:#FEE2E2;color:#991B1B}
 .chip-grey{background:#F1F5F9;color:#475569}
-.chip-navy{background:#1E3A5F;color:#93C5FD}
-.btn{display:block;width:100%;padding:15px;border-radius:14px;font-size:15px;font-weight:600;text-align:center;cursor:pointer;border:none}
+.btn{display:block;width:100%;padding:14px;border-radius:13px;font-size:14px;font-weight:600;text-align:center;cursor:pointer;border:none}
 .btn-teal{background:#00B9C6;color:#fff}
 .btn-ghost{background:transparent;color:#00B9C6;border:1.5px solid #00B9C6}
 .btn-ghost-grey{background:transparent;color:#4B5565;border:1.5px solid #E3E8EF}
-.btn-row{display:flex;gap:10px}
-.btn-row .btn{flex:1}
-.progress-bar{display:flex;gap:6px;padding:16px 20px 8px}
+.btn-row{display:flex;gap:8px}.btn-row .btn{flex:1}
+.progress-bar{display:flex;gap:5px;padding:12px 20px 6px}
 .progress-dot{flex:1;height:4px;border-radius:2px;background:#E3E8EF}
 .progress-dot.done{background:#00B9C6}
-.step-label{padding:0 20px 14px;font-size:13px;color:#9AA4B2;font-weight:500}
-.screen-header{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid #E3E8EF;flex-shrink:0;background:#fff}
-.back-btn{width:36px;height:36px;border-radius:50%;background:#F0F2F5;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;flex-shrink:0}
-.header-title{flex:1;text-align:center;font-size:16px;font-weight:600;color:#121926}
-.close-btn{width:36px;height:36px;border-radius:50%;background:#F0F2F5;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;flex-shrink:0}
+.step-label{padding:0 20px 12px;font-size:12px;color:#9AA4B2;font-weight:500}
+.screen-header{display:flex;align-items:center;padding:10px 14px;border-bottom:1px solid #E3E8EF;flex-shrink:0;background:#fff}
+.back-btn{width:34px;height:34px;border-radius:50%;background:#F0F2F5;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;flex-shrink:0}
+.header-title{flex:1;text-align:center;font-size:15px;font-weight:600;color:#121926}
+.close-btn{width:34px;height:34px;border-radius:50%;background:#F0F2F5;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;flex-shrink:0}
 .divider{height:1px;background:#E3E8EF;margin:0}
 .row{display:flex;align-items:center;justify-content:space-between}
 .text-link{color:#00B9C6;font-size:13px;font-weight:500;text-align:center;cursor:pointer;padding:8px}
-.info-box{background:#F0F9FF;border-left:3px solid #00B9C6;border-radius:8px;padding:12px;margin-bottom:12px}
-.info-box p{font-size:13px;color:#0369A1;line-height:1.5}
-.warn-box{background:#FFFBEB;border-left:3px solid #F79009;border-radius:8px;padding:12px;margin-bottom:12px}
-.warn-box p{font-size:12px;color:#92400E;line-height:1.5}
-.sip-nudge{background:#fff;border-left:4px solid #00B9C6;border-radius:12px;padding:14px;margin:12px 0}
-.label-small{font-size:10px;font-weight:700;color:#00B9C6;letter-spacing:1px;margin-bottom:4px}
-h1{font-size:22px;font-weight:700;color:#121926}
-h2{font-size:18px;font-weight:700;color:#121926}
-h3{font-size:15px;font-weight:600;color:#121926}
-p{font-size:13px;color:#4B5565;line-height:1.5}
+.info-box{background:#F0F9FF;border-left:3px solid #00B9C6;border-radius:8px;padding:10px;margin-bottom:10px}
+.info-box p{font-size:12px;color:#0369A1;line-height:1.5}
+.warn-box{background:#FFFBEB;border-left:3px solid #F79009;border-radius:8px;padding:10px;margin-bottom:10px}
+.warn-box p{font-size:12px;color:#92400E;line-height:1.4}
+.sip-nudge{background:#fff;border-left:4px solid #00B9C6;border-radius:12px;padding:13px;margin:10px 0}
+.label-small{font-size:10px;font-weight:700;color:#00B9C6;letter-spacing:1px;margin-bottom:3px}
 .t1{color:#121926}.t2{color:#4B5565}.t3{color:#697586}.t4{color:#9AA4B2}
-.fw6{font-weight:600}.fw7{font-weight:700}
-.fs11{font-size:11px}.fs12{font-size:12px}.fs13{font-size:13px}.fs14{font-size:14px}.fs15{font-size:15px}.fs16{font-size:16px}
-.mt4{margin-top:4px}.mt6{margin-top:6px}.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}
-.mb4{margin-bottom:4px}.mb8{margin-bottom:8px}.mb12{margin-bottom:12px}.mb16{margin-bottom:16px}
-.bond-card{background:#fff;border-radius:16px;padding:16px;border:1.5px solid #E3E8EF;margin-bottom:12px}
+.fw6{font-weight:600}.fw7{font-weight:700}.fw8{font-weight:800}
+.fs10{font-size:10px}.fs11{font-size:11px}.fs12{font-size:12px}.fs13{font-size:13px}.fs14{font-size:14px}.fs15{font-size:15px}.fs16{font-size:16px}
+.mt4{margin-top:4px}.mt6{margin-top:6px}.mt8{margin-top:8px}.mt10{margin-top:10px}.mt12{margin-top:12px}
+.mb4{margin-bottom:4px}.mb6{margin-bottom:6px}.mb8{margin-bottom:8px}.mb10{margin-bottom:10px}.mb12{margin-bottom:12px}
+.bond-card{background:#fff;border-radius:14px;padding:13px;border:1.5px solid #E3E8EF;margin-bottom:10px}
 .bond-card.highlighted{border-color:#00B9C6;box-shadow:0 0 0 3px rgba(0,185,198,0.08)}
-.ytm-large{font-size:28px;font-weight:700;color:#00B9C6}
-.metrics-strip{display:flex;gap:8px;overflow-x:auto;padding:12px 16px;flex-shrink:0}
+.metrics-strip{display:flex;gap:7px;overflow-x:auto;padding:10px 14px;flex-shrink:0}
 .metrics-strip::-webkit-scrollbar{display:none}
-.metric-chip{background:#fff;border:1px solid #E3E8EF;border-radius:12px;padding:10px 14px;flex-shrink:0;text-align:center}
-.metric-chip .val{font-size:16px;font-weight:700;color:#121926}
-.metric-chip .lbl{font-size:10px;color:#9AA4B2;margin-top:2px;white-space:nowrap}
-.slot-card{background:#F8FAFC;border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid #E3E8EF}
+.metric-chip{border-radius:11px;padding:9px 12px;flex-shrink:0;text-align:center}
+.metric-chip .val{font-size:15px;font-weight:700}.metric-chip .lbl{font-size:10px;margin-top:2px;white-space:nowrap}
+.slot-card{border-radius:11px;padding:11px;margin-bottom:7px;border:1px solid #E3E8EF}
 .slot-card.filled{background:#fff;border-color:#D1FAE5}
 .slot-card.disclosed{background:#FFFBEB;border-color:#FDE68A}
-.slot-card.pending{background:#F8FAFC;border-color:#E3E8EF;opacity:0.8}
-.slot-num{font-size:10px;font-weight:700;color:#9AA4B2;letter-spacing:0.5px;margin-bottom:4px}
-.instalment-row{display:flex;align-items:center;padding:12px 0;border-bottom:1px solid #F0F2F5}
-.control-row{display:flex;align-items:center;padding:14px 0;border-bottom:1px solid #F0F2F5;cursor:pointer}
-.control-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-right:12px;font-size:16px;flex-shrink:0}
-.sip-widget{background:linear-gradient(135deg,#1a3059 0%,#0d2347 100%);border-radius:16px;padding:16px;margin-bottom:12px}
-.sip-badge{background:rgba(0,185,198,0.15);border:1px solid rgba(0,185,198,0.3);color:#00B9C6;font-size:10px;font-weight:700;letter-spacing:0.8px;padding:3px 10px;border-radius:20px;display:inline-block}
-.progress-track{background:rgba(255,255,255,0.1);border-radius:4px;height:4px;margin:10px 0 6px}
+.slot-card.pending{background:#F8FAFC;opacity:0.8}
+.slot-num{font-size:10px;font-weight:700;color:#9AA4B2;letter-spacing:0.5px;margin-bottom:3px}
+.instalment-row{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid #F0F2F5}
+.control-row{display:flex;align-items:center;padding:12px 0;border-bottom:1px solid #F0F2F5;cursor:pointer}
+.control-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-right:10px;font-size:15px;flex-shrink:0}
+.sip-widget{background:linear-gradient(135deg,#1a3059 0%,#0d2347 100%);border-radius:14px;padding:14px;margin-bottom:10px}
+.sip-badge{background:rgba(0,185,198,0.15);border:1px solid rgba(0,185,198,0.3);color:#00B9C6;font-size:10px;font-weight:700;letter-spacing:0.8px;padding:3px 9px;border-radius:20px;display:inline-block}
+.progress-track{background:rgba(255,255,255,0.1);border-radius:4px;height:4px;margin:8px 0 5px}
 .progress-fill{background:#00B9C6;height:4px;border-radius:4px}
-.reinvest-option{background:#fff;border-radius:14px;padding:14px;margin-bottom:10px;border:1.5px solid #E3E8EF;display:flex;align-items:center;gap:12px}
+.reinvest-option{background:#fff;border-radius:13px;padding:12px;margin-bottom:9px;border:1.5px solid #E3E8EF;display:flex;align-items:center;gap:10px}
 .reinvest-option.recommended{border-color:#00B9C6;box-shadow:0 0 0 3px rgba(0,185,198,0.1)}
-.reinvest-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.date-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:4px 0 12px}
-.date-cell{height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500;color:#4B5565;background:#F8FAFC;cursor:pointer;border:1.5px solid transparent}
+.reinvest-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.date-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:3px 0 10px}
+.date-cell{height:42px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;color:#4B5565;background:#F8FAFC;cursor:pointer;border:1.5px solid transparent}
 .date-cell.selected{background:#00B9C6;color:#fff;border-color:#00B9C6;font-weight:700}
-.date-cell:hover:not(.selected){border-color:#00B9C6}
-.quick-chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
-.quick-chip{padding:8px 16px;border-radius:20px;border:1.5px solid #E3E8EF;font-size:13px;font-weight:600;color:#4B5565;cursor:pointer;background:#fff}
+.quick-chips{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0}
+.quick-chip{padding:7px 14px;border-radius:20px;border:1.5px solid #E3E8EF;font-size:12px;font-weight:600;color:#4B5565;cursor:pointer;background:#fff}
 .quick-chip.active{border-color:#00B9C6;color:#00B9C6;background:#F0FDFE}
-.amount-display{font-size:42px;font-weight:800;color:#121926;text-align:center;padding:12px 0 4px;letter-spacing:-1px}
-.amount-sub{font-size:12px;color:#9AA4B2;text-align:center;margin-bottom:8px}
-.slider-row{display:flex;align-items:center;gap:12px;padding:12px 0}
-.slider-btn{width:40px;height:40px;border-radius:50%;background:#F0F2F5;border:none;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;flex-shrink:0;color:#121926;font-weight:600}
+.amount-display{font-size:38px;font-weight:800;color:#121926;text-align:center;padding:10px 0 3px;letter-spacing:-1px}
+.amount-sub{font-size:11px;color:#9AA4B2;text-align:center;margin-bottom:7px}
+.slider-row{display:flex;align-items:center;gap:10px;padding:10px 0}
+.slider-btn{width:38px;height:38px;border-radius:50%;background:#F0F2F5;border:none;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;flex-shrink:0;color:#121926;font-weight:600}
 .slider-track{flex:1;height:4px;background:#E3E8EF;border-radius:2px;position:relative}
 .slider-fill{width:35%;height:4px;background:#00B9C6;border-radius:2px}
-.slider-thumb{width:20px;height:20px;border-radius:50%;background:#00B9C6;position:absolute;top:-8px;left:35%;transform:translateX(-50%);box-shadow:0 2px 8px rgba(0,185,198,0.4)}
-.goal-option{border:1.5px solid #E3E8EF;border-radius:16px;padding:16px;margin-bottom:12px;cursor:pointer}
+.slider-thumb{width:18px;height:18px;border-radius:50%;background:#00B9C6;position:absolute;top:-7px;left:35%;transform:translateX(-50%);box-shadow:0 2px 8px rgba(0,185,198,0.4)}
+.goal-option{border:1.5px solid #E3E8EF;border-radius:14px;padding:14px;margin-bottom:10px;cursor:pointer}
 .goal-option.selected{border-color:#00B9C6;background:#F0FDFE}
-.goal-title{font-size:16px;font-weight:700;color:#121926;margin-bottom:4px}
-.goal-desc{font-size:13px;color:#4B5565;line-height:1.4;margin-bottom:10px}
-.goal-tags{display:flex;gap:6px;flex-wrap:wrap}
-.goal-tag{font-size:10px;font-weight:600;color:#0F766E;background:#D1FAE5;padding:3px 8px;border-radius:10px}
-.mandate-card{background:#F8FAFC;border-radius:14px;padding:16px;margin-bottom:12px}
-.trust-badge{background:#D1FAE5;border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.goal-tag{font-size:10px;font-weight:600;color:#0F766E;background:#D1FAE5;padding:3px 7px;border-radius:8px;display:inline-block;margin:2px 3px 0 0}
+.mandate-card{background:#F8FAFC;border-radius:13px;padding:14px;margin-bottom:10px}
+.trust-badge{background:#D1FAE5;border-radius:9px;padding:9px 12px;display:flex;align-items:center;gap:7px;margin-bottom:12px}
 .trust-badge span{font-size:12px;color:#065F46;font-weight:600}
-.upi-input{width:100%;border:1.5px solid #E3E8EF;border-radius:12px;padding:13px 16px;font-size:14px;color:#121926;background:#fff;outline:none;font-family:inherit}
-.or-divider{display:flex;align-items:center;gap:10px;margin:12px 0}
-.or-divider span{font-size:12px;color:#9AA4B2;white-space:nowrap}
+.upi-input{width:100%;border:1.5px solid #E3E8EF;border-radius:11px;padding:11px 14px;font-size:13px;color:#121926;background:#fff;outline:none;font-family:inherit}
+.or-divider{display:flex;align-items:center;gap:8px;margin:10px 0}
+.or-divider span{font-size:11px;color:#9AA4B2;white-space:nowrap}
 .or-divider::before,.or-divider::after{content:'';flex:1;height:1px;background:#E3E8EF}
-.upi-apps{display:flex;gap:12px;justify-content:center;margin:8px 0}
-.upi-app{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;cursor:pointer}
-.razorpay-badge{text-align:center;font-size:11px;color:#9AA4B2;margin-top:8px}
-.confirm-header{background:linear-gradient(160deg,#030916 0%,#1a3059 100%);padding:28px 20px 24px;text-align:center}
-.confirm-check{width:60px;height:60px;border-radius:50%;background:rgba(0,185,198,0.15);border:2px solid #00B9C6;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:28px}
-.projection-card{border:2px solid #00B9C6;border-radius:16px;padding:16px;margin-bottom:14px;background:#F0FDFE}
-.proj-amount{font-size:28px;font-weight:800;color:#00B9C6;letter-spacing:-0.5px}
-.proj-bar{height:8px;border-radius:4px;background:#E3E8EF;margin:12px 0 6px;overflow:hidden}
-.proj-principal{height:8px;background:#1a3059;border-radius:4px 0 0 4px;display:inline-block;width:92%}
-.proj-interest{height:8px;background:#00B9C6;border-radius:0 4px 4px 0;display:inline-block;width:8%}
-.ladder-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #F0F2F5}
-.ladder-badge{padding:3px 8px;border-radius:6px;font-size:10px;font-weight:700;flex-shrink:0}
+.upi-apps{display:flex;gap:10px;justify-content:center;margin:7px 0}
+.upi-app{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;cursor:pointer}
+.confirm-header{background:linear-gradient(160deg,#030916 0%,#1a3059 100%);padding:22px 18px 20px;text-align:center;flex-shrink:0}
+.confirm-check{width:54px;height:54px;border-radius:50%;background:rgba(0,185,198,0.15);border:2px solid #00B9C6;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px}
+.projection-card{border:2px solid #00B9C6;border-radius:14px;padding:14px;margin-bottom:12px;background:#F0FDFE}
+.proj-amount{font-size:26px;font-weight:800;color:#00B9C6;letter-spacing:-0.5px}
+.ladder-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #F0F2F5}
+.ladder-badge{padding:3px 7px;border-radius:5px;font-size:10px;font-weight:700;flex-shrink:0;white-space:nowrap}
 .ladder-badge.confirmed{background:#D1FAE5;color:#065F46}
 .ladder-badge.illustrative{background:#FEF3C7;color:#92400E}
-.cashflow-row{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid #F0F2F5}
-.cashflow-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-right:10px}
-.homepage-feed{padding:0 16px 16px}
-.feed-section-title{font-size:13px;font-weight:700;color:#9AA4B2;letter-spacing:0.5px;text-transform:uppercase;margin:16px 0 10px}
+.cashflow-row{display:flex;align-items:center;padding:9px 0;border-bottom:1px solid #F0F2F5}
+.cashflow-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-right:9px}
+.feed-section-title{font-size:12px;font-weight:700;color:#9AA4B2;letter-spacing:0.5px;text-transform:uppercase;margin:13px 0 8px}
 </style>
 </head>
 <body>
 
-<div class="top-nav">
-  <div class="nav-title">Bond SIP Mocks · Aspero</div>
-  <div style="padding-bottom:8px">
-    <span class="nav-tab active" onclick="scrollTo('s1')">1 · P2b Entry</span>
-    <span class="nav-tab" onclick="scrollTo('s2')">2 · P6 Entry</span>
-    <span class="nav-tab" onclick="scrollTo('s3')">3 · P7 Maturity</span>
-    <span class="nav-tab" onclick="scrollTo('s4')">4 · Amount</span>
-    <span class="nav-tab" onclick="scrollTo('s5')">5 · Goal</span>
-    <span class="nav-tab" onclick="scrollTo('s6')">6 · Bond Preview</span>
-    <span class="nav-tab" onclick="scrollTo('s7')">7 · Date</span>
-    <span class="nav-tab" onclick="scrollTo('s8')">8 · Mandate</span>
-    <span class="nav-tab" onclick="scrollTo('s9')">9 · Confirmation (B)</span>
-    <span class="nav-tab" onclick="scrollTo('s10')">10 · Portfolio (C)</span>
-    <span class="nav-tab" onclick="scrollTo('s11')">11 · Controls</span>
-    <span class="nav-tab" onclick="scrollTo('s12')">12 · Homepage Widget</span>
+<!-- ── SIDEBAR ── -->
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">Bond SIP Mocks</div>
+    <div class="sidebar-sub">Aspero · ASP-3558 · May 2026</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Entry Points</div>
+    <div class="nav-item active" onclick="showScreen(0,this)"><span class="num">1</span>P2b — RTT Success</div>
+    <div class="nav-item" onclick="showScreen(1,this)"><span class="num">2</span>P6 — First Investment</div>
+    <div class="nav-item" onclick="showScreen(2,this)"><span class="num">3</span>P7 — Maturity Reinvest</div>
+  </div>
+
+  <div class="nav-divider"></div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Setup Flow</div>
+    <div class="nav-item" onclick="showScreen(3,this)"><span class="num">4</span>Step 1 — Amount</div>
+    <div class="nav-item" onclick="showScreen(4,this)"><span class="num">5</span>Step 2 — Goal</div>
+    <div class="nav-item" onclick="showScreen(5,this)"><span class="num">6</span>Step 3 — Bond Preview</div>
+    <div class="nav-item" onclick="showScreen(6,this)"><span class="num">7</span>Step 4 — Date</div>
+    <div class="nav-item" onclick="showScreen(7,this)"><span class="num">8</span>Step 5 — Mandate</div>
+    <div class="nav-item" onclick="showScreen(8,this)"><span class="num">9</span>Confirmation (Option B)</div>
+  </div>
+
+  <div class="nav-divider"></div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Post-Setup</div>
+    <div class="nav-item" onclick="showScreen(9,this)"><span class="num">10</span>Portfolio — SIP Tab (C)</div>
+    <div class="nav-item" onclick="showScreen(10,this)"><span class="num">11</span>SIP Controls</div>
+    <div class="nav-item" onclick="showScreen(11,this)"><span class="num">12</span>Homepage Widget</div>
   </div>
 </div>
 
-<div class="screens-grid">
-
-<!-- ═══════════════════════════════════════════
-     SCREEN 1: P2b ENTRY — RTT Success
-     ═══════════════════════════════════════════ -->
-<div class="screen-wrap" id="s1">
-  <div class="screen-num">SCREEN 1</div>
-  <div class="screen-label">P2b Entry — RTT Success</div>
-  <div class="phone">
-    <div class="screen">
-      <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span class="status-icon">●●●</span><span class="status-icon">WiFi</span><span class="status-icon">⬛</span></div></div>
-      <!-- Success Header -->
-      <div style="background:linear-gradient(160deg,#030916 0%,#0d2040 100%);padding:28px 20px 24px;text-align:center">
-        <div style="width:64px;height:64px;border-radius:50%;background:rgba(18,183,106,0.15);border:2px solid #12B76A;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:30px">✓</div>
-        <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:4px">Investment successful!</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.6)">Your order is confirmed</div>
-      </div>
-      <div class="section-bg" style="padding:16px">
-        <!-- Bond purchased -->
-        <div class="card" style="border-left:3px solid #12B76A">
-          <div class="row mb8"><span class="fs15 fw7 t1">IIFL Finance Ltd</span><span class="chip chip-green">AA</span></div>
-          <div class="row">
-            <div><div class="fs13 t4">Amount invested</div><div class="fs16 fw7 t1">₹50,000</div></div>
-            <div style="text-align:right"><div class="fs13 t4">YTM</div><div style="font-size:20px;font-weight:800;color:#00B9C6">9.4%</div></div>
-            <div style="text-align:right"><div class="fs13 t4">Matures</div><div class="fs14 fw6 t1">Jun 2027</div></div>
-          </div>
-          <div class="mt8" style="background:#F0F2F5;border-radius:8px;padding:8px 12px;font-size:12px;color:#4B5565">Order ref: ASP-2024-0510123 · Processing in T+1</div>
-        </div>
-
-        <div class="divider" style="margin:4px 0 14px"></div>
-
-        <!-- SIP Nudge -->
-        <div class="sip-nudge" style="box-shadow:0 2px 10px rgba(0,185,198,0.1)">
-          <div class="label-small">INVEST REGULARLY</div>
-          <div class="fs16 fw7 t1 mb4">Not ready for ₹50K every time?</div>
-          <div class="fs13 t2 mb12">Start a Bond SIP from ₹5,000/month. Your portfolio builds automatically — no ISIN research needed.</div>
-          <div class="btn-row">
-            <button class="btn btn-ghost-grey" style="font-size:13px;padding:11px">Maybe later</button>
-            <button class="btn btn-teal" style="font-size:13px;padding:11px">Start Bond SIP →</button>
-          </div>
-          <div style="text-align:center;margin-top:8px;font-size:11px;color:#9AA4B2">Takes 2 min · Cancel anytime</div>
-        </div>
-
-        <div class="text-link" style="margin-top:4px">View my portfolio</div>
-      </div>
-      <div class="bottom-nav">
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></div>
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg><span>Explore</span></div>
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg><span>Portfolio</span></div>
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Account</span></div>
-      </div>
+<!-- ── MAIN ── -->
+<div class="main">
+  <div class="main-header">
+    <div>
+      <div class="screen-title" id="mainTitle">P2b Entry — RTT Success Screen</div>
+      <div class="screen-subtitle" id="mainSub">Screen 1 of 12 · Entry Points</div>
+    </div>
+    <div class="nav-arrows">
+      <button class="arrow-btn" onclick="prevScreen()">←</button>
+      <button class="arrow-btn" onclick="nextScreen()">→</button>
     </div>
   </div>
-</div>
+  <div class="content-area">
+    <div class="phone">
+      <div class="screen">
 
-<!-- ═══════════════════════════════════════════
-     SCREEN 2: P6 ENTRY — First investment
-     ═══════════════════════════════════════════ -->
-<div class="screen-wrap" id="s2">
-  <div class="screen-num">SCREEN 2</div>
-  <div class="screen-label">P6 Entry — First Investment</div>
-  <div class="phone">
-    <div class="screen">
-      <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span class="status-icon">●●●</span><span class="status-icon">WiFi</span><span class="status-icon">⬛</span></div></div>
-      <!-- Celebration header -->
-      <div style="background:linear-gradient(160deg,#030916 0%,#1a3059 100%);padding:32px 20px 28px;text-align:center;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none">
-          <span style="position:absolute;top:20px;left:30px;font-size:18px;opacity:0.6">🎉</span>
-          <span style="position:absolute;top:40px;right:40px;font-size:14px;opacity:0.5">✨</span>
-          <span style="position:absolute;bottom:30px;left:60px;font-size:12px;opacity:0.4">⭐</span>
-          <span style="position:absolute;top:15px;left:50%;font-size:16px;opacity:0.5">🎊</span>
-        </div>
-        <div style="width:68px;height:68px;border-radius:50%;background:rgba(18,183,106,0.2);border:2px solid #12B76A;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:32px;position:relative">🥇</div>
-        <div style="font-size:22px;font-weight:700;color:#fff;margin-bottom:6px">Your first bond is live!</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.6)">Welcome to the Aspero community</div>
-      </div>
-
-      <div class="section-bg">
-        <!-- Bond purchased -->
-        <div class="bond-card">
-          <div class="row mb8"><span class="fs15 fw7 t1">Bajaj Finance Ltd</span><span class="chip chip-green">AAA</span></div>
-          <div class="row">
-            <div><div class="fs12 t4">Invested</div><div class="fs15 fw7 t1">₹1,000</div></div>
-            <div style="text-align:center"><div class="fs12 t4">YTM</div><div style="font-size:22px;font-weight:800;color:#00B9C6">8.9%</div></div>
-            <div style="text-align:right"><div class="fs12 t4">Matures</div><div class="fs13 fw6 t1">Jan 2027</div></div>
-          </div>
-          <div class="mt8 fs12 t4">At 8.9% YTM, you'll earn ~₹89 interest on this bond</div>
-        </div>
-
-        <!-- SIP Nudge -->
-        <div class="sip-nudge" style="background:linear-gradient(135deg,#F0FDFE 0%,#ECFEFF 100%);border-left:4px solid #00B9C6;box-shadow:0 2px 12px rgba(0,185,198,0.12)">
-          <div class="label-small">KEEP IT GROWING</div>
-          <div class="fs17 fw7 t1 mb4" style="font-size:17px">Keep it going automatically</div>
-          <div class="fs13 t2 mb12">Your first bond is working. Make it automatic — set up a Bond SIP from ₹1,000/month and your portfolio builds itself.</div>
-          <button class="btn btn-teal" style="margin-bottom:8px">Set up Bond SIP →</button>
-          <div style="text-align:center;font-size:11px;color:#9AA4B2">Takes 2 minutes · Cancel anytime · No agent needed</div>
-        </div>
-
-        <div class="text-link">Done, I'll explore later</div>
-      </div>
-      <div class="bottom-nav">
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></div>
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg><span>Explore</span></div>
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg><span>Portfolio</span></div>
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Account</span></div>
+<!-- ════════════════════════════════════
+     PAGE 0: P2b ENTRY
+     ════════════════════════════════════ -->
+<div class="phone-page active" id="p0">
+  <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>●●●</span><span style="margin-left:4px">⬛</span></div></div>
+  <div style="background:linear-gradient(160deg,#030916 0%,#0d2040 100%);padding:24px 18px 20px;text-align:center;flex-shrink:0">
+    <div style="width:58px;height:58px;border-radius:50%;background:rgba(18,183,106,0.15);border:2px solid #12B76A;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:26px">✓</div>
+    <div class="fs16 fw7" style="color:#fff;margin-bottom:3px">Investment successful!</div>
+    <div class="fs12" style="color:rgba(255,255,255,0.55)">Your order is confirmed</div>
+  </div>
+  <div class="section-bg">
+    <div class="card" style="border-left:3px solid #12B76A">
+      <div class="row mb8"><span class="fs14 fw7 t1">IIFL Finance Ltd</span><span class="chip chip-green">AA</span></div>
+      <div class="row">
+        <div><div class="fs11 t4">Amount</div><div class="fs15 fw7 t1">₹50,000</div></div>
+        <div style="text-align:center"><div class="fs11 t4">YTM</div><div style="font-size:22px;font-weight:800;color:#00B9C6">9.4%</div></div>
+        <div style="text-align:right"><div class="fs11 t4">Matures</div><div class="fs13 fw6 t1">Jun 2027</div></div>
       </div>
     </div>
+    <div class="divider" style="margin:2px 0 12px"></div>
+    <div class="sip-nudge" style="box-shadow:0 2px 10px rgba(0,185,198,0.1)">
+      <div class="label-small">INVEST REGULARLY</div>
+      <div class="fs14 fw7 t1 mb4">Not ready for ₹50K every time?</div>
+      <div class="fs12 t2 mb10">Start a Bond SIP from ₹5,000/month. Your portfolio builds automatically — no ISIN research needed.</div>
+      <div class="btn-row">
+        <button class="btn btn-ghost-grey" style="font-size:12px;padding:10px">Maybe later</button>
+        <button class="btn btn-teal" style="font-size:12px;padding:10px">Start Bond SIP →</button>
+      </div>
+      <div style="text-align:center;margin-top:7px;font-size:11px;color:#9AA4B2">Takes 2 min · Cancel anytime</div>
+    </div>
+    <div class="text-link">View my portfolio</div>
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></div>
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg><span>Explore</span></div>
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg><span>Portfolio</span></div>
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Account</span></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SCREEN 3: P7 — MATURITY REINVESTMENT
-     ═══════════════════════════════════════════ -->
-<div class="screen-wrap" id="s3">
-  <div class="screen-num">SCREEN 3</div>
-  <div class="screen-label">P7 Entry — Maturity Reinvest</div>
-  <div class="phone">
-    <div class="screen">
-      <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span class="status-icon">●●●</span><span class="status-icon">WiFi</span><span class="status-icon">⬛</span></div></div>
-      <!-- Maturity header -->
-      <div style="background:linear-gradient(160deg,#1a1a00 0%,#3d2e00 100%);padding:24px 20px 20px">
-        <div class="row mb8">
-          <span class="chip chip-amber" style="font-size:11px">BOND MATURED</span>
-          <span style="font-size:12px;color:rgba(255,255,255,0.5)">Today, 13 May 2026</span>
-        </div>
-        <div style="font-size:22px;font-weight:700;color:#fff;margin-bottom:4px">Your ₹39,000 is ready</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.6)">HDFC Credila Financial Services bond has matured. Choose how to reinvest.</div>
-        <div style="background:rgba(255,255,255,0.06);border-radius:10px;padding:10px 14px;margin-top:12px;display:flex;justify-content:space-between">
-          <div style="text-align:center"><div style="font-size:10px;color:rgba(255,255,255,0.5)">Principal</div><div style="font-size:15px;font-weight:700;color:#fff">₹35,000</div></div>
-          <div style="text-align:center"><div style="font-size:10px;color:rgba(255,255,255,0.5)">Interest earned</div><div style="font-size:15px;font-weight:700;color:#F59E0B">₹4,000</div></div>
-          <div style="text-align:center"><div style="font-size:10px;color:rgba(255,255,255,0.5)">Total</div><div style="font-size:15px;font-weight:700;color:#fff">₹39,000</div></div>
-        </div>
-      </div>
-
-      <div class="section-bg">
-        <div style="font-size:12px;font-weight:600;color:#9AA4B2;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px">Choose what to do next</div>
-
-        <!-- Option A: Lumpsum -->
-        <div class="reinvest-option">
-          <div class="reinvest-icon" style="background:#EFF6FF">💰</div>
-          <div style="flex:1">
-            <div class="fs14 fw6 t1 mb4">Invest in a new bond</div>
-            <div class="fs12 t3">Browse inventory and pick your ISIN manually</div>
-          </div>
-          <span style="font-size:18px;color:#9AA4B2">›</span>
-        </div>
-
-        <!-- Option B: SIP — RECOMMENDED -->
-        <div class="reinvest-option recommended" style="position:relative">
-          <div style="position:absolute;top:-8px;right:14px;background:#00B9C6;color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;letter-spacing:0.5px">RECOMMENDED</div>
-          <div class="reinvest-icon" style="background:#F0FDFE">📆</div>
-          <div style="flex:1">
-            <div class="fs14 fw6 t1 mb4">Set up Bond SIP</div>
-            <div class="fs12 t3 mb8">Auto-invest ₹3,250/month (₹39,000 ÷ 12). Your portfolio builds itself.</div>
-            <button class="btn btn-teal" style="padding:10px;font-size:13px">Start Bond SIP →</button>
-          </div>
-        </div>
-
-        <!-- Option C: Bank -->
-        <div class="reinvest-option">
-          <div class="reinvest-icon" style="background:#F0FDF4">🏦</div>
-          <div style="flex:1">
-            <div class="fs14 fw6 t1 mb4">Transfer to bank</div>
-            <div class="fs12 t3">₹39,000 arrives in your bank in 2–3 working days</div>
-          </div>
-          <span style="font-size:18px;color:#9AA4B2">›</span>
-        </div>
-
-        <div class="info-box mt8">
-          <p>💼 Funds are held in your Aspero wallet until you choose a reinvestment option.</p>
-        </div>
-      </div>
-      <div class="bottom-nav">
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></div>
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg><span>Explore</span></div>
-        <div class="nav-item active"><svg viewBox="0 0 24 24"><path style="fill:#00B9C6" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg><span style="color:#00B9C6">Portfolio</span></div>
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Account</span></div>
+<!-- ════════════════════════════════════
+     PAGE 1: P6 ENTRY
+     ════════════════════════════════════ -->
+<div class="phone-page" id="p1">
+  <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>●●●</span><span style="margin-left:4px">⬛</span></div></div>
+  <div style="background:linear-gradient(160deg,#030916 0%,#1a3059 100%);padding:28px 18px 24px;text-align:center;position:relative;overflow:hidden;flex-shrink:0">
+    <span style="position:absolute;top:16px;left:28px;font-size:16px;opacity:0.5">🎉</span>
+    <span style="position:absolute;top:36px;right:38px;font-size:13px;opacity:0.4">✨</span>
+    <span style="position:absolute;top:14px;left:50%;font-size:14px;opacity:0.4">🎊</span>
+    <div style="width:62px;height:62px;border-radius:50%;background:rgba(18,183,106,0.2);border:2px solid #12B76A;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:28px">🥇</div>
+    <div class="fs16 fw7" style="color:#fff;margin-bottom:5px">Your first bond is live!</div>
+    <div class="fs12" style="color:rgba(255,255,255,0.55)">Welcome to the Aspero community</div>
+  </div>
+  <div class="section-bg">
+    <div class="bond-card">
+      <div class="row mb8"><span class="fs14 fw7 t1">Bajaj Finance Ltd</span><span class="chip chip-green">AAA</span></div>
+      <div class="row">
+        <div><div class="fs11 t4">Invested</div><div class="fs14 fw7 t1">₹1,000</div></div>
+        <div style="text-align:center"><div class="fs11 t4">YTM</div><div style="font-size:20px;font-weight:800;color:#00B9C6">8.9%</div></div>
+        <div style="text-align:right"><div class="fs11 t4">Matures</div><div class="fs12 fw6 t1">Jan 2027</div></div>
       </div>
     </div>
+    <div class="sip-nudge" style="background:linear-gradient(135deg,#F0FDFE 0%,#ECFEFF 100%)">
+      <div class="label-small">KEEP IT GROWING</div>
+      <div class="fs15 fw7 t1 mb4">Keep it going automatically</div>
+      <div class="fs12 t2 mb10">Your first bond is working. Make it automatic — set up a Bond SIP from ₹1,000/month.</div>
+      <button class="btn btn-teal" style="margin-bottom:7px">Set up Bond SIP →</button>
+      <div style="text-align:center;font-size:11px;color:#9AA4B2">Takes 2 minutes · Cancel anytime</div>
+    </div>
+    <div class="text-link">Done, I'll explore later</div>
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></div>
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg><span>Explore</span></div>
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg><span>Portfolio</span></div>
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Account</span></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SCREEN 4: SETUP STEP 1 — AMOUNT
-     ═══════════════════════════════════════════ -->
-<div class="screen-wrap" id="s4">
-  <div class="screen-num">SCREEN 4</div>
-  <div class="screen-label">Setup · Step 1 — Amount</div>
-  <div class="phone">
-    <div class="screen">
-      <div class="status-bar light"><span class="status-time" style="color:#121926">9:41</span><div class="status-icons"><span class="status-icon" style="color:#121926">●●●</span></div></div>
-      <div class="screen-header">
-        <div class="back-btn">←</div>
-        <div class="header-title">Bond SIP</div>
-        <div class="close-btn">✕</div>
-      </div>
-      <!-- Progress -->
-      <div class="progress-bar"><div class="progress-dot done"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
-      <div class="step-label">Step 1 of 6 — Monthly amount</div>
-
-      <div class="section-bg" style="padding:16px 20px">
-        <div class="amount-display">₹5,000</div>
-        <div class="amount-sub">per month · ₹1,000 steps</div>
-
-        <div class="slider-row">
-          <button class="slider-btn">−</button>
-          <div class="slider-track"><div class="slider-fill"></div><div class="slider-thumb"></div></div>
-          <button class="slider-btn">+</button>
-        </div>
-        <div class="row mb16" style="font-size:11px;color:#9AA4B2"><span>Min ₹1,000</span><span>Max ₹1,00,000</span></div>
-
-        <div style="font-size:13px;font-weight:600;color:#121926;margin-bottom:8px">Quick select</div>
-        <div class="quick-chips">
-          <div class="quick-chip">₹1K</div>
-          <div class="quick-chip">₹2K</div>
-          <div class="quick-chip active">₹5K</div>
-          <div class="quick-chip">₹10K</div>
-          <div class="quick-chip">₹25K</div>
-        </div>
-
-        <div class="info-box mt12">
-          <p>📊 At ₹5,000/month you'll invest <strong>₹60,000</strong> over 12 months — that's ₹5,000–5,500 in interest at typical bond yields.</p>
-        </div>
-
-        <div class="card" style="background:#F8FAFC;border:1px solid #E3E8EF;border-radius:12px;padding:12px">
-          <div class="row mb4"><span class="fs12 t4">Annual investment</span><span class="fs13 fw6 t1">₹60,000</span></div>
-          <div class="row mb4"><span class="fs12 t4">Est. annual interest</span><span class="fs13 fw6" style="color:#00B9C6">~₹5,200</span></div>
-          <div class="row"><span class="fs12 t4">Portfolio value (12m)</span><span class="fs13 fw6 t1">~₹65,200</span></div>
-        </div>
-
-        <button class="btn btn-teal mt16" style="margin-top:16px">Continue →</button>
+<!-- ════════════════════════════════════
+     PAGE 2: P7 MATURITY
+     ════════════════════════════════════ -->
+<div class="phone-page" id="p2">
+  <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>●●●</span><span style="margin-left:4px">⬛</span></div></div>
+  <div style="background:linear-gradient(160deg,#1a1a00 0%,#3d2e00 100%);padding:20px 18px 18px;flex-shrink:0">
+    <div class="row mb8"><span class="chip chip-amber">BOND MATURED</span><span style="font-size:11px;color:rgba(255,255,255,0.4)">13 May 2026</span></div>
+    <div class="fs16 fw7 mb4" style="color:#fff">Your ₹39,000 is ready</div>
+    <div class="fs12 mb10" style="color:rgba(255,255,255,0.55)">HDFC Credila bond matured. Choose how to reinvest.</div>
+    <div style="background:rgba(255,255,255,0.06);border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between">
+      <div style="text-align:center"><div class="fs10" style="color:rgba(255,255,255,0.45)">Principal</div><div class="fs14 fw7" style="color:#fff">₹35,000</div></div>
+      <div style="text-align:center"><div class="fs10" style="color:rgba(255,255,255,0.45)">Interest</div><div class="fs14 fw7" style="color:#F59E0B">₹4,000</div></div>
+      <div style="text-align:center"><div class="fs10" style="color:rgba(255,255,255,0.45)">Total</div><div class="fs14 fw7" style="color:#fff">₹39,000</div></div>
+    </div>
+  </div>
+  <div class="section-bg">
+    <div class="fs11 fw6 t4 mb8" style="letter-spacing:0.5px;text-transform:uppercase">Choose what to do next</div>
+    <div class="reinvest-option">
+      <div class="reinvest-icon" style="background:#EFF6FF">💰</div>
+      <div style="flex:1"><div class="fs13 fw6 t1 mb4">Invest in a new bond</div><div class="fs11 t3">Browse inventory and pick your ISIN</div></div>
+      <span class="fs16 t4">›</span>
+    </div>
+    <div class="reinvest-option recommended" style="position:relative">
+      <div style="position:absolute;top:-7px;right:12px;background:#00B9C6;color:#fff;font-size:10px;font-weight:700;padding:2px 9px;border-radius:9px">RECOMMENDED</div>
+      <div class="reinvest-icon" style="background:#F0FDFE">📆</div>
+      <div style="flex:1">
+        <div class="fs13 fw6 t1 mb4">Set up Bond SIP</div>
+        <div class="fs11 t3 mb8">Auto-invest ₹3,250/month (₹39K ÷ 12). Portfolio builds itself.</div>
+        <button class="btn btn-teal" style="padding:9px;font-size:12px">Start Bond SIP →</button>
       </div>
     </div>
+    <div class="reinvest-option">
+      <div class="reinvest-icon" style="background:#F0FDF4">🏦</div>
+      <div style="flex:1"><div class="fs13 fw6 t1 mb4">Transfer to bank</div><div class="fs11 t3">₹39,000 in 2–3 working days</div></div>
+      <span class="fs16 t4">›</span>
+    </div>
+    <div class="info-box mt8"><p>💼 Funds held in your Aspero wallet until you choose.</p></div>
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></div>
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg><span>Explore</span></div>
+    <div class="nav-item-b active"><svg viewBox="0 0 24 24"><path style="fill:#00B9C6" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg><span style="color:#00B9C6">Portfolio</span></div>
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Account</span></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SCREEN 5: SETUP STEP 2 — GOAL
-     ═══════════════════════════════════════════ -->
-<div class="screen-wrap" id="s5">
-  <div class="screen-num">SCREEN 5</div>
-  <div class="screen-label">Setup · Step 2 — Goal</div>
-  <div class="phone">
-    <div class="screen">
-      <div class="status-bar light"><span class="status-time" style="color:#121926">9:41</span><div class="status-icons"><span class="status-icon" style="color:#121926">●●●</span></div></div>
-      <div class="screen-header">
-        <div class="back-btn">←</div>
-        <div class="header-title">Bond SIP</div>
-        <div class="close-btn">✕</div>
-      </div>
-      <div class="progress-bar"><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
-      <div class="step-label">Step 2 of 6 — Choose your goal</div>
-
-      <div class="section-bg" style="padding:16px 20px">
-        <div class="fs16 fw7 t1 mb4">What do you want from your bonds?</div>
-        <div class="fs13 t3 mb16">This guides how the engine picks your bond each month.</div>
-
-        <!-- Income Ladder — SELECTED -->
-        <div class="goal-option selected">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
-            <div class="goal-title">Income Ladder 🪜</div>
-            <div style="width:22px;height:22px;border-radius:50%;background:#00B9C6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0">✓</div>
-          </div>
-          <div class="goal-desc">Build recurring monthly cashflows — bonds mature at staggered intervals so income arrives every month.</div>
-          <div class="goal-tags"><span class="goal-tag">Diversified maturities</span><span class="goal-tag">Monthly income</span><span class="goal-tag">Stable</span></div>
-        </div>
-
-        <!-- Wealth Growth -->
-        <div class="goal-option">
-          <div class="goal-title">Wealth Growth 📈</div>
-          <div class="goal-desc">Maximise blended portfolio yield over time — engine picks the highest YTM available within your credit rating floor each month.</div>
-          <div class="goal-tags">
-            <span style="font-size:10px;font-weight:600;color:#0F766E;background:#D1FAE5;padding:3px 8px;border-radius:10px">Higher yield</span>
-            <span style="font-size:10px;font-weight:600;color:#0F766E;background:#D1FAE5;padding:3px 8px;border-radius:10px">Compounding</span>
-            <span style="font-size:10px;font-weight:600;color:#0F766E;background:#D1FAE5;padding:3px 8px;border-radius:10px">Growth-first</span>
-          </div>
-        </div>
-
-        <div class="info-box">
-          <p>💡 <strong>Income Ladder</strong> is ideal if you want predictable cashflows. <strong>Wealth Growth</strong> suits long-term compounders.</p>
-        </div>
-
-        <button class="btn btn-teal">Continue with Income Ladder →</button>
-      </div>
+<!-- ════════════════════════════════════
+     PAGE 3: STEP 1 AMOUNT
+     ════════════════════════════════════ -->
+<div class="phone-page" id="p3">
+  <div class="status-bar light"><span class="status-time" style="color:#121926">9:41</span><div class="status-icons" style="color:#121926"><span>●●●</span></div></div>
+  <div class="screen-header"><div class="back-btn">←</div><div class="header-title">Bond SIP</div><div class="close-btn">✕</div></div>
+  <div class="progress-bar"><div class="progress-dot done"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
+  <div class="step-label">Step 1 of 6 — Monthly amount</div>
+  <div class="section-bg" style="padding:14px 18px">
+    <div class="amount-display">₹5,000</div>
+    <div class="amount-sub">per month · ₹1,000 steps</div>
+    <div class="slider-row">
+      <button class="slider-btn">−</button>
+      <div class="slider-track"><div class="slider-fill"></div><div class="slider-thumb"></div></div>
+      <button class="slider-btn">+</button>
     </div>
+    <div class="row mb12 fs11 t4"><span>Min ₹1,000</span><span>Max ₹1,00,000</span></div>
+    <div class="fs12 fw6 t1 mb6">Quick select</div>
+    <div class="quick-chips">
+      <div class="quick-chip">₹1K</div><div class="quick-chip">₹2K</div><div class="quick-chip active">₹5K</div><div class="quick-chip">₹10K</div><div class="quick-chip">₹25K</div>
+    </div>
+    <div class="info-box mt10"><p>📊 At ₹5,000/month you'll invest <strong>₹60,000</strong> over 12 months — ~₹5,200 in interest at typical bond yields.</p></div>
+    <div class="card" style="background:#F8FAFC;border:1px solid #E3E8EF;border-radius:11px;padding:11px">
+      <div class="row mb4"><span class="fs11 t4">Annual investment</span><span class="fs12 fw6 t1">₹60,000</span></div>
+      <div class="row mb4"><span class="fs11 t4">Est. annual interest</span><span class="fs12 fw6" style="color:#00B9C6">~₹5,200</span></div>
+      <div class="row"><span class="fs11 t4">Portfolio value (12m)</span><span class="fs12 fw6 t1">~₹65,200</span></div>
+    </div>
+    <button class="btn btn-teal mt10" style="margin-top:10px">Continue →</button>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SCREEN 6: SETUP STEP 3 — BOND PREVIEW
-     ═══════════════════════════════════════════ -->
-<div class="screen-wrap" id="s6">
-  <div class="screen-num">SCREEN 6</div>
-  <div class="screen-label">Setup · Step 3 — Bond Preview</div>
-  <div class="phone">
-    <div class="screen">
-      <div class="status-bar light"><span class="status-time" style="color:#121926">9:41</span><div class="status-icons"><span class="status-icon" style="color:#121926">●●●</span></div></div>
-      <div class="screen-header">
-        <div class="back-btn">←</div>
-        <div class="header-title">Bond SIP</div>
-        <div class="close-btn">✕</div>
+<!-- ════════════════════════════════════
+     PAGE 4: STEP 2 GOAL
+     ════════════════════════════════════ -->
+<div class="phone-page" id="p4">
+  <div class="status-bar light"><span class="status-time" style="color:#121926">9:41</span><div class="status-icons" style="color:#121926"><span>●●●</span></div></div>
+  <div class="screen-header"><div class="back-btn">←</div><div class="header-title">Bond SIP</div><div class="close-btn">✕</div></div>
+  <div class="progress-bar"><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
+  <div class="step-label">Step 2 of 6 — Choose your goal</div>
+  <div class="section-bg" style="padding:14px 18px">
+    <div class="fs14 fw7 t1 mb4">What do you want from your bonds?</div>
+    <div class="fs12 t3 mb12">This guides how the engine picks your bond each month.</div>
+    <div class="goal-option selected">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+        <div style="font-size:15px;font-weight:700;color:#121926">Income Ladder 🪜</div>
+        <div style="width:20px;height:20px;border-radius:50%;background:#00B9C6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;flex-shrink:0">✓</div>
       </div>
-      <div class="progress-bar"><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
-      <div class="step-label">Step 3 of 6 — Your first month's bond</div>
-
-      <div class="section-bg" style="padding:16px 20px">
-        <div class="fs14 t2 mb12">We've selected this bond for your first instalment. You'll see each month's bond <strong>5 days before your debit</strong>.</div>
-
-        <!-- Bond Card -->
-        <div class="bond-card highlighted">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
-            <div>
-              <div class="fs16 fw7 t1">IIFL Finance Ltd</div>
-              <div class="fs12 t4 mt4">Non-convertible debenture</div>
-            </div>
-            <span class="chip chip-green" style="font-size:12px">AA</span>
-          </div>
-          <!-- Metrics row -->
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">
-            <div style="text-align:center;background:#F8FAFC;border-radius:10px;padding:10px 6px">
-              <div class="fs11 t4 mb4">YTM</div>
-              <div style="font-size:20px;font-weight:800;color:#00B9C6">9.2%</div>
-            </div>
-            <div style="text-align:center;background:#F8FAFC;border-radius:10px;padding:10px 6px">
-              <div class="fs11 t4 mb4">Maturity</div>
-              <div class="fs13 fw7 t1">Jun 2027</div>
-              <div class="fs10 t4">13 months</div>
-            </div>
-            <div style="text-align:center;background:#F8FAFC;border-radius:10px;padding:10px 6px">
-              <div class="fs11 t4 mb4">Face value</div>
-              <div class="fs13 fw7 t1">₹1,000</div>
-              <div class="fs10 t4">per unit</div>
-            </div>
-          </div>
-          <!-- Purchase detail -->
-          <div style="background:#F0FDFE;border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center">
-            <div class="fs13 t2">Units to purchase</div>
-            <div class="fs15 fw7 t1">5 units · <span style="color:#00B9C6">₹5,000</span></div>
-          </div>
-          <!-- Trust signals -->
-          <div style="display:flex;gap:8px;margin-top:12px">
-            <span style="font-size:11px;color:#065F46;background:#D1FAE5;padding:4px 10px;border-radius:8px">✓ Secured</span>
-            <span style="font-size:11px;color:#1E40AF;background:#DBEAFE;padding:4px 10px;border-radius:8px">🛡 AA rated</span>
-            <span style="font-size:11px;color:#6B21A8;background:#F3E8FF;padding:4px 10px;border-radius:8px">📅 13 months</span>
-          </div>
-        </div>
-
-        <button class="btn btn-teal mb8">Proceed with this bond →</button>
-        <div class="text-link">Change goal or amount</div>
-      </div>
+      <div class="fs12 t2 mb8">Build recurring monthly cashflows — bonds mature at staggered intervals so income arrives every month.</div>
+      <span class="goal-tag">Diversified maturities</span><span class="goal-tag">Monthly income</span><span class="goal-tag">Stable</span>
     </div>
+    <div class="goal-option">
+      <div style="font-size:15px;font-weight:700;color:#121926;margin-bottom:4px">Wealth Growth 📈</div>
+      <div class="fs12 t2 mb8">Maximise blended portfolio yield — engine picks the highest YTM within your credit rating floor each month.</div>
+      <span class="goal-tag">Higher yield</span><span class="goal-tag">Compounding</span><span class="goal-tag">Growth-first</span>
+    </div>
+    <div class="info-box"><p>💡 <strong>Income Ladder</strong> = predictable cashflows. <strong>Wealth Growth</strong> = long-term compounders.</p></div>
+    <button class="btn btn-teal">Continue with Income Ladder →</button>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SCREEN 7: SETUP STEP 4 — DATE
-     ═══════════════════════════════════════════ -->
-<div class="screen-wrap" id="s7">
-  <div class="screen-num">SCREEN 7</div>
-  <div class="screen-label">Setup · Step 4 — Date</div>
-  <div class="phone">
-    <div class="screen">
-      <div class="status-bar light"><span class="status-time" style="color:#121926">9:41</span><div class="status-icons"><span class="status-icon" style="color:#121926">●●●</span></div></div>
-      <div class="screen-header">
-        <div class="back-btn">←</div>
-        <div class="header-title">Bond SIP</div>
-        <div class="close-btn">✕</div>
+<!-- ════════════════════════════════════
+     PAGE 5: STEP 3 BOND PREVIEW
+     ════════════════════════════════════ -->
+<div class="phone-page" id="p5">
+  <div class="status-bar light"><span class="status-time" style="color:#121926">9:41</span><div class="status-icons" style="color:#121926"><span>●●●</span></div></div>
+  <div class="screen-header"><div class="back-btn">←</div><div class="header-title">Bond SIP</div><div class="close-btn">✕</div></div>
+  <div class="progress-bar"><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
+  <div class="step-label">Step 3 of 6 — Your first month's bond</div>
+  <div class="section-bg" style="padding:14px 18px">
+    <div class="fs12 t2 mb10">We've selected this bond for your first instalment. You'll see each month's bond <strong>5 days before your debit</strong>.</div>
+    <div class="bond-card highlighted">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div><div class="fs15 fw7 t1">IIFL Finance Ltd</div><div class="fs11 t4 mt4">Non-convertible debenture</div></div>
+        <span class="chip chip-green">AA</span>
       </div>
-      <div class="progress-bar"><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
-      <div class="step-label">Step 4 of 6 — Pick your debit date</div>
-
-      <div class="section-bg" style="padding:16px 20px">
-        <div class="fs14 t2 mb16">Your SIP debit and bond allocation happen on this date every month. Choose any date from 1–28.</div>
-
-        <div class="date-grid"><div class="date-cell">1</div><div class="date-cell">2</div><div class="date-cell">3</div><div class="date-cell">4</div><div class="date-cell">5</div><div class="date-cell">6</div><div class="date-cell">7</div><div class="date-cell">8</div><div class="date-cell">9</div><div class="date-cell selected">10</div><div class="date-cell">11</div><div class="date-cell">12</div><div class="date-cell">13</div><div class="date-cell">14</div><div class="date-cell">15</div><div class="date-cell">16</div><div class="date-cell">17</div><div class="date-cell">18</div><div class="date-cell">19</div><div class="date-cell">20</div><div class="date-cell">21</div><div class="date-cell">22</div><div class="date-cell">23</div><div class="date-cell">24</div><div class="date-cell">25</div><div class="date-cell">26</div><div class="date-cell">27</div><div class="date-cell">28</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:12px">
+        <div style="text-align:center;background:#F8FAFC;border-radius:9px;padding:9px 5px">
+          <div class="fs10 t4 mb4">YTM</div><div style="font-size:18px;font-weight:800;color:#00B9C6">9.2%</div>
         </div>
-
-        <div style="background:#F0FDFE;border-radius:12px;padding:14px;margin:4px 0 12px;text-align:center">
-          <div class="fs12 t4 mb4">Selected debit date</div>
-          <div style="font-size:24px;font-weight:800;color:#00B9C6">10th</div>
-          <div class="fs13 t3">of every month</div>
+        <div style="text-align:center;background:#F8FAFC;border-radius:9px;padding:9px 5px">
+          <div class="fs10 t4 mb4">Maturity</div><div class="fs12 fw7 t1">Jun 2027</div><div class="fs10 t4">13 months</div>
         </div>
-
-        <div class="info-box">
-          <p>📅 First debit on <strong>10 Jun 2026</strong>. Bond will be allocated the same day.</p>
+        <div style="text-align:center;background:#F8FAFC;border-radius:9px;padding:9px 5px">
+          <div class="fs10 t4 mb4">Face value</div><div class="fs12 fw7 t1">₹1,000</div><div class="fs10 t4">per unit</div>
         </div>
-
-        <button class="btn btn-teal">Continue →</button>
+      </div>
+      <div style="background:#F0FDFE;border-radius:9px;padding:9px 12px;display:flex;justify-content:space-between;align-items:center">
+        <div class="fs12 t2">Units to purchase</div>
+        <div class="fs14 fw7 t1">5 units · <span style="color:#00B9C6">₹5,000</span></div>
+      </div>
+      <div style="display:flex;gap:7px;margin-top:10px">
+        <span style="font-size:11px;color:#065F46;background:#D1FAE5;padding:3px 9px;border-radius:7px">✓ Secured</span>
+        <span style="font-size:11px;color:#1E40AF;background:#DBEAFE;padding:3px 9px;border-radius:7px">🛡 AA rated</span>
+        <span style="font-size:11px;color:#6B21A8;background:#F3E8FF;padding:3px 9px;border-radius:7px">📅 13 months</span>
       </div>
     </div>
+    <button class="btn btn-teal mb6" style="margin-bottom:6px">Proceed with this bond →</button>
+    <div class="text-link">Change goal or amount</div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SCREEN 8: SETUP STEP 5 — MANDATE
-     ═══════════════════════════════════════════ -->
-<div class="screen-wrap" id="s8">
-  <div class="screen-num">SCREEN 8</div>
-  <div class="screen-label">Setup · Step 5 — Mandate</div>
-  <div class="phone">
-    <div class="screen">
-      <div class="status-bar light"><span class="status-time" style="color:#121926">9:41</span><div class="status-icons"><span class="status-icon" style="color:#121926">●●●</span></div></div>
-      <div class="screen-header">
-        <div class="back-btn">←</div>
-        <div class="header-title">Bond SIP</div>
-        <div class="close-btn">✕</div>
-      </div>
-      <div class="progress-bar"><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot"></div></div>
-      <div class="step-label">Step 5 of 6 — Authorise AutoPay</div>
-
-      <div class="section-bg" style="padding:16px 20px">
-        <!-- Summary -->
-        <div class="mandate-card">
-          <div class="row mb8"><span class="fs12 t4">Monthly amount</span><span class="fs16 fw7 t1">₹5,000</span></div>
-          <div class="row mb8"><span class="fs12 t4">Debit date</span><span class="fs14 fw6 t1">10th of every month</span></div>
-          <div class="row mb8"><span class="fs12 t4">Goal</span><span class="fs13 fw6 t1">Income Ladder</span></div>
-          <div class="divider" style="margin:8px 0"></div>
-          <div class="row"><span class="fs12 t4">First debit</span><span class="fs13 fw6" style="color:#00B9C6">10 Jun 2026</span></div>
-        </div>
-
-        <!-- Trust badge -->
-        <div class="trust-badge">
-          <span style="font-size:18px">✅</span>
-          <span>Cancel anytime in one tap — no agent, no waiting</span>
-        </div>
-
-        <!-- UPI -->
-        <div class="fs13 fw6 t1 mb8">Pay via UPI AutoPay</div>
-        <input class="upi-input" type="text" placeholder="yourname@upi" value="arpit@okicici">
-        <div class="or-divider"><span>or choose app</span></div>
-        <div class="upi-apps">
-          <div class="upi-app" style="background:#4CAF50;font-size:9px">G Pay</div>
-          <div class="upi-app" style="background:#5F259F">PhPe</div>
-          <div class="upi-app" style="background:#002970">Paytm</div>
-          <div class="upi-app" style="background:#1565C0">BHIM</div>
-        </div>
-
-        <div class="razorpay-badge mt8">🔒 Secured by Razorpay · 256-bit encryption</div>
-
-        <button class="btn btn-teal mt12" style="margin-top:12px">Set up AutoPay →</button>
-        <div style="text-align:center;font-size:11px;color:#9AA4B2;margin-top:8px">A ₹1 verification debit may occur and will be refunded within 24 hours.</div>
-      </div>
+<!-- ════════════════════════════════════
+     PAGE 6: STEP 4 DATE
+     ════════════════════════════════════ -->
+<div class="phone-page" id="p6">
+  <div class="status-bar light"><span class="status-time" style="color:#121926">9:41</span><div class="status-icons" style="color:#121926"><span>●●●</span></div></div>
+  <div class="screen-header"><div class="back-btn">←</div><div class="header-title">Bond SIP</div><div class="close-btn">✕</div></div>
+  <div class="progress-bar"><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
+  <div class="step-label">Step 4 of 6 — Pick your debit date</div>
+  <div class="section-bg" style="padding:12px 18px">
+    <div class="fs12 t2 mb12">Your SIP debit and bond allocation happen on this date every month.</div>
+    <div class="date-grid"><div class="date-cell">1</div><div class="date-cell">2</div><div class="date-cell">3</div><div class="date-cell">4</div><div class="date-cell">5</div><div class="date-cell">6</div><div class="date-cell">7</div><div class="date-cell">8</div><div class="date-cell">9</div><div class="date-cell selected">10</div><div class="date-cell">11</div><div class="date-cell">12</div><div class="date-cell">13</div><div class="date-cell">14</div><div class="date-cell">15</div><div class="date-cell">16</div><div class="date-cell">17</div><div class="date-cell">18</div><div class="date-cell">19</div><div class="date-cell">20</div><div class="date-cell">21</div><div class="date-cell">22</div><div class="date-cell">23</div><div class="date-cell">24</div><div class="date-cell">25</div><div class="date-cell">26</div><div class="date-cell">27</div><div class="date-cell">28</div>
     </div>
+    <div style="background:#F0FDFE;border-radius:11px;padding:12px;margin:4px 0 10px;text-align:center">
+      <div class="fs11 t4 mb4">Selected debit date</div>
+      <div style="font-size:22px;font-weight:800;color:#00B9C6">10th</div>
+      <div class="fs12 t3">of every month</div>
+    </div>
+    <div class="info-box"><p>📅 First debit on <strong>10 Jun 2026</strong>. Bond allocated the same day.</p></div>
+    <button class="btn btn-teal">Continue →</button>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SCREEN 9: CONFIRMATION — OPTION B (Illustrative ladder)
-     ═══════════════════════════════════════════ -->
-<div class="screen-wrap" id="s9">
-  <div class="screen-num">SCREEN 9</div>
-  <div class="screen-label">Confirmation · Option B — Illustrative Ladder</div>
-  <div class="phone">
-    <div class="screen">
-      <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span class="status-icon">●●●</span><span class="status-icon">WiFi</span><span class="status-icon">⬛</span></div></div>
-      <!-- Confirm header -->
-      <div class="confirm-header">
-        <div class="confirm-check">✓</div>
-        <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:4px">Bond SIP activated!</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.6)">₹5,000/month · 10th of every month</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px">First debit: 10 Jun 2026 · Income Ladder</div>
-      </div>
-
-      <div class="section-bg" style="padding:16px">
-        <!-- Projection card -->
-        <div class="projection-card">
-          <div class="fs12 t3 mb4">Your 12-month projection</div>
-          <div class="proj-amount">₹65,200</div>
-          <div class="fs13 t2 mt4">At ₹5,000/month, earning <strong style="color:#00B9C6">~₹5,200 interest</strong> over 12 months</div>
-          <!-- Bar -->
-          <div class="proj-bar" style="margin-top:12px">
-            <div style="display:flex;height:8px;border-radius:4px;overflow:hidden">
-              <div style="width:92%;background:#1a3059;border-radius:4px 0 0 4px"></div>
-              <div style="width:8%;background:#00B9C6;border-radius:0 4px 4px 0"></div>
-            </div>
-          </div>
-          <div class="row" style="font-size:11px;color:#9AA4B2;margin-top:4px">
-            <span>■ ₹60,000 invested</span>
-            <span style="color:#00B9C6">■ ₹5,200 interest</span>
-          </div>
-        </div>
-
-        <!-- Ladder section -->
-        <div class="row mb8"><span class="fs14 fw7 t1">Your illustrative bond ladder</span></div>
-        <div class="warn-box">
-          <p>⚠ Months 2–12 are illustrative — based on today's inventory. Your actual bond is confirmed <strong>5 days before each debit</strong>.</p>
-        </div>
-
-        <!-- Month slots -->
-        <div class="ladder-item">
-          <div style="flex:1">
-            <div class="fs11 t4 mb4">Month 1 · Jun 10</div>
-            <div class="fs14 fw6 t1">IIFL Finance Ltd</div>
-            <div class="fs12 t3 mt4">9.2% YTM · Matures Jun 2027 · ₹5,000</div>
-          </div>
-          <span class="ladder-badge confirmed">CONFIRMED</span>
-        </div>
-        <div class="ladder-item">
-          <div style="flex:1">
-            <div class="fs11 t4 mb4">Month 2 · Jul 10</div>
-            <div class="fs14 fw6 t1">Tata Capital Ltd</div>
-            <div class="fs12 t3 mt4">9.0% YTM · Matures Jul 2027 · ₹5,000</div>
-          </div>
-          <span class="ladder-badge illustrative">ILLUSTRATIVE</span>
-        </div>
-        <div class="ladder-item">
-          <div style="flex:1">
-            <div class="fs11 t4 mb4">Month 3 · Aug 10</div>
-            <div class="fs14 fw6 t1">Mahindra Finance</div>
-            <div class="fs12 t3 mt4">8.8% YTM · Matures Aug 2027 · ₹5,000</div>
-          </div>
-          <span class="ladder-badge illustrative">ILLUSTRATIVE</span>
-        </div>
-        <div class="ladder-item">
-          <div style="flex:1">
-            <div class="fs11 t4 mb4">Month 4 · Sep 10</div>
-            <div class="fs14 fw6 t1">Shriram Finance</div>
-            <div class="fs12 t3 mt4">9.1% YTM · Matures Sep 2027 · ₹5,000</div>
-          </div>
-          <span class="ladder-badge illustrative">ILLUSTRATIVE</span>
-        </div>
-        <div class="ladder-item">
-          <div style="flex:1">
-            <div class="fs11 t4 mb4">Month 5 · Oct 10</div>
-            <div class="fs14 fw6 t1">HDFC Credila</div>
-            <div class="fs12 t3 mt4">8.9% YTM · Matures Oct 2027 · ₹5,000</div>
-          </div>
-          <span class="ladder-badge illustrative">ILLUSTRATIVE</span>
-        </div>
-        <div class="ladder-item">
-          <div style="flex:1">
-            <div class="fs11 t4 mb4">Month 6 · Nov 10</div>
-            <div class="fs14 fw6 t1">Bajaj Finance Ltd</div>
-            <div class="fs12 t3 mt4">9.3% YTM · Matures Nov 2027 · ₹5,000</div>
-          </div>
-          <span class="ladder-badge illustrative">ILLUSTRATIVE</span>
-        </div>
-        <div style="text-align:center;padding:10px 0 4px;font-size:12px;color:#9AA4B2">· · · and 6 more months · · ·</div>
-
-        <button class="btn btn-teal mt12" style="margin-top:12px">View my SIP portfolio →</button>
-      </div>
+<!-- ════════════════════════════════════
+     PAGE 7: STEP 5 MANDATE
+     ════════════════════════════════════ -->
+<div class="phone-page" id="p7">
+  <div class="status-bar light"><span class="status-time" style="color:#121926">9:41</span><div class="status-icons" style="color:#121926"><span>●●●</span></div></div>
+  <div class="screen-header"><div class="back-btn">←</div><div class="header-title">Bond SIP</div><div class="close-btn">✕</div></div>
+  <div class="progress-bar"><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot"></div></div>
+  <div class="step-label">Step 5 of 6 — Authorise AutoPay</div>
+  <div class="section-bg" style="padding:14px 18px">
+    <div class="mandate-card">
+      <div class="row mb8"><span class="fs11 t4">Monthly amount</span><span class="fs15 fw7 t1">₹5,000</span></div>
+      <div class="row mb8"><span class="fs11 t4">Debit date</span><span class="fs13 fw6 t1">10th of every month</span></div>
+      <div class="row mb8"><span class="fs11 t4">Goal</span><span class="fs12 fw6 t1">Income Ladder</span></div>
+      <div class="divider" style="margin:6px 0 8px"></div>
+      <div class="row"><span class="fs11 t4">First debit</span><span class="fs12 fw6" style="color:#00B9C6">10 Jun 2026</span></div>
     </div>
+    <div class="trust-badge"><span style="font-size:16px">✅</span><span>Cancel anytime in one tap — no agent needed</span></div>
+    <div class="fs12 fw6 t1 mb6">Pay via UPI AutoPay</div>
+    <input class="upi-input" type="text" value="arpit@okicici">
+    <div class="or-divider"><span>or choose app</span></div>
+    <div class="upi-apps">
+      <div class="upi-app" style="background:#4CAF50;font-size:9px">G Pay</div>
+      <div class="upi-app" style="background:#5F259F">PhPe</div>
+      <div class="upi-app" style="background:#002970">Paytm</div>
+      <div class="upi-app" style="background:#1565C0">BHIM</div>
+    </div>
+    <div style="text-align:center;font-size:11px;color:#9AA4B2;margin-top:6px">🔒 Secured by Razorpay · 256-bit encryption</div>
+    <button class="btn btn-teal mt10" style="margin-top:10px">Set up AutoPay →</button>
+    <div style="text-align:center;font-size:11px;color:#9AA4B2;margin-top:7px">A ₹1 verification debit may occur and will be refunded.</div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SCREEN 10: PORTFOLIO SIP TAB — OPTION C (Goal slots)
-     ═══════════════════════════════════════════ -->
-<div class="screen-wrap" id="s10">
-  <div class="screen-num">SCREEN 10</div>
-  <div class="screen-label">Portfolio · Bond SIP — Option C (Goal slots)</div>
-  <div class="phone">
-    <div class="screen">
-      <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span class="status-icon">●●●</span><span class="status-icon">WiFi</span><span class="status-icon">⬛</span></div></div>
-      <!-- Page header -->
-      <div style="background:#030916;padding:16px 20px 12px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0">
-        <div style="font-size:20px;font-weight:700;color:#fff">Portfolio</div>
-        <span style="font-size:20px">🔔</span>
+<!-- ════════════════════════════════════
+     PAGE 8: CONFIRMATION — OPTION B
+     ════════════════════════════════════ -->
+<div class="phone-page" id="p8">
+  <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>●●●</span><span style="margin-left:4px">⬛</span></div></div>
+  <div class="confirm-header">
+    <div class="confirm-check">✓</div>
+    <div class="fs16 fw7 mb4" style="color:#fff">Bond SIP activated!</div>
+    <div class="fs12" style="color:rgba(255,255,255,0.55)">₹5,000/month · 10th · Income Ladder</div>
+  </div>
+  <div class="section-bg" style="padding:14px 16px">
+    <div class="projection-card">
+      <div class="fs11 t3 mb4">Your 12-month projection</div>
+      <div class="proj-amount">₹65,200</div>
+      <div class="fs12 t2 mt4">At ₹5,000/month, earning <strong style="color:#00B9C6">~₹5,200 interest</strong></div>
+      <div style="display:flex;height:7px;border-radius:4px;overflow:hidden;margin-top:10px">
+        <div style="width:92%;background:#1a3059;border-radius:4px 0 0 4px"></div>
+        <div style="width:8%;background:#00B9C6;border-radius:0 4px 4px 0"></div>
       </div>
-      <!-- Tabs -->
-      <div style="background:#030916;display:flex;border-bottom:1px solid rgba(255,255,255,0.1);flex-shrink:0">
-        <div style="flex:1;text-align:center;padding:10px;font-size:13px;font-weight:500;color:rgba(255,255,255,0.5);cursor:pointer">Holdings</div>
-        <div style="flex:1;text-align:center;padding:10px;font-size:13px;font-weight:600;color:#00B9C6;border-bottom:2px solid #00B9C6;cursor:pointer">Bond SIP ●</div>
-        <div style="flex:1;text-align:center;padding:10px;font-size:13px;font-weight:500;color:rgba(255,255,255,0.5);cursor:pointer">Transactions</div>
-      </div>
-
-      <!-- Metrics strip -->
-      <div class="metrics-strip" style="background:#030916;padding-bottom:14px">
-        <div class="metric-chip" style="background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.1)">
-          <div class="val" style="color:#fff">₹15,000</div><div class="lbl" style="color:rgba(255,255,255,0.4)">Total invested</div>
-        </div>
-        <div class="metric-chip" style="background:rgba(0,185,198,0.1);border-color:rgba(0,185,198,0.2)">
-          <div class="val" style="color:#00B9C6">9.1%</div><div class="lbl" style="color:rgba(255,255,255,0.4)">Blended YTM</div>
-        </div>
-        <div class="metric-chip" style="background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.1)">
-          <div class="val" style="color:#fff">₹1,365</div><div class="lbl" style="color:rgba(255,255,255,0.4)">Annual interest</div>
-        </div>
-        <div class="metric-chip" style="background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.1)">
-          <div class="val" style="color:#fff">Jun 10</div><div class="lbl" style="color:rgba(255,255,255,0.4)">Next debit</div>
-        </div>
-      </div>
-
-      <div class="section-bg" style="padding:14px 16px">
-        <!-- Status row -->
-        <div class="row mb12" style="background:#fff;border-radius:12px;padding:10px 14px;border:1px solid #E3E8EF">
-          <div style="display:flex;align-items:center;gap:8px">
-            <div style="width:8px;height:8px;border-radius:50%;background:#12B76A"></div>
-            <span class="fs13 fw6 t1">Active</span>
-            <span class="fs12 t3">· Income Ladder · ₹5,000/month</span>
-          </div>
-          <span style="font-size:13px;color:#00B9C6;font-weight:600;cursor:pointer">Manage</span>
-        </div>
-
-        <!-- Cashflow calendar -->
-        <div class="fs13 fw7 t1 mb8">Cashflow calendar — Jun 2026</div>
-        <div class="card" style="padding:12px">
-          <div class="cashflow-row">
-            <div class="cashflow-dot" style="background:#1a3059"></div>
-            <div style="flex:1"><div class="fs13 fw6 t1">SIP debit</div><div class="fs11 t4">Jun 10 · ₹5,000</div></div>
-            <span class="chip chip-grey">Upcoming</span>
-          </div>
-          <div class="cashflow-row">
-            <div class="cashflow-dot" style="background:#12B76A"></div>
-            <div style="flex:1"><div class="fs13 fw6 t1">Coupon credit · IIFL Finance</div><div class="fs11 t4">Jun 15 · ₹375</div></div>
-            <span class="chip chip-green">Projected</span>
-          </div>
-          <div class="cashflow-row">
-            <div class="cashflow-dot" style="background:#1a3059"></div>
-            <div style="flex:1"><div class="fs13 fw6 t1">SIP debit</div><div class="fs11 t4">Jul 10 · ₹5,000</div></div>
-            <span class="chip chip-grey">Upcoming</span>
-          </div>
-          <div class="cashflow-row" style="border:none">
-            <div class="cashflow-dot" style="background:#1a3059"></div>
-            <div style="flex:1"><div class="fs13 fw6 t1">SIP debit</div><div class="fs11 t4">Aug 10 · ₹5,000</div></div>
-            <span class="chip chip-grey">Upcoming</span>
-          </div>
-        </div>
-
-        <!-- Bond Ladder — OPTION C -->
-        <div class="fs13 fw7 t1 mb4 mt8" style="margin-top:8px">Your bond ladder</div>
-        <div class="fs11 t4 mb8">Past cycles show actual bonds. Future slots show engine criteria — bond disclosed 5 days before debit.</div>
-
-        <!-- Slot 1: FILLED -->
-        <div class="slot-card filled">
-          <div class="row mb6">
-            <div class="slot-num">MONTH 1 · Apr 10</div>
-            <span class="chip chip-green" style="font-size:10px">✓ Purchased</span>
-          </div>
-          <div class="fs14 fw7 t1">IIFL Finance Ltd</div>
-          <div class="row mt4"><span class="fs12 t3">₹5,000 · 9.2% YTM</span><span class="fs12 t3">Matures Jun 2027</span></div>
-        </div>
-
-        <!-- Slot 2: FILLED -->
-        <div class="slot-card filled">
-          <div class="row mb6">
-            <div class="slot-num">MONTH 2 · May 10</div>
-            <span class="chip chip-green" style="font-size:10px">✓ Purchased</span>
-          </div>
-          <div class="fs14 fw7 t1">Bajaj Finance Ltd</div>
-          <div class="row mt4"><span class="fs12 t3">₹5,000 · 8.9% YTM</span><span class="fs12 t3">Matures Jul 2027</span></div>
-        </div>
-
-        <!-- Slot 3: DISCLOSED (5 days before) -->
-        <div class="slot-card disclosed">
-          <div class="row mb6">
-            <div class="slot-num">MONTH 3 · Jun 10 — NEXT</div>
-            <span class="chip chip-amber" style="font-size:10px">Bond disclosed Jun 5</span>
-          </div>
-          <div class="fs13 fw6 t2">Slot type: Short maturity rung</div>
-          <div class="fs12 t3 mt4">Target: 8–14 months · AA or above · ₹5,000</div>
-          <div style="margin-top:8px;font-size:11px;color:#92400E;background:#FEF3C7;border-radius:6px;padding:6px 10px">You'll receive a push notification on Jun 5 with the actual bond</div>
-        </div>
-
-        <!-- Slot 4: PENDING -->
-        <div class="slot-card pending">
-          <div class="row mb6">
-            <div class="slot-num">MONTH 4 · Jul 10</div>
-            <span class="chip chip-grey" style="font-size:10px">Pending</span>
-          </div>
-          <div class="fs13 fw6 t3">Mid-duration bond</div>
-          <div class="fs12 t4 mt4">Target: 2–3 years · AA or above · ₹5,000</div>
-        </div>
-
-        <!-- Slot 5: PENDING -->
-        <div class="slot-card pending">
-          <div class="row mb6">
-            <div class="slot-num">MONTH 5 · Aug 10</div>
-            <span class="chip chip-grey" style="font-size:10px">Pending</span>
-          </div>
-          <div class="fs13 fw6 t3">Income rung</div>
-          <div class="fs12 t4 mt4">Target: 18–24 months · AA or above · ₹5,000</div>
-        </div>
-
-        <!-- Instalment history -->
-        <div class="fs13 fw7 t1 mt12 mb8" style="margin-top:12px">Instalment history</div>
-        <div class="card" style="padding:12px">
-          <div class="instalment-row">
-            <div style="flex:1"><div class="fs13 fw6 t1">Apr 10 · IIFL Finance Ltd</div><div class="fs11 t4 mt4">₹5,000 · 9.2% YTM</div></div>
-            <span class="chip chip-green" style="font-size:11px">Success</span>
-          </div>
-          <div class="instalment-row" style="border:none">
-            <div style="flex:1"><div class="fs13 fw6 t1">May 10 · Bajaj Finance Ltd</div><div class="fs11 t4 mt4">₹5,000 · 8.9% YTM</div></div>
-            <span class="chip chip-green" style="font-size:11px">Success</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="bottom-nav">
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></div>
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg><span>Explore</span></div>
-        <div class="nav-item active"><svg viewBox="0 0 24 24"><path style="fill:#00B9C6" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg><span style="color:#00B9C6">Portfolio</span></div>
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Account</span></div>
-      </div>
+      <div class="row fs10 t4 mt4"><span>■ ₹60,000 invested</span><span style="color:#00B9C6">■ ₹5,200 interest</span></div>
     </div>
+    <div class="row mb6"><span class="fs13 fw7 t1">Illustrative bond ladder</span></div>
+    <div class="warn-box"><p>⚠ Months 2–12 are illustrative. Actual bond confirmed 5 days before each debit.</p></div>
+    <div class="ladder-item">
+      <div style="flex:1"><div class="fs10 t4 mb4">Month 1 · Jun 10</div><div class="fs13 fw6 t1">IIFL Finance Ltd</div><div class="fs11 t3 mt4">9.2% YTM · Jun 2027 · ₹5,000</div></div>
+      <span class="ladder-badge confirmed">CONFIRMED</span>
+    </div>
+    <div class="ladder-item">
+      <div style="flex:1"><div class="fs10 t4 mb4">Month 2 · Jul 10</div><div class="fs13 fw6 t1">Tata Capital Ltd</div><div class="fs11 t3 mt4">9.0% YTM · Jul 2027 · ₹5,000</div></div>
+      <span class="ladder-badge illustrative">ILLUSTRATIVE</span>
+    </div>
+    <div class="ladder-item">
+      <div style="flex:1"><div class="fs10 t4 mb4">Month 3 · Aug 10</div><div class="fs13 fw6 t1">Mahindra Finance</div><div class="fs11 t3 mt4">8.8% YTM · Aug 2027 · ₹5,000</div></div>
+      <span class="ladder-badge illustrative">ILLUSTRATIVE</span>
+    </div>
+    <div class="ladder-item">
+      <div style="flex:1"><div class="fs10 t4 mb4">Month 4 · Sep 10</div><div class="fs13 fw6 t1">Shriram Finance</div><div class="fs11 t3 mt4">9.1% YTM · Sep 2027 · ₹5,000</div></div>
+      <span class="ladder-badge illustrative">ILLUSTRATIVE</span>
+    </div>
+    <div class="ladder-item">
+      <div style="flex:1"><div class="fs10 t4 mb4">Month 5 · Oct 10</div><div class="fs13 fw6 t1">HDFC Credila</div><div class="fs11 t3 mt4">8.9% YTM · Oct 2027 · ₹5,000</div></div>
+      <span class="ladder-badge illustrative">ILLUSTRATIVE</span>
+    </div>
+    <div class="ladder-item">
+      <div style="flex:1"><div class="fs10 t4 mb4">Month 6 · Nov 10</div><div class="fs13 fw6 t1">Bajaj Finance Ltd</div><div class="fs11 t3 mt4">9.3% YTM · Nov 2027 · ₹5,000</div></div>
+      <span class="ladder-badge illustrative">ILLUSTRATIVE</span>
+    </div>
+    <div style="text-align:center;padding:8px 0;font-size:11px;color:#9AA4B2">· · · 6 more months · · ·</div>
+    <button class="btn btn-teal mt10" style="margin-top:10px">View my SIP portfolio →</button>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SCREEN 11: SIP PLAN CONTROLS
-     ═══════════════════════════════════════════ -->
-<div class="screen-wrap" id="s11">
-  <div class="screen-num">SCREEN 11</div>
-  <div class="screen-label">SIP Plan Controls</div>
-  <div class="phone">
-    <div class="screen">
-      <div class="status-bar light"><span class="status-time" style="color:#121926">9:41</span><div class="status-icons"><span class="status-icon" style="color:#121926">●●●</span></div></div>
-      <div class="screen-header">
-        <div class="back-btn">←</div>
-        <div class="header-title">Manage Bond SIP</div>
-        <div style="width:36px"></div>
-      </div>
-
-      <div class="section-bg" style="padding:14px 16px">
-        <!-- Status -->
-        <div style="background:#fff;border-radius:12px;padding:14px 16px;margin-bottom:14px;border:1.5px solid #D1FAE5">
-          <div class="row mb8">
-            <div style="display:flex;align-items:center;gap:8px">
-              <div style="width:10px;height:10px;border-radius:50%;background:#12B76A"></div>
-              <span class="fs15 fw7 t1">Active</span>
-            </div>
-            <span class="chip chip-teal">Income Ladder</span>
-          </div>
-          <div class="row">
-            <div><div class="fs11 t4">Monthly amount</div><div class="fs14 fw7 t1">₹5,000</div></div>
-            <div><div class="fs11 t4">Debit date</div><div class="fs14 fw7 t1">10th</div></div>
-            <div><div class="fs11 t4">Next debit</div><div class="fs14 fw7" style="color:#00B9C6">10 Jun</div></div>
-          </div>
-        </div>
-
-        <!-- Controls -->
-        <div class="fs12 fw6 t4 mb8" style="letter-spacing:0.5px;text-transform:uppercase">SIP controls</div>
-        <div class="card" style="padding:4px 14px">
-          <div class="control-row">
-            <div class="control-icon" style="background:#EFF6FF">⏸</div>
-            <div style="flex:1">
-              <div class="fs14 fw6 t1">Pause SIP</div>
-              <div class="fs12 t4 mt4">Skip one or more upcoming cycles</div>
-            </div>
-            <span style="color:#9AA4B2;font-size:18px">›</span>
-          </div>
-          <div class="control-row">
-            <div class="control-icon" style="background:#F0FDF4">📈</div>
-            <div style="flex:1">
-              <div class="fs14 fw6 t1">Step-up amount</div>
-              <div class="fs12 t4 mt4">Increase monthly investment</div>
-            </div>
-            <span style="color:#9AA4B2;font-size:18px">›</span>
-          </div>
-          <div class="control-row">
-            <div class="control-icon" style="background:#FFF7ED">📅</div>
-            <div style="flex:1">
-              <div class="fs14 fw6 t1">Change debit date</div>
-              <div class="fs12 t4 mt4">Move to a different date (1–28)</div>
-            </div>
-            <span style="color:#9AA4B2;font-size:18px">›</span>
-          </div>
-          <div class="control-row" style="border:none">
-            <div class="control-icon" style="background:#F5F3FF">🎯</div>
-            <div style="flex:1">
-              <div class="fs14 fw6 t1">Change goal</div>
-              <div class="fs12 t4 mt4">Switch between Income Ladder and Wealth Growth</div>
-            </div>
-            <span style="color:#9AA4B2;font-size:18px">›</span>
-          </div>
-        </div>
-
-        <!-- Cancel -->
-        <div class="fs12 fw6 t4 mb8 mt12" style="letter-spacing:0.5px;text-transform:uppercase;margin-top:12px">Danger zone</div>
-        <div class="card" style="padding:4px 14px">
-          <div class="control-row" style="border:none">
-            <div class="control-icon" style="background:#FEF2F2">🚫</div>
-            <div style="flex:1">
-              <div class="fs14 fw6" style="color:#F04438">Cancel SIP</div>
-              <div class="fs12 t4 mt4">Stops future debits. Existing bonds are held until maturity — no forced sale.</div>
-            </div>
-            <span style="color:#9AA4B2;font-size:18px">›</span>
-          </div>
-        </div>
-
-        <!-- Mandate section -->
-        <div class="fs12 fw6 t4 mb8 mt12" style="letter-spacing:0.5px;text-transform:uppercase;margin-top:12px">Mandate</div>
-        <div class="card">
-          <div class="row mb8">
-            <div>
-              <div class="fs13 fw6 t1">UPI AutoPay</div>
-              <div class="fs12 t4 mt4">arpit@okicici</div>
-            </div>
-            <span class="chip chip-green">Active</span>
-          </div>
-          <div class="divider" style="margin:4px 0 10px"></div>
-          <div style="font-size:12px;color:#F04438;cursor:pointer">Cancel mandate only →</div>
-          <div class="fs11 t4 mt4">Cancels future payments but keeps your SIP plan record intact.</div>
-        </div>
-
-        <div class="info-box">
-          <p>🛡 All controls are fully self-serve. No agent or support call required.</p>
-        </div>
-      </div>
-
-      <div class="bottom-nav">
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></div>
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg><span>Explore</span></div>
-        <div class="nav-item active"><svg viewBox="0 0 24 24"><path style="fill:#00B9C6" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg><span style="color:#00B9C6">Portfolio</span></div>
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Account</span></div>
-      </div>
+<!-- ════════════════════════════════════
+     PAGE 9: PORTFOLIO SIP TAB — OPTION C
+     ════════════════════════════════════ -->
+<div class="phone-page" id="p9">
+  <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>●●●</span><span style="margin-left:4px">⬛</span></div></div>
+  <div style="background:#030916;padding:14px 18px 10px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0">
+    <div class="fs16 fw7" style="color:#fff">Portfolio</div><span style="font-size:18px">🔔</span>
+  </div>
+  <div style="background:#030916;display:flex;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0">
+    <div style="flex:1;text-align:center;padding:9px;font-size:12px;color:rgba(255,255,255,0.4);cursor:pointer">Holdings</div>
+    <div style="flex:1;text-align:center;padding:9px;font-size:12px;font-weight:600;color:#00B9C6;border-bottom:2px solid #00B9C6;cursor:pointer">Bond SIP ●</div>
+    <div style="flex:1;text-align:center;padding:9px;font-size:12px;color:rgba(255,255,255,0.4);cursor:pointer">Transactions</div>
+  </div>
+  <div class="metrics-strip" style="background:#030916;padding-bottom:12px">
+    <div class="metric-chip" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.08)"><div class="val" style="color:#fff">₹15,000</div><div class="lbl" style="color:rgba(255,255,255,0.35)">Total invested</div></div>
+    <div class="metric-chip" style="background:rgba(0,185,198,0.1);border:1px solid rgba(0,185,198,0.2)"><div class="val" style="color:#00B9C6">9.1%</div><div class="lbl" style="color:rgba(255,255,255,0.35)">Blended YTM</div></div>
+    <div class="metric-chip" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.08)"><div class="val" style="color:#fff">₹1,365</div><div class="lbl" style="color:rgba(255,255,255,0.35)">Annual interest</div></div>
+    <div class="metric-chip" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.08)"><div class="val" style="color:#fff">Jun 10</div><div class="lbl" style="color:rgba(255,255,255,0.35)">Next debit</div></div>
+  </div>
+  <div class="section-bg" style="padding:12px 14px">
+    <div class="row mb10" style="background:#fff;border-radius:11px;padding:9px 12px;border:1px solid #E3E8EF">
+      <div style="display:flex;align-items:center;gap:7px"><div style="width:7px;height:7px;border-radius:50%;background:#12B76A"></div><span class="fs12 fw6 t1">Active</span><span class="fs11 t3">· Income Ladder · ₹5,000/mo</span></div>
+      <span style="font-size:12px;color:#00B9C6;font-weight:600;cursor:pointer">Manage</span>
     </div>
+    <div class="fs12 fw7 t1 mb6">Cashflow calendar — Jun 2026</div>
+    <div class="card" style="padding:10px">
+      <div class="cashflow-row"><div class="cashflow-dot" style="background:#1a3059"></div><div style="flex:1"><div class="fs12 fw6 t1">SIP debit</div><div class="fs10 t4">Jun 10 · ₹5,000</div></div><span class="chip chip-grey" style="font-size:10px">Upcoming</span></div>
+      <div class="cashflow-row"><div class="cashflow-dot" style="background:#12B76A"></div><div style="flex:1"><div class="fs12 fw6 t1">Coupon · IIFL Finance</div><div class="fs10 t4">Jun 15 · ₹375</div></div><span class="chip chip-green" style="font-size:10px">Projected</span></div>
+      <div class="cashflow-row" style="border:none"><div class="cashflow-dot" style="background:#1a3059"></div><div style="flex:1"><div class="fs12 fw6 t1">SIP debit</div><div class="fs10 t4">Jul 10 · ₹5,000</div></div><span class="chip chip-grey" style="font-size:10px">Upcoming</span></div>
+    </div>
+    <div class="fs12 fw7 t1 mb4 mt8" style="margin-top:8px">Bond ladder</div>
+    <div class="fs10 t4 mb8">Past = actual bonds · Future = engine criteria, bond disclosed 5 days before debit</div>
+    <div class="slot-card filled"><div class="row mb4"><div class="slot-num">MONTH 1 · Apr 10</div><span class="chip chip-green" style="font-size:10px">✓ Purchased</span></div><div class="fs13 fw7 t1">IIFL Finance Ltd</div><div class="row mt4"><span class="fs11 t3">₹5,000 · 9.2% YTM</span><span class="fs11 t3">Jun 2027</span></div></div>
+    <div class="slot-card filled"><div class="row mb4"><div class="slot-num">MONTH 2 · May 10</div><span class="chip chip-green" style="font-size:10px">✓ Purchased</span></div><div class="fs13 fw7 t1">Bajaj Finance Ltd</div><div class="row mt4"><span class="fs11 t3">₹5,000 · 8.9% YTM</span><span class="fs11 t3">Jul 2027</span></div></div>
+    <div class="slot-card disclosed"><div class="row mb4"><div class="slot-num">MONTH 3 · Jun 10 — NEXT</div><span class="chip chip-amber" style="font-size:10px">Disclosed Jun 5</span></div><div class="fs12 fw6 t2">Short maturity rung</div><div class="fs11 t3 mt4">Target: 8–14 months · AA or above · ₹5,000</div><div style="margin-top:7px;font-size:10px;color:#92400E;background:#FEF3C7;border-radius:6px;padding:5px 9px">Push notification on Jun 5 with actual bond</div></div>
+    <div class="slot-card pending"><div class="row mb4"><div class="slot-num">MONTH 4 · Jul 10</div><span class="chip chip-grey" style="font-size:10px">Pending</span></div><div class="fs12 fw6 t3">Mid-duration bond</div><div class="fs11 t4 mt4">Target: 2–3 years · AA or above · ₹5,000</div></div>
+    <div class="slot-card pending"><div class="row mb4"><div class="slot-num">MONTH 5 · Aug 10</div><span class="chip chip-grey" style="font-size:10px">Pending</span></div><div class="fs12 fw6 t3">Income rung</div><div class="fs11 t4 mt4">Target: 18–24 months · AA or above · ₹5,000</div></div>
+    <div class="fs12 fw7 t1 mt8 mb6" style="margin-top:8px">Instalment history</div>
+    <div class="card" style="padding:10px">
+      <div class="instalment-row"><div style="flex:1"><div class="fs12 fw6 t1">Apr 10 · IIFL Finance Ltd</div><div class="fs10 t4 mt4">₹5,000 · 9.2% YTM</div></div><span class="chip chip-green" style="font-size:10px">Success</span></div>
+      <div class="instalment-row" style="border:none"><div style="flex:1"><div class="fs12 fw6 t1">May 10 · Bajaj Finance Ltd</div><div class="fs10 t4 mt4">₹5,000 · 8.9% YTM</div></div><span class="chip chip-green" style="font-size:10px">Success</span></div>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></div>
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg><span>Explore</span></div>
+    <div class="nav-item-b active"><svg viewBox="0 0 24 24"><path style="fill:#00B9C6" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg><span style="color:#00B9C6">Portfolio</span></div>
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Account</span></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SCREEN 12: HOMEPAGE SIP WIDGET
-     ═══════════════════════════════════════════ -->
-<div class="screen-wrap" id="s12">
-  <div class="screen-num">SCREEN 12</div>
-  <div class="screen-label">Homepage — Active SIP Widget</div>
-  <div class="phone">
-    <div class="screen">
-      <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span class="status-icon">●●●</span><span class="status-icon">WiFi</span><span class="status-icon">⬛</span></div></div>
-      <!-- Homepage hero -->
-      <div style="background:#030916;padding:16px 20px 20px">
-        <div class="row mb12">
-          <div>
-            <div style="font-size:13px;color:rgba(255,255,255,0.5)">Good morning</div>
-            <div style="font-size:20px;font-weight:700;color:#fff">Arpit 👋</div>
-          </div>
-          <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:18px">🔔</div>
-        </div>
-        <!-- Portfolio value -->
-        <div style="background:rgba(255,255,255,0.06);border-radius:16px;padding:14px 16px">
-          <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px">Portfolio value</div>
-          <div style="font-size:28px;font-weight:800;color:#fff;letter-spacing:-0.5px">₹82,500</div>
-          <div style="font-size:12px;color:#12B76A;margin-top:4px">↑ ₹1,450 this month (1.8%)</div>
-        </div>
-      </div>
-
-      <div class="section-bg" style="padding:14px 16px">
-        <!-- Bond SIP widget -->
-        <div class="feed-section-title">Your Bond SIP</div>
-        <div class="sip-widget">
-          <div class="row mb12">
-            <span class="sip-badge">BOND SIP</span>
-            <div style="display:flex;align-items:center;gap:6px">
-              <div style="width:6px;height:6px;border-radius:50%;background:#12B76A"></div>
-              <span style="font-size:12px;color:rgba(255,255,255,0.7)">Active</span>
-            </div>
-          </div>
-          <div style="font-size:22px;font-weight:800;color:#fff;margin-bottom:4px">₹5,000 / month</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:12px">Income Ladder · 10th of every month</div>
-          <div style="display:flex;gap:16px;margin-bottom:10px">
-            <div>
-              <div style="font-size:10px;color:rgba(255,255,255,0.4)">Blended YTM</div>
-              <div style="font-size:16px;font-weight:700;color:#00B9C6">9.1%</div>
-            </div>
-            <div>
-              <div style="font-size:10px;color:rgba(255,255,255,0.4)">Next debit</div>
-              <div style="font-size:16px;font-weight:700;color:#fff">10 Jun</div>
-            </div>
-            <div>
-              <div style="font-size:10px;color:rgba(255,255,255,0.4)">Invested</div>
-              <div style="font-size:16px;font-weight:700;color:#fff">₹15,000</div>
-            </div>
-          </div>
-          <!-- Progress bar -->
-          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px">3 of 12 months complete</div>
-          <div class="progress-track"><div class="progress-fill" style="width:25%"></div></div>
-          <!-- CTAs -->
-          <div class="btn-row mt12" style="margin-top:12px">
-            <button class="btn btn-ghost" style="border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.8);font-size:13px;padding:11px;flex:1">View portfolio</button>
-            <button class="btn btn-teal" style="font-size:13px;padding:11px;flex:1">Manage →</button>
-          </div>
-        </div>
-
-        <!-- Explore bonds section below widget -->
-        <div class="feed-section-title">Top bonds this week</div>
-        <div class="bond-card">
-          <div class="row mb6"><span class="fs14 fw6 t1">Tata Capital Ltd</span><span class="chip chip-green">AAA</span></div>
-          <div class="row"><span style="font-size:22px;font-weight:800;color:#00B9C6">9.0%</span><div style="text-align:right"><div class="fs11 t4">Min ₹1,000</div><div class="fs12 fw6 t1">Matures Jul 2027</div></div></div>
-        </div>
-        <div class="bond-card">
-          <div class="row mb6"><span class="fs14 fw6 t1">HDFC Credila</span><span class="chip chip-green">AA+</span></div>
-          <div class="row"><span style="font-size:22px;font-weight:800;color:#00B9C6">8.75%</span><div style="text-align:right"><div class="fs11 t4">Min ₹5,000</div><div class="fs12 fw6 t1">Matures Mar 2028</div></div></div>
-        </div>
-      </div>
-
-      <div class="bottom-nav">
-        <div class="nav-item active"><svg viewBox="0 0 24 24"><path style="fill:#00B9C6" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span style="color:#00B9C6">Home</span></div>
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg><span>Explore</span></div>
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg><span>Portfolio</span></div>
-        <div class="nav-item"><svg viewBox="0 0 24 24"><path class="nav-icon-path" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Account</span></div>
-      </div>
+<!-- ════════════════════════════════════
+     PAGE 10: SIP CONTROLS
+     ════════════════════════════════════ -->
+<div class="phone-page" id="p10">
+  <div class="status-bar light"><span class="status-time" style="color:#121926">9:41</span><div class="status-icons" style="color:#121926"><span>●●●</span></div></div>
+  <div class="screen-header"><div class="back-btn">←</div><div class="header-title">Manage Bond SIP</div><div style="width:34px"></div></div>
+  <div class="section-bg" style="padding:12px 14px">
+    <div style="background:#fff;border-radius:11px;padding:12px 14px;margin-bottom:12px;border:1.5px solid #D1FAE5">
+      <div class="row mb8"><div style="display:flex;align-items:center;gap:7px"><div style="width:9px;height:9px;border-radius:50%;background:#12B76A"></div><span class="fs14 fw7 t1">Active</span></div><span class="chip chip-teal">Income Ladder</span></div>
+      <div class="row"><div><div class="fs10 t4">Monthly</div><div class="fs13 fw7 t1">₹5,000</div></div><div><div class="fs10 t4">Date</div><div class="fs13 fw7 t1">10th</div></div><div><div class="fs10 t4">Next debit</div><div class="fs13 fw7" style="color:#00B9C6">10 Jun</div></div></div>
     </div>
+    <div class="fs11 fw6 t4 mb7" style="letter-spacing:0.5px;text-transform:uppercase">SIP controls</div>
+    <div class="card" style="padding:3px 12px">
+      <div class="control-row"><div class="control-icon" style="background:#EFF6FF">⏸</div><div style="flex:1"><div class="fs13 fw6 t1">Pause SIP</div><div class="fs11 t4 mt4">Skip one or more upcoming cycles</div></div><span class="fs16 t4">›</span></div>
+      <div class="control-row"><div class="control-icon" style="background:#F0FDF4">📈</div><div style="flex:1"><div class="fs13 fw6 t1">Step-up amount</div><div class="fs11 t4 mt4">Increase monthly investment</div></div><span class="fs16 t4">›</span></div>
+      <div class="control-row"><div class="control-icon" style="background:#FFF7ED">📅</div><div style="flex:1"><div class="fs13 fw6 t1">Change debit date</div><div class="fs11 t4 mt4">Move to a different date (1–28)</div></div><span class="fs16 t4">›</span></div>
+      <div class="control-row" style="border:none"><div class="control-icon" style="background:#F5F3FF">🎯</div><div style="flex:1"><div class="fs13 fw6 t1">Change goal</div><div class="fs11 t4 mt4">Income Ladder ↔ Wealth Growth</div></div><span class="fs16 t4">›</span></div>
+    </div>
+    <div class="fs11 fw6 t4 mb7 mt10" style="letter-spacing:0.5px;text-transform:uppercase;margin-top:10px">Danger zone</div>
+    <div class="card" style="padding:3px 12px">
+      <div class="control-row" style="border:none"><div class="control-icon" style="background:#FEF2F2">🚫</div><div style="flex:1"><div class="fs13 fw6" style="color:#F04438">Cancel SIP</div><div class="fs11 t4 mt4">Stops future debits. Existing bonds held until maturity.</div></div><span class="fs16 t4">›</span></div>
+    </div>
+    <div class="fs11 fw6 t4 mb7 mt10" style="letter-spacing:0.5px;text-transform:uppercase;margin-top:10px">Mandate</div>
+    <div class="card">
+      <div class="row mb8"><div><div class="fs12 fw6 t1">UPI AutoPay</div><div class="fs11 t4 mt4">arpit@okicici</div></div><span class="chip chip-green">Active</span></div>
+      <div class="divider" style="margin:3px 0 9px"></div>
+      <div class="fs11" style="color:#F04438;cursor:pointer">Cancel mandate only →</div>
+      <div class="fs10 t4 mt4">Cancels payments, keeps SIP plan record intact.</div>
+    </div>
+    <div class="info-box"><p>🛡 All controls are fully self-serve. No agent required.</p></div>
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></div>
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg><span>Explore</span></div>
+    <div class="nav-item-b active"><svg viewBox="0 0 24 24"><path style="fill:#00B9C6" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg><span style="color:#00B9C6">Portfolio</span></div>
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Account</span></div>
   </div>
 </div>
 
-</div><!-- end screens-grid -->
+<!-- ════════════════════════════════════
+     PAGE 11: HOMEPAGE WIDGET
+     ════════════════════════════════════ -->
+<div class="phone-page" id="p11">
+  <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>●●●</span><span style="margin-left:4px">⬛</span></div></div>
+  <div style="background:#030916;padding:14px 18px 18px;flex-shrink:0">
+    <div class="row mb10"><div><div class="fs11" style="color:rgba(255,255,255,0.4)">Good morning</div><div class="fs16 fw7" style="color:#fff">Arpit 👋</div></div><div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:16px">🔔</div></div>
+    <div style="background:rgba(255,255,255,0.06);border-radius:14px;padding:12px 14px"><div class="fs11 mb4" style="color:rgba(255,255,255,0.4)">Portfolio value</div><div style="font-size:26px;font-weight:800;color:#fff;letter-spacing:-0.5px">₹82,500</div><div class="fs11 mt4" style="color:#12B76A">↑ ₹1,450 this month (1.8%)</div></div>
+  </div>
+  <div class="section-bg" style="padding:12px 14px">
+    <div class="feed-section-title">Your Bond SIP</div>
+    <div class="sip-widget">
+      <div class="row mb10"><span class="sip-badge">BOND SIP</span><div style="display:flex;align-items:center;gap:5px"><div style="width:6px;height:6px;border-radius:50%;background:#12B76A"></div><span class="fs11" style="color:rgba(255,255,255,0.6)">Active</span></div></div>
+      <div style="font-size:20px;font-weight:800;color:#fff;margin-bottom:3px">₹5,000 / month</div>
+      <div class="fs11 mb10" style="color:rgba(255,255,255,0.45)">Income Ladder · 10th of every month</div>
+      <div style="display:flex;gap:14px;margin-bottom:8px">
+        <div><div class="fs10" style="color:rgba(255,255,255,0.35)">Blended YTM</div><div class="fs15 fw7" style="color:#00B9C6">9.1%</div></div>
+        <div><div class="fs10" style="color:rgba(255,255,255,0.35)">Next debit</div><div class="fs15 fw7" style="color:#fff">10 Jun</div></div>
+        <div><div class="fs10" style="color:rgba(255,255,255,0.35)">Invested</div><div class="fs15 fw7" style="color:#fff">₹15,000</div></div>
+      </div>
+      <div class="fs10 mb4" style="color:rgba(255,255,255,0.35)">3 of 12 months complete</div>
+      <div class="progress-track"><div class="progress-fill" style="width:25%"></div></div>
+      <div class="btn-row mt10" style="margin-top:10px">
+        <button class="btn" style="border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8);font-size:12px;padding:10px;flex:1;background:transparent;border-radius:11px">View portfolio</button>
+        <button class="btn btn-teal" style="font-size:12px;padding:10px;flex:1">Manage →</button>
+      </div>
+    </div>
+    <div class="feed-section-title">Top bonds this week</div>
+    <div class="bond-card"><div class="row mb6"><span class="fs13 fw6 t1">Tata Capital Ltd</span><span class="chip chip-green">AAA</span></div><div class="row"><span style="font-size:20px;font-weight:800;color:#00B9C6">9.0%</span><div style="text-align:right"><div class="fs10 t4">Min ₹1,000</div><div class="fs12 fw6 t1">Matures Jul 2027</div></div></div></div>
+    <div class="bond-card"><div class="row mb6"><span class="fs13 fw6 t1">HDFC Credila</span><span class="chip chip-green">AA+</span></div><div class="row"><span style="font-size:20px;font-weight:800;color:#00B9C6">8.75%</span><div style="text-align:right"><div class="fs10 t4">Min ₹5,000</div><div class="fs12 fw6 t1">Matures Mar 2028</div></div></div></div>
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item-b active"><svg viewBox="0 0 24 24"><path style="fill:#00B9C6" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span style="color:#00B9C6">Home</span></div>
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg><span>Explore</span></div>
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg><span>Portfolio</span></div>
+    <div class="nav-item-b"><svg viewBox="0 0 24 24"><path class="ni" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Account</span></div>
+  </div>
+</div>
+
+      </div><!-- end .screen -->
+    </div><!-- end .phone -->
+  </div><!-- end .content-area -->
+</div><!-- end .main -->
 
 <script>
-function scrollTo(id) {
-  const el = document.getElementById(id);
-  if (el) el.scrollIntoView({behavior:'smooth', block:'center'});
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
+const screens = [
+  {title:"P2b Entry — RTT Success Screen", sub:"Screen 1 of 12 · Entry Points"},
+  {title:"P6 Entry — First Investment Success", sub:"Screen 2 of 12 · Entry Points"},
+  {title:"P7 Entry — Bond Maturity Reinvest", sub:"Screen 3 of 12 · Entry Points"},
+  {title:"Step 1 — Monthly Amount", sub:"Screen 4 of 12 · Setup Flow"},
+  {title:"Step 2 — Goal Selection", sub:"Screen 5 of 12 · Setup Flow"},
+  {title:"Step 3 — Bond Preview", sub:"Screen 6 of 12 · Setup Flow"},
+  {title:"Step 4 — Debit Date", sub:"Screen 7 of 12 · Setup Flow"},
+  {title:"Step 5 — UPI AutoPay Mandate", sub:"Screen 8 of 12 · Setup Flow"},
+  {title:"Confirmation · Option B — Illustrative Ladder", sub:"Screen 9 of 12 · Setup Flow"},
+  {title:"Portfolio · Bond SIP Tab · Option C — Goal Slots", sub:"Screen 10 of 12 · Post-Setup"},
+  {title:"SIP Plan Controls", sub:"Screen 11 of 12 · Post-Setup"},
+  {title:"Homepage — Active SIP Widget", sub:"Screen 12 of 12 · Post-Setup"},
+];
+
+let current = 0;
+const navItems = document.querySelectorAll(".sidebar .nav-item");
+
+function showScreen(idx, el) {
+  document.getElementById("p"+current).classList.remove("active");
+  navItems[current].classList.remove("active");
+  current = idx;
+  document.getElementById("p"+current).classList.add("active");
+  if(el) { navItems.forEach(n=>n.classList.remove("active")); el.classList.add("active"); }
+  document.getElementById("mainTitle").textContent = screens[idx].title;
+  document.getElementById("mainSub").textContent = screens[idx].sub;
+  // scroll sidebar item into view
+  if(el) el.scrollIntoView({block:"nearest",behavior:"smooth"});
 }
+function nextScreen() { showScreen((current+1)%12, navItems[(current+1)%12]); }
+function prevScreen() { showScreen((current+11)%12, navItems[(current+11)%12]); }
+document.addEventListener("keydown", e => {
+  if(e.key==="ArrowRight"||e.key==="ArrowDown") nextScreen();
+  if(e.key==="ArrowLeft"||e.key==="ArrowUp") prevScreen();
+});
 </script>
 </body>
 </html>
