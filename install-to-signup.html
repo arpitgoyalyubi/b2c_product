@@ -334,8 +334,10 @@ tr:hover td { background:rgba(0,0,0,.02); }
     <div class="chart-wrap" style="height:280px"><canvas id="dailyVpuChart"></canvas></div>
     <p style="font-size:.68rem;color:var(--text3);margin-top:10px">
       Views per user per day = total MOBILE_LAUNCH_VIEW firings &divide; unique MOBILE_LAUNCH_VIEW users &middot;
-      A rising VPU with falling CTR suggests repeated non-converting impressions (user opens app but doesn&rsquo;t tap CTA) &middot;
-      iOS dashed
+      A rising VPU with falling CTR suggests repeated non-converting impressions &middot;
+      iOS dashed &middot;
+      <span style="background:rgba(251,191,36,0.25);padding:0 3px;border-radius:2px">&#9632; shaded Apr&nbsp;21&ndash;May&nbsp;4</span>
+      = MOBILE_LAUNCH_VIEW bug period (event fired multiple times per user per session &rarr; inflated VPU; fixed May 4)
     </p>
   </div>
   <script>
@@ -372,7 +374,25 @@ tr:hover td { background:rgba(0,0,0,.02); }
               title: { display: true, text: 'Views / User', color: '#64748b', font: { size: 11 } }
             }
           }
-        }
+        },
+        plugins: [{
+          id: 'vpuBugShade',
+          beforeDraw: function(chart) {
+            var xa = chart.scales.x;
+            var ya = chart.scales.y;
+            var c2 = chart.ctx;
+            /* Mar 15=0 · Apr 21=index 37 · May 4=index 50 */
+            var x1 = xa.getPixelForValue(37);
+            var x2 = xa.getPixelForValue(50);
+            c2.save();
+            c2.fillStyle = 'rgba(251,191,36,0.15)';
+            c2.fillRect(x1, ya.top, x2 - x1, ya.bottom - ya.top);
+            c2.fillStyle = 'rgba(180,83,9,0.65)';
+            c2.font = '9px sans-serif';
+            c2.fillText('\u26a0 multi-fire bug', x1 + 3, ya.top + 10);
+            c2.restore();
+          }
+        }]
       });
     })();
   </script>
@@ -707,8 +727,7 @@ tr:hover td { background:rgba(0,0,0,.02); }
     Daily unique CTA% = <code>mobile_launch_cta_clicked (Unique users)</code> &divide; <code>mobile_launch_view (Unique users)</code> per day &middot;
     source: AppsFlyer <code>partners_by_date_report/v5</code> (Android + iOS combined) &middot;
     null shown when LV &lt; 10 users that day &middot;
-    <span style="background:rgba(251,191,36,0.25);padding:0 3px;border-radius:2px">&#9632; shaded Apr&nbsp;21&ndash;May&nbsp;4</span> = MOBILE_LAUNCH_VIEW bug (fired multiple times per user per session; fixed May 4).
-    AppsFlyer <code>(Unique users)</code> column deduplicates per device per day &mdash; <strong>not inflated</strong> by this bug.
+    <code>(Unique users)</code> column deduplicates per device per day &mdash; not inflated by the Apr&nbsp;21&ndash;May&nbsp;4 multi-fire bug.
   </p>
 </div>
 <script>
@@ -742,129 +761,48 @@ tr:hover td { background:rgba(0,0,0,.02); }
             title: { display: true, text: 'CTA%', color: '#64748b', font: { size: 11 } }
           }
         }
-      },
-      plugins: [{
-        id: 'bugShade',
-        beforeDraw: function(chart) {
-          var xa = chart.scales.x;
-          var ya = chart.scales.y;
-          var c2 = chart.ctx;
-          /* Apr 21 = label index 40, May 4 = label index 53 */
-          var x1 = xa.getPixelForValue(40);
-          var x2 = xa.getPixelForValue(53);
-          c2.save();
-          c2.fillStyle = 'rgba(251,191,36,0.13)';
-          c2.fillRect(x1, ya.top, x2 - x1, ya.bottom - ya.top);
-          c2.fillStyle = 'rgba(180,83,9,0.60)';
-          c2.font = '9px sans-serif';
-          c2.fillText('\u26a0 LV bug', x1 + 3, ya.top + 10);
-          c2.restore();
-        }
-      }]
+      }
     });
   })();
 </script>
 
-<div class="sec-title">CTA% by Media Source (AppsFlyer · top 5 by LV · overall mobile CTA% = 65.2%)</div>
-  <div class="tbl-wrap" style="margin-bottom:8px">
-    <p style="font-size:.78rem;color:var(--text2);margin:0 0 6px 0">
-      Unique users who saw the launch screen (LV) and tapped CTA, grouped by <code>[AppsFlyer] media source</code> user property.
-      Delta vs overall mobile CTA%: <span style='color:#dc2626'>red</span> = &ge;10pp below &nbsp;
-      <span style='color:#d97706'>amber</span> = 4&ndash;10pp below &nbsp;
-      <span style='color:#16a34a'>green</span> = &ge;4pp above.
-      Rows with CTA%&gt;100% excluded (small-LV noise).
-    </p>
-    <table>
-      <thead><tr>
-        <th style="text-align:left">Media Source</th>
-        <th title="LV unique users">LV Uniques</th>
-        <th title="CTA unique users">CTA Uniques</th>
-        <th title="CTA%">CTA%</th>
-      </tr></thead>
-      <tbody id='af-tbody-ms'><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>(none)</td><td style='text-align:right'>57,342</td><td style='text-align:right'>36,740</td><td style='text-align:right;font-weight:700;color:var(--text)'>64.1% <span style='font-size:.65rem;color:var(--text)'>(−1.1pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>googleadwords_int</td><td style='text-align:right'>12,813</td><td style='text-align:right'>7,213</td><td style='text-align:right;font-weight:700;color:#d97706'>56.3% <span style='font-size:.65rem;color:#d97706'>(−8.9pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>organic</td><td style='text-align:right'>904</td><td style='text-align:right'>450</td><td style='text-align:right;font-weight:700;color:#dc2626'>49.8% <span style='font-size:.65rem;color:#dc2626'>(−15.4pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>Zomato_CPI</td><td style='text-align:right'>54</td><td style='text-align:right'>46</td><td style='text-align:right;font-weight:700;color:#16a34a'>85.2% <span style='font-size:.65rem;color:#16a34a'>(+20.0pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>Apple Search Ads</td><td style='text-align:right'>24</td><td style='text-align:right'>6</td><td style='text-align:right;font-weight:700;color:#dc2626'>25.0% <span style='font-size:.65rem;color:#dc2626'>(−40.2pp)</span></td></tr><tr class='af-extra' style='display:none'><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>nexfigoadh7_int</td><td style='text-align:right'>1</td><td style='text-align:right'>0</td><td style='text-align:right;font-weight:700;color:#dc2626'>0.0% <span style='font-size:.65rem;color:#dc2626'>(−65.2pp)</span></td></tr><tr class='af-extra' style='display:none'><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>QR_code</td><td style='text-align:right'>1</td><td style='text-align:right'>0</td><td style='text-align:right;font-weight:700;color:#dc2626'>0.0% <span style='font-size:.65rem;color:#dc2626'>(−65.2pp)</span></td></tr><tr class='af-extra' style='display:none'><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>mobile_app_share</td><td style='text-align:right'>1</td><td style='text-align:right'>1</td><td style='text-align:right;font-weight:700;color:#16a34a'>100.0% <span style='font-size:.65rem;color:#16a34a'>(+34.8pp)</span></td></tr></tbody>
-    </table>
-  <p class='af-toggle' data-tbody='af-tbody-ms' data-count='3'
-     style='font-size:.75rem;color:#3b82f6;cursor:pointer;margin:4px 0 12px;user-select:none'
-     onclick='afToggle(this)'>Show 3 more ▾</p>
-  </div>
-  <div class="sec-title">CTA% by Channel (AppsFlyer · top 5 by LV · overall mobile CTA% = 65.2%)</div>
-  <div class="tbl-wrap" style="margin-bottom:8px">
-    <p style="font-size:.78rem;color:var(--text2);margin:0 0 6px 0">
-      Unique users who saw the launch screen (LV) and tapped CTA, grouped by <code>[AppsFlyer] channel</code> user property.
-      Delta vs overall mobile CTA%: <span style='color:#dc2626'>red</span> = &ge;10pp below &nbsp;
-      <span style='color:#d97706'>amber</span> = 4&ndash;10pp below &nbsp;
-      <span style='color:#16a34a'>green</span> = &ge;4pp above.
-      Rows with CTA%&gt;100% excluded (small-LV noise).
-    </p>
-    <table>
-      <thead><tr>
-        <th style="text-align:left">Channel</th>
-        <th title="LV unique users">LV Uniques</th>
-        <th title="CTA unique users">CTA Uniques</th>
-        <th title="CTA%">CTA%</th>
-      </tr></thead>
-      <tbody id='af-tbody-ch'><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>(none)</td><td style='text-align:right'>56,911</td><td style='text-align:right'>36,624</td><td style='text-align:right;font-weight:700;color:var(--text)'>64.4% <span style='font-size:.65rem;color:var(--text)'>(−0.8pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>ACI_Display</td><td style='text-align:right'>9,094</td><td style='text-align:right'>4,929</td><td style='text-align:right;font-weight:700;color:#dc2626'>54.2% <span style='font-size:.65rem;color:#dc2626'>(−11.0pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>ACI_Search</td><td style='text-align:right'>1,517</td><td style='text-align:right'>1,267</td><td style='text-align:right;font-weight:700;color:#16a34a'>83.5% <span style='font-size:.65rem;color:#16a34a'>(+18.3pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>ACE_Display</td><td style='text-align:right'>1,232</td><td style='text-align:right'>487</td><td style='text-align:right;font-weight:700;color:#dc2626'>39.5% <span style='font-size:.65rem;color:#dc2626'>(−25.7pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>ACI_Youtube</td><td style='text-align:right'>592</td><td style='text-align:right'>285</td><td style='text-align:right;font-weight:700;color:#dc2626'>48.1% <span style='font-size:.65rem;color:#dc2626'>(−17.1pp)</span></td></tr><tr class='af-extra' style='display:none'><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>ACE_Youtube</td><td style='text-align:right'>231</td><td style='text-align:right'>81</td><td style='text-align:right;font-weight:700;color:#dc2626'>35.1% <span style='font-size:.65rem;color:#dc2626'>(−30.1pp)</span></td></tr><tr class='af-extra' style='display:none'><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>ACI_</td><td style='text-align:right'>18</td><td style='text-align:right'>16</td><td style='text-align:right;font-weight:700;color:#16a34a'>88.9% <span style='font-size:.65rem;color:#16a34a'>(+23.7pp)</span></td></tr><tr class='af-extra' style='display:none'><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>ACE_Search</td><td style='text-align:right'>13</td><td style='text-align:right'>12</td><td style='text-align:right;font-weight:700;color:#16a34a'>92.3% <span style='font-size:.65rem;color:#16a34a'>(+27.1pp)</span></td></tr></tbody>
-    </table>
-  <p class='af-toggle' data-tbody='af-tbody-ch' data-count='3'
-     style='font-size:.75rem;color:#3b82f6;cursor:pointer;margin:4px 0 12px;user-select:none'
-     onclick='afToggle(this)'>Show 3 more ▾</p>
-  </div>
-  <div class="sec-title">CTA% by Campaign (AppsFlyer · top 5 by LV · overall mobile CTA% = 65.2%)</div>
-  <div class="tbl-wrap" style="margin-bottom:8px">
-    <p style="font-size:.78rem;color:var(--text2);margin:0 0 6px 0">
-      Unique users who saw the launch screen (LV) and tapped CTA, grouped by <code>[AppsFlyer] campaign</code> user property.
-      Delta vs overall mobile CTA%: <span style='color:#dc2626'>red</span> = &ge;10pp below &nbsp;
-      <span style='color:#d97706'>amber</span> = 4&ndash;10pp below &nbsp;
-      <span style='color:#16a34a'>green</span> = &ge;4pp above.
-      Rows with CTA%&gt;100% excluded (small-LV noise).
-    </p>
-    <table>
-      <thead><tr>
-        <th style="text-align:left">Campaign</th>
-        <th title="LV unique users">LV Uniques</th>
-        <th title="CTA unique users">CTA Uniques</th>
-        <th title="CTA%">CTA%</th>
-      </tr></thead>
-      <tbody id='af-tbody-cmp'><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>(none)</td><td style='text-align:right'>56,850</td><td style='text-align:right'>36,511</td><td style='text-align:right;font-weight:700;color:var(--text)'>64.2% <span style='font-size:.65rem;color:var(--text)'>(−1.0pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>ADS_IND_APP_AOS_PaymentSuccess_tcpa_22ndSept25</td><td style='text-align:right'>10,046</td><td style='text-align:right'>5,557</td><td style='text-align:right;font-weight:700;color:#d97706'>55.3% <span style='font-size:.65rem;color:#d97706'>(−9.9pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>Aspero_UACe_Install-KYC_Bonds_05052026</td><td style='text-align:right'>1,049</td><td style='text-align:right'>395</td><td style='text-align:right;font-weight:700;color:#dc2626'>37.7% <span style='font-size:.65rem;color:#dc2626'>(−27.5pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>ADS_IND_APP_AOS_PaymentSuccess_Firebase_24042026</td><td style='text-align:right'>462</td><td style='text-align:right'>315</td><td style='text-align:right;font-weight:700;color:var(--text)'>68.2% <span style='font-size:.65rem;color:var(--text)'>(+3.0pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>HM_Engagement_20032026</td><td style='text-align:right'>281</td><td style='text-align:right'>111</td><td style='text-align:right;font-weight:700;color:#dc2626'>39.5% <span style='font-size:.65rem;color:#dc2626'>(−25.7pp)</span></td></tr><tr class='af-extra' style='display:none'><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>Aspero_UACe_KYC-Purchase_Bonds_09012026</td><td style='text-align:right'>151</td><td style='text-align:right'>75</td><td style='text-align:right;font-weight:700;color:#dc2626'>49.7% <span style='font-size:.65rem;color:#dc2626'>(−15.5pp)</span></td></tr><tr class='af-extra' style='display:none'><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>HM_iOS_Install_18032026</td><td style='text-align:right'>138</td><td style='text-align:right'>39</td><td style='text-align:right;font-weight:700;color:#dc2626'>28.3% <span style='font-size:.65rem;color:#dc2626'>(−36.9pp)</span></td></tr><tr class='af-extra' style='display:none'><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>Zomato_14Apr</td><td style='text-align:right'>50</td><td style='text-align:right'>40</td><td style='text-align:right;font-weight:700;color:#16a34a'>80.0% <span style='font-size:.65rem;color:#16a34a'>(+14.8pp)</span></td></tr><tr class='af-extra' style='display:none'><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>2143575296</td><td style='text-align:right'>24</td><td style='text-align:right'>6</td><td style='text-align:right;font-weight:700;color:#dc2626'>25.0% <span style='font-size:.65rem;color:#dc2626'>(−40.2pp)</span></td></tr></tbody>
-    </table>
-  <p class='af-toggle' data-tbody='af-tbody-cmp' data-count='4'
-     style='font-size:.75rem;color:#3b82f6;cursor:pointer;margin:4px 0 12px;user-select:none'
-     onclick='afToggle(this)'>Show 4 more ▾</p>
-  </div>
-  <div class="sec-title">CTA% by Ad Group (AppsFlyer · top 5 by LV · overall mobile CTA% = 65.2%)</div>
-  <div class="tbl-wrap" style="margin-bottom:8px">
-    <p style="font-size:.78rem;color:var(--text2);margin:0 0 6px 0">
-      Unique users who saw the launch screen (LV) and tapped CTA, grouped by <code>[AppsFlyer] ad group</code> user property.
-      Delta vs overall mobile CTA%: <span style='color:#dc2626'>red</span> = &ge;10pp below &nbsp;
-      <span style='color:#d97706'>amber</span> = 4&ndash;10pp below &nbsp;
-      <span style='color:#16a34a'>green</span> = &ge;4pp above.
-      Rows with CTA%&gt;100% excluded (small-LV noise).
-    </p>
-    <table>
-      <thead><tr>
-        <th style="text-align:left">Ad Group</th>
-        <th title="LV unique users">LV Uniques</th>
-        <th title="CTA unique users">CTA Uniques</th>
-        <th title="CTA%">CTA%</th>
-      </tr></thead>
-      <tbody id='af-tbody-ag'><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>(none)</td><td style='text-align:right'>56,882</td><td style='text-align:right'>36,566</td><td style='text-align:right;font-weight:700;color:var(--text)'>64.3% <span style='font-size:.65rem;color:var(--text)'>(−0.9pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>opentargeting_age_householdincome_filtered</td><td style='text-align:right'>4,801</td><td style='text-align:right'>2,680</td><td style='text-align:right;font-weight:700;color:#d97706'>55.8% <span style='font-size:.65rem;color:#d97706'>(−9.4pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>New_Creatives_FD01_CIK_Oct25</td><td style='text-align:right'>4,562</td><td style='text-align:right'>2,441</td><td style='text-align:right;font-weight:700;color:#dc2626'>53.5% <span style='font-size:.65rem;color:#dc2626'>(−11.7pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>no_creatives_opentargeting_age_householdincome_filtered</td><td style='text-align:right'>1,128</td><td style='text-align:right'>736</td><td style='text-align:right;font-weight:700;color:var(--text)'>65.2% <span style='font-size:.65rem;color:var(--text)'>(+0.0pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>Bonds_UACe_Install-KYC_05052026</td><td style='text-align:right'>1,049</td><td style='text-align:right'>395</td><td style='text-align:right;font-weight:700;color:#dc2626'>37.7% <span style='font-size:.65rem;color:#dc2626'>(−27.5pp)</span></td></tr><tr class='af-extra' style='display:none'><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>In-market%20audience_9dec</td><td style='text-align:right'>312</td><td style='text-align:right'>290</td><td style='text-align:right;font-weight:700;color:#16a34a'>92.9% <span style='font-size:.65rem;color:#16a34a'>(+27.7pp)</span></td></tr><tr class='af-extra' style='display:none'><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>Install_Order540D</td><td style='text-align:right'>281</td><td style='text-align:right'>111</td><td style='text-align:right;font-weight:700;color:#dc2626'>39.5% <span style='font-size:.65rem;color:#dc2626'>(−25.7pp)</span></td></tr><tr class='af-extra' style='display:none'><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>bond_investment_quickwins_kws_15dec25</td><td style='text-align:right'>252</td><td style='text-align:right'>198</td><td style='text-align:right;font-weight:700;color:#16a34a'>78.6% <span style='font-size:.65rem;color:#16a34a'>(+13.4pp)</span></td></tr><tr class='af-extra' style='display:none'><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>Bonds_UACe_KYC-Purchase_09012026</td><td style='text-align:right'>151</td><td style='text-align:right'>75</td><td style='text-align:right;font-weight:700;color:#dc2626'>49.7% <span style='font-size:.65rem;color:#dc2626'>(−15.5pp)</span></td></tr><tr class='af-extra' style='display:none'><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>Purchase%20Signal_12012026</td><td style='text-align:right'>148</td><td style='text-align:right'>136</td><td style='text-align:right;font-weight:700;color:#16a34a'>91.9% <span style='font-size:.65rem;color:#16a34a'>(+26.7pp)</span></td></tr><tr class='af-extra' style='display:none'><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>2147192060</td><td style='text-align:right'>22</td><td style='text-align:right'>6</td><td style='text-align:right;font-weight:700;color:#dc2626'>27.3% <span style='font-size:.65rem;color:#dc2626'>(−37.9pp)</span></td></tr><tr class='af-extra' style='display:none'><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>2147192320</td><td style='text-align:right'>2</td><td style='text-align:right'>0</td><td style='text-align:right;font-weight:700;color:#dc2626'>0.0% <span style='font-size:.65rem;color:#dc2626'>(−65.2pp)</span></td></tr></tbody>
-    </table>
-  <p class='af-toggle' data-tbody='af-tbody-ag' data-count='7'
-     style='font-size:.75rem;color:#3b82f6;cursor:pointer;margin:4px 0 12px;user-select:none'
-     onclick='afToggle(this)'>Show 7 more ▾</p>
-  </div>
-
-
-  <script>
-    function afToggle(btn) {
-      var tbodyId = btn.getAttribute('data-tbody');
-      var count   = parseInt(btn.getAttribute('data-count'));
-      var rows    = document.querySelectorAll('#' + tbodyId + ' .af-extra');
-      var open    = rows.length && rows[0].style.display !== 'none';
-      rows.forEach(function(r){ r.style.display = open ? 'none' : ''; });
-      btn.textContent = open ? 'Show ' + count + ' more ▾' : 'Show less ▴';
-    }
-  </script>
+<!-- ── CTA breakdown: Media Source ────────────────────────────────────────────────── -->
+<div class="sec-title">CTA% by Media Source &middot; 7d / 14d / 30d (AppsFlyer direct)</div>
+<div style="font-size:.74rem;color:var(--text2);margin:0 0 6px">Daily trend in chart above. Period chips from <code>mobile_launch_cta_clicked</code> / <code>mobile_launch_view</code> unique-user counts via <code>partners_by_date_report/v5</code>.</div>
+<div style="display:flex;flex-wrap:wrap;margin-bottom:16px"><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">Google Ads</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">7d 59.9%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">14d 60.8%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 64.7%</span></div><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">Facebook Ads</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">7d 93.4%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">14d 92.9%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 93.5%</span></div><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">Organic</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">7d 55.5%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">14d 58.2%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 67.8%</span></div><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">Other sources</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">7d 84.3%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">14d 85.1%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 87.0%</span></div></div>
+<div class="sec-title">CTA% by Channel &middot; daily trend (AppsFlyer direct)</div>
+<div style="display:flex;flex-wrap:wrap;margin-bottom:8px"><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">Google · TCPA</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">7d 58.9%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">14d 59.6%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 63.6%</span></div><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">Meta Ads</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">7d 93.4%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">14d 92.9%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 93.5%</span></div><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">Organic</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">7d 55.5%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">14d 58.2%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 67.8%</span></div><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">Google · Firebase</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">7d 65.4%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">14d 70.5%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 73.2%</span></div><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">Perf CPI / Jio / Other</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">7d 93.5%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">14d 91.0%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 92.0%</span></div></div>
+<div style="position:relative;height:195px;margin-bottom:2px"><canvas id="chBreakChart"></canvas></div>
+<p style="font-size:.72rem;color:var(--text2);margin:2px 0 12px">Channel derived from PID + campaign name prefix (TCPA, Firebase, UAC). Days with &lt;5 unique LV shown as gap.</p>
+<script>
+  (function(){
+    var ctx=document.getElementById("chBreakChart").getContext("2d");
+    new Chart(ctx,{
+      type:"line",
+      data:{labels:["Mar 12","Mar 13","Mar 14","Mar 15","Mar 16","Mar 17","Mar 18","Mar 19","Mar 20","Mar 21","Mar 22","Mar 23","Mar 24","Mar 25","Mar 26","Mar 27","Mar 28","Mar 29","Mar 30","Mar 31","Apr 1","Apr 2","Apr 3","Apr 4","Apr 5","Apr 6","Apr 7","Apr 8","Apr 9","Apr 10","Apr 11","Apr 12","Apr 13","Apr 14","Apr 15","Apr 16","Apr 17","Apr 18","Apr 19","Apr 20","Apr 21","Apr 22","Apr 23","Apr 24","Apr 25","Apr 26","Apr 27","Apr 28","Apr 29","Apr 30","May 1","May 2","May 3","May 4","May 5","May 6","May 7","May 8","May 9","May 10","May 11","May 12"],
+            datasets:[{"label":"Google · TCPA","data":[65.4,47.6,64.7,63.6,42.9,56.4,58.5,88.9,88.0,85.6,84.5,92.4,85.9,88.6,84.1,89.5,84.6,86.4,91.8,95.5,94.7,92.8,92.5,89.5,86.8,85.2,82.7,81.9,83.9,84.3,81.4,78.8,82.4,84.0,77.1,66.8,76.8,78.2,72.8,70.6,66.8,63.6,67.8,63.4,63.9,64.6,59.8,61.5,63.9,64.2,64.7,62.5,57.6,55.4,54.3,59.7,59.5,59.8,59.6,58.7,57.7,56.5],"borderColor":"#4285F4","backgroundColor":"#4285F4","pointRadius":2,"pointHoverRadius":5,"borderWidth":2,"tension":0.3,"borderDash":[],"spanGaps":true,"fill":false},{"label":"Meta Ads","data":[66.7,75.0,66.7,83.3,60.0,73.5,56.1,81.7,88.8,88.2,92.6,92.3,94.0,97.4,100.0,89.8,98.2,92.3,100.0,91.1,90.3,85.8,87.5,93.2,94.4,92.3,95.2,87.4,97.0,97.3,97.7,99.3,98.7,98.9,96.5,92.3,100.0,null,71.4,97.2,100.0,92.5,94.3,86.7,83.8,90.1,89.3,92.0,89.9,90.4,91.9,93.7,93.4,95.2,93.5,89.3,97.7,91.8,96.6,100.0,92.1,91.6],"borderColor":"#34a853","backgroundColor":"#34a853","pointRadius":2,"pointHoverRadius":5,"borderWidth":2,"tension":0.3,"borderDash":[4,2],"spanGaps":true,"fill":false},{"label":"Organic","data":[64.3,70.0,37.5,50.0,57.1,20.0,42.9,66.7,72.0,46.2,83.3,58.8,73.7,84.7,92.8,81.7,90.7,85.1,79.7,94.1,85.7,87.4,81.0,71.1,94.3,95.0,100.0,78.0,83.0,100.0,100.0,100.0,100.0,100.0,96.4,88.3,81.7,92.5,83.1,98.8,80.3,73.3,81.1,80.0,76.4,81.9,62.2,59.1,56.5,66.7,69.0,65.5,67.9,57.3,48.2,46.9,56.2,61.6,69.9,51.0,58.6,45.8],"borderColor":"#ea4335","backgroundColor":"#ea4335","pointRadius":2,"pointHoverRadius":5,"borderWidth":2,"tension":0.3,"borderDash":[2,2],"spanGaps":true,"fill":false},{"label":"Google · Firebase","data":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,85.9,87.5,88.2,79.5,81.7,83.3,93.1,84.7,85.2,78.7,63.0,71.3,69.8,53.6,66.7,68.7,61.3,72.7,62.9],"borderColor":"#fbbc04","backgroundColor":"#fbbc04","pointRadius":2,"pointHoverRadius":5,"borderWidth":2,"tension":0.3,"borderDash":[6,2],"spanGaps":true,"fill":false},{"label":"Perf CPI / Jio / Other","data":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,100.0,85.7,88.9,100.0,100.0,100.0,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,92.3,86.1,85.5,83.9,73.6,74.1],"borderColor":"#0866FF","backgroundColor":"#0866FF","pointRadius":2,"pointHoverRadius":5,"borderWidth":2,"tension":0.3,"borderDash":[4,4],"spanGaps":true,"fill":false}]},
+      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{labels:{font:{size:10},boxWidth:20}},tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label+": "+(ctx.parsed.y!==null?ctx.parsed.y.toFixed(1)+"%":"--");}}}},scales:{x:{ticks:{font:{size:9},maxRotation:45,autoSkip:true,maxTicksLimit:20},grid:{color:"#e2e8f0"}},y:{min:0,max:105,ticks:{font:{size:9},callback:function(v){return v+"%";}},grid:{color:"#e2e8f0"},title:{display:true,text:"CTA%",color:"#64748b",font:{size:11}}}}}
+    });
+  })();
+</script>
+<div class="sec-title">CTA% by Campaign &middot; daily trend (AppsFlyer direct)</div>
+<div style="display:flex;flex-wrap:wrap;margin-bottom:8px"><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">PS TCPA (Google Ads)</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">7d 54.0%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">14d 55.2%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 59.5%</span></div><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">HM Purchase (Jio)</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">7d 89.6%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">14d 91.2%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 91.2%</span></div><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">BankVerified TCPA</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">7d 97.8%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">14d 97.6%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 97.8%</span></div><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">PS Firebase (Google)</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">7d 65.4%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">14d 70.5%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 73.2%</span></div><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">HM Final Purchase (Jio)</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">7d 57.1%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">14d 67.1%</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 74.8%</span></div></div>
+<div style="position:relative;height:195px;margin-bottom:2px"><canvas id="campBreakChart"></canvas></div>
+<p style="font-size:.72rem;color:var(--text2);margin:2px 0 12px">Top 5 campaigns by total LV (Mar 12–May 12). Campaign names shortened. Days with &lt;5 unique LV shown as gap.</p>
+<script>
+  (function(){
+    var ctx=document.getElementById("campBreakChart").getContext("2d");
+    new Chart(ctx,{
+      type:"line",
+      data:{labels:["Mar 12","Mar 13","Mar 14","Mar 15","Mar 16","Mar 17","Mar 18","Mar 19","Mar 20","Mar 21","Mar 22","Mar 23","Mar 24","Mar 25","Mar 26","Mar 27","Mar 28","Mar 29","Mar 30","Mar 31","Apr 1","Apr 2","Apr 3","Apr 4","Apr 5","Apr 6","Apr 7","Apr 8","Apr 9","Apr 10","Apr 11","Apr 12","Apr 13","Apr 14","Apr 15","Apr 16","Apr 17","Apr 18","Apr 19","Apr 20","Apr 21","Apr 22","Apr 23","Apr 24","Apr 25","Apr 26","Apr 27","Apr 28","Apr 29","Apr 30","May 1","May 2","May 3","May 4","May 5","May 6","May 7","May 8","May 9","May 10","May 11","May 12"],
+            datasets:[{"label":"PS TCPA (Google Ads)","data":[58.8,37.5,50.0,60.7,42.9,56.8,43.3,81.5,81.1,79.2,78.1,87.3,77.8,82.2,78.1,83.8,78.2,78.9,87.3,95.0,93.1,90.4,89.3,87.1,84.7,82.5,79.6,78.2,81.3,80.7,77.4,74.8,78.0,80.2,73.1,65.0,70.9,75.5,68.6,66.8,64.0,60.5,63.9,60.9,60.1,61.7,55.2,59.5,60.7,60.4,61.9,59.7,53.1,51.3,47.8,54.8,55.4,55.7,54.6,52.6,52.3,51.1],"borderColor":"#4285F4","backgroundColor":"#4285F4","pointRadius":2,"pointHoverRadius":5,"borderWidth":2,"tension":0.3,"borderDash":[],"spanGaps":true,"fill":false},{"label":"HM Purchase (Jio)","data":[66.7,75.0,66.7,83.3,58.3,75.8,57.5,81.0,88.5,87.9,92.4,92.2,96.8,97.7,98.7,89.9,100.0,94.6,100.0,91.9,89.9,90.7,89.4,92.6,91.9,88.9,90.0,86.3,93.3,92.8,95.8,93.2,95.5,93.9,90.2,90.3,96.2,null,66.7,95.6,97.8,89.0,93.5,88.5,81.5,89.7,92.2,88.8,91.5,91.2,92.2,91.9,91.7,92.7,95.0,87.1,93.4,91.1,92.6,92.9,85.7,84.8],"borderColor":"#34a853","backgroundColor":"#34a853","pointRadius":2,"pointHoverRadius":5,"borderWidth":2,"tension":0.3,"borderDash":[4,2],"spanGaps":true,"fill":false},{"label":"BankVerified TCPA","data":[77.8,80.0,91.7,80.0,42.9,54.5,100.0,98.8,98.0,97.8,97.8,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,99.2,98.8,97.5,100.0,98.9,98.0,97.4,100.0,99.0,98.7,99.0,100.0,99.0,100.0,99.4,97.1,98.0,100.0,96.7,96.2,98.1,93.4,98.8,98.6,98.9,96.6,100.0,96.4,97.8,95.6,95.9,96.3,99.4,98.1,97.8,96.7,98.5,97.1,97.0,99.1],"borderColor":"#ea4335","backgroundColor":"#ea4335","pointRadius":2,"pointHoverRadius":5,"borderWidth":2,"tension":0.3,"borderDash":[2,2],"spanGaps":true,"fill":false},{"label":"PS Firebase (Google)","data":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,85.9,87.5,88.2,79.5,81.7,83.3,93.1,84.7,85.2,78.7,63.0,71.3,69.8,53.6,66.7,68.7,61.3,72.7,62.9],"borderColor":"#fbbc04","backgroundColor":"#fbbc04","pointRadius":2,"pointHoverRadius":5,"borderWidth":2,"tension":0.3,"borderDash":[6,2],"spanGaps":true,"fill":false},{"label":"HM Final Purchase (Jio)","data":[null,null,null,null,null,null,null,null,null,null,null,null,94.1,100.0,100.0,85.2,93.0,82.9,100.0,73.7,85.7,63.3,75.0,88.2,93.3,null,100.0,79.2,75.0,85.7,82.5,83.3,79.5,92.6,63.6,66.7,100.0,null,null,86.7,83.3,73.3,83.3,40.0,null,57.1,33.3,null,66.7,76.5,66.7,82.4,80.0,87.5,33.3,53.8,50.0,42.9,63.6,80.0,null,50.0],"borderColor":"#0866FF","backgroundColor":"#0866FF","pointRadius":2,"pointHoverRadius":5,"borderWidth":2,"tension":0.3,"borderDash":[4,4],"spanGaps":true,"fill":false}]},
+      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{labels:{font:{size:10},boxWidth:20}},tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label+": "+(ctx.parsed.y!==null?ctx.parsed.y.toFixed(1)+"%":"--");}}}},scales:{x:{ticks:{font:{size:9},maxRotation:45,autoSkip:true,maxTicksLimit:20},grid:{color:"#e2e8f0"}},y:{min:0,max:105,ticks:{font:{size:9},callback:function(v){return v+"%";}},grid:{color:"#e2e8f0"},title:{display:true,text:"CTA%",color:"#64748b",font:{size:11}}}}}
+    });
+  })();
+</script>
+<div class="sec-title">CTA% by Ad Group &middot; 30d aggregate (Amplitude)</div>
+<div style="font-size:.74rem;color:var(--text2);margin:0 0 6px">Ad-group daily data not available in AppsFlyer CSV. Values from Amplitude 30-day aggregate via <code>[AppsFlyer] ad group</code> user property. Only 30d chip shown.</div>
+<div style="display:flex;flex-wrap:wrap;margin-bottom:16px"><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">opentargeting</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 55.8%</span></div><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">New_Creatives</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 53.5%</span></div><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">no_creatives</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 65.2%</span></div><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">Bonds_UACe</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 37.7%</span></div><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">In-market aud.</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 92.9%</span></div><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">Purchase Signal</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 91.9%</span></div><div style="display:inline-flex;align-items:center;gap:5px;margin:0 8px 7px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:5px 9px;font-size:.79rem"><span style="color:#334155;font-weight:600">bond_investment</span><span style="background:#dbeafe;color:#1e40af;border-radius:4px;padding:1px 5px;font-size:.73rem">30d 78.6%</span></div></div>
 
     <div class="sec-title">Column Glossary</div>
   <div class="legend">
