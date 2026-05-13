@@ -125,6 +125,40 @@ tr:hover td { background:rgba(0,0,0,.02); }
 .chart-card { background:var(--surface2); border:1px solid var(--border);
   border-radius:var(--radius); padding:20px 24px; margin-bottom:28px; }
 .chart-wrap { position:relative; height:260px; }
+/* AF attribution tabs */
+.af-tabs { display:flex; gap:0; border-bottom:1px solid var(--border); margin-bottom:16px; }
+.af-tab { padding:8px 18px; font-size:.8rem; cursor:pointer; color:var(--text3);
+  background:none; border:none; border-bottom:2px solid transparent; transition:color .15s; }
+.af-tab.active { color:var(--blue); border-bottom-color:var(--blue); font-weight:600; }
+.af-panel { display:none; }
+.af-panel.active { display:block; }
+.chip-row { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+.chip { background:var(--surface); border:1px solid var(--border); border-radius:20px;
+  padding:5px 12px; font-size:.72rem; color:var(--text2); }
+.chip strong { color:var(--text); }
+/* Hypothesis accordion */
+.hyp-table { border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+.hyp-header-row { display:grid; grid-template-columns:2fr 1fr 3fr; gap:12px;
+  padding:8px 14px; background:var(--surface); font-size:.72rem; font-weight:600;
+  color:var(--text3); text-transform:uppercase; letter-spacing:.04em; }
+.hyp-row { cursor:pointer; border-bottom:1px solid var(--border); }
+.hyp-row:last-child { border-bottom:none; }
+.hyp-summary { display:grid; grid-template-columns:2fr 1fr 3fr; gap:12px;
+  padding:10px 14px; align-items:center; }
+.hyp-name { font-weight:600; font-size:.82rem; color:var(--text); }
+.hyp-strength { font-size:.75rem; font-weight:700; text-align:center; }
+.hyp-strength.very-strong { color:#16a34a; }
+.hyp-strength.strong { color:#2563eb; }
+.hyp-strength.moderate { color:#d97706; }
+.hyp-strength.weak-moderate { color:var(--text2); }
+.hyp-strength.weak { color:#dc2626; }
+.hyp-strength.ruled-out { color:#dc2626; }
+.hyp-evidence { font-size:.75rem; color:var(--text3); }
+.hyp-expand { display:none; padding:12px 20px 16px; background:var(--surface2);
+  border-top:1px solid var(--border); }
+.hyp-row.open .hyp-expand { display:block; }
+.hyp-field { margin-bottom:8px; font-size:.8rem; color:var(--text2); line-height:1.5; }
+.hyp-field:last-child { margin-bottom:0; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -135,7 +169,7 @@ tr:hover td { background:rgba(0,0,0,.02); }
   <div class="hdr-left">
     <h1>📲 App Activation → Signup Funnel</h1>
     <div class="sub">
-      CUR: 2026-04-13 → 2026-05-12 · PREV: 2026-03-14 → 2026-04-12 · generated 2026-05-13 12:48 IST
+      CUR: 2026-04-13 → 2026-05-12 · PREV: 2026-03-14 → 2026-04-12 · generated 2026-05-13 17:47 IST
     </div>
   </div>
   <a class="back-link" href="index.html">← Product Hub</a>
@@ -149,37 +183,25 @@ tr:hover td { background:rgba(0,0,0,.02); }
     Interpret as "users who opened the pre-signup screen" rather than fresh installs.
   </div>
 
-  <div class="sec-title" style="margin-top:20px">Mobile KPIs · Last 30 days</div>
+  <div class="sec-title" style="margin-top:20px">Mobile KPIs &middot; Last Mon&ndash;Sun week (May 4–10)</div>
   <div class="kpi-grid">
         <div class="kpi-card blue">
           <div class="kpi-label">LV Users*</div>
-          <div class="kpi-val">38,327</div>
-          
-          <div class="kpi-sub">MOBILE_LAUNCH_VIEW unique users · proxy for installs · all mobile · 30d</div>
+          <div class="kpi-val">0</div>
+          <div class="kpi-wow up">+0 WoW</div>
+          <div class="kpi-sub">new users who saw MOBILE_LAUNCH_VIEW · mobile · last Mon–Sun week · May 4–10</div>
         </div>
         <div class="kpi-card violet">
           <div class="kpi-label">Views/User</div>
-          <div class="kpi-val">3.1×</div>
+          <div class="kpi-val">—</div>
           
-          <div class="kpi-sub">avg MOBILE_LAUNCH_VIEW firings per unique user (totals ÷ daily-uniques) · all mobile</div>
-        </div>
-        <div class="kpi-card violet">
-          <div class="kpi-label">Session CTR</div>
-          <div class="kpi-val">64.8%</div>
-          
-          <div class="kpi-sub">sum-of-daily-unique CTA ÷ LV · all mobile · latest 30d</div>
+          <div class="kpi-sub">avg LV firings per unique user (totals ÷ uniques) · all users · last Mon–Sun week · May 4–10</div>
         </div>
         <div class="kpi-card violet">
           <div class="kpi-label">Unique CTR</div>
-          <div class="kpi-val">64.3%</div>
+          <div class="kpi-val">—</div>
           
-          <div class="kpi-sub">funnel-API: unique users who tapped CTA ÷ who saw LV · all mobile · latest 30d</div>
-        </div>
-        <div class="kpi-card rose">
-          <div class="kpi-label">LV→Signup</div>
-          <div class="kpi-val">30.1%</div>
-          <div class="kpi-wow down">-19.5pp WoW</div>
-          <div class="kpi-sub">end-to-end (LV proxy) · 30d</div>
+          <div class="kpi-sub">new users who tapped CTA ÷ saw LV · Funnel API new_active · last Mon–Sun week · May 4–10</div>
         </div></div>
 
 
@@ -188,8 +210,7 @@ tr:hover td { background:rgba(0,0,0,.02); }
     <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
     <p style="font-size:.68rem;color:var(--text3);margin-top:10px">
       Each data point = one Mon&ndash;Sun calendar week &middot;
-      iOS dashed = AppsFlyer install data unreliable &middot;
-      Web line = Signin PV &rarr; Signup (no install event)
+      Web line uses Signin PV as denominator (no launch screen) &mdash; not directly comparable to mobile tiers
     </p>
   </div>
   <script>
@@ -197,7 +218,7 @@ tr:hover td { background:rgba(0,0,0,.02); }
       var ctx = document.getElementById('trendChart').getContext('2d');
       new Chart(ctx, {
         type: 'line',
-        data: { labels: ["Apr 13\u201319", "Apr 20\u201326", "Apr 27\u2013May 3", "May 4\u201310"], datasets: [{"label": "Android Premium", "data": [36.8, 32.0, 26.0, 24.3], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Android Mid", "data": [38.1, 34.2, 33.8, 30.0], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Android Low", "data": [39.9, 32.7, 30.2, 25.9], "borderColor": "#d29922", "backgroundColor": "#d29922", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "iOS", "data": [26.4, 29.5, 30.7, 22.2], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [4,4], "spanGaps": true}, {"label": "Web", "data": [20.9, 24.0, 24.1, 25.0], "borderColor": "#8b949e", "backgroundColor": "#8b949e", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [2,4], "spanGaps": true}] },
+        data: { labels: ["Mar 16\u201322", "Mar 23\u201329", "Mar 30\u2013Apr 5", "Apr 6\u201312", "Apr 13\u201319", "Apr 20\u201326", "Apr 27\u2013May 3", "May 4\u201310"], datasets: [{"label": "Android Premium", "data": [133.3, 53.2, 40.9, 33.1, 36.8, 32.0, 26.0, 24.3], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Android Mid", "data": [107.5, 53.1, 45.7, 39.9, 38.1, 34.2, 33.8, 30.0], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Android Low", "data": [109.7, 52.1, 41.2, 38.7, 39.9, 32.7, 30.3, 25.9], "borderColor": "#d29922", "backgroundColor": "#d29922", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "iOS", "data": [1500.0, 47.7, 28.1, 21.1, 26.4, 29.5, 30.8, 22.3], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [], "spanGaps": true}, {"label": "Web", "data": [13.0, 19.5, 23.0, 19.8, 20.9, 24.0, 24.1, 25.0], "borderColor": "#8b949e", "backgroundColor": "#8b949e", "pointRadius": 5, "pointHoverRadius": 7, "borderWidth": 2, "tension": 0.3, "borderDash": [2,4], "spanGaps": true}] },
         options: {
           responsive: true, maintainAspectRatio: false,
           interaction: { mode: 'index', intersect: false },
@@ -237,7 +258,7 @@ tr:hover td { background:rgba(0,0,0,.02); }
       <strong>Funnel API &middot; 7-day conversion window.</strong>
       Each point D = unique new users who fired LV in [D,&thinsp;D+6] and also tapped CTA in [D,&thinsp;D+6].
       Values always &le;100% &mdash; no cross-day carry-over bias.
-      New-users-only (new_active segment). iOS dashed. Chart ends 6 days before report end to ensure all windows are full.
+      New-users-only (new_active segment). Chart ends 6 days before report end to ensure all windows are full.
     </p>
   </div>
   <script>
@@ -245,7 +266,7 @@ tr:hover td { background:rgba(0,0,0,.02); }
       var ctx3 = document.getElementById('dailyCtrChart').getContext('2d');
       new Chart(ctx3, {
         type: 'line',
-        data: { labels: ["March 14", "March 15", "March 16", "March 17", "March 18", "March 19", "March 20", "March 21", "March 22", "March 23", "March 24", "March 25", "March 26", "March 27", "March 28", "March 29", "March 30", "March 31", "April 1", "April 2", "April 3", "April 4", "April 5", "April 6", "April 7", "April 8", "April 9", "April 10", "April 11", "April 12", "April 13", "April 14", "April 15", "April 16", "April 17", "April 18", "April 19", "April 20", "April 21", "April 22", "April 23", "April 24", "April 25", "April 26", "April 27", "April 28", "April 29", "April 30", "May 1", "May 2", "May 3", "May 4", "May 5", "May 6"], datasets: [{"label": "Android Premium", "data": [83.0, 87.0, 86.7, 81.8, 84.7, 79.9, 78.2, 76.9, 74.9, 74.1, 71.8, 71.4, 73.7, 73.7, 73.1, 70.6, 71.4, 71.4, 69.2, 66.5, 66.3, 67.2, 68.5, 67.5, 68.3, 70.3, 69.8, 70.3, 69.9, 68.5, 67.3, 64.9, 62.4, 64.4, 64.7, 64.1, 62.7, 62.8, 61.7, 60.5, 60.6, 58.4, 58.5, 58.4, 56.9, 57.1, 55.3, 52.5, 51.6, 49.5, 49.3, 49.2, 48.5, 48.5], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "Android Mid", "data": [75.7, 78.5, 78.3, 78.5, 79.1, 81.3, 80.5, 80.6, 80.2, 80.5, 80.9, 83.2, 83.9, 83.3, 83.2, 83.0, 83.2, 81.9, 79.3, 78.0, 77.5, 77.8, 77.1, 76.0, 75.5, 76.3, 76.6, 75.6, 74.1, 73.9, 73.1, 72.9, 71.4, 69.5, 69.1, 69.1, 67.9, 67.5, 66.8, 65.7, 66.0, 65.9, 66.5, 66.6, 66.7, 65.7, 63.4, 62.7, 60.9, 59.9, 58.7, 58.0, 57.7, 58.0], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "Android Low", "data": [86.2, 86.3, 86.0, 85.7, 84.0, 84.6, 83.6, 83.1, 82.7, 81.9, 82.3, 85.5, 86.4, 86.0, 86.1, 85.5, 84.7, 84.6, 81.4, 80.6, 80.4, 79.9, 80.3, 79.8, 80.1, 80.3, 79.9, 79.4, 79.6, 79.1, 78.7, 77.0, 75.8, 74.5, 73.9, 72.5, 72.1, 71.5, 71.4, 70.6, 70.6, 70.9, 70.9, 70.1, 70.0, 69.3, 67.3, 65.9, 63.7, 61.8, 61.0, 60.1, 60.0, 60.2], "borderColor": "#d29922", "backgroundColor": "#d29922", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "iOS", "data": [null, null, 0.0, 0.0, 83.3, 86.0, 88.7, 85.3, 87.1, 87.5, 86.9, 86.5, 85.2, 82.8, 78.4, 75.1, 69.2, 68.8, 67.7, 66.5, 62.9, 64.2, 65.4, 66.4, 68.2, 68.2, 70.1, 72.7, 74.4, 76.1, 76.4, 78.0, 80.2, 80.7, 80.1, 81.4, 80.9, 80.5, 78.7, 75.2, 75.8, 75.3, 75.6, 75.9, 77.2, 75.5, 59.4, 56.2, 54.1, 52.3, 52.6, 50.7, 51.5, 59.4], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [4,4], "spanGaps": true}] },
+        data: { labels: ["March 14", "March 15", "March 16", "March 17", "March 18", "March 19", "March 20", "March 21", "March 22", "March 23", "March 24", "March 25", "March 26", "March 27", "March 28", "March 29", "March 30", "March 31", "April 1", "April 2", "April 3", "April 4", "April 5", "April 6", "April 7", "April 8", "April 9", "April 10", "April 11", "April 12", "April 13", "April 14", "April 15", "April 16", "April 17", "April 18", "April 19", "April 20", "April 21", "April 22", "April 23", "April 24", "April 25", "April 26", "April 27", "April 28", "April 29", "April 30", "May 1", "May 2", "May 3", "May 4", "May 5", "May 6"], datasets: [{"label": "Android Premium", "data": [83.0, 87.0, 86.7, 81.8, 84.7, 79.9, 78.2, 76.9, 74.9, 74.1, 71.8, 71.4, 73.7, 73.7, 73.1, 70.6, 71.4, 71.4, 69.2, 66.5, 66.3, 67.2, 68.5, 67.5, 68.3, 70.3, 69.8, 70.3, 69.9, 68.5, 67.3, 64.9, 62.6, 64.5, 64.8, 64.3, 63.0, 63.0, 61.9, 60.6, 60.7, 58.5, 58.6, 58.5, 56.9, 57.2, 55.4, 52.6, 51.7, 49.6, 49.4, 49.2, 48.5, 48.5], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "Android Mid", "data": [75.7, 78.5, 78.3, 78.5, 79.1, 81.3, 80.5, 80.6, 80.2, 80.5, 80.9, 83.2, 83.9, 83.3, 83.2, 83.0, 83.2, 81.9, 79.3, 78.0, 77.5, 77.8, 77.1, 76.0, 75.5, 76.3, 76.6, 75.6, 74.1, 73.9, 73.1, 72.9, 71.4, 69.5, 69.1, 69.1, 67.9, 67.5, 66.8, 65.7, 66.0, 65.9, 66.5, 66.6, 66.7, 65.7, 63.4, 62.7, 60.9, 59.9, 58.8, 58.1, 57.8, 58.2], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "Android Low", "data": [86.2, 86.3, 86.0, 85.7, 84.0, 84.6, 83.6, 83.1, 82.7, 81.9, 82.3, 85.5, 86.4, 86.0, 86.1, 85.5, 84.7, 84.6, 81.4, 80.6, 80.4, 79.9, 80.3, 79.8, 80.1, 80.3, 79.9, 79.4, 79.6, 79.1, 78.8, 77.0, 75.8, 74.5, 74.0, 72.5, 72.1, 71.5, 71.4, 70.6, 70.6, 70.9, 70.9, 70.1, 70.0, 69.3, 67.4, 66.0, 63.7, 61.8, 61.0, 60.1, 60.0, 60.2], "borderColor": "#d29922", "backgroundColor": "#d29922", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "iOS", "data": [null, null, 0.0, 0.0, 83.3, 86.0, 88.7, 85.3, 87.1, 87.5, 86.9, 86.5, 85.2, 82.8, 78.4, 75.1, 69.2, 68.8, 67.7, 66.5, 62.9, 64.2, 65.4, 66.4, 68.2, 68.2, 70.1, 72.7, 74.4, 76.1, 76.4, 78.0, 80.2, 80.7, 80.1, 81.4, 80.9, 80.5, 78.7, 75.2, 75.8, 75.5, 75.8, 76.1, 77.5, 75.7, 59.6, 56.4, 54.1, 52.3, 52.6, 50.7, 51.5, 59.4], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}] },
         options: {
           responsive: true, maintainAspectRatio: false,
           interaction: { mode: 'index', intersect: false },
@@ -284,8 +305,7 @@ tr:hover td { background:rgba(0,0,0,.02); }
     <div class="chart-wrap" style="height:280px"><canvas id="dailyVpuChart"></canvas></div>
     <p style="font-size:.68rem;color:var(--text3);margin-top:10px">
       Views per user per day = total MOBILE_LAUNCH_VIEW firings &divide; unique MOBILE_LAUNCH_VIEW users &middot;
-      A rising VPU with falling CTR suggests repeated non-converting impressions (user opens app but doesn&rsquo;t tap CTA) &middot;
-      iOS dashed
+      A rising VPU with falling CTR suggests repeated non-converting impressions (user opens app but doesn&rsquo;t tap CTA)
     </p>
   </div>
   <script>
@@ -293,7 +313,7 @@ tr:hover td { background:rgba(0,0,0,.02); }
       var ctx5 = document.getElementById('dailyVpuChart').getContext('2d');
       new Chart(ctx5, {
         type: 'line',
-        data: { labels: ["March 14", "March 15", "March 16", "March 17", "March 18", "March 19", "March 20", "March 21", "March 22", "March 23", "March 24", "March 25", "March 26", "March 27", "March 28", "March 29", "March 30", "March 31", "April 1", "April 2", "April 3", "April 4", "April 5", "April 6", "April 7", "April 8", "April 9", "April 10", "April 11", "April 12", "April 13", "April 14", "April 15", "April 16", "April 17", "April 18", "April 19", "April 20", "April 21", "April 22", "April 23", "April 24", "April 25", "April 26", "April 27", "April 28", "April 29", "April 30", "May 1", "May 2", "May 3", "May 4", "May 5", "May 6", "May 7", "May 8", "May 9", "May 10", "May 11", "May 12"], datasets: [{"label": "Android Premium (VPU)", "data": [1.0, null, null, null, null, 1.28, 1.14, 1.0, 1.34, 1.4, 1.28, 1.31, 1.29, 1.39, 1.23, 1.11, 1.14, 1.15, 1.13, 1.24, 1.43, 1.33, 1.31, 1.22, 1.2, 1.17, 1.24, 1.08, 1.14, 1.11, 1.22, 1.12, 1.15, 1.11, 1.07, 1.15, 1.16, 1.17, 1.67, 1.9, 2.27, 2.14, 2.21, 2.24, 2.26, 2.35, 2.19, 2.31, 2.39, 2.38, 2.31, 1.67, 1.45, 1.44, 1.85, 1.74, 1.63, 1.7, 1.55, 1.45], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "Android Mid (VPU)", "data": [null, 1.0, 1.0, 6.0, 2.0, 1.26, 1.12, 1.13, 1.17, 1.33, 1.28, 1.2, 1.4, 1.35, 1.22, 1.21, 1.15, 1.17, 1.23, 1.25, 1.36, 1.38, 1.34, 1.2, 1.15, 1.21, 1.16, 1.17, 1.11, 1.13, 1.11, 1.17, 1.15, 1.19, 1.14, 1.14, 1.18, 1.13, 1.8, 1.9, 2.06, 2.14, 2.18, 2.23, 2.15, 2.23, 2.32, 2.24, 2.31, 2.25, 2.29, 1.6, 1.51, 1.43, 1.85, 1.79, 1.53, 1.63, 1.53, 1.44], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "Android Low (VPU)", "data": [2.0, 1.75, 1.0, 1.5, 2.0, 1.22, 1.18, 1.18, 1.23, 1.44, 1.39, 1.27, 1.37, 1.39, 1.3, 1.34, 1.29, 1.26, 1.26, 1.29, 1.34, 1.41, 1.44, 1.24, 1.22, 1.22, 1.2, 1.2, 1.18, 1.15, 1.18, 1.16, 1.23, 1.27, 1.2, 1.22, 1.21, 1.19, 1.86, 2.07, 2.23, 2.24, 2.31, 2.38, 2.38, 2.37, 2.41, 2.48, 2.43, 2.38, 2.41, 1.71, 1.5, 1.43, 2.15, 2.03, 1.79, 1.88, 1.62, 1.52], "borderColor": "#f0883e", "backgroundColor": "#f0883e", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "iOS (VPU)", "data": [null, null, null, null, null, null, null, null, 1.0, 2.0, 1.19, 1.11, 1.22, 1.24, 1.17, 1.17, 1.2, 1.29, 1.26, 1.27, 1.36, 1.5, 1.41, 1.49, 1.45, 1.53, 1.56, 1.5, 1.46, 1.29, 1.35, 1.47, 1.42, 1.31, 1.45, 1.41, 1.43, 1.37, 1.37, 1.81, 2.05, 2.29, 2.39, 2.32, 2.38, 2.46, 2.32, 2.42, 2.37, 2.21, 2.33, 2.16, 1.92, 1.78, 1.5, 1.37, 1.53, 1.37, 1.37, 1.39], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [4,4], "spanGaps": true}] },
+        data: { labels: ["March 14", "March 15", "March 16", "March 17", "March 18", "March 19", "March 20", "March 21", "March 22", "March 23", "March 24", "March 25", "March 26", "March 27", "March 28", "March 29", "March 30", "March 31", "April 1", "April 2", "April 3", "April 4", "April 5", "April 6", "April 7", "April 8", "April 9", "April 10", "April 11", "April 12", "April 13", "April 14", "April 15", "April 16", "April 17", "April 18", "April 19", "April 20", "April 21", "April 22", "April 23", "April 24", "April 25", "April 26", "April 27", "April 28", "April 29", "April 30", "May 1", "May 2", "May 3", "May 4", "May 5", "May 6", "May 7", "May 8", "May 9", "May 10", "May 11", "May 12"], datasets: [{"label": "Android Premium (VPU)", "data": [1.0, null, null, null, null, 1.28, 1.14, 1.0, 1.34, 1.4, 1.28, 1.31, 1.29, 1.39, 1.23, 1.11, 1.14, 1.15, 1.13, 1.24, 1.43, 1.33, 1.31, 1.22, 1.2, 1.17, 1.24, 1.08, 1.14, 1.11, 1.22, 1.12, 1.15, 1.11, 1.07, 1.15, 1.16, 1.17, 1.67, 1.9, 2.27, 2.14, 2.21, 2.24, 2.26, 2.35, 2.19, 2.31, 2.39, 2.38, 2.31, 1.67, 1.45, 1.44, 1.85, 1.74, 1.63, 1.7, 1.55, 1.45], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "Android Mid (VPU)", "data": [null, 1.0, 1.0, 6.0, 2.0, 1.26, 1.12, 1.13, 1.17, 1.33, 1.28, 1.2, 1.4, 1.35, 1.22, 1.21, 1.15, 1.17, 1.23, 1.25, 1.36, 1.38, 1.34, 1.2, 1.15, 1.21, 1.16, 1.17, 1.11, 1.13, 1.11, 1.17, 1.15, 1.19, 1.14, 1.14, 1.18, 1.13, 1.8, 1.9, 2.06, 2.14, 2.18, 2.23, 2.15, 2.23, 2.32, 2.24, 2.31, 2.25, 2.29, 1.6, 1.51, 1.43, 1.85, 1.79, 1.53, 1.63, 1.53, 1.44], "borderColor": "#3fb950", "backgroundColor": "#3fb950", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "Android Low (VPU)", "data": [2.0, 1.75, 1.0, 1.5, 2.0, 1.22, 1.18, 1.18, 1.23, 1.44, 1.39, 1.27, 1.37, 1.39, 1.3, 1.34, 1.29, 1.26, 1.26, 1.29, 1.34, 1.41, 1.44, 1.24, 1.22, 1.22, 1.2, 1.2, 1.18, 1.15, 1.18, 1.16, 1.23, 1.27, 1.2, 1.22, 1.21, 1.19, 1.86, 2.07, 2.23, 2.24, 2.31, 2.38, 2.38, 2.37, 2.41, 2.48, 2.43, 2.38, 2.41, 1.71, 1.5, 1.43, 2.15, 2.03, 1.79, 1.88, 1.62, 1.52], "borderColor": "#f0883e", "backgroundColor": "#f0883e", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}, {"label": "iOS (VPU)", "data": [null, null, null, null, null, null, null, null, 1.0, 2.0, 1.19, 1.11, 1.22, 1.24, 1.17, 1.17, 1.2, 1.29, 1.26, 1.27, 1.36, 1.5, 1.41, 1.49, 1.45, 1.53, 1.56, 1.5, 1.46, 1.29, 1.35, 1.47, 1.42, 1.31, 1.45, 1.41, 1.43, 1.37, 1.37, 1.81, 2.05, 2.29, 2.39, 2.32, 2.38, 2.46, 2.32, 2.42, 2.37, 2.21, 2.33, 2.16, 1.92, 1.78, 1.5, 1.37, 1.53, 1.37, 1.37, 1.39], "borderColor": "#bc8cff", "backgroundColor": "#bc8cff", "pointRadius": 2, "pointHoverRadius": 5, "borderWidth": 1.5, "tension": 0.2, "borderDash": [], "spanGaps": true}] },
         options: {
           responsive: true, maintainAspectRatio: false,
           interaction: { mode: 'index', intersect: false },
@@ -328,265 +348,162 @@ tr:hover td { background:rgba(0,0,0,.02); }
   </script>
 
 
-  <div class="sec-title">Stage Impact · % of Install→Signup Gap by Tier</div>
-  <div class="tbl-wrap" style="margin-bottom:8px">
-    <p style="font-size:.78rem;color:var(--text2);margin:0 0 8px 0">
-      Steps sorted by average impact (top = biggest bottleneck). Each cell: <strong>% of gap</strong> = how much
-      end-to-end conversion improves if that step is fixed to 100%, as share of the total gap &middot;
-      <strong>conv%</strong> = actual step conversion rate &middot;
-      <span style="color:#dc2626">&#9632;</span> ≥20% &nbsp;
-      <span style="color:#d97706">&#9632;</span> 10–20% &nbsp;
-      <span style="color:#16a34a">&#9632;</span> &lt;10%
+  <div class="sec-title" style="margin-top:28px">AF Attribution CTA% Trends</div>
+  <div class="chart-card" style="padding:16px 20px;margin-bottom:28px">
+    <p style="font-size:.8rem;color:var(--text3)">
+      &#9888; AppsFlyer data unavailable &mdash; set <code>APPSFLYER_API_TOKEN</code>,
+      <code>APPSFLYER_APP_ID_ANDROID</code>, and <code>APPSFLYER_APP_ID_IOS</code> to enable this section.
     </p>
-    <table>
-      <thead><tr><th style="text-align:left">Step</th><th>Android Premium</th><th>Android Mid</th><th>Android Low</th><th>iOS</th></tr></thead>
-      <tbody><tr><td style='white-space:nowrap;font-size:.8rem'>LV → CTA</td><td style="text-align:center;background:#fef2f2;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#dc2626">30.6%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 56.1%</div><div style="height:4px;background:#dc2626;border-radius:2px;width:30%;margin:2px auto"></div></td><td style="text-align:center;background:#fef2f2;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#dc2626">27.4%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 63.4%</div><div style="height:4px;background:#dc2626;border-radius:2px;width:27%;margin:2px auto"></div></td><td style="text-align:center;background:#fef2f2;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#dc2626">21.6%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 66.2%</div><div style="height:4px;background:#dc2626;border-radius:2px;width:21%;margin:2px auto"></div></td><td style="text-align:center;background:#fffbeb;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#d97706">15.4%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 71.3%</div><div style="height:4px;background:#d97706;border-radius:2px;width:15%;margin:2px auto"></div></td></tr><tr><td style='white-space:nowrap;font-size:.8rem'>Signin → OTP Sent</td><td style="text-align:center;background:#fef2f2;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#dc2626">20.2%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 65.9%</div><div style="height:4px;background:#dc2626;border-radius:2px;width:20%;margin:2px auto"></div></td><td style="text-align:center;background:#fef2f2;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#dc2626">20.9%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 69.4%</div><div style="height:4px;background:#dc2626;border-radius:2px;width:20%;margin:2px auto"></div></td><td style="text-align:center;background:#fef2f2;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#dc2626">21.7%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 66.1%</div><div style="height:4px;background:#dc2626;border-radius:2px;width:21%;margin:2px auto"></div></td><td style="text-align:center;background:#fef2f2;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#dc2626">20.7%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 64.9%</div><div style="height:4px;background:#dc2626;border-radius:2px;width:20%;margin:2px auto"></div></td></tr><tr><td style='white-space:nowrap;font-size:.8rem'>Email → Signup</td><td style="text-align:center;background:#fffbeb;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#d97706">11.1%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 77.9%</div><div style="height:4px;background:#d97706;border-radius:2px;width:11%;margin:2px auto"></div></td><td style="text-align:center;background:#fffbeb;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#d97706">15.9%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 74.9%</div><div style="height:4px;background:#d97706;border-radius:2px;width:15%;margin:2px auto"></div></td><td style="text-align:center;background:#fffbeb;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#d97706">18.6%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 69.5%</div><div style="height:4px;background:#d97706;border-radius:2px;width:18%;margin:2px auto"></div></td><td style="text-align:center;background:#fef2f2;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#dc2626">24.3%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 61.2%</div><div style="height:4px;background:#dc2626;border-radius:2px;width:24%;margin:2px auto"></div></td></tr><tr><td style='white-space:nowrap;font-size:.8rem'>Screen → Entered</td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">1.0%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 97.5%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:1%;margin:2px auto"></div></td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">1.8%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 96.4%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:1%;margin:2px auto"></div></td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">1.9%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 95.6%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:1%;margin:2px auto"></div></td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">1.9%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 95.2%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:1%;margin:2px auto"></div></td></tr><tr><td style='white-space:nowrap;font-size:.8rem'>Entered → OTP✓</td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">0.4%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 99.0%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:0%;margin:2px auto"></div></td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">0.5%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 99.0%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:0%;margin:2px auto"></div></td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">0.6%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 98.7%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:0%;margin:2px auto"></div></td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">0.5%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 98.8%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:0%;margin:2px auto"></div></td></tr><tr><td style='white-space:nowrap;font-size:.8rem'>OTP✓ → Email</td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">0.6%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 98.4%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:0%;margin:2px auto"></div></td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">0.2%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 99.5%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:0%;margin:2px auto"></div></td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">0.3%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 99.2%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:0%;margin:2px auto"></div></td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">0.9%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 97.8%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:0%;margin:2px auto"></div></td></tr><tr><td style='white-space:nowrap;font-size:.8rem'>OTP Sent → Screen</td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">0.0%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 100.0%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:0%;margin:2px auto"></div></td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">0.0%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 100.0%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:0%;margin:2px auto"></div></td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">0.0%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 100.0%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:0%;margin:2px auto"></div></td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">0.0%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 100.0%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:0%;margin:2px auto"></div></td></tr><tr><td style='white-space:nowrap;font-size:.8rem'>CTA → Signin</td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">-1.1%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 102.8%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:-1%;margin:2px auto"></div></td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">-1.3%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 102.9%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:-1%;margin:2px auto"></div></td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">-1.8%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 104.5%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:-1%;margin:2px auto"></div></td><td style="text-align:center;background:#f0fdf4;padding:6px 8px"><div style="font-size:.95rem;font-weight:700;color:#16a34a">-2.3%</div><div style="font-size:.65rem;color:var(--text3);margin:2px 0">conv 106.4%</div><div style="height:4px;background:#16a34a;border-radius:2px;width:-2%;margin:2px auto"></div></td></tr></tbody>
-    </table>
   </div>
 
-  <div class="sec-title">Channel Funnel · Install → Signup by Marketing Channel</div>
-  <div class="tbl-wrap" style="margin-bottom:8px">
-    <p style="font-size:.78rem;color:var(--text2);margin:0 0 8px 0">
-      Based on the <code>[AppsFlyer] Install</code> event with <code>[AppsFlyer] media source</code> user property for channel attribution.
-      The "All (mobile)" row uses no filter — AppsFlyer 44k vs Amplitude 30k gap represents ~14k dead installs who never
-      opened the app, excluded from all downstream steps.<br/><span style="color:#f59e0b">⚠ Per-channel rows unavailable: Amplitude's Funnel API rejects <code>[AppsFlyer] media source</code> as a filter (property is not in the queryable schema). Use AppsFlyer dashboard directly for channel-level data.</span>
+  <div class="sec-title" style="margin-top:32px">CTA% Drop &middot; Root Cause Hypothesis Ranking</div>
+  <div class="chart-card" style="padding:20px 24px 24px;margin-bottom:28px">
+    <p style="font-size:.78rem;color:var(--text2);margin:0 0 16px 0">
+      Repeat-user CTA% = 98% (logged-out users, same screen) &mdash; rules out technical glitch and UI bugs.
+      Ad group gap: In-market audience 92% vs Bonds_UACe 37% on the <em>same screen</em> &mdash; confirms user intent quality as primary lever.
     </p>
-    <table>
-      <thead>
-        <tr>
-          <th style="text-align:left">Channel</th>
-          <th>Install</th><th>Launch View</th><th>Launch CTA</th><th>Signin PV</th><th>OTP ✓</th><th>Signup</th>
-          <th title="Signup ÷ Install end-to-end">Install→Signup</th>
-        </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td style="font-weight:600;white-space:nowrap">All (mobile)</td>
-        <td style='text-align:right'>33,362</td><td style='text-align:right'>13,622<br/><span style='font-size:.62rem;color:var(--text3)'>40.8%</span></td><td style='text-align:right'>7,673<br/><span style='font-size:.62rem;color:var(--text3)'>56.3%</span></td><td style='text-align:right'>7,625<br/><span style='font-size:.62rem;color:var(--text3)'>99.4%</span></td><td style='text-align:right'>4,256<br/><span style='font-size:.62rem;color:var(--text3)'>55.8%</span></td><td style='text-align:right'>2,223<br/><span style='font-size:.62rem;color:var(--text3)'>52.2%</span></td>
-        <td style="text-align:right;font-weight:700;color:var(--green)">6.7%</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+    <div class="hyp-table">
+      <div class="hyp-header-row">
+        <span>Hypothesis</span><span>Strength</span><span>Key Evidence</span>
+      </div>
 
-  <div class="sec-title">CTA% by Media Source &middot; AppsFlyer direct &middot; last 30d (overall mobile CTA% = 64.8%)</div>
-  <div class="chart-card" style="padding:16px 20px 20px;margin-bottom:28px">
-    <p style="font-size:.72rem;color:var(--text2);margin:0 0 10px 0">
-      Unique users who saw the launch screen (LV) and tapped CTA, attributed via <code>[AppsFlyer] media source</code>.
-      Rows with &lt;50 LV excluded (statistically noisy).
-      Delta vs overall mobile CTA% &mdash;
-      <span style='color:#16a34a;font-weight:600'>green</span> &ge;4pp above &middot;
-      <span style='color:#d97706;font-weight:600'>amber</span> 4&ndash;10pp below &middot;
-      <span style='color:#dc2626;font-weight:600'>red</span> &ge;10pp below.
-    </p>
-    <div class="tbl-wrap" style="margin:0">
-    <table>
-      <thead><tr>
-        <th style="text-align:left">Media Source</th>
-        <th title="Unique users who saw the launch screen">LV Uniques</th>
-        <th title="Unique users who tapped CTA">CTA Uniques</th>
-        <th title="CTA% = CTA ÷ LV unique users · delta vs overall mobile">CTA%</th>
-      </tr></thead>
-      <tbody><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>(none)</td><td style='text-align:right'>57,342</td><td style='text-align:right'>36,740</td><td style='text-align:right;font-weight:700;color:var(--text)'>64.1% <span style='font-size:.65rem;color:var(--text)'>(−0.7pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>googleadwords_int</td><td style='text-align:right'>12,813</td><td style='text-align:right'>7,213</td><td style='text-align:right;font-weight:700;color:#d97706'>56.3% <span style='font-size:.65rem;color:#d97706'>(−8.5pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>organic</td><td style='text-align:right'>904</td><td style='text-align:right'>450</td><td style='text-align:right;font-weight:700;color:#dc2626'>49.8% <span style='font-size:.65rem;color:#dc2626'>(−15.0pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>sokendev_int</td><td style='text-align:right'>57</td><td style='text-align:right'>64</td><td style='text-align:right;font-weight:700;color:#16a34a'>112.3% <span style='font-size:.65rem;color:#16a34a'>(+47.5pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>Zomato_CPI</td><td style='text-align:right'>54</td><td style='text-align:right'>46</td><td style='text-align:right;font-weight:700;color:#16a34a'>85.2% <span style='font-size:.65rem;color:#16a34a'>(+20.4pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>foxmobiwy_int</td><td style='text-align:right'>52</td><td style='text-align:right'>53</td><td style='text-align:right;font-weight:700;color:#16a34a'>101.9% <span style='font-size:.65rem;color:#16a34a'>(+37.1pp)</span></td></tr></tbody>
-    </table>
-    </div>
-  </div>
-  <div class="sec-title">CTA% by Channel &middot; AppsFlyer direct &middot; last 30d (overall mobile CTA% = 64.8%)</div>
-  <div class="chart-card" style="padding:16px 20px 20px;margin-bottom:28px">
-    <p style="font-size:.72rem;color:var(--text2);margin:0 0 10px 0">
-      Unique users who saw the launch screen (LV) and tapped CTA, attributed via <code>[AppsFlyer] channel</code>.
-      Rows with &lt;50 LV excluded (statistically noisy).
-      Delta vs overall mobile CTA% &mdash;
-      <span style='color:#16a34a;font-weight:600'>green</span> &ge;4pp above &middot;
-      <span style='color:#d97706;font-weight:600'>amber</span> 4&ndash;10pp below &middot;
-      <span style='color:#dc2626;font-weight:600'>red</span> &ge;10pp below.
-    </p>
-    <div class="tbl-wrap" style="margin:0">
-    <table>
-      <thead><tr>
-        <th style="text-align:left">Channel</th>
-        <th title="Unique users who saw the launch screen">LV Uniques</th>
-        <th title="Unique users who tapped CTA">CTA Uniques</th>
-        <th title="CTA% = CTA ÷ LV unique users · delta vs overall mobile">CTA%</th>
-      </tr></thead>
-      <tbody><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>(none)</td><td style='text-align:right'>58,605</td><td style='text-align:right'>37,542</td><td style='text-align:right;font-weight:700;color:var(--text)'>64.1% <span style='font-size:.65rem;color:var(--text)'>(−0.7pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>ACI_Display</td><td style='text-align:right'>9,524</td><td style='text-align:right'>5,161</td><td style='text-align:right;font-weight:700;color:#dc2626'>54.2% <span style='font-size:.65rem;color:#dc2626'>(−10.6pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>ACI_Search</td><td style='text-align:right'>1,575</td><td style='text-align:right'>1,303</td><td style='text-align:right;font-weight:700;color:#16a34a'>82.7% <span style='font-size:.65rem;color:#16a34a'>(+17.9pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>ACE_Display</td><td style='text-align:right'>1,330</td><td style='text-align:right'>518</td><td style='text-align:right;font-weight:700;color:#dc2626'>38.9% <span style='font-size:.65rem;color:#dc2626'>(−25.9pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>ACI_Youtube</td><td style='text-align:right'>629</td><td style='text-align:right'>295</td><td style='text-align:right;font-weight:700;color:#dc2626'>46.9% <span style='font-size:.65rem;color:#dc2626'>(−17.9pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>ACE_Youtube</td><td style='text-align:right'>244</td><td style='text-align:right'>85</td><td style='text-align:right;font-weight:700;color:#dc2626'>34.8% <span style='font-size:.65rem;color:#dc2626'>(−30.0pp)</span></td></tr></tbody>
-    </table>
-    </div>
-  </div>
-  <div class="sec-title">CTA% by Campaign &middot; AppsFlyer direct &middot; last 30d (overall mobile CTA% = 64.8%)</div>
-  <div class="chart-card" style="padding:16px 20px 20px;margin-bottom:28px">
-    <p style="font-size:.72rem;color:var(--text2);margin:0 0 10px 0">
-      Unique users who saw the launch screen (LV) and tapped CTA, attributed via <code>[AppsFlyer] campaign</code>.
-      Rows with &lt;50 LV excluded (statistically noisy).
-      Delta vs overall mobile CTA% &mdash;
-      <span style='color:#16a34a;font-weight:600'>green</span> &ge;4pp above &middot;
-      <span style='color:#d97706;font-weight:600'>amber</span> 4&ndash;10pp below &middot;
-      <span style='color:#dc2626;font-weight:600'>red</span> &ge;10pp below.
-    </p>
-    <div class="tbl-wrap" style="margin:0">
-    <table>
-      <thead><tr>
-        <th style="text-align:left">Campaign</th>
-        <th title="Unique users who saw the launch screen">LV Uniques</th>
-        <th title="Unique users who tapped CTA">CTA Uniques</th>
-        <th title="CTA% = CTA ÷ LV unique users · delta vs overall mobile">CTA%</th>
-      </tr></thead>
-      <tbody><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>(none)</td><td style='text-align:right'>58,536</td><td style='text-align:right'>37,414</td><td style='text-align:right;font-weight:700;color:var(--text)'>63.9% <span style='font-size:.65rem;color:var(--text)'>(−0.9pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>ADS_IND_APP_AOS_PaymentSuccess_tcpa_22ndSept25</td><td style='text-align:right'>10,493</td><td style='text-align:right'>5,791</td><td style='text-align:right;font-weight:700;color:#d97706'>55.2% <span style='font-size:.65rem;color:#d97706'>(−9.6pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>Aspero_UACe_Install-KYC_Bonds_05052026</td><td style='text-align:right'>1,159</td><td style='text-align:right'>432</td><td style='text-align:right;font-weight:700;color:#dc2626'>37.3% <span style='font-size:.65rem;color:#dc2626'>(−27.5pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>ADS_IND_APP_AOS_BankVerified_tcpa_4dec25</td><td style='text-align:right'>588</td><td style='text-align:right'>595</td><td style='text-align:right;font-weight:700;color:#16a34a'>101.2% <span style='font-size:.65rem;color:#16a34a'>(+36.4pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>ADS_IND_APP_AOS_PaymentSuccess_Firebase_24042026</td><td style='text-align:right'>524</td><td style='text-align:right'>350</td><td style='text-align:right;font-weight:700;color:var(--text)'>66.8% <span style='font-size:.65rem;color:var(--text)'>(+2.0pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>HM_Engagement_20032026</td><td style='text-align:right'>285</td><td style='text-align:right'>111</td><td style='text-align:right;font-weight:700;color:#dc2626'>38.9% <span style='font-size:.65rem;color:#dc2626'>(−25.9pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>Aspero_UACe_KYC-Purchase_Bonds_09012026</td><td style='text-align:right'>153</td><td style='text-align:right'>75</td><td style='text-align:right;font-weight:700;color:#dc2626'>49.0% <span style='font-size:.65rem;color:#dc2626'>(−15.8pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>HM_iOS_Install_18032026</td><td style='text-align:right'>141</td><td style='text-align:right'>39</td><td style='text-align:right;font-weight:700;color:#dc2626'>27.7% <span style='font-size:.65rem;color:#dc2626'>(−37.1pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>ASPERO_SANDBOX</td><td style='text-align:right'>73</td><td style='text-align:right'>76</td><td style='text-align:right;font-weight:700;color:#16a34a'>104.1% <span style='font-size:.65rem;color:#16a34a'>(+39.3pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>Zomato_14Apr</td><td style='text-align:right'>54</td><td style='text-align:right'>44</td><td style='text-align:right;font-weight:700;color:#16a34a'>81.5% <span style='font-size:.65rem;color:#16a34a'>(+16.7pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>ASPERO</td><td style='text-align:right'>50</td><td style='text-align:right'>52</td><td style='text-align:right;font-weight:700;color:#16a34a'>104.0% <span style='font-size:.65rem;color:#16a34a'>(+39.2pp)</span></td></tr></tbody>
-    </table>
-    </div>
-  </div>
-  <div class="sec-title">CTA% by Ad Group &middot; AppsFlyer direct &middot; last 30d (overall mobile CTA% = 64.8%)</div>
-  <div class="chart-card" style="padding:16px 20px 20px;margin-bottom:28px">
-    <p style="font-size:.72rem;color:var(--text2);margin:0 0 10px 0">
-      Unique users who saw the launch screen (LV) and tapped CTA, attributed via <code>[AppsFlyer] ad group</code>.
-      Rows with &lt;50 LV excluded (statistically noisy).
-      Delta vs overall mobile CTA% &mdash;
-      <span style='color:#16a34a;font-weight:600'>green</span> &ge;4pp above &middot;
-      <span style='color:#d97706;font-weight:600'>amber</span> 4&ndash;10pp below &middot;
-      <span style='color:#dc2626;font-weight:600'>red</span> &ge;10pp below.
-    </p>
-    <div class="tbl-wrap" style="margin:0">
-    <table>
-      <thead><tr>
-        <th style="text-align:left">Ad Group</th>
-        <th title="Unique users who saw the launch screen">LV Uniques</th>
-        <th title="Unique users who tapped CTA">CTA Uniques</th>
-        <th title="CTA% = CTA ÷ LV unique users · delta vs overall mobile">CTA%</th>
-      </tr></thead>
-      <tbody><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>(none)</td><td style='text-align:right'>58,569</td><td style='text-align:right'>37,471</td><td style='text-align:right;font-weight:700;color:var(--text)'>64.0% <span style='font-size:.65rem;color:var(--text)'>(−0.8pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>opentargeting_age_householdincome_filtered</td><td style='text-align:right'>5,026</td><td style='text-align:right'>2,782</td><td style='text-align:right;font-weight:700;color:#d97706'>55.4% <span style='font-size:.65rem;color:#d97706'>(−9.4pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>New_Creatives_FD01_CIK_Oct25</td><td style='text-align:right'>4,844</td><td style='text-align:right'>2,606</td><td style='text-align:right;font-weight:700;color:#dc2626'>53.8% <span style='font-size:.65rem;color:#dc2626'>(−11.0pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>Bonds_UACe_Install-KYC_05052026</td><td style='text-align:right'>1,159</td><td style='text-align:right'>432</td><td style='text-align:right;font-weight:700;color:#dc2626'>37.3% <span style='font-size:.65rem;color:#dc2626'>(−27.5pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>no_creatives_opentargeting_age_householdincome_filtered</td><td style='text-align:right'>1,131</td><td style='text-align:right'>739</td><td style='text-align:right;font-weight:700;color:var(--text)'>65.3% <span style='font-size:.65rem;color:var(--text)'>(+0.5pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>In-market%20audience_9dec</td><td style='text-align:right'>321</td><td style='text-align:right'>296</td><td style='text-align:right;font-weight:700;color:#16a34a'>92.2% <span style='font-size:.65rem;color:#16a34a'>(+27.4pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>Install_Order540D</td><td style='text-align:right'>285</td><td style='text-align:right'>111</td><td style='text-align:right;font-weight:700;color:#dc2626'>38.9% <span style='font-size:.65rem;color:#dc2626'>(−25.9pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>bond_investment_quickwins_kws_15dec25</td><td style='text-align:right'>254</td><td style='text-align:right'>198</td><td style='text-align:right;font-weight:700;color:#16a34a'>78.0% <span style='font-size:.65rem;color:#16a34a'>(+13.2pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>Bonds_UACe_KYC-Purchase_09012026</td><td style='text-align:right'>153</td><td style='text-align:right'>75</td><td style='text-align:right;font-weight:700;color:#dc2626'>49.0% <span style='font-size:.65rem;color:#dc2626'>(−15.8pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>Purchase%20Signal_12012026</td><td style='text-align:right'>153</td><td style='text-align:right'>139</td><td style='text-align:right;font-weight:700;color:#16a34a'>90.8% <span style='font-size:.65rem;color:#16a34a'>(+26.0pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>FM121</td><td style='text-align:right'>63</td><td style='text-align:right'>68</td><td style='text-align:right;font-weight:700;color:#16a34a'>107.9% <span style='font-size:.65rem;color:#16a34a'>(+43.1pp)</span></td></tr><tr><td style='font-size:.78rem;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>cliP</td><td style='text-align:right'>59</td><td style='text-align:right'>60</td><td style='text-align:right;font-weight:700;color:#16a34a'>101.7% <span style='font-size:.65rem;color:#16a34a'>(+36.9pp)</span></td></tr></tbody>
-    </table>
-    </div>
-  </div>
+      <div class="hyp-row" onclick="toggleHyp(this)">
+        <div class="hyp-summary">
+          <span class="hyp-name">User intent quality degradation from spend mix</span>
+          <span class="hyp-strength very-strong">Very Strong</span>
+          <span class="hyp-evidence">In-market 92% vs UACe 37% on same screen &mdash; 2.5&times; gap</span>
+        </div>
+        <div class="hyp-expand">
+          <div class="hyp-field"><strong>Why it matters:</strong> CTA% is the primary bottleneck in this funnel. A 2.5&times; CTA% gap between ad groups on the <em>identical screen</em> isolates user intent as the lever &mdash; not the product, not the UI.</div>
+          <div class="hyp-field"><strong>Supporting data:</strong> See Sections 7&ndash;10 &middot; Ad Group tab &mdash; In-market shows ~92% CTA%; Bonds_UACe shows ~37%. All other variables (screen, device, time of day) held constant across both groups.</div>
+          <div class="hyp-field"><strong>How to validate:</strong> Run a spend-shift experiment: move 20% of Bonds_UACe budget to In-market for 2 weeks. If blended CTA% rises proportionally to the spend share change, hypothesis confirmed.</div>
+          <div class="hyp-field"><strong>Recommended action:</strong> Reallocate budget toward In-market + purchase-signal audiences. Cap broad UACe spend until creative/landing-screen alignment is fixed. Track blended CTA% weekly in Section 4.</div>
+        </div>
+      </div>
 
-  <div class="sec-title">Full Funnel by Device Tier</div>
-  <div class="tbl-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th rowspan="2" style="text-align:left">Tier</th>
-          <th rowspan="2" title="MOBILE_LAUNCH_VIEW unique users — used as install proxy (AppsFlyer data excluded). Marked * throughout.">LV Users*<br/><span style="font-size:.6rem;color:var(--text3)">(proxy)</span></th>
-          <th colspan="2" class="stage-hdr-ovr">
-            ← Pre-Signup · App Activation →
-          </th>
-          <th colspan="5" class="stage-hdr-s1">
-            ← Stage 1 · OTP Verification (new users, Iris Pulse segment) →
-          </th>
-          <th colspan="2" class="stage-hdr-s2">
-            Stage 2 · Registration →
-          </th>
-          <th colspan="2" class="stage-hdr-ovr">Overall</th>
-        </tr>
-        <tr>
-          <th title="Views/User = metric=totals (every LAUNCH_VIEW firing) ÷ metric=uniques (daily-unique sum). Shows avg times app is opened to launch screen per unique user per period.">Views/User<br/><span style="font-size:.62rem;color:var(--text3)">(totals÷uniq)</span></th>
-          <th title="MOBILE_LAUNCH_CTA_CLICKED — Session CTR = sum-of-daily-unique CTA ÷ LV. Unique CTR (sub-row) = funnel-API true unique users who tapped CTA ÷ who saw LV.">Launch CTA<br/><span style="font-size:.62rem;color:var(--text3)">(session / uniq CTR)</span></th>
-          <th title="SIGNIN_PAGE_VIEW (new users) — conv% = Signin PV ÷ Launch CTA">Signin PV<br/><span style="font-size:.62rem;color:var(--text3)">(CTA→Si%)</span></th>
-          <th title="SIGNIN_PAGE_VERIFY_API_SUCCESS — number submitted, OTP dispatched — conv% = Sent ÷ Signin PV">OTP Sent<br/><span style="font-size:.62rem;color:var(--text3)">(Si→Sent%)</span></th>
-          <th title="VERIFY_OTP_PAGE_VIEW — OTP entry screen reached — conv% = Screen ÷ Sent">OTP Screen<br/><span style="font-size:.62rem;color:var(--text3)">(Sent→Scr%)</span></th>
-          <th title="VERIFY_OTP_ENTERED — user entered an OTP — conv% = Entered ÷ Screen">OTP Entered<br/><span style="font-size:.62rem;color:var(--text3)">(Scr→Ent%)</span></th>
-          <th title="VERIFY_OTP_SUCCESS — OTP verified — conv% = Verified ÷ Entered">OTP ✓<br/><span style="font-size:.62rem;color:var(--text3)">(Ent→✓%)</span></th>
-          <th title="EMAIL_PAGE_VIEW — Stage 2 entry, fires only on first-time reg — conv% = Email ÷ OTP✓">Email PV<br/><span style="font-size:.62rem;color:var(--text3)">(OTP✓→Em%)</span></th>
-          <th title="SETUP_SECURE_PIN_SUCCESS — registration complete — conv% = Signup ÷ Email PV">Signup<br/><span style="font-size:.62rem;color:var(--text3)">(Em→Sg%)</span></th>
-          <th title="Signup ÷ LV Users* (end-to-end, proxy)">LV*→Signup</th>
-          <th title="LV*→Signup current 30d vs prior 30d">WoW</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="tier-name">Android Premium</td>
-          <td class="step-cell"><span class="cnt">3,691</span><span class="dim" style="font-size:.65rem;margin-left:3px" title="Proxy: MOBILE_LAUNCH_VIEW unique users (AppsFlyer install data excluded)">*</span></td>
-          <td style="text-align:right"><span class="rate-warn" title="avg MOBILE_LAUNCH_VIEW firings per unique user (totals ÷ daily-uniques)">1.8×</span></td>
-          <td class="step-cell"><span class="cnt">2,069</span><span class="rate-bad" title="Session CTR: sum-of-daily-unique CTA ÷ LV"> 56.1%</span><br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR: funnel-API unique users (true unique)">uniq: <span class="rate-bad">57.6%</span></span></td>
-          <td class="step-cell"><span class="cnt">2,126</span><span class="rate-good"> 102.8%</span></td>
-          <td class="step-cell"><span class="cnt">1,402</span><span class="rate-warn"> 65.9%</span></td>
-          <td class="step-cell"><span class="cnt">1,402</span><span class="rate-good"> 100.0%</span></td>
-          <td class="step-cell"><span class="cnt">1,367</span><span class="rate-good"> 97.5%</span></td>
-          <td class="step-cell"><span class="cnt">1,354</span><span class="rate-good"> 99.0%</span></td>
-          <td class="step-cell"><span class="cnt">1,333</span><span class="rate-good"> 98.4%</span></td>
-          <td class="step-cell"><span class="cnt">1,039</span><span class="rate-warn"> 77.9%</span></td>
-          <td style="text-align:right;font-weight:700">28.1%</td>
-          <td><span class="wow down">-22.1pp</span></td>
-        </tr>
-        <tr>
-          <td class="tier-name">Android Mid</td>
-          <td class="step-cell"><span class="cnt">9,223</span><span class="dim" style="font-size:.65rem;margin-left:3px" title="Proxy: MOBILE_LAUNCH_VIEW unique users (AppsFlyer install data excluded)">*</span></td>
-          <td style="text-align:right"><span class="rate-warn" title="avg MOBILE_LAUNCH_VIEW firings per unique user (totals ÷ daily-uniques)">1.7×</span></td>
-          <td class="step-cell"><span class="cnt">5,848</span><span class="rate-bad" title="Session CTR: sum-of-daily-unique CTA ÷ LV"> 63.4%</span><br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR: funnel-API unique users (true unique)">uniq: <span class="rate-bad">63.3%</span></span></td>
-          <td class="step-cell"><span class="cnt">6,016</span><span class="rate-good"> 102.9%</span></td>
-          <td class="step-cell"><span class="cnt">4,177</span><span class="rate-warn"> 69.4%</span></td>
-          <td class="step-cell"><span class="cnt">4,177</span><span class="rate-good"> 100.0%</span></td>
-          <td class="step-cell"><span class="cnt">4,028</span><span class="rate-good"> 96.4%</span></td>
-          <td class="step-cell"><span class="cnt">3,989</span><span class="rate-good"> 99.0%</span></td>
-          <td class="step-cell"><span class="cnt">3,971</span><span class="rate-good"> 99.5%</span></td>
-          <td class="step-cell"><span class="cnt">2,973</span><span class="rate-warn"> 74.9%</span></td>
-          <td style="text-align:right;font-weight:700">32.2%</td>
-          <td><span class="wow down">-21.0pp</span></td>
-        </tr>
-        <tr>
-          <td class="tier-name">Android Low</td>
-          <td class="step-cell"><span class="cnt">23,462</span><span class="dim" style="font-size:.65rem;margin-left:3px" title="Proxy: MOBILE_LAUNCH_VIEW unique users (AppsFlyer install data excluded)">*</span></td>
-          <td style="text-align:right"><span class="rate-warn" title="avg MOBILE_LAUNCH_VIEW firings per unique user (totals ÷ daily-uniques)">1.9×</span></td>
-          <td class="step-cell"><span class="cnt">15,533</span><span class="rate-bad" title="Session CTR: sum-of-daily-unique CTA ÷ LV"> 66.2%</span><br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR: funnel-API unique users (true unique)">uniq: <span class="rate-bad">65.6%</span></span></td>
-          <td class="step-cell"><span class="cnt">16,227</span><span class="rate-good"> 104.5%</span></td>
-          <td class="step-cell"><span class="cnt">10,731</span><span class="rate-warn"> 66.1%</span></td>
-          <td class="step-cell"><span class="cnt">10,726</span><span class="rate-good"> 100.0%</span></td>
-          <td class="step-cell"><span class="cnt">10,250</span><span class="rate-good"> 95.6%</span></td>
-          <td class="step-cell"><span class="cnt">10,114</span><span class="rate-good"> 98.7%</span></td>
-          <td class="step-cell"><span class="cnt">10,037</span><span class="rate-good"> 99.2%</span></td>
-          <td class="step-cell"><span class="cnt">6,977</span><span class="rate-bad"> 69.5%</span></td>
-          <td style="text-align:right;font-weight:700">29.7%</td>
-          <td><span class="wow down">-20.8pp</span></td>
-        </tr>
-        <tr>
-          <td class="tier-name">iOS</td>
-          <td class="step-cell"><span class="cnt">1,951</span><span class="dim" style="font-size:.65rem;margin-left:3px" title="Proxy: MOBILE_LAUNCH_VIEW unique users (AppsFlyer install data excluded)">*</span></td>
-          <td style="text-align:right"><span class="rate-warn" title="avg MOBILE_LAUNCH_VIEW firings per unique user (totals ÷ daily-uniques)">1.7×</span></td>
-          <td class="step-cell"><span class="cnt">1,391</span><span class="rate-warn" title="Session CTR: sum-of-daily-unique CTA ÷ LV"> 71.3%</span><br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR: funnel-API unique users (true unique)">uniq: <span class="rate-bad">67.3%</span></span></td>
-          <td class="step-cell"><span class="cnt">1,480</span><span class="rate-good"> 106.4%</span></td>
-          <td class="step-cell"><span class="cnt">960</span><span class="rate-bad"> 64.9%</span></td>
-          <td class="step-cell"><span class="cnt">960</span><span class="rate-good"> 100.0%</span></td>
-          <td class="step-cell"><span class="cnt">914</span><span class="rate-good"> 95.2%</span></td>
-          <td class="step-cell"><span class="cnt">903</span><span class="rate-good"> 98.8%</span></td>
-          <td class="step-cell"><span class="cnt">883</span><span class="rate-good"> 97.8%</span></td>
-          <td class="step-cell"><span class="cnt">540</span><span class="rate-bad"> 61.2%</span></td>
-          <td style="text-align:right;font-weight:700">27.7%</td>
-          <td><span class="wow down">-6.5pp</span></td>
-        </tr>
-        <tr>
-          <td class="tier-name">Web</td>
-          <td class="dim" style="text-align:right">(web)</td>
-          <td class="dim" style="text-align:right">(web)</td>
-          <td class="dim" style="text-align:right">(web)</td>
-          <td class="step-cell"><span class="cnt">937</span><span class="dim"> —</span></td>
-          <td class="step-cell"><span class="cnt">342</span><span class="rate-bad"> 36.5%</span></td>
-          <td class="step-cell"><span class="cnt">341</span><span class="rate-good"> 99.7%</span></td>
-          <td class="step-cell"><span class="cnt">306</span><span class="rate-good"> 89.7%</span></td>
-          <td class="step-cell"><span class="cnt">290</span><span class="rate-good"> 94.8%</span></td>
-          <td class="step-cell"><span class="cnt">270</span><span class="rate-good"> 93.1%</span></td>
-          <td class="step-cell"><span class="cnt">216</span><span class="rate-warn"> 80.0%</span></td>
-          <td style="text-align:right;font-weight:700">23.1%</td>
-          <td><span class="wow up">+3.3pp</span></td>
-        </tr>
-        <tr class="total-row">
-          <td class="tier-name">Mobile Total</td>
-          <td class="step-cell"><span class="cnt">38,327</span><span class="dim" style="font-size:.65rem;margin-left:3px">*</span></td>
-          <td style="text-align:right"><span class="rate-bad" title="avg LV firings per unique user (totals ÷ daily-uniques)">3.1×</span></td>
-          <td class="step-cell"><span class="cnt">24,841</span>
-            <span class="rate-bad" title="Session CTR"> 64.8%</span>
-            <br/><span class="dim" style="font-size:.65rem;margin-left:4px" title="Unique CTR">uniq: <span class="rate-bad">64.3%</span></span></td>
-          <td class="step-cell"><span class="cnt">25,849</span><span class="rate-good"> 104.1%</span></td>
-          <td class="step-cell"><span class="cnt">17,270</span><span class="rate-warn"> 66.8%</span></td>
-          <td class="step-cell"><span class="cnt">17,265</span><span class="rate-good"> 100.0%</span></td>
-          <td class="step-cell"><span class="cnt">16,559</span><span class="rate-good"> 95.9%</span></td>
-          <td class="step-cell"><span class="cnt">16,360</span><span class="rate-good"> 98.8%</span></td>
-          <td class="step-cell"><span class="cnt">16,224</span><span class="rate-good"> 99.2%</span></td>
-          <td class="step-cell"><span class="cnt">11,529</span><span class="rate-warn"> 71.1%</span></td>
-          <td style="text-align:right;font-weight:700">30.1%</td>
-          <td><span class="wow down">-19.5pp</span></td>
-        </tr></tbody>
-    </table>
-  </div>
+      <div class="hyp-row" onclick="toggleHyp(this)">
+        <div class="hyp-summary">
+          <span class="hyp-name">Ad creative &harr; landing screen disconnect</span>
+          <span class="hyp-strength strong">Strong</span>
+          <span class="hyp-evidence">UAC auto-creatives show generic investment imagery; screen is bonds-specific</span>
+        </div>
+        <div class="hyp-expand">
+          <div class="hyp-field"><strong>Why it matters:</strong> Users arrive expecting a broad investment product (mutual funds, stocks) based on the ad creative, then see a bonds-specific screen. The cognitive mismatch causes immediate exit before engaging with the CTA.</div>
+          <div class="hyp-field"><strong>Supporting data:</strong> Google UAC auto-generates creatives from app store assets &mdash; these are generic &ldquo;grow your money&rdquo; themes. The landing screen is explicitly about bonds (&ldquo;Invest in Bonds&rdquo;, SEBI badge, coupon rate language).</div>
+          <div class="hyp-field"><strong>How to validate:</strong> Create a bonds-specific creative set (coupon rate, SEBI-regulated, ₹ denominations). Run A/B split vs. auto-creatives on same UACe campaign. Measure CTA% difference within same ad group.</div>
+          <div class="hyp-field"><strong>Recommended action:</strong> Upload 5&ndash;7 bonds-specific creative variants to the UAC campaign. Include the phrase &ldquo;bonds&rdquo; in all headlines. Expected to recover 15&ndash;25pp of UACe CTA%.</div>
+        </div>
+      </div>
 
-  <div class="sec-title">Column Glossary</div>
+      <div class="hyp-row" onclick="toggleHyp(this)">
+        <div class="hyp-summary">
+          <span class="hyp-name">&ldquo;Bonds&rdquo; category awareness gap</span>
+          <span class="hyp-strength strong">Strong</span>
+          <span class="hyp-evidence">Repeat users 98% CTA% &mdash; they know the product; new broad cohorts don&rsquo;t</span>
+        </div>
+        <div class="hyp-expand">
+          <div class="hyp-field"><strong>Why it matters:</strong> The 98% repeat-user CTA% is a ceiling benchmark &mdash; it shows the screen itself is fine for informed users. The gap to new cohorts is purely a &ldquo;what is this product?&rdquo; awareness problem.</div>
+          <div class="hyp-field"><strong>Supporting data:</strong> Repeat users (logged-out, same MOBILE_LAUNCH_VIEW screen) convert at 98%. New broad-match cohorts drop to ~37&ndash;45%. The screen does not explain bonds before asking the user to tap &ldquo;Get Started.&rdquo;</div>
+          <div class="hyp-field"><strong>How to validate:</strong> Add a one-liner below the headline: &ldquo;Bonds = fixed deposits with higher returns, SEBI-regulated.&rdquo; Run A/B test. Measure CTA% lift for UACe / opentargeting segments specifically.</div>
+          <div class="hyp-field"><strong>Recommended action:</strong> Add a 10-word bond explainer to the pre-signup screen. A/B test with Amplitude feature flag. Segment analysis by new vs. returning user to confirm lift is concentrated in new cohorts.</div>
+        </div>
+      </div>
+
+      <div class="hyp-row" onclick="toggleHyp(this)">
+        <div class="hyp-summary">
+          <span class="hyp-name">Missing social proof</span>
+          <span class="hyp-strength moderate">Moderate</span>
+          <span class="hyp-evidence">No &ldquo;1L+ investors / ₹500cr&rdquo; signal on launch screen</span>
+        </div>
+        <div class="hyp-expand">
+          <div class="hyp-field"><strong>Why it matters:</strong> New low-intent users from broad campaigns need external validation (&ldquo;others like me are using this&rdquo;) before committing. Repeat users already have internal validation; this fix targets new cohorts only.</div>
+          <div class="hyp-field"><strong>Supporting data:</strong> The MOBILE_LAUNCH_VIEW screen currently shows only product claims (returns, SEBI badge). No social proof signals (investor count, AUM deployed, reviews) are visible above the CTA fold.</div>
+          <div class="hyp-field"><strong>How to validate:</strong> Add &ldquo;1,00,000+ investors · ₹500Cr+ invested&rdquo; badge near the CTA button. A/B test. Measure lift for new-user cohorts (specifically UACe and opentargeting segments).</div>
+          <div class="hyp-field"><strong>Recommended action:</strong> Add a single social proof line above CTA: &ldquo;Join 1L+ investors earning fixed returns.&rdquo; Low engineering effort, measurable via Section 4 CTA% within 7 days.</div>
+        </div>
+      </div>
+
+      <div class="hyp-row" onclick="toggleHyp(this)">
+        <div class="hyp-summary">
+          <span class="hyp-name">Cold start render latency (Android Low)</span>
+          <span class="hyp-strength moderate">Moderate</span>
+          <span class="hyp-evidence">Largest tier ~23k LV; warm app = 98% CTR; cold start delays CTA render</span>
+        </div>
+        <div class="hyp-expand">
+          <div class="hyp-field"><strong>Why it matters:</strong> Android Low is the single largest tier by LV volume (~23k). Even a 5&ndash;10pp CTA% recovery here adds meaningful absolute CTA volume vs. fixing a smaller tier.</div>
+          <div class="hyp-field"><strong>Supporting data:</strong> Warm-app repeat users (98% CTA%) use faster cached renders. Cold start on low-RAM Android (&lt;3GB RAM) can take 3&ndash;6 seconds. If the CTA button renders after the user&rsquo;s patience window, they exit. See Section 4 &mdash; Android Low has the lowest CTA% of all mobile tiers.</div>
+          <div class="hyp-field"><strong>How to validate:</strong> Profile cold-start time-to-interactive for Android Low devices in Firebase Performance. Compare CTA% segmented by session type (cold vs. warm) if that attribution is available.</div>
+          <div class="hyp-field"><strong>Recommended action:</strong> Engineering: lazy-load non-CTA assets on cold start. Pre-render the CTA button above the fold before carousel images load. Set a performance budget: time-to-CTA-interactive &lt; 1.5s on mid-tier Android.</div>
+        </div>
+      </div>
+
+      <div class="hyp-row" onclick="toggleHyp(this)">
+        <div class="hyp-summary">
+          <span class="hyp-name">Language / comprehension barrier</span>
+          <span class="hyp-strength moderate">Moderate</span>
+          <span class="hyp-evidence">Tier-2/3 expansion; screen is English-only; &ldquo;SEBI Registered Broker&rdquo; requires literacy</span>
+        </div>
+        <div class="hyp-expand">
+          <div class="hyp-field"><strong>Why it matters:</strong> Budget expansion into tier-2/3 cities (visible in campaign data) brings users with limited English financial literacy. The screen&rsquo;s credibility signals (&ldquo;SEBI Registered Broker&rdquo;, &ldquo;fixed returns&rdquo;) are English-only and require domain knowledge to interpret.</div>
+          <div class="hyp-field"><strong>Supporting data:</strong> Google Ads geo distribution shows increasing spend in tier-2/3 cities. The MOBILE_LAUNCH_VIEW screen has no Hindi or regional language text. Android Low tier (likely highest tier-2/3 share) has the lowest CTA% among mobile tiers.</div>
+          <div class="hyp-field"><strong>How to validate:</strong> Segment CTA% by device language setting (available in Amplitude as a user property). Compare Hindi-locale vs. English-locale new users on same ad group. If Hindi locale shows &lt;20% CTA%, language barrier is confirmed.</div>
+          <div class="hyp-field"><strong>Recommended action:</strong> Add Hindi subtitle under the main headline: &ldquo;SEBI-registered platform &mdash; bonds give higher fixed returns than FDs.&rdquo; A/B test on Android Low tier specifically. Low engineering effort.</div>
+        </div>
+      </div>
+
+      <div class="hyp-row" onclick="toggleHyp(this)">
+        <div class="hyp-summary">
+          <span class="hyp-name">Carousel confusion (2-slide ambiguity)</span>
+          <span class="hyp-strength weak-moderate">Weak&ndash;Moderate</span>
+          <span class="hyp-evidence">Users may wait for more slides; hard to isolate without A/B</span>
+        </div>
+        <div class="hyp-expand">
+          <div class="hyp-field"><strong>Why it matters:</strong> The screen has 2 carousel slides (returns-focused + security-focused). Users from carousel-heavy app stores may wait for more slides or perceive the CTA as scroll-dependent rather than always-visible.</div>
+          <div class="hyp-field"><strong>Supporting data:</strong> No direct data isolating carousel confusion. Indirect signal: Views/User &gt;1.5 in Section 5 could reflect users re-opening the screen and scrolling/swiping before tapping. Hard to separate from other re-engagement reasons.</div>
+          <div class="hyp-field"><strong>How to validate:</strong> A/B test: single-slide static screen vs. 2-slide carousel. Amplitude will show CTA% difference immediately. If single-slide outperforms, carousel is confirmed as a confounding pattern.</div>
+          <div class="hyp-field"><strong>Recommended action:</strong> Run A/B test (Feature Flag in Firebase Remote Config) before investing in carousel redesign. Low priority unless single-slide A/B shows &gt;5pp lift.</div>
+        </div>
+      </div>
+
+      <div class="hyp-row" onclick="toggleHyp(this)">
+        <div class="hyp-summary">
+          <span class="hyp-name">Visual / UI issues (button, SEBI badge)</span>
+          <span class="hyp-strength weak">Weak</span>
+          <span class="hyp-evidence">Repeat users 98% on same screen &mdash; rules out UI as primary driver</span>
+        </div>
+        <div class="hyp-expand">
+          <div class="hyp-field"><strong>Why it matters:</strong> While UI quality matters in general, the 98% repeat-user CTA% on the same screen establishes that any UI imperfections are insufficient to block conversion for motivated users.</div>
+          <div class="hyp-field"><strong>Supporting data:</strong> Repeat users (same MOBILE_LAUNCH_VIEW screen, same CTA button, same SEBI badge placement) convert at 98%. If UI were a significant barrier, repeat users would also be blocked. The gap is cohort-specific, not screen-specific.</div>
+          <div class="hyp-field"><strong>How to validate:</strong> Not worth A/B testing until higher-priority hypotheses (intent quality, creative disconnect, awareness gap) are addressed. UI improvements can be shipped without measurement.</div>
+          <div class="hyp-field"><strong>Recommended action:</strong> Deprioritize UI-only fixes. Focus engineering resources on cold-start latency (Hypothesis 5) and language barrier (Hypothesis 6) which have clearer conversion pathways.</div>
+        </div>
+      </div>
+
+      <div class="hyp-row" onclick="toggleHyp(this)">
+        <div class="hyp-summary">
+          <span class="hyp-name">Technical glitch</span>
+          <span class="hyp-strength ruled-out">Ruled out</span>
+          <span class="hyp-evidence">98% repeat-user CTA% closes this completely</span>
+        </div>
+        <div class="hyp-expand">
+          <div class="hyp-field"><strong>Why it matters:</strong> Technical glitches are always a first suspect in conversion drops, but they can be definitively ruled out by a high-performing baseline on the same screen.</div>
+          <div class="hyp-field"><strong>Supporting data:</strong> Repeat users (logged-out, same MOBILE_LAUNCH_VIEW screen) fire CTA at 98%. If the button were broken, API were failing, or JS were erroring, repeat users would also fail. 98% is definitively above any plausible glitch threshold.</div>
+          <div class="hyp-field"><strong>How to validate:</strong> Already validated &mdash; no further investigation needed. Monitor Firebase Crashlytics for regressions but don&rsquo;t prioritize investigation.</div>
+          <div class="hyp-field"><strong>Recommended action:</strong> No action. Confirm with on-call that no recent deploy changed the launch screen. Then redirect attention to Hypotheses 1&ndash;3.</div>
+        </div>
+      </div>
+
+    </div><!-- /.hyp-table -->
+  </div>
+  <script>
+  function toggleHyp(row) {
+    var wasOpen = row.classList.contains('open');
+    document.querySelectorAll('.hyp-row').forEach(function(r) { r.classList.remove('open'); });
+    if (!wasOpen) row.classList.add('open');
+  }
+  </script>
+
+  <div class="sec-title" style="margin-top:32px">Column Glossary</div>
   <div class="legend">
     <dl>
       <dt>LV Users*</dt><dd>MOBILE_LAUNCH_VIEW unique users — proxy for installs. AppsFlyer install data excluded due to iOS ATT attribution gaps and reinstall inflation. Treat as "users who opened the pre-signup launch screen" rather than fresh installs.</dd>
@@ -604,76 +521,6 @@ tr:hover td { background:rgba(0,0,0,.02); }
       <dt>WoW</dt><dd>LV*→Signup current 30d vs previous 30d in percentage points</dd>
       <dt>Colour coding</dt><dd>Each step shows conv% from the prior step · <span style="color:var(--green)">green</span> = on target · <span style="color:var(--yellow)">amber</span> = watch · <span style="color:var(--rose)">red</span> = investigate</dd>
     </dl>
-  </div>
-
-  <div class="sec-title" style="margin-top:32px">CTA% Drop &middot; Root Cause Hypothesis Ranking</div>
-  <div class="chart-card" style="padding:20px 24px 24px;margin-bottom:28px">
-    <p style="font-size:.78rem;color:var(--text2);margin:0 0 14px 0">
-      Repeat-user CTA% = 98% (logged-out users landing on same screen) &mdash; rules out technical glitch and UI bugs as primary drivers.
-      Ad group CTA% gap: In-market audience 92% vs Bonds_UACe 37% on the <em>same screen</em> &mdash; confirms user intent quality as primary lever.
-    </p>
-    <div class="tbl-wrap" style="margin:0">
-    <table>
-      <thead>
-        <tr>
-          <th style="text-align:left;min-width:200px">Hypothesis</th>
-          <th style="text-align:center;width:110px">Strength</th>
-          <th style="text-align:left">Key Evidence / Reasoning</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="font-weight:600">User intent quality degradation from spend mix</td>
-          <td style="text-align:center"><span style="color:#16a34a;font-weight:700">Very Strong</span></td>
-          <td style="font-size:.78rem;color:var(--text2)">Ad group data shows 2.5&times; CTA% gap on same screen. As budget shifts to broad targeting (opentargeting, UACe), cohort intent degrades.</td>
-        </tr>
-        <tr>
-          <td style="font-weight:600">Ad creative &harr; landing screen disconnect</td>
-          <td style="text-align:center"><span style="color:#16a34a;font-weight:700">Strong</span></td>
-          <td style="font-size:.78rem;color:var(--text2)">UAC auto-creatives may show generic investment imagery; screen says "bonds" specifically. Expectation mismatch causes drop-off for broad-match users.</td>
-        </tr>
-        <tr>
-          <td style="font-weight:600">&ldquo;Bonds&rdquo; category awareness gap</td>
-          <td style="text-align:center"><span style="color:#16a34a;font-weight:700">Strong</span></td>
-          <td style="font-size:.78rem;color:var(--text2)">Repeat users (98% CTA%) know bonds. New broad-acquisition cohorts have zero mental model. Screen doesn&rsquo;t answer &ldquo;what is this?&rdquo; before asking them to tap.</td>
-        </tr>
-        <tr>
-          <td style="font-weight:600">Missing social proof (first-time users)</td>
-          <td style="text-align:center"><span style="color:#d97706;font-weight:700">Moderate</span></td>
-          <td style="font-size:.78rem;color:var(--text2)">No &ldquo;1L+ investors / ₹500cr invested&rdquo; signal. Repeat users don&rsquo;t need it. New low-intent users need external validation before committing to tap.</td>
-        </tr>
-        <tr>
-          <td style="font-weight:600">Cold start render latency (Android Low)</td>
-          <td style="text-align:center"><span style="color:#d97706;font-weight:700">Moderate</span></td>
-          <td style="font-size:.78rem;color:var(--text2)">Largest cohort (~23k LV). Warm app = fast render = 98% repeat CTA%. Cold start on low-RAM devices may delay CTA button rendering; user taps blank space and exits.</td>
-        </tr>
-        <tr>
-          <td style="font-weight:600">Language / comprehension barrier</td>
-          <td style="text-align:center"><span style="color:#d97706;font-weight:700">Moderate</span></td>
-          <td style="font-size:.78rem;color:var(--text2)">Spend expansion into tier-2/3 cities likely brings non-English users. Screen is English-only. &ldquo;Fixed returns&rdquo;, &ldquo;SEBI Registered Broker&rdquo; require financial literacy in English.</td>
-        </tr>
-        <tr>
-          <td style="font-weight:600">Carousel confusion (2-slide ambiguity)</td>
-          <td style="text-align:center"><span style="color:var(--text2)">Weak&ndash;Moderate</span></td>
-          <td style="font-size:.78rem;color:var(--text2)">Slide 1 (returns) &rarr; Slide 2 (security) sends two signals. Users may wait for more slides. Hard to isolate without A/B test.</td>
-        </tr>
-        <tr>
-          <td style="font-weight:600">Visual / UI issues (button, SEBI badge)</td>
-          <td style="text-align:center"><span style="color:#dc2626;font-weight:700">Weak</span></td>
-          <td style="font-size:.78rem;color:var(--text2)">Real imperfections but repeat users (same screen) show 98% CTA%. Marginal effect at most; not a primary driver.</td>
-        </tr>
-        <tr>
-          <td style="font-weight:600">Technical glitch</td>
-          <td style="text-align:center"><span style="color:#dc2626;font-weight:700">Ruled out</span></td>
-          <td style="font-size:.78rem;color:var(--text2)">98% repeat-user CTA% on the same screen closes this completely.</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-    <p style="font-size:.72rem;color:var(--text3);margin-top:12px">
-      <strong>Highest-leverage fix:</strong> Shift budget back toward in-market / purchase-signal targeting (already 92%+ CTA%).
-      Parallel track: add social proof (&ldquo;1L+ investors&rdquo;) + one-line bond explainer (&ldquo;bonds = fixed deposits with higher returns, SEBI-regulated&rdquo;) to the pre-signup screen to convert lower-intent new cohorts.
-    </p>
   </div>
 
 </div><!-- /.wrap-inner -->
