@@ -609,6 +609,90 @@ tr:hover td { background:rgba(0,0,0,.02); }
   </div><!-- /Full Funnel hidden -->
 
 
+<div class="sec-title">CTA% Comparison: AppsFlyer vs Amplitude (Apr 13–May 12)</div>
+<div class="tbl-wrap" style="margin-bottom:16px">
+  <p style="font-size:.78rem;color:var(--text2);margin:0 0 8px 0">
+    AppsFlyer has correct attribution for all sources including Facebook Ads.
+    Amplitude misses Facebook Ads entirely and under-counts other sources due to deferred attribution —
+    those users appear in the Unattributed (none) bucket instead.
+  </p>
+  <table>
+    <thead><tr>
+      <th style="text-align:left">Media Source</th>
+      <th title="AppsFlyer installs">Installs (AF)</th>
+      <th title="Launch View uniques — AppsFlyer">LV Uniques (AF)</th>
+      <th title="Launch View uniques — Amplitude">LV Uniques (Ampl)</th>
+      <th title="CTA% from AppsFlyer">CTA% (AF)</th>
+      <th title="CTA% from Amplitude">CTA% (Ampl)</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td style='font-size:.78rem'>Google Ads <span style='font-size:.65rem;color:#d97706'>(59% lost to Unattributed)</span></td>
+        <td style='text-align:right'>35,009</td>
+        <td style='text-align:right'>31,461</td>
+        <td style='text-align:right'>12,813</td>
+        <td style='text-align:right;font-weight:700;color:#d97706'>64.6%</td>
+        <td style='text-align:right;font-weight:700;color:#d97706'>56.3%</td>
+      </tr><tr>
+        <td style='font-size:.78rem'>Facebook Ads <span style='font-size:.65rem;color:#dc2626'>⚠ missing in Amplitude</span></td>
+        <td style='text-align:right'>4,258</td>
+        <td style='text-align:right'>3,804</td>
+        <td style='text-align:right'>—</td>
+        <td style='text-align:right;font-weight:700;color:#16a34a'>93.6%</td>
+        <td style='text-align:right;color:#9AA4B2'>—</td>
+      </tr><tr>
+        <td style='font-size:.78rem'>Organic <span style='font-size:.65rem;color:#d97706'>(69% lost to Unattributed)</span></td>
+        <td style='text-align:right'>4,160</td>
+        <td style='text-align:right'>2,911</td>
+        <td style='text-align:right'>904</td>
+        <td style='text-align:right;font-weight:700;color:var(--text)'>68.2%</td>
+        <td style='text-align:right;font-weight:700;color:#dc2626'>49.8%</td>
+      </tr><tr>
+        <td style='font-size:.78rem'>Zomato CPI</td>
+        <td style='text-align:right'>638</td>
+        <td style='text-align:right'>566</td>
+        <td style='text-align:right'>—</td>
+        <td style='text-align:right;font-weight:700;color:#16a34a'>93.8%</td>
+        <td style='text-align:right;color:#9AA4B2'>—</td>
+      </tr><tr>
+        <td style='font-size:.78rem'>sokendev</td>
+        <td style='text-align:right'>383</td>
+        <td style='text-align:right'>348</td>
+        <td style='text-align:right'>—</td>
+        <td style='text-align:right;font-weight:700;color:#16a34a'>84.8%</td>
+        <td style='text-align:right;color:#9AA4B2'>—</td>
+      </tr><tr>
+        <td style='font-size:.78rem'>foxmobiwy</td>
+        <td style='text-align:right'>363</td>
+        <td style='text-align:right'>320</td>
+        <td style='text-align:right'>—</td>
+        <td style='text-align:right;font-weight:700;color:var(--text)'>76.6%</td>
+        <td style='text-align:right;color:#9AA4B2'>—</td>
+      </tr><tr>
+        <td style='font-size:.78rem'>Jio_HM</td>
+        <td style='text-align:right'>149</td>
+        <td style='text-align:right'>140</td>
+        <td style='text-align:right'>—</td>
+        <td style='text-align:right;font-weight:700;color:#16a34a'>93.6%</td>
+        <td style='text-align:right;color:#9AA4B2'>—</td>
+      </tr>
+      <tr style="border-top:2px solid #e2e8f0;font-style:italic;font-size:.75rem">
+        <td colspan="6" style="padding-top:6px;color:var(--text3)">
+          Amplitude &ldquo;Unattributed&rdquo; (none): 57,342 LV &middot; 36,740 CTA &middot; 64.1% CTA% &mdash;
+          contains Facebook Ads + mis-attributed Google / Organic users.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="margin-top:8px;padding:8px 12px;background:#dbeafe;border-left:3px solid #3b82f6;border-radius:4px;font-size:.75rem;color:#1e40af;line-height:1.5">
+    <strong>Key insight:</strong>
+    Facebook Ads CTA% = <strong>93.6%</strong> (highest of any source) but invisible in Amplitude.
+    Google Ads true CTA% per AppsFlyer = <strong>64.6%</strong> vs only 39.1% in Amplitude —
+    the gap is Google Ads users whose attribution resolves after the first Amplitude event fires,
+    landing in Unattributed instead.
+  </div>
+</div>
+
 <div class="sec-title">Daily CTA% by Media Source (AppsFlyer · Mar 12–May 12 · unique users)</div>
 <div class="chart-card">
   <div class="chart-wrap" style="height:240px"><canvas id="msCtaChart"></canvas></div>
