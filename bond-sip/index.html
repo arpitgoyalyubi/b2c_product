@@ -4,26 +4,35 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bond SIP Mocks — Aspero · ASP-3558</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0F1824;display:flex;height:100vh;overflow:hidden}
+body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-serif;background:#030A16;display:flex;height:100vh;overflow:hidden}
 
 /* ── DESIGN TOKENS ──────────────────────────────────── */
 :root{
-  --bg-dark:#030916;
-  --bg-light:#F8F9FA;
-  --card:#fff;
-  --border:#E3E8EF;
-  --t1:#121926;
-  --t2:#4B5565;
-  --t3:#697586;
-  --t4:#9AA4B2;
-  --green:#00C853;
+  --ink:#030A16;
+  --ink800:#0D1626;
+  --bg-surface:#F4F6F8;
+  --bg-tinted:#F5FBF5;
+  --bg-mint:#E4FFF4;
+  --bg-lavender:#EFF2F9;
+  --brand:#01B756;
   --sip:#00B9C6;
+  --text-primary:#030A16;
+  --text-secondary:#5A6373;
+  --text-tertiary:#8A93A3;
+  --border-subtle:#E6E9EE;
+  --border-default:#D2D7E0;
+  --success-bg:#D6F5E2;
+  --success-text:#017A3A;
 }
 
 /* ── SIDEBAR ──────────────────────────────────── */
-.sidebar{width:220px;background:#0F1824;border-right:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;height:100vh;overflow-y:auto;flex-shrink:0}
+.sidebar{width:220px;background:#0D1626;border-right:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;height:100vh;overflow-y:auto;flex-shrink:0}
 .sidebar::-webkit-scrollbar{width:3px}.sidebar::-webkit-scrollbar-thumb{background:#1E3A5F;border-radius:2px}
 .sidebar-header{padding:20px 16px 14px;border-bottom:1px solid rgba(255,255,255,0.07)}
 .sidebar-logo{color:#fff;font-size:14px;font-weight:700;letter-spacing:0.3px}
@@ -32,9 +41,9 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
 .nav-section-label{padding:0 16px 6px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,0.25)}
 .nav-item{display:flex;align-items:center;padding:8px 16px;cursor:pointer;font-size:12px;color:rgba(255,255,255,0.5);gap:9px;border-left:2px solid transparent;transition:all .15s;line-height:1.3}
 .nav-item:hover{color:rgba(255,255,255,0.8);background:rgba(255,255,255,0.04)}
-.nav-item.active{color:#fff;border-left-color:#00C853;background:rgba(0,200,83,0.08)}
+.nav-item.active{color:#fff;border-left-color:#01B756;background:rgba(1,183,86,0.08)}
 .num{width:18px;height:18px;background:rgba(255,255,255,0.08);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
-.nav-item.active .num{background:#00C853;color:#000}
+.nav-item.active .num{background:#01B756;color:#fff}
 .nav-divider{height:1px;background:rgba(255,255,255,0.06);margin:6px 16px}
 
 /* ── MAIN AREA ──────────────────────────────────── */
@@ -50,7 +59,7 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
 .screen{height:780px;display:flex;flex-direction:column;overflow:hidden;position:relative}
 
 /* ── STATUS BAR ──────────────────────────────────── */
-.sb{display:flex;align-items:center;justify-content:space-between;padding:10px 20px 4px;background:#030916;flex-shrink:0}
+.sb{display:flex;align-items:center;justify-content:space-between;padding:10px 20px 4px;background:#030A16;flex-shrink:0}
 .sb.light{background:#fff}
 .sb-time{font-size:12px;font-weight:700;color:#fff}
 .sb-icons{font-size:10px;color:#fff;letter-spacing:2px}
@@ -63,170 +72,180 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
 .screen-body{flex:1;overflow-y:auto;padding:14px 16px 16px;-webkit-overflow-scrolling:touch}
 .screen-body.white{background:#fff}
 .screen-body::-webkit-scrollbar{display:none}
-.cta-area{padding:12px 16px;background:#fff;border-top:1px solid #F1F5F9;flex-shrink:0}
+.cta-area{padding:12px 16px;background:#fff;border-top:1px solid #E6E9EE;flex-shrink:0}
 
 /* ── NAV HEADER (light screens) ──────────────────────────────────── */
-.nav-hdr{display:flex;align-items:center;padding:10px 16px;background:#fff;border-bottom:1px solid #F1F5F9;flex-shrink:0;gap:12px}
-.back-btn{font-size:18px;color:#121926;cursor:pointer;width:28px}
-.hdr-title{font-size:16px;font-weight:700;color:#121926;flex:1;text-align:center}
+.nav-hdr{display:flex;align-items:center;padding:10px 16px;background:#fff;border-bottom:1px solid #E6E9EE;flex-shrink:0;gap:12px}
+.back-btn{font-size:18px;color:#030A16;cursor:pointer;width:28px}
+.hdr-title{font-size:16px;font-weight:700;color:#030A16;flex:1;text-align:center}
 .hdr-right{width:28px}
 
 /* ── APP HEADER (homepage) ──────────────────────────────────── */
-.app-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#030916;flex-shrink:0}
+.app-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#030A16;flex-shrink:0}
 .logo-row{display:flex;align-items:center;gap:8px}
-.logo-mark{width:28px;height:28px;background:#00C853;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#000}
+.logo-mark{width:28px;height:28px;background:#01B756;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
 .aspero-name{color:#fff;font-size:14px;font-weight:700}
 .aspero-tag{color:rgba(255,255,255,0.4);font-size:10px}
 .header-icons{display:flex;gap:8px}
 .icon-btn{width:30px;height:30px;background:rgba(255,255,255,0.08);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer}
 
 /* ── HERO (homepage dark) ──────────────────────────────────── */
-.hero{background:#030916;padding:14px 16px;flex-shrink:0}
+.hero{background:#030A16;padding:14px 16px;flex-shrink:0}
 .section-lbl{font-size:10px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:8px}
-.hero-bond-card{background:#111827;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:14px}
-.hero-cta{width:100%;padding:10px;background:#00C853;color:#000;font-weight:700;font-size:13px;border:none;border-radius:12px;cursor:pointer;margin-top:10px}
+.hero-bond-card{background:#0D1626;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:14px;background-image:linear-gradient(rgba(1,183,86,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(1,183,86,.06) 1px,transparent 1px);background-size:8px 8px}
+.hero-cta{width:100%;padding:10px;background:#01B756;color:#fff;font-weight:700;font-size:13px;border:none;border-radius:12px;cursor:pointer;margin-top:10px;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif}
 .social-proof{margin-top:8px;text-align:center}
 .sp-text{font-size:11px;color:rgba(255,255,255,0.4)}
 
 /* ── CONTENT AREA (homepage) ──────────────────────────────────── */
-.content{flex:1;overflow-y:auto;background:#F8F9FA;-webkit-overflow-scrolling:touch}
+.content{flex:1;overflow-y:auto;background:#F4F6F8;-webkit-overflow-scrolling:touch}
 .content::-webkit-scrollbar{display:none}
 .section{padding:12px 16px 0}
-.section-card{background:#fff;border-radius:14px;padding:14px;border:1px solid #E3E8EF;margin-bottom:12px}
-.sec-heading{font-size:14px;font-weight:700;color:#121926;margin-bottom:10px}
+.section-card{background:#fff;border-radius:14px;padding:14px;border:1px solid #E6E9EE;margin-bottom:12px}
+.sec-heading{font-size:14px;font-weight:700;color:#030A16;margin-bottom:10px}
 
 /* ── PILLS (filter tabs) ──────────────────────────────────── */
 .pills-row{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
-.pill{padding:5px 12px;border-radius:20px;border:1.5px solid #e0e0e0;font-size:12px;font-weight:500;background:#fff;color:#4B5565;cursor:pointer}
-.pill.on{border-color:#00C853;color:#00C853;font-weight:700}
+.pill{padding:7px 14px;border-radius:999px;border:1px solid #E6E9EE;font-size:13px;font-weight:500;background:#fff;color:#030A16;cursor:pointer}
+.pill.on{background:#0D1626;color:#fff;border-color:#0D1626;font-weight:600;border:0}
 
 /* ── BOND ROW (list) ──────────────────────────────────── */
-.bond-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F1F5F9}
+.bond-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #E6E9EE;position:relative;overflow:hidden}
+.bond-row::after{content:'';position:absolute;right:-30px;bottom:-30px;width:160px;height:160px;background:radial-gradient(circle,rgba(1,183,86,.06),transparent 70%);pointer-events:none}
 .brl{display:flex;align-items:center;gap:8px}
-.brl-logo{width:36px;height:36px;border-radius:50%;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0}
-.brl-name{font-size:13px;font-weight:600;color:#121926}
-.brl-mat{font-size:11px;color:#9AA4B2;margin-top:1px}
+.brl-logo{width:48px;height:48px;border-radius:12px;background:#fff;border:1px solid #E6E9EE;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#030A16;flex-shrink:0}
+.brl-name{font-size:13px;font-weight:600;color:#030A16}
+.brl-mat{font-size:11px;color:#8A93A3;margin-top:1px}
 .brr{text-align:right}
-.brr-ytm{font-size:15px;font-weight:800;color:#00C853}
-.brr-ten{font-size:11px;color:#9AA4B2}
-.view-all{width:100%;text-align:center;padding:10px;color:#00C853;font-size:13px;font-weight:600;background:none;border:none;cursor:pointer;margin-top:4px}
+.brr-ytm{font-size:15px;font-weight:800;color:#01B756}
+.brr-ten{font-size:11px;color:#8A93A3}
+.view-all{width:100%;text-align:center;padding:10px;color:#01B756;font-size:13px;font-weight:600;background:none;border:none;cursor:pointer;margin-top:4px;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif}
 
 /* ── BOTTOM NAV ──────────────────────────────────── */
-.bnav{display:flex;background:#fff;border-top:1px solid #F1F5F9;flex-shrink:0;padding-bottom:4px}
+.bnav{display:flex;background:#fff;border-top:1px solid #E6E9EE;flex-shrink:0;padding-bottom:4px}
 .bn{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 4px 4px;cursor:pointer}
-.bn-icon{font-size:18px;line-height:1;margin-bottom:2px}
-.bn-label{font-size:10px;font-weight:500;color:#9AA4B2}
-.bn.active .bn-label{color:#00C853;font-weight:700}
+.bn-icon{line-height:1;margin-bottom:2px;display:flex;align-items:center;justify-content:center}
+.bn-label{font-size:10px;font-weight:500;color:#8A93A3}
+.bn.active .bn-label{color:#01B756;font-weight:700}
 
 /* ── PROGRESS BAR (setup flow) ──────────────────────────────────── */
 .prog-bar{display:flex;gap:4px;padding:12px 16px 0;background:#fff;flex-shrink:0}
-.prog-seg{flex:1;height:3px;border-radius:2px;background:#E3E8EF}
-.prog-seg.done{background:#00C853}
-.prog-seg.cur{background:#00C853;opacity:0.5}
-.step-lbl{padding:6px 16px 10px;background:#fff;font-size:11px;font-weight:600;color:#9AA4B2;letter-spacing:0.3px;flex-shrink:0}
+.prog-seg{flex:1;height:3px;border-radius:2px;background:#E6E9EE}
+.prog-seg.done{background:#01B756}
+.prog-seg.cur{background:#01B756;opacity:0.5}
+.step-lbl{padding:6px 16px 10px;background:#fff;font-size:11px;font-weight:600;color:#8A93A3;letter-spacing:0.3px;flex-shrink:0}
 
 /* ── CARDS ──────────────────────────────────── */
-.card{background:#fff;border-radius:12px;border:1px solid #E3E8EF;padding:14px;margin-bottom:10px}
-.success-card{border-left:3px solid #00C853}
+.card{background:#fff;border-radius:12px;border:1px solid #E6E9EE;padding:14px;margin-bottom:10px}
+.success-card{border-left:3px solid #01B756}
 
 /* ── BOND CARD V3 ──────────────────────────────────── */
 .ytm-row{display:flex;align-items:baseline;gap:3px;margin-bottom:8px}
-.ytm-val{font-size:32px;font-weight:800;color:#00C853;line-height:1}
-.ytm-pct{font-size:14px;font-weight:700;color:#00C853;line-height:1.3}
+.ytm-val{font-size:32px;font-weight:800;color:#01B756;line-height:1}
+.ytm-pct{font-size:14px;font-weight:700;color:#01B756;line-height:1.3}
 .bond-info-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.co-logo{width:36px;height:36px;border-radius:50%;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0}
-.co-name{font-size:14px;font-weight:700;color:#121926}
-.co-mat{font-size:11px;color:#888;margin-top:2px}
+.co-logo{width:48px;height:48px;border-radius:12px;background:#fff;border:1px solid #E6E9EE;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#030A16;flex-shrink:0}
+.co-name{font-size:14px;font-weight:700;color:#030A16}
+.co-mat{font-size:11px;color:#8A93A3;margin-top:2px}
 
-/* ── CHIPS / PILL BADGES ──────────────────────────────────── */
-.chip{display:inline-flex;align-items:center;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:500;border:1.5px solid #e0e0e0;color:#555;background:#fff}
-.chip-green{border-color:#00C853;color:#00C853}
-.chip-active{background:#00C853;color:#fff;border-color:#00C853}
-.chip-confirmed{background:#00C853;color:#fff;border-color:#00C853}
-.chip-pending{border-color:#e0e0e0;color:#888}
-.chip-amber{border-color:#e0e0e0;color:#888}
-.chip-blue{border-color:#e0e0e0;color:#555}
-.chip-grey{border-color:#e0e0e0;color:#888}
+/* ── CHIPS / BADGE VARIANTS ──────────────────────────────────── */
+/* bond attribute chips (NOT filter pills) */
+.chip{display:inline-flex;align-items:center;padding:3px 9px;border-radius:6px;font-size:11px;font-weight:600;background:#fff;border:1px solid #D2D7E0;color:#030A16}
+/* Senior Secured → lavender */
+.chip-secured{background:#EFF2F9;color:#4753C6;border:0}
+/* AAA / ratings → outlined */
+.chip-green{background:#fff;color:#030A16;border:1px solid #D2D7E0}
+/* Sell anytime / Confirmed → mint */
+.chip-active{background:#D6F5E2;color:#017A3A;border:0}
+.chip-confirmed{background:#D6F5E2;color:#017A3A;border:0}
+/* amber / warn */
+.chip-amber{background:#FFF4DA;color:#92400E;border:0}
+.chip-blue{background:#EFF2F9;color:#4753C6;border:0}
+.chip-grey{background:#F4F6F8;color:#5A6373;border:0}
+.chip-pending{background:#F4F6F8;color:#8A93A3;border:1px solid #D2D7E0}
 .ml-auto{margin-left:auto}
-.new-badge{background:#00C853;color:#000;font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;letter-spacing:0.5px}
+.new-badge{background:#01B756;color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;letter-spacing:0.5px}
 
 /* ── YTM text utility ──────────────────────────────────── */
-.ytm{color:#00C853;font-weight:700}
+.ytm{color:#01B756;font-weight:700}
 
 /* ── BUTTONS ──────────────────────────────────── */
-.btn{width:100%;padding:13px;font-size:14px;font-weight:700;border-radius:12px;border:none;cursor:pointer;text-align:center;display:block;margin-bottom:8px;font-family:'Inter',-apple-system,sans-serif}
-.btn-green{background:#00C853;color:#000}
-.btn-ghost{background:none;color:#00C853;font-size:13px;font-weight:600;padding:9px}
-.btn-outline{background:none;border:none;color:#00C853;font-size:13px;font-weight:600;padding:9px;width:100%;cursor:pointer;text-align:center;display:block;font-family:'Inter',-apple-system,sans-serif}
-.btn-sip{background:#00C853;color:#000;border-radius:12px;border:none;cursor:pointer;padding:13px;font-size:14px;font-weight:700;width:100%;font-family:'Inter',-apple-system,sans-serif}
+.btn{width:100%;padding:14px 20px;font-size:15px;font-weight:600;border-radius:14px;border:0;cursor:pointer;text-align:center;display:block;margin-bottom:8px;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif}
+.btn-green{background:#01B756;color:#fff}
+.btn-ghost{background:transparent;color:#01B756;font-size:13px;font-weight:600;padding:9px;border:0}
+.btn-outline{background:#fff;color:#030A16;border:1px solid #E6E9EE;border-radius:14px;font-size:15px;font-weight:600;padding:14px 20px;width:100%;cursor:pointer;text-align:center;display:block;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif}
+.btn-sip{background:#01B756;color:#fff;border-radius:14px;border:0;cursor:pointer;padding:14px 20px;font-size:15px;font-weight:600;width:100%;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif}
+
+/* small button variant */
+.btn-sm{border-radius:10px;padding:10px 14px;font-size:13px}
 
 /* ── INFO / STATUS BOXES ──────────────────────────────────── */
-.info-box{background:#F8F9FA;border-radius:10px;padding:12px;font-size:12px;color:#697586;line-height:1.6;border-left:3px solid #e0e0e0;margin-bottom:10px}
-.success-box{background:#F0FDF4;border-radius:10px;padding:12px;font-size:12px;color:#065F46;line-height:1.6;margin-bottom:10px}
-.warn-box{background:#FFFBEB;border-radius:10px;padding:12px;font-size:12px;color:#92400E;line-height:1.6;margin-bottom:10px;border-left:3px solid #F59E0B}
+.info-box{background:#F4F6F8;border-radius:10px;padding:12px;font-size:12px;color:#5A6373;line-height:1.6;border-left:3px solid #D2D7E0;margin-bottom:10px}
+.success-box{background:#D6F5E2;border-radius:10px;padding:12px;font-size:12px;color:#017A3A;line-height:1.6;margin-bottom:10px}
+.warn-box{background:#FFF4DA;border-radius:10px;padding:12px;font-size:12px;color:#92400E;line-height:1.6;margin-bottom:10px;border-left:3px solid #E59A1F}
 
 /* ── UTILITY ──────────────────────────────────── */
 .row{display:flex;align-items:center;justify-content:space-between}
-.divider{height:1px;background:#F1F5F9;margin:12px 0}
+.divider{height:1px;background:#E6E9EE;margin:12px 0}
 .fs10{font-size:10px}.fs11{font-size:11px}.fs12{font-size:12px}.fs13{font-size:13px}.fs14{font-size:14px}.fs15{font-size:15px}.fs16{font-size:16px}.fs22{font-size:22px}.fs24{font-size:24px}
 .fw6{font-weight:600}.fw7{font-weight:700}.fw8{font-weight:800}
-.t1{color:#121926}.t2{color:#4B5565}.t3{color:#697586}.t4{color:#9AA4B2}
+.t1{color:#030A16}.t2{color:#5A6373}.t3{color:#5A6373}.t4{color:#8A93A3}
 .mt4{margin-top:4px}.mt6{margin-top:6px}.mt8{margin-top:8px}.mt10{margin-top:10px}.mt12{margin-top:12px}.mt16{margin-top:16px}
 .mb4{margin-bottom:4px}.mb6{margin-bottom:6px}.mb8{margin-bottom:8px}.mb10{margin-bottom:10px}.mb12{margin-bottom:12px}.mb16{margin-bottom:16px}
 .gap8{gap:8px}
 
 /* ── AMOUNT INPUT ──────────────────────────────────── */
-.amount-big{font-size:44px;font-weight:800;color:#121926;text-align:center;padding:16px 0 4px;letter-spacing:-1.5px;line-height:1}
-.amount-sub{font-size:11px;color:#9AA4B2;text-align:center;margin-bottom:12px}
+.amount-big{font-size:44px;font-weight:800;color:#030A16;text-align:center;padding:16px 0 4px;letter-spacing:-1.5px;line-height:1}
+.amount-sub{font-size:11px;color:#8A93A3;text-align:center;margin-bottom:12px}
 .quick-chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
-.qc{padding:7px 14px;border-radius:8px;border:1.5px solid #e0e0e0;font-size:12px;font-weight:600;color:#4B5565;cursor:pointer;background:#fff}
-.qc.on{border-color:#00C853;color:#00C853;background:#fff;font-weight:700}
+.qc{padding:7px 14px;border-radius:8px;border:1.5px solid #E6E9EE;font-size:12px;font-weight:600;color:#5A6373;cursor:pointer;background:#fff}
+.qc.on{border-color:#01B756;color:#01B756;background:#fff;font-weight:700}
 
 /* ── GOAL OPTION ──────────────────────────────────── */
-.goal-opt{border:1.5px solid #E3E8EF;border-radius:14px;padding:14px;margin-bottom:10px;cursor:pointer;background:#fff}
-.goal-opt.sel{border-color:#00C853;background:#fff}
+.goal-opt{border:1.5px solid #E6E9EE;border-radius:14px;padding:14px;margin-bottom:10px;cursor:pointer;background:#fff}
+.goal-opt.sel{border-color:#01B756;background:#fff}
 .goal-opt-icon{width:40px;height:40px;border-radius:10px;margin-bottom:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
 
 /* ── DATE GRID ──────────────────────────────────── */
 .date-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:8px 0 16px}
-.date-cell{height:46px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#4B5565;background:#F8F9FA;cursor:pointer;border:1.5px solid #e0e0e0}
-.date-cell .dc-sub{font-size:9px;color:#9AA4B2;margin-top:1px;font-weight:400}
-.date-cell.sel{background:#00C853;color:#000;border-color:#00C853}
-.date-cell.sel .dc-sub{color:rgba(0,0,0,0.6)}
+.date-cell{height:46px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#5A6373;background:#F4F6F8;cursor:pointer;border:1.5px solid #E6E9EE}
+.date-cell .dc-sub{font-size:9px;color:#8A93A3;margin-top:1px;font-weight:400}
+.date-cell.sel{background:#01B756;color:#fff;border-color:#01B756}
+.date-cell.sel .dc-sub{color:rgba(255,255,255,0.7)}
 
 /* ── MANDATE ──────────────────────────────────── */
-.mandate-card{background:#F8F9FA;border-radius:13px;padding:14px;margin-bottom:10px;border:1px solid #E3E8EF}
-.bank-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #E3E8EF}
-.bank-logo{width:36px;height:36px;border-radius:8px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#1D4ED8;flex-shrink:0}
-.trust-row{display:flex;align-items:center;gap:8px;background:#F0FDF4;border-radius:9px;padding:10px 12px;margin-bottom:12px}
-.trust-text{font-size:12px;color:#065F46;font-weight:600}
+.mandate-card{background:#F4F6F8;border-radius:13px;padding:14px;margin-bottom:10px;border:1px solid #E6E9EE}
+.bank-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #E6E9EE}
+.bank-logo{width:36px;height:36px;border-radius:8px;background:#EFF2F9;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#4753C6;flex-shrink:0}
+.trust-row{display:flex;align-items:center;gap:8px;background:#D6F5E2;border-radius:9px;padding:10px 12px;margin-bottom:12px}
+.trust-text{font-size:12px;color:#017A3A;font-weight:600}
 
 /* ── CONFIRMATION SCREEN ──────────────────────────────────── */
-.confirm-hdr{background:#030916;padding:24px 18px 20px;text-align:center;flex-shrink:0}
-.confirm-check{width:56px;height:56px;border-radius:28px;background:rgba(0,200,83,0.12);border:2px solid #00C853;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:26px;color:#00C853}
+.confirm-hdr{background:#030A16;padding:24px 18px 20px;text-align:center;flex-shrink:0}
+.confirm-check{width:56px;height:56px;border-radius:28px;background:rgba(1,183,86,0.12);border:2px solid #01B756;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:26px;color:#01B756}
 .sip-active-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,185,198,0.12);border:1px solid rgba(0,185,198,0.3);color:#00B9C6;font-size:11px;font-weight:700;letter-spacing:0.5px;padding:4px 12px;border-radius:20px;margin-bottom:8px}
 
 /* ── LADDER ──────────────────────────────────── */
-.ladder-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #F0F2F5}
+.ladder-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #E6E9EE}
 .ladder-num{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
-.ladder-num.conf{background:#D1FAE5;color:#065F46}
-.ladder-num.ill{background:#F8F9FA;color:#9AA4B2}
-.ladder-num.grey{background:#F1F5F9;color:#9AA4B2}
-.lbadge{padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;white-space:nowrap;border:1.5px solid}
-.lbadge.conf{background:#00C853;color:#000;border-color:#00C853}
-.lbadge.ill{background:#fff;color:#888;border-color:#e0e0e0}
+.ladder-num.conf{background:#D6F5E2;color:#017A3A}
+.ladder-num.ill{background:#F4F6F8;color:#8A93A3}
+.ladder-num.grey{background:#F4F6F8;color:#8A93A3}
+.lbadge{padding:2px 7px;border-radius:6px;font-size:9px;font-weight:700;white-space:nowrap;border:0}
+.lbadge.conf{background:#D6F5E2;color:#017A3A}
+.lbadge.ill{background:#fff;color:#5A6373;border:1px solid #D2D7E0}
 
 /* ── SIP SLOT CARDS ──────────────────────────────────── */
-.slot{border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid #E3E8EF}
-.slot.done{background:#F0FDF4;border-color:#BBF7D0}
-.slot.disclosed{background:#FFFBEB;border-color:#FDE68A}
-.slot.pending{background:#F8F9FA;opacity:0.75}
-.slot-num{font-size:10px;font-weight:700;color:#9AA4B2;letter-spacing:0.5px;margin-bottom:4px;text-transform:uppercase}
+.slot{border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid #E6E9EE}
+.slot.done{background:#D6F5E2;border-color:#A7EECA}
+.slot.disclosed{background:#FFF4DA;border-color:#F5D98A}
+.slot.pending{background:#F4F6F8;opacity:0.75}
+.slot-num{font-size:10px;font-weight:700;color:#8A93A3;letter-spacing:0.5px;margin-bottom:4px;text-transform:uppercase}
 
 /* ── CONTROL ROW ──────────────────────────────────── */
-.ctrl-row{display:flex;align-items:center;padding:14px 0;border-bottom:1px solid #E3E8EF;cursor:pointer}
+.ctrl-row{display:flex;align-items:center;padding:14px 0;border-bottom:1px solid #E6E9EE;cursor:pointer}
 .ctrl-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-right:12px;font-size:16px;flex-shrink:0}
-.ctrl-chevron{color:#9AA4B2;font-size:16px;margin-left:auto}
+.ctrl-chevron{color:#8A93A3;font-size:16px;margin-left:auto}
 
 /* ── SIP WIDGET (homepage) ──────────────────────────────────── */
 .sip-widget{background:linear-gradient(135deg,#0d2347 0%,#1a3059 100%);border-radius:14px;padding:14px;margin-bottom:12px}
@@ -235,18 +254,18 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
 .prog-fill{background:#00B9C6;height:4px;border-radius:4px}
 
 /* ── PORTFOLIO TABS ──────────────────────────────────── */
-.ptf-hdr{background:#030916;padding:14px 16px}
-.ptf-lbl{font-size:10px;color:#9AA4B2}
+.ptf-hdr{background:#030A16;padding:14px 16px}
+.ptf-lbl{font-size:10px;color:#8A93A3}
 .ptf-val{font-size:22px;font-weight:700;color:#fff;margin-top:2px}
 .ptf-metrics{display:flex;gap:16px;margin-top:10px}
-.ptf-m label{font-size:10px;color:#9AA4B2;display:block}
+.ptf-m label{font-size:10px;color:#8A93A3;display:block}
 .ptf-m span{font-size:12px;font-weight:600;color:#E2E8F0}
-.tabs{display:flex;background:#fff;border-bottom:1px solid #E3E8EF;flex-shrink:0}
-.tab{flex:1;padding:10px;text-align:center;font-size:13px;font-weight:500;color:#9AA4B2;cursor:pointer}
-.tab.on{color:#00C853;border-bottom:2px solid #00C853;font-weight:600}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #E6E9EE;flex-shrink:0}
+.tab{flex:1;padding:10px;text-align:center;font-size:13px;font-weight:500;color:#8A93A3;cursor:pointer}
+.tab.on{color:#01B756;border-bottom:2px solid #01B756;font-weight:600}
 
 /* ── NUDGE CARD ──────────────────────────────────── */
-.nudge-card{background:#fff;border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid #E3E8EF;border-top:3px solid #00B9C6}
+.nudge-card{background:#fff;border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid #E6E9EE;border-top:3px solid #00B9C6}
 .nudge-card .btn-row{display:flex;gap:8px;margin-top:12px}
 .nudge-card .btn-row .btn{flex:1;padding:9px;font-size:13px;margin-bottom:0}
 
@@ -315,8 +334,8 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
 <div class="phone-page active" id="p0">
   <div class="sb"><span class="sb-time">9:41</span><div class="sb-icons">●●● ▮</div></div>
   <!-- success header -->
-  <div style="background:#030916;padding:22px 18px 20px;text-align:center;flex-shrink:0">
-    <div style="width:54px;height:54px;border-radius:27px;background:rgba(0,200,83,0.12);border:2px solid #00C853;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px;color:#00C853">✓</div>
+  <div style="background:#030A16;padding:22px 18px 20px;text-align:center;flex-shrink:0">
+    <div style="width:54px;height:54px;border-radius:27px;background:rgba(1,183,86,0.12);border:2px solid #01B756;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px;color:#01B756">✓</div>
     <div class="fs16 fw7" style="color:#fff;margin-bottom:3px">Investment confirmed!</div>
     <div class="fs12" style="color:rgba(255,255,255,0.5)">Your order is being processed</div>
   </div>
@@ -346,25 +365,25 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
       <div class="fs12 t3" style="line-height:1.6">Invest automatically every month — same yield range, new bond selected by our engine. From ₹1,000/month.</div>
       <div class="fs11 t4 mt8">⏱ Cancel anytime · 48-hr retry on failed debit</div>
       <div class="nudge-card btn-row">
-        <button class="btn-outline" style="flex:1">Maybe later</button>
-        <button class="btn-sip" style="flex:1;padding:9px;font-size:13px">Set up Bond SIP →</button>
+        <button class="btn-outline btn-sm" style="flex:1">Maybe later</button>
+        <button class="btn-sip btn-sm" style="flex:1">Set up Bond SIP →</button>
       </div>
     </div>
     <div style="display:flex;justify-content:center;margin-top:4px"><span class="fs12 t4">Expected coupon: <span class="fw6 t1">₹4,700/year</span></span></div>
   </div>
   <div class="bnav">
-    <div class="bn"><div class="bn-icon">🏠</div><span class="bn-label">Home</span></div>
-    <div class="bn"><div class="bn-icon">🔍</div><span class="bn-label">Explore</span></div>
-    <div class="bn active"><div class="bn-icon">💼</div><span class="bn-label" style="color:#00C853">Portfolio</span></div>
-    <div class="bn"><div class="bn-icon">👤</div><span class="bn-label">Profile</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11 L12 4 L20 11 V20 a1 1 0 01-1 1h-4v-7h-6v7H5a1 1 0 01-1-1z"/></svg></div><span class="bn-label">Home</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-3.5-3.5"/></svg></div><span class="bn-label">Explore</span></div>
+    <div class="bn active"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#01B756" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><span class="bn-label" style="color:#01B756">Portfolio</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="9" r="3.5"/><path d="M5 20c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg></div><span class="bn-label">Profile</span></div>
   </div>
 </div>
 
 <!-- ════════════════ P1: P6 first investment entry ════════════════ -->
 <div class="phone-page" id="p1">
   <div class="sb"><span class="sb-time">9:41</span><div class="sb-icons">●●● ▮</div></div>
-  <div style="background:#030916;padding:22px 18px 20px;text-align:center;flex-shrink:0">
-    <div style="width:54px;height:54px;border-radius:27px;background:rgba(0,200,83,0.12);border:2px solid #00C853;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px">🎉</div>
+  <div style="background:#030A16;padding:22px 18px 20px;text-align:center;flex-shrink:0">
+    <div style="width:54px;height:54px;border-radius:27px;background:rgba(1,183,86,0.12);border:2px solid #01B756;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px">🎉</div>
     <div class="fs16 fw7" style="color:#fff;margin-bottom:3px">First investment done!</div>
     <div class="fs12" style="color:rgba(255,255,255,0.5)">Welcome to the Aspero family</div>
   </div>
@@ -390,28 +409,28 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
         <span class="new-badge">NEW</span>
       </div>
       <div class="fs12 t3" style="line-height:1.6">You just made your first investment. Set up a Bond SIP to keep the momentum — ₹1,000/month, auto-selected bonds, cancel anytime.</div>
-      <div class="mt10" style="background:#F8F9FA;border-radius:10px;padding:10px">
+      <div class="mt10" style="background:#F4F6F8;border-radius:10px;padding:10px">
         <div class="row mb4"><span class="fs11 t3">Monthly amount</span><span class="fs13 fw7 t1">from ₹1,000</span></div>
         <div class="row mb4"><span class="fs11 t3">Estimated YTM</span><span class="fs13 fw7 ytm">8–9.5%</span></div>
-        <div class="row"><span class="fs11 t3">Cancellation</span><span class="fs12 fw6" style="color:#00C853">Anytime, self-serve</span></div>
+        <div class="row"><span class="fs11 t3">Cancellation</span><span class="fs12 fw6" style="color:#01B756">Anytime, self-serve</span></div>
       </div>
       <div class="nudge-card btn-row">
-        <button class="btn-outline" style="flex:1">Not now</button>
-        <button class="btn-sip" style="flex:1;padding:9px;font-size:13px">Set up Bond SIP →</button>
+        <button class="btn-outline btn-sm" style="flex:1">Not now</button>
+        <button class="btn-sip btn-sm" style="flex:1">Set up Bond SIP →</button>
       </div>
     </div>
   </div>
   <div class="bnav">
-    <div class="bn"><div class="bn-icon">🏠</div><span class="bn-label">Home</span></div>
-    <div class="bn"><div class="bn-icon">🔍</div><span class="bn-label">Explore</span></div>
-    <div class="bn active"><div class="bn-icon">💼</div><span class="bn-label" style="color:#00C853">Portfolio</span></div>
-    <div class="bn"><div class="bn-icon">👤</div><span class="bn-label">Profile</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11 L12 4 L20 11 V20 a1 1 0 01-1 1h-4v-7h-6v7H5a1 1 0 01-1-1z"/></svg></div><span class="bn-label">Home</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-3.5-3.5"/></svg></div><span class="bn-label">Explore</span></div>
+    <div class="bn active"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#01B756" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><span class="bn-label" style="color:#01B756">Portfolio</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="9" r="3.5"/><path d="M5 20c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg></div><span class="bn-label">Profile</span></div>
   </div>
 </div>
 
 <!-- ════════════════ P2: P7 maturity reinvest ════════════════ -->
 <div class="phone-page" id="p2">
-  <div class="sb light"><span class="sb-time" style="color:#121926">9:41</span><div class="sb-icons" style="color:#121926">●●● ▮</div></div>
+  <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><div class="sb-icons" style="color:#030A16">●●● ▮</div></div>
   <div class="nav-hdr">
     <div class="back-btn">←</div>
     <div class="hdr-title">Portfolio</div>
@@ -422,14 +441,14 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
     <div class="ptf-lbl">Total invested</div>
     <div class="ptf-val">₹3,90,000</div>
     <div class="ptf-metrics">
-      <div class="ptf-m"><label>XIRR</label><span style="color:#00C853">9.1%</span></div>
+      <div class="ptf-m"><label>XIRR</label><span style="color:#01B756">9.1%</span></div>
       <div class="ptf-m"><label>Coupons earned</label><span>₹35,490</span></div>
     </div>
   </div>
   <!-- matured bond notification -->
   <div class="screen-body">
-    <div class="info-box" style="background:#FFF7ED;border-color:#F59E0B">
-      <p style="color:#92400E"><strong>Maturity received</strong> — ₹80,000 from RDC Concrete Ltd credited to your bank (May 10)</p>
+    <div class="warn-box">
+      <p><strong>Maturity received</strong> — ₹80,000 from RDC Concrete Ltd credited to your bank (May 10)</p>
     </div>
     <div class="card mb10">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
@@ -451,7 +470,7 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
       <div class="fs13 fw7 t1 mb6">Reinvest ₹80,000?</div>
       <div class="fs12 t3 mb10" style="line-height:1.5">Keep your money working. Two ways to reinvest:</div>
       <div style="display:flex;gap:8px;margin-bottom:10px">
-        <div style="flex:1;background:#F8F9FA;border-radius:10px;padding:10px;border:1.5px solid #e0e0e0;cursor:pointer">
+        <div style="flex:1;background:#F4F6F8;border-radius:10px;padding:10px;border:1.5px solid #E6E9EE;cursor:pointer">
           <div class="fs11 fw7 t2 mb4">One-time</div>
           <div class="fs11 t3" style="line-height:1.4">Pick a specific bond now</div>
         </div>
@@ -464,16 +483,16 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
     </div>
   </div>
   <div class="bnav">
-    <div class="bn"><div class="bn-icon">🏠</div><span class="bn-label">Home</span></div>
-    <div class="bn"><div class="bn-icon">🔍</div><span class="bn-label">Explore</span></div>
-    <div class="bn active"><div class="bn-icon">💼</div><span class="bn-label" style="color:#00C853">Portfolio</span></div>
-    <div class="bn"><div class="bn-icon">👤</div><span class="bn-label">Profile</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11 L12 4 L20 11 V20 a1 1 0 01-1 1h-4v-7h-6v7H5a1 1 0 01-1-1z"/></svg></div><span class="bn-label">Home</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-3.5-3.5"/></svg></div><span class="bn-label">Explore</span></div>
+    <div class="bn active"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#01B756" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><span class="bn-label" style="color:#01B756">Portfolio</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="9" r="3.5"/><path d="M5 20c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg></div><span class="bn-label">Profile</span></div>
   </div>
 </div>
 
 <!-- ════════════════ P3: STEP 1 — Amount ════════════════ -->
 <div class="phone-page" id="p3">
-  <div class="sb light"><span class="sb-time" style="color:#121926">9:41</span><div class="sb-icons" style="color:#121926">●●● ▮</div></div>
+  <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><div class="sb-icons" style="color:#030A16">●●● ▮</div></div>
   <div class="nav-hdr">
     <div class="back-btn">←</div>
     <div class="hdr-title">Set up Bond SIP</div>
@@ -502,7 +521,7 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
     <div class="divider"></div>
     <div class="mt12">
       <div class="fs11 fw7 t4 mb8" style="text-transform:uppercase;letter-spacing:0.5px">What you get</div>
-      <div class="card" style="border-left:3px solid #00C853">
+      <div class="card" style="border-left:3px solid #01B756">
         <div class="row mb6"><span class="fs12 t3">Estimated YTM range</span><span class="fs13 fw7 ytm">8 – 9.5%</span></div>
         <div class="row mb6"><span class="fs12 t3">Min investment</span><span class="fs13 fw6 t1">₹1,000 / month</span></div>
         <div class="row"><span class="fs12 t3">Bond selected by</span><span class="fs12 fw6 t1">Aspero engine</span></div>
@@ -519,7 +538,7 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
 
 <!-- ════════════════ P4: STEP 2 — Goal ════════════════ -->
 <div class="phone-page" id="p4">
-  <div class="sb light"><span class="sb-time" style="color:#121926">9:41</span><div class="sb-icons" style="color:#121926">●●● ▮</div></div>
+  <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><div class="sb-icons" style="color:#030A16">●●● ▮</div></div>
   <div class="nav-hdr">
     <div class="back-btn">←</div>
     <div class="hdr-title">Set up Bond SIP</div>
@@ -538,17 +557,17 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
     <div class="fs12 t3 mb16" style="line-height:1.5">Our engine picks bonds each month based on this</div>
     <div class="goal-opt sel">
       <div class="goal-opt-icon" style="background:#FEF3C7">🪜</div>
-      <div class="row mb4"><span class="fs14 fw7 t1">Income Ladder</span><span style="color:#00C853">●</span></div>
+      <div class="row mb4"><span class="fs14 fw7 t1">Income Ladder</span><span style="color:#01B756">●</span></div>
       <div class="fs12 t3 mb8" style="line-height:1.5">Stagger maturities across 12 months for regular payouts. Best for regular income needs.</div>
       <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <span class="chip">Regular payouts</span>
+        <span class="chip chip-active">Regular payouts</span>
         <span class="chip chip-grey">Varied tenure</span>
         <span class="chip chip-grey">Est. 8.5–9.5% YTM</span>
       </div>
     </div>
     <div class="goal-opt">
-      <div class="goal-opt-icon" style="background:#E0E7FF">🌱</div>
-      <div class="row mb4"><span class="fs14 fw7 t1">Wealth Growth</span><span style="color:#e0e0e0">○</span></div>
+      <div class="goal-opt-icon" style="background:#EFF2F9">🌱</div>
+      <div class="row mb4"><span class="fs14 fw7 t1">Wealth Growth</span><span style="color:#D2D7E0">○</span></div>
       <div class="fs12 t3 mb8" style="line-height:1.5">Maximise yield by targeting longer-tenure, higher-rated bonds. Best for wealth building.</div>
       <div style="display:flex;gap:6px;flex-wrap:wrap">
         <span class="chip chip-blue">Higher yield</span>
@@ -564,7 +583,7 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
 
 <!-- ════════════════ P5: STEP 3 — Bond preview ════════════════ -->
 <div class="phone-page" id="p5">
-  <div class="sb light"><span class="sb-time" style="color:#121926">9:41</span><div class="sb-icons" style="color:#121926">●●● ▮</div></div>
+  <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><div class="sb-icons" style="color:#030A16">●●● ▮</div></div>
   <div class="nav-hdr">
     <div class="back-btn">←</div>
     <div class="hdr-title">Set up Bond SIP</div>
@@ -581,7 +600,7 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
   <div class="screen-body white">
     <div class="fs12 t3 mb12" style="line-height:1.5">The engine selected this bond for June. You can skip before debit without penalty.</div>
     <!-- bond card -->
-    <div style="background:#fff;border:1px solid #E3E8EF;border-radius:14px;padding:16px;margin-bottom:12px">
+    <div style="background:#fff;border:1px solid #E6E9EE;border-radius:14px;padding:16px;margin-bottom:12px">
       <div class="ytm-row">
         <span class="ytm-val">9.2</span>
         <span class="ytm-pct">%<br><span class="fs11">YTM</span></span>
@@ -595,10 +614,10 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
         <span class="chip chip-green">AAA</span>
-        <span class="chip chip-blue">Senior Secured</span>
+        <span class="chip chip-secured">Senior Secured</span>
         <span class="chip chip-grey">Annual Coupon</span>
       </div>
-      <div style="display:flex;justify-content:space-between;border-top:1px dashed #E3E8EF;padding-top:12px">
+      <div style="display:flex;justify-content:space-between;border-top:1px dashed #E6E9EE;padding-top:12px">
         <div><div class="fs11 t4">Min investment</div><div class="fs13 fw6 t1">₹5,000</div></div>
         <div style="text-align:center"><div class="fs11 t4">Face value</div><div class="fs13 fw6 t1">₹1,000</div></div>
         <div style="text-align:right"><div class="fs11 t4">Coupon</div><div class="fs13 fw6 ytm">9.15% p.a.</div></div>
@@ -613,13 +632,13 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
   </div>
   <div class="cta-area">
     <button class="btn btn-green">Confirm bond · Continue</button>
-    <button class="btn-ghost fs13" style="text-align:center;width:100%;display:block;border:none;cursor:pointer;background:none;font-family:'Inter',-apple-system,sans-serif">Skip this month</button>
+    <button class="btn-ghost fs13" style="text-align:center;width:100%;display:block;border:none;cursor:pointer;background:none;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif">Skip this month</button>
   </div>
 </div>
 
 <!-- ════════════════ P6: STEP 4 — Debit date ════════════════ -->
 <div class="phone-page" id="p6">
-  <div class="sb light"><span class="sb-time" style="color:#121926">9:41</span><div class="sb-icons" style="color:#121926">●●● ▮</div></div>
+  <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><div class="sb-icons" style="color:#030A16">●●● ▮</div></div>
   <div class="nav-hdr">
     <div class="back-btn">←</div>
     <div class="hdr-title">Set up Bond SIP</div>
@@ -656,7 +675,7 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
 
 <!-- ════════════════ P7: STEP 5 — Mandate ════════════════ -->
 <div class="phone-page" id="p7">
-  <div class="sb light"><span class="sb-time" style="color:#121926">9:41</span><div class="sb-icons" style="color:#121926">●●● ▮</div></div>
+  <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><div class="sb-icons" style="color:#030A16">●●● ▮</div></div>
   <div class="nav-hdr">
     <div class="back-btn">←</div>
     <div class="hdr-title">Set up Bond SIP</div>
@@ -713,7 +732,7 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
     </div>
     <!-- 12-month ladder -->
     <div class="fs11 fw7 t4 mb8" style="text-transform:uppercase;letter-spacing:0.5px">12-month view</div>
-    <div style="background:#fff;border-radius:14px;padding:0 14px;border:1px solid #E3E8EF">
+    <div style="background:#fff;border-radius:14px;padding:0 14px;border:1px solid #E6E9EE">
       <div class="ladder-item">
         <div class="ladder-num conf">1</div>
         <div style="flex:1">
@@ -750,7 +769,7 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
     </div>
     <div style="margin-top:10px;display:flex;gap:8px">
       <button class="btn btn-green" style="flex:1;margin-bottom:0">Go to portfolio</button>
-      <button class="btn-outline" style="flex:1;border:1.5px solid #e0e0e0;border-radius:12px;padding:13px;font-size:13px">Share SIP plan</button>
+      <button class="btn-outline" style="flex:1;border-radius:14px;padding:13px;font-size:13px">Share SIP plan</button>
     </div>
   </div>
 </div>
@@ -767,7 +786,7 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
     <div class="ptf-lbl">Total invested</div>
     <div class="ptf-val">₹55,000</div>
     <div class="ptf-metrics">
-      <div class="ptf-m"><label>XIRR</label><span style="color:#00C853">9.1%</span></div>
+      <div class="ptf-m"><label>XIRR</label><span style="color:#01B756">9.1%</span></div>
       <div class="ptf-m"><label>SIP invested</label><span>₹5,000/mo</span></div>
     </div>
   </div>
@@ -781,9 +800,9 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
     <div class="sip-widget">
       <div class="sip-badge-dark">● ACTIVE</div>
       <div class="fs15 fw7" style="color:#fff;margin:6px 0 2px">Income Ladder · ₹5,000/mo</div>
-      <div class="fs12" style="color:#697586">Next debit: Jun 5 · HDB Financial (confirmed)</div>
+      <div class="fs12" style="color:#5A6373">Next debit: Jun 5 · HDB Financial (confirmed)</div>
       <div class="prog-track"><div class="prog-fill" style="width:8%"></div></div>
-      <div class="row"><span class="fs11" style="color:#9AA4B2">Month 1 of 12</span><span class="fs11" style="color:#00B9C6">₹5,000 of ₹60,000</span></div>
+      <div class="row"><span class="fs11" style="color:#8A93A3">Month 1 of 12</span><span class="fs11" style="color:#00B9C6">₹5,000 of ₹60,000</span></div>
     </div>
     <!-- slots: Option C goal-driven view -->
     <div class="fs11 fw7 t4 mb8" style="text-transform:uppercase;letter-spacing:0.5px">SIP slots</div>
@@ -794,9 +813,9 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
     </div>
     <div class="slot disclosed">
       <div class="slot-num">Month 2 — Jul 2026</div>
-      <div class="row"><span class="fs13 fw6 t1">Bajaj Finance Ltd</span><span class="chip" style="border-color:#F59E0B;color:#B45309">Disclosed Jun 5</span></div>
+      <div class="row"><span class="fs13 fw6 t1">Bajaj Finance Ltd</span><span class="chip chip-amber">Disclosed Jun 5</span></div>
       <div class="fs11 t4 mt4">Est. ₹5,000 · ~9.0% YTM · Target: 12–18m tenure</div>
-      <div class="fs11 mt6" style="color:#B45309">Debit Jul 5 · Tap to skip</div>
+      <div class="fs11 mt6" style="color:#92400E">Debit Jul 5 · Tap to skip</div>
     </div>
     <div class="slot pending">
       <div class="slot-num">Month 3 — Aug 2026</div>
@@ -812,7 +831,7 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
 
 <!-- ════════════════ P10: SIP CONTROLS ════════════════ -->
 <div class="phone-page" id="p10">
-  <div class="sb light"><span class="sb-time" style="color:#121926">9:41</span><div class="sb-icons" style="color:#121926">●●● ▮</div></div>
+  <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><div class="sb-icons" style="color:#030A16">●●● ▮</div></div>
   <div class="nav-hdr">
     <div class="back-btn">←</div>
     <div class="hdr-title">SIP Controls</div>
@@ -823,10 +842,10 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
     <div class="sip-widget">
       <div class="sip-badge-dark">● ACTIVE</div>
       <div class="fs15 fw7" style="color:#fff;margin:6px 0 2px">Income Ladder · ₹5,000/month</div>
-      <div class="fs12" style="color:#697586">Next debit Jun 5 · Month 1 of 12</div>
+      <div class="fs12" style="color:#5A6373">Next debit Jun 5 · Month 1 of 12</div>
     </div>
     <!-- self-serve controls -->
-    <div style="background:#fff;border-radius:14px;border:1px solid #E3E8EF;padding:0 14px">
+    <div style="background:#fff;border-radius:14px;border:1px solid #E6E9EE;padding:0 14px">
       <div class="ctrl-row">
         <div class="ctrl-icon" style="background:#FEF3C7">⏸</div>
         <div>
@@ -836,7 +855,7 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
         <span class="ctrl-chevron">›</span>
       </div>
       <div class="ctrl-row">
-        <div class="ctrl-icon" style="background:#EFF6FF">💰</div>
+        <div class="ctrl-icon" style="background:#EFF2F9">💰</div>
         <div>
           <div class="fs13 fw6 t1">Change amount</div>
           <div class="fs11 t4 mt4">Currently ₹5,000/month</div>
@@ -844,7 +863,7 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
         <span class="ctrl-chevron">›</span>
       </div>
       <div class="ctrl-row">
-        <div class="ctrl-icon" style="background:#F0FDF4">📅</div>
+        <div class="ctrl-icon" style="background:#E4FFF4">📅</div>
         <div>
           <div class="fs13 fw6 t1">Change debit date</div>
           <div class="fs11 t4 mt4">Currently 5th of every month</div>
@@ -852,7 +871,7 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
         <span class="ctrl-chevron">›</span>
       </div>
       <div class="ctrl-row">
-        <div class="ctrl-icon" style="background:#F8F9FA">🎯</div>
+        <div class="ctrl-icon" style="background:#F4F6F8">🎯</div>
         <div>
           <div class="fs13 fw6 t1">Change goal mode</div>
           <div class="fs11 t4 mt4">Currently: Income Ladder</div>
@@ -860,7 +879,7 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
         <span class="ctrl-chevron">›</span>
       </div>
       <div class="ctrl-row" style="border-bottom:none">
-        <div class="ctrl-icon" style="background:#FFF5F5">✕</div>
+        <div class="ctrl-icon" style="background:#FFF4DA">✕</div>
         <div>
           <div class="fs13 fw6" style="color:#DC2626">Cancel SIP</div>
           <div class="fs11 t4 mt4">Takes effect from next cycle</div>
@@ -897,16 +916,16 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
       <div class="row mt8">
         <div>
           <div class="fs15 fw7" style="color:#fff">₹5,000/month</div>
-          <div class="fs11" style="color:#9AA4B2;margin-top:2px">Income Ladder · Month 1 of 12</div>
+          <div class="fs11" style="color:#8A93A3;margin-top:2px">Income Ladder · Month 1 of 12</div>
         </div>
         <div style="text-align:right">
-          <div class="fs12" style="color:#9AA4B2">Next debit</div>
+          <div class="fs12" style="color:#8A93A3">Next debit</div>
           <div class="fs13 fw6" style="color:#fff">Jun 5</div>
         </div>
       </div>
       <div class="prog-track"><div class="prog-fill" style="width:8%"></div></div>
       <div class="row">
-        <span class="fs11" style="color:#9AA4B2">₹5,000 of ₹60,000 invested</span>
+        <span class="fs11" style="color:#8A93A3">₹5,000 of ₹60,000 invested</span>
         <span class="fs11" style="color:#00B9C6;cursor:pointer">View SIP →</span>
       </div>
     </div>
@@ -933,10 +952,10 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
     </div>
   </div>
   <div class="bnav">
-    <div class="bn active"><div class="bn-icon">🏠</div><span class="bn-label" style="color:#00C853">Home</span></div>
-    <div class="bn"><div class="bn-icon">🔍</div><span class="bn-label">Explore</span></div>
-    <div class="bn"><div class="bn-icon">💼</div><span class="bn-label">Portfolio</span></div>
-    <div class="bn"><div class="bn-icon">👤</div><span class="bn-label">Profile</span></div>
+    <div class="bn active"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="#01B756"><path d="M4 11 L12 4 L20 11 V20 a1 1 0 01-1 1h-4v-7h-6v7H5a1 1 0 01-1-1z"/></svg></div><span class="bn-label" style="color:#01B756">Home</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-3.5-3.5"/></svg></div><span class="bn-label">Explore</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><span class="bn-label">Portfolio</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="9" r="3.5"/><path d="M5 20c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg></div><span class="bn-label">Profile</span></div>
   </div>
 </div>
 
@@ -964,14 +983,14 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
     </div>
   </div>
   <!-- SIP discovery card — lower commitment alternative -->
-  <div style="background:#030916;padding:0 16px 16px;flex-shrink:0">
+  <div style="background:#030A16;padding:0 16px 16px;flex-shrink:0">
     <div class="nudge-card" style="background:#fff;border-color:#00B9C6;border-top:none">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
         <span class="fs14 fw7" style="color:#00B9C6">Start with ₹1,000/month</span>
         <span class="new-badge">NEW</span>
       </div>
       <div class="fs12 t3" style="line-height:1.5">Bond SIP — automated monthly investing, bonds selected for you, cancel anytime.</div>
-      <button class="btn-sip mt10" style="padding:9px;font-size:13px">Set up Bond SIP →</button>
+      <button class="btn-sip btn-sm mt10">Set up Bond SIP →</button>
     </div>
   </div>
   <div class="content">
@@ -996,10 +1015,10 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
     </div>
   </div>
   <div class="bnav">
-    <div class="bn active"><div class="bn-icon">🏠</div><span class="bn-label" style="color:#00C853">Home</span></div>
-    <div class="bn"><div class="bn-icon">🔍</div><span class="bn-label">Explore</span></div>
-    <div class="bn"><div class="bn-icon">💼</div><span class="bn-label">Portfolio</span></div>
-    <div class="bn"><div class="bn-icon">👤</div><span class="bn-label">Profile</span></div>
+    <div class="bn active"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="#01B756"><path d="M4 11 L12 4 L20 11 V20 a1 1 0 01-1 1h-4v-7h-6v7H5a1 1 0 01-1-1z"/></svg></div><span class="bn-label" style="color:#01B756">Home</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-3.5-3.5"/></svg></div><span class="bn-label">Explore</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><span class="bn-label">Portfolio</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="9" r="3.5"/><path d="M5 20c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg></div><span class="bn-label">Profile</span></div>
   </div>
 </div>
 
@@ -1024,7 +1043,7 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
         </div>
         <div style="text-align:right">
           <div class="fs11 t3" style="color:rgba(255,255,255,0.5)">XIRR</div>
-          <div style="font-size:24px;font-weight:800;color:#00C853;line-height:1">9.2</div>
+          <div style="font-size:24px;font-weight:800;color:#01B756;line-height:1">9.2</div>
           <div class="fs12" style="color:rgba(255,255,255,0.5)">%</div>
         </div>
       </div>
@@ -1042,14 +1061,14 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
         <div class="fs11 fw7 t4 mb6" style="text-transform:uppercase;letter-spacing:0.5px">For you</div>
         <div class="fs14 fw7 t1 mb4">Your ₹82,500 is earning 9.2%.</div>
         <div class="fs13 t3 mb10" style="line-height:1.5">Make investing automatic — Bond SIP adds ₹1,000+ each month, bonds selected for you.</div>
-        <div style="background:#F8F9FA;border-radius:10px;padding:10px;margin-bottom:10px">
+        <div style="background:#F4F6F8;border-radius:10px;padding:10px;margin-bottom:10px">
           <div class="row mb4"><span class="fs11 t3">Monthly amount</span><span class="fs12 fw6 t1">from ₹1,000</span></div>
           <div class="row mb4"><span class="fs11 t3">Estimated YTM</span><span class="fs12 fw6 ytm">8–9.5%</span></div>
-          <div class="row"><span class="fs11 t3">Cancel</span><span class="fs11 fw6" style="color:#00C853">Anytime, self-serve</span></div>
+          <div class="row"><span class="fs11 t3">Cancel</span><span class="fs11 fw6" style="color:#01B756">Anytime, self-serve</span></div>
         </div>
         <div class="nudge-card btn-row" style="margin-top:0">
-          <button class="btn-outline" style="flex:1">Not now</button>
-          <button class="btn-sip" style="flex:1;padding:9px;font-size:13px">Set up Bond SIP →</button>
+          <button class="btn-outline btn-sm" style="flex:1">Not now</button>
+          <button class="btn-sip btn-sm" style="flex:1">Set up Bond SIP →</button>
         </div>
       </div>
     </div>
@@ -1069,10 +1088,10 @@ body{font-family:'Inter',-apple-system,'Helvetica Neue',sans-serif;background:#0
     </div>
   </div>
   <div class="bnav">
-    <div class="bn active"><div class="bn-icon">🏠</div><span class="bn-label" style="color:#00C853">Home</span></div>
-    <div class="bn"><div class="bn-icon">🔍</div><span class="bn-label">Explore</span></div>
-    <div class="bn"><div class="bn-icon">💼</div><span class="bn-label">Portfolio</span></div>
-    <div class="bn"><div class="bn-icon">👤</div><span class="bn-label">Profile</span></div>
+    <div class="bn active"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="#01B756"><path d="M4 11 L12 4 L20 11 V20 a1 1 0 01-1 1h-4v-7h-6v7H5a1 1 0 01-1-1z"/></svg></div><span class="bn-label" style="color:#01B756">Home</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-3.5-3.5"/></svg></div><span class="bn-label">Explore</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><span class="bn-label">Portfolio</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="9" r="3.5"/><path d="M5 20c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg></div><span class="bn-label">Profile</span></div>
   </div>
 </div>
 
