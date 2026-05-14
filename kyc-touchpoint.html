@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KYC Touchpoint Analysis — Aspero B2C</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --blue:    #2563EB;
+    --blue-lt: #EFF6FF;
+    --green:   #16A34A;
+    --green-lt:#F0FDF4;
+    --purple:  #7C3AED;
+    --amber:   #D97706;
+    --red:     #DC2626;
+    --red-lt:  #FEF2F2;
+    --gray:    #64748B;
+    --border:  #E2E8F0;
+    --text:    #0F172A;
+    --text2:   #475569;
+    --text3:   #94A3B8;
+    --bg:      #F1F5F9;
+    --white:   #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 60%, #3B82F6 100%);
+    color: white;
+    padding: 44px 32px 36px;
+    text-align: center;
+  }
+  .header .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    opacity: .65;
+    margin-bottom: 10px;
+  }
+  .header h1 {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    margin-bottom: 8px;
+  }
+  .header .sub {
+    font-size: 14px;
+    opacity: .8;
+    line-height: 1.6;
+    max-width: 540px;
+    margin: 0 auto 18px;
+  }
+  .header .meta {
+    display: inline-flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .pill {
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* Layout */
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 40px 24px 64px; }
+
+  /* KPI row */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .kpi {
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 20px;
+  }
+  .kpi .label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+  .kpi .value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .kpi .delta {
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .up   { color: var(--green); }
+  .down { color: var(--red); }
+  .neu  { color: var(--gray); }
+
+  /* Section header */
+  .section-hd {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .section-hd .icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .icon-blue   { background: var(--blue-lt); }
+  .icon-amber  { background: #FFFBEB; }
+  .icon-green  { background: var(--green-lt); }
+  .icon-purple { background: #F5F3FF; }
+  .icon-red    { background: var(--red-lt); }
+
+  .section-hd .hd-text h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .section-hd .hd-text p {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--white);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+  .card-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 680px) {
+    .card-grid-2 { grid-template-columns: 1fr; }
+  }
+
+  /* Bar chart rows */
+  .bar-table { width: 100%; border-collapse: collapse; }
+  .bar-table th {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 0 0 12px;
+    text-align: left;
+  }
+  .bar-table th:not(:first-child) { text-align: right; }
+  .bar-table td {
+    padding: 9px 0;
+    font-size: 13px;
+    vertical-align: middle;
+    border-top: 1px solid var(--border);
+  }
+  .bar-table td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
+  .bar-table td:last-child { padding-right: 0; }
+  .bar-table tr:last-child td { border-bottom: 1px solid var(--border); }
+
+  .surface-name { color: var(--text); font-weight: 500; }
+  .surface-sub  { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  .pct-col { color: var(--blue); font-weight: 700; min-width: 52px; }
+  .cnt-col { color: var(--text2); min-width: 52px; }
+
+  .bar-wrap { width: 120px; padding-left: 12px; }
+  .bar-bg {
+    height: 8px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width .4s ease;
+  }
+  .bar-blue   { background: var(--blue); }
+  .bar-amber  { background: var(--amber); }
+  .bar-red    { background: var(--red); }
+  .bar-green  { background: var(--green); }
+  .bar-purple { background: var(--purple); }
+  .bar-gray   { background: var(--text3); }
+
+  /* Totals row */
+  .total-row td {
+    font-weight: 700;
+    background: var(--bg);
+    font-size: 13px;
+  }
+
+  /* Badge */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-red    { background: var(--red-lt); color: var(--red); }
+  .badge-amber  { background: #FFFBEB; color: var(--amber); }
+  .badge-green  { background: var(--green-lt); color: var(--green); }
+  .badge-blue   { background: var(--blue-lt); color: var(--blue); }
+  .badge-purple { background: #F5F3FF; color: var(--purple); }
+  .badge-gray   { background: #F8FAFC; color: var(--gray); border: 1px solid var(--border); }
+
+  /* Insight boxes */
+  .insight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .insight {
+    border-radius: 12px;
+    padding: 18px;
+    border-left: 4px solid;
+  }
+  .insight-red    { background: var(--red-lt);  border-color: var(--red); }
+  .insight-amber  { background: #FFFBEB;        border-color: var(--amber); }
+  .insight-blue   { background: var(--blue-lt); border-color: var(--blue); }
+  .insight-green  { background: var(--green-lt);border-color: var(--green); }
+  .insight .ins-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .insight p {
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text2);
+  }
+
+  /* Platform bar */
+  .plat-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .plat-name { font-size: 13px; font-weight: 500; width: 80px; flex-shrink: 0; }
+  .plat-bar-bg {
+    flex: 1;
+    height: 10px;
+    background: var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .plat-bar-fill { height: 100%; border-radius: 5px; }
+  .plat-pct { font-size: 13px; font-weight: 700; color: var(--blue); width: 44px; text-align: right; }
+  .plat-cnt { font-size: 12px; color: var(--text3); width: 44px; text-align: right; }
+
+  /* Methodology note */
+  .method-box {
+    background: #F8FAFC;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 16px;
+  }
+  .method-box h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text3); margin-bottom: 8px; }
+  .method-box ul { padding-left: 18px; }
+  .method-box li { font-size: 12px; color: var(--text2); line-height: 1.7; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    color: var(--text3);
+    font-size: 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .footer a { color: var(--blue); text-decoration: none; }
+
+  /* Donut chart wrapper */
+  .donut-wrap {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .donut-canvas { width: 160px !important; height: 160px !important; flex-shrink: 0; }
+  .donut-legend { flex: 1; }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .legend-item .l-name { flex: 1; color: var(--text2); }
+  .legend-item .l-pct  { font-weight: 700; color: var(--text); }
+
+  @media (max-width: 480px) {
+    .header h1 { font-size: 22px; }
+    .donut-wrap { flex-direction: column; }
+    .bar-wrap   { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">Aspero · B2C Analytics</div>
+  <h1>KYC Start — Entry Touchpoint Analysis</h1>
+  <div class="sub">From which in-app surfaces do users arrive at KYC Step 1 (risk profiling)?
+    Each section uses a different attribution methodology — read the notes.</div>
+  <div class="meta">
+    <span class="pill">May 7 – May 13, 2026 (7 days)</span>
+    <span class="pill">vs May 1 – May 7 (prior week)</span>
+    <span class="pill">KYC_RISKDETAILS_SUBMIT</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- KPI row -->
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="label">Total KYC Starters</div>
+      <div class="value">1,360</div>
+      <div class="delta up">▲ +5.3% WoW (vs 1,292)</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Dark / Uninstrumented</div>
+      <div class="value">69.7%</div>
+      <div class="delta down">KycStatusCard not tracked</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Bond Detail CTA</div>
+      <div class="value">14.4%</div>
+      <div class="delta neu">#1 tracked last-touch</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Explore → KYC path</div>
+      <div class="value">9.7%</div>
+      <div class="delta neu">browsing → KYC wall</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Profile page KYC</div>
+      <div class="value">4.1%</div>
+      <div class="delta neu">settings-driven starts</div>
+    </div>
+  </div>
+
+  <!-- KEY INSIGHTS -->
+  <div class="section-hd">
+    <div class="icon icon-amber">💡</div>
+    <div class="hd-text">
+      <h2>Key Insights</h2>
+      <p>What the data says — and what to fix.</p>
+    </div>
+  </div>
+
+  <div class="insight-grid">
+    <div class="insight insight-red">
+      <div class="ins-title">🔴 P0 — KycStatusCard has zero analytics (69.7% dark)</div>
+      <p>The homepage widget for KYC_NOT_STARTED users navigates to KYC_FORM with no event.
+         Once instrumented, the "Other/Uninstrumented" bucket is expected to drop to &lt;20%
+         and this will become the single largest attributed touchpoint.</p>
+    </div>
+    <div class="insight insight-amber">
+      <div class="ins-title">🟡 P1 — Bond Detail CTA misses KYC status (14.4% last-touch)</div>
+      <p>BOND_DETAILS_INVEST_NOW_BUTTON fires for all users regardless of KYC state.
+         <code>userCategory</code> (KYC_NOT_STARTED / KYC_PENDING) is not logged on this event.
+         Fix: add <code>userCategory</code> to the event payload so Amplitude can filter.</p>
+    </div>
+    <div class="insight insight-blue">
+      <div class="ins-title">🔵 Bond browsing drives more KYC than direct CTAs</div>
+      <p>Section D shows 25+ users reached KYC through bond-browsing paths (High Yield, Highly Rated, Issuer widget).
+         These users hit the KYC wall after discovering a bond — intent signal is strong here.
+         Friction in this path directly kills conversions.</p>
+    </div>
+    <div class="insight insight-amber">
+      <div class="ins-title">🟡 WAYLF tab disappears in last-touch (0% vs 17% any-touch)</div>
+      <p>234 users clicked the WAYLF "Bonds" tab before KYC — but in last-touch, they're all
+         reclassified to Bond Detail or Explore. WAYLF is an upstream step, not the final
+         trigger. The tab works for discovery; the conversion point is bond detail.</p>
+    </div>
+    <div class="insight insight-green">
+      <div class="ins-title">🟢 Android dominates (89.3%) — optimise for it first</div>
+      <p>KYC instrumentation gaps (KycStatusCard, NonInvestedHoldingCard) affect all platforms,
+         but fixing them will move Android metrics most. iOS 4.7% is relatively small.
+         Web 2.6% is web-banner driven.</p>
+    </div>
+    <div class="insight insight-blue">
+      <div class="ins-title">🔵 Portfolio page + Bond Basket have no KYC events either</div>
+      <p>NonInvestedHoldingCard (portfolio) and BondBasketDetail navigate to KYC_FORM with no
+         analytics. These contribute to the 69.7% dark bucket alongside KycStatusCard.</p>
+    </div>
+  </div>
+
+  <!-- SECTION D: Last-touch (primary, most important) -->
+  <div class="section-hd" style="margin-top: 8px;">
+    <div class="icon icon-blue">🎯</div>
+    <div class="hd-text">
+      <h2>Section D — Last-Touch Attribution <span class="badge badge-blue" style="margin-left:8px;font-size:11px;">Most Accurate</span></h2>
+      <p>Each user counted <strong>exactly once</strong> — the last instrumented event they fired
+         before <code>KYC_RISKDETAILS_SUBMIT</code>. No double-counting.
+         Source: 136.8 MB raw event export (Amplitude Export API).</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <table class="bar-table">
+      <thead>
+        <tr>
+          <th>Surface</th>
+          <th>Users</th>
+          <th>% of starters</th>
+          <th class="bar-wrap">Distribution</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="surface-name">Other / Uninstrumented</div>
+            <div class="surface-sub">KycStatusCard · NonInvestedHoldingCard · BondBasketDetail · deep links</div>
+          </td>
+          <td class="cnt-col">931</td>
+          <td class="pct-col" style="color:var(--red)">69.7%</td>
+          <td class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-red" style="width:69.7%"></div></div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="surface-name">Bond Detail — Invest Now / Complete KYC</div>
+            <div class="surface-sub">BOND_DETAILS_INVEST_NOW_BUTTON ⚠ userCategory not logged</div>
+          </td>
+          <td class="cnt-col">193</td>
+          <td class="pct-col">14.4%</td>
+          <td class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-blue" style="width:14.4%"></div></div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="surface-name">Explore tab screen view</div>
+            <div class="surface-sub">EXPLORE_PAGE_VIEW — contextual (browsing → KYC wall)</div>
+          </td>
+          <td class="cnt-col">130</td>
+          <td class="pct-col">9.7%</td>
+          <td class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-purple" style="width:9.7%"></div></div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="surface-name">Profile page — KYC card</div>
+            <div class="surface-sub">PROFILE_PAGE_KYC_SELECT</div>
+          </td>
+          <td class="cnt-col">55</td>
+          <td class="pct-col">4.1%</td>
+          <td class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-green" style="width:4.1%"></div></div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="surface-name">Homepage — High Yield section bond click</div>
+            <div class="surface-sub">HOME_PAGE_HIGH_YIELD_BOND_SELECT</div>
+          </td>
+          <td class="cnt-col">14</td>
+          <td class="pct-col">1.0%</td>
+          <td class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-amber" style="width:1.0%"></div></div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="surface-name">Issuer widget → Issuer page</div>
+            <div class="surface-sub">ISSUER_SELECT</div>
+          </td>
+          <td class="cnt-col">7</td>
+          <td class="pct-col">0.5%</td>
+          <td class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-amber" style="width:0.5%"></div></div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="surface-name">Homepage — Highly Rated section bond click</div>
+            <div class="surface-sub">HOME_PAGE_HIGHLY_RATED_BOND_SELECT</div>
+          </td>
+          <td class="cnt-col">3</td>
+          <td class="pct-col">0.2%</td>
+          <td class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-amber" style="width:0.2%"></div></div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="surface-name">Homepage — Low Ticket Size section bond click</div>
+            <div class="surface-sub">HOME_PAGE_LOW_TICKET_SIZE_BOND_SELECT</div>
+          </td>
+          <td class="cnt-col">2</td>
+          <td class="pct-col">0.1%</td>
+          <td class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-amber" style="width:0.1%"></div></div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="surface-name">Web Banner — Let's Get Started</div>
+            <div class="surface-sub">WEB_BANNER_LETS_GET_STARTED_CLICK — web only</div>
+          </td>
+          <td class="cnt-col">1</td>
+          <td class="pct-col">0.1%</td>
+          <td class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-gray" style="width:0.1%"></div></div></td>
+        </tr>
+        <tr>
+          <td colspan="2" style="color:var(--text3);font-size:12px;">Homepage PortfolioStarterCard · Account Details · WAYLF tab · Short Tenure</td>
+          <td class="pct-col" style="color:var(--text3)">0.0%</td>
+          <td class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-gray" style="width:0%"></div></div></td>
+        </tr>
+        <tr class="total-row">
+          <td>Total attributed</td>
+          <td class="cnt-col">1,336</td>
+          <td class="pct-col">100%</td>
+          <td class="bar-wrap"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="method-box">
+      <h4>Methodology — Last-Touch</h4>
+      <ul>
+        <li>Downloaded 136.8 MB 7-day raw event export from Amplitude Export API.</li>
+        <li>Filtered in-memory to touchpoint events + KYC_RISKDETAILS_SUBMIT only.</li>
+        <li>For each user who fired KYC_RISKDETAILS_SUBMIT in the window: walk backwards through their sorted event stream, find the last instrumented touchpoint event before that timestamp.</li>
+        <li>1,336 of 1,360 attributed (gap of 24 = users with server-side receipt time outside window).</li>
+        <li><strong>Each user counted exactly once — no double-counting between surfaces.</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Platform + Section A side by side -->
+  <div class="card-grid-2">
+
+    <!-- Platform breakdown -->
+    <div class="card">
+      <div class="section-hd" style="margin-bottom:20px;">
+        <div class="icon icon-green">📱</div>
+        <div class="hd-text">
+          <h2 style="font-size:16px;">Platform Breakdown</h2>
+          <p style="font-size:12px;">Current 7d · unique KYC starters</p>
+        </div>
+      </div>
+      <div class="plat-row">
+        <span class="plat-name">Android</span>
+        <div class="plat-bar-bg"><div class="plat-bar-fill bar-green" style="width:89.3%"></div></div>
+        <span class="plat-pct">89.3%</span>
+        <span class="plat-cnt">1,215</span>
+      </div>
+      <div class="plat-row">
+        <span class="plat-name">iOS</span>
+        <div class="plat-bar-bg"><div class="plat-bar-fill bar-blue" style="width:4.7%"></div></div>
+        <span class="plat-pct">4.7%</span>
+        <span class="plat-cnt">64</span>
+      </div>
+      <div class="plat-row">
+        <span class="plat-name">(none)</span>
+        <div class="plat-bar-bg"><div class="plat-bar-fill bar-gray" style="width:3.5%"></div></div>
+        <span class="plat-pct">3.5%</span>
+        <span class="plat-cnt">48</span>
+      </div>
+      <div class="plat-row">
+        <span class="plat-name">Web</span>
+        <div class="plat-bar-bg"><div class="plat-bar-fill bar-purple" style="width:2.6%"></div></div>
+        <span class="plat-pct">2.6%</span>
+        <span class="plat-cnt">35</span>
+      </div>
+    </div>
+
+    <!-- Section A: Direct KYC CTAs -->
+    <div class="card">
+      <div class="section-hd" style="margin-bottom:20px;">
+        <div class="icon icon-blue">🔘</div>
+        <div class="hd-text">
+          <h2 style="font-size:16px;">Section A — Direct KYC CTAs</h2>
+          <p style="font-size:12px;">Any-touch: ordered funnel [CTA → KYC_RISKDETAILS_SUBMIT], 7d</p>
+        </div>
+      </div>
+      <table class="bar-table">
+        <thead>
+          <tr><th>Surface</th><th>Users</th><th>%</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="surface-name">Bond Detail — Invest Now ⚠</div></td>
+            <td class="cnt-col">229</td>
+            <td class="pct-col">16.8%</td>
+          </tr>
+          <tr>
+            <td><div class="surface-name">Profile page — KYC card</div></td>
+            <td class="cnt-col">71</td>
+            <td class="pct-col">5.2%</td>
+          </tr>
+          <tr>
+            <td><div class="surface-name">Web Banner</div></td>
+            <td class="cnt-col">12</td>
+            <td class="pct-col">0.9%</td>
+          </tr>
+          <tr>
+            <td><div class="surface-name" style="color:var(--text3)">Homepage KYC CTA</div>
+                <div class="surface-sub">KycStatusCard not instrumented</div></td>
+            <td class="cnt-col" style="color:var(--text3)">0</td>
+            <td class="pct-col" style="color:var(--text3)">0.0%</td>
+          </tr>
+          <tr>
+            <td><div class="surface-name" style="color:var(--text3)">Account Details KYC</div>
+                <div class="surface-sub">Not instrumented</div></td>
+            <td class="cnt-col" style="color:var(--text3)">0</td>
+            <td class="pct-col" style="color:var(--text3)">0.0%</td>
+          </tr>
+          <tr class="total-row">
+            <td>Attributed to direct CTAs</td>
+            <td class="cnt-col">312</td>
+            <td class="pct-col">22.9%</td>
+          </tr>
+          <tr class="total-row">
+            <td><span style="color:var(--red)">Residual (uninstrumented)</span></td>
+            <td class="cnt-col" style="color:var(--red)">1,048</td>
+            <td class="pct-col" style="color:var(--red)">77.1%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section B: Discovery Paths -->
+  <div class="section-hd">
+    <div class="icon icon-amber">🔍</div>
+    <div class="hd-text">
+      <h2>Section B — Discovery Paths <span class="badge badge-amber" style="margin-left:8px;font-size:11px;">Overlaps with Section A</span></h2>
+      <p>Any-touch ordered funnel [homepage entry → KYC_RISKDETAILS_SUBMIT], 7d window.
+         A user who clicked a High Yield bond, landed on Bond Detail, and tapped Invest Now
+         appears in <em>both</em> Section A (Bond Detail row) and Section B (High Yield row).
+         Section B answers "how did users arrive at Bond Detail?"</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <table class="bar-table">
+      <thead>
+        <tr>
+          <th>Entry Point</th>
+          <th>Users</th>
+          <th>% of total starters</th>
+          <th class="bar-wrap">Distribution</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="surface-name">Explore tab screen view</div>
+            <div class="surface-sub">EXPLORE_PAGE_VIEW — contextual, not a click CTA</div>
+          </td>
+          <td class="cnt-col">345</td>
+          <td class="pct-col">25.4%</td>
+          <td class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-purple" style="width:25.4%"></div></div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="surface-name">Homepage 'Bonds' tab (WAYLF)</div>
+            <div class="surface-sub">HOME_PAGE_WAYLF_BONDS_CLICK → Explore → Bond Detail</div>
+          </td>
+          <td class="cnt-col">234</td>
+          <td class="pct-col">17.2%</td>
+          <td class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-amber" style="width:17.2%"></div></div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="surface-name">Homepage — High Yield section</div>
+            <div class="surface-sub">HOME_PAGE_HIGH_YIELD_BOND_SELECT</div>
+          </td>
+          <td class="cnt-col">96</td>
+          <td class="pct-col">7.1%</td>
+          <td class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-amber" style="width:7.1%"></div></div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="surface-name">Homepage — Highly Rated section</div>
+            <div class="surface-sub">HOME_PAGE_HIGHLY_RATED_BOND_SELECT</div>
+          </td>
+          <td class="cnt-col">43</td>
+          <td class="pct-col">3.2%</td>
+          <td class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-blue" style="width:3.2%"></div></div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="surface-name">Issuer widget → Issuer page</div>
+            <div class="surface-sub">ISSUER_SELECT</div>
+          </td>
+          <td class="cnt-col">32</td>
+          <td class="pct-col">2.4%</td>
+          <td class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-blue" style="width:2.4%"></div></div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="surface-name">Homepage — Short Tenure section</div>
+            <div class="surface-sub">HOME_PAGE_SHORT_TENURE_BOND_SELECT</div>
+          </td>
+          <td class="cnt-col">10</td>
+          <td class="pct-col">0.7%</td>
+          <td class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-blue" style="width:0.7%"></div></div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="surface-name">Homepage — Low Ticket Size section</div>
+            <div class="surface-sub">HOME_PAGE_LOW_TICKET_SIZE_BOND_SELECT</div>
+          </td>
+          <td class="cnt-col">4</td>
+          <td class="pct-col">0.3%</td>
+          <td class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-blue" style="width:0.3%"></div></div></td>
+        </tr>
+        <tr class="total-row">
+          <td>Subtotal — homepage bond sections</td>
+          <td class="cnt-col">153</td>
+          <td class="pct-col">11.2%</td>
+          <td class="bar-wrap"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="method-box">
+      <h4>Note on Overlap — Section A vs B</h4>
+      <ul>
+        <li><strong>Section A and B are NOT additive.</strong> They answer different questions about the same set of users.</li>
+        <li>Section A: "Which CTA button directly triggered the KYC flow?" → credits Bond Detail at 16.8%.</li>
+        <li>Section B: "What brought users to Bond Detail in the first place?" → upstream discovery path.</li>
+        <li>A user who went Homepage High Yield → Bond Detail → Invest Now appears in BOTH sections.</li>
+        <li>Section D (last-touch above) resolves this by crediting each user to exactly one surface.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Instrumentation gaps -->
+  <div class="section-hd">
+    <div class="icon icon-red">🔧</div>
+    <div class="hd-text">
+      <h2>Instrumentation Gaps — Action Required</h2>
+      <p>These surfaces navigate to KYC_FORM with no analytics event. Together they explain the 69.7% dark bucket.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <table class="bar-table">
+      <thead>
+        <tr>
+          <th>Surface / File</th>
+          <th>Event to add</th>
+          <th>Priority</th>
+          <th>Impact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="surface-name">Homepage KycStatusCard</div>
+            <div class="surface-sub">src/screens/homeRevamp/components/kycStatusWidget/useKycStatusCard.ts · navigateToKycForm() line 116</div>
+          </td>
+          <td style="font-size:12px;"><code>HOME_PAGE_KYC_STATUS_CARD_CLICK</code></td>
+          <td><span class="badge badge-red">P0</span></td>
+          <td style="font-size:12px;">Primary entry for KYC_NOT_STARTED. Expected to claim 50–60% of dark bucket.</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="surface-name">Portfolio — NonInvestedHoldingCard</div>
+            <div class="surface-sub">src/screens/portfolioRevamp/…/NonInvestedHoldingCard/index.tsx · navigateToKyc() line 38</div>
+          </td>
+          <td style="font-size:12px;"><code>PORTFOLIO_KYC_CTA_CLICK</code> with source prop</td>
+          <td><span class="badge badge-amber">P1</span></td>
+          <td style="font-size:12px;">Fires for KYC_NOT_STARTED, KYC_PENDING, KYC_FAILED users on Portfolio tab.</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="surface-name">Bond Basket Detail</div>
+            <div class="surface-sub">src/screens/bondBasketDetail/useBondBasketDetailContainer.ts · navigateToKycForm() line 138</div>
+          </td>
+          <td style="font-size:12px;"><code>BOND_BASKET_KYC_CTA_CLICK</code></td>
+          <td><span class="badge badge-amber">P1</span></td>
+          <td style="font-size:12px;">Fires for KYC_NOT_STARTED, KYC_PENDING, KYC_FAILED.</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="surface-name">Bond Detail — add userCategory to existing event</div>
+            <div class="surface-sub">src/screens/enhancedBondDetail/…/useInvestNowLogic.ts · currently logs userSubType (INDIVIDUAL/HUF) not KYC status</div>
+          </td>
+          <td style="font-size:12px;">Add <code>userCategory</code> property to <code>BOND_DETAILS_INVEST_NOW_BUTTON</code></td>
+          <td><span class="badge badge-amber">P1</span></td>
+          <td style="font-size:12px;">Enables filtering by KYC status. Currently overcounts KYC_PENDING users in last-touch.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /wrap -->
+
+<div class="wrap" style="padding-top:0">
+  <div class="footer">
+    KYC Touchpoint Analysis · May 7–13, 2026 · Run on-demand ·
+    <a href="https://github.com/yubisecurities/yubi-b2c-product-spec/blob/master/funnel-optimization-agent/agent/kyc_touchpoint_analysis.py">Script ↗</a> ·
+    <a href="index.html">← Product Hub</a>
+  </div>
+</div>
+
+</body>
+</html>
