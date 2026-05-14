@@ -272,6 +272,19 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
 /* ── SCREEN-SPECIFIC SPACING ──────────────────────────────────── */
 .p16{padding:16px}
 .pb16{padding-bottom:16px}
+
+/* ── RATIONALE PANEL ──────────────────────────────────── */
+.content-area{align-items:flex-start;gap:24px}
+.rationale{width:280px;flex-shrink:0;display:none}
+.rationale.visible{display:block}
+.rat-card{background:#0D1626;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;margin-bottom:12px}
+.rat-label{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:8px}
+.rat-text{font-size:12px;color:rgba(255,255,255,0.7);line-height:1.6}
+.rat-metric{display:inline-flex;align-items:center;gap:6px;background:rgba(1,183,86,0.1);border:1px solid rgba(1,183,86,0.2);border-radius:8px;padding:6px 10px;margin-top:8px}
+.rat-metric-val{font-size:13px;font-weight:700;color:#01B756}
+.rat-metric-lbl{font-size:11px;color:rgba(255,255,255,0.5)}
+.rat-pitch{background:rgba(255,255,255,0.04);border-radius:10px;padding:12px;margin-top:8px}
+.rat-pitch-text{font-size:13px;font-weight:600;color:#fff;line-height:1.5}
 </style>
 </head>
 <body>
@@ -285,11 +298,11 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
 
   <div class="nav-section">
     <div class="nav-section-label">Entry Points</div>
-    <div class="nav-item active" onclick="showScreen(0,this)"><span class="num">1</span>P2b — Post-purchase nudge</div>
-    <div class="nav-item" onclick="showScreen(1,this)"><span class="num">2</span>P6 — First investment</div>
-    <div class="nav-item" onclick="showScreen(2,this)"><span class="num">3</span>P7 — Maturity reinvest</div>
-    <div class="nav-item" onclick="showScreen(12,this)"><span class="num">13</span>Homepage — KYC done</div>
-    <div class="nav-item" onclick="showScreen(13,this)"><span class="num">14</span>Homepage — Active investor</div>
+    <div class="nav-item active" onclick="showScreen(0,this)"><span class="num">1</span>Homepage — KYC Not Started</div>
+    <div class="nav-item" onclick="showScreen(1,this)"><span class="num">2</span>Homepage — KYC In Progress</div>
+    <div class="nav-item" onclick="showScreen(2,this)"><span class="num">3</span>Homepage — KYC Done</div>
+    <div class="nav-item" onclick="showScreen(12,this)"><span class="num">4</span>Homepage — Active investor</div>
+    <div class="nav-item" onclick="showScreen(13,this)"><span class="num">5</span>Bond matured → reinvest</div>
   </div>
 
   <div class="nav-divider"></div>
@@ -330,162 +343,271 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
     <div class="phone">
       <div class="screen">
 
-<!-- ════════════════ P0: P2b post-purchase nudge ════════════════ -->
+<!-- ════════════════ P0: Homepage — KYC Not Started ════════════════ -->
 <div class="phone-page active" id="p0">
+  <!-- dark status bar -->
   <div class="sb"><span class="sb-time">9:41</span><div class="sb-icons">●●● ▮</div></div>
-  <!-- success header -->
-  <div style="background:#030A16;padding:22px 18px 20px;text-align:center;flex-shrink:0">
-    <div style="width:54px;height:54px;border-radius:27px;background:rgba(1,183,86,0.12);border:2px solid #01B756;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px;color:#01B756">✓</div>
-    <div class="fs16 fw7" style="color:#fff;margin-bottom:3px">Investment confirmed!</div>
-    <div class="fs12" style="color:rgba(255,255,255,0.5)">Your order is being processed</div>
+  <!-- app header -->
+  <div class="app-header">
+    <div class="logo-row">
+      <div class="logo-mark">A</div>
+      <div class="logo-text"><div class="aspero-name">Aspero</div><div class="aspero-tag">Fixed Income</div></div>
+    </div>
+    <div class="header-icons"><div class="icon-btn">🔔</div><div class="icon-btn">👤</div></div>
   </div>
-  <!-- investment summary -->
-  <div class="screen-body">
-    <div class="card success-card mb10">
-      <div class="row mb8">
-        <div style="display:flex;align-items:center;gap:8px">
-          <div class="co-logo">IIFL</div>
-          <span class="fs14 fw7 t1">IIFL Finance Ltd</span>
+  <!-- hero section -->
+  <div class="hero" style="padding-bottom:14px">
+    <div class="section-lbl">Popular first picks</div>
+    <!-- Design system hero card -->
+    <div class="hero-bond-card" style="position:relative;overflow:hidden;border-radius:18px;padding:18px;padding-top:24px;background:#F5FBF5;background-image:linear-gradient(rgba(1,183,86,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(1,183,86,.06) 1px,transparent 1px);background-size:8px 8px;border:1px solid #E6E9EE">
+      <!-- corner pill -->
+      <span style="position:absolute;top:-1px;left:-1px;background:#D6F5E2;color:#017A3A;padding:6px 14px 8px;border-radius:17px 0 14px 0;border-top:1px solid #B6E8C9;border-left:1px solid #B6E8C9;font-weight:700;font-size:11px;display:inline-flex;align-items:center;gap:5px"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 8.5L5 5l2 2 3-4" stroke="#017A3A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.5 3H10v2.5" stroke="#017A3A" stroke-width="1.6" stroke-linecap="round"/></svg>Highest yield available</span>
+      <!-- logo + name row -->
+      <div style="display:flex;align-items:center;gap:12px;margin-top:22px;margin-bottom:14px">
+        <div style="width:48px;height:48px;border-radius:12px;background:#F26B1B;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;flex-shrink:0">I</div>
+        <div style="flex:1">
+          <div style="font-size:16px;font-weight:700;color:#030A16;margin-bottom:6px">IIFL Finance Ltd</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span class="chip chip-secured">Senior Secured</span>
+            <span class="chip">AA+</span>
+            <span class="chip chip-active">Sell anytime</span>
+          </div>
         </div>
-        <span class="chip chip-green">AA+</span>
       </div>
-      <div class="row">
-        <div><div class="fs11 t4">Invested</div><div class="fs16 fw7 t1">₹50,000</div></div>
-        <div style="text-align:center"><div class="fs11 t4">YTM</div><div class="fs22 fw8 ytm">9.4%</div></div>
-        <div style="text-align:right"><div class="fs11 t4">Matures</div><div class="fs13 fw6 t1">Jun 2027</div></div>
+      <!-- inner white stats box -->
+      <div style="background:#fff;border-radius:12px;padding:14px;border:1px solid #E6E9EE;margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end">
+          <div><div style="font-size:12px;color:#5A6373;margin-bottom:4px">Remaining tenure</div><div style="font-size:20px;font-weight:700;color:#030A16">13M</div></div>
+          <div style="text-align:right"><div style="font-size:12px;color:#5A6373;margin-bottom:4px">Yield to maturity</div><div style="font-size:22px;font-weight:800;color:#01B756">9.4%</div></div>
+        </div>
       </div>
+      <button style="width:100%;background:#030A16;color:#fff;font-family:inherit;font-weight:600;font-size:14px;padding:14px;border-radius:12px;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">Start KYC to invest <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+      <div style="text-align:center;margin-top:10px;font-size:11px;color:#5A6373">↑ 42 investors chose this bond this week</div>
     </div>
-    <div class="divider" style="margin:4px 0 14px"></div>
-    <!-- SIP nudge -->
-    <div class="nudge-card">
+    <!-- SIP teaser -->
+    <div style="background:rgba(0,185,198,0.08);border:1px solid rgba(0,185,198,0.2);border-radius:12px;padding:12px;margin-top:12px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-        <span class="fs14 fw7 t1">Make it monthly?</span>
-        <span class="new-badge">NEW</span>
+        <span style="background:rgba(0,185,198,0.15);color:#00B9C6;font-size:10px;font-weight:700;letter-spacing:0.8px;padding:3px 8px;border-radius:20px">NEW · BOND SIP</span>
       </div>
-      <div class="fs12 t3" style="line-height:1.6">Invest automatically every month — same yield range, new bond selected by our engine. From ₹1,000/month.</div>
-      <div class="fs11 t4 mt8">⏱ Cancel anytime · 48-hr retry on failed debit</div>
-      <div class="nudge-card btn-row">
-        <button class="btn-outline btn-sm" style="flex:1">Maybe later</button>
-        <button class="btn-sip btn-sm" style="flex:1">Set up Bond SIP →</button>
+      <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px">Or start from ₹1,000/month</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5;margin-bottom:8px">Complete KYC to invest automatically — bonds selected for you every month, cancel anytime.</div>
+      <button style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-family:inherit;font-size:12px;font-weight:600;padding:8px 14px;border-radius:8px;cursor:pointer">Complete KYC to unlock →</button>
+    </div>
+  </div>
+  <!-- content -->
+  <div class="content">
+    <div class="section">
+      <div class="section-card">
+        <div class="sec-heading">Top Bonds</div>
+        <div class="pills-row">
+          <button class="pill on">Highest YTM</button>
+          <button class="pill">Safety</button>
+          <button class="pill">Short tenure</button>
+        </div>
+        <div class="bond-row">
+          <div class="brl">
+            <div class="brl-logo" style="background:#F26B1B;color:#fff;font-weight:800">I</div>
+            <div class="brl-info">
+              <div class="brl-name">IIFL Finance Ltd</div>
+              <div style="display:flex;gap:4px;margin-top:3px"><span class="chip chip-secured" style="font-size:10px;padding:2px 7px">Senior Secured</span><span class="chip" style="font-size:10px;padding:2px 7px">AA+</span></div>
+            </div>
+          </div>
+          <div class="brr"><div class="brr-ytm">9.4%</div><div class="brr-ten">13 mo</div></div>
+        </div>
+        <div class="bond-row">
+          <div class="brl">
+            <div class="brl-logo" style="background:#1565C0;color:#fff;font-weight:800">S</div>
+            <div class="brl-info">
+              <div class="brl-name">Sundaram Finance</div>
+              <div style="display:flex;gap:4px;margin-top:3px"><span class="chip" style="font-size:10px;padding:2px 7px">AAA</span></div>
+            </div>
+          </div>
+          <div class="brr"><div class="brr-ytm">8.9%</div><div class="brr-ten">10 mo</div></div>
+        </div>
+        <button class="view-all">View all bonds →</button>
       </div>
     </div>
-    <div style="display:flex;justify-content:center;margin-top:4px"><span class="fs12 t4">Expected coupon: <span class="fw6 t1">₹4,700/year</span></span></div>
   </div>
   <div class="bnav">
-    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11 L12 4 L20 11 V20 a1 1 0 01-1 1h-4v-7h-6v7H5a1 1 0 01-1-1z"/></svg></div><span class="bn-label">Home</span></div>
+    <div class="bn active"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="#01B756"><path d="M4 11 L12 4 L20 11 V20 a1 1 0 01-1 1h-4v-7h-6v7H5a1 1 0 01-1-1z"/></svg></div><span class="bn-label" style="color:#01B756">Home</span></div>
     <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-3.5-3.5"/></svg></div><span class="bn-label">Explore</span></div>
-    <div class="bn active"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#01B756" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><span class="bn-label" style="color:#01B756">Portfolio</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><span class="bn-label">Portfolio</span></div>
     <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="9" r="3.5"/><path d="M5 20c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg></div><span class="bn-label">Profile</span></div>
   </div>
 </div>
 
-<!-- ════════════════ P1: P6 first investment entry ════════════════ -->
+<!-- ════════════════ P1: Homepage — KYC In Progress ════════════════ -->
 <div class="phone-page" id="p1">
   <div class="sb"><span class="sb-time">9:41</span><div class="sb-icons">●●● ▮</div></div>
-  <div style="background:#030A16;padding:22px 18px 20px;text-align:center;flex-shrink:0">
-    <div style="width:54px;height:54px;border-radius:27px;background:rgba(1,183,86,0.12);border:2px solid #01B756;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px">🎉</div>
-    <div class="fs16 fw7" style="color:#fff;margin-bottom:3px">First investment done!</div>
-    <div class="fs12" style="color:rgba(255,255,255,0.5)">Welcome to the Aspero family</div>
+  <div class="app-header">
+    <div class="logo-row">
+      <div class="logo-mark">A</div>
+      <div class="logo-text"><div class="aspero-name">Aspero</div><div class="aspero-tag">Fixed Income</div></div>
+    </div>
+    <div class="header-icons"><div class="icon-btn">🔔</div><div class="icon-btn">👤</div></div>
   </div>
-  <div class="screen-body">
-    <div class="card success-card mb10">
-      <div class="row mb8">
-        <div style="display:flex;align-items:center;gap:8px">
-          <div class="co-logo">SDF</div>
-          <span class="fs14 fw7 t1">Sundaram Finance</span>
-        </div>
-        <span class="chip chip-green">AAA</span>
-      </div>
-      <div class="row">
-        <div><div class="fs11 t4">Invested</div><div class="fs16 fw7 t1">₹10,000</div></div>
-        <div style="text-align:center"><div class="fs11 t4">YTM</div><div class="fs22 fw8 ytm">8.9%</div></div>
-        <div style="text-align:right"><div class="fs11 t4">Matures</div><div class="fs13 fw6 t1">Mar 2027</div></div>
+  <!-- KYC progress banner -->
+  <div style="background:#FFF4DA;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid #F5D98A">
+    <div>
+      <div style="font-size:12px;font-weight:700;color:#92400E">Complete your KYC to invest</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+        <div style="flex:1;height:4px;background:#F5D98A;border-radius:2px;width:120px"><div style="width:43%;height:4px;background:#E59A1F;border-radius:2px"></div></div>
+        <span style="font-size:11px;color:#92400E;font-weight:600">3 of 7 steps</span>
       </div>
     </div>
-    <div class="divider" style="margin:4px 0 14px"></div>
-    <div class="nudge-card">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-        <span class="fs14 fw7 t1">Build wealth automatically</span>
-        <span class="new-badge">NEW</span>
+    <button style="background:#030A16;color:#fff;font-family:inherit;font-size:12px;font-weight:600;padding:8px 14px;border-radius:8px;border:0;cursor:pointer;white-space:nowrap">Resume KYC →</button>
+  </div>
+  <div class="hero" style="padding-bottom:14px">
+    <div class="section-lbl">Bonds waiting for you</div>
+    <div style="position:relative;overflow:hidden;border-radius:18px;padding:18px;padding-top:24px;background:#F5FBF5;background-image:linear-gradient(rgba(1,183,86,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(1,183,86,.06) 1px,transparent 1px);background-size:8px 8px;border:1px solid #E6E9EE">
+      <span style="position:absolute;top:-1px;left:-1px;background:#D6F5E2;color:#017A3A;padding:6px 14px 8px;border-radius:17px 0 14px 0;border-top:1px solid #B6E8C9;border-left:1px solid #B6E8C9;font-weight:700;font-size:11px;display:inline-flex;align-items:center;gap:5px"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 8.5L5 5l2 2 3-4" stroke="#017A3A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.5 3H10v2.5" stroke="#017A3A" stroke-width="1.6" stroke-linecap="round"/></svg>Highest yield available</span>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:22px;margin-bottom:14px">
+        <div style="width:48px;height:48px;border-radius:12px;background:#F26B1B;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;flex-shrink:0">I</div>
+        <div style="flex:1">
+          <div style="font-size:16px;font-weight:700;color:#030A16;margin-bottom:6px">IIFL Finance Ltd</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span class="chip chip-secured">Senior Secured</span>
+            <span class="chip">AA+</span>
+          </div>
+        </div>
       </div>
-      <div class="fs12 t3" style="line-height:1.6">You just made your first investment. Set up a Bond SIP to keep the momentum — ₹1,000/month, auto-selected bonds, cancel anytime.</div>
-      <div class="mt10" style="background:#F4F6F8;border-radius:10px;padding:10px">
-        <div class="row mb4"><span class="fs11 t3">Monthly amount</span><span class="fs13 fw7 t1">from ₹1,000</span></div>
-        <div class="row mb4"><span class="fs11 t3">Estimated YTM</span><span class="fs13 fw7 ytm">8–9.5%</span></div>
-        <div class="row"><span class="fs11 t3">Cancellation</span><span class="fs12 fw6" style="color:#01B756">Anytime, self-serve</span></div>
+      <div style="background:#fff;border-radius:12px;padding:14px;border:1px solid #E6E9EE;margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end">
+          <div><div style="font-size:12px;color:#5A6373;margin-bottom:4px">Remaining tenure</div><div style="font-size:20px;font-weight:700;color:#030A16">13M</div></div>
+          <div style="text-align:right"><div style="font-size:12px;color:#5A6373;margin-bottom:4px">Yield to maturity</div><div style="font-size:22px;font-weight:800;color:#01B756">9.4%</div></div>
+        </div>
       </div>
-      <div class="nudge-card btn-row">
-        <button class="btn-outline btn-sm" style="flex:1">Not now</button>
-        <button class="btn-sip btn-sm" style="flex:1">Set up Bond SIP →</button>
+      <button style="width:100%;background:#030A16;color:#fff;font-family:inherit;font-weight:600;font-size:14px;padding:14px;border-radius:12px;border:0;cursor:pointer;opacity:0.5">Resume KYC to unlock →</button>
+      <div style="text-align:center;margin-top:10px;font-size:11px;color:#5A6373">Complete KYC to invest in this and 40+ more bonds</div>
+    </div>
+    <!-- SIP unlock nudge -->
+    <div style="background:rgba(1,183,86,0.08);border:1px solid rgba(1,183,86,0.15);border-radius:12px;padding:12px;margin-top:12px">
+      <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px">🔓 Unlock Bond SIP on completion</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5">Invest automatically every month — ₹1,000 to start, bonds selected for you, cancel anytime.</div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="section">
+      <div class="section-card">
+        <div class="sec-heading">Top Bonds</div>
+        <div class="bond-row">
+          <div class="brl">
+            <div class="brl-logo" style="background:#F26B1B;color:#fff;font-weight:800">I</div>
+            <div class="brl-info">
+              <div class="brl-name">IIFL Finance Ltd</div>
+              <div style="display:flex;gap:4px;margin-top:3px"><span class="chip chip-secured" style="font-size:10px;padding:2px 7px">Senior Secured</span><span class="chip" style="font-size:10px;padding:2px 7px">AA+</span></div>
+            </div>
+          </div>
+          <div class="brr"><div class="brr-ytm">9.4%</div><div class="brr-ten">13 mo</div></div>
+        </div>
+        <div class="bond-row">
+          <div class="brl">
+            <div class="brl-logo" style="background:#1565C0;color:#fff;font-weight:800">S</div>
+            <div class="brl-info">
+              <div class="brl-name">Sundaram Finance</div>
+              <div style="display:flex;gap:4px;margin-top:3px"><span class="chip" style="font-size:10px;padding:2px 7px">AAA</span></div>
+            </div>
+          </div>
+          <div class="brr"><div class="brr-ytm">8.9%</div><div class="brr-ten">10 mo</div></div>
+        </div>
+        <button class="view-all">View all bonds →</button>
       </div>
     </div>
   </div>
   <div class="bnav">
-    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11 L12 4 L20 11 V20 a1 1 0 01-1 1h-4v-7h-6v7H5a1 1 0 01-1-1z"/></svg></div><span class="bn-label">Home</span></div>
+    <div class="bn active"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="#01B756"><path d="M4 11 L12 4 L20 11 V20 a1 1 0 01-1 1h-4v-7h-6v7H5a1 1 0 01-1-1z"/></svg></div><span class="bn-label" style="color:#01B756">Home</span></div>
     <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-3.5-3.5"/></svg></div><span class="bn-label">Explore</span></div>
-    <div class="bn active"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#01B756" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><span class="bn-label" style="color:#01B756">Portfolio</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><span class="bn-label">Portfolio</span></div>
     <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="9" r="3.5"/><path d="M5 20c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg></div><span class="bn-label">Profile</span></div>
   </div>
 </div>
 
-<!-- ════════════════ P2: P7 maturity reinvest ════════════════ -->
+<!-- ════════════════ P2: Homepage — KYC Done ════════════════ -->
 <div class="phone-page" id="p2">
-  <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><div class="sb-icons" style="color:#030A16">●●● ▮</div></div>
-  <div class="nav-hdr">
-    <div class="back-btn">←</div>
-    <div class="hdr-title">Portfolio</div>
-    <div class="hdr-right"></div>
+  <div class="sb"><span class="sb-time">9:41</span><div class="sb-icons">●●● ▮</div></div>
+  <div class="app-header">
+    <div class="logo-row">
+      <div class="logo-mark">A</div>
+      <div class="logo-text"><div class="aspero-name">Aspero</div><div class="aspero-tag">Fixed Income</div></div>
+    </div>
+    <div class="header-icons"><div class="icon-btn">🔔</div><div class="icon-btn">👤</div></div>
   </div>
-  <!-- portfolio header -->
-  <div class="ptf-hdr">
-    <div class="ptf-lbl">Total invested</div>
-    <div class="ptf-val">₹3,90,000</div>
-    <div class="ptf-metrics">
-      <div class="ptf-m"><label>XIRR</label><span style="color:#01B756">9.1%</span></div>
-      <div class="ptf-m"><label>Coupons earned</label><span>₹35,490</span></div>
+  <div class="hero" style="padding-bottom:14px">
+    <div class="section-lbl">Start your first investment</div>
+    <div style="position:relative;overflow:hidden;border-radius:18px;padding:18px;padding-top:24px;background:#F5FBF5;background-image:linear-gradient(rgba(1,183,86,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(1,183,86,.06) 1px,transparent 1px);background-size:8px 8px;border:1px solid #E6E9EE">
+      <span style="position:absolute;top:-1px;left:-1px;background:#D6F5E2;color:#017A3A;padding:6px 14px 8px;border-radius:17px 0 14px 0;border-top:1px solid #B6E8C9;border-left:1px solid #B6E8C9;font-weight:700;font-size:11px;display:inline-flex;align-items:center;gap:5px"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 8.5L5 5l2 2 3-4" stroke="#017A3A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.5 3H10v2.5" stroke="#017A3A" stroke-width="1.6" stroke-linecap="round"/></svg>Highest yield available</span>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:22px;margin-bottom:14px">
+        <div style="width:48px;height:48px;border-radius:12px;background:#F26B1B;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;flex-shrink:0">I</div>
+        <div style="flex:1">
+          <div style="font-size:16px;font-weight:700;color:#030A16;margin-bottom:6px">IIFL Finance Ltd</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span class="chip chip-secured">Senior Secured</span>
+            <span class="chip">AA+</span>
+            <span class="chip chip-active">Sell anytime</span>
+          </div>
+        </div>
+      </div>
+      <div style="background:#fff;border-radius:12px;padding:14px;border:1px solid #E6E9EE;margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end">
+          <div><div style="font-size:12px;color:#5A6373;margin-bottom:4px">Remaining tenure</div><div style="font-size:20px;font-weight:700;color:#030A16">13M</div></div>
+          <div style="text-align:right"><div style="font-size:12px;color:#5A6373;margin-bottom:4px">Yield to maturity</div><div style="font-size:22px;font-weight:800;color:#01B756">9.4%</div></div>
+        </div>
+      </div>
+      <button style="width:100%;background:#01B756;color:#fff;font-family:inherit;font-weight:600;font-size:14px;padding:14px;border-radius:12px;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">Invest now <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+      <div style="text-align:center;margin-top:10px;font-size:11px;color:#5A6373">↑ 453 investors chose this bond as their first investment</div>
+    </div>
+    <!-- SIP alternative -->
+    <div style="background:#fff;border-radius:14px;padding:14px;margin-top:12px;border:1px solid #E6E9EE">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <span style="background:#E4FFF4;color:#017A3A;font-size:10px;font-weight:700;letter-spacing:0.8px;padding:3px 8px;border-radius:6px">OR START SMALLER</span>
+        <span class="new-badge">NEW</span>
+      </div>
+      <div style="font-size:14px;font-weight:700;color:#030A16;margin-bottom:4px">Bond SIP — from ₹1,000/month</div>
+      <div style="font-size:12px;color:#5A6373;line-height:1.5;margin-bottom:10px">We pick the bond. You set the amount. No lump sum needed — invest automatically every month.</div>
+      <div style="display:flex;gap:10px;font-size:11px;color:#5A6373;margin-bottom:12px">
+        <span>📈 Est. 8–9.5% YTM</span>
+        <span>🔄 Cancel anytime</span>
+      </div>
+      <button class="btn btn-green" style="margin:0;font-size:13px;padding:12px">Set up Bond SIP →</button>
     </div>
   </div>
-  <!-- matured bond notification -->
-  <div class="screen-body">
-    <div class="warn-box">
-      <p><strong>Maturity received</strong> — ₹80,000 from RDC Concrete Ltd credited to your bank (May 10)</p>
-    </div>
-    <div class="card mb10">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-        <div class="co-logo">RDC</div>
-        <div>
-          <div class="fs14 fw6 t1">RDC Concrete India Ltd</div>
-          <div class="fs12 t4">Matured May 10, 2026</div>
+  <div class="content">
+    <div class="section">
+      <div class="section-card">
+        <div class="sec-heading">Chosen by new investors</div>
+        <div class="pills-row">
+          <button class="pill on">All</button>
+          <button class="pill">Short term</button>
+          <button class="pill">AAA</button>
         </div>
-        <span class="chip chip-grey ml-auto">Matured</span>
-      </div>
-      <div class="row">
-        <div><div class="fs11 t4">Invested</div><div class="fs14 fw7 t1">₹80,000</div></div>
-        <div style="text-align:center"><div class="fs11 t4">XIRR earned</div><div class="fs14 fw7 ytm">13.2%</div></div>
-        <div style="text-align:right"><div class="fs11 t4">Returned</div><div class="fs14 fw7 t1">₹90,560</div></div>
-      </div>
-    </div>
-    <!-- reinvest with SIP nudge -->
-    <div class="nudge-card">
-      <div class="fs13 fw7 t1 mb6">Reinvest ₹80,000?</div>
-      <div class="fs12 t3 mb10" style="line-height:1.5">Keep your money working. Two ways to reinvest:</div>
-      <div style="display:flex;gap:8px;margin-bottom:10px">
-        <div style="flex:1;background:#F4F6F8;border-radius:10px;padding:10px;border:1.5px solid #E6E9EE;cursor:pointer">
-          <div class="fs11 fw7 t2 mb4">One-time</div>
-          <div class="fs11 t3" style="line-height:1.4">Pick a specific bond now</div>
+        <div class="bond-row">
+          <div class="brl">
+            <div class="brl-logo" style="background:#1A6B3C;color:#fff;font-weight:800">H</div>
+            <div class="brl-info">
+              <div class="brl-name">HDB Financial Services</div>
+              <div style="display:flex;gap:4px;margin-top:3px"><span class="chip chip-secured" style="font-size:10px;padding:2px 7px">Senior Secured</span><span class="chip" style="font-size:10px;padding:2px 7px">AAA</span></div>
+            </div>
+          </div>
+          <div class="brr"><div class="brr-ytm">9.2%</div><div class="brr-ten">18 mo</div></div>
         </div>
-        <div style="flex:1;background:#fff;border-radius:10px;padding:10px;border:1.5px solid #00B9C6;cursor:pointer">
-          <div style="display:flex;align-items:center;gap:5px;margin-bottom:4px"><span class="fs11 fw7" style="color:#00B9C6">Bond SIP</span><span class="new-badge">NEW</span></div>
-          <div class="fs11 t3" style="line-height:1.4">Auto ₹10,000/month, 8 months</div>
+        <div class="bond-row">
+          <div class="brl">
+            <div class="brl-logo" style="background:#1565C0;color:#fff;font-weight:800">S</div>
+            <div class="brl-info">
+              <div class="brl-name">Sundaram Finance</div>
+              <div style="display:flex;gap:4px;margin-top:3px"><span class="chip" style="font-size:10px;padding:2px 7px">AAA</span></div>
+            </div>
+          </div>
+          <div class="brr"><div class="brr-ytm">8.9%</div><div class="brr-ten">10 mo</div></div>
         </div>
+        <button class="view-all">View all bonds →</button>
       </div>
-      <button class="btn btn-green">Browse bonds to reinvest →</button>
     </div>
   </div>
   <div class="bnav">
-    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11 L12 4 L20 11 V20 a1 1 0 01-1 1h-4v-7h-6v7H5a1 1 0 01-1-1z"/></svg></div><span class="bn-label">Home</span></div>
+    <div class="bn active"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="#01B756"><path d="M4 11 L12 4 L20 11 V20 a1 1 0 01-1 1h-4v-7h-6v7H5a1 1 0 01-1-1z"/></svg></div><span class="bn-label" style="color:#01B756">Home</span></div>
     <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-3.5-3.5"/></svg></div><span class="bn-label">Explore</span></div>
-    <div class="bn active"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#01B756" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><span class="bn-label" style="color:#01B756">Portfolio</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><span class="bn-label">Portfolio</span></div>
     <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="9" r="3.5"/><path d="M5 20c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg></div><span class="bn-label">Profile</span></div>
   </div>
 </div>
@@ -959,7 +1081,7 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
   </div>
 </div>
 
-<!-- ════════════════ P12: HOMEPAGE — KYC DONE (RTT, pre-invest) ════════════════ -->
+<!-- ════════════════ P12: HOMEPAGE — ACTIVE INVESTOR ════════════════ -->
 <div class="phone-page" id="p12">
   <div class="sb"><span class="sb-time">9:41</span><div class="sb-icons">●●● ▮</div></div>
   <div class="app-header">
@@ -969,46 +1091,76 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
     </div>
     <div class="header-icons"><div class="icon-btn">🔔</div><div class="icon-btn">👤</div></div>
   </div>
-  <!-- KYC done hero -->
-  <div class="hero">
-    <div class="section-lbl">Ready to invest</div>
-    <div class="hero-bond-card">
-      <div class="ytm-row"><span class="ytm-val">9.4</span><span class="ytm-pct">%<br><span class="fs11">YTM</span></span></div>
-      <div class="bond-info-row">
-        <div class="co-logo">IIFL</div>
-        <div><div class="co-name">IIFL Finance Ltd</div><div class="co-mat">Matures Jun 2027 · 13 mo</div></div>
+  <!-- portfolio hero - dark card, NOT bond card -->
+  <div class="hero" style="padding-bottom:16px">
+    <div class="section-lbl">Your portfolio</div>
+    <div style="background:#0D1626;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:16px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px">
+        <div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px">Total invested</div>
+          <div style="font-size:28px;font-weight:800;color:#fff;letter-spacing:-0.5px;line-height:1">₹82,500</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px">XIRR</div>
+          <div style="font-size:26px;font-weight:800;color:#01B756;line-height:1">9.2%</div>
+        </div>
       </div>
-      <button class="hero-cta">Invest now</button>
-      <div class="social-proof"><span class="sp-text">↑ 42 investors bought this week</span></div>
+      <div style="height:1px;background:rgba(255,255,255,0.08);margin-bottom:12px"></div>
+      <div style="display:flex;gap:16px;font-size:11px;color:rgba(255,255,255,0.45)">
+        <span>3 active bonds</span>
+        <span>·</span>
+        <span>Next coupon Jun 15</span>
+        <span>·</span>
+        <span>₹7,590/yr</span>
+      </div>
+      <button style="background:transparent;border:0;color:#01B756;font-family:inherit;font-size:12px;font-weight:600;padding:0;margin-top:10px;cursor:pointer">View portfolio →</button>
     </div>
   </div>
-  <!-- SIP discovery card — lower commitment alternative -->
-  <div style="background:#030A16;padding:0 16px 16px;flex-shrink:0">
-    <div class="nudge-card" style="background:#fff;border-color:#00B9C6;border-top:none">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
-        <span class="fs14 fw7" style="color:#00B9C6">Start with ₹1,000/month</span>
-        <span class="new-badge">NEW</span>
-      </div>
-      <div class="fs12 t3" style="line-height:1.5">Bond SIP — automated monthly investing, bonds selected for you, cancel anytime.</div>
-      <button class="btn-sip btn-sm mt10">Set up Bond SIP →</button>
-    </div>
-  </div>
+  <!-- content -->
   <div class="content">
     <div class="section">
+      <!-- Bond SIP nudge - portfolio diversification angle -->
+      <div style="background:#fff;border-radius:14px;padding:16px;border:1px solid #E6E9EE;margin-bottom:12px;margin-top:12px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="background:#E4FFF4;color:#017A3A;font-size:10px;font-weight:700;letter-spacing:0.8px;padding:3px 8px;border-radius:6px">FOR YOU</span>
+          <span class="new-badge">NEW</span>
+        </div>
+        <div style="font-size:15px;font-weight:700;color:#030A16;margin-bottom:6px">Build a bond ladder</div>
+        <div style="font-size:12px;color:#5A6373;line-height:1.6;margin-bottom:12px">Add a new bond every month — different issuers, staggered maturities. Your portfolio diversifies automatically while keeping consistent yield.</div>
+        <div style="background:#F4F6F8;border-radius:10px;padding:10px;margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:11px;color:#5A6373">Est. YTM range</span><span style="font-size:12px;font-weight:700;color:#01B756">8 – 9.5%</span></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:11px;color:#5A6373">Monthly amount</span><span style="font-size:12px;font-weight:600;color:#030A16">from ₹1,000</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="font-size:11px;color:#5A6373">Cancel anytime</span><span style="font-size:12px;font-weight:600;color:#01B756">Self-serve</span></div>
+        </div>
+        <button class="btn btn-green" style="margin:0;font-size:14px">Set up Bond SIP →</button>
+      </div>
+      <!-- more bonds to explore -->
       <div class="section-card">
-        <div class="sec-heading">Chosen by new investors</div>
+        <div class="sec-heading">More bonds to explore</div>
         <div class="pills-row">
-          <button class="pill on">All</button>
-          <button class="pill off">Short term</button>
-          <button class="pill off">AAA</button>
+          <button class="pill on">Highest YTM</button>
+          <button class="pill">Safety</button>
+          <button class="pill">Short tenure</button>
         </div>
         <div class="bond-row">
-          <div class="brl"><div class="brl-logo">HDB</div><div class="brl-info"><div class="brl-name">HDB Financial Services</div><div class="brl-mat">Matures Nov 2027</div></div></div>
+          <div class="brl">
+            <div class="brl-logo" style="background:#1A6B3C;color:#fff;font-weight:800">H</div>
+            <div class="brl-info">
+              <div class="brl-name">HDB Financial Services</div>
+              <div style="display:flex;gap:4px;margin-top:3px"><span class="chip chip-secured" style="font-size:10px;padding:2px 7px">Senior Secured</span><span class="chip" style="font-size:10px;padding:2px 7px">AAA</span></div>
+            </div>
+          </div>
           <div class="brr"><div class="brr-ytm">9.2%</div><div class="brr-ten">18 mo</div></div>
         </div>
         <div class="bond-row">
-          <div class="brl"><div class="brl-logo">BJF</div><div class="brl-info"><div class="brl-name">Bajaj Finance Ltd</div><div class="brl-mat">Matures May 2027</div></div></div>
-          <div class="brr"><div class="brr-ytm">9.0%</div><div class="brr-ten">12 mo</div></div>
+          <div class="brl">
+            <div class="brl-logo" style="background:#F26B1B;color:#fff;font-weight:800">I</div>
+            <div class="brl-info">
+              <div class="brl-name">IIFL Finance Ltd</div>
+              <div style="display:flex;gap:4px;margin-top:3px"><span class="chip chip-secured" style="font-size:10px;padding:2px 7px">Senior Secured</span><span class="chip" style="font-size:10px;padding:2px 7px">AA+</span></div>
+            </div>
+          </div>
+          <div class="brr"><div class="brr-ytm">9.4%</div><div class="brr-ten">13 mo</div></div>
         </div>
         <button class="view-all">View all bonds →</button>
       </div>
@@ -1022,118 +1174,187 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
   </div>
 </div>
 
-<!-- ════════════════ P13: HOMEPAGE — ACTIVE INVESTOR (no SIP) ════════════════ -->
+<!-- ════════════════ P13: BOND MATURED — REINVEST ════════════════ -->
 <div class="phone-page" id="p13">
-  <div class="sb"><span class="sb-time">9:41</span><div class="sb-icons">●●● ▮</div></div>
-  <div class="app-header">
-    <div class="logo-row">
-      <div class="logo-mark">A</div>
-      <div class="logo-text"><div class="aspero-name">Aspero</div><div class="aspero-tag">Fixed Income</div></div>
-    </div>
-    <div class="header-icons"><div class="icon-btn">🔔</div><div class="icon-btn">👤</div></div>
+  <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><div class="sb-icons" style="color:#030A16">●●● ▮</div></div>
+  <div class="nav-hdr">
+    <div class="back-btn">←</div>
+    <div class="hdr-title">Portfolio</div>
+    <div class="hdr-right"></div>
   </div>
-  <!-- portfolio mini-summary in hero -->
-  <div class="hero">
-    <div class="section-lbl">Your portfolio</div>
-    <div class="hero-bond-card">
-      <div class="row mb10">
-        <div>
-          <div class="fs11 t3" style="color:rgba(255,255,255,0.5)">Total invested</div>
-          <div style="font-size:28px;font-weight:800;color:#fff;letter-spacing:-0.5px">₹82,500</div>
-        </div>
-        <div style="text-align:right">
-          <div class="fs11 t3" style="color:rgba(255,255,255,0.5)">XIRR</div>
-          <div style="font-size:24px;font-weight:800;color:#01B756;line-height:1">9.2</div>
-          <div class="fs12" style="color:rgba(255,255,255,0.5)">%</div>
-        </div>
-      </div>
-      <div style="display:flex;gap:14px;border-top:1px solid rgba(255,255,255,0.1);padding-top:10px">
-        <div><div class="fs10" style="color:rgba(255,255,255,0.4)">Next coupon</div><div class="fs12 fw6" style="color:#fff">₹750 · Jul 15</div></div>
-        <div><div class="fs10" style="color:rgba(255,255,255,0.4)">Active bonds</div><div class="fs12 fw6" style="color:#fff">3 bonds</div></div>
-        <div><div class="fs10" style="color:rgba(255,255,255,0.4)">Avg tenure</div><div class="fs12 fw6" style="color:#fff">14 months</div></div>
-      </div>
+  <!-- dark portfolio header -->
+  <div class="ptf-hdr">
+    <div class="ptf-lbl">Total invested</div>
+    <div class="ptf-val">₹3,90,000</div>
+    <div class="ptf-metrics">
+      <div class="ptf-m"><label>XIRR</label><span style="color:#01B756">9.1%</span></div>
+      <div class="ptf-m"><label>Coupons earned</label><span>₹35,490</span></div>
     </div>
   </div>
-  <div class="content">
-    <!-- "For you" feed card — SIP nudge (native, non-intrusive) -->
-    <div class="section">
-      <div class="nudge-card">
-        <div class="fs11 fw7 t4 mb6" style="text-transform:uppercase;letter-spacing:0.5px">For you</div>
-        <div class="fs14 fw7 t1 mb4">Your ₹82,500 is earning 9.2%.</div>
-        <div class="fs13 t3 mb10" style="line-height:1.5">Make investing automatic — Bond SIP adds ₹1,000+ each month, bonds selected for you.</div>
-        <div style="background:#F4F6F8;border-radius:10px;padding:10px;margin-bottom:10px">
-          <div class="row mb4"><span class="fs11 t3">Monthly amount</span><span class="fs12 fw6 t1">from ₹1,000</span></div>
-          <div class="row mb4"><span class="fs11 t3">Estimated YTM</span><span class="fs12 fw6 ytm">8–9.5%</span></div>
-          <div class="row"><span class="fs11 t3">Cancel</span><span class="fs11 fw6" style="color:#01B756">Anytime, self-serve</span></div>
-        </div>
-        <div class="nudge-card btn-row" style="margin-top:0">
-          <button class="btn-outline btn-sm" style="flex:1">Not now</button>
-          <button class="btn-sip btn-sm" style="flex:1">Set up Bond SIP →</button>
-        </div>
+  <div class="screen-body">
+    <!-- maturity success notification - GREEN not amber -->
+    <div style="background:#D6F5E2;border-radius:12px;padding:12px;margin-bottom:12px;display:flex;align-items:flex-start;gap:10px">
+      <div style="width:28px;height:28px;border-radius:8px;background:#01B756;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;color:#fff">✓</div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#017A3A;margin-bottom:2px">Maturity received</div>
+        <div style="font-size:12px;color:#017A3A;line-height:1.5">₹80,000 from RDC Concrete Ltd credited to your bank account (May 10, 2026)</div>
       </div>
     </div>
-    <div class="section">
-      <div class="section-card">
-        <div class="sec-heading">Popular bonds</div>
-        <div class="bond-row">
-          <div class="brl"><div class="brl-logo">HDB</div><div class="brl-info"><div class="brl-name">HDB Financial Services</div><div class="brl-mat">Matures Nov 2027</div></div></div>
-          <div class="brr"><div class="brr-ytm">9.2%</div><div class="brr-ten">18 mo</div></div>
+    <!-- matured bond card -->
+    <div style="background:#fff;border-radius:14px;padding:14px;border:1px solid #E6E9EE;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <div style="width:44px;height:44px;border-radius:10px;background:#6B7280;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0">R</div>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:600;color:#030A16">RDC Concrete India Ltd</div>
+          <div style="font-size:11px;color:#8A93A3;margin-top:2px">Matured May 10, 2026</div>
         </div>
-        <div class="bond-row">
-          <div class="brl"><div class="brl-logo">BJF</div><div class="brl-info"><div class="brl-name">Bajaj Finance Ltd</div><div class="brl-mat">Matures May 2027</div></div></div>
-          <div class="brr"><div class="brr-ytm">9.0%</div><div class="brr-ten">12 mo</div></div>
-        </div>
-        <button class="view-all">View all bonds →</button>
+        <span class="chip chip-grey">Matured</span>
       </div>
+      <div style="display:flex;justify-content:space-between">
+        <div><div style="font-size:11px;color:#8A93A3;margin-bottom:2px">Invested</div><div style="font-size:14px;font-weight:700;color:#030A16">₹80,000</div></div>
+        <div style="text-align:center"><div style="font-size:11px;color:#8A93A3;margin-bottom:2px">XIRR earned</div><div style="font-size:14px;font-weight:700;color:#01B756">13.2%</div></div>
+        <div style="text-align:right"><div style="font-size:11px;color:#8A93A3;margin-bottom:2px">Returned</div><div style="font-size:14px;font-weight:700;color:#030A16">₹90,560</div></div>
+      </div>
+    </div>
+    <!-- reinvest card -->
+    <div style="background:#fff;border-radius:14px;padding:16px;border:1px solid #E6E9EE">
+      <div style="font-size:15px;font-weight:700;color:#030A16;margin-bottom:4px">Reinvest ₹80,000?</div>
+      <div style="font-size:12px;color:#5A6373;margin-bottom:14px;line-height:1.5">Keep your money working. Choose how:</div>
+      <!-- two tiles -->
+      <div style="display:flex;gap:10px;margin-bottom:14px">
+        <div style="flex:1;background:#F4F6F8;border-radius:12px;padding:12px;border:1.5px solid #E6E9EE;cursor:pointer">
+          <div style="font-size:11px;font-weight:700;color:#5A6373;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">One-time</div>
+          <div style="font-size:13px;font-weight:600;color:#030A16;margin-bottom:4px">Pick a bond now</div>
+          <div style="font-size:11px;color:#8A93A3;line-height:1.4">Browse and choose a specific bond</div>
+        </div>
+        <div style="flex:1;background:#fff;border-radius:12px;padding:12px;border:2px solid #01B756;cursor:pointer;position:relative">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+            <div style="font-size:11px;font-weight:700;color:#01B756;text-transform:uppercase;letter-spacing:0.5px">Bond SIP</div>
+            <span class="new-badge">NEW</span>
+          </div>
+          <div style="font-size:13px;font-weight:600;color:#030A16;margin-bottom:4px">Auto ₹10k/month</div>
+          <div style="font-size:11px;color:#8A93A3;line-height:1.4">8 months · bonds selected automatically</div>
+        </div>
+      </div>
+      <button class="btn btn-green" style="margin:0">Browse bonds to reinvest →</button>
     </div>
   </div>
   <div class="bnav">
-    <div class="bn active"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="#01B756"><path d="M4 11 L12 4 L20 11 V20 a1 1 0 01-1 1h-4v-7h-6v7H5a1 1 0 01-1-1z"/></svg></div><span class="bn-label" style="color:#01B756">Home</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11 L12 4 L20 11 V20 a1 1 0 01-1 1h-4v-7h-6v7H5a1 1 0 01-1-1z"/></svg></div><span class="bn-label">Home</span></div>
     <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-3.5-3.5"/></svg></div><span class="bn-label">Explore</span></div>
-    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><span class="bn-label">Portfolio</span></div>
+    <div class="bn active"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#01B756" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><span class="bn-label" style="color:#01B756">Portfolio</span></div>
     <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="9" r="3.5"/><path d="M5 20c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg></div><span class="bn-label">Profile</span></div>
   </div>
 </div>
 
       </div><!-- /screen -->
     </div><!-- /phone -->
+    <!-- rationale panel -->
+    <div class="rationale" id="rationalePanel">
+      <div class="rat-card">
+        <div class="rat-label">Why this screen matters</div>
+        <div class="rat-text" id="ratWhy"></div>
+      </div>
+      <div class="rat-card">
+        <div class="rat-label">Primary pitch</div>
+        <div class="rat-pitch"><div class="rat-pitch-text" id="ratPitch"></div></div>
+      </div>
+      <div class="rat-card">
+        <div class="rat-label">Business goal</div>
+        <div class="rat-text" id="ratGoal"></div>
+        <div class="rat-metric"><span class="rat-metric-val" id="ratMetricVal"></span><span class="rat-metric-lbl" id="ratMetricLbl"></span></div>
+      </div>
+    </div>
   </div><!-- /content-area -->
 </div><!-- /main -->
 
 <script>
 const screens = [
-  {title:"P2b — Post-purchase SIP nudge",      sub:"Screen 1 of 14 · Entry Points"},
-  {title:"P6 — First investment entry",         sub:"Screen 2 of 14 · Entry Points"},
-  {title:"P7 — Maturity reinvest entry",        sub:"Screen 3 of 14 · Entry Points"},
-  {title:"Step 1 — Monthly amount",             sub:"Screen 4 of 14 · Setup Flow"},
-  {title:"Step 2 — Investment goal",            sub:"Screen 5 of 14 · Setup Flow"},
-  {title:"Step 3 — Bond preview",               sub:"Screen 6 of 14 · Setup Flow"},
-  {title:"Step 4 — Debit date",                 sub:"Screen 7 of 14 · Setup Flow"},
-  {title:"Step 5 — Authorize mandate",          sub:"Screen 8 of 14 · Setup Flow"},
-  {title:"Confirmation — Option B (Ladder)",    sub:"Screen 9 of 14 · Setup Flow"},
-  {title:"Portfolio — SIP tab (Option C)",      sub:"Screen 10 of 14 · Post-Setup"},
-  {title:"SIP Controls",                        sub:"Screen 11 of 14 · Post-Setup"},
-  {title:"Homepage widget (active SIP)",        sub:"Screen 12 of 14 · Post-Setup"},
-  {title:"Homepage — KYC done, pre-invest",     sub:"Screen 13 of 14 · Entry Points"},
-  {title:"Homepage — Active investor, no SIP",  sub:"Screen 14 of 14 · Entry Points"},
+  {title:'Homepage — KYC Not Started', sub:'Screen 1 of 14 · Entry Points'},
+  {title:'Homepage — KYC In Progress', sub:'Screen 2 of 14 · Entry Points'},
+  {title:'Homepage — KYC Done', sub:'Screen 3 of 14 · Entry Points'},
+  {title:'Step 1 — Amount', sub:'Screen 4 of 14 · Setup Flow'},
+  {title:'Step 2 — Goal', sub:'Screen 5 of 14 · Setup Flow'},
+  {title:'Step 3 — Bond preview', sub:'Screen 6 of 14 · Setup Flow'},
+  {title:'Step 4 — Debit date', sub:'Screen 7 of 14 · Setup Flow'},
+  {title:'Step 5 — Mandate', sub:'Screen 8 of 14 · Setup Flow'},
+  {title:'Confirm (Option B)', sub:'Screen 9 of 14 · Setup Flow'},
+  {title:'Portfolio — SIP tab', sub:'Screen 10 of 14 · Post-Setup'},
+  {title:'SIP Controls', sub:'Screen 11 of 14 · Post-Setup'},
+  {title:'Homepage widget', sub:'Screen 12 of 14 · Post-Setup'},
+  {title:'Homepage — Active investor', sub:'Screen 13 of 14 · Entry Points'},
+  {title:'Bond matured → reinvest', sub:'Screen 14 of 14 · Entry Points'},
 ];
+
+const rationale = {
+  0: {
+    why: 'KYC start rate is 31.6% vs 40% target — the single highest-leverage product action (₹44L/month GTV unlock). This is the first screen a signed-up user sees. Bond SIP shown as a lower-commitment reason to act.',
+    pitch: 'Start from ₹1,000/month — no big lump sum decision needed right now',
+    goal: 'KYC start rate: 31.6% → 40%',
+    metricVal: '+₹44L/mo',
+    metricLbl: 'GTV unlock'
+  },
+  1: {
+    why: 'Only 27.2% of KYC starters complete all steps. The drop is motivational, not technical. Showing Bond SIP as an "unlock" gives an additional reason to finish beyond generic bond discovery.',
+    pitch: 'You\'re almost there — complete KYC to unlock automated monthly investing',
+    goal: 'KYC completion rate: 27.2% of starters',
+    metricVal: '72.8%',
+    metricLbl: 'drop-off of starters'
+  },
+  2: {
+    why: 'Payment conversion is 10.6% of KYC-done users vs 18% target (−7.1pp WoW). Many users are hesitant about a lump sum first investment. Bond SIP is a lower-commitment alternative — ₹1,000/month vs ₹10,000+ upfront.',
+    pitch: 'We pick the bond, you set the amount — invest from ₹1,000/month',
+    goal: 'First investment conversion: 10.6% → 18%',
+    metricVal: '−7.1pp',
+    metricLbl: 'WoW regression'
+  },
+  12: {
+    why: 'Repeat investor rate is 34.5% vs 50% target. Bond SIP mechanically solves this — each monthly debit IS a repeat transaction. But the pitch must be portfolio strategy: diversification + stability, not just automation.',
+    pitch: 'Build a bond ladder — different issuers, staggered maturities, automatic every month',
+    goal: 'Repeat investor rate: 34.5% → 50%',
+    metricVal: '−15.5pp',
+    metricLbl: 'gap to target'
+  },
+  13: {
+    why: 'Post-maturity is the highest-intent moment for SIP. Money has returned, platform is validated, user is actively in "what do I do with this?" mode. Research pattern: first investment → maturity → 5x escalation.',
+    pitch: 'Keep compounding — automate the reinvestment instead of deciding manually each time',
+    goal: 'Retention + ATV growth: ₹88K → ₹1.2L target',
+    metricVal: '₹90,560',
+    metricLbl: 'returned to user'
+  }
+};
+
 let current = 0;
 const navItems = document.querySelectorAll('.nav-item');
-function showScreen(idx, el) {
-  document.getElementById('p'+current).classList.remove('active');
-  navItems[current].classList.remove('active');
-  current = idx;
-  document.getElementById('p'+current).classList.add('active');
-  navItems[idx].classList.add('active');
-  document.getElementById('mainTitle').textContent = screens[idx].title;
-  document.getElementById('mainSub').textContent = screens[idx].sub;
+function showScreen(n, el) {
+  document.querySelectorAll('.phone-page').forEach(p => p.classList.remove('active'));
+  document.getElementById('p'+n).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  if(el) el.classList.add('active');
+  current = n;
+  document.getElementById('mainTitle').textContent = screens[n].title;
+  document.getElementById('mainSub').textContent = screens[n].sub;
+  // rationale panel
+  const panel = document.getElementById('rationalePanel');
+  if(rationale[n]) {
+    const r = rationale[n];
+    document.getElementById('ratWhy').textContent = r.why;
+    document.getElementById('ratPitch').textContent = r.pitch;
+    document.getElementById('ratGoal').textContent = r.goal;
+    document.getElementById('ratMetricVal').textContent = r.metricVal;
+    document.getElementById('ratMetricLbl').textContent = r.metricLbl;
+    panel.classList.add('visible');
+  } else {
+    panel.classList.remove('visible');
+  }
 }
-function nextScreen() { showScreen((current+1)%14, navItems[(current+1)%14]); }
-function prevScreen() { showScreen((current+13)%14, navItems[(current+13)%14]); }
+function nextScreen() { showScreen((current+1)%14, document.querySelectorAll('.nav-item')[(current+1)%14]); }
+function prevScreen() { showScreen((current+13)%14, document.querySelectorAll('.nav-item')[(current+13)%14]); }
 document.addEventListener('keydown', e => {
   if(e.key==='ArrowRight'||e.key==='ArrowDown') nextScreen();
   if(e.key==='ArrowLeft'||e.key==='ArrowUp') prevScreen();
 });
+showScreen(0, document.querySelector('.nav-item'));
 </script>
 </body>
 </html>
