@@ -269,6 +269,34 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
 .nudge-card .btn-row{display:flex;gap:8px;margin-top:12px}
 .nudge-card .btn-row .btn{flex:1;padding:9px;font-size:13px;margin-bottom:0}
 
+/* ── BOND SIP SIMULATION WIDGET ──────────────────────────────────── */
+.sip-sim-widget{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:14px;margin-top:12px}
+.sip-sim-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sip-engine-badge{background:rgba(0,185,198,0.15);border:1px solid rgba(0,185,198,0.25);color:#00B9C6;font-size:10px;font-weight:700;letter-spacing:0.8px;padding:4px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:5px}
+.sip-engine-dot{width:6px;height:6px;background:#00B9C6;border-radius:50%;animation:engDot 1.2s ease-in-out infinite}
+.sip-sim-amt{font-size:11px;color:rgba(255,255,255,0.4)}
+.sim-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+.sim-row:last-of-type{border-bottom:0}
+.sim-badge{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.sim-badge.conf{background:rgba(1,183,86,0.15);color:#01B756}
+.sim-badge.sel{background:rgba(0,185,198,0.15);color:#00B9C6}
+.sim-badge.pend{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.2)}
+.sim-body{flex:1;min-width:0}
+.sim-mo{font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:1px}
+.sim-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sim-name.conf{color:rgba(255,255,255,0.85)}
+.sim-name.sel{color:#00B9C6}
+.sim-name.pend{color:rgba(255,255,255,0.2)}
+.sim-ytm{font-size:11px;font-weight:700;color:#01B756;white-space:nowrap}
+.sim-ytm.dim{color:rgba(255,255,255,0.2)}
+.sim-footer{display:flex;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.07)}
+.sim-footer span{font-size:11px;color:rgba(255,255,255,0.4)}
+.sim-footer .v{color:rgba(255,255,255,0.75);font-weight:600}
+.sim-cta{width:100%;margin-top:12px;background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-family:inherit;font-size:12px;font-weight:600;padding:9px;border-radius:10px;cursor:pointer;text-align:center}
+@keyframes engDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.7)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.25}}
+.sim-blink{animation:blink 0.55s ease-in-out infinite}
+
 /* ── SCREEN-SPECIFIC SPACING ──────────────────────────────────── */
 .p16{padding:16px}
 .pb16{padding-bottom:16px}
@@ -384,14 +412,37 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
       <button style="width:100%;background:#030A16;color:#fff;font-family:inherit;font-weight:600;font-size:14px;padding:14px;border-radius:12px;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">Start KYC to invest <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
       <div style="text-align:center;margin-top:10px;font-size:11px;color:#5A6373">↑ 42 investors chose this bond this week</div>
     </div>
-    <!-- SIP teaser -->
-    <div style="background:rgba(0,185,198,0.08);border:1px solid rgba(0,185,198,0.2);border-radius:12px;padding:12px;margin-top:12px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-        <span style="background:rgba(0,185,198,0.15);color:#00B9C6;font-size:10px;font-weight:700;letter-spacing:0.8px;padding:3px 8px;border-radius:20px">NEW · BOND SIP</span>
+    <!-- SIP simulation widget -->
+    <div class="sip-sim-widget">
+      <div class="sip-sim-hdr">
+        <span class="sip-engine-badge"><span class="sip-engine-dot"></span>BOND SIP ENGINE</span>
+        <span class="sip-sim-amt">from ₹1,000/month</span>
       </div>
-      <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px">Or start from ₹1,000/month</div>
-      <div style="font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5;margin-bottom:8px">Complete KYC to invest automatically — bonds selected for you every month, cancel anytime.</div>
-      <button style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-family:inherit;font-size:12px;font-weight:600;padding:8px 14px;border-radius:8px;cursor:pointer">Complete KYC to unlock →</button>
+      <div class="sim-row">
+        <div class="sim-badge conf">✓</div>
+        <div class="sim-body"><div class="sim-mo">Jun 2026</div><div class="sim-name conf">HDB Financial Services</div></div>
+        <span class="sim-ytm">9.2%</span>
+      </div>
+      <div class="sim-row">
+        <div class="sim-badge conf">✓</div>
+        <div class="sim-body"><div class="sim-mo">Jul 2026</div><div class="sim-name conf">IIFL Finance Ltd</div></div>
+        <span class="sim-ytm">9.4%</span>
+      </div>
+      <div class="sim-row selecting">
+        <div class="sim-badge sel">⟳</div>
+        <div class="sim-body"><div class="sim-mo">Aug 2026</div><div class="sim-name sel sim-blink"><span class="sim-live-name">Searching...</span></div></div>
+        <span class="sim-ytm dim">~9%</span>
+      </div>
+      <div class="sim-row pending">
+        <div class="sim-badge pend">4</div>
+        <div class="sim-body"><div class="sim-mo">Sep 2026</div><div class="sim-name pend">Auto-selected later</div></div>
+        <span class="sim-ytm dim">—</span>
+      </div>
+      <div class="sim-footer">
+        <span><span class="v sim-total">₹2,000</span> invested so far</span>
+        <span>Est. <span class="v">₹185/yr</span> returns</span>
+      </div>
+      <button class="sim-cta">Complete KYC to start your Bond SIP →</button>
     </div>
   </div>
   <!-- content -->
@@ -446,17 +497,6 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
     </div>
     <div class="header-icons"><div class="icon-btn">🔔</div><div class="icon-btn">👤</div></div>
   </div>
-  <!-- KYC progress banner -->
-  <div style="background:#FFF4DA;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid #F5D98A">
-    <div>
-      <div style="font-size:12px;font-weight:700;color:#92400E">Complete your KYC to invest</div>
-      <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
-        <div style="flex:1;height:4px;background:#F5D98A;border-radius:2px;width:120px"><div style="width:43%;height:4px;background:#E59A1F;border-radius:2px"></div></div>
-        <span style="font-size:11px;color:#92400E;font-weight:600">3 of 7 steps</span>
-      </div>
-    </div>
-    <button style="background:#030A16;color:#fff;font-family:inherit;font-size:12px;font-weight:600;padding:8px 14px;border-radius:8px;border:0;cursor:pointer;white-space:nowrap">Resume KYC →</button>
-  </div>
   <div class="hero" style="padding-bottom:14px">
     <div class="section-lbl">Bonds waiting for you</div>
     <div style="position:relative;overflow:hidden;border-radius:18px;padding:18px;padding-top:24px;background:#F5FBF5;background-image:linear-gradient(rgba(1,183,86,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(1,183,86,.06) 1px,transparent 1px);background-size:8px 8px;border:1px solid #E6E9EE">
@@ -480,10 +520,37 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
       <button style="width:100%;background:#030A16;color:#fff;font-family:inherit;font-weight:600;font-size:14px;padding:14px;border-radius:12px;border:0;cursor:pointer;opacity:0.5">Resume KYC to unlock →</button>
       <div style="text-align:center;margin-top:10px;font-size:11px;color:#5A6373">Complete KYC to invest in this and 40+ more bonds</div>
     </div>
-    <!-- SIP unlock nudge -->
-    <div style="background:rgba(1,183,86,0.08);border:1px solid rgba(1,183,86,0.15);border-radius:12px;padding:12px;margin-top:12px">
-      <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px">🔓 Unlock Bond SIP on completion</div>
-      <div style="font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5">Invest automatically every month — ₹1,000 to start, bonds selected for you, cancel anytime.</div>
+    <!-- SIP simulation widget -->
+    <div class="sip-sim-widget">
+      <div class="sip-sim-hdr">
+        <span class="sip-engine-badge"><span class="sip-engine-dot"></span>BOND SIP ENGINE</span>
+        <span class="sip-sim-amt">from ₹1,000/month</span>
+      </div>
+      <div class="sim-row">
+        <div class="sim-badge conf">✓</div>
+        <div class="sim-body"><div class="sim-mo">Jun 2026</div><div class="sim-name conf">HDB Financial Services</div></div>
+        <span class="sim-ytm">9.2%</span>
+      </div>
+      <div class="sim-row">
+        <div class="sim-badge conf">✓</div>
+        <div class="sim-body"><div class="sim-mo">Jul 2026</div><div class="sim-name conf">IIFL Finance Ltd</div></div>
+        <span class="sim-ytm">9.4%</span>
+      </div>
+      <div class="sim-row selecting">
+        <div class="sim-badge sel">⟳</div>
+        <div class="sim-body"><div class="sim-mo">Aug 2026</div><div class="sim-name sel sim-blink"><span class="sim-live-name">Searching...</span></div></div>
+        <span class="sim-ytm dim">~9%</span>
+      </div>
+      <div class="sim-row pending">
+        <div class="sim-badge pend">4</div>
+        <div class="sim-body"><div class="sim-mo">Sep 2026</div><div class="sim-name pend">Auto-selected later</div></div>
+        <span class="sim-ytm dim">—</span>
+      </div>
+      <div class="sim-footer">
+        <span><span class="v sim-total">₹2,000</span> invested so far</span>
+        <span>Est. <span class="v">₹185/yr</span> returns</span>
+      </div>
+      <button class="sim-cta">Resume KYC to unlock Bond SIP →</button>
     </div>
   </div>
   <div class="content">
@@ -1355,6 +1422,49 @@ document.addEventListener('keydown', e => {
   if(e.key==='ArrowLeft'||e.key==='ArrowUp') prevScreen();
 });
 showScreen(0, document.querySelector('.nav-item'));
+
+// ── BOND SIP SIMULATION ──────────────────────────────────
+const SIM_NAMES=['Bajaj Finance','Tata Capital','Sundaram Finance','Cholamandalam Inv.','Piramal Finance','Mahindra Finance','Shriram Finance'];
+const SIM_YTMS=['9.0%','9.1%','8.9%','9.3%','9.5%','9.2%','9.6%'];
+let _sc=0,_confirmed=2;
+
+setInterval(function(){
+  _sc++;
+  document.querySelectorAll('.sim-live-name').forEach(function(el){el.textContent=SIM_NAMES[_sc%SIM_NAMES.length]});
+},480);
+
+setInterval(function(){
+  var locked=SIM_NAMES[_sc%SIM_NAMES.length];
+  var lockedYtm=SIM_YTMS[_sc%SIM_YTMS.length];
+  // confirm current "selecting" row
+  document.querySelectorAll('.sim-row.selecting').forEach(function(row){
+    row.classList.remove('selecting');
+    row.querySelector('.sim-badge').className='sim-badge conf';
+    row.querySelector('.sim-badge').textContent='✓';
+    var nm=row.querySelector('.sim-name');
+    nm.className='sim-name conf';
+    nm.classList.remove('sim-blink');
+    nm.textContent=locked;
+    var yt=row.querySelector('.sim-ytm');
+    if(yt){yt.className='sim-ytm';yt.textContent=lockedYtm}
+  });
+  // advance first pending row to selecting
+  var pend=document.querySelectorAll('.sim-row.pending');
+  if(pend.length>0){
+    var next=pend[0];
+    next.classList.remove('pending');
+    next.classList.add('selecting');
+    next.querySelector('.sim-badge').className='sim-badge sel';
+    next.querySelector('.sim-badge').textContent='⟳';
+    var nm2=next.querySelector('.sim-name');
+    nm2.className='sim-name sel sim-blink';
+    nm2.innerHTML='<span class="sim-live-name">Searching...</span>';
+    var yt2=next.querySelector('.sim-ytm');
+    if(yt2){yt2.className='sim-ytm dim';yt2.textContent='~9%'}
+  }
+  _confirmed++;
+  document.querySelectorAll('.sim-total').forEach(function(el){el.textContent='₹'+((_confirmed)*1000).toLocaleString('en-IN')});
+},3500);
 </script>
 </body>
 </html>
