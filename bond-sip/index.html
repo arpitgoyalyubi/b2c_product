@@ -837,14 +837,14 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
       <!-- Top: company identity left · YTM right -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
         <div style="display:flex;align-items:center;gap:10px">
-          <div class="co-logo">HDB</div>
+          <div id="p5-bond-logo" class="co-logo" style="background:#E8F0FF;color:#2D5BE3">HDB</div>
           <div>
-            <div class="co-name">HDB Financial Services</div>
-            <div class="co-mat">Matures Nov 2027 · 18 months</div>
+            <div id="p5-bond-name" class="co-name">HDB Financial Services</div>
+            <div id="p5-bond-mat" class="co-mat">Matures Nov 2027 · 18 months</div>
           </div>
         </div>
         <div style="text-align:right;flex-shrink:0">
-          <div style="font-size:26px;font-weight:800;color:#01B756;line-height:1;letter-spacing:-0.5px">9.2%</div>
+          <div id="p5-bond-ytm" style="font-size:26px;font-weight:800;color:#01B756;line-height:1;letter-spacing:-0.5px">9.2%</div>
           <div style="font-size:10px;font-weight:600;color:#8A93A3;letter-spacing:0.5px;text-transform:uppercase">YTM</div>
         </div>
       </div>
@@ -856,9 +856,9 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
       </div>
       <!-- Stats: grid for consistent alignment -->
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px dashed #E6E9EE;padding-top:12px;gap:4px">
-        <div><div class="fs11 t4">Min. invest</div><div class="fs13 fw6 t1">₹5,000</div></div>
+        <div><div class="fs11 t4">Min. invest</div><div id="p5-bond-invest" class="fs13 fw6 t1">₹5,000</div></div>
         <div><div class="fs11 t4">Face value</div><div class="fs13 fw6 t1">₹1,000</div></div>
-        <div><div class="fs11 t4">Coupon</div><div class="fs13 fw6 ytm">9.15% p.a.</div></div>
+        <div><div class="fs11 t4">Coupon</div><div id="p5-bond-coupon" class="fs13 fw6 ytm">9.15% p.a.</div></div>
       </div>
     </div>
     <div class="success-box">
@@ -1476,11 +1476,8 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
         <span style="font-size:10px;color:rgba(255,255,255,0.3)">now</span>
       </div>
       <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;line-height:1.3">Month 2 bond ready — 3 days to preview</div>
-      <div style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.55;margin-bottom:12px">HDB Financial Services · 9.1% YTM · AAA rated<br>₹5,000 debits on May 25 unless you skip</div>
-      <div style="display:flex;gap:8px">
-        <button style="flex:1;padding:9px 0;background:rgba(1,183,86,0.18);border:1px solid rgba(1,183,86,0.35);border-radius:10px;color:#01B756;font-size:12px;font-weight:700;cursor:pointer;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif">Preview bond</button>
-        <button style="flex:1;padding:9px 0;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:rgba(255,255,255,0.5);font-size:12px;font-weight:600;cursor:pointer;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif">Skip month</button>
-      </div>
+      <div id="p14-notif-bond" style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.55;margin-bottom:12px">Bajaj Finance Ltd · 9.0% YTM · AAA rated<br>₹5,000 debits on May 25 if you confirm</div>
+      <button style="width:100%;padding:10px;background:rgba(1,183,86,0.18);border:1px solid rgba(1,183,86,0.35);border-radius:10px;color:#01B756;font-size:12px;font-weight:700;cursor:pointer;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif">Preview this month's bond →</button>
     </div>
     <div style="text-align:center;margin-top:14px">
       <div style="font-size:10px;color:rgba(255,255,255,0.2)">Tap to open · Swipe left to manage</div>
@@ -1512,11 +1509,8 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
         <div style="background:rgba(0,185,198,0.12);border:1px solid rgba(0,185,198,0.2);border-radius:6px;padding:3px 8px;font-size:9px;font-weight:700;color:#00B9C6">3 DAYS LEFT</div>
       </div>
       <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px">Review this month's bond before debit</div>
-      <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:12px;line-height:1.5">HDB Financial Services · 9.1% YTM · AAA<br>₹5,000 debits on May 25</div>
-      <div style="display:flex;gap:8px">
-        <button style="flex:1;padding:9px;background:#01B756;border:none;border-radius:10px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif">Preview & confirm →</button>
-        <button style="padding:9px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:rgba(255,255,255,0.45);font-size:12px;font-weight:600;cursor:pointer;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif">Skip</button>
-      </div>
+      <div id="p15-nudge-bond" style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:12px;line-height:1.5">Bajaj Finance Ltd · 9.0% YTM · AAA<br>₹5,000 debits on May 25 if you confirm</div>
+      <button style="width:100%;padding:10px;background:#01B756;border:none;border-radius:10px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif">Preview this month's bond →</button>
     </div>
   </div>
   <!-- Abbreviated homepage below -->
@@ -1582,8 +1576,8 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
             <span style="font-size:12px;font-weight:700;color:#030A16">Month 2 · May 25</span>
             <span style="background:rgba(0,185,198,0.12);color:#00B9C6;font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px">PREVIEW</span>
           </div>
-          <div style="font-size:11px;color:#5A6373">HDB Financial Services · 9.1% YTM · AAA</div>
-          <div style="font-size:10px;color:#8A93A3;margin-top:2px">3 days left · auto-confirms May 22</div>
+          <div style="font-size:11px;color:#5A6373">Bajaj Finance Ltd · 9.0% YTM · AAA</div>
+          <div style="font-size:10px;color:#8A93A3;margin-top:2px">3 days left · auto-confirms May 22 if no action</div>
         </div>
         <button style="padding:7px 12px;background:#01B756;border:none;border-radius:8px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;flex-shrink:0;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif">Review →</button>
       </div>
@@ -1603,7 +1597,8 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
     </div>
   </div>
   <div class="cta-area">
-    <button class="btn" style="background:#F4F6F8;color:#030A16;border:1px solid #E6E9EE">Pause SIP</button>
+    <button class="btn btn-green">Review Month 2 bond →</button>
+    <button class="btn" style="background:#F4F6F8;color:#5A6373;border:1px solid #E6E9EE;margin-top:8px;font-size:13px">⚙ Manage SIP settings</button>
   </div>
 </div>
 
@@ -1622,18 +1617,18 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
   </div>
   <div class="screen-body white">
     <div class="fs12 t3 mb12" style="line-height:1.5">Your May SIP bond. Confirm to invest automatically on May 25, or skip — your SIP continues next month.</div>
-    <!-- Bond card (same improved layout) -->
+    <!-- Bond card — Month 2 (different issuer from Month 1 — diversification) -->
     <div style="background:#fff;border:1px solid #E6E9EE;border-radius:14px;padding:16px;margin-bottom:12px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
         <div style="display:flex;align-items:center;gap:10px">
-          <div class="co-logo">HDB</div>
+          <div id="p17-bond-logo" class="co-logo" style="background:#E8F0FF;color:#2D5BE3">BFL</div>
           <div>
-            <div class="co-name">HDB Financial Services</div>
-            <div class="co-mat">Matures Nov 2027 · 18 months</div>
+            <div id="p17-bond-name" class="co-name">Bajaj Finance Ltd</div>
+            <div id="p17-bond-mat" class="co-mat">Matures Aug 2027 · 15 months</div>
           </div>
         </div>
         <div style="text-align:right;flex-shrink:0">
-          <div style="font-size:26px;font-weight:800;color:#01B756;line-height:1;letter-spacing:-0.5px">9.1%</div>
+          <div id="p17-bond-ytm" style="font-size:26px;font-weight:800;color:#01B756;line-height:1;letter-spacing:-0.5px">9.0%</div>
           <div style="font-size:10px;font-weight:600;color:#8A93A3;letter-spacing:0.5px;text-transform:uppercase">YTM</div>
         </div>
       </div>
@@ -1645,7 +1640,7 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px dashed #E6E9EE;padding-top:12px;gap:4px">
         <div><div class="fs11 t4">Min. invest</div><div class="fs13 fw6 t1">₹5,000</div></div>
         <div><div class="fs11 t4">Face value</div><div class="fs13 fw6 t1">₹1,000</div></div>
-        <div><div class="fs11 t4">Coupon</div><div class="fs13 fw6 ytm">9.07% p.a.</div></div>
+        <div><div class="fs11 t4">Coupon</div><div id="p17-bond-coupon" class="fs13 fw6 ytm">8.97% p.a.</div></div>
       </div>
     </div>
     <div class="info-box">
@@ -1756,6 +1751,224 @@ document.addEventListener('keydown', e => {
 });
 showScreen(0, document.querySelector('.nav-item'));
 
+</script>
+
+<!-- ══════════════════════════════════════════════════════════
+     DESIGN CHAT — live mock editing via Claude
+     ══════════════════════════════════════════════════════════ -->
+<style>
+#chat-btn{position:fixed;bottom:24px;right:24px;width:48px;height:48px;border-radius:50%;background:#01B756;border:none;color:#fff;font-size:20px;cursor:pointer;box-shadow:0 4px 20px rgba(1,183,86,0.45);z-index:2000;display:flex;align-items:center;justify-content:center;transition:transform .2s,box-shadow .2s;font-family:inherit}
+#chat-btn:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(1,183,86,0.6)}
+#chat-panel{position:fixed;bottom:84px;right:24px;width:360px;height:480px;background:#fff;border-radius:18px;box-shadow:0 8px 48px rgba(0,0,0,0.22);display:none;flex-direction:column;overflow:hidden;z-index:2000;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif}
+#chat-panel.open{display:flex}
+.ch-hdr{background:#030A16;padding:14px 18px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.ch-avatar{width:32px;height:32px;background:#01B756;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0}
+.ch-title{font-size:13px;font-weight:700;color:#fff}
+.ch-sub{font-size:10px;color:rgba(255,255,255,0.45);margin-top:1px}
+.ch-close{margin-left:auto;background:none;border:none;color:rgba(255,255,255,0.5);font-size:18px;cursor:pointer;padding:2px 4px;line-height:1}
+.ch-close:hover{color:#fff}
+.ch-msgs{flex:1;overflow-y:auto;padding:14px;background:#F8FAFC;display:flex;flex-direction:column;gap:10px}
+.ch-msgs::-webkit-scrollbar{width:3px}.ch-msgs::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:3px}
+.cmsg{max-width:88%;padding:9px 12px;border-radius:12px;font-size:12px;line-height:1.55}
+.cmsg.user{background:#030A16;color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.cmsg.assistant{background:#fff;color:#030A16;align-self:flex-start;border:1px solid #E6E9EE;border-bottom-left-radius:4px}
+.cmsg.thinking{background:#F4F6F8;color:#8A93A3;align-self:flex-start;font-style:italic;font-size:11px}
+.cmsg.patch{background:#E4FFF4;color:#017A3A;align-self:flex-start;border:1px solid #C6EED9;border-bottom-left-radius:4px;font-size:11px}
+.ch-sug{padding:8px 14px;display:flex;flex-wrap:wrap;gap:6px;background:#F8FAFC;border-top:1px solid #E6E9EE;flex-shrink:0}
+.ch-sq{background:#fff;border:1px solid #E6E9EE;border-radius:8px;padding:5px 9px;font-size:11px;color:#5A6373;cursor:pointer;font-family:inherit;transition:border-color .15s,color .15s}
+.ch-sq:hover{border-color:#01B756;color:#017A3A}
+.ch-input-row{padding:10px 14px;display:flex;gap:8px;border-top:1px solid #E6E9EE;flex-shrink:0;background:#fff}
+#chat-input{flex:1;border:1px solid #D2D7E0;border-radius:10px;padding:8px 12px;font-size:12px;font-family:inherit;resize:none;outline:none;color:#030A16;line-height:1.4;max-height:80px}
+#chat-input:focus{border-color:#01B756;box-shadow:0 0 0 3px rgba(1,183,86,0.1)}
+#chat-send{width:34px;height:34px;background:#01B756;border:none;border-radius:9px;color:#fff;font-size:14px;cursor:pointer;flex-shrink:0;transition:background .15s;align-self:flex-end}
+#chat-send:hover{background:#019A4A}
+#chat-send:disabled{background:#D2D7E0;cursor:not-allowed}
+</style>
+
+<button id="chat-btn" title="Edit mocks with AI">✦</button>
+
+<div id="chat-panel">
+  <div class="ch-hdr">
+    <div class="ch-avatar">A</div>
+    <div>
+      <div class="ch-title">Bond SIP Design Assistant</div>
+      <div class="ch-sub">Ask questions or edit any screen live</div>
+    </div>
+    <button class="ch-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="ch-msgs" id="chat-msgs">
+    <div class="cmsg assistant">Hi! I can answer questions about these mocks or make live edits — just describe the change. Try: <em>"Change month 2 bond to HDFC Bank, 9.3% YTM"</em></div>
+  </div>
+  <div class="ch-sug" id="chat-sug">
+    <button class="ch-sq" onclick="chatSend('What bonds are currently shown?')">What bonds are shown?</button>
+    <button class="ch-sq" onclick="chatSend('Change month 1 bond to ICICI Home Finance, 9.1% YTM, 12 months')">Swap month 1 bond</button>
+    <button class="ch-sq" onclick="chatSend('Why is Skip removed from the notification screen?')">Why no Skip on notif?</button>
+    <button class="ch-sq" onclick="chatSend('What are all the screens in this mock?')">List all screens</button>
+  </div>
+  <div class="ch-input-row">
+    <textarea id="chat-input" placeholder="Ask or edit…" rows="1" onkeydown="chatKey(event)"></textarea>
+    <button id="chat-send" onclick="chatSend()">➤</button>
+  </div>
+</div>
+
+<script>
+// ── Bond SIP Design Chat ──────────────────────────────────────────────────────
+const CHAT_API   = 'https://llmproxy.go-yubi.in/chat/completions';
+const CHAT_KEY   = 'sk-5wJPukqGUr_yz7c2JORgtA';
+const CHAT_MODEL = 'bedrock-claude-sonnet-4.6-(US)';
+
+const CHAT_SYSTEM = `You are a design assistant embedded in the Bond SIP mock prototype (Aspero, ASP-3558). You help the PM review screens, answer product questions, and make live edits to any screen.
+
+WHEN USER ASKS TO CHANGE SOMETHING — respond ONLY with this exact JSON (no other text):
+{"reply":"one sentence describing what changed","patches":[{"id":"element-id","text":"new value"}]}
+
+WHEN USER ASKS A QUESTION — respond with plain text only (no JSON).
+
+EDITABLE ELEMENTS (use these IDs exactly):
+Setup flow — Month 1 bond (screen p5):
+  p5-bond-logo    → 3-letter issuer abbreviation shown in the logo circle (e.g. "HDB")
+  p5-bond-name    → full issuer name (e.g. "HDB Financial Services")
+  p5-bond-mat     → maturity line (e.g. "Matures Nov 2027 · 18 months")
+  p5-bond-ytm     → YTM % number (e.g. "9.2%")
+  p5-bond-coupon  → coupon rate (e.g. "9.15% p.a.")
+  p5-bond-invest  → min investment (e.g. "₹5,000")
+
+Monthly preview — Month 2 bond (screen p17):
+  p17-bond-logo   → 3-letter abbreviation (e.g. "BFL")
+  p17-bond-name   → full issuer name (e.g. "Bajaj Finance Ltd")
+  p17-bond-mat    → maturity line (e.g. "Matures Aug 2027 · 15 months")
+  p17-bond-ytm    → YTM % (e.g. "9.0%")
+  p17-bond-coupon → coupon rate (e.g. "8.97% p.a.")
+
+Notification + homepage (p14, p15):
+  p14-notif-bond  → bond summary in lock screen notification
+  p15-nudge-bond  → bond summary in homepage nudge card
+
+CURRENT BOND DATA:
+  Month 1 (p5):  HDB Financial Services · 9.2% YTM · AAA · Matures Nov 2027 · 18mo · Coupon 9.15%
+  Month 2 (p17): Bajaj Finance Ltd · 9.0% YTM · AAA · Matures Aug 2027 · 15mo · Coupon 8.97%
+
+SCREENS (18 total, IDs p0–p17):
+  p0  Entry: Homepage KYC Not Started    p1  Entry: Homepage KYC In Progress
+  p2  Entry: Homepage KYC Done           p3  Setup: Amount selection
+  p4  Setup: Goal selection              p5  Setup: Bond preview (Month 1)
+  p6  Setup: Debit date                  p7  Setup: Mandate
+  p8  Setup: Confirm (12-month ladder)   p9  Post-setup: Portfolio SIP tab
+  p10 Post-setup: SIP Controls           p11 Post-setup: Homepage widget
+  p12 Entry: Active investor             p13 Entry: Bond matured → reinvest
+  p14 Monthly preview: Push notification p15 Monthly preview: Homepage nudge
+  p16 Monthly preview: SIP history       p17 Monthly preview: Bond confirm/skip
+
+DESIGN RULES (never violate):
+  - Rating must always be AA or above
+  - Month 1 and Month 2 must use different issuers (diversification)
+  - Never add Skip buttons to p14 or p15 — skip only happens after reviewing on p17
+  - Brand green #01B756 = YTM / CTA color; Teal #00B9C6 = SIP badges only`;
+
+let chatHistory = [];
+let chatTyping  = false;
+
+function toggleChat() {
+  const p = document.getElementById('chat-panel');
+  p.classList.toggle('open');
+  if (p.classList.contains('open')) setTimeout(() => document.getElementById('chat-input').focus(), 80);
+}
+document.getElementById('chat-btn').addEventListener('click', toggleChat);
+
+async function chatSend(preset) {
+  const input    = document.getElementById('chat-input');
+  const userText = preset || input.value.trim();
+  if (!userText || chatTyping) return;
+  input.value = '';
+  chatResize(input);
+  document.getElementById('chat-sug').style.display = 'none';
+
+  appendChatMsg('user', userText);
+  chatHistory.push({ role: 'user', content: userText });
+
+  const thinking = appendChatMsg('thinking', '…');
+  document.getElementById('chat-send').disabled = true;
+  chatTyping = true;
+
+  try {
+    const resp = await fetch(CHAT_API, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${CHAT_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: CHAT_MODEL,
+        max_tokens: 800,
+        messages: [{ role: 'system', content: CHAT_SYSTEM }, ...chatHistory]
+      })
+    });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data  = await resp.json();
+    const reply = data.choices?.[0]?.message?.content || '(empty)';
+    chatHistory.push({ role: 'assistant', content: reply });
+    thinking.remove();
+
+    // Try to parse as patch JSON
+    try {
+      const trimmed = reply.trim();
+      if (trimmed.startsWith('{')) {
+        const parsed = JSON.parse(trimmed);
+        if (parsed.patches && Array.isArray(parsed.patches)) {
+          applyPatches(parsed.patches);
+          appendChatMsg('patch', '✓ ' + (parsed.reply || 'Updated'));
+        } else {
+          appendChatMsg('assistant', formatChatReply(reply));
+        }
+      } else {
+        appendChatMsg('assistant', formatChatReply(reply));
+      }
+    } catch (_) {
+      appendChatMsg('assistant', formatChatReply(reply));
+    }
+  } catch (e) {
+    thinking.remove();
+    appendChatMsg('assistant', '⚠️ ' + e.message);
+    chatHistory.pop();
+  }
+
+  chatTyping = false;
+  document.getElementById('chat-send').disabled = false;
+}
+
+function applyPatches(patches) {
+  patches.forEach(p => {
+    const el = document.getElementById(p.id);
+    if (!el) return;
+    if (p.text  !== undefined) el.textContent = p.text;
+    if (p.html  !== undefined) el.innerHTML   = p.html;
+    if (p.style !== undefined) Object.assign(el.style, p.style);
+  });
+}
+
+function appendChatMsg(role, text) {
+  const msgs = document.getElementById('chat-msgs');
+  const el   = document.createElement('div');
+  el.className = 'cmsg ' + role;
+  el.innerHTML = text;
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+  return el;
+}
+
+function formatChatReply(text) {
+  return text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/`(.*?)`/g,'<code style="background:#F4F6F8;padding:1px 4px;border-radius:4px;font-size:11px">$1</code>')
+    .replace(/\n/g,'<br>');
+}
+
+function chatKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); chatSend(); }
+  chatResize(e.target);
+}
+function chatResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 80) + 'px';
+}
 </script>
 </body>
 </html>
