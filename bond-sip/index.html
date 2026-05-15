@@ -2024,7 +2024,8 @@ async function chatSend(preset) {
       body: JSON.stringify({
         model: CHAT_MODEL,
         max_tokens: 800,
-        messages: [{ role: 'system', content: CHAT_SYSTEM }, ...chatHistory]
+        system: CHAT_SYSTEM,
+        messages: chatHistory
       })
     });
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
@@ -2033,11 +2034,13 @@ async function chatSend(preset) {
     chatHistory.push({ role: 'assistant', content: reply });
     thinking.remove();
 
-    // Try to parse as patch JSON
+    // Try to parse as patch JSON (handles bare JSON or markdown-wrapped ```json ... ```)
     try {
-      const trimmed = reply.trim();
-      if (trimmed.startsWith('{')) {
-        const parsed = JSON.parse(trimmed);
+      let jsonStr = reply.trim();
+      const codeBlock = jsonStr.match(/```(?:json)?\s*([\s\S]*?)```/);
+      if (codeBlock) jsonStr = codeBlock[1].trim();
+      if (jsonStr.startsWith('{')) {
+        const parsed = JSON.parse(jsonStr);
         if (parsed.patches && Array.isArray(parsed.patches)) {
           applyPatches(parsed.patches);
           appendChatMsg('patch', '✓ ' + (parsed.reply || 'Updated'));
