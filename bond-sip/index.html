@@ -481,7 +481,7 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
     </div>
     <!-- Widget: What ₹12,000 does in a year -->
     <div class="compare-card">
-      <div class="compare-hdg">What ₹12,000 earns in a year</div>
+      <div id="p0-compare-hdg" class="compare-hdg">What ₹12,000 earns in a year</div>
       <div class="compare-row dim">
         <span class="cname">Savings account</span>
         <span class="cval">₹12,360 &nbsp;(3%)</span>
@@ -498,8 +498,8 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
         <span class="cname">MF SIP</span>
         <span class="cval">₹? &nbsp;(market-linked)</span>
       </div>
-      <div class="compare-note">Returns fixed on Day 1 — you know what you'll earn before you invest. Complete KYC to start.</div>
-      <button class="sim-cta" style="margin-top:10px">Complete KYC to start your Bond SIP →</button>
+      <div id="p0-compare-note" class="compare-note">Returns fixed on Day 1 — you know what you'll earn before you invest. Complete KYC to start.</div>
+      <button id="p0-cta" class="sim-cta" style="margin-top:10px">Complete KYC to start your Bond SIP →</button>
     </div>
   </div>
   <!-- content -->
@@ -579,15 +579,15 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
     </div>
     <!-- Widget: Fear removal + bold number -->
     <div class="fear-card">
-      <div class="fear-num">₹1,104</div>
-      <div class="fear-num-sub">earned on ₹1,000/month in Year 1<br>Fixed return — not market-linked</div>
+      <div id="p1-fear-num" class="fear-num">₹1,104</div>
+      <div id="p1-fear-sub" class="fear-num-sub">earned on ₹1,000/month in Year 1<br>Fixed return — not market-linked</div>
       <div class="fear-checks">
         <div class="fear-check"><div class="fear-icon">✓</div>Cancel any month, self-serve</div>
         <div class="fear-check"><div class="fear-icon">✓</div>Start from ₹1,000 — no lump sum</div>
         <div class="fear-check"><div class="fear-icon">✓</div>No lock-in period</div>
         <div class="fear-check"><div class="fear-icon">✓</div>Returns fixed before you invest</div>
       </div>
-      <button class="sim-cta">Resume KYC to unlock Bond SIP →</button>
+      <button id="p1-cta" class="sim-cta">Resume KYC to unlock Bond SIP →</button>
     </div>
   </div>
   <div class="content">
@@ -666,8 +666,8 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
         <span style="background:#E4FFF4;color:#017A3A;font-size:10px;font-weight:700;letter-spacing:0.8px;padding:3px 8px;border-radius:6px">OR START SMALLER</span>
         <span class="new-badge">NEW</span>
       </div>
-      <div class="step-hdg">Bond SIP — we do the picking</div>
-      <div class="step-hdg-sub">No need to choose a bond. Set an amount and we handle the rest.</div>
+      <div id="p2-step-hdg" class="step-hdg">Bond SIP — we do the picking</div>
+      <div id="p2-step-sub" class="step-hdg-sub">No need to choose a bond. Set an amount and we handle the rest.</div>
       <div class="step-row">
         <div class="step-num">1</div>
         <div><div class="step-title">You set ₹X/month</div><div class="step-sub">From ₹1,000. Change or cancel anytime.</div></div>
@@ -680,7 +680,7 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
         <div class="step-num">3</div>
         <div><div class="step-title">Fixed returns — known on Day 1</div><div class="step-sub">Est. 8–9.5% YTM. Not market-linked, no surprises.</div></div>
       </div>
-      <button class="btn btn-green" style="margin:14px 0 0;font-size:13px;padding:12px">Set up Bond SIP →</button>
+      <button id="p2-cta" class="btn btn-green" style="margin:14px 0 0;font-size:13px;padding:12px">Set up Bond SIP →</button>
     </div>
   </div>
   <div class="content">
@@ -787,8 +787,8 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
   </div>
   <div class="step-lbl">Step 2 of 5 — Investment goal</div>
   <div class="screen-body white">
-    <div class="fs15 fw7 t1 mb4">What's your goal?</div>
-    <div class="fs12 t3 mb16" style="line-height:1.5">Our engine picks bonds each month based on this</div>
+    <div id="p4-hdg" class="fs15 fw7 t1 mb4">What's your goal?</div>
+    <div id="p4-sub" class="fs12 t3 mb16" style="line-height:1.5">Our engine picks bonds each month based on this</div>
     <div class="goal-opt sel">
       <div class="goal-opt-icon" style="background:#FEF3C7">🪜</div>
       <div class="row mb4"><span class="fs14 fw7 t1">Income Ladder</span><span style="color:#01B756">●</span></div>
@@ -832,7 +832,7 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
   </div>
   <div class="step-lbl">Step 3 of 5 — This month's bond</div>
   <div class="screen-body white">
-    <div class="fs12 t3 mb12" style="line-height:1.5">Your first month's bond — selected based on your goal and amount. From month 2 onwards you'll preview each bond 5 days before debit.</div>
+    <div id="p5-intro" class="fs12 t3 mb12" style="line-height:1.5">Your first month's bond — selected based on your goal and amount. From month 2 onwards you'll preview each bond 5 days before debit.</div>
     <!-- bond card -->
     <div style="background:#fff;border:1px solid #E6E9EE;border-radius:14px;padding:16px;margin-bottom:12px">
       <!-- Top: company identity left · YTM right -->
@@ -863,14 +863,14 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
       </div>
     </div>
     <div class="success-box">
-      <p><strong>Why this bond?</strong> Matches Income Ladder goal — AAA rated, 18-month tenure staggered from your existing holdings.</p>
+      <p id="p5-why"><strong>Why this bond?</strong> Matches Income Ladder goal — AAA rated, 18-month tenure staggered from your existing holdings.</p>
     </div>
     <div class="info-box">
-      <p>Future bonds are always <strong>AA or better</strong>, <strong>1–3 year tenure</strong>, highest available YTM that month — we never pick below this floor. You'll see each bond <strong>5 days before debit</strong> and can skip or cancel with no penalty.</p>
+      <p id="p5-info">Future bonds are always <strong>AA or better</strong>, <strong>1–3 year tenure</strong>, highest available YTM that month — we never pick below this floor. You'll see each bond <strong>5 days before debit</strong> and can skip or cancel with no penalty.</p>
     </div>
   </div>
   <div class="cta-area">
-    <button class="btn btn-green">Confirm bond · Continue</button>
+    <button id="p5-cta" class="btn btn-green">Confirm bond · Continue</button>
   </div>
 </div>
 
@@ -891,8 +891,8 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
   </div>
   <div class="step-lbl">Step 4 of 5 — Monthly debit date</div>
   <div class="screen-body white">
-    <div class="fs15 fw7 t1 mb4">When to debit?</div>
-    <div class="fs12 t3 mb16">Pick the day of month for automatic debit</div>
+    <div id="p6-hdg" class="fs15 fw7 t1 mb4">When to debit?</div>
+    <div id="p6-sub" class="fs12 t3 mb16">Pick the day of month for automatic debit</div>
     <div class="date-grid">
       <div class="date-cell"><span>1st</span><span class="dc-sub">Sun</span></div>
       <div class="date-cell sel"><span>5th</span><span class="dc-sub">Thu</span></div>
@@ -950,7 +950,7 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
     <div class="fs12 t3 mt10" style="line-height:1.5">You can pause or cancel this SIP anytime from Portfolio → SIP Controls. No lock-in period.</div>
   </div>
   <div class="cta-area">
-    <button class="btn btn-green">Authorize ₹5,000/month →</button>
+    <button id="p7-cta" class="btn btn-green">Authorize ₹5,000/month →</button>
     <button class="btn-outline" style="margin-top:4px">Pay via UPI instead</button>
   </div>
 </div>
@@ -961,7 +961,7 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
   <div class="confirm-hdr">
     <div class="confirm-check">✓</div>
     <div class="sip-active-badge">● Bond SIP Active</div>
-    <div class="fs16 fw7" style="color:#fff;margin-bottom:4px">₹5,000/month · 5th of each month</div>
+    <div id="p8-summary" class="fs16 fw7" style="color:#fff;margin-bottom:4px">₹5,000/month · 5th of each month</div>
     <div class="fs12" style="color:rgba(255,255,255,0.5)">Income Ladder · HDB Financial · Jun 2026</div>
   </div>
   <div class="screen-body">
@@ -1241,8 +1241,8 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
           <span style="background:#E4FFF4;color:#017A3A;font-size:10px;font-weight:700;letter-spacing:0.8px;padding:3px 8px;border-radius:6px">ADD A BOND MONTHLY</span>
           <span class="new-badge">NEW</span>
         </div>
-        <div class="step-hdg">Bond SIP — add to what's working</div>
-        <div class="step-hdg-sub">Already investing? Automate your next bond — no picking needed each month.</div>
+        <div id="p12-step-hdg" class="step-hdg">Bond SIP — add to what's working</div>
+        <div id="p12-step-sub" class="step-hdg-sub">Already investing? Automate your next bond — no picking needed each month.</div>
         <div class="step-row">
           <div class="step-num">1</div>
           <div><div class="step-title">You set ₹X/month</div><div class="step-sub">From ₹1,000. Change or cancel anytime.</div></div>
@@ -1255,7 +1255,7 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
           <div class="step-num">3</div>
           <div><div class="step-title">Fixed returns — known on Day 1</div><div class="step-sub">Est. 8–9.5% YTM. Not market-linked, no surprises.</div></div>
         </div>
-        <button class="btn btn-green" style="margin:14px 0 0;font-size:13px;padding:12px">Set up Bond SIP →</button>
+        <button id="p12-cta" class="btn btn-green" style="margin:14px 0 0;font-size:13px;padding:12px">Set up Bond SIP →</button>
       </div>
       <!-- more bonds to explore -->
       <div class="section-card">
@@ -1394,9 +1394,9 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
         </div>
         <span style="font-size:10px;color:rgba(255,255,255,0.3)">now</span>
       </div>
-      <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;line-height:1.3">Month 2 bond ready — 3 days to preview</div>
+      <div id="p14-notif-title" style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;line-height:1.3">Month 2 bond ready — 3 days to preview</div>
       <div id="p14-notif-bond" style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.55;margin-bottom:12px">Bajaj Finance Ltd · 9.0% YTM · AAA rated<br>₹5,000 debits on May 25 if you confirm</div>
-      <button style="width:100%;padding:10px;background:rgba(1,183,86,0.18);border:1px solid rgba(1,183,86,0.35);border-radius:10px;color:#01B756;font-size:12px;font-weight:700;cursor:pointer;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif">Preview this month's bond →</button>
+      <button id="p14-cta" style="width:100%;padding:10px;background:rgba(1,183,86,0.18);border:1px solid rgba(1,183,86,0.35);border-radius:10px;color:#01B756;font-size:12px;font-weight:700;cursor:pointer;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif">Preview this month's bond →</button>
     </div>
     <div style="text-align:center;margin-top:14px">
       <div style="font-size:10px;color:rgba(255,255,255,0.2)">Tap to open · Swipe left to manage</div>
@@ -1427,9 +1427,9 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
         </div>
         <div style="background:rgba(0,185,198,0.12);border:1px solid rgba(0,185,198,0.2);border-radius:6px;padding:3px 8px;font-size:9px;font-weight:700;color:#00B9C6">3 DAYS LEFT</div>
       </div>
-      <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px">Review this month's bond before debit</div>
+      <div id="p15-nudge-hdg" style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px">Review this month's bond before debit</div>
       <div id="p15-nudge-bond" style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:12px;line-height:1.5">Bajaj Finance Ltd · 9.0% YTM · AAA<br>₹5,000 debits on May 25 if you confirm</div>
-      <button style="width:100%;padding:10px;background:#01B756;border:none;border-radius:10px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif">Preview this month's bond →</button>
+      <button id="p15-cta" style="width:100%;padding:10px;background:#01B756;border:none;border-radius:10px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif">Preview this month's bond →</button>
     </div>
   </div>
   <!-- Abbreviated homepage below -->
@@ -1516,7 +1516,7 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
     </div>
   </div>
   <div class="cta-area">
-    <button class="btn btn-green">Review Month 2 bond →</button>
+    <button id="p16-cta" class="btn btn-green">Review Month 2 bond →</button>
     <button class="btn" style="background:#F4F6F8;color:#5A6373;border:1px solid #E6E9EE;margin-top:8px;font-size:13px">⚙ Manage SIP settings</button>
   </div>
 </div>
@@ -1535,7 +1535,7 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
     <span style="font-size:11px;font-weight:700;color:#D4500A">Debit May 25</span>
   </div>
   <div class="screen-body white">
-    <div class="fs12 t3 mb12" style="line-height:1.5">Your May SIP bond. Confirm to invest automatically on May 25, or skip — your SIP continues next month.</div>
+    <div id="p17-intro" class="fs12 t3 mb12" style="line-height:1.5">Your May SIP bond. Confirm to invest automatically on May 25, or skip — your SIP continues next month.</div>
     <!-- Bond card — Month 2 (different issuer from Month 1 — diversification) -->
     <div style="background:#fff;border:1px solid #E6E9EE;border-radius:14px;padding:16px;margin-bottom:12px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
@@ -1563,12 +1563,12 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
       </div>
     </div>
     <div class="info-box">
-      <p>If you take no action, this bond auto-confirms on May 22. Skipping does not cancel your SIP — Month 3 continues as normal.</p>
+      <p id="p17-info">If you take no action, this bond auto-confirms on May 22. Skipping does not cancel your SIP — Month 3 continues as normal.</p>
     </div>
   </div>
   <div class="cta-area">
-    <button class="btn btn-green">Confirm — auto-invest May 25</button>
-    <button class="btn-ghost fs13" style="text-align:center;width:100%;display:block;border:none;cursor:pointer;background:none;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif;margin-top:6px;color:#5A6373;padding:8px">Skip this month — no penalty</button>
+    <button id="p17-cta-confirm" class="btn btn-green">Confirm — auto-invest May 25</button>
+    <button class="btn-ghost fs13" style="text-align:center;width:100%;display:block;border:none;cursor:pointer;background:none;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif;margin-top:6px;color:#5A6373;padding:8px"id="p17-cta-skip">Skip this month — no penalty</button>
   </div>
 </div>
 
@@ -1607,8 +1607,8 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
     <div class="section">
       <!-- Honest coupon feed: 1 real + 1 upcoming teaser -->
       <div class="feed-card">
-        <div class="feed-hdg">Your Bond SIP earnings</div>
-        <div class="feed-sub">Coupons land in your account on the bond's payment date — no action needed.</div>
+        <div id="p18-feed-hdg" class="feed-hdg">Your Bond SIP earnings</div>
+        <div id="p18-feed-sub" class="feed-sub">Coupons land in your account on the bond's payment date — no action needed.</div>
         <!-- Real row — Month 1 coupon received -->
         <div class="feed-row">
           <div class="feed-left">
@@ -1892,27 +1892,83 @@ WHEN USER ASKS TO CHANGE SOMETHING — respond ONLY with this exact JSON (no oth
 WHEN USER ASKS A QUESTION — respond with plain text only (no JSON).
 
 EDITABLE ELEMENTS (use these IDs exactly):
-Setup flow — Month 1 bond (screen p5):
-  p5-bond-logo    → 3-letter issuer abbreviation shown in the logo circle (e.g. "HDB")
-  p5-bond-name    → full issuer name (e.g. "HDB Financial Services")
+
+p0 — Homepage KYC Not Started:
+  p0-compare-hdg  → widget heading (e.g. "What ₹12,000 earns in a year")
+  p0-compare-note → note below comparison table
+  p0-cta          → CTA button text
+
+p1 — Homepage KYC In Progress:
+  p1-fear-num     → bold rupee number (e.g. "₹1,104")
+  p1-fear-sub     → sub-text below the number
+  p1-cta          → CTA button text
+
+p2 — Homepage KYC Done:
+  p2-step-hdg     → widget heading (e.g. "Bond SIP — we do the picking")
+  p2-step-sub     → widget sub-heading
+  p2-cta          → CTA button text
+
+p4 — Goal selection:
+  p4-hdg          → screen heading (e.g. "What's your goal?")
+  p4-sub          → sub-heading below
+
+p5 — Bond preview Month 1:
+  p5-intro        → intro paragraph above bond card
+  p5-bond-logo    → 3-letter logo abbreviation (e.g. "HDB")
+  p5-bond-name    → full issuer name
   p5-bond-mat     → maturity line (e.g. "Matures Nov 2027 · 18 months")
-  p5-bond-ytm     → YTM % number (e.g. "9.2%")
+  p5-bond-ytm     → YTM % (e.g. "9.2%")
   p5-bond-coupon  → coupon rate (e.g. "9.15% p.a.")
   p5-bond-invest  → min investment (e.g. "₹5,000")
+  p5-why          → "Why this bond?" explanation in green box
+  p5-info         → reassurance paragraph in info box
+  p5-cta          → CTA button text
 
-Monthly preview — Month 2 bond (screen p17):
-  p17-bond-logo   → 3-letter abbreviation (e.g. "BFL")
-  p17-bond-name   → full issuer name (e.g. "Bajaj Finance Ltd")
-  p17-bond-mat    → maturity line (e.g. "Matures Aug 2027 · 15 months")
-  p17-bond-ytm    → YTM % (e.g. "9.0%")
-  p17-bond-coupon → coupon rate (e.g. "8.97% p.a.")
+p6 — Debit date:
+  p6-hdg          → screen heading (e.g. "When to debit?")
+  p6-sub          → sub-heading below
 
-Notification + homepage (p14, p15):
-  p14-notif-bond  → bond summary in lock screen notification
-  p15-nudge-bond  → bond summary in homepage nudge card
+p7 — Mandate:
+  p7-cta          → CTA button text (e.g. "Authorize ₹5,000/month →")
 
-Bond matured screen (p13):
-  p13-cta         → primary CTA button text (e.g. "Browse bonds to reinvest →" or "Set up Bond SIP →")
+p8 — Confirmation:
+  p8-summary      → summary line in dark header (e.g. "₹5,000/month · 5th of each month")
+
+p12 — Homepage Active Investor:
+  p12-step-hdg    → widget heading (e.g. "Bond SIP — add to what's working")
+  p12-step-sub    → widget sub-heading
+  p12-cta         → CTA button text
+
+p13 — Bond matured → reinvest:
+  p13-cta         → CTA button text (e.g. "Browse bonds to reinvest →")
+
+p14 — Push notification:
+  p14-notif-title → notification title (e.g. "Month 2 bond ready — 3 days to preview")
+  p14-notif-bond  → bond summary line in notification
+  p14-cta         → CTA button text
+
+p15 — Homepage nudge:
+  p15-nudge-hdg   → nudge card heading (e.g. "Review this month's bond before debit")
+  p15-nudge-bond  → bond summary line in nudge card
+  p15-cta         → CTA button text
+
+p16 — SIP history:
+  p16-cta         → primary CTA button text
+
+p17 — Monthly bond preview + confirm:
+  p17-intro       → intro paragraph above bond card
+  p17-bond-logo   → 3-letter logo abbreviation (e.g. "BFL")
+  p17-bond-name   → full issuer name
+  p17-bond-mat    → maturity line
+  p17-bond-ytm    → YTM %
+  p17-bond-coupon → coupon rate
+  p17-info        → info box text (auto-confirm notice)
+  p17-cta-confirm → confirm button text
+  p17-cta-skip    → skip link text
+
+p18 — Homepage Month 1 done:
+  p18-feed-hdg    → feed section heading
+  p18-feed-sub    → feed section sub-text
 
 CURRENT BOND DATA:
   Month 1 (p5):  HDB Financial Services · 9.2% YTM · AAA · Matures Nov 2027 · 18mo · Coupon 9.15%
@@ -1928,6 +1984,7 @@ SCREENS (19 total, IDs p0–p18):
   p12 Entry: Active investor             p13 Entry: Bond matured → reinvest
   p14 Monthly preview: Push notification p15 Monthly preview: Homepage nudge
   p16 Monthly preview: SIP history       p17 Monthly preview: Bond confirm/skip
+  p18 Post-setup: Homepage Month 1 done (honest feed)
 
 DESIGN RULES (never violate):
   - Rating must always be AA or above
