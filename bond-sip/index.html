@@ -394,7 +394,7 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
   <div class="nav-section">
     <div class="nav-section-label">Setup Flow</div>
     <div class="nav-item" onclick="showScreen(3,this)"><span class="num">4</span>Step 1 — Amount</div>
-    <div class="nav-item" onclick="showScreen(4,this)"><span class="num">5</span>Step 2 — Goal</div>
+    <div class="nav-item" onclick="showScreen(4,this)"><span class="num">5</span>Step 2 — SIP type</div>
     <div class="nav-item" onclick="showScreen(5,this)"><span class="num">6</span>Step 3 — Bond preview</div>
     <div class="nav-item" onclick="showScreen(6,this)"><span class="num">7</span>Step 4 — Debit date</div>
     <div class="nav-item" onclick="showScreen(7,this)"><span class="num">8</span>Step 5 — Mandate</div>
@@ -770,7 +770,7 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
   </div>
 </div>
 
-<!-- ════════════════ P4: STEP 2 — Goal ════════════════ -->
+<!-- ════════════════ P4: STEP 2 — SIP Type ════════════════ -->
 <div class="phone-page" id="p4">
   <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><div class="sb-icons" style="color:#030A16">●●● ▮</div></div>
   <div class="nav-hdr">
@@ -785,28 +785,52 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
     <div class="prog-seg"></div>
     <div class="prog-seg"></div>
   </div>
-  <div class="step-lbl">Step 2 of 5 — Investment goal</div>
+  <div class="step-lbl">Step 2 of 5 — Choose your SIP type</div>
   <div class="screen-body white">
-    <div id="p4-hdg" class="fs15 fw7 t1 mb4">What's your goal?</div>
-    <div id="p4-sub" class="fs12 t3 mb16" style="line-height:1.5">Our engine picks bonds each month based on this</div>
-    <div class="goal-opt sel">
-      <div class="goal-opt-icon" style="background:#FEF3C7">🪜</div>
-      <div class="row mb4"><span class="fs14 fw7 t1">Income Ladder</span><span style="color:#01B756">●</span></div>
-      <div class="fs12 t3 mb8" style="line-height:1.5">Stagger maturities across 12 months for regular payouts. Best for regular income needs.</div>
+    <div id="p4-hdg" class="fs15 fw7 t1 mb4">Which SIP suits you?</div>
+    <div id="p4-sub" class="fs12 t3 mb14" style="line-height:1.5">Our engine picks bonds each month based on your choice. You can change this anytime.</div>
+
+    <!-- Stable SIP — selected by default -->
+    <div class="goal-opt sel" style="margin-bottom:10px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="goal-opt-icon" style="background:#E8F5EE;font-size:15px;width:32px;height:32px;min-width:32px">🛡️</div>
+          <span id="p4-stable-name" class="fs14 fw7 t1">Stable SIP</span>
+        </div>
+        <span style="color:#01B756;font-size:17px">●</span>
+      </div>
+      <div id="p4-stable-desc" class="fs12 t3 mb10" style="line-height:1.5">Highest-rated bonds on the platform each month. Built for safety first, returns second.</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px">
+        <span class="chip" style="background:#E8F5EE;color:#0A7B3E;border:none;font-size:11px;font-weight:600;padding:3px 8px">AA to AAA</span>
+        <span class="chip chip-grey" style="font-size:11px;padding:3px 8px">Last month: 9.2%</span>
+      </div>
+      <div class="fs11 t4 mb5" style="text-transform:uppercase;letter-spacing:0.5px;font-weight:600">Good for</div>
       <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <span class="chip chip-active">Regular payouts</span>
-        <span class="chip chip-grey">Varied tenure</span>
-        <span class="chip chip-grey">Est. 8.5–9.5% YTM</span>
+        <span class="chip chip-active" style="font-size:11px;padding:3px 8px">First investment</span>
+        <span class="chip chip-active" style="font-size:11px;padding:3px 8px">FD replacement</span>
+        <span class="chip chip-active" style="font-size:11px;padding:3px 8px">Peace of mind</span>
       </div>
     </div>
+
+    <!-- High Yield SIP — unselected -->
     <div class="goal-opt">
-      <div class="goal-opt-icon" style="background:#EFF2F9">🌱</div>
-      <div class="row mb4"><span class="fs14 fw7 t1">Wealth Growth</span><span style="color:#D2D7E0">○</span></div>
-      <div class="fs12 t3 mb8" style="line-height:1.5">Maximise yield by targeting longer-tenure, higher-rated bonds. Best for wealth building.</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="goal-opt-icon" style="background:#FEF9EC;font-size:15px;width:32px;height:32px;min-width:32px">⚡</div>
+          <span id="p4-hy-name" class="fs14 fw7 t1">High Yield SIP</span>
+        </div>
+        <span style="color:#D2D7E0;font-size:17px">○</span>
+      </div>
+      <div id="p4-hy-desc" class="fs12 t3 mb10" style="line-height:1.5">Best-yielding bonds on the platform each month. Higher returns, slightly more credit risk.</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px">
+        <span class="chip" style="background:#FEF9EC;color:#92600A;border:none;font-size:11px;font-weight:600;padding:3px 8px">A- to A+</span>
+        <span class="chip chip-grey" style="font-size:11px;padding:3px 8px">Last month: 11.4%</span>
+      </div>
+      <div class="fs11 t4 mb5" style="text-transform:uppercase;letter-spacing:0.5px;font-weight:600">Good for</div>
       <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <span class="chip chip-blue">Higher yield</span>
-        <span class="chip chip-grey">Longer tenure</span>
-        <span class="chip chip-grey">Est. 9–10% YTM</span>
+        <span class="chip chip-grey" style="font-size:11px;padding:3px 8px">Already investing</span>
+        <span class="chip chip-grey" style="font-size:11px;padding:3px 8px">Yield focused</span>
+        <span class="chip chip-grey" style="font-size:11px;padding:3px 8px">Risk-comfortable</span>
       </div>
     </div>
   </div>
@@ -1907,9 +1931,13 @@ p2 — Homepage KYC Done:
   p2-step-sub     → widget sub-heading
   p2-cta          → CTA button text
 
-p4 — Goal selection:
-  p4-hdg          → screen heading (e.g. "What's your goal?")
+p4 — SIP type selection:
+  p4-hdg          → screen heading ("Which SIP suits you?")
   p4-sub          → sub-heading below
+  p4-stable-name  → Stable SIP card title
+  p4-stable-desc  → Stable SIP card description
+  p4-hy-name      → High Yield SIP card title
+  p4-hy-desc      → High Yield SIP card description
 
 p5 — Bond preview Month 1:
   p5-intro        → intro paragraph above bond card
