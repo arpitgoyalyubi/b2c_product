@@ -408,6 +408,7 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
     <div class="nav-item" onclick="showScreen(9,this)"><span class="num">10</span>Portfolio — SIP tab (C)</div>
     <div class="nav-item" onclick="showScreen(10,this)"><span class="num">11</span>SIP Controls</div>
     <div class="nav-item" onclick="showScreen(11,this)"><span class="num">12</span>Homepage widget</div>
+    <div class="nav-item" onclick="showScreen(18,this)"><span class="num">19</span>Homepage — Month 1 done</div>
   </div>
 
   <div class="nav-divider"></div>
@@ -1234,46 +1235,27 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
   <!-- content -->
   <div class="content">
     <div class="section">
-      <!-- Widget: Coupon income feed -->
-      <div class="feed-card">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-          <span style="background:#E4FFF4;color:#017A3A;font-size:10px;font-weight:700;letter-spacing:0.8px;padding:3px 8px;border-radius:6px">FOR YOU</span>
+      <!-- Widget: 3-step explainer (active investor variant) -->
+      <div class="step-card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="background:#E4FFF4;color:#017A3A;font-size:10px;font-weight:700;letter-spacing:0.8px;padding:3px 8px;border-radius:6px">ADD A BOND MONTHLY</span>
           <span class="new-badge">NEW</span>
         </div>
-        <div class="feed-hdg">Earn every month, automatically</div>
-        <div class="feed-sub">Bond SIP investors receive coupons like this — a different bond selected each month.</div>
-        <div class="feed-row">
-          <div class="feed-left">
-            <div class="feed-dot"></div>
-            <div>
-              <div class="feed-amt">+ ₹83</div>
-              <div class="feed-meta">Coupon · HDB Financial</div>
-            </div>
-          </div>
-          <span style="font-size:11px;color:#8A93A3">May 5</span>
+        <div class="step-hdg">Bond SIP — add to what's working</div>
+        <div class="step-hdg-sub">Already investing? Automate your next bond — no picking needed each month.</div>
+        <div class="step-row">
+          <div class="step-num">1</div>
+          <div><div class="step-title">You set ₹X/month</div><div class="step-sub">From ₹1,000. Change or cancel anytime.</div></div>
         </div>
-        <div class="feed-row">
-          <div class="feed-left">
-            <div class="feed-dot"></div>
-            <div>
-              <div class="feed-amt">+ ₹91</div>
-              <div class="feed-meta">Coupon · IIFL Finance</div>
-            </div>
-          </div>
-          <span style="font-size:11px;color:#8A93A3">Apr 5</span>
+        <div class="step-row">
+          <div class="step-num">2</div>
+          <div><div class="step-title">We pick the best bond that month</div><div class="step-sub">Our engine selects based on yield, rating, and tenure.</div></div>
         </div>
-        <div class="feed-row">
-          <div class="feed-left">
-            <div class="feed-dot"></div>
-            <div>
-              <div class="feed-amt">+ ₹77</div>
-              <div class="feed-meta">Coupon · Sundaram Finance</div>
-            </div>
-          </div>
-          <span style="font-size:11px;color:#8A93A3">Mar 5</span>
+        <div class="step-row">
+          <div class="step-num">3</div>
+          <div><div class="step-title">Fixed returns — known on Day 1</div><div class="step-sub">Est. 8–9.5% YTM. Not market-linked, no surprises.</div></div>
         </div>
-        <div class="feed-note">₹1,000/month · Est. 8–9.5% YTM · Different issuer each month · Cancel anytime</div>
-        <button class="btn btn-green" style="margin:0;font-size:14px">Set up Bond SIP →</button>
+        <button class="btn btn-green" style="margin:14px 0 0;font-size:13px;padding:12px">Set up Bond SIP →</button>
       </div>
       <!-- more bonds to explore -->
       <div class="section-card">
@@ -1590,6 +1572,89 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
   </div>
 </div>
 
+<!-- ════════════════ P18: HOMEPAGE — MONTH 1 DONE (honest feed) ════════════════ -->
+<div class="phone-page" id="p18">
+  <div class="sb"><span class="sb-time">9:41</span><div class="sb-icons">●●● ▮</div></div>
+  <div class="app-header">
+    <div class="logo-row">
+      <div class="logo-mark">A</div>
+      <div class="logo-text"><div class="aspero-name">Aspero</div><div class="aspero-tag">Fixed Income</div></div>
+    </div>
+    <div class="header-icons"><div class="icon-btn">🔔</div><div class="icon-btn">👤</div></div>
+  </div>
+  <!-- SIP widget in hero -->
+  <div class="hero" style="padding-bottom:14px">
+    <div class="sip-widget" style="margin-bottom:0">
+      <div class="sip-badge-dark">● BOND SIP ACTIVE</div>
+      <div class="row mt8">
+        <div>
+          <div class="fs15 fw7" style="color:#fff">₹5,000/month</div>
+          <div class="fs11" style="color:#8A93A3;margin-top:2px">Income Ladder · Month 1 complete</div>
+        </div>
+        <div style="text-align:right">
+          <div class="fs12" style="color:#8A93A3">Next debit</div>
+          <div class="fs13 fw6" style="color:#fff">May 25</div>
+        </div>
+      </div>
+      <div class="prog-track"><div class="prog-fill" style="width:8%"></div></div>
+      <div class="row">
+        <span class="fs11" style="color:#8A93A3">₹5,000 of ₹60,000 invested</span>
+        <span class="fs11" style="color:#00B9C6;cursor:pointer">View SIP →</span>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="section">
+      <!-- Honest coupon feed: 1 real + 1 upcoming teaser -->
+      <div class="feed-card">
+        <div class="feed-hdg">Your Bond SIP earnings</div>
+        <div class="feed-sub">Coupons land in your account on the bond's payment date — no action needed.</div>
+        <!-- Real row — Month 1 coupon received -->
+        <div class="feed-row">
+          <div class="feed-left">
+            <div class="feed-dot"></div>
+            <div>
+              <div class="feed-amt">+ ₹83</div>
+              <div class="feed-meta">Coupon · HDB Financial · Month 1</div>
+            </div>
+          </div>
+          <span style="font-size:11px;color:#8A93A3">May 5</span>
+        </div>
+        <!-- Upcoming row — Month 2 not yet selected, no amount shown -->
+        <div class="feed-row" style="background:#F9FAFB;border-radius:8px;margin:4px -4px 0;padding:9px 4px;border-bottom:none;border:1px dashed #D2D7E0">
+          <div class="feed-left">
+            <div style="width:8px;height:8px;border-radius:50%;background:rgba(0,185,198,0.15);border:1px dashed #00B9C6;flex-shrink:0"></div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:#5A6373">Month 2 · Bond preview May 20</div>
+              <div class="feed-meta">₹5,000 debits May 25 · bond not yet selected</div>
+            </div>
+          </div>
+          <span style="font-size:10px;font-weight:600;color:#00B9C6;background:rgba(0,185,198,0.1);padding:2px 7px;border-radius:5px">UPCOMING</span>
+        </div>
+      </div>
+      <!-- Popular bonds below -->
+      <div class="section-card">
+        <div class="sec-heading">Popular bonds</div>
+        <div class="bond-row">
+          <div class="brl"><div class="brl-logo" style="background:#FFF0E8;color:#D4500A">IL</div><div class="brl-info"><div class="brl-name">IIFL Finance</div><div class="brl-mat">Matures Jul 2027</div></div></div>
+          <div class="brr"><div class="brr-ytm">9.4%</div><div class="brr-ten">14 mo</div></div>
+        </div>
+        <div class="bond-row">
+          <div class="brl"><div class="brl-logo" style="background:#E8F0FF;color:#2D5BE3">BFL</div><div class="brl-info"><div class="brl-name">Bajaj Finance</div><div class="brl-mat">Matures Aug 2027</div></div></div>
+          <div class="brr"><div class="brr-ytm">9.0%</div><div class="brr-ten">15 mo</div></div>
+        </div>
+        <button class="view-all">View all bonds →</button>
+      </div>
+    </div>
+  </div>
+  <div class="bnav">
+    <div class="bn active"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="#01B756"><path d="M4 11 L12 4 L20 11 V20 a1 1 0 01-1 1h-4v-7h-6v7H5a1 1 0 01-1-1z"/></svg></div><span class="bn-label" style="color:#01B756">Home</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-3.5-3.5"/></svg></div><span class="bn-label">Explore</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><span class="bn-label">Portfolio</span></div>
+    <div class="bn"><div class="bn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5A6373" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="9" r="3.5"/><path d="M5 20c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg></div><span class="bn-label">Profile</span></div>
+  </div>
+</div>
+
       </div><!-- /screen -->
     </div><!-- /phone -->
     <!-- rationale panel -->
@@ -1638,7 +1703,7 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
         <div class="rat-sr-num">4</div>
         <div class="rat-sr-body">
           <div class="rat-sr-name">Active Investor</div>
-          <div class="rat-sr-widget">Widget: Coupon income feed</div>
+          <div class="rat-sr-widget">Widget: 3-step explainer (investor variant)</div>
           <div class="rat-sr-block">Blocker: No urgency to automate</div>
         </div>
       </div>
@@ -1659,24 +1724,25 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
 
 <script>
 const screens = [
-  {title:'Homepage — KYC Not Started', sub:'Screen 1 of 18 · Entry Points'},
-  {title:'Homepage — KYC In Progress', sub:'Screen 2 of 18 · Entry Points'},
-  {title:'Homepage — KYC Done', sub:'Screen 3 of 18 · Entry Points'},
-  {title:'Step 1 — Amount', sub:'Screen 4 of 18 · Setup Flow'},
-  {title:'Step 2 — Goal', sub:'Screen 5 of 18 · Setup Flow'},
-  {title:'Step 3 — Bond preview', sub:'Screen 6 of 18 · Setup Flow'},
-  {title:'Step 4 — Debit date', sub:'Screen 7 of 18 · Setup Flow'},
-  {title:'Step 5 — Mandate', sub:'Screen 8 of 18 · Setup Flow'},
-  {title:'Confirm (Option B)', sub:'Screen 9 of 18 · Setup Flow'},
-  {title:'Portfolio — SIP tab', sub:'Screen 10 of 18 · Post-Setup'},
-  {title:'SIP Controls', sub:'Screen 11 of 18 · Post-Setup'},
-  {title:'Homepage widget', sub:'Screen 12 of 18 · Post-Setup'},
-  {title:'Homepage — Active investor', sub:'Screen 13 of 18 · Entry Points'},
-  {title:'Bond matured → reinvest', sub:'Screen 14 of 18 · Entry Points'},
-  {title:'Push notification', sub:'Screen 15 of 18 · Monthly Preview'},
-  {title:'Homepage nudge', sub:'Screen 16 of 18 · Monthly Preview'},
-  {title:'Orders — SIP history', sub:'Screen 17 of 18 · Monthly Preview'},
-  {title:'Bond preview + confirm', sub:'Screen 18 of 18 · Monthly Preview'},
+  {title:'Homepage — KYC Not Started', sub:'Screen 1 of 19 · Entry Points'},
+  {title:'Homepage — KYC In Progress', sub:'Screen 2 of 19 · Entry Points'},
+  {title:'Homepage — KYC Done', sub:'Screen 3 of 19 · Entry Points'},
+  {title:'Step 1 — Amount', sub:'Screen 4 of 19 · Setup Flow'},
+  {title:'Step 2 — Goal', sub:'Screen 5 of 19 · Setup Flow'},
+  {title:'Step 3 — Bond preview', sub:'Screen 6 of 19 · Setup Flow'},
+  {title:'Step 4 — Debit date', sub:'Screen 7 of 19 · Setup Flow'},
+  {title:'Step 5 — Mandate', sub:'Screen 8 of 19 · Setup Flow'},
+  {title:'Confirm (Option B)', sub:'Screen 9 of 19 · Setup Flow'},
+  {title:'Portfolio — SIP tab', sub:'Screen 10 of 19 · Post-Setup'},
+  {title:'SIP Controls', sub:'Screen 11 of 19 · Post-Setup'},
+  {title:'Homepage widget', sub:'Screen 12 of 19 · Post-Setup'},
+  {title:'Homepage — Active investor', sub:'Screen 13 of 19 · Entry Points'},
+  {title:'Bond matured → reinvest', sub:'Screen 14 of 19 · Entry Points'},
+  {title:'Push notification', sub:'Screen 15 of 19 · Monthly Preview'},
+  {title:'Homepage nudge', sub:'Screen 16 of 19 · Monthly Preview'},
+  {title:'Orders — SIP history', sub:'Screen 17 of 19 · Monthly Preview'},
+  {title:'Bond preview + confirm', sub:'Screen 18 of 19 · Monthly Preview'},
+  {title:'Homepage — Month 1 done', sub:'Screen 19 of 19 · Post-Setup'},
 ];
 
 const rationale = {
@@ -1702,8 +1768,8 @@ const rationale = {
     metricLbl: 'WoW regression'
   },
   12: {
-    why: 'Repeat investor rate is 34.5% vs 50% target. Bond SIP mechanically solves this — each monthly debit IS a repeat transaction. But the pitch must be portfolio strategy: diversification + stability, not just automation.',
-    pitch: 'Build a bond ladder — different issuers, staggered maturities, automatic every month',
+    why: 'Repeat investor rate is 34.5% vs 50% target. This user trusts the platform — they\'ve already invested. They just lack urgency to automate. Simple 3-step explainer removes the "how do I even start?" friction without over-engineering the pitch.',
+    pitch: 'Already investing? Automate your next bond — no picking needed each month',
     goal: 'Repeat investor rate: 34.5% → 50%',
     metricVal: '−15.5pp',
     metricLbl: 'gap to target'
@@ -1744,8 +1810,8 @@ function showScreen(n, el) {
     panel.classList.remove('visible');
   }
 }
-function nextScreen() { showScreen((current+1)%18, document.querySelectorAll('.nav-item')[(current+1)%18]); }
-function prevScreen() { showScreen((current+17)%18, document.querySelectorAll('.nav-item')[(current+17)%18]); }
+function nextScreen() { showScreen((current+1)%19, document.querySelectorAll('.nav-item')[(current+1)%19]); }
+function prevScreen() { showScreen((current+18)%19, document.querySelectorAll('.nav-item')[(current+18)%19]); }
 document.addEventListener('keydown', e => {
   if(e.key==='ArrowRight'||e.key==='ArrowDown') nextScreen();
   if(e.key==='ArrowLeft'||e.key==='ArrowUp') prevScreen();
