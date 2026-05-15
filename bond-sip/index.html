@@ -409,6 +409,16 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
     <div class="nav-item" onclick="showScreen(10,this)"><span class="num">11</span>SIP Controls</div>
     <div class="nav-item" onclick="showScreen(11,this)"><span class="num">12</span>Homepage widget</div>
   </div>
+
+  <div class="nav-divider"></div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Monthly Preview</div>
+    <div class="nav-item" onclick="showScreen(14,this)"><span class="num">15</span>Push notification</div>
+    <div class="nav-item" onclick="showScreen(15,this)"><span class="num">16</span>Homepage nudge</div>
+    <div class="nav-item" onclick="showScreen(16,this)"><span class="num">17</span>Orders — SIP history</div>
+    <div class="nav-item" onclick="showScreen(17,this)"><span class="num">18</span>Bond preview + confirm</div>
+  </div>
 </div>
 
 <!-- ════ MAIN ════ -->
@@ -824,33 +834,45 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
     <div class="fs12 t3 mb12" style="line-height:1.5">The engine selected this bond for June. You can skip before debit without penalty.</div>
     <!-- bond card -->
     <div style="background:#fff;border:1px solid #E6E9EE;border-radius:14px;padding:16px;margin-bottom:12px">
-      <div class="ytm-row">
-        <span class="ytm-val">9.2</span>
-        <span class="ytm-pct">%<br><span class="fs11">YTM</span></span>
-      </div>
-      <div class="bond-info-row">
-        <div class="co-logo">HDB</div>
-        <div>
-          <div class="co-name">HDB Financial Services</div>
-          <div class="co-mat">Matures Nov 2027 · 18 months</div>
+      <!-- Top: company identity left · YTM right -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="co-logo">HDB</div>
+          <div>
+            <div class="co-name">HDB Financial Services</div>
+            <div class="co-mat">Matures Nov 2027 · 18 months</div>
+          </div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-size:26px;font-weight:800;color:#01B756;line-height:1;letter-spacing:-0.5px">9.2%</div>
+          <div style="font-size:10px;font-weight:600;color:#8A93A3;letter-spacing:0.5px;text-transform:uppercase">YTM</div>
         </div>
       </div>
+      <!-- Chips -->
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
         <span class="chip chip-green">AAA</span>
         <span class="chip chip-secured">Senior Secured</span>
         <span class="chip chip-grey">Annual Coupon</span>
       </div>
-      <div style="display:flex;justify-content:space-between;border-top:1px dashed #E6E9EE;padding-top:12px">
-        <div><div class="fs11 t4">Min investment</div><div class="fs13 fw6 t1">₹5,000</div></div>
-        <div style="text-align:center"><div class="fs11 t4">Face value</div><div class="fs13 fw6 t1">₹1,000</div></div>
-        <div style="text-align:right"><div class="fs11 t4">Coupon</div><div class="fs13 fw6 ytm">9.15% p.a.</div></div>
+      <!-- Stats: grid for consistent alignment -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px dashed #E6E9EE;padding-top:12px;gap:4px">
+        <div><div class="fs11 t4">Min. invest</div><div class="fs13 fw6 t1">₹5,000</div></div>
+        <div><div class="fs11 t4">Face value</div><div class="fs13 fw6 t1">₹1,000</div></div>
+        <div><div class="fs11 t4">Coupon</div><div class="fs13 fw6 ytm">9.15% p.a.</div></div>
       </div>
     </div>
     <div class="success-box">
       <p><strong>Why this bond?</strong> Matches Income Ladder goal — AAA rated, 18-month tenure staggered from your existing holdings.</p>
     </div>
-    <div class="info-box">
-      <p>Future months' bonds are selected 5 days before each debit. You'll always know the bond before money moves.</p>
+    <!-- Engine rules: short, 4 rows -->
+    <div style="background:#F4F6F8;border-radius:10px;padding:12px 14px;margin-bottom:10px">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#8A93A3;margin-bottom:8px">How future months work</div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:5px 12px;font-size:11px;line-height:1.4">
+        <span class="fw7 t1">Min. rating</span><span class="t3">AA or above</span>
+        <span class="fw7 t1">Tenure</span><span class="t3">1 – 3 years</span>
+        <span class="fw7 t1">Selection</span><span class="t3">Highest available YTM each month</span>
+        <span class="fw7 t1">Preview</span><span class="t3">5 days before debit — skip any month, no penalty</span>
+      </div>
     </div>
   </div>
   <div class="cta-area">
@@ -1441,25 +1463,232 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
     </div>
   </div>
 </div>
+
+<!-- ════════════════ P14: MONTHLY PREVIEW — Push Notification ════════════════ -->
+<div class="phone-page" id="p14">
+  <div class="sb"><span class="sb-time">9:41</span><div class="sb-icons">●●● ▮</div></div>
+  <div style="flex:1;background:#0D1626;display:flex;flex-direction:column;padding:0 0 24px;overflow:hidden">
+    <!-- Lock screen time -->
+    <div style="text-align:center;padding:40px 20px 28px">
+      <div style="font-size:54px;font-weight:200;color:#fff;letter-spacing:-2px;line-height:1">9:41</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:5px">Wednesday, 21 May</div>
+    </div>
+    <!-- Notification card -->
+    <div style="margin:0 12px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.12);border-radius:18px;padding:14px 16px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <div style="width:26px;height:26px;background:#01B756;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0">A</div>
+        <div style="flex:1">
+          <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.9)">Aspero</span>
+          <span style="font-size:10px;color:rgba(255,255,255,0.4)"> · Bond SIP</span>
+        </div>
+        <span style="font-size:10px;color:rgba(255,255,255,0.3)">now</span>
+      </div>
+      <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;line-height:1.3">Month 2 bond ready — 3 days to preview</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.55;margin-bottom:12px">HDB Financial Services · 9.1% YTM · AAA rated<br>₹5,000 debits on May 25 unless you skip</div>
+      <div style="display:flex;gap:8px">
+        <button style="flex:1;padding:9px 0;background:rgba(1,183,86,0.18);border:1px solid rgba(1,183,86,0.35);border-radius:10px;color:#01B756;font-size:12px;font-weight:700;cursor:pointer;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif">Preview bond</button>
+        <button style="flex:1;padding:9px 0;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:rgba(255,255,255,0.5);font-size:12px;font-weight:600;cursor:pointer;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif">Skip month</button>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:14px">
+      <div style="font-size:10px;color:rgba(255,255,255,0.2)">Tap to open · Swipe left to manage</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ P15: MONTHLY PREVIEW — Homepage nudge ════════════════ -->
+<div class="phone-page" id="p15">
+  <div class="sb"><span class="sb-time">9:41</span><div class="sb-icons">●●● ▮</div></div>
+  <div class="app-header">
+    <div class="logo-row">
+      <div class="logo-mark">A</div>
+      <div><div class="aspero-name">Aspero</div><div class="aspero-tag">Fixed income</div></div>
+    </div>
+    <div class="header-icons">
+      <div class="icon-btn">🔔</div>
+      <div class="icon-btn">👤</div>
+    </div>
+  </div>
+  <!-- SIP nudge: teal-accented, above fold -->
+  <div style="background:#030A16;padding:10px 16px 14px">
+    <div style="background:#0D1E1F;border:1.5px solid rgba(0,185,198,0.3);border-radius:14px;padding:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="display:flex;align-items:center;gap:7px">
+          <div style="width:7px;height:7px;border-radius:50%;background:#00B9C6"></div>
+          <span style="font-size:10px;font-weight:700;color:#00B9C6;letter-spacing:0.8px;text-transform:uppercase">Bond SIP · Month 2</span>
+        </div>
+        <div style="background:rgba(0,185,198,0.12);border:1px solid rgba(0,185,198,0.2);border-radius:6px;padding:3px 8px;font-size:9px;font-weight:700;color:#00B9C6">3 DAYS LEFT</div>
+      </div>
+      <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px">Review this month's bond before debit</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:12px;line-height:1.5">HDB Financial Services · 9.1% YTM · AAA<br>₹5,000 debits on May 25</div>
+      <div style="display:flex;gap:8px">
+        <button style="flex:1;padding:9px;background:#01B756;border:none;border-radius:10px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif">Preview & confirm →</button>
+        <button style="padding:9px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:rgba(255,255,255,0.45);font-size:12px;font-weight:600;cursor:pointer;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif">Skip</button>
+      </div>
+    </div>
+  </div>
+  <!-- Abbreviated homepage below -->
+  <div class="screen-body" style="background:#F4F6F8">
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#8A93A3;margin-bottom:10px">Top Bonds</div>
+    <div style="background:#fff;border-radius:12px;padding:12px 14px;margin-bottom:8px;border:1px solid #E6E9EE;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:36px;height:36px;border-radius:9px;background:#FFF0E8;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#D4500A">IL</div>
+        <div><div style="font-size:13px;font-weight:700;color:#030A16">IIFL Finance</div><div style="font-size:10px;color:#8A93A3">AA+ · 14 months</div></div>
+      </div>
+      <div style="text-align:right"><div style="font-size:14px;font-weight:800;color:#01B756">9.4%</div><div style="font-size:9px;color:#8A93A3">YTM</div></div>
+    </div>
+    <div style="background:#fff;border-radius:12px;padding:12px 14px;border:1px solid #E6E9EE;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:36px;height:36px;border-radius:9px;background:#E8F0FF;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#2D5BE3">HDB</div>
+        <div><div style="font-size:13px;font-weight:700;color:#030A16">HDB Financial</div><div style="font-size:10px;color:#8A93A3">AAA · 18 months</div></div>
+      </div>
+      <div style="text-align:right"><div style="font-size:14px;font-weight:800;color:#01B756">9.1%</div><div style="font-size:9px;color:#8A93A3">YTM</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ P16: MONTHLY PREVIEW — SIP orders / history ════════════════ -->
+<div class="phone-page" id="p16">
+  <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><div class="sb-icons" style="color:#030A16">●●● ▮</div></div>
+  <div class="nav-hdr">
+    <div class="back-btn">←</div>
+    <div class="hdr-title">Bond SIP</div>
+    <div class="hdr-right"></div>
+  </div>
+  <div class="screen-body white">
+    <!-- SIP summary -->
+    <div style="background:#F5FBF5;border:1px solid #C6EED9;border-radius:12px;padding:14px;margin-bottom:16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <span style="font-size:13px;font-weight:700;color:#030A16">₹5,000 / month</span>
+        <span style="background:#D6F5E2;color:#017A3A;font-size:10px;font-weight:700;padding:3px 9px;border-radius:6px">Active</span>
+      </div>
+      <div style="font-size:11px;color:#5A6373;margin-bottom:10px">Started April 2026 · Next debit May 25</div>
+      <div style="display:flex;gap:0">
+        <div style="flex:1"><div style="font-size:10px;color:#8A93A3">Invested</div><div style="font-size:13px;font-weight:700;color:#030A16">₹5,000</div></div>
+        <div style="width:1px;background:#C6EED9"></div>
+        <div style="flex:1;padding-left:12px"><div style="font-size:10px;color:#8A93A3">Est. returns</div><div style="font-size:13px;font-weight:700;color:#01B756">₹460+</div></div>
+        <div style="width:1px;background:#C6EED9"></div>
+        <div style="flex:1;padding-left:12px"><div style="font-size:10px;color:#8A93A3">Months run</div><div style="font-size:13px;font-weight:700;color:#030A16">1 of 12</div></div>
+      </div>
+    </div>
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#8A93A3;margin-bottom:10px">Monthly history</div>
+    <!-- Month 3 — upcoming -->
+    <div style="background:#F4F6F8;border-radius:10px;padding:12px 14px;margin-bottom:8px;border:1px dashed #E6E9EE">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#8A93A3">Month 3 · Jun 5</div>
+          <div style="font-size:11px;color:#8A93A3;margin-top:2px">Bond not yet selected</div>
+        </div>
+        <span style="font-size:10px;color:#8A93A3;background:#fff;border:1px solid #E6E9EE;padding:3px 8px;border-radius:6px">Upcoming</span>
+      </div>
+    </div>
+    <!-- Month 2 — preview pending (highlighted teal) -->
+    <div style="background:rgba(0,185,198,0.04);border-radius:10px;padding:12px 14px;margin-bottom:8px;border:1.5px solid rgba(0,185,198,0.3)">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+            <span style="font-size:12px;font-weight:700;color:#030A16">Month 2 · May 25</span>
+            <span style="background:rgba(0,185,198,0.12);color:#00B9C6;font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px">PREVIEW</span>
+          </div>
+          <div style="font-size:11px;color:#5A6373">HDB Financial Services · 9.1% YTM · AAA</div>
+          <div style="font-size:10px;color:#8A93A3;margin-top:2px">3 days left · auto-confirms May 22</div>
+        </div>
+        <button style="padding:7px 12px;background:#01B756;border:none;border-radius:8px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;flex-shrink:0;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif">Review →</button>
+      </div>
+    </div>
+    <!-- Month 1 — invested -->
+    <div style="background:#fff;border-radius:10px;padding:12px 14px;border:1px solid #E6E9EE">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#030A16">Month 1 · Apr 5</div>
+          <div style="font-size:11px;color:#5A6373;margin-top:2px">IIFL Finance · 9.4% YTM · AA+</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:12px;font-weight:700;color:#017A3A">₹5,000</div>
+          <div style="font-size:10px;color:#8A93A3;margin-top:2px">✓ Invested</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cta-area">
+    <button class="btn" style="background:#F4F6F8;color:#030A16;border:1px solid #E6E9EE">Pause SIP</button>
+  </div>
+</div>
+
+<!-- ════════════════ P17: MONTHLY PREVIEW — Bond confirm / skip ════════════════ -->
+<div class="phone-page" id="p17">
+  <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><div class="sb-icons" style="color:#030A16">●●● ▮</div></div>
+  <div class="nav-hdr">
+    <div class="back-btn">←</div>
+    <div class="hdr-title">Month 2 — May bond</div>
+    <div class="hdr-right"></div>
+  </div>
+  <!-- Countdown banner -->
+  <div style="background:#FFF8E8;border-bottom:1px solid #F5E0AA;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+    <span style="font-size:11px;color:#92400E;font-weight:600">⏳  3 days left to confirm or skip</span>
+    <span style="font-size:11px;font-weight:700;color:#D4500A">Debit May 25</span>
+  </div>
+  <div class="screen-body white">
+    <div class="fs12 t3 mb12" style="line-height:1.5">Your May SIP bond. Confirm to invest automatically on May 25, or skip — your SIP continues next month.</div>
+    <!-- Bond card (same improved layout) -->
+    <div style="background:#fff;border:1px solid #E6E9EE;border-radius:14px;padding:16px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="co-logo">HDB</div>
+          <div>
+            <div class="co-name">HDB Financial Services</div>
+            <div class="co-mat">Matures Nov 2027 · 18 months</div>
+          </div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-size:26px;font-weight:800;color:#01B756;line-height:1;letter-spacing:-0.5px">9.1%</div>
+          <div style="font-size:10px;font-weight:600;color:#8A93A3;letter-spacing:0.5px;text-transform:uppercase">YTM</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+        <span class="chip chip-green">AAA</span>
+        <span class="chip chip-secured">Senior Secured</span>
+        <span class="chip chip-grey">Annual Coupon</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px dashed #E6E9EE;padding-top:12px;gap:4px">
+        <div><div class="fs11 t4">Min. invest</div><div class="fs13 fw6 t1">₹5,000</div></div>
+        <div><div class="fs11 t4">Face value</div><div class="fs13 fw6 t1">₹1,000</div></div>
+        <div><div class="fs11 t4">Coupon</div><div class="fs13 fw6 ytm">9.07% p.a.</div></div>
+      </div>
+    </div>
+    <div class="info-box">
+      <p>If you take no action, this bond auto-confirms on May 22. Skipping does not cancel your SIP — Month 3 continues as normal.</p>
+    </div>
+  </div>
+  <div class="cta-area">
+    <button class="btn btn-green">Confirm — auto-invest May 25</button>
+    <button class="btn-ghost fs13" style="text-align:center;width:100%;display:block;border:none;cursor:pointer;background:none;font-family:'Sequel Sans','Manrope',-apple-system,sans-serif;margin-top:6px;color:#5A6373;padding:8px">Skip this month — no penalty</button>
+  </div>
+</div>
+
   </div><!-- /content-area -->
 </div><!-- /main -->
 
 <script>
 const screens = [
-  {title:'Homepage — KYC Not Started', sub:'Screen 1 of 14 · Entry Points'},
-  {title:'Homepage — KYC In Progress', sub:'Screen 2 of 14 · Entry Points'},
-  {title:'Homepage — KYC Done', sub:'Screen 3 of 14 · Entry Points'},
-  {title:'Step 1 — Amount', sub:'Screen 4 of 14 · Setup Flow'},
-  {title:'Step 2 — Goal', sub:'Screen 5 of 14 · Setup Flow'},
-  {title:'Step 3 — Bond preview', sub:'Screen 6 of 14 · Setup Flow'},
-  {title:'Step 4 — Debit date', sub:'Screen 7 of 14 · Setup Flow'},
-  {title:'Step 5 — Mandate', sub:'Screen 8 of 14 · Setup Flow'},
-  {title:'Confirm (Option B)', sub:'Screen 9 of 14 · Setup Flow'},
-  {title:'Portfolio — SIP tab', sub:'Screen 10 of 14 · Post-Setup'},
-  {title:'SIP Controls', sub:'Screen 11 of 14 · Post-Setup'},
-  {title:'Homepage widget', sub:'Screen 12 of 14 · Post-Setup'},
-  {title:'Homepage — Active investor', sub:'Screen 13 of 14 · Entry Points'},
-  {title:'Bond matured → reinvest', sub:'Screen 14 of 14 · Entry Points'},
+  {title:'Homepage — KYC Not Started', sub:'Screen 1 of 18 · Entry Points'},
+  {title:'Homepage — KYC In Progress', sub:'Screen 2 of 18 · Entry Points'},
+  {title:'Homepage — KYC Done', sub:'Screen 3 of 18 · Entry Points'},
+  {title:'Step 1 — Amount', sub:'Screen 4 of 18 · Setup Flow'},
+  {title:'Step 2 — Goal', sub:'Screen 5 of 18 · Setup Flow'},
+  {title:'Step 3 — Bond preview', sub:'Screen 6 of 18 · Setup Flow'},
+  {title:'Step 4 — Debit date', sub:'Screen 7 of 18 · Setup Flow'},
+  {title:'Step 5 — Mandate', sub:'Screen 8 of 18 · Setup Flow'},
+  {title:'Confirm (Option B)', sub:'Screen 9 of 18 · Setup Flow'},
+  {title:'Portfolio — SIP tab', sub:'Screen 10 of 18 · Post-Setup'},
+  {title:'SIP Controls', sub:'Screen 11 of 18 · Post-Setup'},
+  {title:'Homepage widget', sub:'Screen 12 of 18 · Post-Setup'},
+  {title:'Homepage — Active investor', sub:'Screen 13 of 18 · Entry Points'},
+  {title:'Bond matured → reinvest', sub:'Screen 14 of 18 · Entry Points'},
+  {title:'Push notification', sub:'Screen 15 of 18 · Monthly Preview'},
+  {title:'Homepage nudge', sub:'Screen 16 of 18 · Monthly Preview'},
+  {title:'Orders — SIP history', sub:'Screen 17 of 18 · Monthly Preview'},
+  {title:'Bond preview + confirm', sub:'Screen 18 of 18 · Monthly Preview'},
 ];
 
 const rationale = {
@@ -1527,8 +1756,8 @@ function showScreen(n, el) {
     panel.classList.remove('visible');
   }
 }
-function nextScreen() { showScreen((current+1)%14, document.querySelectorAll('.nav-item')[(current+1)%14]); }
-function prevScreen() { showScreen((current+13)%14, document.querySelectorAll('.nav-item')[(current+13)%14]); }
+function nextScreen() { showScreen((current+1)%18, document.querySelectorAll('.nav-item')[(current+1)%18]); }
+function prevScreen() { showScreen((current+17)%18, document.querySelectorAll('.nav-item')[(current+17)%18]); }
 document.addEventListener('keydown', e => {
   if(e.key==='ArrowRight'||e.key==='ArrowDown') nextScreen();
   if(e.key==='ArrowLeft'||e.key==='ArrowUp') prevScreen();
