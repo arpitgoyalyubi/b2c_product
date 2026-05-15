@@ -297,6 +297,62 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.25}}
 .sim-blink{animation:blink 0.55s ease-in-out infinite}
 
+/* ── ENTRY POINT WIDGETS ──────────────────────────────────── */
+
+/* Widget: What ₹12,000 does (p0) */
+.compare-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:14px;margin-top:12px}
+.compare-hdg{font-size:12px;font-weight:700;color:rgba(255,255,255,0.9);margin-bottom:10px}
+.compare-row{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-radius:8px;margin-bottom:4px}
+.compare-row.dim .cname,.compare-row.dim .cval{font-size:12px;color:rgba(255,255,255,0.4)}
+.compare-row.hi{background:rgba(1,183,86,0.12);border:1px solid rgba(1,183,86,0.2)}
+.compare-row.hi .cname{font-size:12px;font-weight:700;color:#fff}
+.compare-row.hi .cval{font-size:13px;font-weight:800;color:#01B756}
+.compare-tag{font-size:9px;font-weight:700;background:#01B756;color:#fff;padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:middle}
+.compare-note{font-size:11px;color:rgba(255,255,255,0.4);margin-top:10px;line-height:1.5;padding-top:10px;border-top:1px solid rgba(255,255,255,0.07)}
+
+/* Widget: Fear removal + bold number (p1) */
+.fear-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:14px;margin-top:12px}
+.fear-num{font-size:28px;font-weight:800;color:#01B756;letter-spacing:-0.5px;line-height:1;margin-bottom:4px}
+.fear-num-sub{font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:14px;line-height:1.5}
+.fear-checks{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.fear-check{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,0.7);font-weight:500}
+.fear-icon{width:20px;height:20px;border-radius:6px;background:rgba(1,183,86,0.15);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;color:#01B756}
+
+/* Widget: 3-step explainer (p2 — light bg) */
+.step-card{background:#fff;border-radius:14px;padding:16px;margin-top:12px;border:1px solid #E6E9EE}
+.step-hdg{font-size:13px;font-weight:700;color:#030A16;margin-bottom:2px}
+.step-hdg-sub{font-size:11px;color:#5A6373;margin-bottom:14px;line-height:1.4}
+.step-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+.step-row:last-of-type{margin-bottom:0}
+.step-num{width:26px;height:26px;border-radius:8px;background:#E4FFF4;color:#017A3A;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-title{font-size:13px;font-weight:600;color:#030A16}
+.step-sub{font-size:11px;color:#5A6373;margin-top:2px;line-height:1.4}
+
+/* Widget: Coupon income feed (p12 — light bg) */
+.feed-card{background:#fff;border-radius:14px;padding:16px;border:1px solid #E6E9EE;margin-bottom:12px;margin-top:12px}
+.feed-hdg{font-size:14px;font-weight:700;color:#030A16;margin-bottom:4px}
+.feed-sub{font-size:12px;color:#5A6373;margin-bottom:12px;line-height:1.5}
+.feed-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #E6E9EE}
+.feed-row:last-of-type{border-bottom:none}
+.feed-left{display:flex;align-items:center;gap:8px}
+.feed-dot{width:8px;height:8px;border-radius:50%;background:#D6F5E2;border:1px solid #01B756;flex-shrink:0}
+.feed-amt{font-size:14px;font-weight:700;color:#017A3A}
+.feed-meta{font-size:11px;color:#8A93A3}
+.feed-note{font-size:11px;color:#5A6373;line-height:1.5;margin:12px 0;padding:10px;background:#F4F6F8;border-radius:8px}
+
+/* State map in rationale panel */
+.rat-statemap{margin-top:4px;display:flex;flex-direction:column;gap:2px}
+.rat-sr{display:flex;align-items:flex-start;gap:8px;padding:7px 8px;border-radius:8px;opacity:0.45;transition:opacity .15s}
+.rat-sr.cur{opacity:1;background:rgba(1,183,86,0.08);border:1px solid rgba(1,183,86,0.15)}
+.rat-sr-num{width:16px;height:16px;border-radius:4px;background:rgba(255,255,255,0.08);font-size:9px;font-weight:700;color:rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.rat-sr.cur .rat-sr-num{background:#01B756;color:#fff}
+.rat-sr-body{flex:1;min-width:0}
+.rat-sr-name{font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);line-height:1.3}
+.rat-sr.cur .rat-sr-name{color:#fff}
+.rat-sr-widget{font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px}
+.rat-sr-block{font-size:10px;color:rgba(255,255,255,0.25);margin-top:1px}
+.rat-sr.cur .rat-sr-widget{color:rgba(1,183,86,0.8)}
+
 /* ── SCREEN-SPECIFIC SPACING ──────────────────────────────────── */
 .p16{padding:16px}
 .pb16{padding-bottom:16px}
@@ -412,37 +468,27 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
       <button style="width:100%;background:#030A16;color:#fff;font-family:inherit;font-weight:600;font-size:14px;padding:14px;border-radius:12px;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">Start KYC to invest <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
       <div style="text-align:center;margin-top:10px;font-size:11px;color:#5A6373">↑ 42 investors chose this bond this week</div>
     </div>
-    <!-- SIP simulation widget -->
-    <div class="sip-sim-widget">
-      <div class="sip-sim-hdr">
-        <span class="sip-engine-badge"><span class="sip-engine-dot"></span>BOND SIP ENGINE</span>
-        <span class="sip-sim-amt">from ₹1,000/month</span>
+    <!-- Widget: What ₹12,000 does in a year -->
+    <div class="compare-card">
+      <div class="compare-hdg">What ₹12,000 earns in a year</div>
+      <div class="compare-row dim">
+        <span class="cname">Savings account</span>
+        <span class="cval">₹12,360 &nbsp;(3%)</span>
       </div>
-      <div class="sim-row">
-        <div class="sim-badge conf">✓</div>
-        <div class="sim-body"><div class="sim-mo">Jun 2026</div><div class="sim-name conf">HDB Financial Services</div></div>
-        <span class="sim-ytm">9.2%</span>
+      <div class="compare-row dim">
+        <span class="cname">Fixed deposit</span>
+        <span class="cval">₹12,840 &nbsp;(7%)</span>
       </div>
-      <div class="sim-row">
-        <div class="sim-badge conf">✓</div>
-        <div class="sim-body"><div class="sim-mo">Jul 2026</div><div class="sim-name conf">IIFL Finance Ltd</div></div>
-        <span class="sim-ytm">9.4%</span>
+      <div class="compare-row hi">
+        <span class="cname">Bond SIP <span class="compare-tag">FIXED</span></span>
+        <span class="cval">₹13,104 &nbsp;(9.2%)</span>
       </div>
-      <div class="sim-row selecting">
-        <div class="sim-badge sel">⟳</div>
-        <div class="sim-body"><div class="sim-mo">Aug 2026</div><div class="sim-name sel sim-blink"><span class="sim-live-name">Searching...</span></div></div>
-        <span class="sim-ytm dim">~9%</span>
+      <div class="compare-row dim">
+        <span class="cname">MF SIP</span>
+        <span class="cval">₹? &nbsp;(market-linked)</span>
       </div>
-      <div class="sim-row pending">
-        <div class="sim-badge pend">4</div>
-        <div class="sim-body"><div class="sim-mo">Sep 2026</div><div class="sim-name pend">Auto-selected later</div></div>
-        <span class="sim-ytm dim">—</span>
-      </div>
-      <div class="sim-footer">
-        <span><span class="v sim-total">₹2,000</span> invested so far</span>
-        <span>Est. <span class="v">₹185/yr</span> returns</span>
-      </div>
-      <button class="sim-cta">Complete KYC to start your Bond SIP →</button>
+      <div class="compare-note">Returns fixed on Day 1 — you know what you'll earn before you invest. Complete KYC to start.</div>
+      <button class="sim-cta" style="margin-top:10px">Complete KYC to start your Bond SIP →</button>
     </div>
   </div>
   <!-- content -->
@@ -520,35 +566,15 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
       <button style="width:100%;background:#030A16;color:#fff;font-family:inherit;font-weight:600;font-size:14px;padding:14px;border-radius:12px;border:0;cursor:pointer;opacity:0.5">Resume KYC to unlock →</button>
       <div style="text-align:center;margin-top:10px;font-size:11px;color:#5A6373">Complete KYC to invest in this and 40+ more bonds</div>
     </div>
-    <!-- SIP simulation widget -->
-    <div class="sip-sim-widget">
-      <div class="sip-sim-hdr">
-        <span class="sip-engine-badge"><span class="sip-engine-dot"></span>BOND SIP ENGINE</span>
-        <span class="sip-sim-amt">from ₹1,000/month</span>
-      </div>
-      <div class="sim-row">
-        <div class="sim-badge conf">✓</div>
-        <div class="sim-body"><div class="sim-mo">Jun 2026</div><div class="sim-name conf">HDB Financial Services</div></div>
-        <span class="sim-ytm">9.2%</span>
-      </div>
-      <div class="sim-row">
-        <div class="sim-badge conf">✓</div>
-        <div class="sim-body"><div class="sim-mo">Jul 2026</div><div class="sim-name conf">IIFL Finance Ltd</div></div>
-        <span class="sim-ytm">9.4%</span>
-      </div>
-      <div class="sim-row selecting">
-        <div class="sim-badge sel">⟳</div>
-        <div class="sim-body"><div class="sim-mo">Aug 2026</div><div class="sim-name sel sim-blink"><span class="sim-live-name">Searching...</span></div></div>
-        <span class="sim-ytm dim">~9%</span>
-      </div>
-      <div class="sim-row pending">
-        <div class="sim-badge pend">4</div>
-        <div class="sim-body"><div class="sim-mo">Sep 2026</div><div class="sim-name pend">Auto-selected later</div></div>
-        <span class="sim-ytm dim">—</span>
-      </div>
-      <div class="sim-footer">
-        <span><span class="v sim-total">₹2,000</span> invested so far</span>
-        <span>Est. <span class="v">₹185/yr</span> returns</span>
+    <!-- Widget: Fear removal + bold number -->
+    <div class="fear-card">
+      <div class="fear-num">₹1,104</div>
+      <div class="fear-num-sub">earned on ₹1,000/month in Year 1<br>Fixed return — not market-linked</div>
+      <div class="fear-checks">
+        <div class="fear-check"><div class="fear-icon">✓</div>Cancel any month, self-serve</div>
+        <div class="fear-check"><div class="fear-icon">✓</div>Start from ₹1,000 — no lump sum</div>
+        <div class="fear-check"><div class="fear-icon">✓</div>No lock-in period</div>
+        <div class="fear-check"><div class="fear-icon">✓</div>Returns fixed before you invest</div>
       </div>
       <button class="sim-cta">Resume KYC to unlock Bond SIP →</button>
     </div>
@@ -623,19 +649,27 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
       <button style="width:100%;background:#01B756;color:#fff;font-family:inherit;font-weight:600;font-size:14px;padding:14px;border-radius:12px;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">Invest now <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
       <div style="text-align:center;margin-top:10px;font-size:11px;color:#5A6373">↑ 453 investors chose this bond as their first investment</div>
     </div>
-    <!-- SIP alternative -->
-    <div style="background:#fff;border-radius:14px;padding:14px;margin-top:12px;border:1px solid #E6E9EE">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+    <!-- Widget: 3-step explainer -->
+    <div class="step-card">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
         <span style="background:#E4FFF4;color:#017A3A;font-size:10px;font-weight:700;letter-spacing:0.8px;padding:3px 8px;border-radius:6px">OR START SMALLER</span>
         <span class="new-badge">NEW</span>
       </div>
-      <div style="font-size:14px;font-weight:700;color:#030A16;margin-bottom:4px">Bond SIP — from ₹1,000/month</div>
-      <div style="font-size:12px;color:#5A6373;line-height:1.5;margin-bottom:10px">We pick the bond. You set the amount. No lump sum needed — invest automatically every month.</div>
-      <div style="display:flex;gap:10px;font-size:11px;color:#5A6373;margin-bottom:12px">
-        <span>📈 Est. 8–9.5% YTM</span>
-        <span>🔄 Cancel anytime</span>
+      <div class="step-hdg">Bond SIP — we do the picking</div>
+      <div class="step-hdg-sub">No need to choose a bond. Set an amount and we handle the rest.</div>
+      <div class="step-row">
+        <div class="step-num">1</div>
+        <div><div class="step-title">You set ₹X/month</div><div class="step-sub">From ₹1,000. Change or cancel anytime.</div></div>
       </div>
-      <button class="btn btn-green" style="margin:0;font-size:13px;padding:12px">Set up Bond SIP →</button>
+      <div class="step-row">
+        <div class="step-num">2</div>
+        <div><div class="step-title">We pick the best bond that month</div><div class="step-sub">Our engine selects based on yield, rating, and tenure.</div></div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">3</div>
+        <div><div class="step-title">Fixed returns — known on Day 1</div><div class="step-sub">Est. 8–9.5% YTM. Not market-linked, no surprises.</div></div>
+      </div>
+      <button class="btn btn-green" style="margin:14px 0 0;font-size:13px;padding:12px">Set up Bond SIP →</button>
     </div>
   </div>
   <div class="content">
@@ -1186,19 +1220,45 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
   <!-- content -->
   <div class="content">
     <div class="section">
-      <!-- Bond SIP nudge - portfolio diversification angle -->
-      <div style="background:#fff;border-radius:14px;padding:16px;border:1px solid #E6E9EE;margin-bottom:12px;margin-top:12px">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <!-- Widget: Coupon income feed -->
+      <div class="feed-card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
           <span style="background:#E4FFF4;color:#017A3A;font-size:10px;font-weight:700;letter-spacing:0.8px;padding:3px 8px;border-radius:6px">FOR YOU</span>
           <span class="new-badge">NEW</span>
         </div>
-        <div style="font-size:15px;font-weight:700;color:#030A16;margin-bottom:6px">Build a bond ladder</div>
-        <div style="font-size:12px;color:#5A6373;line-height:1.6;margin-bottom:12px">Add a new bond every month — different issuers, staggered maturities. Your portfolio diversifies automatically while keeping consistent yield.</div>
-        <div style="background:#F4F6F8;border-radius:10px;padding:10px;margin-bottom:12px">
-          <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:11px;color:#5A6373">Est. YTM range</span><span style="font-size:12px;font-weight:700;color:#01B756">8 – 9.5%</span></div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:11px;color:#5A6373">Monthly amount</span><span style="font-size:12px;font-weight:600;color:#030A16">from ₹1,000</span></div>
-          <div style="display:flex;justify-content:space-between"><span style="font-size:11px;color:#5A6373">Cancel anytime</span><span style="font-size:12px;font-weight:600;color:#01B756">Self-serve</span></div>
+        <div class="feed-hdg">Earn every month, automatically</div>
+        <div class="feed-sub">Bond SIP investors receive coupons like this — a different bond selected each month.</div>
+        <div class="feed-row">
+          <div class="feed-left">
+            <div class="feed-dot"></div>
+            <div>
+              <div class="feed-amt">+ ₹83</div>
+              <div class="feed-meta">Coupon · HDB Financial</div>
+            </div>
+          </div>
+          <span style="font-size:11px;color:#8A93A3">May 5</span>
         </div>
+        <div class="feed-row">
+          <div class="feed-left">
+            <div class="feed-dot"></div>
+            <div>
+              <div class="feed-amt">+ ₹91</div>
+              <div class="feed-meta">Coupon · IIFL Finance</div>
+            </div>
+          </div>
+          <span style="font-size:11px;color:#8A93A3">Apr 5</span>
+        </div>
+        <div class="feed-row">
+          <div class="feed-left">
+            <div class="feed-dot"></div>
+            <div>
+              <div class="feed-amt">+ ₹77</div>
+              <div class="feed-meta">Coupon · Sundaram Finance</div>
+            </div>
+          </div>
+          <span style="font-size:11px;color:#8A93A3">Mar 5</span>
+        </div>
+        <div class="feed-note">₹1,000/month · Est. 8–9.5% YTM · Different issuer each month · Cancel anytime</div>
         <button class="btn btn-green" style="margin:0;font-size:14px">Set up Bond SIP →</button>
       </div>
       <!-- more bonds to explore -->
@@ -1303,6 +1363,10 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
           <div style="font-size:11px;color:#8A93A3;line-height:1.4">8 months · bonds selected automatically</div>
         </div>
       </div>
+      <!-- Simple projection — no persuasion needed at this intent level -->
+      <div style="background:#F4F6F8;border-radius:10px;padding:10px;margin-bottom:12px;font-size:11px;color:#5A6373;line-height:1.6">
+        <span style="font-weight:700;color:#030A16">Bond SIP option:</span> ₹10,000/month × 8 months = ₹80,000 reinvested · Est. returns <span style="font-weight:700;color:#01B756">₹6,160</span>
+      </div>
       <button class="btn btn-green" style="margin:0">Browse bonds to reinvest →</button>
     </div>
   </div>
@@ -1318,20 +1382,65 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
     </div><!-- /phone -->
     <!-- rationale panel -->
     <div class="rationale" id="rationalePanel">
-      <div class="rat-card">
-        <div class="rat-label">Why this screen matters</div>
-        <div class="rat-text" id="ratWhy"></div>
+  <div class="rat-card">
+    <div class="rat-label">Why this screen matters</div>
+    <div class="rat-text" id="ratWhy"></div>
+  </div>
+  <div class="rat-card">
+    <div class="rat-label">Primary pitch</div>
+    <div class="rat-pitch"><div class="rat-pitch-text" id="ratPitch"></div></div>
+  </div>
+  <div class="rat-card">
+    <div class="rat-label">Business goal</div>
+    <div class="rat-text" id="ratGoal"></div>
+    <div class="rat-metric"><span class="rat-metric-val" id="ratMetricVal"></span><span class="rat-metric-lbl" id="ratMetricLbl"></span></div>
+  </div>
+  <div class="rat-card">
+    <div class="rat-label">User state map</div>
+    <div class="rat-statemap" id="ratStateMap">
+      <div class="rat-sr" data-state="0">
+        <div class="rat-sr-num">1</div>
+        <div class="rat-sr-body">
+          <div class="rat-sr-name">KYC Not Started</div>
+          <div class="rat-sr-widget">Widget: What ₹12,000 does</div>
+          <div class="rat-sr-block">Blocker: Don't know platform or concept</div>
+        </div>
       </div>
-      <div class="rat-card">
-        <div class="rat-label">Primary pitch</div>
-        <div class="rat-pitch"><div class="rat-pitch-text" id="ratPitch"></div></div>
+      <div class="rat-sr" data-state="1">
+        <div class="rat-sr-num">2</div>
+        <div class="rat-sr-body">
+          <div class="rat-sr-name">KYC In Progress</div>
+          <div class="rat-sr-widget">Widget: Fear removal + bold number</div>
+          <div class="rat-sr-block">Blocker: Motivation to finish dropped</div>
+        </div>
       </div>
-      <div class="rat-card">
-        <div class="rat-label">Business goal</div>
-        <div class="rat-text" id="ratGoal"></div>
-        <div class="rat-metric"><span class="rat-metric-val" id="ratMetricVal"></span><span class="rat-metric-lbl" id="ratMetricLbl"></span></div>
+      <div class="rat-sr" data-state="2">
+        <div class="rat-sr-num">3</div>
+        <div class="rat-sr-body">
+          <div class="rat-sr-name">KYC Done</div>
+          <div class="rat-sr-widget">Widget: 3-step explainer</div>
+          <div class="rat-sr-block">Blocker: Choice paralysis on which bond</div>
+        </div>
+      </div>
+      <div class="rat-sr" data-state="12">
+        <div class="rat-sr-num">4</div>
+        <div class="rat-sr-body">
+          <div class="rat-sr-name">Active Investor</div>
+          <div class="rat-sr-widget">Widget: Coupon income feed</div>
+          <div class="rat-sr-block">Blocker: No urgency to automate</div>
+        </div>
+      </div>
+      <div class="rat-sr" data-state="13">
+        <div class="rat-sr-num">5</div>
+        <div class="rat-sr-body">
+          <div class="rat-sr-name">Bond Matured</div>
+          <div class="rat-sr-widget">Widget: Simple projection only</div>
+          <div class="rat-sr-block">Blocker: None — highest intent</div>
+        </div>
       </div>
     </div>
+  </div>
+</div>
   </div><!-- /content-area -->
 </div><!-- /main -->
 
@@ -1411,6 +1520,9 @@ function showScreen(n, el) {
     document.getElementById('ratMetricVal').textContent = r.metricVal;
     document.getElementById('ratMetricLbl').textContent = r.metricLbl;
     panel.classList.add('visible');
+  document.querySelectorAll('.rat-sr').forEach(function(r){r.classList.remove('cur')});
+  var activeRow = document.querySelector('.rat-sr[data-state="'+n+'"]');
+  if(activeRow) activeRow.classList.add('cur');
   } else {
     panel.classList.remove('visible');
   }
@@ -1423,48 +1535,6 @@ document.addEventListener('keydown', e => {
 });
 showScreen(0, document.querySelector('.nav-item'));
 
-// ── BOND SIP SIMULATION ──────────────────────────────────
-const SIM_NAMES=['Bajaj Finance','Tata Capital','Sundaram Finance','Cholamandalam Inv.','Piramal Finance','Mahindra Finance','Shriram Finance'];
-const SIM_YTMS=['9.0%','9.1%','8.9%','9.3%','9.5%','9.2%','9.6%'];
-let _sc=0,_confirmed=2;
-
-setInterval(function(){
-  _sc++;
-  document.querySelectorAll('.sim-live-name').forEach(function(el){el.textContent=SIM_NAMES[_sc%SIM_NAMES.length]});
-},480);
-
-setInterval(function(){
-  var locked=SIM_NAMES[_sc%SIM_NAMES.length];
-  var lockedYtm=SIM_YTMS[_sc%SIM_YTMS.length];
-  // confirm current "selecting" row
-  document.querySelectorAll('.sim-row.selecting').forEach(function(row){
-    row.classList.remove('selecting');
-    row.querySelector('.sim-badge').className='sim-badge conf';
-    row.querySelector('.sim-badge').textContent='✓';
-    var nm=row.querySelector('.sim-name');
-    nm.className='sim-name conf';
-    nm.classList.remove('sim-blink');
-    nm.textContent=locked;
-    var yt=row.querySelector('.sim-ytm');
-    if(yt){yt.className='sim-ytm';yt.textContent=lockedYtm}
-  });
-  // advance first pending row to selecting
-  var pend=document.querySelectorAll('.sim-row.pending');
-  if(pend.length>0){
-    var next=pend[0];
-    next.classList.remove('pending');
-    next.classList.add('selecting');
-    next.querySelector('.sim-badge').className='sim-badge sel';
-    next.querySelector('.sim-badge').textContent='⟳';
-    var nm2=next.querySelector('.sim-name');
-    nm2.className='sim-name sel sim-blink';
-    nm2.innerHTML='<span class="sim-live-name">Searching...</span>';
-    var yt2=next.querySelector('.sim-ytm');
-    if(yt2){yt2.className='sim-ytm dim';yt2.textContent='~9%'}
-  }
-  _confirmed++;
-  document.querySelectorAll('.sim-total').forEach(function(el){el.textContent='₹'+((_confirmed)*1000).toLocaleString('en-IN')});
-},3500);
 </script>
 </body>
 </html>
