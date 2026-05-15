@@ -3,357 +3,254 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>I8 · Post-KYC Activation Screen (US-2) — States A / B / C</title>
+<title>I8 · Post-KYC Activation — All Screens</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <style>
   :root {
-    --green:#01B756; --green-600:#019648; --green-100:#D6F5E2; --green-050:#E4FFF4;
-    --ink:#030A16; --ink-800:#0D1626; --ink-700:#151D2A;
-    --text2:#5A6373; --text3:#8A93A3; --text4:#B0BAC8;
-    --border:#E6E9EE; --border-d:#D2D7E0;
-    --lavender:#EFF2F9; --lav-fg:#4753C6;
-    --cream:#F9EDBF; --mint:#E4FFF4; --amber-bg:#FFFBEB; --amber-fg:#B45309;
-    --white:#FFFFFF; --bg:#F4F6FA;
+    --g:#018E43; --g2:#016B33; --g3:#DCFCE7; --g4:#F0FDF4;
+    --dark:#0F1419; --dark2:#1A2233;
+    --fg2:#4B5563; --fg3:#9CA3AF; --fg4:#D1D5DB;
+    --border:#E5E7EB; --border2:#D1D5DB;
+    --page:#F7F8F8; --white:#FFFFFF;
+    --amber-bg:#FFFBEB; --amber-fg:#92400E; --amber-border:#FDE68A;
+    --lav:#EEF2FF; --lav-fg:#4338CA;
     --red:#DC2626; --red-bg:#FEF2F2;
-    --shadow-card: 0 1px 3px rgba(3,10,22,.05), 0 4px 16px rgba(3,10,22,.06);
-    --shadow-hero: 0 4px 24px rgba(3,10,22,.12), 0 1px 4px rgba(3,10,22,.08);
+    --serif:'Fraunces','Source Serif Pro','Georgia',serif;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Manrope', -apple-system, sans-serif;
-    background: #E8ECF4;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 24px 80px;
-    -webkit-font-smoothing: antialiased;
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Manrope',-apple-system,sans-serif;
+    background:#E2E8F0;min-height:100vh;
+    display:flex;flex-direction:column;align-items:center;
+    padding:40px 24px 80px;
+    -webkit-font-smoothing:antialiased;
   }
 
-  /* Page header */
-  .page-header {
-    text-align: center;
-    margin-bottom: 36px;
-  }
-  .page-header .eyebrow {
-    font-size: 11px; font-weight: 700; letter-spacing: .12em;
-    text-transform: uppercase; color: var(--text3); margin-bottom: 10px;
-  }
-  .page-header h1 {
-    font-size: 24px; font-weight: 800; color: var(--ink); letter-spacing: -.02em;
-    margin-bottom: 6px;
-  }
-  .page-header p { font-size: 13px; color: var(--text2); }
+  /* ── page header ─────────────────────────────── */
+  .ph{text-align:center;margin-bottom:36px}
+  .ph .ey{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);margin-bottom:8px}
+  .ph h1{font-size:24px;font-weight:800;color:var(--dark);letter-spacing:-.02em;margin-bottom:6px}
+  .ph p{font-size:13px;color:var(--fg2)}
 
-  /* State switcher */
-  .state-tabs {
-    display: flex; gap: 8px; margin-bottom: 32px;
-    background: rgba(3,10,22,.07); padding: 5px; border-radius: 14px;
-  }
-  .state-tab {
-    font-family: inherit; cursor: pointer; border: 0;
-    padding: 9px 20px; border-radius: 10px; font-size: 13px; font-weight: 600;
-    transition: all 160ms;
-    background: transparent; color: var(--text2);
-  }
-  .state-tab.active {
-    background: var(--white); color: var(--ink);
-    box-shadow: 0 1px 4px rgba(0,0,0,.1);
-  }
+  /* ── tab bar ─────────────────────────────────── */
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:32px;background:rgba(15,20,25,.07);padding:5px;border-radius:14px;max-width:900px}
+  .tab{font-family:inherit;cursor:pointer;border:0;padding:8px 16px;border-radius:10px;font-size:12px;font-weight:600;transition:all 140ms;background:transparent;color:var(--fg2)}
+  .tab.on{background:var(--white);color:var(--dark);box-shadow:0 1px 4px rgba(0,0,0,.1)}
 
-  /* Phone frame */
-  .phone-wrap {
-    display: flex; justify-content: center;
-    filter: drop-shadow(0 32px 64px rgba(3,10,22,.18));
-  }
-  .phone {
-    width: 390px; height: 844px; border-radius: 44px;
-    background: var(--white); overflow: hidden; position: relative;
-    border: 1px solid rgba(3,10,22,.08);
-  }
-  .phone-inner {
-    height: 100%; display: flex; flex-direction: column;
-    overflow: hidden;
-  }
+  /* ── layout ──────────────────────────────────── */
+  .layout{display:flex;gap:28px;align-items:flex-start;max-width:960px;width:100%;margin:0 auto}
+  .ann{flex:1;min-width:180px}
+  .ann-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
+  .ann-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--fg3);margin-bottom:5px}
+  .ann-val{font-size:13px;font-weight:600;color:var(--dark);line-height:1.6}
+  .ann-val .hi{color:var(--g)}
+  .ann-ul{font-size:12px;color:var(--fg2);line-height:1.8;padding-left:16px}
+  .spec-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
+  .spec-row:last-child{border-bottom:0}
+  .spec-k{color:var(--fg3);font-weight:500}.spec-v{color:var(--dark);font-weight:700}
 
-  /* Status bar */
-  .status-bar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 28px 10px; flex-shrink: 0; position: relative; z-index: 10;
-  }
-  .status-bar.dark { background: var(--ink); }
-  .status-bar.light { background: var(--white); }
-  .status-time { font-size: 15px; font-weight: 600; letter-spacing: -.01em; }
-  .status-icons { display: flex; align-items: center; gap: 6px; }
-  /* Dynamic island */
-  .dynamic-island {
-    position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
-    width: 120px; height: 34px; background: #000; border-radius: 20px; z-index: 20;
-  }
-  /* Home indicator */
-  .home-indicator {
-    position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
-    width: 134px; height: 5px; border-radius: 3px;
-    background: rgba(3,10,22,.2);
-  }
+  /* ── phone frame ─────────────────────────────── */
+  .phone-wrap{display:flex;justify-content:center;filter:drop-shadow(0 24px 56px rgba(15,20,25,.2))}
+  .phone{width:390px;border-radius:48px;background:var(--white);overflow:hidden;position:relative;border:1px solid rgba(15,20,25,.1)}
+  .phone-inner{display:flex;flex-direction:column;height:100%;overflow:hidden;min-height:812px}
 
-  /* Scroll area */
-  .screen-scroll {
-    flex: 1; overflow-y: auto; padding-bottom: 32px;
-  }
-  .screen-scroll::-webkit-scrollbar { display: none; }
+  /* ── status bar ──────────────────────────────── */
+  .sb{display:flex;align-items:center;justify-content:space-between;padding:14px 28px 8px;position:relative;z-index:10;flex-shrink:0}
+  .sb.dk{background:var(--dark)}
+  .sb.lt{background:var(--white)}
+  .sb .di{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:122px;height:34px;background:#000;border-radius:20px;z-index:20}
+  .sb .t{font-size:15px;font-weight:600;letter-spacing:-.01em}
 
-  /* Nav bar */
-  .nav-bar {
-    display: flex; align-items: center; padding: 6px 16px 12px;
-    gap: 8px; flex-shrink: 0;
-  }
-  .nav-bar.dark { background: var(--ink); }
-  .nav-bar.light { background: var(--white); border-bottom: 1px solid var(--border); }
-  .nav-back {
-    width: 36px; height: 36px; border-radius: 999px; border: 0; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    background: rgba(255,255,255,.12);
-  }
-  .nav-back.light { background: var(--bg); }
-  .nav-title { font-size: 16px; font-weight: 700; flex: 1; }
+  /* ── top bar ─────────────────────────────────── */
+  .topbar{display:flex;align-items:center;padding:6px 16px 10px;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border)}
+  .topbar.dk{background:var(--dark);border-bottom:1px solid rgba(255,255,255,.08)}
+  .topbar .logo-pill{display:flex;align-items:center;gap:8px;flex:1}
+  .topbar .logo-sq{width:28px;height:28px;border-radius:8px;background:var(--dark);display:flex;align-items:center;justify-content:center}
+  .topbar .logo-sq svg{fill:var(--g);width:16px;height:16px}
+  .topbar .brand{font-size:15px;font-weight:700}
+  .topbar .rt{display:flex;align-items:center;gap:8px;margin-left:auto}
+  .iconbtn{width:34px;height:34px;border-radius:10px;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--dark)}
+  .iconbtn.dk{color:var(--white)}
+  .back-btn{width:34px;height:34px;border-radius:10px;border:0;background:rgba(255,255,255,.1);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--white)}
+  .back-btn.lt{background:var(--page);color:var(--dark)}
+  .topbar-title{font-size:15px;font-weight:600;color:var(--white)}
+  .topbar-title.dk-t{color:var(--dark)}
+  .ava{width:30px;height:30px;border-radius:10px;background:var(--g3);color:var(--g2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
 
-  /* Section gutter */
-  .px { padding: 0 16px; }
+  /* ── scroll body ─────────────────────────────── */
+  .body{flex:1;overflow-y:auto;padding-bottom:32px}
+  .body::-webkit-scrollbar{display:none}
 
-  /* State A — Default */
-  .kyc-done-strip {
-    background: var(--green-050); border-bottom: 1px solid #B6E8C9;
-    padding: 10px 16px; display: flex; align-items: center; gap: 10px;
-    font-size: 12px; font-weight: 600; color: var(--green-600);
-  }
+  /* ── act-hero ────────────────────────────────── */
+  .act-hero{padding:18px 16px 0}
+  .act-eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--g3);color:#166534;padding:5px 11px;border-radius:20px;font-size:11px;font-weight:700;margin-bottom:10px}
+  .act-eyebrow .pulse{width:7px;height:7px;border-radius:50%;background:#16A34A;flex-shrink:0;animation:pulse 1.8s infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.9)}}
+  .act-title{font-size:22px;font-weight:800;color:var(--dark);letter-spacing:-.025em;line-height:1.15;margin-bottom:8px}
+  .act-sub{font-size:13px;color:var(--fg2);line-height:1.5;margin-bottom:16px}
 
-  .screen-heading {
-    font-size: 22px; font-weight: 800; color: var(--ink);
-    letter-spacing: -.02em; line-height: 1.2;
-    padding: 20px 16px 4px;
-  }
-  .screen-sub {
-    display: flex; align-items: center; gap: 8px;
-    padding: 0 16px 16px; font-size: 13px; color: var(--text2);
-  }
-  .profile-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    background: var(--lavender); color: var(--lav-fg);
-    padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 700;
-  }
+  /* ── bond card ───────────────────────────────── */
+  .i8-card{margin:0 16px 14px;background:var(--white);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(15,20,25,.06);position:relative}
+  .matched-tag{position:absolute;top:-11px;left:20px;display:inline-flex;align-items:center;gap:5px;background:var(--g);color:var(--white);padding:4px 10px;border-radius:20px;font-size:10.5px;font-weight:700;white-space:nowrap;box-shadow:0 2px 8px rgba(1,142,67,.3)}
+  .bond-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .bond-logo{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--white);position:relative;flex-shrink:0}
+  .bond-meta .issuer{font-size:14px;font-weight:700;color:var(--dark);line-height:1.2}
+  .bond-meta .isin{font-size:10px;color:var(--fg3);margin-top:1px}
+  .bond-badges{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+  .bb{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:10.5px;font-weight:600;white-space:nowrap}
+  .bb.aa{background:#ECFDF5;color:#065F46}
+  .bb.aaa{background:#EFF6FF;color:#1E40AF}
+  .bb.type{background:var(--page);color:var(--fg2);border:1px solid var(--border)}
+  .bb.gov{background:#FEF9C3;color:#713F12}
 
-  /* Why this bond pill */
-  .why-pill {
-    margin: 0 16px 14px; border: 1px solid var(--border-d);
-    border-radius: 12px; overflow: hidden;
-    background: var(--bg);
-  }
-  .why-pill-trigger {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 11px 14px; cursor: pointer; border: 0; width: 100%;
-    background: transparent; font-family: inherit; text-align: left;
-  }
-  .why-pill-label {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 13px; font-weight: 600; color: var(--ink);
-  }
-  .why-pill-body {
-    padding: 0 14px 14px;
-  }
-  .why-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px;
-  }
-  .why-cell {
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: 8px; padding: 9px 10px;
-  }
-  .why-cell-label { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 3px; }
-  .why-cell-value { font-size: 13px; font-weight: 600; color: var(--ink); }
-  .why-profile-row {
-    display: flex; justify-content: flex-end;
-    font-size: 11px; color: var(--text2); font-weight: 500;
-  }
-  .why-profile-row strong { color: var(--ink); margin-left: 4px; }
+  /* ── monthly hero ────────────────────────────── */
+  .monthly-hero{padding:12px 0;border-top:1px solid var(--border);margin-top:4px}
+  .monthly-lbl{font-size:10.5px;color:var(--fg3);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+  .monthly-val{display:flex;align-items:baseline;gap:2px;line-height:1}
+  .monthly-val .unit{font-size:16px;font-weight:600;color:var(--dark)}
+  .monthly-val .num{font-family:var(--serif);font-size:44px;font-weight:600;color:var(--dark);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .monthly-val .denom{font-size:14px;font-weight:500;color:var(--fg2);margin-left:2px}
+  .monthly-sub{font-size:11px;color:var(--fg3);margin-top:5px}
 
-  /* Bond card */
-  .bond-card {
-    margin: 0 16px 16px;
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: 16px; padding: 16px;
-    box-shadow: var(--shadow-card);
-    position: relative; overflow: hidden;
-  }
-  .bond-card::after {
-    content: ''; position: absolute; right: -20px; bottom: -20px;
-    width: 80px; height: 80px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(1,183,86,.12) 0%, rgba(1,183,86,0) 70%);
-  }
-  .bond-card-top {
-    display: flex; align-items: flex-start; justify-content: space-between;
-    margin-bottom: 12px;
-  }
-  .bond-issuer-row { display: flex; align-items: center; gap: 10px; }
-  .issuer-logo {
-    width: 36px; height: 36px; border-radius: 8px;
-    border: 1px solid var(--border); background: var(--white);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 800; color: var(--green-600);
-  }
-  .issuer-name { font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.2; }
-  .issuer-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
-  .chips-row { display: flex; gap: 6px; align-items: center; margin-top: 6px; flex-wrap: wrap; }
-  .chip {
-    display: inline-flex; align-items: center; padding: 3px 9px;
-    border-radius: 6px; font-weight: 600; font-size: 11px; white-space: nowrap;
-  }
-  .chip-aaa { background: var(--white); color: var(--ink); border: 1px solid var(--border-d); }
-  .chip-secured { background: var(--lavender); color: var(--lav-fg); }
-  .chip-rating { background: var(--green-100); color: var(--green-600); }
+  /* ── amount row ──────────────────────────────── */
+  .amt-row{margin:0 16px 10px;background:var(--page);border:1px solid var(--border);border-radius:12px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between}
+  .amt-row .lbl{font-size:11px;color:var(--fg3);font-weight:500;margin-bottom:2px}
+  .amt-row .val{font-size:15px;font-weight:700;color:var(--dark)}
+  .change-link{font-size:12px;font-weight:600;color:var(--g);background:none;border:none;cursor:pointer;font-family:inherit}
 
-  .bond-stats { display: flex; gap: 16px; padding: 12px 0; border-top: 1px solid var(--border); }
-  .bond-stat { flex: 1; }
-  .bond-stat-label { font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 3px; }
-  .bond-stat-value { font-size: 14px; font-weight: 700; color: var(--ink); }
-  .bond-stat-value.green { color: var(--green); }
+  /* ── why-pill ────────────────────────────────── */
+  .why-pill{margin:0 16px 14px;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--page)}
+  .why-head{display:flex;align-items:center;padding:11px 14px;gap:8px;cursor:pointer;width:100%;border:0;background:transparent;text-align:left;font-family:inherit}
+  .why-head .ic{color:var(--fg3)}
+  .why-head .ttl{flex:1;font-size:13px;font-weight:600;color:var(--dark)}
+  .why-head .meta{font-size:11px;color:var(--fg3);font-weight:500;margin-top:1px}
+  .why-head .chev{color:var(--fg3)}
+  .why-body{padding:0 14px 14px}
+  .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px}
+  .why-cell{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+  .why-cell .l{font-size:10px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+  .why-cell .v{font-size:12px;font-weight:600;color:var(--dark);display:flex;align-items:center;gap:4px}
+  .nsdl-tag{display:inline-flex;align-items:center;gap:2px;background:#FEF3C7;color:#92400E;padding:1px 5px;border-radius:3px;font-size:9px;font-weight:700;margin-left:4px}
+  .why-profile{display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid var(--border);font-size:11.5px}
+  .why-profile .l{color:var(--fg3);font-weight:500}
+  .why-profile .v{display:flex;align-items:center;gap:4px;font-weight:700;color:var(--dark)}
 
-  .bond-income-hero {
-    padding-top: 12px; border-top: 1px solid var(--border);
-  }
-  .bond-income-label { font-size: 11px; color: var(--text3); font-weight: 500; margin-bottom: 2px; }
-  .bond-income-amount {
-    font-size: 28px; font-weight: 800; color: var(--ink); letter-spacing: -.03em;
-    line-height: 1; margin-bottom: 3px;
-  }
-  .bond-income-sub { font-size: 11px; color: var(--text3); }
+  /* ── CTA stack ───────────────────────────────── */
+  .cta-stack{padding:0 16px;display:flex;flex-direction:column;gap:10px;margin-top:4px}
+  .btn-primary{width:100%;height:52px;border-radius:12px;border:0;background:var(--g);color:var(--white);font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:-.01em;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 12px rgba(1,142,67,.25)}
+  .btn-ghost{width:100%;padding:14px 20px;border-radius:12px;border:1.5px solid var(--border2);background:var(--white);color:var(--dark);font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+  .btn-link{background:none;border:none;font-family:inherit;font-size:13px;font-weight:600;color:var(--fg2);cursor:pointer;text-align:center;padding:4px 0}
 
-  /* Amount row */
-  .amount-row {
-    margin: 0 16px 8px;
-    background: var(--bg); border: 1px solid var(--border);
-    border-radius: 12px; padding: 12px 14px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .amount-label { font-size: 12px; color: var(--text2); font-weight: 500; }
-  .amount-value { font-size: 16px; font-weight: 800; color: var(--ink); }
-  .amount-edit {
-    font-size: 12px; font-weight: 600; color: var(--green);
-    background: none; border: none; cursor: pointer; font-family: inherit;
-  }
+  /* ── chip selection ──────────────────────────── */
+  .chip-group{padding:0 16px 14px}
+  .chip-label{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:8px}
+  .chip-label .sub{font-size:11px;font-weight:500;color:var(--g)}
+  .chip-row{display:flex;gap:8px;flex-wrap:wrap}
+  .chip-opt{padding:9px 14px;border-radius:10px;border:1.5px solid var(--border);font-size:13px;font-weight:600;color:var(--dark);background:var(--white);cursor:pointer;font-family:inherit;transition:all 120ms}
+  .chip-opt.on{background:var(--dark);color:var(--white);border-color:var(--dark)}
 
-  /* CTAs */
-  .cta-stack { padding: 0 16px; display: flex; flex-direction: column; gap: 10px; }
-  .btn-primary {
-    width: 100%; padding: 15px 20px; border-radius: 14px; border: 0;
-    background: var(--green); color: var(--white); font-family: inherit;
-    font-size: 15px; font-weight: 700; cursor: pointer; letter-spacing: -.01em;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
-  .btn-ghost {
-    width: 100%; padding: 13px 20px; border-radius: 14px;
-    border: 1px solid var(--border); background: var(--white); color: var(--ink);
-    font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
-  }
-  .btn-link {
-    background: none; border: none; font-family: inherit;
-    font-size: 13px; font-weight: 600; color: var(--text2); cursor: pointer;
-    text-align: center; padding: 6px 0;
-    display: flex; align-items: center; justify-content: center; gap: 4px;
-  }
-  .btn-link.green { color: var(--green); }
+  /* ── locked card ─────────────────────────────── */
+  .locked-card{margin:0 16px 12px;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .locked-card .head{display:flex;align-items:flex-start;gap:8px;padding:10px 14px;background:var(--page);border-bottom:1px solid var(--border)}
+  .locked-card .head .ic{color:var(--fg3);margin-top:1px}
+  .locked-card .head .ttl{font-size:12.5px;font-weight:700;color:var(--dark)}
+  .locked-card .head .meta{font-size:10.5px;color:var(--fg3);font-weight:500;margin-top:1px}
 
-  /* State B — Correction */
-  .section-card {
-    margin: 0 16px 14px; border-radius: 14px; overflow: hidden;
-    border: 1px solid var(--border); background: var(--white);
-  }
-  .section-card-header {
-    padding: 11px 14px; background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    font-size: 11px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: .08em; color: var(--text3);
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .nsdl-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    background: #FEF3C7; color: #92400E;
-    padding: 2px 8px; border-radius: 5px; font-size: 10px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: .04em;
-  }
-  .locked-field {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 14px; border-bottom: 1px solid var(--border);
-  }
-  .locked-field:last-child { border-bottom: 0; }
-  .locked-field-label { font-size: 12px; color: var(--text3); font-weight: 500; }
-  .locked-field-value { font-size: 13px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 6px; }
-  .lock-icon { color: var(--text4); }
+  /* ── amber strip ─────────────────────────────── */
+  .amber-strip{margin:0 16px 14px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:12px;padding:11px 14px;display:flex;align-items:flex-start;gap:9px}
+  .amber-strip .ic{color:#B45309;flex-shrink:0;margin-top:1px}
+  .amber-strip .txt{font-size:12px;color:#78350F;line-height:1.55}
+  .amber-strip a{color:#B45309;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:3px}
 
-  .amber-strip {
-    margin: 0 16px 14px; background: var(--amber-bg);
-    border: 1px solid #FDE68A; border-radius: 12px; padding: 12px 14px;
-  }
-  .amber-strip p { font-size: 12px; color: #78350F; line-height: 1.6; margin-bottom: 8px; }
-  .amber-strip a {
-    font-size: 12px; font-weight: 700; color: var(--amber-fg);
-    text-decoration: none; display: inline-flex; align-items: center; gap: 4px;
-  }
+  /* ── switched banner ─────────────────────────── */
+  .switched-banner{margin:0 16px 14px;background:var(--g3);border:1px solid #BBF7D0;border-radius:12px;padding:11px 14px;display:flex;align-items:flex-start;gap:9px}
+  .switched-banner .ic{color:var(--g);flex-shrink:0;margin-top:1px}
+  .switched-banner .body{flex:1;font-size:12.5px;color:#166534;line-height:1.5}
+  .switched-banner .undo{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--g);cursor:pointer;white-space:nowrap;margin-top:1px}
 
-  .pref-section { padding: 0 16px 14px; }
-  .pref-label { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
-  .pref-chips { display: flex; gap: 8px; flex-wrap: wrap; }
-  .pref-chip {
-    padding: 9px 14px; border-radius: 10px; border: 1.5px solid var(--border);
-    font-size: 13px; font-weight: 600; color: var(--ink);
-    background: var(--white); cursor: pointer; font-family: inherit;
-    transition: all 140ms;
-  }
-  .pref-chip.active {
-    background: var(--ink); color: var(--white); border-color: var(--ink);
-  }
+  /* ── tab bar ─────────────────────────────────── */
+  .tabbar{display:flex;background:var(--white);border-top:1px solid var(--border);padding:8px 0 20px;flex-shrink:0}
+  .tb-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;font-family:inherit;padding:4px 0}
+  .tb-btn svg{color:var(--fg3)}
+  .tb-btn .label{font-size:10px;font-weight:600;color:var(--fg3)}
+  .tb-btn.on svg{color:var(--g)}
+  .tb-btn.on .label{color:var(--g)}
+  .hi-bar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:rgba(15,20,25,.15)}
 
-  /* State C — Updated match */
-  .updated-banner {
-    margin: 0 16px 14px; background: var(--green-050);
-    border: 1px solid #B6E8C9; border-radius: 12px; padding: 11px 14px;
-    display: flex; align-items: center; gap: 10px;
-    font-size: 13px; font-weight: 600; color: var(--green-600);
-  }
+  /* ── lock screen ─────────────────────────────── */
+  .lock-screen{flex:1;display:flex;flex-direction:column;position:relative;background:radial-gradient(ellipse at 50% 20%, #1a3a2a 0%, #0a0f0a 100%)}
+  .lock-sb{background:transparent!important}
+  .lock-time-block{text-align:center;padding:48px 0 28px;color:var(--white)}
+  .lock-time{font-family:var(--serif);font-size:72px;font-weight:300;letter-spacing:-.02em;line-height:1}
+  .lock-date{font-size:16px;font-weight:400;color:rgba(255,255,255,.75);margin-top:6px}
+  .notif-stack{padding:0 16px;display:flex;flex-direction:column;gap:10px}
+  .notif{background:rgba(255,255,255,.14);backdrop-filter:blur(20px) saturate(1.8);border:1px solid rgba(255,255,255,.2);border-radius:18px;padding:13px;display:flex;gap:10px}
+  .notif .leading{width:34px;height:34px;border-radius:10px;background:var(--g);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--white);flex-shrink:0}
+  .notif .body{flex:1;min-width:0}
+  .notif .row1{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
+  .notif .app{font-size:11.5px;font-weight:700;color:rgba(255,255,255,.9)}
+  .notif .time-ago{font-size:10.5px;color:rgba(255,255,255,.5)}
+  .notif .title{font-size:13px;font-weight:600;color:var(--white);line-height:1.35;margin-bottom:2px}
+  .notif .msg{font-size:11.5px;color:rgba(255,255,255,.75);line-height:1.4}
+  .swipe-hint{text-align:center;margin-top:24px;font-size:11.5px;color:rgba(255,255,255,.4);font-weight:500}
+  .lock-icon-row{display:flex;justify-content:center;margin-bottom:8px}
 
-  /* Annotations sidebar */
-  .page-layout {
-    display: flex; gap: 32px; align-items: flex-start; max-width: 900px; width: 100%;
-  }
-  .annotations {
-    flex: 1; min-width: 200px;
-  }
-  .annotation-card {
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: 12px; padding: 16px; margin-bottom: 12px;
-  }
-  .annotation-card .ann-label {
-    font-size: 10px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: .08em; color: var(--text3); margin-bottom: 6px;
-  }
-  .annotation-card .ann-val {
-    font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.6;
-  }
-  .annotation-card .ann-val span { color: var(--green); }
-  .ann-bullet { font-size: 12px; color: var(--text2); line-height: 1.8; }
-  .ann-bullet li { margin-left: 16px; }
+  /* ── nudge card ──────────────────────────────── */
+  .nudge-card{margin:12px 16px;background:var(--white);border:1.5px solid #BFDFCB;border-radius:16px;padding:14px;position:relative}
+  .nudge-card .dismiss{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:8px;border:0;background:var(--page);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--fg3)}
+  .nudge-card .ey{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--fg3);margin-bottom:4px}
+  .nudge-card .bn{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:2px}
+  .nudge-card .bm{font-size:11px;color:var(--fg3)}
+  .nudge-monthly{padding:10px 0;border-top:1px solid var(--border);margin-top:10px}
+  .nudge-monthly .v{display:flex;align-items:baseline;gap:2px}
+  .nudge-monthly .v .num{font-family:var(--serif);font-size:36px;font-weight:600;color:var(--dark);letter-spacing:-.02em}
+  .nudge-monthly .v .unit{font-size:14px;font-weight:500;color:var(--fg2)}
+  .nudge-monthly .sub{font-size:11px;color:var(--fg3);margin-top:4px}
+  .nudge-amt-row{display:flex;align-items:center;justify-content:space-between;margin-top:8px;font-size:12.5px}
+  .nudge-amt-row .l{color:var(--fg3)}.nudge-amt-row .v{font-weight:700;color:var(--dark)}
+  .nudge-cta-row{display:flex;gap:8px;margin-top:10px}
+  .nudge-invest{flex:2;height:40px;border-radius:10px;border:0;background:var(--g);color:var(--white);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px}
+  .nudge-remind{flex:1;height:40px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);color:var(--fg2);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer}
+  .nudge-edit-block{margin-top:10px}
+  .nudge-edit-block .h{font-size:12px;font-weight:700;color:var(--dark);margin-bottom:8px}
+  .nudge-edit-block .amt-input{border:1.5px solid var(--g);border-radius:10px;padding:10px 14px;font-size:16px;font-weight:700;color:var(--dark);background:var(--g4)}
+  .nudge-edit-block .chips{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+  .nudge-edit-block .ec{padding:6px 10px;border-radius:8px;border:1.5px solid var(--border);font-size:12px;font-weight:600;color:var(--dark);background:var(--white);cursor:pointer;font-family:inherit}
+  .nudge-edit-block .ec.on{background:var(--dark);color:var(--white);border-color:var(--dark)}
+  .nudge-live{display:flex;align-items:center;gap:6px;margin-top:10px;padding:8px 10px;background:var(--g4);border-radius:8px;font-size:11.5px}
+  .nudge-live .pulse{width:6px;height:6px;border-radius:50%;background:#16A34A;flex-shrink:0}
+  .nudge-live .l{color:var(--fg2);flex:1}
+  .nudge-live .v{font-weight:700;color:var(--g)}
 
-  .spec-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 7px 0; border-bottom: 1px solid var(--border);
-    font-size: 12px;
-  }
-  .spec-row:last-child { border-bottom: 0; }
-  .spec-key { color: var(--text3); font-weight: 500; }
-  .spec-val { color: var(--ink); font-weight: 700; }
+  /* ── web frame ───────────────────────────────── */
+  .web-frame{background:var(--white);border-radius:16px;overflow:hidden;width:960px;box-shadow:0 8px 32px rgba(15,20,25,.15);border:1px solid var(--border)}
+  .web-topbar{display:flex;align-items:center;padding:12px 24px;border-bottom:1px solid var(--border);gap:20px}
+  .web-topbar .logo-sq{width:30px;height:30px;border-radius:8px;background:var(--dark);display:flex;align-items:center;justify-content:center}
+  .web-topbar .brand{font-size:15px;font-weight:700;color:var(--dark)}
+  .web-topbar nav{display:flex;gap:2px;margin-left:28px}
+  .web-topbar nav a{padding:6px 12px;border-radius:8px;font-size:13px;font-weight:600;color:var(--fg2);cursor:pointer;text-decoration:none}
+  .web-topbar nav a.on{background:var(--page);color:var(--dark)}
+  .web-body{display:flex;min-height:700px}
+  .web-left{flex:1;padding:48px 40px;border-right:1px solid var(--border)}
+  .web-left h1{font-size:30px;font-weight:800;color:var(--dark);letter-spacing:-.025em;margin:14px 0 12px;line-height:1.15}
+  .web-left .sub{font-size:14px;color:var(--fg2);line-height:1.6;margin-bottom:20px}
+  .check-row{display:flex;flex-direction:column;gap:9px}
+  .ck{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--fg2)}
+  .ck .ic{width:20px;height:20px;border-radius:6px;background:var(--g3);display:flex;align-items:center;justify-content:center;color:var(--g);flex-shrink:0}
+  .web-right{width:480px;padding:32px;background:var(--page)}
+  .web-card{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+  .web-card-inner{padding:20px}
+  .web-monthly .lbl{font-size:10.5px;color:var(--fg3);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+  .web-monthly .num{font-family:var(--serif);font-size:48px;font-weight:600;color:var(--dark);letter-spacing:-.02em;line-height:1}
+  .web-monthly .unit{font-size:18px;font-weight:500;color:var(--fg2)}
+  .web-monthly .sub{font-size:12px;color:var(--fg3);margin-top:6px}
+  .web-cta{display:flex;gap:10px;padding:16px 20px;border-top:1px solid var(--border);background:var(--white)}
+  .web-cta .primary{flex:1;height:48px;border-radius:12px;border:0;background:var(--g);color:var(--white);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 12px rgba(1,142,67,.25)}
+  .web-cta .secondary{height:48px;padding:0 16px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);color:var(--dark);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
 </style>
 </head>
 <body>
@@ -361,91 +258,41 @@
 <script type="text/babel">
 const { useState } = React;
 
-// ─── tokens
-const T = {
-  green:'#01B756', green600:'#019648', green100:'#D6F5E2', green050:'#E4FFF4',
-  ink:'#030A16', ink800:'#0D1626',
-  text2:'#5A6373', text3:'#8A93A3', text4:'#B0BAC8',
-  border:'#E6E9EE', borderD:'#D2D7E0',
-  lavender:'#EFF2F9', lavFg:'#4753C6',
-  white:'#FFFFFF', bg:'#F4F6FA',
-  amberBg:'#FFFBEB', amberFg:'#B45309',
-};
+/* ─── BOND DATA ──────────────────────────────────────────────── */
+const MATCHED = { issuer:'REC Limited', name:'PSU NCD 10.50% Mar 2028', isin:'INE020B07JZ4', rating:'AA+', type:'PSU · Secured', tenure:'24 months', ytm:10.5, amount:50000, monthly:438, colour:'#0E7A39', initials:'RE' };
+const SHORTER = { issuer:'Bajaj Finance', name:'NCD 9.80% Nov 2027', isin:'INE296A07PL2', rating:'AAA', type:'NBFC · Secured', tenure:'18 months', ytm:9.8, amount:50000, monthly:408, colour:'#1F3A93', initials:'BF' };
+const KYC = { income:'₹10 – 25L', netWorth:'₹25L+', occupation:'Service', marital:'Married', age:34, profile:'Moderate' };
 
-// ─── helpers
-const ChevIcon = ({ dir = 'down', size = 16, color = T.text3 }) => {
-  const r = dir === 'up' ? 180 : dir === 'left' ? 90 : dir === 'right' ? -90 : 0;
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-      stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
-      style={{ transform: `rotate(${r}deg)`, flexShrink: 0 }}>
-      <polyline points="6 9 12 15 18 9"/>
-    </svg>
-  );
-};
+/* ─── SVG ICONS ──────────────────────────────────────────────── */
+const IC = (props) => <svg width={props.size||18} height={props.size||18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>{props.children}</svg>;
+const ChevDown = (p) => <IC {...p}><polyline points="6 9 12 15 18 9"/></IC>;
+const ChevRight = (p) => <IC {...p}><polyline points="9 6 15 12 9 18"/></IC>;
+const ChevLeft = (p) => <IC {...p}><polyline points="15 6 9 12 15 18"/></IC>;
+const CheckIcon = (p) => <IC {...p}><polyline points="20 6 9 17 4 12"/></IC>;
+const InfoIcon = (p) => <IC {...p}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></IC>;
+const LockIcon = (p) => <IC {...p}><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></IC>;
+const AlertIcon = (p) => <IC {...p}><triangle points="10.29 3 1.45 19 22.55 19"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></IC>;
+const RefreshIcon = (p) => <IC {...p}><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.3"/></IC>;
+const CloseIcon = (p) => <IC {...p}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></IC>;
+const HomeIcon = (p) => <IC {...p}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-4v-7H9v7H5a2 2 0 0 1-2-2z"/></IC>;
+const ChartIcon = (p) => <IC {...p}><path d="M3 3v18h18"/><path d="M7 14l4-4 4 3 5-7"/></IC>;
+const BriefcaseIcon = (p) => <IC {...p}><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></IC>;
+const StarIcon = (p) => <IC {...p}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></IC>;
+const MoreIcon = (p) => <IC {...p}><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></IC>;
+const BellIcon = (p) => <IC {...p}><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></IC>;
+const ShieldIcon = (p) => <IC {...p}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></IC>;
+const WalletIcon = (p) => <IC {...p}><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></IC>;
 
-const LockIcon = ({ size = 13 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-    stroke={T.text4} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-  </svg>
-);
-
-const CheckIcon = ({ size = 16, color = T.green }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-    stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="20 6 9 17 4 12"/>
-  </svg>
-);
-
-const InfoIcon = ({ size = 14, color = T.amberFg }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-    stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-  </svg>
-);
-
-const ArrowRight = ({ size = 14, color = T.white }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-    stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-  </svg>
-);
-
-// ─── Aspero logo
-const AsperoLogo = ({ size = 24, dark = false }) => (
-  <svg width={size} height={size} viewBox="0 0 80 80" style={{ borderRadius: 8 }}>
-    <rect width="80" height="80" rx="14" fill={T.ink}/>
-    <path d="M40 14 L62 64 L51 64 L40 38 L29 64 L18 64 Z M40 50 L46 64 L34 64 Z"
-      fill={T.green}/>
-  </svg>
-);
-
-// ─── Issuer logo placeholder
-const IssuerLogo = ({ initials, color = T.green600 }) => (
-  <div style={{
-    width: 36, height: 36, borderRadius: 8, border: `1px solid ${T.border}`,
-    background: T.white, display: 'flex', alignItems: 'center', justifyContent: 'center',
-    fontWeight: 800, fontSize: 11, color,
-  }}>{initials}</div>
-);
-
-// ─── Status bar
+/* ─── StatusBar ──────────────────────────────────────────────── */
 const StatusBar = ({ dark }) => (
-  <div style={{
-    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    padding: '14px 28px 8px', position: 'relative', zIndex: 10,
-    background: dark ? T.ink : T.white,
-  }}>
-    <div style={{ position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)',
-      width: 120, height: 32, background: '#000', borderRadius: 20, zIndex: 20 }} />
-    <span style={{ fontSize: 15, fontWeight: 600, color: dark ? T.white : T.ink }}>9:41</span>
-    <svg width="54" height="13" viewBox="0 0 54 13" fill={dark ? T.white : T.ink}>
+  <div className={`sb ${dark ? 'dk' : 'lt'}`}>
+    <div className="di"/>
+    <span className="t" style={{ color: dark ? 'rgba(255,255,255,.9)' : '#0F1419' }}>9:41</span>
+    <svg width="54" height="13" viewBox="0 0 54 13" fill={dark ? 'rgba(255,255,255,.9)' : '#0F1419'}>
       <rect x="0" y="7.5" width="3" height="5.5" rx=".7"/><rect x="5" y="5" width="3" height="8" rx=".7"/>
       <rect x="10" y="2.5" width="3" height="10.5" rx=".7"/><rect x="15" y="0" width="3" height="13" rx=".7"/>
-      <rect x="22" y="3" width="12" height="10" rx="2.5" stroke={dark ? T.white : T.ink} strokeWidth="1.2" fill="none"/>
-      <rect x="24" y="5" width="8" height="6" rx="1.5" fill={dark ? T.white : T.ink}/>
+      <rect x="22" y="3" width="12" height="10" rx="2.5" stroke={dark ? 'rgba(255,255,255,.9)' : '#0F1419'} strokeWidth="1.2" fill="none"/>
+      <rect x="24" y="5" width="8" height="6" rx="1.5" fill={dark ? 'rgba(255,255,255,.9)' : '#0F1419'}/>
       <path d="M35.2 6v3.5c.9-.3 1.3-.9 1.3-1.75S36.1 6.3 35.2 6z"/>
       <rect x="40" y="0" width="3.2" height="5.5" rx=".7"/><rect x="44.8" y="0" width="3.2" height="8" rx=".7"/>
       <rect x="49.6" y="0" width="3.2" height="11" rx=".7"/>
@@ -453,456 +300,662 @@ const StatusBar = ({ dark }) => (
   </div>
 );
 
-// ─── Bond card reused across states
-const BondCard = ({ issuer, initials, logoColor, rating, tenure, ytm, monthlyIncome, onAmount, amount, profile }) => (
-  <div className="bond-card">
-    <div className="bond-card-top">
-      <div>
-        <div className="bond-issuer-row">
-          <IssuerLogo initials={initials} color={logoColor} />
-          <div>
-            <div className="issuer-name">{issuer}</div>
-            <div className="issuer-sub">Corporate Bond</div>
+/* ─── AsperoLogo ─────────────────────────────────────────────── */
+const AsperoLogo = () => (
+  <div className="logo-sq">
+    <svg viewBox="0 0 80 80" fill="none" style={{width:16,height:16}}>
+      <path d="M40 10 L65 70 L52 70 L40 38 L28 70 L15 70 Z M40 52 L48 70 L32 70 Z" fill="#018E43"/>
+    </svg>
+  </div>
+);
+
+/* ─── TabBar ─────────────────────────────────────────────────── */
+const TabBar = ({ active = 'Home' }) => (
+  <div className="tabbar">
+    {[['Home', HomeIcon], ['Bonds', ChartIcon], ['Portfolio', BriefcaseIcon], ['Learn', StarIcon], ['More', MoreIcon]].map(([name, Icon]) => (
+      <button key={name} className={`tb-btn ${active === name ? 'on' : ''}`}>
+        <Icon size={20}/><span className="label">{name}</span>
+      </button>
+    ))}
+  </div>
+);
+
+/* ─── WhyPill ────────────────────────────────────────────────── */
+const WhyPill = ({ open, locked }) => {
+  const [expanded, setExpanded] = useState(open);
+  return (
+    <div className="why-pill">
+      <button className="why-head" onClick={() => setExpanded(v => !v)}>
+        <span className="ic"><InfoIcon size={14}/></span>
+        <div className="ttl">Why this bond?<div className="meta">Matched on 4 details from your KYC</div></div>
+        <span className="chev" style={{ transform: expanded ? 'rotate(180deg)' : 'none', transition: 'transform 200ms' }}><ChevDown size={14}/></span>
+      </button>
+      {expanded && (
+        <div className="why-body">
+          <div className="why-grid">
+            {[
+              { l: 'Annual income', v: KYC.income },
+              { l: 'Net worth', v: KYC.netWorth },
+              { l: 'Occupation', v: KYC.occupation },
+              { l: 'Marital status', v: KYC.marital },
+            ].map(c => (
+              <div key={c.l} className="why-cell">
+                <div className="l">{c.l}</div>
+                <div className="v">{c.v}{locked && <span className="nsdl-tag"><LockIcon size={8}/>NSDL</span>}</div>
+              </div>
+            ))}
+          </div>
+          <div className="why-profile">
+            <span className="l">Matching profile</span>
+            <span className="v"><ShieldIcon size={11}/>{KYC.profile}</span>
           </div>
         </div>
-        <div className="chips-row">
-          <span className="chip chip-aaa">{rating}</span>
-          <span className="chip chip-secured">Senior Secured</span>
-          <span className="chip chip-rating">Sell anytime</span>
-        </div>
-      </div>
-    </div>
-    <div className="bond-stats">
-      <div className="bond-stat">
-        <div className="bond-stat-label">YTM</div>
-        <div className="bond-stat-value green">{ytm}%</div>
-      </div>
-      <div style={{ width: 1, background: T.border }} />
-      <div className="bond-stat">
-        <div className="bond-stat-label">Tenure</div>
-        <div className="bond-stat-value">{tenure}</div>
-      </div>
-      <div style={{ width: 1, background: T.border }} />
-      <div className="bond-stat">
-        <div className="bond-stat-label">Min. invest</div>
-        <div className="bond-stat-value">₹1,000</div>
-      </div>
-    </div>
-    <div className="bond-income-hero">
-      <div className="bond-income-label">Monthly income on ₹{amount.toLocaleString('en-IN')}</div>
-      <div className="bond-income-amount">₹{monthlyIncome(amount)}<span style={{ fontSize: 14, fontWeight: 600, color: T.text2 }}>/mo</span></div>
-      <div className="bond-income-sub">{ytm}% YTM · paid monthly</div>
-    </div>
-  </div>
-);
-
-// ─── Why this bond expandable
-const WhyBox = ({ expanded, onToggle }) => (
-  <div className="why-pill">
-    <button className="why-pill-trigger" onClick={onToggle}>
-      <div className="why-pill-label">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={T.green} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-        </svg>
-        Why this bond?
-      </div>
-      <ChevIcon dir={expanded ? 'up' : 'down'} />
-    </button>
-    {expanded && (
-      <div className="why-pill-body">
-        <div className="why-grid">
-          {[
-            { label: 'Annual income', value: '₹10–25L' },
-            { label: 'Net worth', value: '₹5–10L' },
-            { label: 'Occupation', value: 'Service' },
-            { label: 'Marital status', value: 'Married' },
-          ].map(r => (
-            <div key={r.label} className="why-cell">
-              <div className="why-cell-label">{r.label}</div>
-              <div className="why-cell-value">{r.value}</div>
-            </div>
-          ))}
-        </div>
-        <div className="why-profile-row">
-          Profile score: 6 →<strong>Moderate</strong>
-        </div>
-      </div>
-    )}
-  </div>
-);
-
-// ─── Amount editor inline
-const AmountRow = ({ amount, setAmount }) => {
-  const [editing, setEditing] = useState(false);
-  const opts = [10000, 25000, 50000, 100000, 200000];
-  return editing ? (
-    <div style={{ margin: '0 16px 8px', background: T.bg, border: `1px solid ${T.borderD}`, borderRadius: 12, padding: 14 }}>
-      <div style={{ fontSize: 12, fontWeight: 700, color: T.ink, marginBottom: 10 }}>How much do you want to invest?</div>
-      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
-        {opts.map(v => (
-          <button key={v} onClick={() => setAmount(v)} style={{
-            padding: '7px 12px', borderRadius: 8, border: `1.5px solid ${v === amount ? T.ink : T.border}`,
-            background: v === amount ? T.ink : T.white, color: v === amount ? T.white : T.ink,
-            fontFamily: 'inherit', fontSize: 12, fontWeight: 600, cursor: 'pointer',
-          }}>₹{v >= 100000 ? `${v/100000}L` : `${v/1000}K`}</button>
-        ))}
-      </div>
-      <button onClick={() => setEditing(false)} style={{
-        background: 'none', border: 'none', fontFamily: 'inherit',
-        fontSize: 12, fontWeight: 600, color: T.text3, cursor: 'pointer',
-      }}>Cancel</button>
-    </div>
-  ) : (
-    <div className="amount-row">
-      <div>
-        <div className="amount-label">Investing</div>
-        <div className="amount-value">₹{amount.toLocaleString('en-IN')}</div>
-      </div>
-      <button className="amount-edit" onClick={() => setEditing(true)}>change</button>
+      )}
     </div>
   );
 };
 
-// ─── State A
-const StateA = ({ onGoB, whyExpanded, setWhyExpanded }) => {
-  const [amount, setAmount] = useState(50000);
-  const monthlyIncome = (amt) => Math.round(amt * 0.1275 / 12).toLocaleString('en-IN');
+/* ─── BondCard ───────────────────────────────────────────────── */
+const BondCard = ({ bond, showMatched = true }) => {
+  const [amount, setAmount] = useState(bond.amount);
+  const monthly = Math.round(amount * bond.ytm / 100 / 12);
+  const [editAmt, setEditAmt] = useState(false);
   return (
-    <div className="screen-scroll">
-      {/* KYC done strip */}
-      <div className="kyc-done-strip">
-        <CheckIcon size={15} />
-        KYC complete · You're ready to invest on Aspero!
+    <div className="i8-card" style={{ marginTop: showMatched ? 20 : 0 }}>
+      {showMatched && <div className="matched-tag"><CheckIcon size={10}/>Matched to your profile</div>}
+      <div className="bond-row">
+        <div className="bond-logo" style={{ background: bond.colour }}>{bond.initials}</div>
+        <div className="bond-meta">
+          <div className="issuer">{bond.issuer}</div>
+          <div className="isin">{bond.isin}</div>
+          <div className="bond-badges">
+            <span className={`bb ${bond.rating.startsWith('AAA') ? 'aaa' : 'aa'}`}>{bond.rating}</span>
+            <span className="bb type">{bond.type}</span>
+            {bond.type.includes('PSU') && <span className="bb gov">Govt backed</span>}
+          </div>
+        </div>
       </div>
-      <div className="screen-heading">Make your first investment</div>
-      <div className="screen-sub">
-        Matched to your profile
-        <span className="profile-badge">
-          <svg width="8" height="8" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill={T.lavFg}/></svg>
-          Moderate
-        </span>
+      <div className="monthly-hero">
+        <div className="monthly-lbl">Earn every month</div>
+        <div className="monthly-val">
+          <span className="unit">₹</span>
+          <span className="num">{monthly.toLocaleString('en-IN')}</span>
+          <span className="denom">&nbsp;/mo</span>
+        </div>
+        <div className="monthly-sub">on ₹{amount.toLocaleString('en-IN')} invested · {bond.ytm.toFixed(2)}% YTM · {bond.tenure}</div>
       </div>
-
-      <WhyBox expanded={whyExpanded} onToggle={() => setWhyExpanded(v => !v)} />
-
-      <BondCard
-        issuer="Shriram Finance Ltd."
-        initials="SF"
-        logoColor={T.green600}
-        rating="AA+"
-        tenure="24 months"
-        ytm={12.75}
-        monthlyIncome={monthlyIncome}
-        amount={amount}
-      />
-
-      <AmountRow amount={amount} setAmount={setAmount} />
-
-      <div className="cta-stack">
-        <button className="btn-primary">
-          Invest ₹{amount.toLocaleString('en-IN')} now <ArrowRight />
-        </button>
-        <button className="btn-ghost" onClick={onGoB}>This doesn't feel right — change it</button>
-        <button className="btn-link">Explore all bonds <ChevIcon dir="right" size={14} color={T.text3} /></button>
-      </div>
-      <div style={{ height: 40 }} />
+      {editAmt ? (
+        <div style={{ marginTop: 10, padding: '12px', background: 'var(--page)', borderRadius: 10 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--dark)', marginBottom: 8 }}>How much do you want to invest?</div>
+          <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap', marginBottom: 10 }}>
+            {[10000, 25000, 50000, 100000, 200000].map(v => (
+              <button key={v} onClick={() => setAmount(v)} style={{ padding: '6px 11px', borderRadius: 8, border: `1.5px solid ${v===amount ? '#0F1419' : '#E5E7EB'}`, background: v===amount ? '#0F1419' : '#fff', color: v===amount ? '#fff' : '#0F1419', fontFamily: 'inherit', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>₹{v>=100000 ? `${v/100000}L` : `${v/1000}K`}</button>
+            ))}
+          </div>
+          <button onClick={() => setEditAmt(false)} style={{ background: 'none', border: 'none', fontFamily: 'inherit', fontSize: 12, fontWeight: 600, color: 'var(--fg3)', cursor: 'pointer' }}>Done</button>
+        </div>
+      ) : (
+        <div className="amt-row" style={{ margin: '10px 0 0', background: 'var(--page)', border: '1px solid var(--border)', borderRadius: 10, padding: '10px 12px' }}>
+          <div><div className="lbl">Investing</div><div className="val">₹{amount.toLocaleString('en-IN')}</div></div>
+          <button className="change-link" onClick={() => setEditAmt(true)}>Change amount</button>
+        </div>
+      )}
     </div>
   );
 };
 
-// ─── State B
+/* ─── ① Push notification screen ─────────────────────────────── */
+const PushNotif = () => (
+  <div className="phone-inner" style={{ minHeight: 812 }}>
+    <StatusBar dark/>
+    <div className="lock-screen">
+      <div className="lock-time-block">
+        <div className="lock-icon-row">
+          <LockIcon size={18} style={{ color: 'rgba(255,255,255,.5)' }}/>
+        </div>
+        <div className="lock-time">14:32</div>
+        <div className="lock-date">Thursday, 14 May</div>
+      </div>
+      <div className="notif-stack">
+        <div className="notif">
+          <div className="leading">A</div>
+          <div className="body">
+            <div className="row1"><div className="app">Aspero</div><div className="time-ago">now</div></div>
+            <div className="title">You're ready to invest on Aspero! 🎉</div>
+            <div className="msg">REC Limited · 10.50% returns · Start with ₹50,000 — your bond's ready.</div>
+          </div>
+        </div>
+        <div className="notif" style={{ opacity: 0.82 }}>
+          <div className="leading" style={{ background: '#3B82F6' }}>S</div>
+          <div className="body">
+            <div className="row1"><div className="app">SMS</div><div className="time-ago">14:30</div></div>
+            <div className="title" style={{ fontWeight: 500 }}>NSDL: Demat account 1208160000XXXX created. Welcome.</div>
+          </div>
+        </div>
+      </div>
+      <div className="swipe-hint">Tap notification to open</div>
+    </div>
+  </div>
+);
+
+/* ─── ② State A ───────────────────────────────────────────────── */
+const StateA = ({ whyOpen = false, onGoB }) => (
+  <div className="phone-inner" style={{ minHeight: 812 }}>
+    <StatusBar dark/>
+    <div className="topbar dk">
+      <div className="logo-pill">
+        <AsperoLogo/>
+        <span className="brand" style={{ color: 'rgba(255,255,255,.9)' }}>aspero</span>
+      </div>
+      <div className="rt">
+        <button className="iconbtn dk"><BellIcon size={18}/></button>
+        <div className="ava">AR</div>
+      </div>
+    </div>
+    <div className="body">
+      <div className="act-hero">
+        <div className="act-eyebrow"><span className="pulse"/>KYC approved · Demat ready</div>
+        <h1 className="act-title">Make your first investment</h1>
+        <p className="act-sub">We've picked one bond that fits your profile. Review it below — you can swap in two taps.</p>
+      </div>
+      <BondCard bond={MATCHED} showMatched={true}/>
+      <WhyPill open={whyOpen} locked={false}/>
+      <div className="cta-stack">
+        <button className="btn-primary">Invest ₹50,000 now <ChevRight size={16}/></button>
+        <button className="btn-ghost" onClick={onGoB}>This doesn't feel right — <u>change it</u></button>
+        <button className="btn-link">Explore all bonds →</button>
+      </div>
+      <div style={{ height: 40 }}/>
+    </div>
+    <TabBar active="Home"/>
+  </div>
+);
+
+/* ─── ② State B ───────────────────────────────────────────────── */
 const StateB = ({ onGoC }) => {
   const [tenure, setTenure] = useState('1-2yr');
   const [band, setBand] = useState('10k-50k');
   return (
-    <div className="screen-scroll">
-      <div className="screen-heading">Adjust your match</div>
-      <div style={{ padding: '0 16px 16px', fontSize: 13, color: T.text2 }}>
-        Your KYC data was used to match you. Some fields are locked — they were submitted to NSDL when your demat was created.
+    <div className="phone-inner" style={{ minHeight: 812 }}>
+      <StatusBar/>
+      <div className="topbar">
+        <button className="back-btn lt"><ChevLeft size={18}/></button>
+        <span className="topbar-title dk-t">Change my match</span>
       </div>
-
-      {/* Locked KYC fields */}
-      <div className="section-card">
-        <div className="section-card-header">
-          KYC data (submitted to NSDL)
-          <span className="nsdl-badge">🔒 Submitted</span>
+      <div className="body">
+        <div style={{ padding: '20px 16px 0' }}>
+          <h2 style={{ fontSize: 21, fontWeight: 700, color: '#0F1419', letterSpacing: '-.015em', lineHeight: 1.2, marginBottom: 8 }}>Let's pick a better bond for you</h2>
+          <p style={{ fontSize: 13, color: 'var(--fg2)', lineHeight: 1.5 }}>Tell us your tenure and amount preference — we'll re-match. Your KYC details below are locked because they're already with NSDL.</p>
         </div>
-        {[
-          { label: 'Annual income', value: '₹10–25L' },
-          { label: 'Net worth', value: '₹5–10L' },
-          { label: 'Occupation', value: 'Service' },
-          { label: 'Marital status', value: 'Married' },
-        ].map(f => (
-          <div key={f.label} className="locked-field">
-            <div className="locked-field-label">{f.label}</div>
-            <div className="locked-field-value">
-              {f.value}
-              <LockIcon />
-            </div>
+        <div style={{ height: 16 }}/>
+        <div className="locked-card">
+          <div className="head">
+            <span className="ic"><LockIcon size={13}/></span>
+            <div className="ttl">From your KYC<div className="meta">Submitted to NSDL · cannot be edited here</div></div>
           </div>
-        ))}
-      </div>
-
-      {/* Amber strip */}
-      <div className="amber-strip">
-        <p>Entered something wrong above? This data is with NSDL and can't be changed here. Raise a correction with our support team.</p>
-        <a href="#">Contact support <ArrowRight size={12} color={T.amberFg} /></a>
-      </div>
-
-      {/* Editable prefs */}
-      <div className="pref-section">
-        <div className="pref-label">How long can you lock in?</div>
-        <div className="pref-chips">
-          {[{v:'under1', l:'Under 1 yr'}, {v:'1-2yr', l:'1–2 yrs'}, {v:'3yr+', l:'3 yrs+'}].map(o => (
-            <button key={o.v} className={`pref-chip ${tenure === o.v ? 'active' : ''}`} onClick={() => setTenure(o.v)}>{o.l}</button>
-          ))}
-        </div>
-      </div>
-
-      <div className="pref-section">
-        <div className="pref-label">Amount you have in mind</div>
-        <div className="pref-chips">
-          {[{v:'10k-50k', l:'₹10K–50K'}, {v:'50k-2l', l:'₹50K–2L'}, {v:'2l+', l:'₹2L+'}].map(o => (
-            <button key={o.v} className={`pref-chip ${band === o.v ? 'active' : ''}`} onClick={() => setBand(o.v)}>{o.l}</button>
-          ))}
-        </div>
-      </div>
-
-      <div className="cta-stack">
-        <button className="btn-primary" onClick={onGoC}>
-          Update match <ArrowRight />
-        </button>
-        <button className="btn-link">Explore all bonds <ChevIcon dir="right" size={14} color={T.text3} /></button>
-      </div>
-      <div style={{ height: 40 }} />
-    </div>
-  );
-};
-
-// ─── State C
-const StateC = ({ onGoA }) => {
-  const [amount, setAmount] = useState(25000);
-  const monthlyIncome = (amt) => Math.round(amt * 0.1395 / 12).toLocaleString('en-IN');
-  return (
-    <div className="screen-scroll">
-      {/* Confirmation banner */}
-      <div className="updated-banner">
-        <CheckIcon size={16} color={T.green600} />
-        Switched to a shorter-term bond for you
-      </div>
-
-      <div className="screen-heading">Make your first investment</div>
-      <div className="screen-sub">
-        Matched to your preference
-        <span className="profile-badge">
-          <svg width="8" height="8" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill={T.lavFg}/></svg>
-          Moderate
-        </span>
-      </div>
-
-      <BondCard
-        issuer="Bajaj Finance Ltd."
-        initials="BF"
-        logoColor="#F97316"
-        rating="AAA"
-        tenure="12 months"
-        ytm={13.95}
-        monthlyIncome={monthlyIncome}
-        amount={amount}
-      />
-
-      <AmountRow amount={amount} setAmount={setAmount} />
-
-      <div className="cta-stack">
-        <button className="btn-primary">
-          Invest ₹{amount.toLocaleString('en-IN')} now <ArrowRight />
-        </button>
-        <button className="btn-ghost" onClick={onGoA}>← Back to previous match</button>
-        <button className="btn-link">Explore all bonds <ChevIcon dir="right" size={14} color={T.text3} /></button>
-      </div>
-      <div style={{ height: 40 }} />
-    </div>
-  );
-};
-
-// ─── Main app
-function App() {
-  const [state, setState] = useState('A');
-  const [whyExpanded, setWhyExpanded] = useState(false);
-
-  const headerDark = state === 'A';
-
-  return (
-    <div>
-      {/* Page header */}
-      <div className="page-header">
-        <div className="eyebrow">I8 · Post-KYC Activation Screen · US-2</div>
-        <h1>Post-KYC Activation Screen</h1>
-        <p>One-time screen shown immediately after KYC → RTT transition. Three states, one flow.</p>
-      </div>
-
-      {/* State switcher */}
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 32 }}>
-        <div className="state-tabs">
-          {[{v:'A', l:'State A — Default match'}, {v:'B', l:'State B — Correction'}, {v:'C', l:'State C — Updated match'}].map(s => (
-            <button key={s.v} className={`state-tab ${state === s.v ? 'active' : ''}`} onClick={() => setState(s.v)}>{s.l}</button>
-          ))}
-        </div>
-      </div>
-
-      {/* Layout: phone + annotations */}
-      <div className="page-layout" style={{ margin: '0 auto' }}>
-
-        {/* Left annotations */}
-        <div className="annotations" style={{ paddingTop: 60 }}>
-          {state === 'A' && <>
-            <div className="annotation-card">
-              <div className="ann-label">Trigger</div>
-              <div className="ann-val">Shown <span>once</span> on first home screen render after KYC → RTT transition</div>
-            </div>
-            <div className="annotation-card">
-              <div className="ann-label">Bond matching</div>
-              <ul className="ann-bullet">
-                <li>Income ₹10–25L → score 4</li>
-                <li>Occupation: Service → score 2</li>
-                <li>Age 35, Married → modifier 0</li>
-                <li>Composite: 6 → <strong>Moderate</strong></li>
-                <li>Criteria: ≥A, 18–36M, YTM 9–12%</li>
-              </ul>
-            </div>
-            <div className="annotation-card">
-              <div className="ann-label">Pre-fill logic</div>
-              <div className="ann-val">Income ₹10–25L → default amount <span>₹50,000</span> from recommended_default_amount</div>
-            </div>
-            <div className="annotation-card">
-              <div className="ann-label">Jira</div>
-              <div className="ann-val"><span>ASP-3251</span> · FE · US-2</div>
-            </div>
-          </>}
-          {state === 'B' && <>
-            <div className="annotation-card">
-              <div className="ann-label">Trigger</div>
-              <div className="ann-val">Tap "This doesn't feel right — change it" from State A</div>
-            </div>
-            <div className="annotation-card">
-              <div className="ann-label">Why fields are locked</div>
-              <ul className="ann-bullet">
-                <li>Annual income, net worth, occupation, marital status were submitted to NSDL at demat creation</li>
-                <li>These cannot be edited in any product surface — only via support correction request</li>
-              </ul>
-            </div>
-            <div className="annotation-card">
-              <div className="ann-label">Override params to API</div>
-              <ul className="ann-bullet">
-                <li>tenure_preference: short / medium / long</li>
-                <li>amount_band: from chip selection</li>
-              </ul>
-            </div>
-          </>}
-          {state === 'C' && <>
-            <div className="annotation-card">
-              <div className="ann-label">Trigger</div>
-              <div className="ann-val">Tap "Update match" in State B — re-calls bond matching API with override params</div>
-            </div>
-            <div className="annotation-card">
-              <div className="ann-label">Banner variants</div>
-              <ul className="ann-bullet">
-                <li>"Switched to a <strong>shorter-term</strong> bond for you"</li>
-                <li>"Switched to a <strong>higher-return</strong> bond for you"</li>
-                <li>"Switched to a <strong>safer</strong> bond for you"</li>
-              </ul>
-            </div>
-            <div className="annotation-card">
-              <div className="ann-label">Undo</div>
-              <div className="ann-val">"← Back to previous match" re-shows State A with original bond</div>
-            </div>
-          </>}
-        </div>
-
-        {/* Phone */}
-        <div className="phone-wrap">
-          <div className="phone">
-            <div className="phone-inner">
-              <StatusBar dark={headerDark} />
-
-              {/* Nav bar */}
-              <div style={{
-                display: 'flex', alignItems: 'center', gap: 10,
-                padding: '6px 16px 12px',
-                background: headerDark ? T.ink800 : T.white,
-                borderBottom: headerDark ? 'none' : `1px solid ${T.border}`,
-              }}>
-                <div style={{
-                  width: 34, height: 34, borderRadius: 999,
-                  background: headerDark ? 'rgba(255,255,255,.1)' : T.bg,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  <ChevIcon dir="left" size={18} color={headerDark ? T.white : T.ink} />
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <AsperoLogo size={28} />
-                  <span style={{ fontSize: 16, fontWeight: 700, color: headerDark ? T.white : T.ink }}>aspero</span>
-                </div>
-              </div>
-
-              {state === 'A' && <StateA onGoB={() => setState('B')} whyExpanded={whyExpanded} setWhyExpanded={setWhyExpanded} />}
-              {state === 'B' && <StateB onGoC={() => setState('C')} />}
-              {state === 'C' && <StateC onGoA={() => setState('A')} />}
-
-              <div className="home-indicator" />
-            </div>
-          </div>
-        </div>
-
-        {/* Right spec */}
-        <div className="annotations" style={{ paddingTop: 60 }}>
-          <div className="annotation-card">
-            <div className="ann-label">Screen spec</div>
-            {[
-              { k: 'Story', v: 'US-2 · ASP-3251' },
-              { k: 'Owner', v: 'Hari / Dhanavel (FE)' },
-              { k: 'Effort', v: 'S' },
-              { k: 'Stack', v: 'React Native' },
-              { k: 'One-time?', v: 'Yes — per user' },
-              { k: 'Skip if', v: 'Bond API returns null' },
-            ].map(r => (
-              <div key={r.k} className="spec-row">
-                <div className="spec-key">{r.k}</div>
-                <div className="spec-val">{r.v}</div>
+          <div className="why-grid" style={{ padding: 12 }}>
+            {[['Annual income', KYC.income], ['Net worth', KYC.netWorth], ['Occupation', KYC.occupation], ['Marital status', KYC.marital]].map(([l, v]) => (
+              <div key={l} className="why-cell">
+                <div className="l">{l}</div>
+                <div className="v">{v}<span className="nsdl-tag"><LockIcon size={8}/>NSDL</span></div>
               </div>
             ))}
           </div>
-          <div className="annotation-card">
-            <div className="ann-label">Impact target</div>
-            <ul className="ann-bullet">
-              <li>RTT → invest%: 5.1% → <strong>~9–11%</strong></li>
-              <li>D7 NTU: 0.84% → <strong>~1.5%</strong></li>
-              <li>+9–13 investors/wk (1× RTT scale)</li>
-              <li>+₹0.8–1.1Cr GTV/mo</li>
-            </ul>
+        </div>
+        <div className="amber-strip">
+          <span className="ic"><AlertIcon size={15}/></span>
+          <div className="txt"><strong>Entered something wrong?</strong> This data is with NSDL and can't be changed here. <a>Raise a correction with support <ChevRight size={10}/></a></div>
+        </div>
+        <div className="chip-group">
+          <div className="chip-label">How long can you lock in? <span className="sub">· editable</span></div>
+          <div className="chip-row">
+            {[['under1','Under 1 yr'],['1-2yr','1 – 2 yrs'],['3yr+','3 yrs +']].map(([v,l]) => (
+              <button key={v} className={`chip-opt ${tenure===v ? 'on' : ''}`} onClick={() => setTenure(v)}>{l}</button>
+            ))}
           </div>
-          <div className="annotation-card">
-            <div className="ann-label">Definition of done</div>
-            <ul className="ann-bullet">
-              <li>State A shown once on first RTT</li>
-              <li>Why-box pre-fills from KYC data</li>
-              <li>Amount editable inline</li>
-              <li>"Invest now" pre-fills order summary</li>
-              <li>State B → C → undo works</li>
-            </ul>
+        </div>
+        <div className="chip-group">
+          <div className="chip-label">Amount you have in mind <span className="sub">· editable</span></div>
+          <div className="chip-row">
+            {[['10k-50k','₹10K – 50K'],['50k-2l','₹50K – 2L'],['2l+','₹2L +']].map(([v,l]) => (
+              <button key={v} className={`chip-opt ${band===v ? 'on' : ''}`} onClick={() => setBand(v)}>{l}</button>
+            ))}
+          </div>
+        </div>
+        <div className="cta-stack">
+          <button className="btn-primary" onClick={onGoC}><RefreshIcon size={15}/>Update match</button>
+          <button className="btn-link">Explore all bonds →</button>
+        </div>
+        <div style={{ height: 40 }}/>
+      </div>
+      <TabBar active="Home"/>
+    </div>
+  );
+};
+
+/* ─── ② State C ───────────────────────────────────────────────── */
+const StateC = ({ onGoA }) => (
+  <div className="phone-inner" style={{ minHeight: 812 }}>
+    <StatusBar dark/>
+    <div className="topbar dk">
+      <div className="logo-pill">
+        <AsperoLogo/>
+        <span className="brand" style={{ color: 'rgba(255,255,255,.9)' }}>aspero</span>
+      </div>
+      <div className="rt">
+        <button className="iconbtn dk"><BellIcon size={18}/></button>
+        <div className="ava">AR</div>
+      </div>
+    </div>
+    <div className="body">
+      <div className="act-hero">
+        <div className="act-eyebrow"><span className="pulse"/>New match · Updated for you</div>
+        <h1 className="act-title">Better fit found</h1>
+        <p className="act-sub">Based on your preferences, here's a shorter-tenure, higher-rated bond.</p>
+      </div>
+      <div className="switched-banner">
+        <span className="ic"><RefreshIcon size={14}/></span>
+        <div className="body">Switched to a <strong>shorter-tenure, AAA-rated</strong> bond — 18 months instead of 24.</div>
+        <button className="undo" onClick={onGoA}><ChevLeft size={10}/>Undo</button>
+      </div>
+      <BondCard bond={SHORTER} showMatched={true}/>
+      <WhyPill open={false} locked={false}/>
+      <div className="cta-stack">
+        <button className="btn-primary">Invest ₹50,000 now <ChevRight size={16}/></button>
+        <button className="btn-ghost">Want to change preferences — <u>tweak it</u></button>
+        <button className="btn-link">Explore all bonds →</button>
+      </div>
+      <div style={{ height: 40 }}/>
+    </div>
+    <TabBar active="Home"/>
+  </div>
+);
+
+/* ─── ③ Nudge card (homepage) ─────────────────────────────────── */
+const NudgeScreen = ({ editing }) => {
+  const [amount, setAmount] = useState(50000);
+  const monthly = Math.round(amount * MATCHED.ytm / 100 / 12);
+  return (
+    <div className="phone-inner" style={{ minHeight: 812 }}>
+      <StatusBar/>
+      <div className="topbar">
+        <div className="logo-pill">
+          <AsperoLogo/>
+          <span className="brand">aspero</span>
+        </div>
+        <div className="rt">
+          <button className="iconbtn"><BellIcon size={18}/></button>
+          <div className="ava">AR</div>
+        </div>
+      </div>
+      <div className="body">
+        <div style={{ padding: '14px 16px 4px' }}>
+          <div style={{ fontSize: 11, color: 'var(--fg3)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.04em' }}>Welcome to Aspero</div>
+          <div style={{ fontSize: 19, fontWeight: 600, marginTop: 2 }}>Hi Arjun</div>
+        </div>
+
+        {/* Nudge card */}
+        <div className="nudge-card" style={{ borderColor: editing ? 'var(--g)' : '#BFDFCB' }}>
+          <button className="dismiss"><CloseIcon size={12}/></button>
+          <div className="ey">Your first investment</div>
+          <div className="bn">{MATCHED.issuer} · NCD 10.50% Mar 2028</div>
+          <div className="bm">{MATCHED.rating} · {MATCHED.tenure} · Moderate profile match</div>
+          <div className="nudge-monthly">
+            <div className="v">
+              <span className="unit">₹</span>
+              <span className="num">{monthly.toLocaleString('en-IN')}</span>
+              <span className="unit">&nbsp;/mo</span>
+            </div>
+            <div className="sub">per month on ₹{amount.toLocaleString('en-IN')} · {MATCHED.ytm.toFixed(2)}% YTM</div>
+          </div>
+
+          {!editing ? (
+            <>
+              <div className="nudge-amt-row">
+                <span className="l">Investing</span>
+                <span style={{ display:'flex',alignItems:'center',gap:8 }}>
+                  <span className="v">₹{amount.toLocaleString('en-IN')}</span>
+                  <button className="change-link">change</button>
+                </span>
+              </div>
+              <div className="nudge-cta-row">
+                <button className="nudge-invest">Invest now <ChevRight size={14}/></button>
+                <button className="nudge-remind">Remind me later</button>
+              </div>
+            </>
+          ) : (
+            <div className="nudge-edit-block">
+              <div className="h">How much do you want to invest?</div>
+              <div className="amt-input">₹50,000</div>
+              <div className="chips">
+                {[['10K',10000],['25K',25000],['50K',50000],['1L',100000],['2L',200000]].map(([l,v]) => (
+                  <button key={v} className={`ec ${v===amount ? 'on' : ''}`} onClick={() => setAmount(v)}>₹{l}</button>
+                ))}
+              </div>
+              <div className="nudge-live">
+                <span className="pulse"/>
+                <span className="l">Monthly income at ₹{amount.toLocaleString('en-IN')} →</span>
+                <span className="v">₹{monthly.toLocaleString('en-IN')} /mo</span>
+              </div>
+              <div className="nudge-cta-row" style={{ marginTop: 12 }}>
+                <button className="nudge-invest">Invest ₹{amount.toLocaleString('en-IN')} <ChevRight size={14}/></button>
+                <button className="nudge-remind">Cancel</button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div style={{ padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 8, fontSize: 11, color: 'var(--fg3)' }}>
+          <ShieldIcon size={12}/>Your bonds settle into your own demat account.
+        </div>
+
+        {/* Bond list peek */}
+        <div style={{ padding: '0 16px 12px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--dark)' }}>Popular with first-time investors</div>
+            <button style={{ background: 'none', border: 'none', fontSize: 12, fontWeight: 600, color: 'var(--g)', cursor: 'pointer', display:'flex',alignItems:'center',gap:3 }}>See all<ChevRight size={11}/></button>
+          </div>
+          {[MATCHED, SHORTER].map(b => (
+            <div key={b.isin} style={{ display:'flex',alignItems:'center',gap:10,padding:'10px 0',borderBottom:'1px solid var(--border)' }}>
+              <div style={{ width:34,height:34,borderRadius:9,background:b.colour,display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:800,color:'#fff',flexShrink:0 }}>{b.initials}</div>
+              <div style={{ flex:1 }}>
+                <div style={{ fontSize:13,fontWeight:700,color:'var(--dark)' }}>{b.issuer}</div>
+                <div style={{ fontSize:11,color:'var(--fg3)' }}>{b.rating} · {b.tenure} · Min ₹10,000</div>
+              </div>
+              <div style={{ textAlign:'right' }}>
+                <div style={{ fontFamily:'var(--serif)',fontSize:18,fontWeight:600,color:'var(--g)',letterSpacing:'-.01em' }}>{b.ytm.toFixed(1)}%</div>
+                <div style={{ fontSize:10,color:'var(--fg3)',fontWeight:600 }}>YTM</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <TabBar active="Home"/>
+    </div>
+  );
+};
+
+/* ─── ⑤ Web activation ────────────────────────────────────────── */
+const WebScreen = () => (
+  <div className="web-frame">
+    <div className="web-topbar">
+      <div className="logo-sq" style={{ background: '#0F1419' }}>
+        <svg viewBox="0 0 80 80" fill="none" style={{ width:16,height:16 }}>
+          <path d="M40 10 L65 70 L52 70 L40 38 L28 70 L15 70 Z M40 52 L48 70 L32 70 Z" fill="#018E43"/>
+        </svg>
+      </div>
+      <span className="brand" style={{ fontSize:15,fontWeight:700,color:'#0F1419' }}>aspero</span>
+      <nav>
+        {['Home','Bonds','FDs','Portfolio','Learn'].map(n => (
+          <a key={n} className={n==='Home' ? 'on' : ''}>{n}</a>
+        ))}
+      </nav>
+      <div style={{ marginLeft:'auto',display:'flex',alignItems:'center',gap:10 }}>
+        <button className="iconbtn"><BellIcon size={18}/></button>
+        <div className="ava">AR</div>
+      </div>
+    </div>
+    <div className="web-body">
+      <div className="web-left">
+        <div className="act-eyebrow"><span className="pulse"/>KYC approved · Demat ready</div>
+        <h1>Make your first investment</h1>
+        <div className="sub">We've matched one bond from our inventory to the income, occupation and risk signals you shared during KYC. Review the details on the right — you can swap it in two taps.</div>
+        <div className="check-row">
+          {['Identity verified with NSDL','Demat account 1208160…XXXX created','Risk profile · Moderate','Bank linked · HDFC …4502'].map(t => (
+            <div key={t} className="ck"><span className="ic"><CheckIcon size={11}/></span>{t}</div>
+          ))}
+        </div>
+        <div style={{ marginTop: 32 }}>
+          <WhyPill open={true} locked={false}/>
+        </div>
+      </div>
+      <div className="web-right">
+        <div className="web-card">
+          <div className="web-card-inner">
+            <div className="bond-row">
+              <div className="bond-logo" style={{ background: MATCHED.colour }}>{MATCHED.initials}</div>
+              <div className="bond-meta">
+                <div className="issuer">{MATCHED.issuer}</div>
+                <div className="isin">{MATCHED.isin}</div>
+                <div className="bond-badges">
+                  <span className="bb aa">{MATCHED.rating}</span>
+                  <span className="bb type">{MATCHED.type}</span>
+                  <span className="bb gov">Govt backed</span>
+                </div>
+              </div>
+            </div>
+            <div style={{ borderTop: '1px solid var(--border)', marginTop: 12, paddingTop: 14 }}>
+              <div className="web-monthly">
+                <div className="lbl">Earn every month</div>
+                <div style={{ display:'flex',alignItems:'baseline',gap:2 }}>
+                  <span className="unit">₹</span>
+                  <span className="num">{MATCHED.monthly.toLocaleString('en-IN')}</span>
+                  <span className="unit">&nbsp;/mo</span>
+                </div>
+                <div className="sub">on ₹{MATCHED.amount.toLocaleString('en-IN')} invested · {MATCHED.ytm.toFixed(2)}% YTM · {MATCHED.tenure}</div>
+              </div>
+            </div>
+            <div style={{ display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:12,padding:'10px 12px',background:'var(--page)',borderRadius:10 }}>
+              <div>
+                <div style={{ fontSize:11,color:'var(--fg3)',fontWeight:500,marginBottom:2 }}>Investing</div>
+                <div style={{ fontSize:16,fontWeight:700,color:'var(--dark)' }}>₹50,000</div>
+              </div>
+              <button className="change-link">Change amount</button>
+            </div>
+          </div>
+          <div className="web-cta">
+            <button className="primary">Invest ₹50,000 now <ChevRight size={15}/></button>
+            <button className="secondary">Change bond</button>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+);
 
-      {/* Footer */}
-      <div style={{ textAlign: 'center', fontSize: 11, color: '#B0BAC8', marginTop: 48 }}>
-        I8 · Post-KYC Activation Screen (R1) · ASP-263 · Last updated Apr 7, 2026 · aspero B2C
+/* ─── APP ─────────────────────────────────────────────────────── */
+function App() {
+  const [tab, setTab] = useState('push');
+  const [state, setState] = useState('A');
+
+  const TABS = [
+    { id:'push',   label:'① Push Notification' },
+    { id:'stateA', label:'② State A (default)' },
+    { id:'stateA2',label:'② State A (why open)' },
+    { id:'stateB', label:'② State B (correction)' },
+    { id:'stateC', label:'② State C (updated)' },
+    { id:'nudge',  label:'③ Home Nudge' },
+    { id:'nudge2', label:'③ Nudge (editing)' },
+    { id:'web',    label:'⑤ Web Activation' },
+  ];
+
+  const isWeb = tab === 'web';
+
+  return (
+    <div>
+      <div className="ph">
+        <div className="ey">I8 · Post-KYC Activation · US-2 / US-3 / US-4</div>
+        <h1>Post-KYC Activation — All Screens</h1>
+        <p>Push notification trigger → Activation (3 states) → Home nudge → Web screen</p>
+      </div>
+
+      <div style={{ display:'flex',justifyContent:'center' }}>
+        <div className="tabs">
+          {TABS.map(t => (
+            <button key={t.id} className={`tab ${tab===t.id ? 'on' : ''}`} onClick={() => setTab(t.id)}>{t.label}</button>
+          ))}
+        </div>
+      </div>
+
+      <div className="layout" style={{ justifyContent: isWeb ? 'center' : undefined }}>
+
+        {/* Left annotations */}
+        {!isWeb && (
+          <div className="ann" style={{ paddingTop: 60 }}>
+            {tab === 'push' && <>
+              <div className="ann-card">
+                <div className="ann-label">Trigger (US-4)</div>
+                <div className="ann-val">Fires within <span className="hi">5 minutes</span> of KYC → RTT transition. Deeplinks straight into State A.</div>
+              </div>
+              <div className="ann-card">
+                <div className="ann-label">Notification copy</div>
+                <div className="ann-val">Title: "You're ready to invest on Aspero! 🎉"<br/>Body: "REC Limited · 10.50% returns · Start with ₹50,000 — your bond's ready."</div>
+              </div>
+              <div className="ann-card">
+                <div className="ann-label">Jira</div>
+                <div className="ann-val"><span className="hi">ASP-3250</span> · BE · US-4</div>
+              </div>
+            </>}
+            {(tab === 'stateA' || tab === 'stateA2') && <>
+              <div className="ann-card">
+                <div className="ann-label">Trigger</div>
+                <div className="ann-val">Shown <span className="hi">once</span> on first home screen render after KYC → RTT transition</div>
+              </div>
+              <div className="ann-card">
+                <div className="ann-label">Bond matching model</div>
+                <ul className="ann-ul">
+                  <li>Income ₹10–25L → score 4</li>
+                  <li>Occupation: Service → score 2</li>
+                  <li>Age 34, Married → modifier 0</li>
+                  <li>Composite: 6 → <strong>Moderate</strong></li>
+                  <li>Filter: ≥A, 18–36M, YTM ≥9%</li>
+                </ul>
+              </div>
+              <div className="ann-card">
+                <div className="ann-label">Pre-fill logic</div>
+                <div className="ann-val">Income ₹10–25L → default amount <span className="hi">₹50,000</span></div>
+              </div>
+              <div className="ann-card">
+                <div className="ann-label">Jira</div>
+                <div className="ann-val"><span className="hi">ASP-3251</span> · FE · US-2</div>
+              </div>
+            </>}
+            {tab === 'stateB' && <>
+              <div className="ann-card">
+                <div className="ann-label">Entry</div>
+                <div className="ann-val">Tap "This doesn't feel right — change it" from State A</div>
+              </div>
+              <div className="ann-card">
+                <div className="ann-label">Why locked</div>
+                <ul className="ann-ul">
+                  <li>Income, net worth, occupation, marital status submitted to NSDL at demat creation</li>
+                  <li>Cannot be edited in any product surface — only via support correction</li>
+                </ul>
+              </div>
+              <div className="ann-card">
+                <div className="ann-label">API params</div>
+                <ul className="ann-ul">
+                  <li>tenure_preference: short / medium / long</li>
+                  <li>amount_band: from chip selection</li>
+                </ul>
+              </div>
+            </>}
+            {tab === 'stateC' && <>
+              <div className="ann-card">
+                <div className="ann-label">Entry</div>
+                <div className="ann-val">Tap "Update match" in State B — re-calls bond matching API with override params</div>
+              </div>
+              <div className="ann-card">
+                <div className="ann-label">Bond</div>
+                <div className="ann-val">Bajaj Finance · AAA · 9.80% YTM · 18 months · ₹408/mo on ₹50K</div>
+              </div>
+              <div className="ann-card">
+                <div className="ann-label">Undo</div>
+                <div className="ann-val">"Undo" in switched-banner re-shows State A with original REC Limited bond</div>
+              </div>
+            </>}
+            {(tab === 'nudge' || tab === 'nudge2') && <>
+              <div className="ann-card">
+                <div className="ann-label">Trigger (US-3)</div>
+                <div className="ann-val">Persists on homepage until <span className="hi">first investment</span>. Dismissed state stored per user.</div>
+              </div>
+              <div className="ann-card">
+                <div className="ann-label">Amount editor</div>
+                <div className="ann-val">Inline — no new screen, no navigation. Monthly income updates live as amount changes.</div>
+              </div>
+              <div className="ann-card">
+                <div className="ann-label">Jira</div>
+                <div className="ann-val"><span className="hi">ASP-3252</span> · FE · US-3</div>
+              </div>
+            </>}
+          </div>
+        )}
+
+        {/* Main content */}
+        {isWeb ? (
+          <div style={{ marginTop: 0 }}>
+            <WebScreen/>
+          </div>
+        ) : (
+          <div className="phone-wrap">
+            <div className="phone">
+              {tab === 'push'   && <PushNotif/>}
+              {tab === 'stateA' && <StateA whyOpen={false} onGoB={() => setTab('stateB')}/>}
+              {tab === 'stateA2'&& <StateA whyOpen={true} onGoB={() => setTab('stateB')}/>}
+              {tab === 'stateB' && <StateB onGoC={() => setTab('stateC')}/>}
+              {tab === 'stateC' && <StateC onGoA={() => setTab('stateA')}/>}
+              {tab === 'nudge'  && <NudgeScreen editing={false}/>}
+              {tab === 'nudge2' && <NudgeScreen editing={true}/>}
+            </div>
+          </div>
+        )}
+
+        {/* Right spec */}
+        {!isWeb && (
+          <div className="ann" style={{ paddingTop: 60 }}>
+            <div className="ann-card">
+              <div className="ann-label">Screen spec</div>
+              {[['Story','US-2 · ASP-3251'],['Owner','Hari / Dhanavel (FE)'],['Effort','S'],['Stack','React Native'],['One-time?','Yes — per user'],['Skip if','Bond API returns null']].map(([k,v]) => (
+                <div key={k} className="spec-row"><span className="spec-k">{k}</span><span className="spec-v">{v}</span></div>
+              ))}
+            </div>
+            <div className="ann-card">
+              <div className="ann-label">Impact target</div>
+              <ul className="ann-ul">
+                <li>RTT → invest%: 5.1% → <strong>~9–11%</strong></li>
+                <li>D7 NTU: 0.84% → <strong>~1.5%</strong></li>
+                <li>+9–13 investors/wk (1× RTT scale)</li>
+                <li>+₹0.8–1.1Cr GTV/mo</li>
+              </ul>
+            </div>
+            <div className="ann-card">
+              <div className="ann-label">Definition of done</div>
+              <ul className="ann-ul">
+                <li>State A shown once on first RTT</li>
+                <li>Why-box pre-fills from KYC data</li>
+                <li>Amount editable inline (live updates)</li>
+                <li>"Invest now" pre-fills order summary</li>
+                <li>State B → C → undo works end-to-end</li>
+              </ul>
+            </div>
+          </div>
+        )}
+
+      </div>
+
+      {isWeb && (
+        <div style={{ display:'flex',justifyContent:'center',marginTop:24 }}>
+          <div className="ann" style={{ maxWidth:960,width:'100%' }}>
+            <div className="ann-card">
+              <div className="ann-label">Web spec (⑤)</div>
+              <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:12 }}>
+                {[['Layout','480px left / 480px right card'],['Why-pill','Expanded by default (space available)'],['Check list','KYC completions pre-filled from API'],['CTA','Invest now + Change bond secondary'],['Jira','ASP-3253 · Web · US-2'],['Effort','M (separate from mobile RN work)']].map(([k,v]) => (
+                  <div key={k}><div style={{ fontSize:10,fontWeight:700,textTransform:'uppercase',letterSpacing:'.05em',color:'var(--fg3)',marginBottom:3 }}>{k}</div><div style={{ fontSize:12,fontWeight:600,color:'var(--dark)' }}>{v}</div></div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div style={{ textAlign:'center',fontSize:11,color:'#9CA3AF',marginTop:48 }}>
+        I8 · Post-KYC Activation (R1) · ASP-263 · Design handoff May 2026 · aspero B2C
       </div>
     </div>
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 </script>
 </body>
 </html>

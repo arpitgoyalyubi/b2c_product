@@ -3,315 +3,201 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>I8 · RTT Homepage (US-3) — 10 Sections</title>
+<title>I8 · RTT Homepage — All 9 Sections</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <style>
   :root {
-    --green:#01B756; --green-600:#019648; --green-700:#017A3A;
-    --green-100:#D6F5E2; --green-050:#E4FFF4;
-    --ink:#030A16; --ink-800:#0D1626; --ink-700:#151D2A;
-    --text2:#5A6373; --text3:#8A93A3; --text4:#B0BAC8;
-    --border:#E6E9EE; --border-d:#D2D7E0;
-    --lavender:#EFF2F9; --lav-fg:#4753C6;
-    --cream:#F9EDBF; --mint:#E4FFF4;
-    --white:#FFFFFF; --bg:#F4F6FA;
-    --amber-bg:#FFFBEB; --amber-fg:#B45309;
+    --g:#018E43;--g2:#016B33;--g3:#DCFCE7;--g4:#F0FDF4;
+    --dark:#0F1419;--dark2:#1A2233;
+    --fg2:#4B5563;--fg3:#9CA3AF;--fg4:#D1D5DB;
+    --border:#E5E7EB;--border2:#D1D5DB;
+    --page:#F7F8F8;--white:#FFFFFF;
+    --amber-bg:#FFFBEB;--amber-fg:#92400E;
+    --lav:#EEF2FF;--lav-fg:#4338CA;
+    --serif:'Fraunces','Source Serif Pro','Georgia',serif;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Manrope', -apple-system, sans-serif;
-    background: #E8ECF4; min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Manrope',-apple-system,sans-serif;
+    background:#E2E8F0;min-height:100vh;
+    -webkit-font-smoothing:antialiased;
   }
+  .outer{max-width:1280px;margin:0 auto;padding:40px 24px 80px}
 
-  /* Outer layout */
-  .outer {
-    max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px;
-  }
-  .page-header { text-align: center; margin-bottom: 36px; }
-  .page-header .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
-  .page-header h1 { font-size: 24px; font-weight: 800; color: var(--ink); letter-spacing: -.02em; margin-bottom: 6px; }
-  .page-header p { font-size: 13px; color: var(--text2); }
+  /* ── page header ─────────────────────────────── */
+  .ph{text-align:center;margin-bottom:28px}
+  .ph .ey{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);margin-bottom:8px}
+  .ph h1{font-size:24px;font-weight:800;color:var(--dark);letter-spacing:-.02em;margin-bottom:6px}
+  .ph p{font-size:13px;color:var(--fg2)}
 
-  /* Phone */
-  .phone-wrap { display: flex; justify-content: center; }
-  .phone {
-    width: 390px; height: 844px; border-radius: 44px; overflow: hidden;
-    background: var(--bg); position: relative;
-    box-shadow: 0 40px 80px rgba(3,10,22,.2), 0 0 0 1px rgba(3,10,22,.08);
-  }
-  .phone-inner { height: 100%; display: flex; flex-direction: column; }
+  /* ── variant toggle ──────────────────────────── */
+  .var-toggle{display:flex;justify-content:center;gap:8px;margin-bottom:32px}
+  .var-btn{font-family:inherit;cursor:pointer;border:1.5px solid var(--border);padding:10px 22px;border-radius:12px;font-size:13px;font-weight:600;background:var(--white);color:var(--fg2);transition:all 140ms}
+  .var-btn.on{border-color:var(--dark);background:var(--dark);color:var(--white)}
+  .var-badge{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:700;background:var(--g3);color:var(--g2)}
 
-  /* Dynamic island */
-  .di { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 120px; height: 32px; background: #000; border-radius: 20px; z-index: 30; }
+  /* ── two-col layout ──────────────────────────── */
+  .two-col{display:flex;gap:24px;align-items:flex-start}
+  .phone-col{position:sticky;top:24px}
+  .ann-col{flex:1;min-width:0}
 
-  /* Home indicator */
-  .hi { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 134px; height: 5px; border-radius: 3px; background: rgba(3,10,22,.2); z-index: 30; }
+  /* ── phone frame ─────────────────────────────── */
+  .phone-wrap{filter:drop-shadow(0 24px 56px rgba(15,20,25,.2))}
+  .phone{width:390px;border-radius:48px;background:var(--white);overflow:hidden;position:relative;border:1px solid rgba(15,20,25,.1)}
+  .phone-inner{display:flex;flex-direction:column;overflow:hidden}
 
-  /* Scroll */
-  .scroll { flex: 1; overflow-y: auto; }
-  .scroll::-webkit-scrollbar { display: none; }
+  /* ── status bar ──────────────────────────────── */
+  .sb{display:flex;align-items:center;justify-content:space-between;padding:14px 28px 8px;position:relative;z-index:10;flex-shrink:0;background:var(--white)}
+  .sb .di{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:122px;height:34px;background:#000;border-radius:20px;z-index:20}
+  .sb .t{font-size:15px;font-weight:600;letter-spacing:-.01em;color:var(--dark)}
 
-  /* ── Header (dark ink) */
-  .app-header {
-    background: var(--ink-800); padding: 0 16px 16px; position: relative;
-    overflow: hidden;
-  }
-  .app-header::before {
-    content: ''; position: absolute; top: -40px; right: -30px;
-    width: 160px; height: 160px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(1,183,86,.18) 0%, transparent 70%);
-  }
-  .header-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 64px 0 14px;
-  }
-  .header-logo { display: flex; align-items: center; gap: 8px; }
-  .header-logo span { font-size: 18px; font-weight: 800; color: var(--white); letter-spacing: -.02em; }
-  .header-icons { display: flex; gap: 8px; }
-  .header-icon {
-    width: 34px; height: 34px; border-radius: 10px;
-    background: rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center;
-  }
-  .search-bar {
-    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.1);
-    border-radius: 12px; padding: 9px 12px; display: flex; align-items: center; gap: 8px;
-    font-size: 13px; color: rgba(255,255,255,.4); font-family: inherit;
-  }
+  /* ── top bar ─────────────────────────────────── */
+  .topbar{display:flex;align-items:center;padding:6px 16px 10px;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border)}
+  .topbar .logo-sq{width:28px;height:28px;border-radius:8px;background:var(--dark);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .topbar .brand{font-size:15px;font-weight:700;color:var(--dark)}
+  .topbar .rt{display:flex;align-items:center;gap:8px;margin-left:auto}
+  .iconbtn{width:34px;height:34px;border-radius:10px;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--dark)}
+  .dot{width:7px;height:7px;border-radius:50%;background:#EF4444;position:absolute;top:4px;right:4px}
+  .ava{width:30px;height:30px;border-radius:10px;background:var(--g3);color:var(--g2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
 
-  /* Section wrappers */
-  .section { padding: 20px 0 4px; }
-  .section-white { background: var(--white); }
-  .section-bg { background: var(--bg); }
-  .section-mint { background: var(--green-050); }
-  .section-dark { background: var(--ink-800); }
+  /* ── page body ───────────────────────────────── */
+  .rtt-body{flex:1;overflow-y:auto;padding-bottom:32px;background:var(--page)}
+  .rtt-body::-webkit-scrollbar{display:none}
 
-  .section-hd {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 16px 12px;
-  }
-  .section-title { font-size: 16px; font-weight: 800; color: var(--ink); letter-spacing: -.01em; }
-  .section-link {
-    font-size: 12px; font-weight: 600; color: var(--green); background: none; border: none; cursor: pointer; font-family: inherit;
-  }
-  .section-sub { font-size: 12px; color: var(--text3); padding: 0 16px 10px; margin-top: -8px; }
+  /* ── section wrapper ─────────────────────────── */
+  .rtt-sec{padding:14px 16px 0}
+  .rtt-sec h3{font-size:16px;font-weight:700;color:var(--dark);margin-bottom:2px}
+  .rtt-sec .sub-line{font-size:11px;color:var(--fg3);font-weight:500;margin-bottom:12px}
+  .sec-head-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .see-all{background:none;border:none;font-size:12px;font-weight:600;color:var(--g);cursor:pointer;display:flex;align-items:center;gap:3px;font-family:inherit}
+  .sec-divider{height:1px;background:var(--border);margin:14px 16px 0}
 
-  /* ── §1 Nudge Card */
-  .nudge-card {
-    margin: 0 16px 4px; background: var(--white);
-    border: 1.5px solid var(--green-100); border-radius: 18px; overflow: hidden;
-    box-shadow: 0 2px 16px rgba(1,183,86,.1), 0 1px 3px rgba(3,10,22,.06);
-  }
-  .nudge-header {
-    background: linear-gradient(135deg, var(--ink-800) 0%, #0d2235 100%);
-    padding: 14px 14px 10px; position: relative; overflow: hidden;
-  }
-  .nudge-header::after {
-    content: ''; position: absolute; right: -10px; bottom: -10px;
-    width: 80px; height: 80px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(1,183,86,.25) 0%, transparent 70%);
-  }
-  .nudge-eyebrow { font-size: 10px; font-weight: 700; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
-  .nudge-issuer { font-size: 15px; font-weight: 800; color: var(--white); }
-  .nudge-meta { display: flex; gap: 8px; margin-top: 6px; align-items: center; }
-  .nudge-income {
-    padding: 12px 14px; background: var(--white);
-    display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border);
-  }
-  .nudge-income-big { font-size: 26px; font-weight: 800; color: var(--ink); letter-spacing: -.03em; line-height: 1; }
-  .nudge-income-label { font-size: 11px; color: var(--text3); margin-top: 2px; }
-  .nudge-amount-row {
-    padding: 10px 14px; background: var(--bg);
-    display: flex; align-items: center; justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-  }
-  .nudge-amount-left { font-size: 12px; color: var(--text2); }
-  .nudge-amount-val { font-size: 14px; font-weight: 800; color: var(--ink); }
-  .nudge-change-btn {
-    font-size: 12px; font-weight: 700; color: var(--green); background: none; border: none; cursor: pointer; font-family: inherit;
-  }
-  .nudge-actions { padding: 12px 14px; display: flex; gap: 8px; align-items: center; }
-  .btn-invest {
-    flex: 1; padding: 12px; border-radius: 12px; border: 0;
-    background: var(--green); color: var(--white); font-family: inherit;
-    font-size: 14px; font-weight: 700; cursor: pointer;
-  }
-  .btn-remind {
-    padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border);
-    background: var(--white); color: var(--ink); font-family: inherit;
-    font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
-  }
-  .nudge-dismiss {
-    padding: 8px 14px; text-align: right;
-  }
-  .nudge-dismiss button { background: none; border: none; font-family: inherit; font-size: 11px; color: var(--text4); cursor: pointer; }
+  /* ── nudge card ──────────────────────────────── */
+  .nudge-card{margin:10px 16px 4px;background:var(--white);border:1.5px solid #BFDFCB;border-radius:16px;padding:14px;position:relative}
+  .nudge-card .dismiss{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:8px;border:0;background:var(--page);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--fg3)}
+  .nudge-card .ey{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--fg3);margin-bottom:4px}
+  .nudge-card .bn{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:2px}
+  .nudge-card .bm{font-size:11px;color:var(--fg3)}
+  .nudge-monthly{padding:10px 0;border-top:1px solid var(--border);margin-top:10px}
+  .nudge-monthly .v{display:flex;align-items:baseline;gap:2px}
+  .nudge-monthly .num{font-family:var(--serif);font-size:36px;font-weight:600;color:var(--dark);letter-spacing:-.02em}
+  .nudge-monthly .unit{font-size:14px;font-weight:500;color:var(--fg2)}
+  .nudge-monthly .sub{font-size:11px;color:var(--fg3);margin-top:4px}
+  .nudge-amt-row{display:flex;align-items:center;justify-content:space-between;margin-top:8px;font-size:12.5px}
+  .nudge-amt-row .l{color:var(--fg3)}.nudge-amt-row .v{font-weight:700;color:var(--dark)}
+  .change-link{font-size:12px;font-weight:600;color:var(--g);background:none;border:none;cursor:pointer;font-family:inherit}
+  .nudge-cta-row{display:flex;gap:8px;margin-top:10px}
+  .nudge-invest{flex:2;height:40px;border-radius:10px;border:0;background:var(--g);color:var(--white);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}
+  .nudge-remind{flex:1;height:40px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);color:var(--fg2);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer}
 
-  /* Amount editor inline */
-  .inline-editor {
-    padding: 12px 14px; background: var(--white); border-top: 1px solid var(--border);
-  }
-  .inline-editor-label { font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
-  .chips-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
-  .amount-chip {
-    padding: 7px 11px; border-radius: 8px; border: 1.5px solid var(--border);
-    background: var(--white); font-family: inherit; font-size: 12px; font-weight: 600;
-    color: var(--ink); cursor: pointer; transition: all 140ms;
-  }
-  .amount-chip.active { background: var(--ink); color: var(--white); border-color: var(--ink); }
-  .inline-cancel { background: none; border: none; font-family: inherit; font-size: 12px; color: var(--text3); cursor: pointer; }
+  /* ── about grid (variant A) ──────────────────── */
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
+  .about-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:12px}
+  .about-card .eyebrow{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--fg3);margin-bottom:4px}
+  .about-card .ttl{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:8px}
+  .about-card .desc{font-size:11px;color:var(--fg2);line-height:1.5;margin-top:8px}
+  .about-card .stat-row{display:flex;gap:8px}
+  .about-card .stat .v{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--dark);letter-spacing:-.01em;line-height:1}
+  .about-card .stat .l{font-size:9.5px;font-weight:600;color:var(--fg3);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+  .track-bar{display:flex;gap:3px;margin-top:6px;margin-bottom:6px}
+  .track-bar .tb{flex:1;height:6px;border-radius:2px;background:var(--g)}
+  .reg-row{display:flex;gap:5px}
+  .reg-row .r{padding:2px 6px;border-radius:4px;font-size:9px;font-weight:700;background:var(--g3);color:var(--g2)}
 
-  /* ── §2 About this investment */
-  .infographic-grid { display: flex; gap: 10px; padding: 0 16px 4px; overflow-x: auto; }
-  .infographic-grid::-webkit-scrollbar { display: none; }
-  .info-card {
-    min-width: 220px; background: var(--white); border: 1px solid var(--border);
-    border-radius: 14px; padding: 14px; flex-shrink: 0;
-    box-shadow: 0 1px 6px rgba(3,10,22,.05);
-  }
-  .info-card-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text3); margin-bottom: 10px; }
-  .info-stat-row { display: flex; gap: 8px; margin-bottom: 10px; }
-  .info-stat {
-    flex: 1; background: var(--bg); border-radius: 8px; padding: 8px 10px;
-  }
-  .info-stat-label { font-size: 10px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
-  .info-stat-value { font-size: 16px; font-weight: 800; color: var(--ink); margin-top: 1px; }
-  .info-stat-value.green { color: var(--green); }
-  .info-use-funds {
-    background: var(--mint); border-radius: 8px; padding: 8px 10px;
-    font-size: 11px; color: var(--green-700); line-height: 1.5; font-weight: 500;
-  }
-  .repayment-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin: 8px 0; }
-  .repayment-fill { height: 100%; background: var(--green); border-radius: 3px; }
-  .issuer-tag { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text3); background: var(--bg); padding: 3px 8px; border-radius: 6px; margin-right: 5px; margin-bottom: 5px; }
+  /* ── video grid (variant B) ──────────────────── */
+  .video-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
+  .video-card{border-radius:12px;padding:12px;position:relative;min-height:140px;display:flex;flex-direction:column;overflow:hidden}
+  .video-card.bond{background:linear-gradient(145deg,#0a4f2a 0%,#052d18 100%)}
+  .video-card.issuer{background:linear-gradient(145deg,#1a3a6e 0%,#0d1f3c 100%)}
+  .video-card .pill{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);margin-bottom:6px;width:fit-content}
+  .video-card .corner-stat{display:flex;gap:10px;margin-bottom:auto}
+  .video-card .corner-stat .stat .v{font-family:var(--serif);font-size:16px;font-weight:600;color:#fff;line-height:1}
+  .video-card .corner-stat .stat .l{font-size:9px;font-weight:600;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.05em}
+  .video-card .initials{font-family:var(--serif);font-size:28px;font-weight:600;color:rgba(255,255,255,.9);margin-bottom:2px}
+  .video-card .founded{font-size:10px;color:rgba(255,255,255,.5);margin-bottom:auto}
+  .video-card .play{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;margin-bottom:8px;align-self:center;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+  .video-card .ttl-text{font-size:11px;font-weight:600;color:rgba(255,255,255,.85);line-height:1.35;margin-top:auto}
+  .video-card .duration{font-size:10px;color:rgba(255,255,255,.5);margin-top:3px}
 
-  /* ── §3 & §4 Bond rows */
-  .bond-row {
-    margin: 0 16px 10px; background: var(--white); border: 1px solid var(--border);
-    border-radius: 14px; padding: 13px 13px; display: flex; align-items: center; gap: 12px;
-    position: relative; overflow: hidden;
-  }
-  .bond-row::after { content: ''; position: absolute; right: -8px; bottom: -8px; width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle, rgba(1,183,86,.1) 0%, transparent 70%); }
-  .bond-row-logo {
-    width: 38px; height: 38px; border-radius: 9px; border: 1px solid var(--border);
-    background: var(--white); display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 800; color: var(--green-600); flex-shrink: 0;
-  }
-  .bond-row-main { flex: 1; }
-  .bond-row-issuer { font-size: 13px; font-weight: 700; color: var(--ink); }
-  .bond-row-chips { display: flex; gap: 5px; margin-top: 4px; flex-wrap: wrap; }
-  .chip-small {
-    display: inline-flex; align-items: center; padding: 2px 7px;
-    border-radius: 5px; font-weight: 600; font-size: 10px; white-space: nowrap;
-  }
-  .chip-aaa { background: var(--white); color: var(--ink); border: 1px solid var(--border-d); }
-  .chip-secured { background: var(--lavender); color: var(--lav-fg); }
-  .chip-rating { background: var(--green-100); color: var(--green-600); }
-  .bond-row-right { text-align: right; }
-  .bond-row-ytm { font-size: 17px; font-weight: 800; color: var(--green); letter-spacing: -.02em; }
-  .bond-row-tenure { font-size: 11px; color: var(--text3); margin-top: 1px; }
-  .social-proof { display: flex; align-items: center; gap: 5px; padding: 5px 13px 10px; margin: -6px 16px 6px; font-size: 11px; color: var(--text3); }
+  /* ── bond list rows ──────────────────────────── */
+  .bond-list{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .bond-list-row{display:flex;align-items:center;gap:10px;padding:12px 12px;border-bottom:1px solid var(--border)}
+  .bond-list-row:last-child{border-bottom:0}
+  .blr-logo{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0}
+  .blr-meta{flex:1;min-width:0}
+  .blr-meta .issuer{font-size:13px;font-weight:700;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .blr-meta .sub{font-size:11px;color:var(--fg3);margin-top:1px}
+  .blr-meta .pill-line{margin-top:4px}
+  .ipill{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700}
+  .ipill.top{background:var(--g3);color:var(--g2)}
+  .ipill.gov{background:#FEF9C3;color:#713F12}
+  .ipill.new{background:var(--g3);color:var(--g2)}
+  .blr-right{text-align:right}
+  .blr-right .v{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--g);letter-spacing:-.01em;line-height:1}
+  .blr-right .l{font-size:10px;font-weight:600;color:var(--fg3);text-transform:uppercase;letter-spacing:.05em}
 
-  /* ── §5 Category tabs */
-  .tab-bar {
-    display: flex; gap: 0; margin: 0 16px 12px;
-    background: var(--bg); border-radius: 10px; padding: 4px; overflow: hidden;
-  }
-  .tab-btn {
-    flex: 1; padding: 8px 6px; border-radius: 7px; border: 0; font-family: inherit;
-    font-size: 12px; font-weight: 600; cursor: pointer; transition: all 140ms;
-    background: transparent; color: var(--text3);
-  }
-  .tab-btn.active { background: var(--white); color: var(--ink); box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+  /* ── tabbed card ─────────────────────────────── */
+  .tabbed-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .tabbed-card .tabs{display:flex;border-bottom:1px solid var(--border)}
+  .tabbed-card .tb-t{flex:1;padding:9px 0;background:none;border:none;font-family:inherit;font-size:12px;font-weight:600;color:var(--fg3);cursor:pointer}
+  .tabbed-card .tb-t.on{color:var(--dark);border-bottom:2px solid var(--dark)}
+  .tabbed-card .footer{display:flex;align-items:center;justify-content:center;gap:4px;padding:10px;font-size:12px;font-weight:600;color:var(--g);cursor:pointer;background:none;border:none;width:100%;font-family:inherit}
 
-  /* ── §6 How bonds work */
-  .steps-row { display: flex; gap: 0; padding: 0 16px 4px; }
-  .step { flex: 1; text-align: center; position: relative; }
-  .step:not(:last-child)::after {
-    content: '→'; position: absolute; right: -6px; top: 20px;
-    font-size: 14px; color: var(--text4);
-  }
-  .step-num {
-    width: 40px; height: 40px; border-radius: 12px;
-    background: var(--green-050); border: 1.5px solid var(--green-100);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px; font-weight: 800; color: var(--green);
-    margin: 0 auto 7px;
-  }
-  .step-title { font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
-  .step-desc { font-size: 10px; color: var(--text3); line-height: 1.5; }
+  /* ── How bonds work (vertical rows) ─────────── */
+  .hbw-list{display:flex;flex-direction:column;gap:0}
+  .hbw-row{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border)}
+  .hbw-row:last-child{border-bottom:0}
+  .hbw-row .num{width:26px;height:26px;border-radius:50%;background:var(--dark);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;margin-top:1px}
+  .hbw-row .body .h{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:3px}
+  .hbw-row .body .p{font-size:12px;color:var(--fg2);line-height:1.5}
 
-  /* ── §7 New on Aspero */
-  .new-grid { display: flex; gap: 10px; padding: 0 16px 4px; }
-  .new-card {
-    flex: 1; background: var(--white); border: 1px solid var(--border);
-    border-radius: 14px; padding: 13px; overflow: hidden; position: relative;
-  }
-  .new-badge {
-    display: inline-flex; background: var(--green-100); color: var(--green-600);
-    padding: 2px 8px; border-radius: 5px; font-size: 10px; font-weight: 700;
-    margin-bottom: 6px;
-  }
-  .new-timestamp { font-size: 10px; color: var(--text4); margin-bottom: 8px; }
-  .new-issuer { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
-  .new-ytm { font-size: 22px; font-weight: 800; color: var(--green); letter-spacing: -.03em; line-height: 1; }
-  .new-ytm-label { font-size: 10px; color: var(--text3); }
+  /* ── New on Aspero grid ───────────────────────── */
+  .new-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .new-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:12px}
+  .new-card .ttl{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:3px}
+  .new-card .sub{font-size:11px;color:var(--fg3)}
+  .new-card .ytm-num{font-family:var(--serif);font-size:26px;font-weight:600;color:var(--g);margin-top:8px;letter-spacing:-.01em;line-height:1}
+  .new-card .ytm-lbl{font-size:9.5px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
 
-  /* ── §8 Testimonials */
-  .testimonial-scroll { display: flex; gap: 10px; padding: 0 16px 4px; overflow-x: auto; }
-  .testimonial-scroll::-webkit-scrollbar { display: none; }
-  .tcard {
-    min-width: 220px; background: var(--white); border: 1px solid var(--border);
-    border-radius: 14px; padding: 14px; flex-shrink: 0;
-  }
-  .tcard-stars { color: #F59E0B; font-size: 12px; margin-bottom: 8px; letter-spacing: 1px; }
-  .tcard-text { font-size: 12px; color: var(--ink); line-height: 1.7; margin-bottom: 10px; font-style: italic; }
-  .tcard-meta { display: flex; align-items: center; gap: 8px; }
-  .tcard-avatar { width: 28px; height: 28px; border-radius: 999px; background: var(--green-100); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--green-600); }
-  .tcard-name { font-size: 12px; font-weight: 700; color: var(--ink); }
-  .tcard-city { font-size: 11px; color: var(--text3); }
+  /* ── Testimonial ─────────────────────────────── */
+  .testimonial{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px}
+  .testimonial .quote{font-size:13px;line-height:1.65;color:var(--fg2);font-style:italic;margin-bottom:12px}
+  .testimonial .quote .hi{font-family:var(--serif);font-style:normal;font-weight:600;color:var(--dark)}
+  .testimonial .author{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--fg2)}
+  .testimonial .avi{width:32px;height:32px;border-radius:10px;background:var(--g3);color:var(--g2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
 
-  /* ── §9 Trust markers */
-  .trust-rows { margin: 0 16px; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--white); }
-  .trust-row { display: flex; align-items: flex-start; gap: 12px; padding: 13px 14px; border-bottom: 1px solid var(--border); }
-  .trust-row:last-child { border-bottom: 0; }
-  .trust-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--green-050); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .trust-title { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
-  .trust-desc { font-size: 11px; color: var(--text3); line-height: 1.6; }
+  /* ── Trust card ──────────────────────────────── */
+  .trust-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .trust-row{display:flex;gap:12px;align-items:flex-start;padding:12px;border-bottom:1px solid var(--border)}
+  .trust-row:last-child{border-bottom:0}
+  .trust-row .ic{width:34px;height:34px;border-radius:10px;background:var(--g4);color:var(--g);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .trust-row .body .h{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:2px}
+  .trust-row .body .p{font-size:11.5px;color:var(--fg2);line-height:1.5}
 
-  /* ── Bottom nav */
-  .bottom-nav {
-    display: flex; background: var(--white); border-top: 1px solid var(--border);
-    padding: 8px 0 20px; flex-shrink: 0; position: relative; z-index: 10;
-  }
-  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 4px 0; }
-  .nav-item-label { font-size: 10px; font-weight: 600; }
-  .nav-item.active .nav-item-label { color: var(--green); }
-  .nav-item:not(.active) .nav-item-label { color: var(--text4); }
+  /* ── Explore link ─────────────────────────────── */
+  .explore-row{display:flex;align-items:center;justify-content:center;gap:5px;padding:18px 0;font-size:13px;font-weight:700;color:var(--g)}
 
-  /* Annotations */
-  .two-col { display: flex; gap: 32px; align-items: flex-start; max-width: 1100px; margin: 0 auto; }
-  .ann-sidebar { flex: 1; min-width: 180px; }
-  .ann-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
-  .ann-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text3); margin-bottom: 6px; }
-  .ann-body { font-size: 12px; color: var(--text2); line-height: 1.7; }
-  .ann-body strong { color: var(--ink); }
-  .ann-num { display: flex; align-items: baseline; gap: 4px; }
-  .ann-big { font-size: 24px; font-weight: 800; color: var(--ink); letter-spacing: -.02em; }
-  .ann-small { font-size: 11px; color: var(--text3); }
-  .ann-trend { font-size: 11px; color: var(--green); font-weight: 700; }
-  .spec-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
-  .spec-row:last-child { border-bottom: 0; }
-  .spec-key { color: var(--text3); }
-  .spec-val { color: var(--ink); font-weight: 700; }
-  .section-index { display: flex; flex-direction: column; gap: 6px; }
-  .section-index-item { display: flex; align-items: baseline; gap: 8px; font-size: 12px; color: var(--text2); }
-  .section-index-item .num { width: 16px; font-weight: 800; color: var(--green); flex-shrink: 0; }
-  .section-index-item .name { font-weight: 600; color: var(--ink); }
-  .section-index-item .trigger { font-size: 11px; color: var(--text4); margin-left: 4px; }
+  /* ── Tab bar ─────────────────────────────────── */
+  .tabbar{display:flex;background:var(--white);border-top:1px solid var(--border);padding:8px 0 20px;flex-shrink:0}
+  .tb-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;font-family:inherit;padding:4px 0}
+  .tb-btn svg{color:var(--fg3)}
+  .tb-btn .label{font-size:10px;font-weight:600;color:var(--fg3)}
+  .tb-btn.on svg,.tb-btn.on .label{color:var(--g)}
+
+  /* ── annotation panel ────────────────────────── */
+  .ann-panel{padding-top:8px}
+  .ann-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
+  .ann-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--fg3);margin-bottom:6px}
+  .ann-val{font-size:13px;font-weight:600;color:var(--dark);line-height:1.6}
+  .ann-val .hi{color:var(--g)}
+  .ann-ul{font-size:12px;color:var(--fg2);line-height:1.8;padding-left:16px}
+  .spec-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
+  .spec-row:last-child{border-bottom:0}
+  .spec-k{color:var(--fg3);font-weight:500}.spec-v{color:var(--dark);font-weight:700}
 </style>
 </head>
 <body>
@@ -319,629 +205,444 @@
 <script type="text/babel">
 const { useState } = React;
 
-const T = {
-  green:'#01B756', green600:'#019648', green700:'#017A3A',
-  green100:'#D6F5E2', green050:'#E4FFF4',
-  ink:'#030A16', ink800:'#0D1626', ink700:'#151D2A',
-  text2:'#5A6373', text3:'#8A93A3', text4:'#B0BAC8',
-  border:'#E6E9EE', borderD:'#D2D7E0',
-  lavender:'#EFF2F9', lavFg:'#4753C6',
-  white:'#FFFFFF', bg:'#F4F6FA',
-  mint:'#E4FFF4',
-};
+/* ─── DATA ──────────────────────────────────────────────────── */
+const MATCHED = { issuer:'REC Limited', name:'PSU NCD 10.50% Mar 2028', isin:'INE020B07JZ4', rating:'AA+', type:'PSU · Secured', tenure:'24 months', ytm:10.5, amount:50000, monthly:438, colour:'#0E7A39', initials:'RE', faceValue:1000 };
+const SHORTER = { issuer:'Bajaj Finance', name:'NCD 9.80% Nov 2027', isin:'INE296A07PL2', rating:'AAA', type:'NBFC · Secured', tenure:'18 months', ytm:9.8, amount:50000, monthly:408, colour:'#1F3A93', initials:'BF', faceValue:1000 };
+const NHAI = { issuer:'NHAI', name:'54EC Capital Bonds', isin:'INE906B07GG6', rating:'AAA', type:'Govt · Secured', tenure:'5 years', ytm:8.05, colour:'#0E7A39', initials:'NH', faceValue:10000 };
+const LT = { issuer:'L&T Finance', name:'NCD 9.5% 2029', isin:'INE476A07NX8', rating:'AA+', ytm:13.85, tenure:'24 mo', colour:'#0050A5', initials:'LT', faceValue:1000 };
+const IIFL = { issuer:'IIFL Samasta', name:'NCD 10.75% 2027', isin:'INE917Y07034', rating:'AA-', ytm:13.5, tenure:'14 mo', colour:'#1B7E6A', initials:'IS', faceValue:1000 };
+const UGRO = { issuer:'U GRO Capital', name:'NCD 14.35% 2026', isin:'INE583D07039', rating:'A+', ytm:14.35, tenure:'9 mo', colour:'#523B7A', initials:'UG', faceValue:1000 };
 
-/* ── Icons */
-const Chev = ({ dir = 'down', size = 14, color = T.text3 }) => {
-  const r = { down:0, up:180, left:90, right:-90 }[dir];
-  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ transform:`rotate(${r}deg)`, flexShrink:0 }}><polyline points="6 9 12 15 18 9"/></svg>;
-};
+/* ─── ICONS ─────────────────────────────────────────────────── */
+const IC = (p) => <svg width={p.size||18} height={p.size||18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}>{p.children}</svg>;
+const ChevRight = (p) => <IC {...p}><polyline points="9 6 15 12 9 18"/></IC>;
+const HomeIcon = (p) => <IC {...p}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-4v-7H9v7H5a2 2 0 0 1-2-2z"/></IC>;
+const ChartIcon = (p) => <IC {...p}><path d="M3 3v18h18"/><path d="M7 14l4-4 4 3 5-7"/></IC>;
+const BriefcaseIcon = (p) => <IC {...p}><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></IC>;
+const StarIcon = (p) => <IC {...p}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></IC>;
+const MoreIcon = (p) => <IC {...p}><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></IC>;
+const BellIcon = (p) => <IC {...p}><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></IC>;
+const SearchIcon = (p) => <IC {...p}><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></IC>;
+const ShieldIcon = (p) => <IC {...p}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></IC>;
+const WalletIcon = (p) => <IC {...p}><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></IC>;
+const FileIcon = (p) => <IC {...p}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></IC>;
+const CloseIcon = (p) => <IC {...p}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></IC>;
 
-const AsperoMark = () => (
-  <svg width="28" height="28" viewBox="0 0 80 80" style={{ borderRadius: 8 }}>
-    <rect width="80" height="80" rx="14" fill={T.ink}/>
-    <path d="M40 14 L62 64 L51 64 L40 38 L29 64 L18 64 Z M40 50 L46 64 L34 64 Z" fill={T.green}/>
-  </svg>
-);
-
-/* ── StatusBar */
+/* ─── StatusBar ─────────────────────────────────────────────── */
 const StatusBar = () => (
-  <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'14px 28px 8px', background:T.ink800, position:'relative', zIndex:10, flexShrink:0 }}>
-    <div style={{ position:'absolute', top:12, left:'50%', transform:'translateX(-50%)', width:120, height:32, background:'#000', borderRadius:20, zIndex:20 }}/>
-    <span style={{ fontSize:15, fontWeight:600, color:T.white }}>9:41</span>
-    <svg width="54" height="13" viewBox="0 0 54 13" fill={T.white}>
+  <div className="sb">
+    <div className="di"/>
+    <span className="t">9:41</span>
+    <svg width="54" height="13" viewBox="0 0 54 13" fill="#0F1419">
       <rect x="0" y="7.5" width="3" height="5.5" rx=".7"/><rect x="5" y="5" width="3" height="8" rx=".7"/>
       <rect x="10" y="2.5" width="3" height="10.5" rx=".7"/><rect x="15" y="0" width="3" height="13" rx=".7"/>
-      <rect x="22" y="3" width="12" height="10" rx="2.5" stroke={T.white} strokeWidth="1.2" fill="none"/>
-      <rect x="24" y="5" width="8" height="6" rx="1.5" fill={T.white}/>
-      <rect x="40" y="2" width="3.2" height="5" rx=".7"/><rect x="44.8" y="0" width="3.2" height="8" rx=".7"/><rect x="49.6" y="0" width="3.2" height="11" rx=".7"/>
+      <rect x="22" y="3" width="12" height="10" rx="2.5" stroke="#0F1419" strokeWidth="1.2" fill="none"/>
+      <rect x="24" y="5" width="8" height="6" rx="1.5" fill="#0F1419"/>
+      <path d="M35.2 6v3.5c.9-.3 1.3-.9 1.3-1.75S36.1 6.3 35.2 6z"/>
+      <rect x="40" y="0" width="3.2" height="5.5" rx=".7"/><rect x="44.8" y="0" width="3.2" height="8" rx=".7"/>
+      <rect x="49.6" y="0" width="3.2" height="11" rx=".7"/>
     </svg>
   </div>
 );
 
-/* ── Chip */
-const Chip = ({ children, kind = 'aaa' }) => {
-  const styles = {
-    aaa:     { background:T.white, color:T.ink, border:`1px solid ${T.borderD}` },
-    secured: { background:T.lavender, color:T.lavFg },
-    rating:  { background:T.green100, color:T.green600 },
-    mint:    { background:T.mint, color:T.green600, border:`1px solid #B6E8C9` },
-  };
-  return (
-    <span style={{ display:'inline-flex', alignItems:'center', padding:'2px 7px', borderRadius:5, fontWeight:600, fontSize:10, whiteSpace:'nowrap', ...styles[kind] }}>
-      {children}
-    </span>
-  );
-};
-
-/* ── Bond row */
-const BondRow = ({ initials, issuer, rating, tenure, ytm, color = T.green600, socialProof }) => (
-  <div>
-    <div style={{ margin:'0 16px 0', background:T.white, border:`1px solid ${T.border}`, borderRadius:14, padding:'13px 13px', display:'flex', alignItems:'center', gap:12, position:'relative', overflow:'hidden' }}>
-      <div style={{ position:'absolute', right:-8, bottom:-8, width:60, height:60, borderRadius:'50%', background:`radial-gradient(circle, rgba(1,183,86,.1) 0%, transparent 70%)` }}/>
-      <div style={{ width:38, height:38, borderRadius:9, border:`1px solid ${T.border}`, background:T.white, display:'flex', alignItems:'center', justifyContent:'center', fontWeight:800, fontSize:11, color, flexShrink:0 }}>{initials}</div>
-      <div style={{ flex:1 }}>
-        <div style={{ fontSize:13, fontWeight:700, color:T.ink }}>{issuer}</div>
-        <div style={{ display:'flex', gap:5, marginTop:4, flexWrap:'wrap' }}>
-          <Chip kind="aaa">{rating}</Chip>
-          <Chip kind="secured">Senior Secured</Chip>
-        </div>
-      </div>
-      <div style={{ textAlign:'right' }}>
-        <div style={{ fontSize:17, fontWeight:800, color:T.green, letterSpacing:'-.02em' }}>{ytm}%</div>
-        <div style={{ fontSize:11, color:T.text3, marginTop:1 }}>{tenure}</div>
-      </div>
-    </div>
-    {socialProof && (
-      <div style={{ display:'flex', alignItems:'center', gap:5, padding:'5px 29px 10px', fontSize:11, color:T.text3 }}>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={T.green} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/></svg>
-        {socialProof}
-      </div>
-    )}
-    {!socialProof && <div style={{ height:10 }}/>}
-  </div>
-);
-
-/* ── §1 Nudge Card */
-const NudgeCard = () => {
-  const [editing, setEditing] = useState(false);
-  const [amount, setAmount] = useState(50000);
-  const [dismissed, setDismissed] = useState(false);
-  const monthly = (a) => Math.round(a * 0.1275 / 12).toLocaleString('en-IN');
-  const opts = [10000, 25000, 50000, 100000, 200000];
-  if (dismissed) return (
-    <div style={{ margin:'0 16px 16px', padding:'12px 16px', background:T.green050, border:`1px solid #B6E8C9`, borderRadius:14, textAlign:'center', fontSize:12, color:T.green600, fontWeight:600 }}>
-      Nudge card hidden for 7 days · tap to restore
-      <button onClick={() => setDismissed(false)} style={{ display:'block', margin:'6px auto 0', background:'none', border:'none', fontFamily:'inherit', fontSize:11, color:T.green600, cursor:'pointer', fontWeight:700 }}>Restore</button>
-    </div>
-  );
-  return (
-    <div style={{ margin:'0 16px 16px', background:T.white, border:`1.5px solid ${T.green100}`, borderRadius:18, overflow:'hidden', boxShadow:`0 2px 16px rgba(1,183,86,.1), 0 1px 3px rgba(3,10,22,.06)` }}>
-      {/* header */}
-      <div style={{ background:`linear-gradient(135deg, ${T.ink800} 0%, #0d2235 100%)`, padding:'14px 14px 10px', position:'relative', overflow:'hidden' }}>
-        <div style={{ position:'absolute', right:-10, bottom:-10, width:80, height:80, borderRadius:'50%', background:`radial-gradient(circle, rgba(1,183,86,.25) 0%, transparent 70%)` }}/>
-        <div style={{ fontSize:10, fontWeight:700, color:'rgba(255,255,255,.5)', textTransform:'uppercase', letterSpacing:'.08em', marginBottom:4 }}>Your first investment</div>
-        <div style={{ fontSize:16, fontWeight:800, color:T.white }}>Shriram Finance Ltd.</div>
-        <div style={{ display:'flex', gap:7, marginTop:6, alignItems:'center' }}>
-          <Chip kind="aaa">AA+</Chip>
-          <Chip kind="secured">Senior Secured</Chip>
-          <span style={{ fontSize:11, color:'rgba(255,255,255,.5)' }}>24M</span>
-        </div>
-        <div style={{ display:'inline-flex', alignItems:'center', gap:5, marginTop:8, background:'rgba(1,183,86,.2)', border:`1px solid rgba(1,183,86,.3)`, borderRadius:7, padding:'3px 9px', fontSize:11, fontWeight:600, color:T.green100 }}>
-          Moderate profile match
-        </div>
-      </div>
-      {/* income hero */}
-      <div style={{ padding:'12px 14px', background:T.white, display:'flex', alignItems:'flex-end', gap:6, borderBottom:`1px solid ${T.border}` }}>
-        <div>
-          <div style={{ fontSize:11, color:T.text3, marginBottom:2 }}>Monthly income on ₹{amount.toLocaleString('en-IN')}</div>
-          <div style={{ fontSize:28, fontWeight:800, color:T.ink, letterSpacing:'-.03em', lineHeight:1 }}>
-            ₹{monthly(amount)}<span style={{ fontSize:14, fontWeight:600, color:T.text2 }}>/mo</span>
-          </div>
-          <div style={{ fontSize:11, color:T.text3, marginTop:2 }}>12.75% YTM · paid monthly</div>
-        </div>
-      </div>
-      {/* amount row */}
-      <div style={{ padding:'10px 14px', background:T.bg, display:'flex', alignItems:'center', justifyContent:'space-between', borderBottom:`1px solid ${T.border}` }}>
-        <div>
-          <div style={{ fontSize:11, color:T.text3, marginBottom:1 }}>Investing</div>
-          <div style={{ fontSize:15, fontWeight:800, color:T.ink }}>₹{amount.toLocaleString('en-IN')}</div>
-        </div>
-        <button onClick={() => setEditing(v => !v)} style={{ fontSize:12, fontWeight:700, color:T.green, background:'none', border:'none', cursor:'pointer', fontFamily:'inherit' }}>
-          {editing ? 'done' : 'change'}
-        </button>
-      </div>
-      {/* inline editor */}
-      {editing && (
-        <div style={{ padding:'12px 14px', background:T.white, borderBottom:`1px solid ${T.border}` }}>
-          <div style={{ fontSize:12, fontWeight:700, color:T.ink, marginBottom:9 }}>How much do you want to invest?</div>
-          <div style={{ display:'flex', gap:7, flexWrap:'wrap', marginBottom:8 }}>
-            {opts.map(v => (
-              <button key={v} onClick={() => setAmount(v)} style={{
-                padding:'7px 11px', borderRadius:8, border:`1.5px solid ${v===amount?T.ink:T.border}`,
-                background:v===amount?T.ink:T.white, color:v===amount?T.white:T.ink,
-                fontFamily:'inherit', fontSize:12, fontWeight:600, cursor:'pointer',
-              }}>₹{v>=100000?`${v/100000}L`:`${v/1000}K`}</button>
-            ))}
-          </div>
-          <div style={{ fontSize:11, color:T.text3 }}>
-            Monthly income at ₹{amount.toLocaleString('en-IN')} → <strong style={{ color:T.green }}>₹{monthly(amount)}/mo</strong>
-          </div>
-        </div>
-      )}
-      {/* actions */}
-      <div style={{ padding:'12px 14px', display:'flex', gap:8, alignItems:'center' }}>
-        <button style={{ flex:1, padding:'12px', borderRadius:12, border:0, background:T.green, color:T.white, fontFamily:'inherit', fontSize:14, fontWeight:700, cursor:'pointer' }}>
-          Invest ₹{amount.toLocaleString('en-IN')}
-        </button>
-        <button style={{ padding:'12px 14px', borderRadius:12, border:`1px solid ${T.border}`, background:T.white, color:T.ink, fontFamily:'inherit', fontSize:13, fontWeight:600, cursor:'pointer', whiteSpace:'nowrap' }}>
-          Remind me later
-        </button>
-      </div>
-      {/* dismiss */}
-      <div style={{ padding:'4px 14px 10px', textAlign:'right' }}>
-        <button onClick={() => setDismissed(true)} style={{ background:'none', border:'none', fontFamily:'inherit', fontSize:11, color:T.text4, cursor:'pointer' }}>
-          ✕ Dismiss for 7 days
-        </button>
-      </div>
-    </div>
-  );
-};
-
-/* ── §2 About this investment */
-const AboutInvestment = () => (
-  <div style={{ padding:'16px 0 4px', background:T.bg }}>
-    <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 16px 12px' }}>
-      <div style={{ fontSize:15, fontWeight:800, color:T.ink }}>About this investment</div>
-    </div>
-    <div style={{ display:'flex', gap:10, padding:'0 16px 12px', overflowX:'auto' }}>
-      {/* Card 1 — Bond snapshot */}
-      <div style={{ minWidth:220, background:T.white, border:`1px solid ${T.border}`, borderRadius:14, padding:14, flexShrink:0 }}>
-        <div style={{ fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'.08em', color:T.text3, marginBottom:10 }}>Bond snapshot</div>
-        <div style={{ display:'flex', gap:7, marginBottom:9 }}>
-          {[{l:'YTM',v:'12.75%',g:true},{l:'Rating',v:'AA+'},{l:'Tenure',v:'24M'}].map(s => (
-            <div key={s.l} style={{ flex:1, background:T.bg, borderRadius:8, padding:'7px 9px' }}>
-              <div style={{ fontSize:9, color:T.text3, fontWeight:600, textTransform:'uppercase', letterSpacing:'.05em' }}>{s.l}</div>
-              <div style={{ fontSize:14, fontWeight:800, color:s.g?T.green:T.ink, marginTop:1 }}>{s.v}</div>
-            </div>
-          ))}
-        </div>
-        <div style={{ background:T.mint, borderRadius:8, padding:'8px 10px', fontSize:11, color:T.green700, lineHeight:1.6, fontWeight:500 }}>
-          <strong>Use of funds:</strong> Auto loans and SME business lending across India
-        </div>
-      </div>
-      {/* Card 2 — About issuer */}
-      <div style={{ minWidth:220, background:T.white, border:`1px solid ${T.border}`, borderRadius:14, padding:14, flexShrink:0 }}>
-        <div style={{ fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'.08em', color:T.text3, marginBottom:10 }}>About the issuer</div>
-        <div style={{ display:'flex', gap:7, marginBottom:8 }}>
-          {[{l:'Founded',v:'1979'},{l:'AUM',v:'₹1.7L Cr'}].map(s => (
-            <div key={s.l} style={{ flex:1, background:T.bg, borderRadius:8, padding:'7px 9px' }}>
-              <div style={{ fontSize:9, color:T.text3, fontWeight:600, textTransform:'uppercase', letterSpacing:'.05em' }}>{s.l}</div>
-              <div style={{ fontSize:13, fontWeight:800, color:T.ink, marginTop:1 }}>{s.v}</div>
-            </div>
-          ))}
-        </div>
-        <div style={{ marginBottom:8 }}>
-          <div style={{ display:'flex', justifyContent:'space-between', fontSize:11, color:T.text3, marginBottom:4 }}>
-            <span>Repayment track record</span>
-            <span style={{ color:T.green, fontWeight:700 }}>97%</span>
-          </div>
-          <div style={{ height:6, background:T.border, borderRadius:3, overflow:'hidden' }}>
-            <div style={{ height:'100%', width:'97%', background:T.green, borderRadius:3 }}/>
-          </div>
-        </div>
-        <div style={{ display:'flex', flexWrap:'wrap', gap:5 }}>
-          {['SEBI regulated','RBI registered','CRISIL rated'].map(t => (
-            <span key={t} style={{ display:'inline-flex', alignItems:'center', gap:4, fontSize:10, color:T.text3, background:T.bg, padding:'3px 7px', borderRadius:5 }}>✓ {t}</span>
-          ))}
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
-/* ── §5 Browse by category */
-const BrowseByCategory = () => {
-  const [tab, setTab] = useState('returns');
-  const tabs = [{ v:'returns', l:'High returns' }, { v:'safe', l:'Highly safe' }, { v:'short', l:'Short term' }];
-  const bonds = {
-    returns: [
-      { initials:'MF', issuer:'Muthoot Finance', rating:'A+', tenure:'36M', ytm:'15.2%', color:'#7C3AED' },
-      { initials:'PF', issuer:'Piramal Finance', rating:'A', tenure:'24M', ytm:'14.8%', color:'#2563EB' },
-      { initials:'CF', issuer:'Cholamandalam Finance', rating:'AA', tenure:'30M', ytm:'13.5%', color:'#059669' },
-    ],
-    safe: [
-      { initials:'HF', issuer:'HDFC Bank', rating:'AAA', tenure:'18M', ytm:'8.9%', color:'#1D4ED8' },
-      { initials:'IF', issuer:'ICICI Bank', rating:'AAA', tenure:'24M', ytm:'8.75%', color:'#DC2626' },
-      { initials:'SF', issuer:'SBI', rating:'AAA', tenure:'12M', ytm:'8.5%', color:'#0284C7' },
-    ],
-    short: [
-      { initials:'TF', issuer:'Tata Capital', rating:'AA+', tenure:'6M', ytm:'10.5%', color:'#0F172A' },
-      { initials:'BF', issuer:'Bajaj Finance', rating:'AAA', tenure:'9M', ytm:'9.9%', color:'#F97316' },
-      { initials:'MH', issuer:'Mahindra Finance', rating:'AA+', tenure:'12M', ytm:'11.2%', color:'#DC2626' },
-    ],
-  };
-  return (
-    <div style={{ padding:'16px 0 4px', background:T.white }}>
-      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 16px 12px' }}>
-        <div style={{ fontSize:15, fontWeight:800, color:T.ink }}>Browse by category</div>
-      </div>
-      {/* tab bar */}
-      <div style={{ display:'flex', gap:0, margin:'0 16px 12px', background:T.bg, borderRadius:10, padding:4 }}>
-        {tabs.map(t => (
-          <button key={t.v} onClick={() => setTab(t.v)} style={{
-            flex:1, padding:'8px 4px', borderRadius:7, border:0, fontFamily:'inherit',
-            fontSize:12, fontWeight:600, cursor:'pointer', transition:'all 140ms',
-            background: t.v===tab ? T.white : 'transparent',
-            color: t.v===tab ? T.ink : T.text3,
-            boxShadow: t.v===tab ? '0 1px 4px rgba(0,0,0,.1)' : 'none',
-          }}>{t.l}</button>
-        ))}
-      </div>
-      {bonds[tab].map((b, i) => (
-        <div key={i} style={{ margin:'0 16px 10px', background:T.white, border:`1px solid ${T.border}`, borderRadius:12, padding:'11px 12px', display:'flex', alignItems:'center', gap:10 }}>
-          <div style={{ width:34, height:34, borderRadius:8, border:`1px solid ${T.border}`, background:T.white, display:'flex', alignItems:'center', justifyContent:'center', fontWeight:800, fontSize:10, color:b.color, flexShrink:0 }}>{b.initials}</div>
-          <div style={{ flex:1 }}>
-            <div style={{ fontSize:13, fontWeight:700, color:T.ink }}>{b.issuer}</div>
-            <div style={{ display:'flex', gap:5, marginTop:3 }}>
-              <Chip kind="aaa">{b.rating}</Chip>
-              {tab === 'safe' && <span style={{ display:'inline-flex', alignItems:'center', padding:'2px 7px', borderRadius:5, fontWeight:600, fontSize:10, background:'#DBEAFE', color:'#1D4ED8' }}>Govt backed</span>}
-              {tab === 'short' && <span style={{ display:'inline-flex', alignItems:'center', padding:'2px 7px', borderRadius:5, fontWeight:600, fontSize:10, background:T.green100, color:T.green600 }}>{b.tenure}</span>}
-            </div>
-          </div>
-          <div style={{ textAlign:'right' }}>
-            <div style={{ fontSize:16, fontWeight:800, color:T.green }}>{b.ytm}</div>
-            <div style={{ fontSize:10, color:T.text3 }}>{b.tenure}</div>
-          </div>
-        </div>
-      ))}
-      <div style={{ padding:'4px 16px 8px', textAlign:'center' }}>
-        <button style={{ background:'none', border:'none', fontFamily:'inherit', fontSize:12, fontWeight:600, color:T.green, cursor:'pointer' }}>
-          See all {tabs.find(t=>t.v===tab)?.l.toLowerCase()} bonds →
-        </button>
-      </div>
-    </div>
-  );
-};
-
-/* ── §9 Trust markers */
-const TrustRows = [
-  { icon:'🏦', title:'NSDL registered depository', desc:'Your bonds are held in your own demat account — not with Aspero.' },
-  { icon:'📋', title:'SEBI regulated platform', desc:'Every bond listed is a SEBI-approved ISIN. Aspero is a registered stockbroker.' },
-  { icon:'🔐', title:'ISIN-level protection', desc:"Each bond has a unique ISIN. Your holding is tracked independently in the depository." },
-  { icon:'₹', title:'₹0 platform fee', desc:"No subscription, no transaction fee. Aspero earns from the issuer, not from you." },
-];
-
-/* ── Bottom nav */
-const BottomNav = () => (
-  <div style={{ display:'flex', background:T.white, borderTop:`1px solid ${T.border}`, padding:'8px 0 20px', flexShrink:0, position:'relative', zIndex:10 }}>
-    {[
-      { label:'Home', active:true, icon:(
-        <svg width="22" height="22" viewBox="0 0 24 24" fill={T.green}><path d="M4 11L12 4L20 11V20a1 1 0 01-1 1h-4v-7h-6v7H5a1 1 0 01-1-1z"/></svg>
-      )},
-      { label:'Explore', icon:(
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={T.text4} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-3.5-3.5"/></svg>
-      )},
-      { label:'Portfolio', icon:(
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={T.text4} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
-      )},
-      { label:'Profile', icon:(
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={T.text4} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="9" r="3.5"/><path d="M5 20c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg>
-      )},
-    ].map(item => (
-      <div key={item.label} style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', gap:3, cursor:'pointer', padding:'4px 0' }}>
-        {item.icon}
-        <span style={{ fontSize:10, fontWeight:600, color:item.active?T.green:T.text4 }}>{item.label}</span>
-      </div>
+/* ─── TabBar ─────────────────────────────────────────────────── */
+const TabBar = () => (
+  <div className="tabbar">
+    {[['Home', HomeIcon], ['Bonds', ChartIcon], ['Portfolio', BriefcaseIcon], ['Learn', StarIcon], ['More', MoreIcon]].map(([name, Icon]) => (
+      <button key={name} className={`tb-btn ${name==='Home' ? 'on' : ''}`}>
+        <Icon size={20}/><span className="label">{name}</span>
+      </button>
     ))}
   </div>
 );
 
-/* ── FULL HOMEPAGE */
-const Homepage = () => (
-  <div style={{ height:'100%', display:'flex', flexDirection:'column' }}>
-    <StatusBar />
-    <div style={{ flex:1, overflowY:'auto', scrollBehavior:'smooth' }}
-      className="scroll">
-
-      {/* App header (dark) */}
-      <div style={{ background:T.ink800, padding:'0 16px 16px', position:'relative', overflow:'hidden' }}>
-        <div style={{ position:'absolute', top:-40, right:-30, width:160, height:160, borderRadius:'50%', background:`radial-gradient(circle, rgba(1,183,86,.18) 0%, transparent 70%)` }}/>
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', paddingTop:56, paddingBottom:14, position:'relative' }}>
-          <div style={{ display:'flex', alignItems:'center', gap:9 }}>
-            <AsperoMark />
-            <span style={{ fontSize:19, fontWeight:800, color:T.white, letterSpacing:'-.02em' }}>aspero</span>
-          </div>
-          <div style={{ display:'flex', gap:8 }}>
-            {[
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.6)" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>,
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.6)" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="9" r="3.5"/><path d="M5 20c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg>,
-            ].map((icon, i) => (
-              <div key={i} style={{ width:34, height:34, borderRadius:10, background:'rgba(255,255,255,.1)', display:'flex', alignItems:'center', justifyContent:'center' }}>{icon}</div>
-            ))}
-          </div>
-        </div>
-        <div style={{ display:'flex', alignItems:'center', gap:9, background:'rgba(255,255,255,.08)', border:'1px solid rgba(255,255,255,.1)', borderRadius:12, padding:'9px 12px' }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.4)" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-3.5-3.5"/></svg>
-          <span style={{ fontSize:13, color:'rgba(255,255,255,.35)', fontFamily:'inherit' }}>Search bonds, issuers…</span>
-        </div>
-      </div>
-
-      {/* §1 Nudge card */}
-      <div style={{ padding:'14px 0 4px', background:T.bg }}>
-        <NudgeCard />
-      </div>
-
-      {/* §2 About this investment */}
-      <AboutInvestment />
-
-      {/* §3 Popular with first-time investors */}
-      <div style={{ padding:'16px 0 4px', background:T.bg }}>
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 16px 4px' }}>
-          <div style={{ fontSize:15, fontWeight:800, color:T.ink }}>Popular with first-time investors</div>
-          <button style={{ fontSize:12, fontWeight:600, color:T.green, background:'none', border:'none', cursor:'pointer', fontFamily:'inherit' }}>See all</button>
-        </div>
-        <div style={{ fontSize:12, color:T.text3, padding:'0 16px 10px' }}>Invest now, withdraw anytime</div>
-        <BondRow initials="SF" issuer="Shriram Finance Ltd." rating="AA+" tenure="24M" ytm="12.75" color={T.green600}
-          socialProof="453 investors chose this as their first investment" />
-        <BondRow initials="CF" issuer="Cholamandalam Invest. & Finance" rating="AA" tenure="18M" ytm="11.95" color="#059669"
-          socialProof="317 investors chose this as their first investment" />
-        <BondRow initials="MF" issuer="Manappuram Finance" rating="A+" tenure="12M" ytm="13.2" color="#7C3AED"
-          socialProof="198 investors chose this as their first investment" />
-      </div>
-
-      {/* §4 Trending this month */}
-      <div style={{ padding:'16px 0 4px', background:T.white }}>
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 16px 4px' }}>
-          <div style={{ fontSize:15, fontWeight:800, color:T.ink }}>Trending this month</div>
-          <button style={{ fontSize:12, fontWeight:600, color:T.green, background:'none', border:'none', cursor:'pointer', fontFamily:'inherit' }}>See all</button>
-        </div>
-        <div style={{ fontSize:12, color:T.text3, padding:'0 16px 10px' }}>By order volume, last 30 days</div>
-        <BondRow initials="BF" issuer="Bajaj Finance Ltd." rating="AAA" tenure="12M" ytm="13.95" color="#F97316" />
-        <BondRow initials="TF" issuer="Tata Capital Ltd." rating="AA+" tenure="36M" ytm="12.1" color="#0F172A" />
-        <BondRow initials="PF" issuer="Piramal Finance Ltd." rating="A" tenure="24M" ytm="14.8" color="#2563EB" />
-      </div>
-
-      {/* §5 Browse by category */}
-      <BrowseByCategory />
-
-      {/* §6 How bonds work */}
-      <div style={{ padding:'16px 0 16px', background:T.mint }}>
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 16px 14px' }}>
-          <div style={{ fontSize:15, fontWeight:800, color:T.ink }}>How bonds work</div>
-        </div>
-        <div style={{ display:'flex', gap:0, padding:'0 16px' }}>
-          {[
-            { n:'1', t:'You lend money', d:'Buy a bond — you become the lender, the company borrows at a fixed rate' },
-            { n:'2', t:'Earn monthly', d:'Company pays interest to your bank account every month' },
-            { n:'3', t:'Get back principal', d:'At maturity, the full face value returns to your account' },
-          ].map((s, i) => (
-            <div key={i} style={{ flex:1, textAlign:'center', position:'relative' }}>
-              {i < 2 && (
-                <div style={{ position:'absolute', right:-5, top:18, fontSize:16, color:T.text4, zIndex:1 }}>→</div>
-              )}
-              <div style={{ width:40, height:40, borderRadius:12, background:T.green050, border:`1.5px solid ${T.green100}`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:16, fontWeight:800, color:T.green, margin:'0 auto 7px' }}>{s.n}</div>
-              <div style={{ fontSize:12, fontWeight:700, color:T.ink, marginBottom:3 }}>{s.t}</div>
-              <div style={{ fontSize:10, color:T.text3, lineHeight:1.5 }}>{s.d}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* §7 New on Aspero */}
-      <div style={{ padding:'16px 0 16px', background:T.bg }}>
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 16px 12px' }}>
-          <div style={{ fontSize:15, fontWeight:800, color:T.ink }}>New on Aspero</div>
-          <button style={{ fontSize:12, fontWeight:600, color:T.green, background:'none', border:'none', cursor:'pointer', fontFamily:'inherit' }}>See all</button>
-        </div>
-        <div style={{ display:'flex', gap:10, padding:'0 16px' }}>
-          {[
-            { initials:'KF', issuer:'Keertana Finserv', rating:'BBB+', ytm:'15.5', color:'#F59E0B', listed:'2d ago' },
-            { initials:'RF', issuer:'Repco Finance', rating:'A-', ytm:'13.8', color:'#06B6D4', listed:'5d ago' },
-          ].map((c, i) => (
-            <div key={i} style={{ flex:1, background:T.white, border:`1px solid ${T.border}`, borderRadius:14, padding:13, overflow:'hidden', position:'relative' }}>
-              <div style={{ display:'inline-flex', background:T.green100, color:T.green600, padding:'2px 8px', borderRadius:5, fontSize:10, fontWeight:700, marginBottom:5 }}>New</div>
-              <div style={{ fontSize:10, color:T.text4, marginBottom:8 }}>Listed {c.listed}</div>
-              <div style={{ width:32, height:32, borderRadius:7, border:`1px solid ${T.border}`, background:T.white, display:'flex', alignItems:'center', justifyContent:'center', fontWeight:800, fontSize:10, color:c.color, marginBottom:6 }}>{c.initials}</div>
-              <div style={{ fontSize:12, fontWeight:700, color:T.ink, marginBottom:5 }}>{c.issuer}</div>
-              <div style={{ fontSize:22, fontWeight:800, color:T.green, letterSpacing:'-.03em', lineHeight:1 }}>{c.ytm}%</div>
-              <div style={{ fontSize:10, color:T.text3 }}>YTM</div>
-              <Chip kind="aaa">{c.rating}</Chip>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* §8 What investors say */}
-      <div style={{ padding:'16px 0 16px', background:T.white }}>
-        <div style={{ padding:'0 16px 12px' }}>
-          <div style={{ fontSize:15, fontWeight:800, color:T.ink }}>What investors say</div>
-          <div style={{ fontSize:12, color:T.text3, marginTop:2 }}>Real investors, real returns</div>
-        </div>
-        <div style={{ display:'flex', gap:10, padding:'0 16px', overflowX:'auto' }}>
-          {[
-            { stars:'★★★★★', text:'"Started with ₹10,000. Got ₹900 credited in 3 months. Aspero is genuinely easy."', name:'Rohan M.', city:'Pune', ytm:'12.5%' },
-            { stars:'★★★★★', text:'"I was nervous about bonds but the KYC was smooth and my ₹50,000 is earning ₹531/mo."', name:'Priya K.', city:'Chennai', ytm:'12.75%' },
-            { stars:'★★★★☆', text:'"Best platform for FD alternatives. The AA+ rating with 13% return is hard to find."', name:'Amit D.', city:'Hyderabad', ytm:'13.0%' },
-          ].map((t, i) => (
-            <div key={i} style={{ minWidth:220, background:T.white, border:`1px solid ${T.border}`, borderRadius:14, padding:14, flexShrink:0 }}>
-              <div style={{ color:'#F59E0B', fontSize:13, marginBottom:8, letterSpacing:1 }}>{t.stars}</div>
-              <div style={{ fontSize:12, color:T.ink, lineHeight:1.7, marginBottom:10, fontStyle:'italic' }}>{t.text}</div>
-              <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-                <div style={{ width:28, height:28, borderRadius:999, background:T.green100, display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, fontWeight:700, color:T.green600 }}>{t.name[0]}</div>
-                <div>
-                  <div style={{ fontSize:12, fontWeight:700, color:T.ink }}>{t.name}</div>
-                  <div style={{ fontSize:10, color:T.text3 }}>{t.city} · {t.ytm} YTM</div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* §9 Your money is safe */}
-      <div style={{ padding:'16px 0 16px', background:T.bg }}>
-        <div style={{ padding:'0 16px 12px' }}>
-          <div style={{ fontSize:15, fontWeight:800, color:T.ink }}>Your money is safe</div>
-          <div style={{ fontSize:12, color:T.text3, marginTop:2 }}>Four layers of protection</div>
-        </div>
-        <div style={{ margin:'0 16px', border:`1px solid ${T.border}`, borderRadius:14, overflow:'hidden', background:T.white }}>
-          {TrustRows.map((r, i) => (
-            <div key={i} style={{ display:'flex', alignItems:'flex-start', gap:12, padding:'13px 14px', borderBottom: i<TrustRows.length-1?`1px solid ${T.border}`:'none' }}>
-              <div style={{ width:36, height:36, borderRadius:10, background:T.green050, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, fontSize:16 }}>{r.icon}</div>
-              <div>
-                <div style={{ fontSize:13, fontWeight:700, color:T.ink, marginBottom:2 }}>{r.title}</div>
-                <div style={{ fontSize:11, color:T.text3, lineHeight:1.6 }}>{r.desc}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* §10 Explore all bonds */}
-      <div style={{ padding:'8px 16px 24px', background:T.white, textAlign:'center' }}>
-        <button style={{ background:'none', border:'none', fontFamily:'inherit', fontSize:14, fontWeight:700, color:T.green, cursor:'pointer', display:'inline-flex', alignItems:'center', gap:6 }}>
-          Explore all bonds
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.green} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </button>
-      </div>
-
-      <div style={{ height: 20 }} />
+/* ─── BondListRow ────────────────────────────────────────────── */
+const BondListRow = ({ bond, pill }) => (
+  <div className="bond-list-row">
+    <div className="blr-logo" style={{ background: bond.colour }}>{bond.initials}</div>
+    <div className="blr-meta">
+      <div className="issuer">{bond.issuer}</div>
+      <div className="sub">{bond.rating} · {bond.tenure} · Min ₹{((bond.faceValue||1000) * 10).toLocaleString('en-IN')}</div>
+      {pill && <div className="pill-line"><span className={`ipill ${pill.kind}`}>{pill.label}</span></div>}
     </div>
-    <BottomNav />
+    <div className="blr-right">
+      <div className="v">{bond.ytm.toFixed(1)}%</div>
+      <div className="l">YTM</div>
+    </div>
   </div>
 );
 
-/* ── App */
+/* ─── NudgeCard ──────────────────────────────────────────────── */
+const NudgeCard = () => (
+  <div className="nudge-card">
+    <button className="dismiss"><CloseIcon size={12}/></button>
+    <div className="ey">Your first investment</div>
+    <div className="bn">REC Limited · NCD 10.50% Mar 2028</div>
+    <div className="bm">AA+ · 24 months · Moderate profile match</div>
+    <div className="nudge-monthly">
+      <div className="v"><span className="unit">₹</span><span className="num">438</span><span className="unit">&nbsp;/mo</span></div>
+      <div className="sub">per month on ₹50,000 · 10.50% YTM</div>
+    </div>
+    <div className="nudge-amt-row">
+      <span className="l">Investing</span>
+      <span style={{ display:'flex',alignItems:'center',gap:8 }}>
+        <span className="v">₹50,000</span>
+        <button className="change-link">change</button>
+      </span>
+    </div>
+    <div className="nudge-cta-row">
+      <button className="nudge-invest">Invest now →</button>
+      <button className="nudge-remind">Remind me later</button>
+    </div>
+  </div>
+);
+
+/* ─── RTT Homepage ───────────────────────────────────────────── */
+const RttHomepage = ({ variant }) => (
+  <div className="phone-inner">
+    <StatusBar/>
+    <div className="topbar">
+      <div className="logo-sq">
+        <svg viewBox="0 0 80 80" fill="none" style={{ width:16,height:16 }}>
+          <path d="M40 10 L65 70 L52 70 L40 38 L28 70 L15 70 Z M40 52 L48 70 L32 70 Z" fill="#018E43"/>
+        </svg>
+      </div>
+      <span className="brand" style={{ marginLeft:8 }}>aspero</span>
+      <div className="rt">
+        <button className="iconbtn"><SearchIcon size={18}/></button>
+        <button className="iconbtn" style={{ position:'relative' }}><BellIcon size={18}/><span className="dot"/></button>
+      </div>
+    </div>
+
+    <div className="rtt-body">
+      {/* Welcome */}
+      <div style={{ padding:'14px 16px 4px' }}>
+        <div style={{ fontSize:11,color:'var(--fg3)',fontWeight:600,textTransform:'uppercase',letterSpacing:'.04em' }}>Welcome to Aspero</div>
+        <div style={{ fontSize:19,fontWeight:600,color:'var(--dark)',marginTop:2 }}>Hi Arjun</div>
+      </div>
+
+      {/* §1 Nudge card */}
+      <NudgeCard/>
+      <div style={{ padding:'8px 16px', display:'flex',alignItems:'center',gap:8,fontSize:11,color:'var(--fg3)' }}>
+        <ShieldIcon size={11}/>Your bonds settle into your own demat account.
+      </div>
+      <div className="sec-divider"/>
+
+      {/* §2 About this investment */}
+      <div className="rtt-sec">
+        <h3>About this investment</h3>
+        <div className="sub-line">
+          {variant === 'a' ? 'Two-card snapshot · zero-tap context' : 'Two short videos · 1–2 min each'}
+        </div>
+
+        {variant === 'a' ? (
+          <div className="about-grid">
+            <div className="about-card">
+              <div className="eyebrow">Bond snapshot</div>
+              <div className="ttl">What you're investing in</div>
+              <div className="stat-row">
+                <div className="stat"><div className="v">10.5%</div><div className="l">YTM</div></div>
+                <div className="stat"><div className="v">AA+</div><div className="l">Rating</div></div>
+                <div className="stat"><div className="v">24mo</div><div className="l">Tenure</div></div>
+              </div>
+              <div className="desc">REC funds power transmission projects across India. Coupons paid quarterly direct to your bank.</div>
+            </div>
+            <div className="about-card">
+              <div className="eyebrow">About the issuer</div>
+              <div className="ttl">Who is borrowing</div>
+              <div className="stat-row">
+                <div className="stat"><div className="v">1969</div><div className="l">Founded</div></div>
+                <div className="stat"><div className="v">₹5.4L Cr</div><div className="l">AUM</div></div>
+                <div className="stat"><div className="v">0</div><div className="l">Defaults</div></div>
+              </div>
+              <div style={{ fontSize:10,fontWeight:700,color:'var(--fg3)',textTransform:'uppercase',letterSpacing:'.04em',marginTop:8 }}>56-yr repayment track record</div>
+              <div className="track-bar">
+                {Array.from({ length:14 }).map((_,i) => <span key={i} className="tb"/>)}
+              </div>
+              <div className="reg-row">
+                <span className="r">SEBI</span><span className="r">RBI</span><span className="r">PFRDA</span>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="video-grid">
+            <div className="video-card bond">
+              <span className="pill">Bond</span>
+              <div className="corner-stat">
+                <div className="stat"><span className="v">10.5%</span><span className="l">YTM</span></div>
+                <div className="stat"><span className="v">AA+</span><span className="l">Rating</span></div>
+              </div>
+              <div className="play">
+                <span style={{ borderLeft:'12px solid #fff',borderTop:'8px solid transparent',borderBottom:'8px solid transparent',marginLeft:3 }}/>
+              </div>
+              <div className="ttl-text">What you're investing in</div>
+              <div className="duration">1:45</div>
+            </div>
+            <div className="video-card issuer">
+              <span className="pill">Issuer</span>
+              <div className="initials">REC</div>
+              <div className="founded">Founded 1969</div>
+              <div className="play">
+                <span style={{ borderLeft:'12px solid #fff',borderTop:'8px solid transparent',borderBottom:'8px solid transparent',marginLeft:3 }}/>
+              </div>
+              <div className="ttl-text">Who is borrowing your money</div>
+              <div className="duration">2:08</div>
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="sec-divider"/>
+
+      {/* §3 Popular with first-time investors */}
+      <div className="rtt-sec">
+        <div className="sec-head-row">
+          <h3>Popular with first-time investors</h3>
+          <button className="see-all">See all<ChevRight size={11}/></button>
+        </div>
+        <div className="bond-list">
+          <BondListRow bond={MATCHED} pill={{ kind:'top', label:'Top pick' }}/>
+          <BondListRow bond={SHORTER}/>
+          <BondListRow bond={NHAI} pill={{ kind:'gov', label:'Govt backed' }}/>
+        </div>
+      </div>
+      <div className="sec-divider"/>
+
+      {/* §4 Trending this month */}
+      <div className="rtt-sec">
+        <div className="sec-head-row">
+          <h3>Trending this month</h3>
+          <button className="see-all">See all<ChevRight size={11}/></button>
+        </div>
+        <div className="bond-list">
+          <BondListRow bond={LT}/>
+          <BondListRow bond={IIFL}/>
+        </div>
+      </div>
+      <div className="sec-divider"/>
+
+      {/* §5 Browse by category */}
+      <div className="rtt-sec">
+        <h3>Browse by category</h3>
+        <div style={{ height:10 }}/>
+        <div className="tabbed-card">
+          <div className="tabs">
+            {['High returns','Highly safe','Short term'].map((t,i) => (
+              <button key={t} className={`tb-t ${i===0 ? 'on' : ''}`}>{t}</button>
+            ))}
+          </div>
+          <div className="bond-list" style={{ borderRadius:0,border:'none' }}>
+            <BondListRow bond={UGRO} pill={{ kind:'top', label:'Top pick' }}/>
+            <BondListRow bond={IIFL}/>
+            <BondListRow bond={MATCHED}/>
+          </div>
+          <button className="footer">See all high-return bonds<ChevRight size={12}/></button>
+        </div>
+      </div>
+      <div className="sec-divider"/>
+
+      {/* §6 How bonds work */}
+      <div className="rtt-sec">
+        <h3>How bonds work</h3>
+        <div style={{ height:10 }}/>
+        <div className="hbw-list" style={{ background:'var(--white)',border:'1px solid var(--border)',borderRadius:12,padding:'0 12px' }}>
+          {[
+            { n:1, h:'You lend, the issuer borrows', p:'Pay once. The issuer takes your money to fund their business — roads, energy, lending.' },
+            { n:2, h:'They pay you every month / quarter', p:'Coupon payments hit your bank directly on a fixed schedule. No NAV swings.' },
+            { n:3, h:'You get your money back at maturity', p:'On the maturity date, the issuer returns your full principal. You\'re free to reinvest.' },
+          ].map(r => (
+            <div key={r.n} className="hbw-row">
+              <span className="num">{r.n}</span>
+              <div className="body"><div className="h">{r.h}</div><div className="p">{r.p}</div></div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="sec-divider"/>
+
+      {/* §7 New on Aspero */}
+      <div className="rtt-sec">
+        <div className="sec-head-row">
+          <h3>New on Aspero</h3>
+          <button className="see-all">See all<ChevRight size={11}/></button>
+        </div>
+        <div className="new-grid">
+          <div className="new-card">
+            <span className="ipill new" style={{ marginBottom:8 }}>NEW · Listed 2d ago</span>
+            <div className="ttl">Bajaj Finance 9.80%</div>
+            <div className="sub">AAA · 18 months</div>
+            <div className="ytm-num">9.80%</div>
+            <div className="ytm-lbl">YTM</div>
+          </div>
+          <div className="new-card">
+            <span className="ipill new" style={{ marginBottom:8 }}>NEW · Listed 5d ago</span>
+            <div className="ttl">NHAI 54EC</div>
+            <div className="sub">AAA · 5 years</div>
+            <div className="ytm-num">8.05%</div>
+            <div className="ytm-lbl">YTM</div>
+          </div>
+        </div>
+      </div>
+      <div className="sec-divider"/>
+
+      {/* §8 What investors say */}
+      <div className="rtt-sec">
+        <h3>What investors say</h3>
+        <div style={{ height:10 }}/>
+        <div className="testimonial">
+          <div className="quote">
+            "Started with <span className="hi">₹25,000</span> just to test. Got my first coupon of <span className="hi">₹218</span> two months later, on time. Now I've invested <span className="hi">₹3.4 lakh</span> across 6 bonds."
+          </div>
+          <div className="author">
+            <span className="avi">PR</span>
+            <span><strong>Priyanka R.</strong> · Bengaluru · investing since Jan 2026</span>
+          </div>
+        </div>
+      </div>
+      <div className="sec-divider"/>
+
+      {/* §9 Your money is safe */}
+      <div className="rtt-sec">
+        <h3>Your money is safe</h3>
+        <div style={{ height:10 }}/>
+        <div className="trust-card">
+          {[
+            { Icon: ShieldIcon, h:'NSDL registered depository', p:'Your bonds are held in your own demat account — not with Aspero.' },
+            { Icon: ShieldIcon, h:'SEBI regulated platform', p:'Every bond listed is a SEBI-approved ISIN. Aspero is a registered stockbroker.' },
+            { Icon: FileIcon, h:'ISIN-level protection', p:'Each bond has a unique ISIN. Your holding is tracked independently in the depository.' },
+            { Icon: WalletIcon, h:'₹0 platform fee', p:'No subscription, no transaction fee. Aspero earns from the issuer, not from you.' },
+          ].map(({ Icon, h, p }) => (
+            <div key={h} className="trust-row">
+              <span className="ic"><Icon size={18}/></span>
+              <div className="body"><div className="h">{h}</div><div className="p">{p}</div></div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="explore-row">
+        Explore all bonds <ChevRight size={13}/>
+      </div>
+    </div>
+
+    <TabBar/>
+  </div>
+);
+
+/* ─── APP ────────────────────────────────────────────────────── */
 function App() {
+  const [variant, setVariant] = useState('a');
+
   return (
     <div className="outer">
-      <div className="page-header">
-        <div className="eyebrow">I8 · RTT Homepage · US-3 + Homepage Spec</div>
-        <h1>RTT Homepage — 10 Sections</h1>
-        <p>Shown to all RTT users with zero investments. Sections 1–9 disappear after first trade (except §9 trust markers).</p>
+      <div className="ph">
+        <div className="ey">I8 · RTT Homepage · US-3 · Full 9-Section View</div>
+        <h1>RTT Homepage — All 9 Sections</h1>
+        <p>Shown only to RTT users with zero investments. §9 (trust markers) persists post-first-trade.</p>
+      </div>
+
+      {/* Variant toggle */}
+      <div className="var-toggle">
+        <button className={`var-btn ${variant==='a' ? 'on' : ''}`} onClick={() => setVariant('a')}>
+          Variant A · Infographic about-cards <span className="var-badge">Launch</span>
+        </button>
+        <button className={`var-btn ${variant==='b' ? 'on' : ''}`} onClick={() => setVariant('b')}>
+          Variant B · Video about-cards <span className="var-badge">Phase 2</span>
+        </button>
       </div>
 
       <div className="two-col">
 
         {/* Left annotations */}
-        <div className="ann-sidebar" style={{ paddingTop:60 }}>
+        <div className="ann-panel">
           <div className="ann-card">
-            <div className="ann-label">Trigger condition</div>
-            <div className="ann-body">
-              <strong>KYC status = RTT</strong> AND<br/>
-              <strong>first_investment_count = 0</strong>
-            </div>
+            <div className="ann-label">Audience</div>
+            <div className="ann-val">RTT users (KYC done) with <span className="hi">zero investments</span></div>
           </div>
           <div className="ann-card">
-            <div className="ann-label">Baseline metrics</div>
-            <div className="ann-num" style={{ marginBottom:6 }}>
-              <div className="ann-big">5.1%</div>
-              <div className="ann-small">RTT → invest</div>
-            </div>
-            <div style={{ fontSize:11, color:'#DC2626', fontWeight:600, marginBottom:4 }}>↓ from historical best 40–50%</div>
-            <div className="ann-num">
-              <div className="ann-big">0.84%</div>
-              <div className="ann-small">D7 NTU</div>
-            </div>
-            <div style={{ fontSize:11, color:'#DC2626', fontWeight:600 }}>↓ from best 2.09%</div>
+            <div className="ann-label">§9 persistence</div>
+            <div className="ann-val">Trust markers section persists post-first-trade. All other sections hidden after first investment.</div>
           </div>
           <div className="ann-card">
-            <div className="ann-label">Section index</div>
-            <div className="section-index">
-              {[
-                {n:'1', name:'Nudge card', trigger:'RTT + 0 investments'},
-                {n:'2', name:'About this investment', trigger:'Variant A — infographic'},
-                {n:'3', name:'Popular first picks'},
-                {n:'4', name:'Trending this month'},
-                {n:'5', name:'Browse by category', trigger:'tabbed, interactive'},
-                {n:'6', name:'How bonds work'},
-                {n:'7', name:'New on Aspero'},
-                {n:'8', name:'What investors say'},
-                {n:'9', name:'Your money is safe', trigger:'persists post-trade'},
-                {n:'10', name:'Explore all bonds', trigger:'text link'},
-              ].map(s => (
-                <div key={s.n} style={{ display:'flex', alignItems:'baseline', gap:8, fontSize:12, color:'#5A6373', padding:'3px 0', borderBottom:'1px solid #F4F6FA' }}>
-                  <span style={{ width:16, fontWeight:800, color:T.green, flexShrink:0 }}>{s.n}</span>
-                  <span style={{ fontWeight:600, color:T.ink }}>{s.name}</span>
-                  {s.trigger && <span style={{ fontSize:10, color:T.text4 }}>{s.trigger}</span>}
-                </div>
-              ))}
-            </div>
+            <div className="ann-label">Nudge card (§1)</div>
+            <ul className="ann-ul">
+              <li>Persists until first investment</li>
+              <li>Monthly income in Fraunces serif</li>
+              <li>Amount editable inline — no new screen</li>
+              <li>₹438/mo pre-calculated at ₹50K</li>
+            </ul>
+          </div>
+          <div className="ann-card">
+            <div className="ann-label">Variant A vs B</div>
+            <ul className="ann-ul">
+              <li><strong>A:</strong> Ships first (zero content dependency)</li>
+              <li><strong>B:</strong> Requires 1-2 min video per ISIN</li>
+              <li>Start Variant B with top 10 ISINs by volume</li>
+            </ul>
+          </div>
+          <div className="ann-card">
+            <div className="ann-label">How Bonds Work (§6)</div>
+            <div className="ann-val">Vertical row layout — numbered steps with heading + description. NOT horizontal columns.</div>
+          </div>
+          <div className="ann-card">
+            <div className="ann-label">Jira</div>
+            <div className="ann-val"><span className="hi">ASP-3253</span> · FE · US-3 · RTT homepage</div>
           </div>
         </div>
 
         {/* Phone */}
-        <div className="phone-wrap">
-          <div className="phone">
-            <div className="phone-inner">
-              <Homepage />
-              <div className="di" />
-              <div className="hi" />
+        <div className="phone-col">
+          <div className="phone-wrap">
+            <div className="phone">
+              <RttHomepage variant={variant}/>
             </div>
           </div>
         </div>
 
         {/* Right spec */}
-        <div className="ann-sidebar" style={{ paddingTop:60 }}>
+        <div className="ann-panel">
           <div className="ann-card">
-            <div className="ann-label">US-3 nudge card spec</div>
-            {[
-              { k:'Jira', v:'ASP-3252' },
-              { k:'Owner', v:'Hari / Hari (FE) + Jagath (BE)' },
-              { k:'Dismiss', v:'7 days, then re-shows' },
-              { k:'Goes away', v:'After first successful invest' },
-              { k:'Bond refresh', v:'Daily — auto-switch if sold out' },
-              { k:'Bond change', v:'Via Screen 2 (State A) only' },
-            ].map(r => (
-              <div key={r.k} className="spec-row">
-                <div className="spec-key">{r.k}</div>
-                <div className="spec-val">{r.v}</div>
-              </div>
+            <div className="ann-label">Screen spec</div>
+            {[['Story','US-3 · ASP-3253'],['Height','~3400px (scrollable)'],['Owner','Hari (FE)'],['Effort','L'],['Stack','React Native'],['Disappears','After first investment (§9 stays)']].map(([k,v]) => (
+              <div key={k} className="spec-row"><span className="spec-k">{k}</span><span className="spec-v">{v}</span></div>
             ))}
           </div>
           <div className="ann-card">
-            <div className="ann-label">Variant A (launch)</div>
-            <div className="ann-body">
-              §2 uses <strong>infographic cards</strong> (bond snapshot + issuer) — zero content dependency.<br/><br/>
-              <strong>Variant B</strong> (phase 2): video cards — requires video per ISIN, start with top 10 by volume.
-            </div>
+            <div className="ann-label">Impact target</div>
+            <ul className="ann-ul">
+              <li>RTT → invest conversion: 5.1% → <strong>~9–11%</strong></li>
+              <li>Time-to-first-invest: D2.4 → <strong>D1.5</strong></li>
+              <li>+₹0.8–1.1Cr GTV/mo at current RTT scale</li>
+            </ul>
           </div>
           <div className="ann-card">
-            <div className="ann-label">Impact model</div>
-            {[
-              { k:'Target D0 invest lift', v:'+4–6pp' },
-              { k:'At 1× RTT (216/wk)', v:'+₹0.8–1.1Cr/mo' },
-              { k:'At 2× RTT (432/wk)', v:'+₹1.5–2.2Cr/mo' },
-              { k:'At 10× RTT (2,160/wk)', v:'+₹9.2Cr/mo' },
-            ].map(r => (
-              <div key={r.k} className="spec-row">
-                <div className="spec-key">{r.k}</div>
-                <div className="spec-val">{r.v}</div>
-              </div>
-            ))}
+            <div className="ann-label">Section visibility rules</div>
+            <ul className="ann-ul">
+              <li>§1 Nudge: hide after first investment</li>
+              <li>§2 About: hide after first investment</li>
+              <li>§3–§8: hide after first investment</li>
+              <li>§9 Trust: <strong>always visible</strong></li>
+            </ul>
           </div>
           <div className="ann-card">
-            <div className="ann-label">Interactive in this mock</div>
-            <ul style={{ fontSize:12, color:'#5A6373', lineHeight:1.8, paddingLeft:16 }}>
-              <li>Nudge card amount editor</li>
-              <li>₹/mo recalculates live</li>
-              <li>CTA label updates with amount</li>
-              <li>7-day dismiss (tap to restore)</li>
-              <li>Browse by category tabs</li>
+            <div className="ann-label">Bond data (§3, §5)</div>
+            <ul className="ann-ul">
+              <li>REC Limited — AA+ · 10.5% · 24mo</li>
+              <li>Bajaj Finance — AAA · 9.8% · 18mo</li>
+              <li>NHAI 54EC — AAA · 8.05% · 5yr</li>
+              <li>L&T Finance — AA+ · 13.85% · 24mo</li>
             </ul>
           </div>
         </div>
-
       </div>
 
-      <div style={{ textAlign:'center', fontSize:11, color:'#B0BAC8', marginTop:48 }}>
-        I8 · RTT Homepage (R1) · US-3 · ASP-263 · Last updated Apr 7, 2026 · aspero B2C
+      <div style={{ textAlign:'center',fontSize:11,color:'#9CA3AF',marginTop:48 }}>
+        I8 · RTT Homepage (R1) · ASP-263 · Design handoff May 2026 · aspero B2C
       </div>
     </div>
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 </script>
 </body>
 </html>
