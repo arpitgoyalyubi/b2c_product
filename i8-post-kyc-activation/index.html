@@ -189,11 +189,26 @@
     <div style="grid-column:1/-1">
       <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#8A93A3;margin-bottom:10px">Solution overview</div>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
-        {['US-1 Bond matching API (BE) · ASP-3250', 'US-2 Post-KYC activation screen (FE) · ASP-3251', 'US-3 Persistent nudge card (FE+BE) · ASP-3252', 'US-4 Push notification at KYC approval (BE) · ASP-3253'].map((item, i) => `
-          <div style="background:#F4F6FA;border-radius:10px;padding:12px">
-            <div style="font-size:11px;font-weight:700;color:#030A16;line-height:1.6">${item}</div>
-          </div>
-        `).join('')}
+        <div style="background:#F4F6FA;border-radius:10px;padding:12px">
+          <div style="font-size:10px;font-weight:700;color:#4753C6;background:#EFF2F9;display:inline-block;padding:2px 7px;border-radius:4px;margin-bottom:6px">US-1 &middot; ASP-3250 &middot; BE</div>
+          <div style="font-size:12px;font-weight:700;color:#030A16;line-height:1.5">Bond matching API</div>
+          <div style="font-size:11px;color:#5A6373;margin-top:3px">Score user from KYC data &rarr; return best-matched bond</div>
+        </div>
+        <div style="background:#F4F6FA;border-radius:10px;padding:12px">
+          <div style="font-size:10px;font-weight:700;color:#4753C6;background:#EFF2F9;display:inline-block;padding:2px 7px;border-radius:4px;margin-bottom:6px">US-2 &middot; ASP-3251 &middot; FE</div>
+          <div style="font-size:12px;font-weight:700;color:#030A16;line-height:1.5">Post-KYC activation screen</div>
+          <div style="font-size:11px;color:#5A6373;margin-top:3px">One-time screen after KYC &mdash; States A, B, C</div>
+        </div>
+        <div style="background:#F4F6FA;border-radius:10px;padding:12px">
+          <div style="font-size:10px;font-weight:700;color:#4753C6;background:#EFF2F9;display:inline-block;padding:2px 7px;border-radius:4px;margin-bottom:6px">US-3 &middot; ASP-3252 &middot; FE+BE</div>
+          <div style="font-size:12px;font-weight:700;color:#030A16;line-height:1.5">Persistent nudge card</div>
+          <div style="font-size:11px;color:#5A6373;margin-top:3px">Home screen card for RTT users until first trade</div>
+        </div>
+        <div style="background:#F4F6FA;border-radius:10px;padding:12px">
+          <div style="font-size:10px;font-weight:700;color:#4753C6;background:#EFF2F9;display:inline-block;padding:2px 7px;border-radius:4px;margin-bottom:6px">US-4 &middot; ASP-3253 &middot; BE+Push</div>
+          <div style="font-size:12px;font-weight:700;color:#030A16;line-height:1.5">Push notification</div>
+          <div style="font-size:11px;color:#5A6373;margin-top:3px">Instant push at KYC approval with deeplink to Screen 2</div>
+        </div>
       </div>
     </div>
   </div>
