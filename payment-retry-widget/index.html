@@ -265,6 +265,103 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
 .divider{height:1px;background:#E6E9EE;margin:8px 0}
 .mt4{margin-top:4px}.mt8{margin-top:8px}.mt10{margin-top:10px}.mt12{margin-top:12px}
 .mb8{margin-bottom:8px}.mb10{margin-bottom:10px}.mb12{margin-bottom:12px}
+
+/* ── LOCK SCREEN ──────────────────────────────────── */
+.lock-bg{background:linear-gradient(160deg,#1e3a5f 0%,#0d1626 100%);height:100%;display:flex;flex-direction:column;align-items:center;padding-top:44px;position:relative}
+.lock-time{font-size:54px;font-weight:200;color:#fff;letter-spacing:-2px;line-height:1}
+.lock-date{font-size:12px;color:rgba(255,255,255,0.55);margin-bottom:18px}
+.notif-card{background:rgba(255,255,255,0.14);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:13px;padding:11px 13px;width:88%;margin-bottom:7px}
+.notif-row{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.notif-app-ico{width:20px;height:20px;border-radius:5px;background:#01B756;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0}
+.sms-ico{width:20px;height:20px;border-radius:5px;background:#4F80ED;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0}
+.notif-app-name{font-size:11px;font-weight:600;color:#fff}.notif-ts{font-size:10px;color:rgba(255,255,255,0.45);margin-left:auto}
+.notif-title{font-size:12px;font-weight:700;color:#fff;margin-bottom:2px}
+.notif-body{font-size:11px;color:rgba(255,255,255,0.7);line-height:1.4}
+.lock-swipe{position:absolute;bottom:14px;font-size:11px;color:rgba(255,255,255,0.3);text-align:center;width:100%}
+
+/* ── PROCESSING SCREEN ──────────────────────────────────── */
+.proc-wrap{display:flex;flex-direction:column;align-items:center;padding:20px 16px 0}
+.spinner-ring{width:48px;height:48px;border-radius:50%;border:3px solid #E6E9EE;border-top-color:#01B756;margin-bottom:12px;animation:spin 0.9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.proc-title{font-size:15px;font-weight:700;color:#030A16;text-align:center;margin-bottom:4px}
+.proc-sub{font-size:11px;color:#8A93A3;text-align:center;margin-bottom:16px}
+.step-list{display:flex;flex-direction:column;gap:7px;align-self:flex-start;width:100%;padding:0 4px}
+.step-row{display:flex;align-items:center;gap:9px;font-size:12px}
+.step-done{width:16px;height:16px;border-radius:50%;background:#D6F5E2;color:#017A3A;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700}
+.step-active{width:16px;height:16px;border-radius:50%;border:2px solid #E6E9EE;border-top-color:#01B756;flex-shrink:0}
+.step-pending{width:16px;height:16px;border-radius:50%;border:2px solid #D2D7E0;flex-shrink:0;background:#fff}
+.step-txt-done{color:#030A16;font-weight:500}.step-txt-now{color:#030A16;font-weight:600}
+.step-txt-wait{color:#C5CBD6}
+.proc-footer-card{margin:16px 0 0;padding:12px;background:#F8F9FB;border-radius:10px;width:100%}
+.proc-bond-name{font-size:12px;font-weight:700;color:#030A16}.proc-bond-sub{font-size:11px;color:#8A93A3}
+.proc-secure{font-size:10px;color:#B0B8C4;text-align:center;padding:10px 0 14px}
+
+/* ── FAILURE VARIANT SCREENS ──────────────────────────────────── */
+.fail-v-wrap{display:flex;flex-direction:column;align-items:center;padding:0 14px}
+.fail-v-circle{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:16px auto 8px;font-size:20px;flex-shrink:0}
+.fail-v-circle.red{background:#FEF2F2}.fail-v-circle.amber{background:#FFF9EC}
+.fv-type{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-align:center;margin-bottom:6px}
+.fv-type.red{color:#E53E3E}.fv-type.amber{color:#EF9F27}
+.fv-title{font-size:15px;font-weight:700;color:#030A16;text-align:center;margin-bottom:6px;line-height:1.3}
+.fv-desc{font-size:12px;color:#5A6373;text-align:center;margin-bottom:14px;line-height:1.5}
+.fv-order-card{background:#F8F9FB;border-radius:10px;padding:10px 12px;width:100%;margin-bottom:10px}
+.fv-order-name{font-size:13px;font-weight:700;color:#030A16;margin-bottom:8px}
+.fv-order-row{display:flex;justify-content:space-between;padding:4px 0;font-size:11.5px;border-top:1px solid #EEF0F3}
+.fv-order-label{color:#8A93A3}.fv-order-val{color:#030A16;font-weight:600}
+.info-hint{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:9px 11px;font-size:11px;color:#1E40AF;margin-bottom:10px;display:flex;gap:8px;align-items:flex-start;line-height:1.4;width:100%}
+.info-hint-ico{flex-shrink:0;font-size:13px}
+.order-meta-row{display:flex;justify-content:space-between;font-size:10px;color:#B0B8C4;margin-bottom:10px;width:100%}
+
+/* ── SWITCH METHOD ──────────────────────────────────── */
+.sm-wrap{padding:0 14px;display:flex;flex-direction:column}
+.sm-paying-for{font-size:11px;color:#8A93A3;margin-bottom:2px}
+.sm-bond-name{font-size:13px;font-weight:700;color:#030A16;margin-bottom:2px}
+.sm-amount{font-size:22px;font-weight:800;color:#030A16;margin-bottom:3px;letter-spacing:-0.5px}
+.sm-held{font-size:10px;color:#EF9F27;font-weight:600;margin-bottom:12px}
+.sm-group-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#8A93A3;margin-bottom:6px;margin-top:8px}
+.sm-method-item{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:10px;border:1.5px solid #E6E9EE;margin-bottom:6px}
+.sm-method-item.selected{border-color:#01B756;background:#F0FDF4}
+.sm-method-item.failed{border-color:#FCA5A5;background:#FFF5F5}
+.sm-ico{width:30px;height:30px;border-radius:8px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.sm-name{font-size:12px;font-weight:600;color:#030A16}.sm-sub{font-size:10.5px;color:#8A93A3}
+.sm-radio{width:16px;height:16px;border-radius:50%;border:2px solid #D2D7E0;margin-left:auto;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.sm-radio.on{border-color:#01B756;background:#01B756}.sm-radio.on::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff}
+.sm-failed-tag{font-size:9px;color:#E53E3E;font-weight:700;margin-left:auto;flex-shrink:0;background:#FEF2F2;padding:2px 5px;border-radius:4px}
+.sm-legal{font-size:10px;color:#B0B8C4;line-height:1.4;margin-top:4px;margin-bottom:12px}
+
+/* ── RETRY IN PROGRESS ──────────────────────────────────── */
+.rp-attempt-label{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#EF9F27;text-align:center;margin-bottom:5px}
+.rp-title{font-size:15px;font-weight:700;color:#030A16;text-align:center;margin-bottom:5px}
+.rp-sub{font-size:11px;color:#8A93A3;text-align:center;margin-bottom:14px}
+
+/* ── COOLDOWN ──────────────────────────────────── */
+.cd-circle{width:44px;height:44px;border-radius:50%;background:#FFF9EC;display:flex;align-items:center;justify-content:center;margin:16px auto 8px;font-size:22px}
+.cd-type{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#EF9F27;text-align:center;margin-bottom:6px}
+.cd-title{font-size:15px;font-weight:700;color:#030A16;text-align:center;margin-bottom:6px;line-height:1.3}
+.cd-desc{font-size:12px;color:#5A6373;text-align:center;margin-bottom:12px;line-height:1.5}
+.countdown-num{font-size:44px;font-weight:800;color:#030A16;text-align:center;letter-spacing:-2px;line-height:1}
+.countdown-lbl{font-size:10px;color:#8A93A3;text-align:center;margin-bottom:12px}
+.attempt-list-wrap{background:#F8F9FB;border-radius:10px;padding:10px 12px;width:100%;margin-bottom:10px}
+.attempt-list-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#8A93A3;margin-bottom:7px}
+.attempt-row{display:flex;align-items:center;gap:8px;font-size:11px;color:#5A6373;padding:3px 0}
+.attempt-num-badge{width:18px;height:18px;border-radius:50%;background:#FEF2F2;color:#E53E3E;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.attempt-time{min-width:30px;color:#8A93A3;font-variant-numeric:tabular-nums}.attempt-reason{flex:1}
+
+/* ── SUCCESS ──────────────────────────────────── */
+.succ-circle{width:52px;height:52px;border-radius:50%;background:#01B756;display:flex;align-items:center;justify-content:center;margin:14px auto 10px;font-size:24px}
+.succ-type{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#017A3A;text-align:center;margin-bottom:6px}
+.succ-title{font-size:16px;font-weight:700;color:#030A16;text-align:center;margin-bottom:6px}
+.succ-desc{font-size:12px;color:#5A6373;text-align:center;margin-bottom:14px;line-height:1.5}
+.bank-ref-row{display:flex;justify-content:space-between;font-size:11px;padding:6px 0;border-top:1px solid #EEF0F3}
+.bank-ref-label{color:#B0B8C4}.bank-ref-val{color:#8A93A3;font-family:'Courier New',monospace;font-size:10px}
+
+/* ── CANCELLED ──────────────────────────────────── */
+.cancel-circle{width:44px;height:44px;border-radius:50%;background:#FEF2F2;display:flex;align-items:center;justify-content:center;margin:14px auto 8px;font-size:22px}
+.cancel-type{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#E53E3E;text-align:center;margin-bottom:6px}
+.cancel-title{font-size:15px;font-weight:700;color:#030A16;text-align:center;margin-bottom:6px;line-height:1.3}
+.cancel-desc{font-size:12px;color:#5A6373;text-align:center;margin-bottom:12px;line-height:1.5}
+.case-ref{background:#F8F9FB;border-radius:8px;padding:9px 12px;font-size:11px;color:#5A6373;line-height:1.5;display:flex;gap:8px;align-items:flex-start;margin-bottom:10px;width:100%}
+.case-ref-ico{flex-shrink:0;font-size:13px}
 </style>
 </head>
 <body>
@@ -313,6 +410,36 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
   <div class="nav-section">
     <div class="nav-section-label">Specs</div>
     <div class="nav-item" id="n11" onclick="show(11)"><span class="num">11</span>Analytics events</div>
+  </div>
+
+  <div class="nav-divider"></div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">PDF Flow</div>
+    <div class="nav-item" id="n12" onclick="show(12)"><span class="num">12</span>Lock-screen push</div>
+    <div class="nav-item" id="n13" onclick="show(13)"><span class="num">13</span>Processing</div>
+  </div>
+
+  <div class="nav-divider"></div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Failure Variants</div>
+    <div class="nav-item" id="n14" onclick="show(14)"><span class="num">14</span>Gateway down</div>
+    <div class="nav-item" id="n15" onclick="show(15)"><span class="num">15</span>Card declined</div>
+    <div class="nav-item" id="n16" onclick="show(16)"><span class="num">16</span>OTP timeout</div>
+    <div class="nav-item" id="n17" onclick="show(17)"><span class="num">17</span>UPI mandate revoked</div>
+    <div class="nav-item" id="n18" onclick="show(18)"><span class="num">18</span>Network dropped</div>
+  </div>
+
+  <div class="nav-divider"></div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Resolution</div>
+    <div class="nav-item" id="n19" onclick="show(19)"><span class="num">19</span>Switch method</div>
+    <div class="nav-item" id="n20" onclick="show(20)"><span class="num">20</span>Retry in progress</div>
+    <div class="nav-item" id="n21" onclick="show(21)"><span class="num">21</span>Cooldown (3 fails)</div>
+    <div class="nav-item" id="n22" onclick="show(22)"><span class="num">22</span>Success</div>
+    <div class="nav-item" id="n23" onclick="show(23)"><span class="num">23</span>Permanent failure</div>
   </div>
 </div>
 
@@ -1156,7 +1283,349 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
           </div>
         </div>
 
-      </div><!-- /screen -->
+          <!-- ═══════════════════════════════════════ 12: LOCK-SCREEN PUSH + SMS -->
+        <div class="phone-page" id="p12">
+          <div class="sb" style="background:#1e3a5f"><span class="sb-time" style="color:#fff">9:41</span><span class="sb-icons" style="color:#fff">▲ ◥ ▐</span></div>
+          <div class="lock-bg">
+            <div class="lock-time">14:32</div>
+            <div class="lock-date">Thursday, 14 May</div>
+            <div class="notif-card">
+              <div class="notif-row">
+                <div class="notif-app-ico">A</div>
+                <div class="notif-app-name">Aspero</div>
+                <div class="notif-ts">now</div>
+              </div>
+              <div class="notif-title">Payment failed — action needed</div>
+              <div class="notif-body">HDFC NCD 8.2% 2028 · ₹ 20,49,000 · Tap to retry before order is cancelled.</div>
+            </div>
+            <div class="notif-card">
+              <div class="notif-row">
+                <div class="sms-ico">SMS</div>
+                <div class="notif-app-name">HDFC Bank</div>
+                <div class="notif-ts">11:24</div>
+              </div>
+              <div class="notif-title" style="font-weight:400">A/C XX4502: NACH debit of Rs 20,49,000 on 14-05-26 returned (insufficient bal). Avl bal Rs 2,06,540.</div>
+            </div>
+            <div class="lock-swipe">Swipe up to open</div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 13: PROCESSING -->
+        <div class="phone-page" id="p13">
+          <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><span class="sb-icons" style="color:#030A16">▲ ◥ ▐</span></div>
+          <div class="nav-hdr">
+            <div class="back-btn">‹</div>
+            <div class="hdr-title">Confirming payment</div>
+            <div class="hdr-right"></div>
+          </div>
+          <div class="content-scroll white" style="display:flex;flex-direction:column">
+            <div class="proc-wrap" style="flex:1">
+              <div class="spinner-ring"></div>
+              <div class="proc-title">Processing your payment</div>
+              <div class="proc-sub">Hang tight — don't close or go back.</div>
+              <div class="step-list">
+                <div class="step-row"><div class="step-done">✓</div><span class="step-txt-done">Order validated</span></div>
+                <div class="step-row"><div class="step-done">✓</div><span class="step-txt-done">Funds reserved</span></div>
+                <div class="step-row"><div class="step-active"></div><span class="step-txt-now">Awaiting bank OTP</span></div>
+                <div class="step-row"><div class="step-pending"></div><span class="step-txt-wait">Settlement booking</span></div>
+              </div>
+              <div class="proc-footer-card">
+                <div class="proc-bond-name">HDFC NCD 8.2% 2028</div>
+                <div class="proc-bond-sub">₹ 20,49,000 · ORD-2026-05-14-A7K2</div>
+              </div>
+            </div>
+            <div class="proc-secure">🔒 Secured by NPCI · 256-bit encryption</div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 14: GATEWAY DOWN -->
+        <div class="phone-page" id="p14">
+          <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><span class="sb-icons" style="color:#030A16">▲ ◥ ▐</span></div>
+          <div class="nav-hdr"><div class="back-btn">‹</div><div class="hdr-title"></div><div class="hdr-right">?</div></div>
+          <div class="content-scroll white">
+            <div class="fail-v-wrap">
+              <div class="fail-v-circle amber">⚠️</div>
+              <div class="fv-type amber">Bank Unreachable</div>
+              <div class="fv-title">HDFC's systems aren't responding</div>
+              <div class="fv-desc">This is on the bank's side. Your money has <strong>not</strong> been debited and your order is safe.</div>
+              <div class="fv-order-card">
+                <div class="fv-order-name">HDFC NCD 8.2% 2028</div>
+                <div class="fv-order-row"><span class="fv-order-label">ISIN</span><span class="fv-order-val">INE001A07RR4 · AAA</span></div>
+                <div class="fv-order-row"><span class="fv-order-label">Quantity</span><span class="fv-order-val">20</span></div>
+                <div class="fv-order-row"><span class="fv-order-label">Source</span><span class="fv-order-val">HDFC Savings …4502</span></div>
+                <div class="fv-order-row"><span class="fv-order-label">Amount</span><span class="fv-order-val">₹ 20,49,000</span></div>
+              </div>
+              <div class="info-hint"><span class="info-hint-ico">ℹ️</span>We'll auto-retry every 5 minutes for the next 2 hours, or you can try another bank right now.</div>
+              <div class="order-meta-row"><span>ORD-2026-05-14-A7K2</span><span>HDFC DIRECT · E22</span></div>
+            </div>
+          </div>
+          <div class="cta-area">
+            <button class="btn btn-green">↺ Switch bank</button>
+            <div class="btn-sub">Auto-retry on</div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 15: CARD DECLINED -->
+        <div class="phone-page" id="p15">
+          <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><span class="sb-icons" style="color:#030A16">▲ ◥ ▐</span></div>
+          <div class="nav-hdr"><div class="back-btn">‹</div><div class="hdr-title"></div><div class="hdr-right">?</div></div>
+          <div class="content-scroll white">
+            <div class="fail-v-wrap">
+              <div class="fail-v-circle red">💳</div>
+              <div class="fv-type red">Card Declined</div>
+              <div class="fv-title">HDFC card …8842 was declined</div>
+              <div class="fv-desc">Your card issuer didn't authorise this. This often happens for amounts over ₹ 2,00,000 on credit cards.</div>
+              <div class="fv-order-card">
+                <div class="fv-order-name">HDFC NCD 8.2% 2028</div>
+                <div class="fv-order-row"><span class="fv-order-label">ISIN</span><span class="fv-order-val">INE001A07RR4 · AAA</span></div>
+                <div class="fv-order-row"><span class="fv-order-label">Quantity</span><span class="fv-order-val">20</span></div>
+                <div class="fv-order-row"><span class="fv-order-label">Source</span><span class="fv-order-val">HDFC Savings …4502</span></div>
+                <div class="fv-order-row"><span class="fv-order-label">Amount</span><span class="fv-order-val">₹ 20,49,000</span></div>
+              </div>
+              <div class="info-hint"><span class="info-hint-ico">ℹ️</span>UPI or net-banking supports up to ₹ 5,00,000 per transaction. Try those, or use a different card.</div>
+              <div class="order-meta-row"><span>ORD-2026-05-14-A7K2</span><span>Razorpay · E51</span></div>
+            </div>
+          </div>
+          <div class="cta-area">
+            <button class="btn btn-green">↺ Use UPI instead</button>
+            <div class="btn-sub">Try another card</div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 16: OTP TIMEOUT -->
+        <div class="phone-page" id="p16">
+          <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><span class="sb-icons" style="color:#030A16">▲ ◥ ▐</span></div>
+          <div class="nav-hdr"><div class="back-btn">‹</div><div class="hdr-title"></div><div class="hdr-right">?</div></div>
+          <div class="content-scroll white">
+            <div class="fail-v-wrap">
+              <div class="fail-v-circle amber">🕐</div>
+              <div class="fv-type amber">OTP Timed Out</div>
+              <div class="fv-title">OTP wasn't confirmed in time</div>
+              <div class="fv-desc">The 90-second window expired before the code was entered. Your order is held — start over to get a fresh code.</div>
+              <div class="fv-order-card">
+                <div class="fv-order-name">HDFC NCD 8.2% 2028</div>
+                <div class="fv-order-row"><span class="fv-order-label">ISIN</span><span class="fv-order-val">INE001A07RR4 · AAA</span></div>
+                <div class="fv-order-row"><span class="fv-order-label">Quantity</span><span class="fv-order-val">20</span></div>
+                <div class="fv-order-row"><span class="fv-order-label">Source</span><span class="fv-order-val">HDFC Savings …4502</span></div>
+                <div class="fv-order-row"><span class="fv-order-label">Amount</span><span class="fv-order-val">₹ 20,49,000</span></div>
+              </div>
+              <div class="info-hint"><span class="info-hint-ico">ℹ️</span>Code didn't arrive? Check spam, then tap Resend. If your number has changed, update it in Profile → KYC.</div>
+              <div class="order-meta-row"><span>ORD-2026-05-14-A7K2</span><span>3DS · E94</span></div>
+            </div>
+          </div>
+          <div class="cta-area">
+            <button class="btn btn-green">↺ Resend OTP</button>
+            <div class="btn-sub">Switch method</div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 17: UPI MANDATE REVOKED -->
+        <div class="phone-page" id="p17">
+          <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><span class="sb-icons" style="color:#030A16">▲ ◥ ▐</span></div>
+          <div class="nav-hdr"><div class="back-btn">‹</div><div class="hdr-title"></div><div class="hdr-right">?</div></div>
+          <div class="content-scroll white">
+            <div class="fail-v-wrap">
+              <div class="fail-v-circle red">📵</div>
+              <div class="fv-type red">UPI Mandate Revoked</div>
+              <div class="fv-title">Your auto-pay mandate was revoked</div>
+              <div class="fv-desc">The mandate on <strong>arjun.rao@okhdfcbank</strong> was cancelled, so this payment can't be collected automatically.</div>
+              <div class="fv-order-card">
+                <div class="fv-order-name">HDFC NCD 8.2% 2028</div>
+                <div class="fv-order-row"><span class="fv-order-label">ISIN</span><span class="fv-order-val">INE001A07RR4 · AAA</span></div>
+                <div class="fv-order-row"><span class="fv-order-label">Quantity</span><span class="fv-order-val">20</span></div>
+                <div class="fv-order-row"><span class="fv-order-label">Source</span><span class="fv-order-val">HDFC Savings …4502</span></div>
+                <div class="fv-order-row"><span class="fv-order-label">Amount</span><span class="fv-order-val">₹ 20,49,000</span></div>
+              </div>
+              <div class="info-hint"><span class="info-hint-ico">ℹ️</span>Pay one-time with UPI now to keep this order, then set up a fresh mandate for future debits.</div>
+              <div class="order-meta-row"><span>ORD-2026-05-14-A7K2</span><span>UPI AUTOPAY · E33</span></div>
+            </div>
+          </div>
+          <div class="cta-area">
+            <button class="btn btn-green">↺ Pay one-time via UPI</button>
+            <div class="btn-sub">Set up new mandate</div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 18: NETWORK DROPPED -->
+        <div class="phone-page" id="p18">
+          <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><span class="sb-icons" style="color:#030A16">▲ ◥ ▐</span></div>
+          <div class="nav-hdr"><div class="back-btn">‹</div><div class="hdr-title"></div><div class="hdr-right">?</div></div>
+          <div class="content-scroll white">
+            <div class="fail-v-wrap">
+              <div class="fail-v-circle amber">📶</div>
+              <div class="fv-type amber">Connection Dropped</div>
+              <div class="fv-title">Network dropped during payment</div>
+              <div class="fv-desc">We're checking with the bank — your order won't be double-charged.</div>
+              <div class="fv-order-card">
+                <div class="fv-order-name">HDFC NCD 8.2% 2028</div>
+                <div class="fv-order-row"><span class="fv-order-label">ISIN</span><span class="fv-order-val">INE001A07RR4 · AAA</span></div>
+                <div class="fv-order-row"><span class="fv-order-label">Quantity</span><span class="fv-order-val">20</span></div>
+                <div class="fv-order-row"><span class="fv-order-label">Source</span><span class="fv-order-val">HDFC Savings …4502</span></div>
+                <div class="fv-order-row"><span class="fv-order-label">Amount</span><span class="fv-order-val">₹ 20,49,000</span></div>
+              </div>
+              <div class="info-hint"><span class="info-hint-ico">ℹ️</span>This usually clears in 10–30 seconds. If your bank confirms the debit, the order will move to Paid automatically.</div>
+              <div class="order-meta-row"><span>ORD-2026-05-14-A7K2</span><span>UPI · E99</span></div>
+            </div>
+          </div>
+          <div class="cta-area">
+            <button class="btn btn-green">↺ Check status</button>
+            <div class="btn-sub">Retry payment</div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 19: SWITCH PAYMENT METHOD -->
+        <div class="phone-page" id="p19">
+          <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><span class="sb-icons" style="color:#030A16">▲ ◥ ▐</span></div>
+          <div class="nav-hdr"><div class="back-btn">‹</div><div class="hdr-title">Choose payment method</div><div class="hdr-right"></div></div>
+          <div class="content-scroll white">
+            <div class="sm-wrap">
+              <div style="margin-top:12px">
+                <div class="sm-paying-for">Paying for · HDFC NCD 8.2% 2028</div>
+                <div class="sm-amount">₹ 20,49,000</div>
+                <div class="sm-held">⚠ Held until 15/05, 17:00 IST</div>
+              </div>
+              <div class="sm-group-label">Recently Used</div>
+              <div class="sm-method-item failed">
+                <div class="sm-ico" style="background:#FEF2F2">🏦</div>
+                <div><div class="sm-name">HDFC Savings …4502</div><div class="sm-sub">Insufficient balance</div></div>
+                <div class="sm-failed-tag">FAILED</div>
+              </div>
+              <div class="sm-method-item selected">
+                <div class="sm-ico">🏦</div>
+                <div><div class="sm-name">ICICI Savings …8821</div><div class="sm-sub">Balance ₹ 24,86,540</div></div>
+                <div class="sm-radio on"></div>
+              </div>
+              <div class="sm-group-label">Other Methods</div>
+              <div class="sm-method-item">
+                <div class="sm-ico" style="background:#F0FDF4">📱</div>
+                <div><div class="sm-name">UPI · arjun.rao@okicici</div><div class="sm-sub">One-time · Limit ₹ 5,00,000 / txn</div></div>
+                <div style="margin-left:auto;font-size:14px;color:#D2D7E0">›</div>
+              </div>
+              <div class="sm-method-item">
+                <div class="sm-ico" style="background:#F8F9FB">🏛</div>
+                <div><div class="sm-name">RTGS transfer</div><div class="sm-sub">Manual · Best for ₹ 2L+</div></div>
+                <div style="margin-left:auto;font-size:14px;color:#D2D7E0">›</div>
+              </div>
+              <div class="sm-method-item">
+                <div class="sm-ico" style="background:#F8F9FB">💳</div>
+                <div><div class="sm-name">Add a new card</div><div class="sm-sub">Visa / Mastercard / Rupay</div></div>
+                <div style="margin-left:auto;font-size:14px;color:#D2D7E0">›</div>
+              </div>
+              <div class="sm-legal">By proceeding you authorise Aspero to collect ₹ 20,49,000 via your selected method.</div>
+            </div>
+          </div>
+          <div class="cta-area">
+            <button class="btn btn-green">Pay ₹ 20,49,000 via ICICI</button>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 20: RETRY IN PROGRESS -->
+        <div class="phone-page" id="p20">
+          <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><span class="sb-icons" style="color:#030A16">▲ ◥ ▐</span></div>
+          <div class="nav-hdr"><div class="back-btn">‹</div><div class="hdr-title">Retrying payment</div><div class="hdr-right"></div></div>
+          <div class="content-scroll white" style="display:flex;flex-direction:column">
+            <div class="proc-wrap" style="flex:1">
+              <div class="spinner-ring"></div>
+              <div class="rp-attempt-label">Attempt 2 of 3</div>
+              <div class="proc-title">Retrying with ICICI …8821</div>
+              <div class="proc-sub">This usually takes 5–10 seconds. You may receive an OTP from ICICI.</div>
+              <div class="step-list">
+                <div class="step-row"><div class="step-done">✓</div><span class="step-txt-done">Order revalidated</span></div>
+                <div class="step-row"><div class="step-active"></div><span class="step-txt-now">Sending to ICICI gateway</span></div>
+                <div class="step-row"><div class="step-pending"></div><span class="step-txt-wait">Awaiting bank authorisation</span></div>
+                <div class="step-row"><div class="step-pending"></div><span class="step-txt-wait">Settlement booking</span></div>
+              </div>
+              <div class="proc-footer-card">
+                <div class="proc-bond-name">HDFC NCD 8.2% 2028</div>
+                <div class="proc-bond-sub">INE001A07RR4 · AAA · Listed</div>
+                <div class="proc-bond-sub" style="margin-top:4px">Qty 20 · Source ICICI Savings …8821</div>
+                <div class="proc-bond-sub">Amount ₹ 20,49,000</div>
+              </div>
+            </div>
+            <div class="proc-secure">🔒 Secured by NPCI · 256-bit encrypted</div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 21: COOLDOWN -->
+        <div class="phone-page" id="p21">
+          <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><span class="sb-icons" style="color:#030A16">▲ ◥ ▐</span></div>
+          <div class="nav-hdr"><div class="back-btn">‹</div><div class="hdr-title">Retry paused</div><div class="hdr-right"></div></div>
+          <div class="content-scroll white">
+            <div class="fail-v-wrap">
+              <div class="cd-circle">⏳</div>
+              <div class="cd-type">3 Attempts · Cooling Down</div>
+              <div class="cd-title">Let's pause for 15 minutes</div>
+              <div class="cd-desc">Multiple back-to-back declines can flag your bank account. We'll re-enable retry shortly — your order is safe.</div>
+              <div class="countdown-num">14:27</div>
+              <div class="countdown-lbl">until next retry</div>
+              <div class="attempt-list-wrap">
+                <div class="attempt-list-label">Recent Attempts</div>
+                <div class="attempt-row"><div class="attempt-num-badge">1</div><span class="attempt-time">11:24</span><span class="attempt-reason">HDFC · Insufficient balance</span></div>
+                <div class="attempt-row"><div class="attempt-num-badge">2</div><span class="attempt-time">11:31</span><span class="attempt-reason">ICICI · Daily limit</span></div>
+                <div class="attempt-row"><div class="attempt-num-badge">3</div><span class="attempt-time">11:33</span><span class="attempt-reason">HDFC · Insufficient balance</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="cta-area">
+            <button class="btn" style="border:1.5px solid var(--brand);color:var(--brand);background:#fff">💬 Chat with support</button>
+            <div class="btn-sub">Cancel order</div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 22: SUCCESS AFTER RETRY -->
+        <div class="phone-page" id="p22">
+          <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><span class="sb-icons" style="color:#030A16">▲ ◥ ▐</span></div>
+          <div class="nav-hdr"><div class="back-btn"></div><div class="hdr-title">Payment confirmed</div><div class="hdr-right"></div></div>
+          <div class="content-scroll white">
+            <div class="fail-v-wrap">
+              <div class="succ-circle">✓</div>
+              <div class="succ-type">Order Confirmed</div>
+              <div class="succ-title">Payment successful</div>
+              <div class="succ-desc"><strong>₹ 20,49,000</strong> debited from <strong>ICICI Savings …8821</strong>. Settling 15/05/2026 (T+1).</div>
+              <div class="fv-order-card">
+                <div class="fv-order-name">HDFC NCD 8.2% 2028</div>
+                <div class="fv-order-row"><span class="fv-order-label">ISIN</span><span class="fv-order-val">INE001A07RR4 · AAA</span></div>
+                <div class="fv-order-row"><span class="fv-order-label">Quantity</span><span class="fv-order-val">20</span></div>
+                <div class="fv-order-row"><span class="fv-order-label">Source</span><span class="fv-order-val">ICICI Savings …8821</span></div>
+                <div class="fv-order-row"><span class="fv-order-label">Amount</span><span class="fv-order-val">₹ 20,49,000</span></div>
+                <div class="bank-ref-row"><span class="bank-ref-label">Bank reference</span><span class="bank-ref-val">ICICN23051420049000</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="cta-area">
+            <button class="btn btn-green">View order</button>
+            <div class="btn-sub">⬇ Download contract note</div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 23: PERMANENT FAILURE -->
+        <div class="phone-page" id="p23">
+          <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><span class="sb-icons" style="color:#030A16">▲ ◥ ▐</span></div>
+          <div class="nav-hdr"><div class="back-btn">‹</div><div class="hdr-title">Order cancelled</div><div class="hdr-right"></div></div>
+          <div class="content-scroll white">
+            <div class="fail-v-wrap">
+              <div class="cancel-circle">✕</div>
+              <div class="cancel-type">5 Attempts · Couldn't Recover</div>
+              <div class="cancel-title">We couldn't complete this order</div>
+              <div class="cancel-desc">Your bank declined every method we tried. To protect you, we've cancelled the order and released the slot — no funds were debited.</div>
+              <div class="attempt-list-wrap">
+                <div class="attempt-list-label">Attempt History</div>
+                <div class="attempt-row"><div class="attempt-num-badge">1</div><span class="attempt-time">11:24</span><span class="attempt-reason">HDFC · Insufficient</span></div>
+                <div class="attempt-row"><div class="attempt-num-badge">2</div><span class="attempt-time">11:31</span><span class="attempt-reason">ICICI · Daily limit</span></div>
+                <div class="attempt-row"><div class="attempt-num-badge">3</div><span class="attempt-time">11:48</span><span class="attempt-reason">UPI · Mandate revoked</span></div>
+                <div class="attempt-row"><div class="attempt-num-badge">4</div><span class="attempt-time">12:02</span><span class="attempt-reason">Card …8842 · Declined</span></div>
+                <div class="attempt-row"><div class="attempt-num-badge">5</div><span class="attempt-time">12:15</span><span class="attempt-reason">ICICI · Do not honor</span></div>
+              </div>
+              <div class="case-ref"><span class="case-ref-ico">🎧</span><span>Case <strong>SUP-2026-05-14-7741</strong> — our team will call +91 98XXX XX482 within 2 working hours.</span></div>
+            </div>
+          </div>
+          <div class="cta-area">
+            <button class="btn btn-green">📞 Call support · 1800 419 0001</button>
+            <div class="btn-sub">💬 Chat with us</div>
+          </div>
+        </div>
+
+    </div><!-- /screen -->
     </div><!-- /phone -->
   </div><!-- /content-area -->
 </div><!-- /main -->
@@ -1174,6 +1643,18 @@ const SCREENS = {
   9:  ['Strip — Bond Sold Out',     'Retry tapped · 0 units available · inline error in strip'],
   10: ['Strip — Dismissed',         'User tapped ✕ · dismissed flag set · clean home view'],
   11: ['Analytics Event Map',       '6 events: 3 FE + 3 BE · properties per event'],
+  12: ['Lock-screen Push + SMS',    'PDF §1 · push notification + HDFC bank SMS side-by-side'],
+  13: ['Payment Processing',        'PDF §2 · step-by-step stepper — Order validated → Settlement'],
+  14: ['Failure — Gateway Down',    'PDF §3a · BANK UNREACHABLE · auto-retry every 5 min or switch bank'],
+  15: ['Failure — Card Declined',   'PDF §3b · CARD DECLINED · E51 DO_NOT_HONOR · switch to UPI'],
+  16: ['Failure — OTP Timeout',     'PDF §3c · OTP TIMED OUT · 90-sec window expired · resend or switch'],
+  17: ['Failure — Mandate Revoked', 'PDF §3d · UPI AUTOPAY E33 · mandate cancelled · one-time UPI'],
+  18: ['Failure — Network Dropped', 'PDF §3e · CONNECTION DROPPED · E99 · idempotency check in progress'],
+  19: ['Switch Payment Method',     'PDF §4 · HDFC FAILED shown · ICICI selected · RTGS / UPI options'],
+  20: ['Retry In Progress',         'PDF §5 · Attempt 2 of 3 · ICICI gateway stepper'],
+  21: ['Cooldown — 3 Failures',     'PDF §6 · 15-min fraud-protection pause · countdown + attempt log'],
+  22: ['Success After Retry',       'PDF §7 · ORDER CONFIRMED · ICICI debited · bank ref · T+1 settle'],
+  23: ['Permanent Failure',         'PDF §8 · 5 attempts · order cancelled · SUP case · support handoff'],
 };
 
 let cur = 1;
@@ -1186,8 +1667,8 @@ function show(id) {
   document.getElementById('screen-sub').textContent   = SCREENS[id][1];
   cur = id;
 }
-function next() { show(cur < 11 ? cur + 1 : 1); }
-function prev() { show(cur > 1  ? cur - 1 : 11); }
+function next() { show(cur < 23 ? cur + 1 : 1); }
+function prev() { show(cur > 1  ? cur - 1 : 23); }
 </script>
 </body>
 </html>
