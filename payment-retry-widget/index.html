@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Payment Retry Widget Mocks — Aspero · I6 / ASP-3246</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── RESET ──────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-serif;background:#030A16;display:flex;height:100vh;overflow:hidden}
+
+/* ── DESIGN TOKENS ──────────────────────────────────── */
+:root{
+  --ink:#030A16;
+  --ink800:#0D1626;
+  --bg-surface:#F4F6F8;
+  --brand:#01B756;
+  --text-primary:#030A16;
+  --text-secondary:#5A6373;
+  --text-tertiary:#8A93A3;
+  --border-subtle:#E6E9EE;
+  --border-default:#D2D7E0;
+  --amber:#EF9F27;
+  --amber-bg:#FFF9EC;
+  --amber-bg2:#FFF4DA;
+  --amber-text:#92400E;
+  --amber-border:#F6CC6A;
+  --red:#E53E3E;
+  --red-bg:#FEF2F2;
+  --red-text:#7F1D1D;
+  --success-bg:#D6F5E2;
+  --success-text:#017A3A;
+}
+
+/* ── SIDEBAR ──────────────────────────────────── */
+.sidebar{width:224px;background:#0D1626;border-right:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;height:100vh;overflow-y:auto;flex-shrink:0}
+.sidebar::-webkit-scrollbar{width:3px}.sidebar::-webkit-scrollbar-thumb{background:#1E3A5F;border-radius:2px}
+.sidebar-header{padding:20px 16px 14px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.sidebar-logo{color:#fff;font-size:14px;font-weight:700;letter-spacing:0.3px}
+.sidebar-sub{color:rgba(255,255,255,0.35);font-size:11px;margin-top:3px}
+.nav-section{padding:14px 0 4px}
+.nav-section-label{padding:0 16px 6px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,0.25)}
+.nav-item{display:flex;align-items:center;padding:8px 16px;cursor:pointer;font-size:12px;color:rgba(255,255,255,0.5);gap:9px;border-left:2px solid transparent;transition:all .15s;line-height:1.3}
+.nav-item:hover{color:rgba(255,255,255,0.8);background:rgba(255,255,255,0.04)}
+.nav-item.active{color:#fff;border-left-color:#EF9F27;background:rgba(239,159,39,0.08)}
+.num{width:18px;height:18px;background:rgba(255,255,255,0.08);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.nav-item.active .num{background:#EF9F27;color:#fff}
+.nav-divider{height:1px;background:rgba(255,255,255,0.06);margin:6px 16px}
+
+/* ── MAIN AREA ──────────────────────────────────── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.main-header{padding:16px 24px;border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.screen-title{color:#fff;font-size:15px;font-weight:700}
+.screen-subtitle{color:rgba(255,255,255,0.35);font-size:11px;margin-top:2px}
+.nav-arrows{display:flex;gap:6px}
+.arrow-btn{background:rgba(255,255,255,0.07);border:none;color:rgba(255,255,255,0.6);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:14px;transition:background .15s}
+.arrow-btn:hover{background:rgba(255,255,255,0.12)}
+.content-area{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto}
+
+/* ── PHONE ──────────────────────────────────── */
+.phone{width:390px;background:#fff;border-radius:40px;box-shadow:0 24px 80px rgba(0,0,0,0.5);overflow:hidden;flex-shrink:0;position:relative}
+.screen{height:780px;display:flex;flex-direction:column;overflow:hidden;position:relative}
+.phone-page{display:none;flex-direction:column;height:100%;overflow:hidden}
+.phone-page.active{display:flex}
+
+/* ── STATUS BAR ──────────────────────────────────── */
+.sb{display:flex;align-items:center;justify-content:space-between;padding:10px 22px 4px;background:#030A16;flex-shrink:0}
+.sb.light{background:#fff}
+.sb.wa{background:#075E54}
+.sb-time{font-size:12px;font-weight:700;color:#fff}
+.sb-icons{font-size:10px;color:#fff;letter-spacing:2px}
+.sb.light .sb-time{color:#030A16}
+.sb.light .sb-icons{color:#030A16}
+
+/* ── APP HEADER (dark) ──────────────────────────────────── */
+.app-header{display:flex;align-items:center;justify-content:space-between;padding:8px 16px 10px;background:#030A16;flex-shrink:0}
+.logo-row{display:flex;align-items:center;gap:8px}
+.logo-mark{width:28px;height:28px;background:#01B756;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff}
+.aspero-name{color:#fff;font-size:14px;font-weight:700;letter-spacing:-0.2px}
+.header-icons{display:flex;gap:8px}
+.icon-btn{width:30px;height:30px;background:rgba(255,255,255,0.08);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;color:rgba(255,255,255,0.7)}
+
+/* ── NAV HEADER (light) ──────────────────────────────────── */
+.nav-hdr{display:flex;align-items:center;padding:11px 16px;background:#fff;border-bottom:1px solid #E6E9EE;flex-shrink:0;gap:12px}
+.back-btn{font-size:18px;color:#030A16;cursor:pointer;width:28px}
+.hdr-title{font-size:16px;font-weight:700;color:#030A16;flex:1;text-align:center}
+.hdr-right{width:28px}
+
+/* ── HERO (dark) ──────────────────────────────────── */
+.hero{background:#030A16;padding:14px 16px 16px;flex-shrink:0}
+.hero-label{font-size:10px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:8px}
+.hero-card{background:#0D1626;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:14px;background-image:linear-gradient(rgba(1,183,86,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(1,183,86,.04) 1px,transparent 1px);background-size:10px 10px}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.hero-co{display:flex;align-items:center;gap:8px}
+.hero-logo{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0;text-align:center;line-height:1.3}
+.hero-name{font-size:13px;font-weight:700;color:#fff;line-height:1.3}
+.hero-mat{font-size:10px;color:rgba(255,255,255,0.35);margin-top:1px}
+.hero-ytm{font-size:28px;font-weight:800;color:#01B756;line-height:1}
+.hero-ytm-sub{font-size:10px;color:rgba(255,255,255,0.3);text-align:right;margin-top:1px}
+.hero-pills{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.hpill{padding:3px 8px;background:rgba(255,255,255,0.07);border-radius:5px;font-size:10px;font-weight:600;color:rgba(255,255,255,0.5)}
+.hpill.green{background:rgba(1,183,86,0.15);color:#01B756}
+.hero-btn{width:100%;padding:11px;background:#01B756;color:#fff;font-weight:700;font-size:14px;border:none;border-radius:12px;cursor:pointer;font-family:inherit}
+
+/* ── CONTENT SCROLL ──────────────────────────────────── */
+.content-scroll{flex:1;overflow-y:auto;background:#F4F6F8;-webkit-overflow-scrolling:touch}
+.content-scroll::-webkit-scrollbar{display:none}
+.content-scroll.white{background:#fff}
+.section{padding:12px 16px 0}
+.section-card{background:#fff;border-radius:14px;padding:14px;border:1px solid #E6E9EE;margin-bottom:12px}
+.sec-head{font-size:14px;font-weight:700;color:#030A16;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.sec-head-r{font-size:12px;font-weight:600;color:#01B756}
+.bond-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #E6E9EE}
+.bond-row:last-child{border-bottom:0;padding-bottom:0}
+.brl{display:flex;align-items:center;gap:10px}
+.brl-logo{width:44px;height:44px;border-radius:10px;background:#F4F6F8;border:1px solid #E6E9EE;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#030A16;flex-shrink:0;text-align:center;line-height:1.2}
+.brl-name{font-size:13px;font-weight:600;color:#030A16;line-height:1.3}
+.brl-mat{font-size:11px;color:#8A93A3;margin-top:1px}
+.brr{text-align:right}
+.brr-ytm{font-size:14px;font-weight:800;color:#01B756}
+.brr-ten{font-size:10px;color:#8A93A3;margin-top:1px}
+
+/* ── BOTTOM NAV ──────────────────────────────────── */
+.bnav{display:flex;background:#fff;border-top:1px solid #E6E9EE;flex-shrink:0;padding-bottom:4px}
+.bn{flex:1;display:flex;flex-direction:column;align-items:center;padding:7px 4px 3px;cursor:pointer;gap:2px}
+.bn-icon{font-size:19px;line-height:1}
+.bn-label{font-size:10px;font-weight:500;color:#8A93A3}
+.bn.active .bn-label{color:#01B756;font-weight:700}
+
+/* ── RETRY STRIP ──────────────────────────────────── */
+.retry-strip{background:#fff;border-top:3px solid var(--amber);padding:9px 14px 10px;flex-shrink:0;display:flex;align-items:center;gap:8px;box-shadow:0 -2px 10px rgba(0,0,0,0.07)}
+.retry-strip.red{border-top-color:var(--red)}
+.rstrip-info{flex:1;min-width:0}
+.rstrip-l1{font-size:12px;font-weight:600;color:#030A16;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:5px}
+.rstrip-l2{font-size:11px;color:#8A93A3;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rstrip-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.retry-btn{padding:6px 12px;background:var(--amber);color:#fff;font-size:11px;font-weight:700;border:none;border-radius:8px;cursor:pointer;white-space:nowrap;font-family:inherit}
+.retry-btn-sm{padding:5px 9px;font-size:10px;font-weight:700;border-radius:7px;cursor:pointer;border:none;white-space:nowrap;font-family:inherit}
+.retry-upi{background:#EFF2F9;color:#4753C6}
+.retry-nb{background:#F4F6F8;color:#5A6373;border:1px solid #E6E9EE !important}
+.retry-dismiss{font-size:15px;color:#8A93A3;cursor:pointer;line-height:1;padding:2px 3px;flex-shrink:0}
+.qty-badge{background:#FFF4DA;color:#92400E;font-size:9px;font-weight:700;padding:2px 5px;border-radius:4px;border:1px solid #F6CC6A;white-space:nowrap;flex-shrink:0}
+
+/* ── INVESTMENT SUMMARY ──────────────────────────────────── */
+.retry-banner{background:#FFF9EC;border-left:3px solid var(--amber);padding:10px 14px;flex-shrink:0;display:flex;align-items:flex-start;gap:8px}
+.retry-banner-ico{font-size:14px;flex-shrink:0;margin-top:1px}
+.retry-banner-txt{font-size:12px;font-weight:600;color:#92400E;line-height:1.4}
+.scr-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#F4F6F8}
+.scr-body::-webkit-scrollbar{display:none}
+.p14{padding:14px}
+.inv-bond-card{background:#fff;border-radius:12px;padding:14px;border:1px solid #E6E9EE;margin-bottom:10px}
+.bc-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.bc-logo{width:48px;height:48px;border-radius:12px;background:#F4F6F8;border:1px solid #E6E9EE;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#030A16;flex-shrink:0;text-align:center;line-height:1.3}
+.bc-name{font-size:14px;font-weight:700;color:#030A16;line-height:1.3}
+.bc-isin{font-size:11px;color:#8A93A3;margin-top:2px}
+.chips-row{display:flex;gap:6px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.chip-green{background:#D6F5E2;color:#017A3A}
+.chip-grey{background:#F4F6F8;color:#5A6373;border:1px solid #E6E9EE}
+.chip-blue{background:#EFF2F9;color:#4753C6}
+.order-section{background:#fff;border-radius:12px;padding:14px;border:1px solid #E6E9EE;margin-bottom:10px}
+.ord-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #E6E9EE}
+.ord-row:last-child{border-bottom:0;padding-bottom:0}
+.ord-label{font-size:13px;color:#5A6373}
+.ord-val{font-size:13px;font-weight:600;color:#030A16;display:flex;align-items:center;gap:6px}
+.prefill-badge{background:#D6F5E2;color:#017A3A;font-size:9px;font-weight:700;padding:2px 5px;border-radius:4px;letter-spacing:0.3px}
+.total-section{background:#fff;border-radius:12px;padding:14px;border:1px solid #E6E9EE;margin-bottom:10px}
+.total-row-inner{display:flex;align-items:center;justify-content:space-between}
+.total-label{font-size:14px;font-weight:600;color:#030A16}
+.total-amount{font-size:20px;font-weight:800;color:#030A16}
+.pay-section{background:#fff;border-radius:12px;padding:14px;border:1px solid #E6E9EE;margin-bottom:10px}
+.pay-head{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#8A93A3;margin-bottom:10px}
+.pay-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #E6E9EE}
+.pay-row:last-child{border-bottom:0;padding-bottom:0}
+.pay-label{font-size:13px;color:#5A6373}
+.pay-val{font-size:13px;font-weight:600;color:#030A16;display:flex;align-items:center;gap:6px}
+.bank-chip-inner{display:flex;align-items:center;gap:5px;background:#F4F6F8;border-radius:7px;padding:4px 8px;border:1px solid #E6E9EE}
+.bank-ico{width:18px;height:18px;border-radius:4px;background:#EFF2F9;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:800;color:#4753C6}
+.bank-text{font-size:11px;font-weight:600;color:#030A16}
+.cta-area{padding:12px 16px;background:#fff;border-top:1px solid #E6E9EE;flex-shrink:0}
+.btn{width:100%;padding:14px 20px;font-size:15px;font-weight:700;border-radius:14px;border:0;cursor:pointer;text-align:center;display:block;font-family:inherit}
+.btn-green{background:#01B756;color:#fff}
+.btn-outline{background:#fff;color:#030A16;border:1.5px solid #E6E9EE;border-radius:14px;font-size:14px;font-weight:600;padding:13px 20px;width:100%;cursor:pointer;text-align:center;display:block;font-family:inherit}
+.btn-sub{font-size:11px;color:#8A93A3;text-align:center;margin-top:5px}
+.t2-note{font-size:11px;color:#8A93A3;text-align:center;padding:6px 0 2px;line-height:1.5}
+
+/* ── INSUFFICIENT FUNDS SCREEN ──────────────────────────────────── */
+.fail-wrap{display:flex;flex-direction:column;align-items:center;padding:28px 20px 20px}
+.fail-icon{width:72px;height:72px;border-radius:36px;background:#FEF2F2;border:2px solid #FECACA;display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:16px}
+.fail-heading{font-size:19px;font-weight:800;color:#030A16;text-align:center;margin-bottom:10px;line-height:1.3}
+.fail-body{font-size:13px;color:#5A6373;text-align:center;line-height:1.6;margin-bottom:20px}
+.fail-card{background:#FEF2F2;border-radius:10px;padding:11px 14px;border:1px solid #FECACA;margin-bottom:20px;width:100%}
+.fail-card-row{display:flex;justify-content:space-between;font-size:12px}
+.fail-card-label{color:#E53E3E}
+.fail-card-val{font-weight:700;color:#7F1D1D}
+.two-ctas{display:flex;flex-direction:column;gap:10px;width:100%}
+
+/* ── DOWNTIME BANNER ──────────────────────────────────── */
+.downtime-banner{background:#FFF4DA;padding:9px 14px;flex-shrink:0;display:flex;align-items:flex-start;gap:8px;border-bottom:1px solid #F6CC6A}
+.db-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.db-txt{flex:1}
+.db-title{font-size:12px;font-weight:700;color:#92400E;line-height:1.4}
+.db-sub{font-size:11px;color:#92400E;margin-top:2px;opacity:0.8}
+
+/* ── WHATSAPP ──────────────────────────────────── */
+.wa-hdr{background:#075E54;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.wa-avatar{width:36px;height:36px;border-radius:18px;background:#25D366;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.wa-name{color:#fff;font-size:14px;font-weight:700}
+.wa-status{color:rgba(255,255,255,0.7);font-size:11px}
+.wa-body{flex:1;background:#ECE5DD;padding:12px 14px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.wa-date{text-align:center;font-size:10px;color:#8A93A3;background:rgba(255,255,255,0.6);padding:3px 10px;border-radius:12px;align-self:center}
+.wa-bubble{background:#fff;border-radius:0 12px 12px 12px;padding:10px 12px;max-width:290px;box-shadow:0 1px 2px rgba(0,0,0,0.08)}
+.wa-sender{font-size:11px;font-weight:700;color:#01B756;margin-bottom:4px}
+.wa-txt{font-size:13px;color:#030A16;line-height:1.5}
+.wa-deeplink{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;padding:9px 14px;background:#E8F5E9;border-radius:8px;border-top:1px solid #E6E9EE}
+.wa-deeplink-txt{font-size:13px;font-weight:700;color:#075E54}
+.wa-time{font-size:10px;color:#8A93A3;text-align:right;margin-top:5px;display:flex;align-items:center;justify-content:flex-end;gap:3px}
+.wa-expire{font-size:11px;color:#8A93A3;text-align:center;align-self:center}
+.wa-footer{padding:10px 14px;background:#F0F0F0;flex-shrink:0}
+.wa-input{background:#fff;border-radius:24px;padding:9px 14px;font-size:13px;color:#8A93A3;border:1px solid #E6E9EE;width:100%}
+
+/* ── SOLD OUT STRIP ──────────────────────────────────── */
+.soldout-strip{background:#FEF2F2;border-top:3px solid var(--red);padding:9px 14px 10px;flex-shrink:0;display:flex;align-items:center;gap:8px;box-shadow:0 -2px 10px rgba(0,0,0,0.06)}
+.soldout-info{flex:1;min-width:0}
+.soldout-l1{font-size:12px;font-weight:700;color:#7F1D1D}
+.soldout-l2{font-size:11px;color:#E53E3E;margin-top:2px}
+.soldout-dismiss{font-size:15px;color:#8A93A3;cursor:pointer;flex-shrink:0}
+
+/* ── ANALYTICS SPEC ──────────────────────────────────── */
+.spec-intro{background:#0D1626;padding:12px 16px;flex-shrink:0}
+.spec-intro-title{color:#fff;font-size:13px;font-weight:700}
+.spec-intro-sub{color:rgba(255,255,255,0.35);font-size:10px;margin-top:2px}
+.spec-body{flex:1;overflow-y:auto;background:#F4F6F8;-webkit-overflow-scrolling:touch}
+.spec-body::-webkit-scrollbar{display:none}
+.spec-section{padding:12px 16px 0}
+.spec-section-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#8A93A3;margin-bottom:8px}
+.event-card{background:#fff;border-radius:10px;padding:12px;margin-bottom:8px;border:1px solid #E6E9EE}
+.event-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.event-name{font-family:'Courier New',monospace;font-size:11px;font-weight:700;color:#4753C6}
+.event-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px}
+.badge-fe{background:#EFF2F9;color:#4753C6}
+.badge-be{background:#D6F5E2;color:#017A3A}
+.event-trigger{font-size:11px;color:#5A6373;margin-bottom:7px;line-height:1.4}
+.event-props{display:flex;flex-wrap:wrap;gap:4px}
+.eprop{background:#F4F6F8;color:#5A6373;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;font-family:'Courier New',monospace;border:1px solid #E6E9EE}
+
+/* ── UTILITY ──────────────────────────────────── */
+.divider{height:1px;background:#E6E9EE;margin:8px 0}
+.mt4{margin-top:4px}.mt8{margin-top:8px}.mt10{margin-top:10px}.mt12{margin-top:12px}
+.mb8{margin-bottom:8px}.mb10{margin-bottom:10px}.mb12{margin-bottom:12px}
+</style>
+</head>
+<body>
+
+<!-- ────────────────────────────────────────────────────── SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">Aspero · Fin</div>
+    <div class="sidebar-sub">I6 · Payment Retry Widget</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Home Screen</div>
+    <div class="nav-item active" id="n1" onclick="show(1)"><span class="num">1</span>Baseline — no strip</div>
+    <div class="nav-item" id="n2" onclick="show(2)"><span class="num">2</span>Recoverable failure</div>
+    <div class="nav-item" id="n3" onclick="show(3)"><span class="num">3</span>Quantity updated</div>
+    <div class="nav-item" id="n4" onclick="show(4)"><span class="num">4</span>Insufficient funds</div>
+  </div>
+
+  <div class="nav-divider"></div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Flows</div>
+    <div class="nav-item" id="n5" onclick="show(5)"><span class="num">5</span>Investment Summary</div>
+    <div class="nav-item" id="n6" onclick="show(6)"><span class="num">6</span>Insuff. funds screen</div>
+  </div>
+
+  <div class="nav-divider"></div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Notifications</div>
+    <div class="nav-item" id="n7" onclick="show(7)"><span class="num">7</span>Downtime banner</div>
+    <div class="nav-item" id="n8" onclick="show(8)"><span class="num">8</span>WA deeplink</div>
+  </div>
+
+  <div class="nav-divider"></div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Edge Cases</div>
+    <div class="nav-item" id="n9" onclick="show(9)"><span class="num">9</span>Bond sold out</div>
+    <div class="nav-item" id="n10" onclick="show(10)"><span class="num">10</span>Strip dismissed</div>
+  </div>
+
+  <div class="nav-divider"></div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Specs</div>
+    <div class="nav-item" id="n11" onclick="show(11)"><span class="num">11</span>Analytics events</div>
+  </div>
+</div>
+
+<!-- ────────────────────────────────────────────────────── MAIN -->
+<div class="main">
+  <div class="main-header">
+    <div>
+      <div class="screen-title" id="screen-title">Home — Baseline</div>
+      <div class="screen-subtitle" id="screen-sub">No failed payments · reference state</div>
+    </div>
+    <div class="nav-arrows">
+      <button class="arrow-btn" onclick="prev()">‹</button>
+      <button class="arrow-btn" onclick="next()">›</button>
+    </div>
+  </div>
+
+  <div class="content-area">
+    <div class="phone">
+      <div class="screen">
+
+        <!-- ═══════════════════════════════════════ 1: HOME BASELINE -->
+        <div class="phone-page active" id="p1">
+          <div class="sb"><span class="sb-time">9:41</span><span class="sb-icons">▲ ◥ ▐</span></div>
+          <div class="app-header">
+            <div class="logo-row">
+              <div class="logo-mark">F</div>
+              <div><div class="aspero-name">Fin</div></div>
+            </div>
+            <div class="header-icons">
+              <div class="icon-btn">🔔</div>
+              <div class="icon-btn">👤</div>
+            </div>
+          </div>
+          <div class="hero">
+            <div class="hero-label">Top Pick · 1 of 12</div>
+            <div class="hero-card">
+              <div class="hero-top">
+                <div class="hero-co">
+                  <div class="hero-logo">TATA<br>CAP</div>
+                  <div>
+                    <div class="hero-name">Tata Capital FS Ltd</div>
+                    <div class="hero-mat">Matures Mar 2027 · AA+</div>
+                  </div>
+                </div>
+                <div style="text-align:right">
+                  <div class="hero-ytm">9.24%</div>
+                  <div class="hero-ytm-sub">YTM p.a.</div>
+                </div>
+              </div>
+              <div class="hero-pills">
+                <span class="hpill green">Senior Secured</span>
+                <span class="hpill">Quarterly Payout</span>
+                <span class="hpill">₹1,000 min</span>
+              </div>
+              <button class="hero-btn">Invest Now</button>
+            </div>
+          </div>
+          <div class="content-scroll">
+            <div class="section">
+              <div class="section-card">
+                <div class="sec-head">Explore Bonds <span class="sec-head-r">View all</span></div>
+                <div class="bond-row">
+                  <div class="brl">
+                    <div class="brl-logo">BAJAJ<br>FIN</div>
+                    <div>
+                      <div class="brl-name">Bajaj Finance Ltd</div>
+                      <div class="brl-mat">AAA · Jun 2026</div>
+                    </div>
+                  </div>
+                  <div class="brr"><div class="brr-ytm">8.95%</div><div class="brr-ten">YTM</div></div>
+                </div>
+                <div class="bond-row">
+                  <div class="brl">
+                    <div class="brl-logo">HDFC<br>BANK</div>
+                    <div>
+                      <div class="brl-name">HDFC Bank Ltd</div>
+                      <div class="brl-mat">AAA · Dec 2025</div>
+                    </div>
+                  </div>
+                  <div class="brr"><div class="brr-ytm">8.60%</div><div class="brr-ten">YTM</div></div>
+                </div>
+                <div class="bond-row">
+                  <div class="brl">
+                    <div class="brl-logo">L&T<br>FIN</div>
+                    <div>
+                      <div class="brl-name">L&T Finance Ltd</div>
+                      <div class="brl-mat">AA · Sep 2026</div>
+                    </div>
+                  </div>
+                  <div class="brr"><div class="brr-ytm">9.10%</div><div class="brr-ten">YTM</div></div>
+                </div>
+              </div>
+              <div style="height:10px"></div>
+            </div>
+          </div>
+          <div class="bnav">
+            <div class="bn active"><span class="bn-icon">🏠</span><span class="bn-label">Home</span></div>
+            <div class="bn"><span class="bn-icon">🔍</span><span class="bn-label">Explore</span></div>
+            <div class="bn"><span class="bn-icon">📊</span><span class="bn-label">Portfolio</span></div>
+            <div class="bn"><span class="bn-icon">👤</span><span class="bn-label">Account</span></div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 2: HOME + RETRY STRIP (RECOVERABLE) -->
+        <div class="phone-page" id="p2">
+          <div class="sb"><span class="sb-time">9:41</span><span class="sb-icons">▲ ◥ ▐</span></div>
+          <div class="app-header">
+            <div class="logo-row">
+              <div class="logo-mark">F</div>
+              <div><div class="aspero-name">Fin</div></div>
+            </div>
+            <div class="header-icons">
+              <div class="icon-btn">🔔</div>
+              <div class="icon-btn">👤</div>
+            </div>
+          </div>
+          <div class="hero">
+            <div class="hero-label">Top Pick · 1 of 12</div>
+            <div class="hero-card">
+              <div class="hero-top">
+                <div class="hero-co">
+                  <div class="hero-logo">TATA<br>CAP</div>
+                  <div>
+                    <div class="hero-name">Tata Capital FS Ltd</div>
+                    <div class="hero-mat">Matures Mar 2027 · AA+</div>
+                  </div>
+                </div>
+                <div style="text-align:right">
+                  <div class="hero-ytm">9.24%</div>
+                  <div class="hero-ytm-sub">YTM p.a.</div>
+                </div>
+              </div>
+              <div class="hero-pills">
+                <span class="hpill green">Senior Secured</span>
+                <span class="hpill">Quarterly Payout</span>
+                <span class="hpill">₹1,000 min</span>
+              </div>
+              <button class="hero-btn">Invest Now</button>
+            </div>
+          </div>
+          <div class="content-scroll">
+            <div class="section">
+              <div class="section-card">
+                <div class="sec-head">Explore Bonds <span class="sec-head-r">View all</span></div>
+                <div class="bond-row">
+                  <div class="brl">
+                    <div class="brl-logo">BAJAJ<br>FIN</div>
+                    <div><div class="brl-name">Bajaj Finance Ltd</div><div class="brl-mat">AAA · Jun 2026</div></div>
+                  </div>
+                  <div class="brr"><div class="brr-ytm">8.95%</div><div class="brr-ten">YTM</div></div>
+                </div>
+                <div class="bond-row">
+                  <div class="brl">
+                    <div class="brl-logo">HDFC<br>BANK</div>
+                    <div><div class="brl-name">HDFC Bank Ltd</div><div class="brl-mat">AAA · Dec 2025</div></div>
+                  </div>
+                  <div class="brr"><div class="brr-ytm">8.60%</div><div class="brr-ten">YTM</div></div>
+                </div>
+              </div>
+              <div style="height:10px"></div>
+            </div>
+          </div>
+          <!-- RETRY STRIP: recoverable — amber -->
+          <div class="retry-strip">
+            <div class="rstrip-info">
+              <div class="rstrip-l1">Tata Capital FS · 5 units · ₹5,120</div>
+              <div class="rstrip-l2">Bank server timeout — payment not charged</div>
+            </div>
+            <div class="rstrip-actions">
+              <button class="retry-btn">Retry</button>
+              <span class="retry-dismiss">✕</span>
+            </div>
+          </div>
+          <div class="bnav">
+            <div class="bn active"><span class="bn-icon">🏠</span><span class="bn-label">Home</span></div>
+            <div class="bn"><span class="bn-icon">🔍</span><span class="bn-label">Explore</span></div>
+            <div class="bn"><span class="bn-icon">📊</span><span class="bn-label">Portfolio</span></div>
+            <div class="bn"><span class="bn-icon">👤</span><span class="bn-label">Account</span></div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 3: HOME + RETRY STRIP (QUANTITY UPDATED) -->
+        <div class="phone-page" id="p3">
+          <div class="sb"><span class="sb-time">9:41</span><span class="sb-icons">▲ ◥ ▐</span></div>
+          <div class="app-header">
+            <div class="logo-row">
+              <div class="logo-mark">F</div>
+              <div><div class="aspero-name">Fin</div></div>
+            </div>
+            <div class="header-icons">
+              <div class="icon-btn">🔔</div>
+              <div class="icon-btn">👤</div>
+            </div>
+          </div>
+          <div class="hero">
+            <div class="hero-label">Top Pick · 1 of 12</div>
+            <div class="hero-card">
+              <div class="hero-top">
+                <div class="hero-co">
+                  <div class="hero-logo">TATA<br>CAP</div>
+                  <div>
+                    <div class="hero-name">Tata Capital FS Ltd</div>
+                    <div class="hero-mat">Matures Mar 2027 · AA+</div>
+                  </div>
+                </div>
+                <div style="text-align:right">
+                  <div class="hero-ytm">9.24%</div>
+                  <div class="hero-ytm-sub">YTM p.a.</div>
+                </div>
+              </div>
+              <div class="hero-pills">
+                <span class="hpill green">Senior Secured</span>
+                <span class="hpill">Quarterly Payout</span>
+              </div>
+              <button class="hero-btn">Invest Now</button>
+            </div>
+          </div>
+          <div class="content-scroll">
+            <div class="section">
+              <div class="section-card">
+                <div class="sec-head">Explore Bonds <span class="sec-head-r">View all</span></div>
+                <div class="bond-row">
+                  <div class="brl">
+                    <div class="brl-logo">BAJAJ<br>FIN</div>
+                    <div><div class="brl-name">Bajaj Finance Ltd</div><div class="brl-mat">AAA · Jun 2026</div></div>
+                  </div>
+                  <div class="brr"><div class="brr-ytm">8.95%</div><div class="brr-ten">YTM</div></div>
+                </div>
+                <div class="bond-row">
+                  <div class="brl">
+                    <div class="brl-logo">HDFC<br>BANK</div>
+                    <div><div class="brl-name">HDFC Bank Ltd</div><div class="brl-mat">AAA · Dec 2025</div></div>
+                  </div>
+                  <div class="brr"><div class="brr-ytm">8.60%</div><div class="brr-ten">YTM</div></div>
+                </div>
+              </div>
+              <div style="height:10px"></div>
+            </div>
+          </div>
+          <!-- RETRY STRIP: quantity updated (amber + badge) -->
+          <div class="retry-strip">
+            <div class="rstrip-info">
+              <div class="rstrip-l1">
+                Tata Capital FS ·
+                <s style="color:#8A93A3;font-weight:400;font-size:11px">5</s>&nbsp;3 units · ₹3,072
+                <span class="qty-badge">Qty updated</span>
+              </div>
+              <div class="rstrip-l2">Only 3 units available · price reflects current market</div>
+            </div>
+            <div class="rstrip-actions">
+              <button class="retry-btn">Retry</button>
+              <span class="retry-dismiss">✕</span>
+            </div>
+          </div>
+          <div class="bnav">
+            <div class="bn active"><span class="bn-icon">🏠</span><span class="bn-label">Home</span></div>
+            <div class="bn"><span class="bn-icon">🔍</span><span class="bn-label">Explore</span></div>
+            <div class="bn"><span class="bn-icon">📊</span><span class="bn-label">Portfolio</span></div>
+            <div class="bn"><span class="bn-icon">👤</span><span class="bn-label">Account</span></div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 4: HOME + RETRY STRIP (INSUFFICIENT FUNDS) -->
+        <div class="phone-page" id="p4">
+          <div class="sb"><span class="sb-time">9:41</span><span class="sb-icons">▲ ◥ ▐</span></div>
+          <div class="app-header">
+            <div class="logo-row">
+              <div class="logo-mark">F</div>
+              <div><div class="aspero-name">Fin</div></div>
+            </div>
+            <div class="header-icons">
+              <div class="icon-btn">🔔</div>
+              <div class="icon-btn">👤</div>
+            </div>
+          </div>
+          <div class="hero">
+            <div class="hero-label">Top Pick · 1 of 12</div>
+            <div class="hero-card">
+              <div class="hero-top">
+                <div class="hero-co">
+                  <div class="hero-logo">TATA<br>CAP</div>
+                  <div>
+                    <div class="hero-name">Tata Capital FS Ltd</div>
+                    <div class="hero-mat">Matures Mar 2027 · AA+</div>
+                  </div>
+                </div>
+                <div style="text-align:right">
+                  <div class="hero-ytm">9.24%</div>
+                  <div class="hero-ytm-sub">YTM p.a.</div>
+                </div>
+              </div>
+              <div class="hero-pills">
+                <span class="hpill green">Senior Secured</span>
+                <span class="hpill">Quarterly Payout</span>
+              </div>
+              <button class="hero-btn">Invest Now</button>
+            </div>
+          </div>
+          <div class="content-scroll">
+            <div class="section">
+              <div class="section-card">
+                <div class="sec-head">Explore Bonds <span class="sec-head-r">View all</span></div>
+                <div class="bond-row">
+                  <div class="brl">
+                    <div class="brl-logo">BAJAJ<br>FIN</div>
+                    <div><div class="brl-name">Bajaj Finance Ltd</div><div class="brl-mat">AAA · Jun 2026</div></div>
+                  </div>
+                  <div class="brr"><div class="brr-ytm">8.95%</div><div class="brr-ten">YTM</div></div>
+                </div>
+                <div class="bond-row">
+                  <div class="brl">
+                    <div class="brl-logo">HDFC<br>BANK</div>
+                    <div><div class="brl-name">HDFC Bank Ltd</div><div class="brl-mat">AAA · Dec 2025</div></div>
+                  </div>
+                  <div class="brr"><div class="brr-ytm">8.60%</div><div class="brr-ten">YTM</div></div>
+                </div>
+              </div>
+              <div style="height:10px"></div>
+            </div>
+          </div>
+          <!-- RETRY STRIP: insufficient funds — red border, dual CTAs -->
+          <div class="retry-strip red">
+            <div class="rstrip-info">
+              <div class="rstrip-l1">Tata Capital FS · 5 units · ₹5,120</div>
+              <div class="rstrip-l2">Insufficient funds in linked HDFC account</div>
+            </div>
+            <div class="rstrip-actions">
+              <button class="retry-btn-sm retry-upi">UPI</button>
+              <button class="retry-btn-sm retry-nb">Netbanking</button>
+              <span class="retry-dismiss">✕</span>
+            </div>
+          </div>
+          <div class="bnav">
+            <div class="bn active"><span class="bn-icon">🏠</span><span class="bn-label">Home</span></div>
+            <div class="bn"><span class="bn-icon">🔍</span><span class="bn-label">Explore</span></div>
+            <div class="bn"><span class="bn-icon">📊</span><span class="bn-label">Portfolio</span></div>
+            <div class="bn"><span class="bn-icon">👤</span><span class="bn-label">Account</span></div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 5: INVESTMENT SUMMARY — RETRY ENTRY -->
+        <div class="phone-page" id="p5">
+          <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><span class="sb-icons" style="color:#030A16">▲ ◥ ▐</span></div>
+          <div class="nav-hdr">
+            <div class="back-btn">‹</div>
+            <div class="hdr-title">Investment Summary</div>
+            <div class="hdr-right"></div>
+          </div>
+          <!-- amber retry banner -->
+          <div class="retry-banner">
+            <div class="retry-banner-ico">⚠️</div>
+            <div class="retry-banner-txt">Retrying failed payment — all details pre-filled</div>
+          </div>
+          <div class="scr-body">
+            <div class="p14">
+              <!-- Bond card -->
+              <div class="inv-bond-card">
+                <div class="bc-top">
+                  <div class="bc-logo">TATA<br>CAP</div>
+                  <div>
+                    <div class="bc-name">Tata Capital Financial Services Ltd</div>
+                    <div class="bc-isin">INE306N07IB4 · Series 2024-III</div>
+                  </div>
+                </div>
+                <div class="chips-row">
+                  <span class="chip chip-green">AA+ Rated</span>
+                  <span class="chip chip-blue">Senior Secured</span>
+                  <span class="chip chip-grey">9.24% YTM</span>
+                </div>
+              </div>
+              <!-- Order details -->
+              <div class="order-section">
+                <div class="ord-row">
+                  <span class="ord-label">Units</span>
+                  <span class="ord-val">5 <span class="prefill-badge">Pre-filled</span></span>
+                </div>
+                <div class="ord-row">
+                  <span class="ord-label">Price per unit</span>
+                  <span class="ord-val">₹1,024.00</span>
+                </div>
+                <div class="ord-row">
+                  <span class="ord-label">Accrued interest</span>
+                  <span class="ord-val">₹0.00</span>
+                </div>
+              </div>
+              <!-- Total -->
+              <div class="total-section">
+                <div class="total-row-inner">
+                  <span class="total-label">Total payable</span>
+                  <span class="total-amount">₹5,120</span>
+                </div>
+                <div style="font-size:11px;color:#8A93A3;margin-top:4px">Current market price · T+2 settlement</div>
+              </div>
+              <!-- Payment details -->
+              <div class="pay-section">
+                <div class="pay-head">Payment Details</div>
+                <div class="pay-row">
+                  <span class="pay-label">Bank account</span>
+                  <span class="pay-val">
+                    <div class="bank-chip-inner">
+                      <div class="bank-ico">HDFC</div>
+                      <div class="bank-text">HDFC ··4823</div>
+                    </div>
+                    <span class="prefill-badge">Pre-filled</span>
+                  </span>
+                </div>
+                <div class="pay-row">
+                  <span class="pay-label">Payment method</span>
+                  <span class="pay-val">UPI <span class="prefill-badge">Pre-filled</span></span>
+                </div>
+              </div>
+              <div class="t2-note">Funds debited from KYC-verified bank only · T+2 settlement</div>
+              <div style="height:10px"></div>
+            </div>
+          </div>
+          <div class="cta-area">
+            <button class="btn btn-green">Proceed to pay ₹5,120</button>
+            <div class="btn-sub">HDFC Bank ··4823 · UPI</div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 6: INSUFFICIENT FUNDS — FULL SCREEN -->
+        <div class="phone-page" id="p6">
+          <div class="sb light"><span class="sb-time" style="color:#030A16">9:41</span><span class="sb-icons" style="color:#030A16">▲ ◥ ▐</span></div>
+          <div class="nav-hdr">
+            <div class="back-btn">‹</div>
+            <div class="hdr-title">Payment Failed</div>
+            <div class="hdr-right"></div>
+          </div>
+          <div class="content-scroll white">
+            <div class="fail-wrap">
+              <div class="fail-icon">💸</div>
+              <div class="fail-heading">Payment unsuccessful</div>
+              <div class="fail-body">Ensure your HDFC Bank account ··4823 has ₹5,120 or more, then retry. You can also switch your payment method below.</div>
+              <div class="fail-card">
+                <div class="fail-card-row">
+                  <span class="fail-card-label">Amount needed</span>
+                  <span class="fail-card-val">₹5,120</span>
+                </div>
+                <div class="divider"></div>
+                <div class="fail-card-row">
+                  <span class="fail-card-label">Linked bank</span>
+                  <span class="fail-card-val">HDFC ··4823</span>
+                </div>
+                <div class="divider"></div>
+                <div class="fail-card-row">
+                  <span class="fail-card-label">Bond</span>
+                  <span class="fail-card-val">Tata Capital FS Ltd</span>
+                </div>
+              </div>
+              <div class="two-ctas">
+                <button class="btn btn-green" style="border-radius:13px;border:none;cursor:pointer;font-family:inherit">Retry via UPI</button>
+                <button class="btn-outline">Try Netbanking</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 7: HOME + DOWNTIME BANNER -->
+        <div class="phone-page" id="p7">
+          <div class="sb"><span class="sb-time">9:41</span><span class="sb-icons">▲ ◥ ▐</span></div>
+          <div class="app-header">
+            <div class="logo-row">
+              <div class="logo-mark">F</div>
+              <div><div class="aspero-name">Fin</div></div>
+            </div>
+            <div class="header-icons">
+              <div class="icon-btn">🔔</div>
+              <div class="icon-btn">👤</div>
+            </div>
+          </div>
+          <!-- Downtime banner — just below app header -->
+          <div class="downtime-banner">
+            <div class="db-icon">⚠️</div>
+            <div class="db-txt">
+              <div class="db-title">UPI payments may be experiencing delays</div>
+              <div class="db-sub">Try Netbanking for faster processing</div>
+            </div>
+          </div>
+          <div class="hero">
+            <div class="hero-label">Top Pick · 1 of 12</div>
+            <div class="hero-card">
+              <div class="hero-top">
+                <div class="hero-co">
+                  <div class="hero-logo">TATA<br>CAP</div>
+                  <div>
+                    <div class="hero-name">Tata Capital FS Ltd</div>
+                    <div class="hero-mat">Matures Mar 2027 · AA+</div>
+                  </div>
+                </div>
+                <div style="text-align:right">
+                  <div class="hero-ytm">9.24%</div>
+                  <div class="hero-ytm-sub">YTM p.a.</div>
+                </div>
+              </div>
+              <div class="hero-pills">
+                <span class="hpill green">Senior Secured</span>
+                <span class="hpill">Quarterly Payout</span>
+              </div>
+              <button class="hero-btn">Invest Now</button>
+            </div>
+          </div>
+          <div class="content-scroll">
+            <div class="section">
+              <div class="section-card">
+                <div class="sec-head">Explore Bonds <span class="sec-head-r">View all</span></div>
+                <div class="bond-row">
+                  <div class="brl">
+                    <div class="brl-logo">BAJAJ<br>FIN</div>
+                    <div><div class="brl-name">Bajaj Finance Ltd</div><div class="brl-mat">AAA · Jun 2026</div></div>
+                  </div>
+                  <div class="brr"><div class="brr-ytm">8.95%</div><div class="brr-ten">YTM</div></div>
+                </div>
+                <div class="bond-row">
+                  <div class="brl">
+                    <div class="brl-logo">HDFC<br>BANK</div>
+                    <div><div class="brl-name">HDFC Bank Ltd</div><div class="brl-mat">AAA · Dec 2025</div></div>
+                  </div>
+                  <div class="brr"><div class="brr-ytm">8.60%</div><div class="brr-ten">YTM</div></div>
+                </div>
+              </div>
+              <div style="height:10px"></div>
+            </div>
+          </div>
+          <div class="bnav">
+            <div class="bn active"><span class="bn-icon">🏠</span><span class="bn-label">Home</span></div>
+            <div class="bn"><span class="bn-icon">🔍</span><span class="bn-label">Explore</span></div>
+            <div class="bn"><span class="bn-icon">📊</span><span class="bn-label">Portfolio</span></div>
+            <div class="bn"><span class="bn-icon">👤</span><span class="bn-label">Account</span></div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 8: WHATSAPP RE-ENGAGEMENT -->
+        <div class="phone-page" id="p8">
+          <div class="sb wa"><span class="sb-time">9:41</span><span class="sb-icons">▲ ◥ ▐</span></div>
+          <div class="wa-hdr">
+            <div class="wa-avatar">A</div>
+            <div>
+              <div class="wa-name">Fin by Aspero</div>
+              <div class="wa-status">Business Account · end-to-end encrypted</div>
+            </div>
+          </div>
+          <div class="wa-body">
+            <div class="wa-date">Today, 9:38 AM</div>
+            <div class="wa-bubble">
+              <div class="wa-sender">Fin by Aspero</div>
+              <div class="wa-txt">Hi Arpit 👋<br><br>Your payment of <strong>₹5,120</strong> for <strong>Tata Capital FS Ltd</strong> (5 units at 9.24% YTM) did not go through due to a bank server timeout.<br><br>Your money was <strong>not debited</strong>. The bond is still available — retry before it sells out.</div>
+              <div class="wa-deeplink">
+                <span>🔗</span>
+                <span class="wa-deeplink-txt">Retry Payment →</span>
+              </div>
+              <div class="wa-time">
+                <span>9:38 AM</span>
+                <span style="color:#53B09E">✓✓</span>
+              </div>
+            </div>
+            <div class="wa-expire">Link expires in 24 hours · Sent within 15 min of failure</div>
+          </div>
+          <div class="wa-footer">
+            <div class="wa-input">Type a message</div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 9: STRIP — BOND SOLD OUT -->
+        <div class="phone-page" id="p9">
+          <div class="sb"><span class="sb-time">9:41</span><span class="sb-icons">▲ ◥ ▐</span></div>
+          <div class="app-header">
+            <div class="logo-row">
+              <div class="logo-mark">F</div>
+              <div><div class="aspero-name">Fin</div></div>
+            </div>
+            <div class="header-icons">
+              <div class="icon-btn">🔔</div>
+              <div class="icon-btn">👤</div>
+            </div>
+          </div>
+          <div class="hero">
+            <div class="hero-label">Top Pick · 1 of 12</div>
+            <div class="hero-card">
+              <div class="hero-top">
+                <div class="hero-co">
+                  <div class="hero-logo">BAJAJ<br>FIN</div>
+                  <div>
+                    <div class="hero-name">Bajaj Finance Ltd</div>
+                    <div class="hero-mat">Matures Jun 2026 · AAA</div>
+                  </div>
+                </div>
+                <div style="text-align:right">
+                  <div class="hero-ytm">8.95%</div>
+                  <div class="hero-ytm-sub">YTM p.a.</div>
+                </div>
+              </div>
+              <div class="hero-pills">
+                <span class="hpill green">AAA Rated</span>
+                <span class="hpill">Monthly Payout</span>
+              </div>
+              <button class="hero-btn">Invest Now</button>
+            </div>
+          </div>
+          <div class="content-scroll">
+            <div class="section">
+              <div class="section-card">
+                <div class="sec-head">Explore Bonds <span class="sec-head-r">View all</span></div>
+                <div class="bond-row">
+                  <div class="brl">
+                    <div class="brl-logo">HDFC<br>BANK</div>
+                    <div><div class="brl-name">HDFC Bank Ltd</div><div class="brl-mat">AAA · Dec 2025</div></div>
+                  </div>
+                  <div class="brr"><div class="brr-ytm">8.60%</div><div class="brr-ten">YTM</div></div>
+                </div>
+                <div class="bond-row">
+                  <div class="brl">
+                    <div class="brl-logo">L&T<br>FIN</div>
+                    <div><div class="brl-name">L&T Finance Ltd</div><div class="brl-mat">AA · Sep 2026</div></div>
+                  </div>
+                  <div class="brr"><div class="brr-ytm">9.10%</div><div class="brr-ten">YTM</div></div>
+                </div>
+              </div>
+              <div style="height:10px"></div>
+            </div>
+          </div>
+          <!-- Sold out error strip — user tapped Retry but bond gone -->
+          <div class="soldout-strip">
+            <div class="soldout-info">
+              <div class="soldout-l1">⚠ This bond is no longer available</div>
+              <div class="soldout-l2">Tata Capital FS Ltd · Series III has fully sold out</div>
+            </div>
+            <span class="soldout-dismiss">✕</span>
+          </div>
+          <div class="bnav">
+            <div class="bn active"><span class="bn-icon">🏠</span><span class="bn-label">Home</span></div>
+            <div class="bn"><span class="bn-icon">🔍</span><span class="bn-label">Explore</span></div>
+            <div class="bn"><span class="bn-icon">📊</span><span class="bn-label">Portfolio</span></div>
+            <div class="bn"><span class="bn-icon">👤</span><span class="bn-label">Account</span></div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 10: STRIP DISMISSED — CLEAN HOME -->
+        <div class="phone-page" id="p10">
+          <div class="sb"><span class="sb-time">9:41</span><span class="sb-icons">▲ ◥ ▐</span></div>
+          <div class="app-header">
+            <div class="logo-row">
+              <div class="logo-mark">F</div>
+              <div><div class="aspero-name">Fin</div></div>
+            </div>
+            <div class="header-icons">
+              <div class="icon-btn">🔔</div>
+              <div class="icon-btn">👤</div>
+            </div>
+          </div>
+          <div class="hero">
+            <div class="hero-label">Top Pick · 1 of 12</div>
+            <div class="hero-card">
+              <div class="hero-top">
+                <div class="hero-co">
+                  <div class="hero-logo">TATA<br>CAP</div>
+                  <div>
+                    <div class="hero-name">Tata Capital FS Ltd</div>
+                    <div class="hero-mat">Matures Mar 2027 · AA+</div>
+                  </div>
+                </div>
+                <div style="text-align:right">
+                  <div class="hero-ytm">9.24%</div>
+                  <div class="hero-ytm-sub">YTM p.a.</div>
+                </div>
+              </div>
+              <div class="hero-pills">
+                <span class="hpill green">Senior Secured</span>
+                <span class="hpill">Quarterly Payout</span>
+                <span class="hpill">₹1,000 min</span>
+              </div>
+              <button class="hero-btn">Invest Now</button>
+            </div>
+          </div>
+          <div class="content-scroll">
+            <div class="section">
+              <div class="section-card">
+                <div class="sec-head">Explore Bonds <span class="sec-head-r">View all</span></div>
+                <div class="bond-row">
+                  <div class="brl">
+                    <div class="brl-logo">BAJAJ<br>FIN</div>
+                    <div><div class="brl-name">Bajaj Finance Ltd</div><div class="brl-mat">AAA · Jun 2026</div></div>
+                  </div>
+                  <div class="brr"><div class="brr-ytm">8.95%</div><div class="brr-ten">YTM</div></div>
+                </div>
+                <div class="bond-row">
+                  <div class="brl">
+                    <div class="brl-logo">HDFC<br>BANK</div>
+                    <div><div class="brl-name">HDFC Bank Ltd</div><div class="brl-mat">AAA · Dec 2025</div></div>
+                  </div>
+                  <div class="brr"><div class="brr-ytm">8.60%</div><div class="brr-ten">YTM</div></div>
+                </div>
+                <div class="bond-row">
+                  <div class="brl">
+                    <div class="brl-logo">L&T<br>FIN</div>
+                    <div><div class="brl-name">L&T Finance Ltd</div><div class="brl-mat">AA · Sep 2026</div></div>
+                  </div>
+                  <div class="brr"><div class="brr-ytm">9.10%</div><div class="brr-ten">YTM</div></div>
+                </div>
+              </div>
+              <div style="height:10px"></div>
+            </div>
+          </div>
+          <!-- No strip — dismissed state. Bnav sits flush at bottom. -->
+          <div class="bnav">
+            <div class="bn active"><span class="bn-icon">🏠</span><span class="bn-label">Home</span></div>
+            <div class="bn"><span class="bn-icon">🔍</span><span class="bn-label">Explore</span></div>
+            <div class="bn"><span class="bn-icon">📊</span><span class="bn-label">Portfolio</span></div>
+            <div class="bn"><span class="bn-icon">👤</span><span class="bn-label">Account</span></div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ 11: ANALYTICS EVENT MAP -->
+        <div class="phone-page" id="p11">
+          <div class="sb"><span class="sb-time">9:41</span><span class="sb-icons">▲ ◥ ▐</span></div>
+          <div class="spec-intro">
+            <div class="spec-intro-title">Analytics Event Map</div>
+            <div class="spec-intro-sub">6 events · 3 FE + 3 BE · retry strip lifecycle</div>
+          </div>
+          <div class="spec-body">
+            <div class="spec-section">
+              <div class="spec-section-label">Frontend Events (FE)</div>
+
+              <div class="event-card">
+                <div class="event-top">
+                  <span class="event-name">retry_strip_viewed</span>
+                  <span class="event-badge badge-fe">FE</span>
+                </div>
+                <div class="event-trigger">Strip becomes visible (all display conditions met)</div>
+                <div class="event-props">
+                  <span class="eprop">bond_isin</span>
+                  <span class="eprop">failure_reason</span>
+                  <span class="eprop">failed_amount</span>
+                  <span class="eprop">failed_units</span>
+                  <span class="eprop">ttl_remaining_hrs</span>
+                  <span class="eprop">qty_updated</span>
+                </div>
+              </div>
+
+              <div class="event-card">
+                <div class="event-top">
+                  <span class="event-name">retry_strip_cta_clicked</span>
+                  <span class="event-badge badge-fe">FE</span>
+                </div>
+                <div class="event-trigger">User taps Retry / UPI / Netbanking button on strip</div>
+                <div class="event-props">
+                  <span class="eprop">bond_isin</span>
+                  <span class="eprop">failure_reason</span>
+                  <span class="eprop">cta_type</span>
+                  <span class="eprop">failed_amount</span>
+                  <span class="eprop">time_since_failure_hrs</span>
+                </div>
+              </div>
+
+              <div class="event-card">
+                <div class="event-top">
+                  <span class="event-name">retry_strip_dismissed</span>
+                  <span class="event-badge badge-fe">FE</span>
+                </div>
+                <div class="event-trigger">User taps ✕ · sets permanent dismissed flag on record</div>
+                <div class="event-props">
+                  <span class="eprop">bond_isin</span>
+                  <span class="eprop">failure_reason</span>
+                  <span class="eprop">failed_amount</span>
+                  <span class="eprop">time_since_failure_hrs</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="spec-section" style="padding-top:8px">
+              <div class="spec-section-label">Backend Events (BE)</div>
+
+              <div class="event-card">
+                <div class="event-top">
+                  <span class="event-name">retry_payment_initiated</span>
+                  <span class="event-badge badge-be">BE</span>
+                </div>
+                <div class="event-trigger">Payment API called from retry Investment Summary CTA</div>
+                <div class="event-props">
+                  <span class="eprop">bond_isin</span>
+                  <span class="eprop">units</span>
+                  <span class="eprop">amount</span>
+                  <span class="eprop">payment_method</span>
+                  <span class="eprop">original_failure_reason</span>
+                  <span class="eprop">time_since_failure_hrs</span>
+                </div>
+              </div>
+
+              <div class="event-card">
+                <div class="event-top">
+                  <span class="event-name">retry_payment_success</span>
+                  <span class="event-badge badge-be">BE</span>
+                </div>
+                <div class="event-trigger">Payment succeeded on retry · order placed</div>
+                <div class="event-props">
+                  <span class="eprop">bond_isin</span>
+                  <span class="eprop">units</span>
+                  <span class="eprop">amount_paid</span>
+                  <span class="eprop">payment_method</span>
+                  <span class="eprop">original_failure_reason</span>
+                  <span class="eprop">time_since_failure_hrs</span>
+                </div>
+              </div>
+
+              <div class="event-card">
+                <div class="event-top">
+                  <span class="event-name">retry_payment_failed</span>
+                  <span class="event-badge badge-be">BE</span>
+                </div>
+                <div class="event-trigger">Payment failed again on retry attempt</div>
+                <div class="event-props">
+                  <span class="eprop">bond_isin</span>
+                  <span class="eprop">amount</span>
+                  <span class="eprop">payment_method</span>
+                  <span class="eprop">original_failure_reason</span>
+                  <span class="eprop">new_error_reason</span>
+                  <span class="eprop">new_error_source</span>
+                  <span class="eprop">retry_attempt_num</span>
+                </div>
+              </div>
+            </div>
+            <div style="height:16px"></div>
+          </div>
+        </div>
+
+      </div><!-- /screen -->
+    </div><!-- /phone -->
+  </div><!-- /content-area -->
+</div><!-- /main -->
+
+<script>
+const SCREENS = {
+  1:  ['Home — Baseline',           'No failed payments · reference state'],
+  2:  ['Home — Retry Strip',        'Recoverable failure · amber strip · bank server timeout'],
+  3:  ['Home — Quantity Updated',   'Only 3 of 5 units available · "Qty updated" badge shown'],
+  4:  ['Home — Insufficient Funds', 'Red strip variant · inline UPI + Netbanking CTAs (US-5)'],
+  5:  ['Investment Summary',        'Retry entry · amber banner · all fields pre-filled'],
+  6:  ['Insufficient Funds Screen', 'US-5 · "Payment unsuccessful" · two-CTA guided nudge'],
+  7:  ['Home — Downtime Banner',    'US-4 · Razorpay gateway outage · amber banner below header'],
+  8:  ['WhatsApp Re-engagement',    'US-3 · deeplink message sent within 15 min of failure'],
+  9:  ['Strip — Bond Sold Out',     'Retry tapped · 0 units available · inline error in strip'],
+  10: ['Strip — Dismissed',         'User tapped ✕ · dismissed flag set · clean home view'],
+  11: ['Analytics Event Map',       '6 events: 3 FE + 3 BE · properties per event'],
+};
+
+let cur = 1;
+function show(id) {
+  document.querySelectorAll('.phone-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('p' + id).classList.add('active');
+  document.getElementById('n' + id).classList.add('active');
+  document.getElementById('screen-title').textContent = SCREENS[id][0];
+  document.getElementById('screen-sub').textContent   = SCREENS[id][1];
+  cur = id;
+}
+function next() { show(cur < 11 ? cur + 1 : 1); }
+function prev() { show(cur > 1  ? cur - 1 : 11); }
+</script>
+</body>
+</html>
