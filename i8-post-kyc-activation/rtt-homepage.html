@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I8 · RTT Homepage (US-3) — 10 Sections</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+  :root {
+    --green:#01B756; --green-600:#019648; --green-700:#017A3A;
+    --green-100:#D6F5E2; --green-050:#E4FFF4;
+    --ink:#030A16; --ink-800:#0D1626; --ink-700:#151D2A;
+    --text2:#5A6373; --text3:#8A93A3; --text4:#B0BAC8;
+    --border:#E6E9EE; --border-d:#D2D7E0;
+    --lavender:#EFF2F9; --lav-fg:#4753C6;
+    --cream:#F9EDBF; --mint:#E4FFF4;
+    --white:#FFFFFF; --bg:#F4F6FA;
+    --amber-bg:#FFFBEB; --amber-fg:#B45309;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Manrope', -apple-system, sans-serif;
+    background: #E8ECF4; min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Outer layout */
+  .outer {
+    max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px;
+  }
+  .page-header { text-align: center; margin-bottom: 36px; }
+  .page-header .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
+  .page-header h1 { font-size: 24px; font-weight: 800; color: var(--ink); letter-spacing: -.02em; margin-bottom: 6px; }
+  .page-header p { font-size: 13px; color: var(--text2); }
+
+  /* Phone */
+  .phone-wrap { display: flex; justify-content: center; }
+  .phone {
+    width: 390px; height: 844px; border-radius: 44px; overflow: hidden;
+    background: var(--bg); position: relative;
+    box-shadow: 0 40px 80px rgba(3,10,22,.2), 0 0 0 1px rgba(3,10,22,.08);
+  }
+  .phone-inner { height: 100%; display: flex; flex-direction: column; }
+
+  /* Dynamic island */
+  .di { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 120px; height: 32px; background: #000; border-radius: 20px; z-index: 30; }
+
+  /* Home indicator */
+  .hi { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 134px; height: 5px; border-radius: 3px; background: rgba(3,10,22,.2); z-index: 30; }
+
+  /* Scroll */
+  .scroll { flex: 1; overflow-y: auto; }
+  .scroll::-webkit-scrollbar { display: none; }
+
+  /* ── Header (dark ink) */
+  .app-header {
+    background: var(--ink-800); padding: 0 16px 16px; position: relative;
+    overflow: hidden;
+  }
+  .app-header::before {
+    content: ''; position: absolute; top: -40px; right: -30px;
+    width: 160px; height: 160px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(1,183,86,.18) 0%, transparent 70%);
+  }
+  .header-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 64px 0 14px;
+  }
+  .header-logo { display: flex; align-items: center; gap: 8px; }
+  .header-logo span { font-size: 18px; font-weight: 800; color: var(--white); letter-spacing: -.02em; }
+  .header-icons { display: flex; gap: 8px; }
+  .header-icon {
+    width: 34px; height: 34px; border-radius: 10px;
+    background: rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center;
+  }
+  .search-bar {
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px; padding: 9px 12px; display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: rgba(255,255,255,.4); font-family: inherit;
+  }
+
+  /* Section wrappers */
+  .section { padding: 20px 0 4px; }
+  .section-white { background: var(--white); }
+  .section-bg { background: var(--bg); }
+  .section-mint { background: var(--green-050); }
+  .section-dark { background: var(--ink-800); }
+
+  .section-hd {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 16px 12px;
+  }
+  .section-title { font-size: 16px; font-weight: 800; color: var(--ink); letter-spacing: -.01em; }
+  .section-link {
+    font-size: 12px; font-weight: 600; color: var(--green); background: none; border: none; cursor: pointer; font-family: inherit;
+  }
+  .section-sub { font-size: 12px; color: var(--text3); padding: 0 16px 10px; margin-top: -8px; }
+
+  /* ── §1 Nudge Card */
+  .nudge-card {
+    margin: 0 16px 4px; background: var(--white);
+    border: 1.5px solid var(--green-100); border-radius: 18px; overflow: hidden;
+    box-shadow: 0 2px 16px rgba(1,183,86,.1), 0 1px 3px rgba(3,10,22,.06);
+  }
+  .nudge-header {
+    background: linear-gradient(135deg, var(--ink-800) 0%, #0d2235 100%);
+    padding: 14px 14px 10px; position: relative; overflow: hidden;
+  }
+  .nudge-header::after {
+    content: ''; position: absolute; right: -10px; bottom: -10px;
+    width: 80px; height: 80px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(1,183,86,.25) 0%, transparent 70%);
+  }
+  .nudge-eyebrow { font-size: 10px; font-weight: 700; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
+  .nudge-issuer { font-size: 15px; font-weight: 800; color: var(--white); }
+  .nudge-meta { display: flex; gap: 8px; margin-top: 6px; align-items: center; }
+  .nudge-income {
+    padding: 12px 14px; background: var(--white);
+    display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border);
+  }
+  .nudge-income-big { font-size: 26px; font-weight: 800; color: var(--ink); letter-spacing: -.03em; line-height: 1; }
+  .nudge-income-label { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .nudge-amount-row {
+    padding: 10px 14px; background: var(--bg);
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .nudge-amount-left { font-size: 12px; color: var(--text2); }
+  .nudge-amount-val { font-size: 14px; font-weight: 800; color: var(--ink); }
+  .nudge-change-btn {
+    font-size: 12px; font-weight: 700; color: var(--green); background: none; border: none; cursor: pointer; font-family: inherit;
+  }
+  .nudge-actions { padding: 12px 14px; display: flex; gap: 8px; align-items: center; }
+  .btn-invest {
+    flex: 1; padding: 12px; border-radius: 12px; border: 0;
+    background: var(--green); color: var(--white); font-family: inherit;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+  }
+  .btn-remind {
+    padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border);
+    background: var(--white); color: var(--ink); font-family: inherit;
+    font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
+  }
+  .nudge-dismiss {
+    padding: 8px 14px; text-align: right;
+  }
+  .nudge-dismiss button { background: none; border: none; font-family: inherit; font-size: 11px; color: var(--text4); cursor: pointer; }
+
+  /* Amount editor inline */
+  .inline-editor {
+    padding: 12px 14px; background: var(--white); border-top: 1px solid var(--border);
+  }
+  .inline-editor-label { font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
+  .chips-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .amount-chip {
+    padding: 7px 11px; border-radius: 8px; border: 1.5px solid var(--border);
+    background: var(--white); font-family: inherit; font-size: 12px; font-weight: 600;
+    color: var(--ink); cursor: pointer; transition: all 140ms;
+  }
+  .amount-chip.active { background: var(--ink); color: var(--white); border-color: var(--ink); }
+  .inline-cancel { background: none; border: none; font-family: inherit; font-size: 12px; color: var(--text3); cursor: pointer; }
+
+  /* ── §2 About this investment */
+  .infographic-grid { display: flex; gap: 10px; padding: 0 16px 4px; overflow-x: auto; }
+  .infographic-grid::-webkit-scrollbar { display: none; }
+  .info-card {
+    min-width: 220px; background: var(--white); border: 1px solid var(--border);
+    border-radius: 14px; padding: 14px; flex-shrink: 0;
+    box-shadow: 0 1px 6px rgba(3,10,22,.05);
+  }
+  .info-card-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text3); margin-bottom: 10px; }
+  .info-stat-row { display: flex; gap: 8px; margin-bottom: 10px; }
+  .info-stat {
+    flex: 1; background: var(--bg); border-radius: 8px; padding: 8px 10px;
+  }
+  .info-stat-label { font-size: 10px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+  .info-stat-value { font-size: 16px; font-weight: 800; color: var(--ink); margin-top: 1px; }
+  .info-stat-value.green { color: var(--green); }
+  .info-use-funds {
+    background: var(--mint); border-radius: 8px; padding: 8px 10px;
+    font-size: 11px; color: var(--green-700); line-height: 1.5; font-weight: 500;
+  }
+  .repayment-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin: 8px 0; }
+  .repayment-fill { height: 100%; background: var(--green); border-radius: 3px; }
+  .issuer-tag { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text3); background: var(--bg); padding: 3px 8px; border-radius: 6px; margin-right: 5px; margin-bottom: 5px; }
+
+  /* ── §3 & §4 Bond rows */
+  .bond-row {
+    margin: 0 16px 10px; background: var(--white); border: 1px solid var(--border);
+    border-radius: 14px; padding: 13px 13px; display: flex; align-items: center; gap: 12px;
+    position: relative; overflow: hidden;
+  }
+  .bond-row::after { content: ''; position: absolute; right: -8px; bottom: -8px; width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle, rgba(1,183,86,.1) 0%, transparent 70%); }
+  .bond-row-logo {
+    width: 38px; height: 38px; border-radius: 9px; border: 1px solid var(--border);
+    background: var(--white); display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; color: var(--green-600); flex-shrink: 0;
+  }
+  .bond-row-main { flex: 1; }
+  .bond-row-issuer { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .bond-row-chips { display: flex; gap: 5px; margin-top: 4px; flex-wrap: wrap; }
+  .chip-small {
+    display: inline-flex; align-items: center; padding: 2px 7px;
+    border-radius: 5px; font-weight: 600; font-size: 10px; white-space: nowrap;
+  }
+  .chip-aaa { background: var(--white); color: var(--ink); border: 1px solid var(--border-d); }
+  .chip-secured { background: var(--lavender); color: var(--lav-fg); }
+  .chip-rating { background: var(--green-100); color: var(--green-600); }
+  .bond-row-right { text-align: right; }
+  .bond-row-ytm { font-size: 17px; font-weight: 800; color: var(--green); letter-spacing: -.02em; }
+  .bond-row-tenure { font-size: 11px; color: var(--text3); margin-top: 1px; }
+  .social-proof { display: flex; align-items: center; gap: 5px; padding: 5px 13px 10px; margin: -6px 16px 6px; font-size: 11px; color: var(--text3); }
+
+  /* ── §5 Category tabs */
+  .tab-bar {
+    display: flex; gap: 0; margin: 0 16px 12px;
+    background: var(--bg); border-radius: 10px; padding: 4px; overflow: hidden;
+  }
+  .tab-btn {
+    flex: 1; padding: 8px 6px; border-radius: 7px; border: 0; font-family: inherit;
+    font-size: 12px; font-weight: 600; cursor: pointer; transition: all 140ms;
+    background: transparent; color: var(--text3);
+  }
+  .tab-btn.active { background: var(--white); color: var(--ink); box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+
+  /* ── §6 How bonds work */
+  .steps-row { display: flex; gap: 0; padding: 0 16px 4px; }
+  .step { flex: 1; text-align: center; position: relative; }
+  .step:not(:last-child)::after {
+    content: '→'; position: absolute; right: -6px; top: 20px;
+    font-size: 14px; color: var(--text4);
+  }
+  .step-num {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: var(--green-050); border: 1.5px solid var(--green-100);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800; color: var(--green);
+    margin: 0 auto 7px;
+  }
+  .step-title { font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+  .step-desc { font-size: 10px; color: var(--text3); line-height: 1.5; }
+
+  /* ── §7 New on Aspero */
+  .new-grid { display: flex; gap: 10px; padding: 0 16px 4px; }
+  .new-card {
+    flex: 1; background: var(--white); border: 1px solid var(--border);
+    border-radius: 14px; padding: 13px; overflow: hidden; position: relative;
+  }
+  .new-badge {
+    display: inline-flex; background: var(--green-100); color: var(--green-600);
+    padding: 2px 8px; border-radius: 5px; font-size: 10px; font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .new-timestamp { font-size: 10px; color: var(--text4); margin-bottom: 8px; }
+  .new-issuer { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
+  .new-ytm { font-size: 22px; font-weight: 800; color: var(--green); letter-spacing: -.03em; line-height: 1; }
+  .new-ytm-label { font-size: 10px; color: var(--text3); }
+
+  /* ── §8 Testimonials */
+  .testimonial-scroll { display: flex; gap: 10px; padding: 0 16px 4px; overflow-x: auto; }
+  .testimonial-scroll::-webkit-scrollbar { display: none; }
+  .tcard {
+    min-width: 220px; background: var(--white); border: 1px solid var(--border);
+    border-radius: 14px; padding: 14px; flex-shrink: 0;
+  }
+  .tcard-stars { color: #F59E0B; font-size: 12px; margin-bottom: 8px; letter-spacing: 1px; }
+  .tcard-text { font-size: 12px; color: var(--ink); line-height: 1.7; margin-bottom: 10px; font-style: italic; }
+  .tcard-meta { display: flex; align-items: center; gap: 8px; }
+  .tcard-avatar { width: 28px; height: 28px; border-radius: 999px; background: var(--green-100); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--green-600); }
+  .tcard-name { font-size: 12px; font-weight: 700; color: var(--ink); }
+  .tcard-city { font-size: 11px; color: var(--text3); }
+
+  /* ── §9 Trust markers */
+  .trust-rows { margin: 0 16px; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--white); }
+  .trust-row { display: flex; align-items: flex-start; gap: 12px; padding: 13px 14px; border-bottom: 1px solid var(--border); }
+  .trust-row:last-child { border-bottom: 0; }
+  .trust-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--green-050); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .trust-title { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+  .trust-desc { font-size: 11px; color: var(--text3); line-height: 1.6; }
+
+  /* ── Bottom nav */
+  .bottom-nav {
+    display: flex; background: var(--white); border-top: 1px solid var(--border);
+    padding: 8px 0 20px; flex-shrink: 0; position: relative; z-index: 10;
+  }
+  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 4px 0; }
+  .nav-item-label { font-size: 10px; font-weight: 600; }
+  .nav-item.active .nav-item-label { color: var(--green); }
+  .nav-item:not(.active) .nav-item-label { color: var(--text4); }
+
+  /* Annotations */
+  .two-col { display: flex; gap: 32px; align-items: flex-start; max-width: 1100px; margin: 0 auto; }
+  .ann-sidebar { flex: 1; min-width: 180px; }
+  .ann-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+  .ann-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text3); margin-bottom: 6px; }
+  .ann-body { font-size: 12px; color: var(--text2); line-height: 1.7; }
+  .ann-body strong { color: var(--ink); }
+  .ann-num { display: flex; align-items: baseline; gap: 4px; }
+  .ann-big { font-size: 24px; font-weight: 800; color: var(--ink); letter-spacing: -.02em; }
+  .ann-small { font-size: 11px; color: var(--text3); }
+  .ann-trend { font-size: 11px; color: var(--green); font-weight: 700; }
+  .spec-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+  .spec-row:last-child { border-bottom: 0; }
+  .spec-key { color: var(--text3); }
+  .spec-val { color: var(--ink); font-weight: 700; }
+  .section-index { display: flex; flex-direction: column; gap: 6px; }
+  .section-index-item { display: flex; align-items: baseline; gap: 8px; font-size: 12px; color: var(--text2); }
+  .section-index-item .num { width: 16px; font-weight: 800; color: var(--green); flex-shrink: 0; }
+  .section-index-item .name { font-weight: 600; color: var(--ink); }
+  .section-index-item .trigger { font-size: 11px; color: var(--text4); margin-left: 4px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState } = React;
+
+const T = {
+  green:'#01B756', green600:'#019648', green700:'#017A3A',
+  green100:'#D6F5E2', green050:'#E4FFF4',
+  ink:'#030A16', ink800:'#0D1626', ink700:'#151D2A',
+  text2:'#5A6373', text3:'#8A93A3', text4:'#B0BAC8',
+  border:'#E6E9EE', borderD:'#D2D7E0',
+  lavender:'#EFF2F9', lavFg:'#4753C6',
+  white:'#FFFFFF', bg:'#F4F6FA',
+  mint:'#E4FFF4',
+};
+
+/* ── Icons */
+const Chev = ({ dir = 'down', size = 14, color = T.text3 }) => {
+  const r = { down:0, up:180, left:90, right:-90 }[dir];
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ transform:`rotate(${r}deg)`, flexShrink:0 }}><polyline points="6 9 12 15 18 9"/></svg>;
+};
+
+const AsperoMark = () => (
+  <svg width="28" height="28" viewBox="0 0 80 80" style={{ borderRadius: 8 }}>
+    <rect width="80" height="80" rx="14" fill={T.ink}/>
+    <path d="M40 14 L62 64 L51 64 L40 38 L29 64 L18 64 Z M40 50 L46 64 L34 64 Z" fill={T.green}/>
+  </svg>
+);
+
+/* ── StatusBar */
+const StatusBar = () => (
+  <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'14px 28px 8px', background:T.ink800, position:'relative', zIndex:10, flexShrink:0 }}>
+    <div style={{ position:'absolute', top:12, left:'50%', transform:'translateX(-50%)', width:120, height:32, background:'#000', borderRadius:20, zIndex:20 }}/>
+    <span style={{ fontSize:15, fontWeight:600, color:T.white }}>9:41</span>
+    <svg width="54" height="13" viewBox="0 0 54 13" fill={T.white}>
+      <rect x="0" y="7.5" width="3" height="5.5" rx=".7"/><rect x="5" y="5" width="3" height="8" rx=".7"/>
+      <rect x="10" y="2.5" width="3" height="10.5" rx=".7"/><rect x="15" y="0" width="3" height="13" rx=".7"/>
+      <rect x="22" y="3" width="12" height="10" rx="2.5" stroke={T.white} strokeWidth="1.2" fill="none"/>
+      <rect x="24" y="5" width="8" height="6" rx="1.5" fill={T.white}/>
+      <rect x="40" y="2" width="3.2" height="5" rx=".7"/><rect x="44.8" y="0" width="3.2" height="8" rx=".7"/><rect x="49.6" y="0" width="3.2" height="11" rx=".7"/>
+    </svg>
+  </div>
+);
+
+/* ── Chip */
+const Chip = ({ children, kind = 'aaa' }) => {
+  const styles = {
+    aaa:     { background:T.white, color:T.ink, border:`1px solid ${T.borderD}` },
+    secured: { background:T.lavender, color:T.lavFg },
+    rating:  { background:T.green100, color:T.green600 },
+    mint:    { background:T.mint, color:T.green600, border:`1px solid #B6E8C9` },
+  };
+  return (
+    <span style={{ display:'inline-flex', alignItems:'center', padding:'2px 7px', borderRadius:5, fontWeight:600, fontSize:10, whiteSpace:'nowrap', ...styles[kind] }}>
+      {children}
+    </span>
+  );
+};
+
+/* ── Bond row */
+const BondRow = ({ initials, issuer, rating, tenure, ytm, color = T.green600, socialProof }) => (
+  <div>
+    <div style={{ margin:'0 16px 0', background:T.white, border:`1px solid ${T.border}`, borderRadius:14, padding:'13px 13px', display:'flex', alignItems:'center', gap:12, position:'relative', overflow:'hidden' }}>
+      <div style={{ position:'absolute', right:-8, bottom:-8, width:60, height:60, borderRadius:'50%', background:`radial-gradient(circle, rgba(1,183,86,.1) 0%, transparent 70%)` }}/>
+      <div style={{ width:38, height:38, borderRadius:9, border:`1px solid ${T.border}`, background:T.white, display:'flex', alignItems:'center', justifyContent:'center', fontWeight:800, fontSize:11, color, flexShrink:0 }}>{initials}</div>
+      <div style={{ flex:1 }}>
+        <div style={{ fontSize:13, fontWeight:700, color:T.ink }}>{issuer}</div>
+        <div style={{ display:'flex', gap:5, marginTop:4, flexWrap:'wrap' }}>
+          <Chip kind="aaa">{rating}</Chip>
+          <Chip kind="secured">Senior Secured</Chip>
+        </div>
+      </div>
+      <div style={{ textAlign:'right' }}>
+        <div style={{ fontSize:17, fontWeight:800, color:T.green, letterSpacing:'-.02em' }}>{ytm}%</div>
+        <div style={{ fontSize:11, color:T.text3, marginTop:1 }}>{tenure}</div>
+      </div>
+    </div>
+    {socialProof && (
+      <div style={{ display:'flex', alignItems:'center', gap:5, padding:'5px 29px 10px', fontSize:11, color:T.text3 }}>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={T.green} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/></svg>
+        {socialProof}
+      </div>
+    )}
+    {!socialProof && <div style={{ height:10 }}/>}
+  </div>
+);
+
+/* ── §1 Nudge Card */
+const NudgeCard = () => {
+  const [editing, setEditing] = useState(false);
+  const [amount, setAmount] = useState(50000);
+  const [dismissed, setDismissed] = useState(false);
+  const monthly = (a) => Math.round(a * 0.1275 / 12).toLocaleString('en-IN');
+  const opts = [10000, 25000, 50000, 100000, 200000];
+  if (dismissed) return (
+    <div style={{ margin:'0 16px 16px', padding:'12px 16px', background:T.green050, border:`1px solid #B6E8C9`, borderRadius:14, textAlign:'center', fontSize:12, color:T.green600, fontWeight:600 }}>
+      Nudge card hidden for 7 days · tap to restore
+      <button onClick={() => setDismissed(false)} style={{ display:'block', margin:'6px auto 0', background:'none', border:'none', fontFamily:'inherit', fontSize:11, color:T.green600, cursor:'pointer', fontWeight:700 }}>Restore</button>
+    </div>
+  );
+  return (
+    <div style={{ margin:'0 16px 16px', background:T.white, border:`1.5px solid ${T.green100}`, borderRadius:18, overflow:'hidden', boxShadow:`0 2px 16px rgba(1,183,86,.1), 0 1px 3px rgba(3,10,22,.06)` }}>
+      {/* header */}
+      <div style={{ background:`linear-gradient(135deg, ${T.ink800} 0%, #0d2235 100%)`, padding:'14px 14px 10px', position:'relative', overflow:'hidden' }}>
+        <div style={{ position:'absolute', right:-10, bottom:-10, width:80, height:80, borderRadius:'50%', background:`radial-gradient(circle, rgba(1,183,86,.25) 0%, transparent 70%)` }}/>
+        <div style={{ fontSize:10, fontWeight:700, color:'rgba(255,255,255,.5)', textTransform:'uppercase', letterSpacing:'.08em', marginBottom:4 }}>Your first investment</div>
+        <div style={{ fontSize:16, fontWeight:800, color:T.white }}>Shriram Finance Ltd.</div>
+        <div style={{ display:'flex', gap:7, marginTop:6, alignItems:'center' }}>
+          <Chip kind="aaa">AA+</Chip>
+          <Chip kind="secured">Senior Secured</Chip>
+          <span style={{ fontSize:11, color:'rgba(255,255,255,.5)' }}>24M</span>
+        </div>
+        <div style={{ display:'inline-flex', alignItems:'center', gap:5, marginTop:8, background:'rgba(1,183,86,.2)', border:`1px solid rgba(1,183,86,.3)`, borderRadius:7, padding:'3px 9px', fontSize:11, fontWeight:600, color:T.green100 }}>
+          Moderate profile match
+        </div>
+      </div>
+      {/* income hero */}
+      <div style={{ padding:'12px 14px', background:T.white, display:'flex', alignItems:'flex-end', gap:6, borderBottom:`1px solid ${T.border}` }}>
+        <div>
+          <div style={{ fontSize:11, color:T.text3, marginBottom:2 }}>Monthly income on ₹{amount.toLocaleString('en-IN')}</div>
+          <div style={{ fontSize:28, fontWeight:800, color:T.ink, letterSpacing:'-.03em', lineHeight:1 }}>
+            ₹{monthly(amount)}<span style={{ fontSize:14, fontWeight:600, color:T.text2 }}>/mo</span>
+          </div>
+          <div style={{ fontSize:11, color:T.text3, marginTop:2 }}>12.75% YTM · paid monthly</div>
+        </div>
+      </div>
+      {/* amount row */}
+      <div style={{ padding:'10px 14px', background:T.bg, display:'flex', alignItems:'center', justifyContent:'space-between', borderBottom:`1px solid ${T.border}` }}>
+        <div>
+          <div style={{ fontSize:11, color:T.text3, marginBottom:1 }}>Investing</div>
+          <div style={{ fontSize:15, fontWeight:800, color:T.ink }}>₹{amount.toLocaleString('en-IN')}</div>
+        </div>
+        <button onClick={() => setEditing(v => !v)} style={{ fontSize:12, fontWeight:700, color:T.green, background:'none', border:'none', cursor:'pointer', fontFamily:'inherit' }}>
+          {editing ? 'done' : 'change'}
+        </button>
+      </div>
+      {/* inline editor */}
+      {editing && (
+        <div style={{ padding:'12px 14px', background:T.white, borderBottom:`1px solid ${T.border}` }}>
+          <div style={{ fontSize:12, fontWeight:700, color:T.ink, marginBottom:9 }}>How much do you want to invest?</div>
+          <div style={{ display:'flex', gap:7, flexWrap:'wrap', marginBottom:8 }}>
+            {opts.map(v => (
+              <button key={v} onClick={() => setAmount(v)} style={{
+                padding:'7px 11px', borderRadius:8, border:`1.5px solid ${v===amount?T.ink:T.border}`,
+                background:v===amount?T.ink:T.white, color:v===amount?T.white:T.ink,
+                fontFamily:'inherit', fontSize:12, fontWeight:600, cursor:'pointer',
+              }}>₹{v>=100000?`${v/100000}L`:`${v/1000}K`}</button>
+            ))}
+          </div>
+          <div style={{ fontSize:11, color:T.text3 }}>
+            Monthly income at ₹{amount.toLocaleString('en-IN')} → <strong style={{ color:T.green }}>₹{monthly(amount)}/mo</strong>
+          </div>
+        </div>
+      )}
+      {/* actions */}
+      <div style={{ padding:'12px 14px', display:'flex', gap:8, alignItems:'center' }}>
+        <button style={{ flex:1, padding:'12px', borderRadius:12, border:0, background:T.green, color:T.white, fontFamily:'inherit', fontSize:14, fontWeight:700, cursor:'pointer' }}>
+          Invest ₹{amount.toLocaleString('en-IN')}
+        </button>
+        <button style={{ padding:'12px 14px', borderRadius:12, border:`1px solid ${T.border}`, background:T.white, color:T.ink, fontFamily:'inherit', fontSize:13, fontWeight:600, cursor:'pointer', whiteSpace:'nowrap' }}>
+          Remind me later
+        </button>
+      </div>
+      {/* dismiss */}
+      <div style={{ padding:'4px 14px 10px', textAlign:'right' }}>
+        <button onClick={() => setDismissed(true)} style={{ background:'none', border:'none', fontFamily:'inherit', fontSize:11, color:T.text4, cursor:'pointer' }}>
+          ✕ Dismiss for 7 days
+        </button>
+      </div>
+    </div>
+  );
+};
+
+/* ── §2 About this investment */
+const AboutInvestment = () => (
+  <div style={{ padding:'16px 0 4px', background:T.bg }}>
+    <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 16px 12px' }}>
+      <div style={{ fontSize:15, fontWeight:800, color:T.ink }}>About this investment</div>
+    </div>
+    <div style={{ display:'flex', gap:10, padding:'0 16px 12px', overflowX:'auto' }}>
+      {/* Card 1 — Bond snapshot */}
+      <div style={{ minWidth:220, background:T.white, border:`1px solid ${T.border}`, borderRadius:14, padding:14, flexShrink:0 }}>
+        <div style={{ fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'.08em', color:T.text3, marginBottom:10 }}>Bond snapshot</div>
+        <div style={{ display:'flex', gap:7, marginBottom:9 }}>
+          {[{l:'YTM',v:'12.75%',g:true},{l:'Rating',v:'AA+'},{l:'Tenure',v:'24M'}].map(s => (
+            <div key={s.l} style={{ flex:1, background:T.bg, borderRadius:8, padding:'7px 9px' }}>
+              <div style={{ fontSize:9, color:T.text3, fontWeight:600, textTransform:'uppercase', letterSpacing:'.05em' }}>{s.l}</div>
+              <div style={{ fontSize:14, fontWeight:800, color:s.g?T.green:T.ink, marginTop:1 }}>{s.v}</div>
+            </div>
+          ))}
+        </div>
+        <div style={{ background:T.mint, borderRadius:8, padding:'8px 10px', fontSize:11, color:T.green700, lineHeight:1.6, fontWeight:500 }}>
+          <strong>Use of funds:</strong> Auto loans and SME business lending across India
+        </div>
+      </div>
+      {/* Card 2 — About issuer */}
+      <div style={{ minWidth:220, background:T.white, border:`1px solid ${T.border}`, borderRadius:14, padding:14, flexShrink:0 }}>
+        <div style={{ fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'.08em', color:T.text3, marginBottom:10 }}>About the issuer</div>
+        <div style={{ display:'flex', gap:7, marginBottom:8 }}>
+          {[{l:'Founded',v:'1979'},{l:'AUM',v:'₹1.7L Cr'}].map(s => (
+            <div key={s.l} style={{ flex:1, background:T.bg, borderRadius:8, padding:'7px 9px' }}>
+              <div style={{ fontSize:9, color:T.text3, fontWeight:600, textTransform:'uppercase', letterSpacing:'.05em' }}>{s.l}</div>
+              <div style={{ fontSize:13, fontWeight:800, color:T.ink, marginTop:1 }}>{s.v}</div>
+            </div>
+          ))}
+        </div>
+        <div style={{ marginBottom:8 }}>
+          <div style={{ display:'flex', justifyContent:'space-between', fontSize:11, color:T.text3, marginBottom:4 }}>
+            <span>Repayment track record</span>
+            <span style={{ color:T.green, fontWeight:700 }}>97%</span>
+          </div>
+          <div style={{ height:6, background:T.border, borderRadius:3, overflow:'hidden' }}>
+            <div style={{ height:'100%', width:'97%', background:T.green, borderRadius:3 }}/>
+          </div>
+        </div>
+        <div style={{ display:'flex', flexWrap:'wrap', gap:5 }}>
+          {['SEBI regulated','RBI registered','CRISIL rated'].map(t => (
+            <span key={t} style={{ display:'inline-flex', alignItems:'center', gap:4, fontSize:10, color:T.text3, background:T.bg, padding:'3px 7px', borderRadius:5 }}>✓ {t}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+/* ── §5 Browse by category */
+const BrowseByCategory = () => {
+  const [tab, setTab] = useState('returns');
+  const tabs = [{ v:'returns', l:'High returns' }, { v:'safe', l:'Highly safe' }, { v:'short', l:'Short term' }];
+  const bonds = {
+    returns: [
+      { initials:'MF', issuer:'Muthoot Finance', rating:'A+', tenure:'36M', ytm:'15.2%', color:'#7C3AED' },
+      { initials:'PF', issuer:'Piramal Finance', rating:'A', tenure:'24M', ytm:'14.8%', color:'#2563EB' },
+      { initials:'CF', issuer:'Cholamandalam Finance', rating:'AA', tenure:'30M', ytm:'13.5%', color:'#059669' },
+    ],
+    safe: [
+      { initials:'HF', issuer:'HDFC Bank', rating:'AAA', tenure:'18M', ytm:'8.9%', color:'#1D4ED8' },
+      { initials:'IF', issuer:'ICICI Bank', rating:'AAA', tenure:'24M', ytm:'8.75%', color:'#DC2626' },
+      { initials:'SF', issuer:'SBI', rating:'AAA', tenure:'12M', ytm:'8.5%', color:'#0284C7' },
+    ],
+    short: [
+      { initials:'TF', issuer:'Tata Capital', rating:'AA+', tenure:'6M', ytm:'10.5%', color:'#0F172A' },
+      { initials:'BF', issuer:'Bajaj Finance', rating:'AAA', tenure:'9M', ytm:'9.9%', color:'#F97316' },
+      { initials:'MH', issuer:'Mahindra Finance', rating:'AA+', tenure:'12M', ytm:'11.2%', color:'#DC2626' },
+    ],
+  };
+  return (
+    <div style={{ padding:'16px 0 4px', background:T.white }}>
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 16px 12px' }}>
+        <div style={{ fontSize:15, fontWeight:800, color:T.ink }}>Browse by category</div>
+      </div>
+      {/* tab bar */}
+      <div style={{ display:'flex', gap:0, margin:'0 16px 12px', background:T.bg, borderRadius:10, padding:4 }}>
+        {tabs.map(t => (
+          <button key={t.v} onClick={() => setTab(t.v)} style={{
+            flex:1, padding:'8px 4px', borderRadius:7, border:0, fontFamily:'inherit',
+            fontSize:12, fontWeight:600, cursor:'pointer', transition:'all 140ms',
+            background: t.v===tab ? T.white : 'transparent',
+            color: t.v===tab ? T.ink : T.text3,
+            boxShadow: t.v===tab ? '0 1px 4px rgba(0,0,0,.1)' : 'none',
+          }}>{t.l}</button>
+        ))}
+      </div>
+      {bonds[tab].map((b, i) => (
+        <div key={i} style={{ margin:'0 16px 10px', background:T.white, border:`1px solid ${T.border}`, borderRadius:12, padding:'11px 12px', display:'flex', alignItems:'center', gap:10 }}>
+          <div style={{ width:34, height:34, borderRadius:8, border:`1px solid ${T.border}`, background:T.white, display:'flex', alignItems:'center', justifyContent:'center', fontWeight:800, fontSize:10, color:b.color, flexShrink:0 }}>{b.initials}</div>
+          <div style={{ flex:1 }}>
+            <div style={{ fontSize:13, fontWeight:700, color:T.ink }}>{b.issuer}</div>
+            <div style={{ display:'flex', gap:5, marginTop:3 }}>
+              <Chip kind="aaa">{b.rating}</Chip>
+              {tab === 'safe' && <span style={{ display:'inline-flex', alignItems:'center', padding:'2px 7px', borderRadius:5, fontWeight:600, fontSize:10, background:'#DBEAFE', color:'#1D4ED8' }}>Govt backed</span>}
+              {tab === 'short' && <span style={{ display:'inline-flex', alignItems:'center', padding:'2px 7px', borderRadius:5, fontWeight:600, fontSize:10, background:T.green100, color:T.green600 }}>{b.tenure}</span>}
+            </div>
+          </div>
+          <div style={{ textAlign:'right' }}>
+            <div style={{ fontSize:16, fontWeight:800, color:T.green }}>{b.ytm}</div>
+            <div style={{ fontSize:10, color:T.text3 }}>{b.tenure}</div>
+          </div>
+        </div>
+      ))}
+      <div style={{ padding:'4px 16px 8px', textAlign:'center' }}>
+        <button style={{ background:'none', border:'none', fontFamily:'inherit', fontSize:12, fontWeight:600, color:T.green, cursor:'pointer' }}>
+          See all {tabs.find(t=>t.v===tab)?.l.toLowerCase()} bonds →
+        </button>
+      </div>
+    </div>
+  );
+};
+
+/* ── §9 Trust markers */
+const TrustRows = [
+  { icon:'🏦', title:'NSDL registered depository', desc:'Your bonds are held in your own demat account — not with Aspero.' },
+  { icon:'📋', title:'SEBI regulated platform', desc:'Every bond listed is a SEBI-approved ISIN. Aspero is a registered stockbroker.' },
+  { icon:'🔐', title:'ISIN-level protection', desc:"Each bond has a unique ISIN. Your holding is tracked independently in the depository." },
+  { icon:'₹', title:'₹0 platform fee', desc:"No subscription, no transaction fee. Aspero earns from the issuer, not from you." },
+];
+
+/* ── Bottom nav */
+const BottomNav = () => (
+  <div style={{ display:'flex', background:T.white, borderTop:`1px solid ${T.border}`, padding:'8px 0 20px', flexShrink:0, position:'relative', zIndex:10 }}>
+    {[
+      { label:'Home', active:true, icon:(
+        <svg width="22" height="22" viewBox="0 0 24 24" fill={T.green}><path d="M4 11L12 4L20 11V20a1 1 0 01-1 1h-4v-7h-6v7H5a1 1 0 01-1-1z"/></svg>
+      )},
+      { label:'Explore', icon:(
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={T.text4} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-3.5-3.5"/></svg>
+      )},
+      { label:'Portfolio', icon:(
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={T.text4} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+      )},
+      { label:'Profile', icon:(
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={T.text4} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="9" r="3.5"/><path d="M5 20c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg>
+      )},
+    ].map(item => (
+      <div key={item.label} style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', gap:3, cursor:'pointer', padding:'4px 0' }}>
+        {item.icon}
+        <span style={{ fontSize:10, fontWeight:600, color:item.active?T.green:T.text4 }}>{item.label}</span>
+      </div>
+    ))}
+  </div>
+);
+
+/* ── FULL HOMEPAGE */
+const Homepage = () => (
+  <div style={{ height:'100%', display:'flex', flexDirection:'column' }}>
+    <StatusBar />
+    <div style={{ flex:1, overflowY:'auto', scrollBehavior:'smooth' }}
+      className="scroll">
+
+      {/* App header (dark) */}
+      <div style={{ background:T.ink800, padding:'0 16px 16px', position:'relative', overflow:'hidden' }}>
+        <div style={{ position:'absolute', top:-40, right:-30, width:160, height:160, borderRadius:'50%', background:`radial-gradient(circle, rgba(1,183,86,.18) 0%, transparent 70%)` }}/>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', paddingTop:56, paddingBottom:14, position:'relative' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:9 }}>
+            <AsperoMark />
+            <span style={{ fontSize:19, fontWeight:800, color:T.white, letterSpacing:'-.02em' }}>aspero</span>
+          </div>
+          <div style={{ display:'flex', gap:8 }}>
+            {[
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.6)" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>,
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.6)" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="9" r="3.5"/><path d="M5 20c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg>,
+            ].map((icon, i) => (
+              <div key={i} style={{ width:34, height:34, borderRadius:10, background:'rgba(255,255,255,.1)', display:'flex', alignItems:'center', justifyContent:'center' }}>{icon}</div>
+            ))}
+          </div>
+        </div>
+        <div style={{ display:'flex', alignItems:'center', gap:9, background:'rgba(255,255,255,.08)', border:'1px solid rgba(255,255,255,.1)', borderRadius:12, padding:'9px 12px' }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.4)" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-3.5-3.5"/></svg>
+          <span style={{ fontSize:13, color:'rgba(255,255,255,.35)', fontFamily:'inherit' }}>Search bonds, issuers…</span>
+        </div>
+      </div>
+
+      {/* §1 Nudge card */}
+      <div style={{ padding:'14px 0 4px', background:T.bg }}>
+        <NudgeCard />
+      </div>
+
+      {/* §2 About this investment */}
+      <AboutInvestment />
+
+      {/* §3 Popular with first-time investors */}
+      <div style={{ padding:'16px 0 4px', background:T.bg }}>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 16px 4px' }}>
+          <div style={{ fontSize:15, fontWeight:800, color:T.ink }}>Popular with first-time investors</div>
+          <button style={{ fontSize:12, fontWeight:600, color:T.green, background:'none', border:'none', cursor:'pointer', fontFamily:'inherit' }}>See all</button>
+        </div>
+        <div style={{ fontSize:12, color:T.text3, padding:'0 16px 10px' }}>Invest now, withdraw anytime</div>
+        <BondRow initials="SF" issuer="Shriram Finance Ltd." rating="AA+" tenure="24M" ytm="12.75" color={T.green600}
+          socialProof="453 investors chose this as their first investment" />
+        <BondRow initials="CF" issuer="Cholamandalam Invest. & Finance" rating="AA" tenure="18M" ytm="11.95" color="#059669"
+          socialProof="317 investors chose this as their first investment" />
+        <BondRow initials="MF" issuer="Manappuram Finance" rating="A+" tenure="12M" ytm="13.2" color="#7C3AED"
+          socialProof="198 investors chose this as their first investment" />
+      </div>
+
+      {/* §4 Trending this month */}
+      <div style={{ padding:'16px 0 4px', background:T.white }}>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 16px 4px' }}>
+          <div style={{ fontSize:15, fontWeight:800, color:T.ink }}>Trending this month</div>
+          <button style={{ fontSize:12, fontWeight:600, color:T.green, background:'none', border:'none', cursor:'pointer', fontFamily:'inherit' }}>See all</button>
+        </div>
+        <div style={{ fontSize:12, color:T.text3, padding:'0 16px 10px' }}>By order volume, last 30 days</div>
+        <BondRow initials="BF" issuer="Bajaj Finance Ltd." rating="AAA" tenure="12M" ytm="13.95" color="#F97316" />
+        <BondRow initials="TF" issuer="Tata Capital Ltd." rating="AA+" tenure="36M" ytm="12.1" color="#0F172A" />
+        <BondRow initials="PF" issuer="Piramal Finance Ltd." rating="A" tenure="24M" ytm="14.8" color="#2563EB" />
+      </div>
+
+      {/* §5 Browse by category */}
+      <BrowseByCategory />
+
+      {/* §6 How bonds work */}
+      <div style={{ padding:'16px 0 16px', background:T.mint }}>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 16px 14px' }}>
+          <div style={{ fontSize:15, fontWeight:800, color:T.ink }}>How bonds work</div>
+        </div>
+        <div style={{ display:'flex', gap:0, padding:'0 16px' }}>
+          {[
+            { n:'1', t:'You lend money', d:'Buy a bond — you become the lender, the company borrows at a fixed rate' },
+            { n:'2', t:'Earn monthly', d:'Company pays interest to your bank account every month' },
+            { n:'3', t:'Get back principal', d:'At maturity, the full face value returns to your account' },
+          ].map((s, i) => (
+            <div key={i} style={{ flex:1, textAlign:'center', position:'relative' }}>
+              {i < 2 && (
+                <div style={{ position:'absolute', right:-5, top:18, fontSize:16, color:T.text4, zIndex:1 }}>→</div>
+              )}
+              <div style={{ width:40, height:40, borderRadius:12, background:T.green050, border:`1.5px solid ${T.green100}`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:16, fontWeight:800, color:T.green, margin:'0 auto 7px' }}>{s.n}</div>
+              <div style={{ fontSize:12, fontWeight:700, color:T.ink, marginBottom:3 }}>{s.t}</div>
+              <div style={{ fontSize:10, color:T.text3, lineHeight:1.5 }}>{s.d}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* §7 New on Aspero */}
+      <div style={{ padding:'16px 0 16px', background:T.bg }}>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 16px 12px' }}>
+          <div style={{ fontSize:15, fontWeight:800, color:T.ink }}>New on Aspero</div>
+          <button style={{ fontSize:12, fontWeight:600, color:T.green, background:'none', border:'none', cursor:'pointer', fontFamily:'inherit' }}>See all</button>
+        </div>
+        <div style={{ display:'flex', gap:10, padding:'0 16px' }}>
+          {[
+            { initials:'KF', issuer:'Keertana Finserv', rating:'BBB+', ytm:'15.5', color:'#F59E0B', listed:'2d ago' },
+            { initials:'RF', issuer:'Repco Finance', rating:'A-', ytm:'13.8', color:'#06B6D4', listed:'5d ago' },
+          ].map((c, i) => (
+            <div key={i} style={{ flex:1, background:T.white, border:`1px solid ${T.border}`, borderRadius:14, padding:13, overflow:'hidden', position:'relative' }}>
+              <div style={{ display:'inline-flex', background:T.green100, color:T.green600, padding:'2px 8px', borderRadius:5, fontSize:10, fontWeight:700, marginBottom:5 }}>New</div>
+              <div style={{ fontSize:10, color:T.text4, marginBottom:8 }}>Listed {c.listed}</div>
+              <div style={{ width:32, height:32, borderRadius:7, border:`1px solid ${T.border}`, background:T.white, display:'flex', alignItems:'center', justifyContent:'center', fontWeight:800, fontSize:10, color:c.color, marginBottom:6 }}>{c.initials}</div>
+              <div style={{ fontSize:12, fontWeight:700, color:T.ink, marginBottom:5 }}>{c.issuer}</div>
+              <div style={{ fontSize:22, fontWeight:800, color:T.green, letterSpacing:'-.03em', lineHeight:1 }}>{c.ytm}%</div>
+              <div style={{ fontSize:10, color:T.text3 }}>YTM</div>
+              <Chip kind="aaa">{c.rating}</Chip>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* §8 What investors say */}
+      <div style={{ padding:'16px 0 16px', background:T.white }}>
+        <div style={{ padding:'0 16px 12px' }}>
+          <div style={{ fontSize:15, fontWeight:800, color:T.ink }}>What investors say</div>
+          <div style={{ fontSize:12, color:T.text3, marginTop:2 }}>Real investors, real returns</div>
+        </div>
+        <div style={{ display:'flex', gap:10, padding:'0 16px', overflowX:'auto' }}>
+          {[
+            { stars:'★★★★★', text:'"Started with ₹10,000. Got ₹900 credited in 3 months. Aspero is genuinely easy."', name:'Rohan M.', city:'Pune', ytm:'12.5%' },
+            { stars:'★★★★★', text:'"I was nervous about bonds but the KYC was smooth and my ₹50,000 is earning ₹531/mo."', name:'Priya K.', city:'Chennai', ytm:'12.75%' },
+            { stars:'★★★★☆', text:'"Best platform for FD alternatives. The AA+ rating with 13% return is hard to find."', name:'Amit D.', city:'Hyderabad', ytm:'13.0%' },
+          ].map((t, i) => (
+            <div key={i} style={{ minWidth:220, background:T.white, border:`1px solid ${T.border}`, borderRadius:14, padding:14, flexShrink:0 }}>
+              <div style={{ color:'#F59E0B', fontSize:13, marginBottom:8, letterSpacing:1 }}>{t.stars}</div>
+              <div style={{ fontSize:12, color:T.ink, lineHeight:1.7, marginBottom:10, fontStyle:'italic' }}>{t.text}</div>
+              <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+                <div style={{ width:28, height:28, borderRadius:999, background:T.green100, display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, fontWeight:700, color:T.green600 }}>{t.name[0]}</div>
+                <div>
+                  <div style={{ fontSize:12, fontWeight:700, color:T.ink }}>{t.name}</div>
+                  <div style={{ fontSize:10, color:T.text3 }}>{t.city} · {t.ytm} YTM</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* §9 Your money is safe */}
+      <div style={{ padding:'16px 0 16px', background:T.bg }}>
+        <div style={{ padding:'0 16px 12px' }}>
+          <div style={{ fontSize:15, fontWeight:800, color:T.ink }}>Your money is safe</div>
+          <div style={{ fontSize:12, color:T.text3, marginTop:2 }}>Four layers of protection</div>
+        </div>
+        <div style={{ margin:'0 16px', border:`1px solid ${T.border}`, borderRadius:14, overflow:'hidden', background:T.white }}>
+          {TrustRows.map((r, i) => (
+            <div key={i} style={{ display:'flex', alignItems:'flex-start', gap:12, padding:'13px 14px', borderBottom: i<TrustRows.length-1?`1px solid ${T.border}`:'none' }}>
+              <div style={{ width:36, height:36, borderRadius:10, background:T.green050, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, fontSize:16 }}>{r.icon}</div>
+              <div>
+                <div style={{ fontSize:13, fontWeight:700, color:T.ink, marginBottom:2 }}>{r.title}</div>
+                <div style={{ fontSize:11, color:T.text3, lineHeight:1.6 }}>{r.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* §10 Explore all bonds */}
+      <div style={{ padding:'8px 16px 24px', background:T.white, textAlign:'center' }}>
+        <button style={{ background:'none', border:'none', fontFamily:'inherit', fontSize:14, fontWeight:700, color:T.green, cursor:'pointer', display:'inline-flex', alignItems:'center', gap:6 }}>
+          Explore all bonds
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.green} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+
+      <div style={{ height: 20 }} />
+    </div>
+    <BottomNav />
+  </div>
+);
+
+/* ── App */
+function App() {
+  return (
+    <div className="outer">
+      <div className="page-header">
+        <div className="eyebrow">I8 · RTT Homepage · US-3 + Homepage Spec</div>
+        <h1>RTT Homepage — 10 Sections</h1>
+        <p>Shown to all RTT users with zero investments. Sections 1–9 disappear after first trade (except §9 trust markers).</p>
+      </div>
+
+      <div className="two-col">
+
+        {/* Left annotations */}
+        <div className="ann-sidebar" style={{ paddingTop:60 }}>
+          <div className="ann-card">
+            <div className="ann-label">Trigger condition</div>
+            <div className="ann-body">
+              <strong>KYC status = RTT</strong> AND<br/>
+              <strong>first_investment_count = 0</strong>
+            </div>
+          </div>
+          <div className="ann-card">
+            <div className="ann-label">Baseline metrics</div>
+            <div className="ann-num" style={{ marginBottom:6 }}>
+              <div className="ann-big">5.1%</div>
+              <div className="ann-small">RTT → invest</div>
+            </div>
+            <div style={{ fontSize:11, color:'#DC2626', fontWeight:600, marginBottom:4 }}>↓ from historical best 40–50%</div>
+            <div className="ann-num">
+              <div className="ann-big">0.84%</div>
+              <div className="ann-small">D7 NTU</div>
+            </div>
+            <div style={{ fontSize:11, color:'#DC2626', fontWeight:600 }}>↓ from best 2.09%</div>
+          </div>
+          <div className="ann-card">
+            <div className="ann-label">Section index</div>
+            <div className="section-index">
+              {[
+                {n:'1', name:'Nudge card', trigger:'RTT + 0 investments'},
+                {n:'2', name:'About this investment', trigger:'Variant A — infographic'},
+                {n:'3', name:'Popular first picks'},
+                {n:'4', name:'Trending this month'},
+                {n:'5', name:'Browse by category', trigger:'tabbed, interactive'},
+                {n:'6', name:'How bonds work'},
+                {n:'7', name:'New on Aspero'},
+                {n:'8', name:'What investors say'},
+                {n:'9', name:'Your money is safe', trigger:'persists post-trade'},
+                {n:'10', name:'Explore all bonds', trigger:'text link'},
+              ].map(s => (
+                <div key={s.n} style={{ display:'flex', alignItems:'baseline', gap:8, fontSize:12, color:'#5A6373', padding:'3px 0', borderBottom:'1px solid #F4F6FA' }}>
+                  <span style={{ width:16, fontWeight:800, color:T.green, flexShrink:0 }}>{s.n}</span>
+                  <span style={{ fontWeight:600, color:T.ink }}>{s.name}</span>
+                  {s.trigger && <span style={{ fontSize:10, color:T.text4 }}>{s.trigger}</span>}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Phone */}
+        <div className="phone-wrap">
+          <div className="phone">
+            <div className="phone-inner">
+              <Homepage />
+              <div className="di" />
+              <div className="hi" />
+            </div>
+          </div>
+        </div>
+
+        {/* Right spec */}
+        <div className="ann-sidebar" style={{ paddingTop:60 }}>
+          <div className="ann-card">
+            <div className="ann-label">US-3 nudge card spec</div>
+            {[
+              { k:'Jira', v:'ASP-3252' },
+              { k:'Owner', v:'Hari / Hari (FE) + Jagath (BE)' },
+              { k:'Dismiss', v:'7 days, then re-shows' },
+              { k:'Goes away', v:'After first successful invest' },
+              { k:'Bond refresh', v:'Daily — auto-switch if sold out' },
+              { k:'Bond change', v:'Via Screen 2 (State A) only' },
+            ].map(r => (
+              <div key={r.k} className="spec-row">
+                <div className="spec-key">{r.k}</div>
+                <div className="spec-val">{r.v}</div>
+              </div>
+            ))}
+          </div>
+          <div className="ann-card">
+            <div className="ann-label">Variant A (launch)</div>
+            <div className="ann-body">
+              §2 uses <strong>infographic cards</strong> (bond snapshot + issuer) — zero content dependency.<br/><br/>
+              <strong>Variant B</strong> (phase 2): video cards — requires video per ISIN, start with top 10 by volume.
+            </div>
+          </div>
+          <div className="ann-card">
+            <div className="ann-label">Impact model</div>
+            {[
+              { k:'Target D0 invest lift', v:'+4–6pp' },
+              { k:'At 1× RTT (216/wk)', v:'+₹0.8–1.1Cr/mo' },
+              { k:'At 2× RTT (432/wk)', v:'+₹1.5–2.2Cr/mo' },
+              { k:'At 10× RTT (2,160/wk)', v:'+₹9.2Cr/mo' },
+            ].map(r => (
+              <div key={r.k} className="spec-row">
+                <div className="spec-key">{r.k}</div>
+                <div className="spec-val">{r.v}</div>
+              </div>
+            ))}
+          </div>
+          <div className="ann-card">
+            <div className="ann-label">Interactive in this mock</div>
+            <ul style={{ fontSize:12, color:'#5A6373', lineHeight:1.8, paddingLeft:16 }}>
+              <li>Nudge card amount editor</li>
+              <li>₹/mo recalculates live</li>
+              <li>CTA label updates with amount</li>
+              <li>7-day dismiss (tap to restore)</li>
+              <li>Browse by category tabs</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <div style={{ textAlign:'center', fontSize:11, color:'#B0BAC8', marginTop:48 }}>
+        I8 · RTT Homepage (R1) · US-3 · ASP-263 · Last updated Apr 7, 2026 · aspero B2C
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

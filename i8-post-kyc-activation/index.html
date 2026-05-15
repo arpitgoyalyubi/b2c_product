@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I8 · Post-KYC Activation Screen — Mocks</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Manrope', sans-serif; background: #E8ECF4; min-height: 100vh; padding: 60px 24px; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 800px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 48px; }
+  .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #8A93A3; margin-bottom: 10px; }
+  h1 { font-size: 28px; font-weight: 800; color: #030A16; letter-spacing: -.02em; margin-bottom: 8px; }
+  .sub { font-size: 14px; color: #5A6373; line-height: 1.6; max-width: 500px; margin: 0 auto 20px; }
+  .meta-pills { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .pill { background: rgba(3,10,22,.08); border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 600; color: #5A6373; }
+  .pill.green { background: #D6F5E2; color: #019648; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .card {
+    background: #fff; border: 1px solid #E6E9EE; border-radius: 18px;
+    overflow: hidden; text-decoration: none; color: inherit;
+    transition: transform 160ms, box-shadow 160ms;
+    display: flex; flex-direction: column;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(3,10,22,.12); }
+
+  .card-hero {
+    height: 160px; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-a { background: linear-gradient(135deg, #030A16 0%, #0D1626 100%); }
+  .hero-b { background: linear-gradient(135deg, #0D2235 0%, #030A16 100%); }
+  .hero-blob {
+    position: absolute; width: 140px; height: 140px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(1,183,86,.25) 0%, transparent 70%);
+    right: -20px; bottom: -20px;
+  }
+  .hero-label {
+    position: absolute; bottom: 14px; left: 16px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .1em; color: rgba(255,255,255,.4);
+  }
+  .hero-screens {
+    display: flex; gap: 8px; align-items: center; position: relative; z-index: 1;
+  }
+  .screen-pill {
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
+    border-radius: 8px; padding: 6px 11px; font-size: 12px; font-weight: 700; color: #fff;
+  }
+  .screen-pill.active { background: #01B756; border-color: #01B756; }
+
+  .card-body { padding: 20px; flex: 1; }
+  .card-title { font-size: 17px; font-weight: 800; color: #030A16; margin-bottom: 6px; letter-spacing: -.01em; }
+  .card-desc { font-size: 13px; color: #5A6373; line-height: 1.6; margin-bottom: 14px; }
+  .card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag { display: inline-flex; padding: 3px 9px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+  .tag-green { background: #D6F5E2; color: #019648; }
+  .tag-lav { background: #EFF2F9; color: #4753C6; }
+  .tag-gray { background: #F4F6FA; color: #5A6373; }
+
+  .card-footer {
+    padding: 14px 20px; border-top: 1px solid #E6E9EE;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .jira-tag { font-size: 11px; font-weight: 700; color: #4753C6; background: #EFF2F9; padding: 3px 9px; border-radius: 5px; }
+  .open-link {
+    font-size: 12px; font-weight: 700; color: #01B756;
+    display: flex; align-items: center; gap: 5px;
+  }
+
+  .prd-note {
+    margin-top: 32px; background: #fff; border: 1px solid #E6E9EE;
+    border-radius: 14px; padding: 20px 24px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+  }
+  .kpi { text-align: center; }
+  .kpi-val { font-size: 22px; font-weight: 800; color: #030A16; letter-spacing: -.03em; }
+  .kpi-label { font-size: 11px; color: #8A93A3; font-weight: 600; margin-top: 3px; text-transform: uppercase; letter-spacing: .06em; }
+  .kpi-delta { font-size: 11px; font-weight: 700; margin-top: 2px; }
+  .kpi-delta.red { color: #DC2626; }
+  .kpi-delta.green { color: #019648; }
+
+  .footer { text-align: center; font-size: 11px; color: #B0BAC8; margin-top: 40px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="eyebrow">Aspero · I8 · ASP-263 — KYC Optimisations</div>
+    <h1>Post-KYC Activation Screen</h1>
+    <div class="sub">One-time activation screen + RTT homepage redesign. P0 — called out in GK warroom Mar 13, 2026. Never shipped.</div>
+    <div class="meta-pills">
+      <span class="pill">In design</span>
+      <span class="pill">Stack rank #6</span>
+      <span class="pill">XS–S effort</span>
+      <span class="pill green">D7 NTU gap: 0.84% vs 2.09% historical best</span>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="prd-note" style="margin-bottom:32px">
+    <div class="kpi">
+      <div class="kpi-val">216</div>
+      <div class="kpi-label">RTT/wk</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val" style="color:#DC2626">5.1%</div>
+      <div class="kpi-label">RTT → invest</div>
+      <div class="kpi-delta red">↓ from ~40–50% best</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val" style="color:#DC2626">0.84%</div>
+      <div class="kpi-label">D7 NTU</div>
+      <div class="kpi-delta red">↓ from 2.09% best</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val" style="color:#01B756">+₹0.8Cr</div>
+      <div class="kpi-label">GTV/mo target</div>
+      <div class="kpi-delta green">at 1× RTT scale</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- Screen 2 -->
+    <a href="screen2-activation.html" class="card">
+      <div class="card-hero hero-a">
+        <div class="hero-blob"></div>
+        <div class="hero-screens">
+          <div class="screen-pill active">A</div>
+          <div style="color:rgba(255,255,255,.3);font-size:14px">→</div>
+          <div class="screen-pill">B</div>
+          <div style="color:rgba(255,255,255,.3);font-size:14px">→</div>
+          <div class="screen-pill">C</div>
+        </div>
+        <div class="hero-label">Screen 2 · 3 states</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Post-KYC Activation Screen</div>
+        <div class="card-desc">One-time screen shown immediately after KYC → RTT transition. Personalized bond match with full transparency on why it was picked.</div>
+        <div class="card-tags">
+          <span class="tag tag-green">State A — Default match</span>
+          <span class="tag tag-lav">State B — Correction</span>
+          <span class="tag tag-gray">State C — Updated match</span>
+          <span class="tag tag-green">Interactive</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="jira-tag">ASP-3251 · FE</span>
+        <span class="open-link">Open mock →</span>
+      </div>
+    </a>
+
+    <!-- RTT Homepage -->
+    <a href="rtt-homepage.html" class="card">
+      <div class="card-hero hero-b">
+        <div class="hero-blob"></div>
+        <div class="hero-screens" style="flex-direction:column;gap:6px">
+          <div style="display:flex;gap:6px">
+            <div class="screen-pill active" style="font-size:10px">Nudge card</div>
+            <div class="screen-pill" style="font-size:10px">About invest.</div>
+          </div>
+          <div style="display:flex;gap:6px">
+            <div class="screen-pill" style="font-size:10px">Popular picks</div>
+            <div class="screen-pill active" style="font-size:10px">Browse tabs</div>
+          </div>
+        </div>
+        <div class="hero-label">RTT Homepage · 10 sections</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">RTT Homepage</div>
+        <div class="card-desc">Full homepage for users who completed KYC but haven't invested yet. 10 sections — from nudge card to trust markers. Disappear after first trade.</div>
+        <div class="card-tags">
+          <span class="tag tag-green">US-3 Nudge card</span>
+          <span class="tag tag-green">Interactive tabs</span>
+          <span class="tag tag-lav">Live amount editor</span>
+          <span class="tag tag-gray">10 sections</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="jira-tag">ASP-3252 · FE + BE</span>
+        <span class="open-link">Open mock →</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="prd-note">
+    <div style="grid-column:1/-1">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#8A93A3;margin-bottom:10px">Solution overview</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+        {['US-1 Bond matching API (BE) · ASP-3250', 'US-2 Post-KYC activation screen (FE) · ASP-3251', 'US-3 Persistent nudge card (FE+BE) · ASP-3252', 'US-4 Push notification at KYC approval (BE) · ASP-3253'].map((item, i) => `
+          <div style="background:#F4F6FA;border-radius:10px;padding:12px">
+            <div style="font-size:11px;font-weight:700;color:#030A16;line-height:1.6">${item}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    I8 · Post-KYC Activation Screen (R1) · ASP-263 · Owners: Jagath (BE) · Hari / Dhanavel (FE) · Arpit (PM) · Prankul (Design)<br>
+    Last updated Apr 7, 2026 · aspero B2C
+  </div>
+</div>
+</body>
+</html>
