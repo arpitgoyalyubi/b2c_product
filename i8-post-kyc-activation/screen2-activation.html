@@ -1174,22 +1174,22 @@ const RttHomepage = ({ variant }) => (
 function App() {
   const [tab, setTab] = useState('push');
   const [state, setState] = useState('A');
+  const [homepageView, setHomepageView] = useState('nudge');
   const [rttVariant, setRttVariant] = useState('a');
 
   const TABS = [
-    { id:'push',    label:'① Push Notification' },
-    { id:'stateA',  label:'② State A (default)' },
-    { id:'stateA2', label:'② State A (why open)' },
-    { id:'stateB',  label:'② State B (correction)' },
-    { id:'stateC',  label:'② State C (updated)' },
-    { id:'nudge',   label:'③ Home Nudge' },
-    { id:'nudge2',  label:'③ Nudge (editing)' },
-    { id:'web',     label:'⑤ Web Activation' },
-    { id:'rttHome', label:'③ RTT Homepage' },
+    { id:'push',     label:'① Push Notification' },
+    { id:'stateA',   label:'② State A (default)' },
+    { id:'stateA2',  label:'② State A (why open)' },
+    { id:'stateB',   label:'② State B (correction)' },
+    { id:'stateC',   label:'② State C (updated)' },
+    { id:'homepage', label:'③ Homepage' },
+    { id:'web',      label:'⑤ Web Activation' },
   ];
 
-  const isWeb = tab === 'web';
-  const isRtt = tab === 'rttHome';
+  const isWeb  = tab === 'web';
+  const isHome = tab === 'homepage';
+  const isRtt  = isHome && homepageView === 'rtt';
 
   return (
     <div>
@@ -1284,7 +1284,7 @@ function App() {
                 <div className="ann-val">"Undo" in switched-banner re-shows State A with original REC Limited bond</div>
               </div>
             </>}
-            {(tab === 'nudge' || tab === 'nudge2') && <>
+            {(isHome && !isRtt) && <>
               <div className="ann-card">
                 <div className="ann-label">Trigger (US-3)</div>
                 <div className="ann-val">Persists on homepage until <span className="hi">first investment</span>. Dismissed state stored per user.</div>
@@ -1308,17 +1308,32 @@ function App() {
           </div>
         ) : (
           <div className="phone-wrap">
-            {isRtt && (
-              <div style={{ display:'flex',gap:6,marginBottom:14,justifyContent:'center' }}>
-                {[['a','Infographic'],['b','Video']].map(([v,label]) => (
-                  <button key={v} onClick={() => setRttVariant(v)} style={{
-                    padding:'6px 16px',borderRadius:20,border:'none',cursor:'pointer',
-                    fontSize:12,fontWeight:700,letterSpacing:'.03em',fontFamily:'inherit',
-                    background: rttVariant===v ? '#018E43' : 'rgba(255,255,255,.08)',
-                    color: rttVariant===v ? '#fff' : 'rgba(255,255,255,.5)',
-                    transition:'all 140ms',
-                  }}>{label}</button>
-                ))}
+            {isHome && (
+              <div style={{ display:'flex',flexDirection:'column',alignItems:'center',gap:8,marginBottom:14 }}>
+                <div style={{ display:'flex',gap:6 }}>
+                  {[['nudge','Home Nudge'],['nudge2','Nudge (editing)'],['rtt','RTT Homepage']].map(([v,label]) => (
+                    <button key={v} onClick={() => setHomepageView(v)} style={{
+                      padding:'6px 14px',borderRadius:20,border:'none',cursor:'pointer',
+                      fontSize:12,fontWeight:700,letterSpacing:'.03em',fontFamily:'inherit',
+                      background: homepageView===v ? '#018E43' : 'rgba(255,255,255,.08)',
+                      color: homepageView===v ? '#fff' : 'rgba(255,255,255,.5)',
+                      transition:'all 140ms',
+                    }}>{label}</button>
+                  ))}
+                </div>
+                {isRtt && (
+                  <div style={{ display:'flex',gap:6 }}>
+                    {[['a','Infographic'],['b','Video']].map(([v,label]) => (
+                      <button key={v} onClick={() => setRttVariant(v)} style={{
+                        padding:'4px 12px',borderRadius:20,border:'1px solid rgba(255,255,255,.15)',cursor:'pointer',
+                        fontSize:11,fontWeight:700,letterSpacing:'.03em',fontFamily:'inherit',
+                        background: rttVariant===v ? 'rgba(1,142,67,.25)' : 'transparent',
+                        color: rttVariant===v ? '#4ADE80' : 'rgba(255,255,255,.4)',
+                        transition:'all 140ms',
+                      }}>{label}</button>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
             <div className="phone" style={isRtt ? {height:'812px'} : {}}>
@@ -1327,9 +1342,9 @@ function App() {
               {tab === 'stateA2' && <StateA whyOpen={true} onGoB={() => setTab('stateB')}/>}
               {tab === 'stateB'  && <StateB onGoC={() => setTab('stateC')}/>}
               {tab === 'stateC'  && <StateC onGoA={() => setTab('stateA')}/>}
-              {tab === 'nudge'   && <NudgeScreen editing={false}/>}
-              {tab === 'nudge2'  && <NudgeScreen editing={true}/>}
-              {isRtt             && <RttHomepage variant={rttVariant}/>}
+              {isHome && homepageView === 'nudge'  && <NudgeScreen editing={false}/>}
+              {isHome && homepageView === 'nudge2' && <NudgeScreen editing={true}/>}
+              {isRtt                               && <RttHomepage variant={rttVariant}/>}
             </div>
           </div>
         )}
