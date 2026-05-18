@@ -83,8 +83,8 @@
 
   /* ── phone frame ─────────────────────────────── */
   .phone-wrap{display:flex;justify-content:center;filter:drop-shadow(0 24px 56px rgba(15,20,25,.2))}
-  .phone{width:390px;border-radius:48px;background:var(--white);overflow:hidden;position:relative;border:1px solid rgba(15,20,25,.1)}
-  .phone-inner{display:flex;flex-direction:column;height:100%;overflow:hidden;min-height:812px}
+  .phone{width:390px;height:812px;border-radius:48px;background:var(--white);overflow:hidden;position:relative;border:1px solid rgba(15,20,25,.1)}
+  .phone-inner{display:flex;flex-direction:column;height:100%;overflow:hidden}
 
   /* ── status bar ──────────────────────────────── */
   .sb{display:flex;align-items:center;justify-content:space-between;padding:14px 28px 8px;position:relative;z-index:10;flex-shrink:0}
@@ -1278,9 +1278,7 @@ function App() {
             : (
               <div className="phone-wrap">
                 <div className="phone">
-                  <div className="phone-inner">
-                    {renderPhone()}
-                  </div>
+                  {renderPhone()}
                 </div>
               </div>
             )
