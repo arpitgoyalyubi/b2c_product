@@ -60,6 +60,30 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
 .arrow-btn:hover{background:rgba(255,255,255,0.12)}
 .content-area{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto}
 
+/* ── FLOW STRIP ──────────────────────────────────── */
+.flow-strip{display:flex;align-items:center;justify-content:center;padding:12px 24px 0;flex-shrink:0;gap:0}
+.fs-node{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:5px 10px;border-radius:8px;transition:background .15s;min-width:72px}
+.fs-dot{width:9px;height:9px;border-radius:50%;background:#1E3A5F;transition:all .2s}
+.fs-lbl{font-size:9px;color:rgba(255,255,255,0.22);font-weight:700;text-transform:uppercase;letter-spacing:0.7px;transition:all .2s;white-space:nowrap}
+.fs-line{flex:1;height:1px;background:#1E3A5F;max-width:32px;flex-shrink:0}
+.fs-node:hover .fs-dot{background:#2A5A8A}
+.fs-node:hover .fs-lbl{color:rgba(255,255,255,0.5)}
+/* Entry = amber */
+.fs-node[data-phase="0"].active .fs-dot{background:#EF9F27;box-shadow:0 0 8px rgba(239,159,39,0.45)}
+.fs-node[data-phase="0"].active .fs-lbl{color:#EF9F27}
+/* Processing = amber */
+.fs-node[data-phase="1"].active .fs-dot{background:#EF9F27;box-shadow:0 0 8px rgba(239,159,39,0.45)}
+.fs-node[data-phase="1"].active .fs-lbl{color:#EF9F27}
+/* Failed = red */
+.fs-node[data-phase="2"].active .fs-dot{background:#E53E3E;box-shadow:0 0 8px rgba(229,62,62,0.45)}
+.fs-node[data-phase="2"].active .fs-lbl{color:#E53E3E}
+/* Recovery = amber */
+.fs-node[data-phase="3"].active .fs-dot{background:#EF9F27;box-shadow:0 0 8px rgba(239,159,39,0.45)}
+.fs-node[data-phase="3"].active .fs-lbl{color:#EF9F27}
+/* Resolved = green */
+.fs-node[data-phase="4"].active .fs-dot{background:#01B756;box-shadow:0 0 8px rgba(1,183,86,0.45)}
+.fs-node[data-phase="4"].active .fs-lbl{color:#01B756}
+
 /* ── PHONE ──────────────────────────────────── */
 .phone{width:390px;background:#fff;border-radius:40px;box-shadow:0 24px 80px rgba(0,0,0,0.5);overflow:hidden;flex-shrink:0;position:relative}
 .screen{height:780px;display:flex;flex-direction:column;overflow:hidden;position:relative}
@@ -374,72 +398,48 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
   </div>
 
   <div class="nav-section">
-    <div class="nav-section-label">Home Screen</div>
-    <div class="nav-item active" id="n1" onclick="show(1)"><span class="num">1</span>Baseline — no strip</div>
-    <div class="nav-item" id="n2" onclick="show(2)"><span class="num">2</span>Recoverable failure</div>
-    <div class="nav-item" id="n3" onclick="show(3)"><span class="num">3</span>Quantity updated</div>
-    <div class="nav-item" id="n4" onclick="show(4)"><span class="num">4</span>Insufficient funds</div>
-  </div>
-
-  <div class="nav-divider"></div>
-
-  <div class="nav-section">
-    <div class="nav-section-label">Flows</div>
-    <div class="nav-item" id="n5" onclick="show(5)"><span class="num">5</span>Investment Summary</div>
-    <div class="nav-item" id="n6" onclick="show(6)"><span class="num">6</span>Insuff. funds screen</div>
-  </div>
-
-  <div class="nav-divider"></div>
-
-  <div class="nav-section">
-    <div class="nav-section-label">Notifications</div>
-    <div class="nav-item" id="n7" onclick="show(7)"><span class="num">7</span>Downtime banner</div>
-    <div class="nav-item" id="n8" onclick="show(8)"><span class="num">8</span>WA deeplink</div>
-  </div>
-
-  <div class="nav-divider"></div>
-
-  <div class="nav-section">
-    <div class="nav-section-label">Edge Cases</div>
-    <div class="nav-item" id="n9" onclick="show(9)"><span class="num">9</span>Bond sold out</div>
-    <div class="nav-item" id="n10" onclick="show(10)"><span class="num">10</span>Strip dismissed</div>
-  </div>
-
-  <div class="nav-divider"></div>
-
-  <div class="nav-section">
-    <div class="nav-section-label">Specs</div>
-    <div class="nav-item" id="n11" onclick="show(11)"><span class="num">11</span>Analytics events</div>
-  </div>
-
-  <div class="nav-divider"></div>
-
-  <div class="nav-section">
-    <div class="nav-section-label">PDF Flow</div>
-    <div class="nav-item" id="n12" onclick="show(12)"><span class="num">12</span>Lock-screen push</div>
-    <div class="nav-item" id="n13" onclick="show(13)"><span class="num">13</span>Processing</div>
+    <div class="nav-section-label">Core Journey →</div>
+    <div class="nav-item active" id="n1" onclick="show(1)"><span class="num">1</span>Home · no failures</div>
+    <div class="nav-item" id="n2" onclick="show(2)"><span class="num">2</span>Retry strip appears</div>
+    <div class="nav-item" id="n12" onclick="show(12)"><span class="num">3</span>Push notification</div>
+    <div class="nav-item" id="n13" onclick="show(13)"><span class="num">4</span>Processing</div>
+    <div class="nav-item" id="n6" onclick="show(6)"><span class="num">5</span>Payment fails</div>
+    <div class="nav-item" id="n19" onclick="show(19)"><span class="num">6</span>Switch method</div>
+    <div class="nav-item" id="n20" onclick="show(20)"><span class="num">7</span>Retry attempt 2/3</div>
+    <div class="nav-item" id="n21" onclick="show(21)"><span class="num">8</span>Cooldown</div>
+    <div class="nav-item" id="n22" onclick="show(22)"><span class="num">9</span>Success ✓</div>
+    <div class="nav-item" id="n23" onclick="show(23)"><span class="num">10</span>Permanent failure ✗</div>
   </div>
 
   <div class="nav-divider"></div>
 
   <div class="nav-section">
     <div class="nav-section-label">Failure Variants</div>
-    <div class="nav-item" id="n14" onclick="show(14)"><span class="num">14</span>Gateway down</div>
-    <div class="nav-item" id="n15" onclick="show(15)"><span class="num">15</span>Card declined</div>
-    <div class="nav-item" id="n16" onclick="show(16)"><span class="num">16</span>OTP timeout</div>
-    <div class="nav-item" id="n17" onclick="show(17)"><span class="num">17</span>UPI mandate revoked</div>
-    <div class="nav-item" id="n18" onclick="show(18)"><span class="num">18</span>Network dropped</div>
+    <div class="nav-item" id="n14" onclick="show(14)"><span class="num">·</span>Gateway down</div>
+    <div class="nav-item" id="n15" onclick="show(15)"><span class="num">·</span>Card declined</div>
+    <div class="nav-item" id="n16" onclick="show(16)"><span class="num">·</span>OTP timeout</div>
+    <div class="nav-item" id="n17" onclick="show(17)"><span class="num">·</span>UPI mandate revoked</div>
+    <div class="nav-item" id="n18" onclick="show(18)"><span class="num">·</span>Network dropped</div>
   </div>
 
   <div class="nav-divider"></div>
 
   <div class="nav-section">
-    <div class="nav-section-label">Resolution</div>
-    <div class="nav-item" id="n19" onclick="show(19)"><span class="num">19</span>Switch method</div>
-    <div class="nav-item" id="n20" onclick="show(20)"><span class="num">20</span>Retry in progress</div>
-    <div class="nav-item" id="n21" onclick="show(21)"><span class="num">21</span>Cooldown (3 fails)</div>
-    <div class="nav-item" id="n22" onclick="show(22)"><span class="num">22</span>Success</div>
-    <div class="nav-item" id="n23" onclick="show(23)"><span class="num">23</span>Permanent failure</div>
+    <div class="nav-section-label">Edge Cases</div>
+    <div class="nav-item" id="n3" onclick="show(3)"><span class="num">·</span>Qty updated strip</div>
+    <div class="nav-item" id="n4" onclick="show(4)"><span class="num">·</span>Insuff. funds strip</div>
+    <div class="nav-item" id="n5" onclick="show(5)"><span class="num">·</span>Investment Summary</div>
+    <div class="nav-item" id="n7" onclick="show(7)"><span class="num">·</span>Downtime banner</div>
+    <div class="nav-item" id="n8" onclick="show(8)"><span class="num">·</span>WA deeplink</div>
+    <div class="nav-item" id="n9" onclick="show(9)"><span class="num">·</span>Bond sold out</div>
+    <div class="nav-item" id="n10" onclick="show(10)"><span class="num">·</span>Strip dismissed</div>
+  </div>
+
+  <div class="nav-divider"></div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Specs</div>
+    <div class="nav-item" id="n11" onclick="show(11)"><span class="num">·</span>Analytics events</div>
   </div>
 </div>
 
@@ -453,6 +453,28 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
     <div class="nav-arrows">
       <button class="arrow-btn" onclick="prev()">‹</button>
       <button class="arrow-btn" onclick="next()">›</button>
+    </div>
+  </div>
+
+  <div class="flow-strip">
+    <div class="fs-node" data-phase="0" id="fs0" onclick="show(2)">
+      <div class="fs-dot"></div><div class="fs-lbl">Entry</div>
+    </div>
+    <div class="fs-line"></div>
+    <div class="fs-node" data-phase="1" id="fs1" onclick="show(13)">
+      <div class="fs-dot"></div><div class="fs-lbl">Processing</div>
+    </div>
+    <div class="fs-line"></div>
+    <div class="fs-node" data-phase="2" id="fs2" onclick="show(14)">
+      <div class="fs-dot"></div><div class="fs-lbl">Failed</div>
+    </div>
+    <div class="fs-line"></div>
+    <div class="fs-node" data-phase="3" id="fs3" onclick="show(19)">
+      <div class="fs-dot"></div><div class="fs-lbl">Recovery</div>
+    </div>
+    <div class="fs-line"></div>
+    <div class="fs-node" data-phase="4" id="fs4" onclick="show(22)">
+      <div class="fs-dot"></div><div class="fs-lbl">Resolved</div>
     </div>
   </div>
 
@@ -1632,30 +1654,42 @@ body{font-family:'Sequel Sans','Manrope',-apple-system,BlinkMacSystemFont,sans-s
 
 <script>
 const SCREENS = {
-  1:  ['Home — Baseline',           'No failed payments · reference state'],
-  2:  ['Home — Retry Strip',        'Recoverable failure · amber strip · bank server timeout'],
-  3:  ['Home — Quantity Updated',   'Only 3 of 5 units available · "Qty updated" badge shown'],
-  4:  ['Home — Insufficient Funds', 'Red strip · "Add bank" + "Transfer" inline CTAs'],
-  5:  ['Investment Summary',        'Retry entry · amber banner · all fields pre-filled'],
-  6:  ['Insufficient Funds Screen', 'US-5 · verify new bank account OR transfer funds & retry'],
-  7:  ['Home — Downtime Banner',    'US-4 · Razorpay gateway outage · amber banner below header'],
-  8:  ['WhatsApp Re-engagement',    'US-3 · deeplink message sent within 15 min of failure'],
-  9:  ['Strip — Bond Sold Out',     'Retry tapped · 0 units available · inline error in strip'],
-  10: ['Strip — Dismissed',         'User tapped ✕ · dismissed flag set · clean home view'],
-  11: ['Analytics Event Map',       '6 events: 3 FE + 3 BE · properties per event'],
-  12: ['Lock-screen Push + SMS',    'PDF §1 · push notification + HDFC bank SMS side-by-side'],
-  13: ['Payment Processing',        'PDF §2 · step-by-step stepper — Order validated → Settlement'],
-  14: ['Failure — Gateway Down',    'PDF §3a · BANK UNREACHABLE · auto-retry every 5 min or switch bank'],
-  15: ['Failure — Card Declined',   'PDF §3b · CARD DECLINED · E51 DO_NOT_HONOR · switch to UPI'],
-  16: ['Failure — OTP Timeout',     'PDF §3c · OTP TIMED OUT · 90-sec window expired · resend or switch'],
-  17: ['Failure — Mandate Revoked', 'PDF §3d · UPI AUTOPAY E33 · mandate cancelled · one-time UPI'],
-  18: ['Failure — Network Dropped', 'PDF §3e · CONNECTION DROPPED · E99 · idempotency check in progress'],
-  19: ['Switch Payment Method',     'PDF §4 · HDFC FAILED shown · ICICI selected · RTGS / UPI options'],
-  20: ['Retry In Progress',         'PDF §5 · Attempt 2 of 3 · ICICI gateway stepper'],
-  21: ['Cooldown — 3 Failures',     'PDF §6 · 15-min fraud-protection pause · countdown + attempt log'],
-  22: ['Success After Retry',       'PDF §7 · ORDER CONFIRMED · ICICI debited · bank ref · T+1 settle'],
-  23: ['Permanent Failure',         'PDF §8 · 5 attempts · order cancelled · SUP case · support handoff'],
+  1:  ['Home · No failures',        'Entry — baseline reference state, no pending payment issues'],
+  2:  ['Home · Retry strip',        'Entry — failure detected, amber strip surfaces the action'],
+  3:  ['Home · Qty updated strip',  'Edge case — only 3 of 5 units available, "Qty updated" badge'],
+  4:  ['Home · Insuff. funds strip','Edge case — red strip, "Add bank" + "Transfer" inline CTAs'],
+  5:  ['Investment Summary',        'Edge case — retry entry from order detail, fields pre-filled'],
+  6:  ['Payment fails',             'Failed — insufficient balance, switch or top up to proceed'],
+  7:  ['Home · Downtime banner',    'Edge case — Razorpay gateway outage, amber banner below header'],
+  8:  ['WhatsApp re-engagement',    'Edge case — deeplink message sent within 15 min of failure'],
+  9:  ['Strip · Bond sold out',     'Edge case — retry tapped but 0 units remain, inline error'],
+  10: ['Strip · Dismissed',         'Edge case — user tapped ✕, dismissed flag set, clean view'],
+  11: ['Analytics event map',       'Specs — 6 events: 3 FE + 3 BE, properties per event'],
+  12: ['Push notification',         'Entry — lock-screen push + HDFC bank SMS, drives re-entry'],
+  13: ['Processing',                'In Progress — stepper: Order validated → Awaiting OTP → Settlement'],
+  14: ['Failure · Gateway down',    'Failed — BANK UNREACHABLE, auto-retry every 5 min or switch bank'],
+  15: ['Failure · Card declined',   'Failed — CARD DECLINED E51 DO_NOT_HONOR, switch to UPI/netbanking'],
+  16: ['Failure · OTP timeout',     'Failed — OTP TIMED OUT, 90-sec window expired, resend or switch'],
+  17: ['Failure · Mandate revoked', 'Failed — UPI AUTOPAY E33, mandate cancelled, pay one-time instead'],
+  18: ['Failure · Network dropped', 'Failed — CONNECTION DROPPED E99, idempotency check running'],
+  19: ['Switch method',             'Recovery — HDFC FAILED shown, ICICI pre-selected, RTGS / UPI options'],
+  20: ['Retry in progress',         'Recovery — Attempt 2 of 3, ICICI gateway stepper with OTP note'],
+  21: ['Cooldown',                  'Recovery — 15-min fraud-protection pause, countdown + attempt log'],
+  22: ['Success ✓',                 'Resolved — ORDER CONFIRMED, ICICI debited, bank ref, T+1 settle'],
+  23: ['Permanent failure ✗',       'Resolved — 5 attempts exhausted, order cancelled, SUP case created'],
 };
+
+// Phase map: which flow-strip stage each screen belongs to (0–4, undefined = none)
+const PHASE = {
+  1:0, 2:0, 12:0,                          // Entry
+  13:1,                                     // Processing
+  6:2, 14:2, 15:2, 16:2, 17:2, 18:2,       // Failed
+  19:3, 20:3, 21:3,                         // Recovery
+  22:4, 23:4,                               // Resolved
+};
+
+// Story order for ‹ › navigation (Core Journey first, then variants, then edge cases, then specs)
+const FLOW = [1, 2, 12, 13, 6, 19, 20, 21, 22, 23, 14, 15, 16, 17, 18, 3, 4, 5, 7, 8, 9, 10, 11];
 
 let cur = 1;
 function show(id) {
@@ -1665,10 +1699,15 @@ function show(id) {
   document.getElementById('n' + id).classList.add('active');
   document.getElementById('screen-title').textContent = SCREENS[id][0];
   document.getElementById('screen-sub').textContent   = SCREENS[id][1];
+  // update flow strip
+  const phase = PHASE[id];
+  document.querySelectorAll('.fs-node').forEach(n => {
+    n.classList.toggle('active', phase !== undefined && parseInt(n.dataset.phase) === phase);
+  });
   cur = id;
 }
-function next() { show(cur < 23 ? cur + 1 : 1); }
-function prev() { show(cur > 1  ? cur - 1 : 23); }
+function next() { const i = FLOW.indexOf(cur); show(FLOW[i < FLOW.length - 1 ? i + 1 : 0]); }
+function prev() { const i = FLOW.indexOf(cur); show(FLOW[i > 0 ? i - 1 : FLOW.length - 1]); }
 </script>
 </body>
 </html>
