@@ -206,8 +206,8 @@
 const { useState } = React;
 
 /* ─── DATA ──────────────────────────────────────────────────── */
-const MATCHED = { issuer:'REC Limited', name:'PSU NCD 10.50% Mar 2028', isin:'INE020B07JZ4', rating:'AA+', type:'PSU · Secured', tenure:'24 months', ytm:10.5, amount:50000, monthly:438, colour:'#0E7A39', initials:'RE', faceValue:1000 };
-const SHORTER = { issuer:'Bajaj Finance', name:'NCD 9.80% Nov 2027', isin:'INE296A07PL2', rating:'AAA', type:'NBFC · Secured', tenure:'18 months', ytm:9.8, amount:50000, monthly:408, colour:'#1F3A93', initials:'BF', faceValue:1000 };
+const MATCHED = { issuer:'REC Limited', name:'PSU NCD 10.50% Mar 2028', isin:'INE020B07JZ4', rating:'AA+', type:'PSU · Secured', tenure:'24 months', ytm:10.5, amount:25000, monthly:219, colour:'#0E7A39', initials:'RE', faceValue:1000 };
+const SHORTER = { issuer:'Bajaj Finance', name:'NCD 9.80% Nov 2027', isin:'INE296A07PL2', rating:'AAA', type:'NBFC · Secured', tenure:'18 months', ytm:9.8, amount:25000, monthly:204, colour:'#1F3A93', initials:'BF', faceValue:1000 };
 const NHAI = { issuer:'NHAI', name:'54EC Capital Bonds', isin:'INE906B07GG6', rating:'AAA', type:'Govt · Secured', tenure:'5 years', ytm:8.05, colour:'#0E7A39', initials:'NH', faceValue:10000 };
 const LT = { issuer:'L&T Finance', name:'NCD 9.5% 2029', isin:'INE476A07NX8', rating:'AA+', ytm:13.85, tenure:'24 mo', colour:'#0050A5', initials:'LT', faceValue:1000 };
 const IIFL = { issuer:'IIFL Samasta', name:'NCD 10.75% 2027', isin:'INE917Y07034', rating:'AA-', ytm:13.5, tenure:'14 mo', colour:'#1B7E6A', initials:'IS', faceValue:1000 };
@@ -280,13 +280,13 @@ const NudgeCard = () => (
     <div className="bn">REC Limited · NCD 10.50% Mar 2028</div>
     <div className="bm">AA+ · 24 months · Moderate profile match</div>
     <div className="nudge-monthly">
-      <div className="v"><span className="unit">₹</span><span className="num">438</span><span className="unit">&nbsp;/mo</span></div>
-      <div className="sub">per month on ₹50,000 · 10.50% YTM</div>
+      <div className="v"><span className="unit">₹</span><span className="num">219</span><span className="unit">&nbsp;/mo</span></div>
+      <div className="sub">per month on ₹25,000 · 10.50% YTM</div>
     </div>
     <div className="nudge-amt-row">
       <span className="l">Investing</span>
       <span style={{ display:'flex',alignItems:'center',gap:8 }}>
-        <span className="v">₹50,000</span>
+        <span className="v">₹25,000</span>
         <button className="change-link">change</button>
       </span>
     </div>
@@ -568,7 +568,7 @@ function App() {
               <li>Persists until first investment</li>
               <li>Monthly income in Fraunces serif</li>
               <li>Amount editable inline — no new screen</li>
-              <li>₹438/mo pre-calculated at ₹50K</li>
+              <li>₹219/mo pre-calculated at ₹25K</li>
             </ul>
           </div>
           <div className="ann-card">

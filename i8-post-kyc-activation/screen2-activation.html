@@ -259,8 +259,8 @@
 const { useState } = React;
 
 /* ─── BOND DATA ──────────────────────────────────────────────── */
-const MATCHED = { issuer:'REC Limited', name:'PSU NCD 10.50% Mar 2028', isin:'INE020B07JZ4', rating:'AA+', type:'PSU · Secured', tenure:'24 months', ytm:10.5, amount:50000, monthly:438, colour:'#0E7A39', initials:'RE' };
-const SHORTER = { issuer:'Bajaj Finance', name:'NCD 9.80% Nov 2027', isin:'INE296A07PL2', rating:'AAA', type:'NBFC · Secured', tenure:'18 months', ytm:9.8, amount:50000, monthly:408, colour:'#1F3A93', initials:'BF' };
+const MATCHED = { issuer:'REC Limited', name:'PSU NCD 10.50% Mar 2028', isin:'INE020B07JZ4', rating:'AA+', type:'PSU · Secured', tenure:'24 months', ytm:10.5, amount:25000, monthly:219, colour:'#0E7A39', initials:'RE' };
+const SHORTER = { issuer:'Bajaj Finance', name:'NCD 9.80% Nov 2027', isin:'INE296A07PL2', rating:'AAA', type:'NBFC · Secured', tenure:'18 months', ytm:9.8, amount:25000, monthly:204, colour:'#1F3A93', initials:'BF' };
 const KYC = { income:'₹10 – 25L', netWorth:'₹25L+', occupation:'Service', marital:'Married', age:34, profile:'Moderate' };
 
 /* ─── SVG ICONS ──────────────────────────────────────────────── */
@@ -422,7 +422,7 @@ const PushNotif = () => (
           <div className="body">
             <div className="row1"><div className="app">Aspero</div><div className="time-ago">now</div></div>
             <div className="title">You're ready to invest on Aspero! 🎉</div>
-            <div className="msg">REC Limited · 10.50% returns · Start with ₹50,000 — your bond's ready.</div>
+            <div className="msg">REC Limited · 10.50% returns · Start with ₹25,000 — your bond's ready.</div>
           </div>
         </div>
         <div className="notif" style={{ opacity: 0.82 }}>
@@ -461,7 +461,7 @@ const StateA = ({ whyOpen = false, onGoB }) => (
       <BondCard bond={MATCHED} showMatched={true}/>
       <WhyPill open={whyOpen} locked={false}/>
       <div className="cta-stack">
-        <button className="btn-primary">Invest ₹50,000 now <ChevRight size={16}/></button>
+        <button className="btn-primary">Invest ₹25,000 now <ChevRight size={16}/></button>
         <button className="btn-ghost" onClick={onGoB}>This doesn't feel right — <u>change it</u></button>
         <button className="btn-link">Explore all bonds →</button>
       </div>
@@ -561,7 +561,7 @@ const StateC = ({ onGoA }) => (
       <BondCard bond={SHORTER} showMatched={true}/>
       <WhyPill open={false} locked={false}/>
       <div className="cta-stack">
-        <button className="btn-primary">Invest ₹50,000 now <ChevRight size={16}/></button>
+        <button className="btn-primary">Invest ₹25,000 now <ChevRight size={16}/></button>
         <button className="btn-ghost">Want to change preferences — <u>tweak it</u></button>
         <button className="btn-link">Explore all bonds →</button>
       </div>
@@ -573,7 +573,7 @@ const StateC = ({ onGoA }) => (
 
 /* ─── ③ Nudge card (homepage) ─────────────────────────────────── */
 const NudgeScreen = ({ editing }) => {
-  const [amount, setAmount] = useState(50000);
+  const [amount, setAmount] = useState(25000);
   const monthly = Math.round(amount * MATCHED.ytm / 100 / 12);
   return (
     <div className="phone-inner" style={{ minHeight: 812 }}>
@@ -626,7 +626,7 @@ const NudgeScreen = ({ editing }) => {
           ) : (
             <div className="nudge-edit-block">
               <div className="h">How much do you want to invest?</div>
-              <div className="amt-input">₹50,000</div>
+              <div className="amt-input">₹{amount.toLocaleString('en-IN')}</div>
               <div className="chips">
                 {[['10K',10000],['25K',25000],['50K',50000],['1L',100000],['2L',200000]].map(([l,v]) => (
                   <button key={v} className={`ec ${v===amount ? 'on' : ''}`} onClick={() => setAmount(v)}>₹{l}</button>
@@ -738,13 +738,13 @@ const WebScreen = () => (
             <div style={{ display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:12,padding:'10px 12px',background:'var(--page)',borderRadius:10 }}>
               <div>
                 <div style={{ fontSize:11,color:'var(--fg3)',fontWeight:500,marginBottom:2 }}>Investing</div>
-                <div style={{ fontSize:16,fontWeight:700,color:'var(--dark)' }}>₹50,000</div>
+                <div style={{ fontSize:16,fontWeight:700,color:'var(--dark)' }}>₹25,000</div>
               </div>
               <button className="change-link">Change amount</button>
             </div>
           </div>
           <div className="web-cta">
-            <button className="primary">Invest ₹50,000 now <ChevRight size={15}/></button>
+            <button className="primary">Invest ₹25,000 now <ChevRight size={15}/></button>
             <button className="secondary">Change bond</button>
           </div>
         </div>
@@ -799,7 +799,7 @@ function App() {
               </div>
               <div className="ann-card">
                 <div className="ann-label">Notification copy</div>
-                <div className="ann-val">Title: "You're ready to invest on Aspero! 🎉"<br/>Body: "REC Limited · 10.50% returns · Start with ₹50,000 — your bond's ready."</div>
+                <div className="ann-val">Title: "You're ready to invest on Aspero! 🎉"<br/>Body: "REC Limited · 10.50% returns · Start with ₹25,000 — your bond's ready."</div>
               </div>
               <div className="ann-card">
                 <div className="ann-label">Jira</div>
@@ -823,7 +823,7 @@ function App() {
               </div>
               <div className="ann-card">
                 <div className="ann-label">Pre-fill logic</div>
-                <div className="ann-val">Income ₹10–25L → default amount <span className="hi">₹50,000</span></div>
+                <div className="ann-val">Income ₹10–25L → default amount <span className="hi">₹25,000</span></div>
               </div>
               <div className="ann-card">
                 <div className="ann-label">Jira</div>
