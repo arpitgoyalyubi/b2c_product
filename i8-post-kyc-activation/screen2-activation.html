@@ -1174,22 +1174,22 @@ const RttHomepage = ({ variant }) => (
 function App() {
   const [tab, setTab] = useState('push');
   const [state, setState] = useState('A');
+  const [rttVariant, setRttVariant] = useState('a');
 
   const TABS = [
-    { id:'push',   label:'① Push Notification' },
-    { id:'stateA', label:'② State A (default)' },
-    { id:'stateA2',label:'② State A (why open)' },
-    { id:'stateB', label:'② State B (correction)' },
-    { id:'stateC', label:'② State C (updated)' },
-    { id:'nudge',  label:'③ Home Nudge' },
-    { id:'nudge2', label:'③ Nudge (editing)' },
-    { id:'web',    label:'⑤ Web Activation' },
-    { id:'rttA',   label:'⑥ RTT Home · Infographic' },
-    { id:'rttB',   label:'⑥ RTT Home · Video' },
+    { id:'push',    label:'① Push Notification' },
+    { id:'stateA',  label:'② State A (default)' },
+    { id:'stateA2', label:'② State A (why open)' },
+    { id:'stateB',  label:'② State B (correction)' },
+    { id:'stateC',  label:'② State C (updated)' },
+    { id:'nudge',   label:'③ Home Nudge' },
+    { id:'nudge2',  label:'③ Nudge (editing)' },
+    { id:'web',     label:'⑤ Web Activation' },
+    { id:'rttHome', label:'③ RTT Homepage' },
   ];
 
   const isWeb = tab === 'web';
-  const isRtt = tab === 'rttA' || tab === 'rttB';
+  const isRtt = tab === 'rttHome';
 
   return (
     <div>
@@ -1308,15 +1308,28 @@ function App() {
           </div>
         ) : (
           <div className="phone-wrap">
+            {isRtt && (
+              <div style={{ display:'flex',gap:6,marginBottom:14,justifyContent:'center' }}>
+                {[['a','Infographic'],['b','Video']].map(([v,label]) => (
+                  <button key={v} onClick={() => setRttVariant(v)} style={{
+                    padding:'6px 16px',borderRadius:20,border:'none',cursor:'pointer',
+                    fontSize:12,fontWeight:700,letterSpacing:'.03em',fontFamily:'inherit',
+                    background: rttVariant===v ? '#018E43' : 'rgba(255,255,255,.08)',
+                    color: rttVariant===v ? '#fff' : 'rgba(255,255,255,.5)',
+                    transition:'all 140ms',
+                  }}>{label}</button>
+                ))}
+              </div>
+            )}
             <div className="phone" style={isRtt ? {height:'812px'} : {}}>
-              {tab === 'push'   && <PushNotif/>}
-              {tab === 'stateA' && <StateA whyOpen={false} onGoB={() => setTab('stateB')}/>}
-              {tab === 'stateA2'&& <StateA whyOpen={true} onGoB={() => setTab('stateB')}/>}
-              {tab === 'stateB' && <StateB onGoC={() => setTab('stateC')}/>}
-              {tab === 'stateC' && <StateC onGoA={() => setTab('stateA')}/>}
-              {tab === 'nudge'  && <NudgeScreen editing={false}/>}
-              {tab === 'nudge2' && <NudgeScreen editing={true}/>}
-              {isRtt && <RttHomepage variant={tab === 'rttA' ? 'a' : 'b'}/> }
+              {tab === 'push'    && <PushNotif/>}
+              {tab === 'stateA'  && <StateA whyOpen={false} onGoB={() => setTab('stateB')}/>}
+              {tab === 'stateA2' && <StateA whyOpen={true} onGoB={() => setTab('stateB')}/>}
+              {tab === 'stateB'  && <StateB onGoC={() => setTab('stateC')}/>}
+              {tab === 'stateC'  && <StateC onGoA={() => setTab('stateA')}/>}
+              {tab === 'nudge'   && <NudgeScreen editing={false}/>}
+              {tab === 'nudge2'  && <NudgeScreen editing={true}/>}
+              {isRtt             && <RttHomepage variant={rttVariant}/>}
             </div>
           </div>
         )}
