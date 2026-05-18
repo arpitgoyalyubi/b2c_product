@@ -3,646 +3,581 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>I8 · RTT Homepage — All 9 Sections</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<title>RTT Homepage — Mocks</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Fraunces:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --g:#018E43;--g2:#016B33;--g3:#DCFCE7;--g4:#F0FDF4;
-    --dark:#0F1419;--dark2:#1A2233;
-    --fg2:#4B5563;--fg3:#9CA3AF;--fg4:#D1D5DB;
-    --border:#E5E7EB;--border2:#D1D5DB;
-    --page:#F7F8F8;--white:#FFFFFF;
-    --amber-bg:#FFFBEB;--amber-fg:#92400E;
-    --lav:#EEF2FF;--lav-fg:#4338CA;
-    --serif:'Fraunces','Source Serif Pro','Georgia',serif;
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: #030A16;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    color: #fff;
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{
-    font-family:'Manrope',-apple-system,sans-serif;
-    background:#E2E8F0;min-height:100vh;
-    -webkit-font-smoothing:antialiased;
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 220px;
+    background: #0D1626;
+    border-right: 1px solid rgba(255,255,255,0.07);
+    display: flex; flex-direction: column;
+    height: 100vh; overflow-y: auto; flex-shrink: 0;
   }
-  .outer{max-width:1280px;margin:0 auto;padding:40px 24px 80px}
+  .sidebar-header { padding: 20px 16px 12px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .sidebar-title { font-size: 12px; font-weight: 700; color: #fff; letter-spacing: 0.5px; }
+  .sidebar-sub { font-size: 10px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+  .nav-section-label {
+    padding: 14px 16px 4px; font-size: 9px; font-weight: 700;
+    letter-spacing: 1px; color: rgba(255,255,255,0.25); text-transform: uppercase;
+  }
+  .nav-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 6px 16px; }
+  .nav-item {
+    display: flex; align-items: center; padding: 8px 16px; cursor: pointer;
+    font-size: 11.5px; color: rgba(255,255,255,0.5); gap: 9px;
+    border-left: 2px solid transparent; transition: all 0.15s; line-height: 1.3;
+  }
+  .nav-item:hover { color: rgba(255,255,255,0.75); background: rgba(255,255,255,0.04); }
+  .nav-item.active { color: #fff; border-left-color: #01B756; background: rgba(1,183,86,0.08); }
+  .num {
+    width: 18px; height: 18px; background: rgba(255,255,255,0.08); border-radius: 4px;
+    font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; color: rgba(255,255,255,0.5);
+  }
+  .nav-item.active .num { background: #01B756; color: #fff; }
 
-  /* ── page header ─────────────────────────────── */
-  .ph{text-align:center;margin-bottom:28px}
-  .ph .ey{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);margin-bottom:8px}
-  .ph h1{font-size:24px;font-weight:800;color:var(--dark);letter-spacing:-.02em;margin-bottom:6px}
-  .ph p{font-size:13px;color:var(--fg2)}
+  /* ── Main area ── */
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .main-header {
+    padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+  }
+  .screen-title { color: #fff; font-size: 15px; font-weight: 700; }
+  .screen-badge {
+    font-size: 10px; color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.07); padding: 3px 8px; border-radius: 20px; margin-left: 10px;
+  }
+  .header-left { display: flex; align-items: center; }
+  .nav-arrows { display: flex; gap: 6px; }
+  .arrow-btn {
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.6); width: 32px; height: 32px; border-radius: 8px;
+    cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .arrow-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
 
-  /* ── variant toggle ──────────────────────────── */
-  .var-toggle{display:flex;justify-content:center;gap:8px;margin-bottom:32px}
-  .var-btn{font-family:inherit;cursor:pointer;border:1.5px solid var(--border);padding:10px 22px;border-radius:12px;font-size:13px;font-weight:600;background:var(--white);color:var(--fg2);transition:all 140ms}
-  .var-btn.on{border-color:var(--dark);background:var(--dark);color:var(--white)}
-  .var-badge{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:700;background:var(--g3);color:var(--g2)}
+  .content-area {
+    flex: 1; display: flex; align-items: flex-start; justify-content: center;
+    padding: 28px 24px; overflow-y: auto; gap: 32px;
+  }
 
-  /* ── two-col layout ──────────────────────────── */
-  .two-col{display:flex;gap:24px;align-items:flex-start}
-  .phone-col{position:sticky;top:24px}
-  .ann-col{flex:1;min-width:0}
+  /* ── Phone frame ── */
+  .phone {
+    width: 390px; background: #fff; border-radius: 40px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6); overflow: hidden; flex-shrink: 0;
+  }
+  .screen {
+    height: 780px; display: flex; flex-direction: column; overflow-y: auto; background: #fff;
+  }
 
-  /* ── phone frame ─────────────────────────────── */
-  .phone-wrap{filter:drop-shadow(0 24px 56px rgba(15,20,25,.2))}
-  .phone{width:390px;border-radius:48px;background:var(--white);overflow:hidden;position:relative;border:1px solid rgba(15,20,25,.1)}
-  .phone-inner{display:flex;flex-direction:column;overflow:hidden}
+  /* pages */
+  .page { display: none; }
+  .page.active { display: flex; }
 
-  /* ── status bar ──────────────────────────────── */
-  .sb{display:flex;align-items:center;justify-content:space-between;padding:14px 28px 8px;position:relative;z-index:10;flex-shrink:0;background:var(--white)}
-  .sb .di{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:122px;height:34px;background:#000;border-radius:20px;z-index:20}
-  .sb .t{font-size:15px;font-weight:600;letter-spacing:-.01em;color:var(--dark)}
+  /* ── Annotation ── */
+  .annotation {
+    width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 14px;
+  }
+  .ann-card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; padding: 14px 16px;
+  }
+  .ann-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: #01B756; margin-bottom: 8px;
+  }
+  .ann-row {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.06); gap: 8px;
+  }
+  .ann-row:last-child { border-bottom: none; }
+  .ann-key { font-size: 11px; color: rgba(255,255,255,0.5); }
+  .ann-val { font-size: 11px; color: #fff; font-weight: 600; text-align: right; }
+  .ann-text { font-size: 11px; color: rgba(255,255,255,0.7); line-height: 1.5; }
+  .impact-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .impact-row:last-child { border-bottom: none; }
+  .impact-dot { width: 6px; height: 6px; border-radius: 50%; background: #01B756; flex-shrink: 0; }
+  .impact-text { font-size: 11px; color: rgba(255,255,255,0.75); }
+  .impact-num { font-size: 11px; font-weight: 700; color: #01B756; }
 
-  /* ── top bar ─────────────────────────────────── */
-  .topbar{display:flex;align-items:center;padding:6px 16px 10px;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border)}
-  .topbar .logo-sq{width:28px;height:28px;border-radius:8px;background:var(--dark);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-  .topbar .brand{font-size:15px;font-weight:700;color:var(--dark)}
-  .topbar .rt{display:flex;align-items:center;gap:8px;margin-left:auto}
-  .iconbtn{width:34px;height:34px;border-radius:10px;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--dark)}
-  .dot{width:7px;height:7px;border-radius:50%;background:#EF4444;position:absolute;top:4px;right:4px}
-  .ava{width:30px;height:30px;border-radius:10px;background:var(--g3);color:var(--g2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+  /* ─────────────────────────────────────────
+     HOMEPAGE INTERNALS
+  ───────────────────────────────────────── */
+  .home-header {
+    background: #fff; padding: 48px 20px 14px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .home-greeting { font-size: 14px; font-weight: 700; color: #0F1419; }
+  .home-sub { font-size: 11px; color: #697586; margin-top: 2px; }
+  .home-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: linear-gradient(135deg, #018E43, #01B756);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: #fff;
+  }
 
-  /* ── page body ───────────────────────────────── */
-  .rtt-body{flex:1;overflow-y:auto;padding-bottom:32px;background:var(--page)}
-  .rtt-body::-webkit-scrollbar{display:none}
+  /* Nudge card (same as activation mocks) */
+  .nudge-card {
+    margin: 12px 16px;
+    background: linear-gradient(135deg, #012B18 0%, #018E43 100%);
+    border-radius: 18px; padding: 18px; position: relative; overflow: hidden;
+    flex-shrink: 0;
+  }
+  .nudge-sparkle {
+    position: absolute; top: -20px; right: -20px;
+    width: 100px; height: 100px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .nudge-tag {
+    display: inline-block; background: rgba(255,255,255,0.2);
+    border-radius: 20px; padding: 3px 10px;
+    font-size: 9.5px; font-weight: 700; color: rgba(255,255,255,0.9); margin-bottom: 10px;
+  }
+  .nudge-headline { font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 12px; line-height: 1.3; }
+  .nudge-amount-row { display: flex; align-items: baseline; gap: 4px; margin-bottom: 4px; }
+  .nudge-rupee { font-size: 16px; color: rgba(255,255,255,0.7); font-weight: 600; }
+  .nudge-amount { font-family: 'Fraunces', serif; font-size: 36px; font-weight: 700; color: #fff; }
+  .nudge-per { font-size: 12px; color: rgba(255,255,255,0.65); }
+  .nudge-sub { font-size: 10.5px; color: rgba(255,255,255,0.6); margin-bottom: 14px; }
+  .nudge-btn-row { display: flex; gap: 8px; }
+  .nudge-primary {
+    flex: 1; background: #fff; border-radius: 10px; padding: 10px;
+    text-align: center; font-size: 12px; font-weight: 700; color: #018E43;
+  }
+  .nudge-secondary {
+    background: rgba(255,255,255,0.15); border-radius: 10px; padding: 10px 14px;
+    font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.8); white-space: nowrap;
+  }
 
-  /* ── section wrapper ─────────────────────────── */
-  .rtt-sec{padding:14px 16px 0}
-  .rtt-sec h3{font-size:16px;font-weight:700;color:var(--dark);margin-bottom:2px}
-  .rtt-sec .sub-line{font-size:11px;color:var(--fg3);font-weight:500;margin-bottom:12px}
-  .sec-head-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-  .see-all{background:none;border:none;font-size:12px;font-weight:600;color:var(--g);cursor:pointer;display:flex;align-items:center;gap:3px;font-family:inherit}
-  .sec-divider{height:1px;background:var(--border);margin:14px 16px 0}
+  /* Sections */
+  .sec-heading { padding: 16px 16px 8px; font-size: 13px; font-weight: 700; color: #0F1419; flex-shrink: 0; }
 
-  /* ── nudge card ──────────────────────────────── */
-  .nudge-card{margin:10px 16px 4px;background:var(--white);border:1.5px solid #BFDFCB;border-radius:16px;padding:14px;position:relative}
-  .nudge-card .dismiss{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:8px;border:0;background:var(--page);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--fg3)}
-  .nudge-card .ey{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--fg3);margin-bottom:4px}
-  .nudge-card .bn{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:2px}
-  .nudge-card .bm{font-size:11px;color:var(--fg3)}
-  .nudge-monthly{padding:10px 0;border-top:1px solid var(--border);margin-top:10px}
-  .nudge-monthly .v{display:flex;align-items:baseline;gap:2px}
-  .nudge-monthly .num{font-family:var(--serif);font-size:36px;font-weight:600;color:var(--dark);letter-spacing:-.02em}
-  .nudge-monthly .unit{font-size:14px;font-weight:500;color:var(--fg2)}
-  .nudge-monthly .sub{font-size:11px;color:var(--fg3);margin-top:4px}
-  .nudge-amt-row{display:flex;align-items:center;justify-content:space-between;margin-top:8px;font-size:12.5px}
-  .nudge-amt-row .l{color:var(--fg3)}.nudge-amt-row .v{font-weight:700;color:var(--dark)}
-  .change-link{font-size:12px;font-weight:600;color:var(--g);background:none;border:none;cursor:pointer;font-family:inherit}
-  .nudge-cta-row{display:flex;gap:8px;margin-top:10px}
-  .nudge-invest{flex:2;height:40px;border-radius:10px;border:0;background:var(--g);color:var(--white);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}
-  .nudge-remind{flex:1;height:40px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);color:var(--fg2);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer}
+  /* Bond rows */
+  .bond-row-item {
+    margin: 0 16px 10px; background: #fff; border-radius: 12px;
+    border: 1px solid #E8ECF0; padding: 14px; display: flex; align-items: center; gap: 12px;
+    flex-shrink: 0;
+  }
+  .b-logo {
+    width: 38px; height: 38px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; color: #fff; flex-shrink: 0;
+  }
+  .b-info { flex: 1; }
+  .b-name { font-size: 12px; font-weight: 700; color: #0F1419; }
+  .b-detail { font-size: 10.5px; color: #697586; margin-top: 1px; }
+  .b-ytm { font-size: 14px; font-weight: 800; color: #018E43; }
+  .b-ytm-lbl { font-size: 9px; color: #9AA4B2; }
 
-  /* ── about grid (variant A) ──────────────────── */
-  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
-  .about-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:12px}
-  .about-card .eyebrow{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--fg3);margin-bottom:4px}
-  .about-card .ttl{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:8px}
-  .about-card .desc{font-size:11px;color:var(--fg2);line-height:1.5;margin-top:8px}
-  .about-card .stat-row{display:flex;gap:8px}
-  .about-card .stat .v{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--dark);letter-spacing:-.01em;line-height:1}
-  .about-card .stat .l{font-size:9.5px;font-weight:600;color:var(--fg3);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
-  .track-bar{display:flex;gap:3px;margin-top:6px;margin-bottom:6px}
-  .track-bar .tb{flex:1;height:6px;border-radius:2px;background:var(--g)}
-  .reg-row{display:flex;gap:5px}
-  .reg-row .r{padding:2px 6px;border-radius:4px;font-size:9px;font-weight:700;background:var(--g3);color:var(--g2)}
+  /* How bonds work — Variant A (infographic rows) */
+  .hbw-row {
+    margin: 0 16px 0; display: flex; align-items: flex-start; gap: 0;
+    position: relative; flex-shrink: 0;
+  }
+  .hbw-step-col { display: flex; flex-direction: column; align-items: center; width: 36px; flex-shrink: 0; }
+  .hbw-circle {
+    width: 28px; height: 28px; border-radius: 50%; background: #018E43;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; color: #fff; flex-shrink: 0;
+  }
+  .hbw-line { width: 2px; flex: 1; min-height: 28px; background: #C3E8D2; }
+  .hbw-body { flex: 1; padding: 4px 0 20px 12px; }
+  .hbw-title { font-size: 12px; font-weight: 700; color: #0F1419; margin-bottom: 3px; }
+  .hbw-desc { font-size: 11px; color: #697586; line-height: 1.4; }
 
-  /* ── video grid (variant B) ──────────────────── */
-  .video-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
-  .video-card{border-radius:12px;padding:12px;position:relative;min-height:140px;display:flex;flex-direction:column;overflow:hidden}
-  .video-card.bond{background:linear-gradient(145deg,#0a4f2a 0%,#052d18 100%)}
-  .video-card.issuer{background:linear-gradient(145deg,#1a3a6e 0%,#0d1f3c 100%)}
-  .video-card .pill{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:700;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);margin-bottom:6px;width:fit-content}
-  .video-card .corner-stat{display:flex;gap:10px;margin-bottom:auto}
-  .video-card .corner-stat .stat .v{font-family:var(--serif);font-size:16px;font-weight:600;color:#fff;line-height:1}
-  .video-card .corner-stat .stat .l{font-size:9px;font-weight:600;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.05em}
-  .video-card .initials{font-family:var(--serif);font-size:28px;font-weight:600;color:rgba(255,255,255,.9);margin-bottom:2px}
-  .video-card .founded{font-size:10px;color:rgba(255,255,255,.5);margin-bottom:auto}
-  .video-card .play{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;margin-bottom:8px;align-self:center;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
-  .video-card .ttl-text{font-size:11px;font-weight:600;color:rgba(255,255,255,.85);line-height:1.35;margin-top:auto}
-  .video-card .duration{font-size:10px;color:rgba(255,255,255,.5);margin-top:3px}
+  /* How bonds work — Variant B (video cards) */
+  .video-card {
+    margin: 0 16px 12px; border-radius: 14px; overflow: hidden;
+    border: 1px solid #E8ECF0; flex-shrink: 0;
+  }
+  .video-thumb {
+    height: 120px; position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .play-btn {
+    width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.9);
+    display: flex; align-items: center; justify-content: center; font-size: 18px; z-index: 2;
+  }
+  .video-overlay {
+    position: absolute; inset: 0; background: rgba(0,0,0,0.35);
+  }
+  .video-duration {
+    position: absolute; bottom: 8px; right: 10px;
+    background: rgba(0,0,0,0.7); border-radius: 4px; padding: 2px 6px;
+    font-size: 10px; color: #fff; font-weight: 600; z-index: 2;
+  }
+  .video-info { padding: 10px 14px 12px; background: #fff; }
+  .video-title { font-size: 12px; font-weight: 700; color: #0F1419; margin-bottom: 3px; }
+  .video-sub { font-size: 10.5px; color: #697586; }
 
-  /* ── bond list rows ──────────────────────────── */
-  .bond-list{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-  .bond-list-row{display:flex;align-items:center;gap:10px;padding:12px 12px;border-bottom:1px solid var(--border)}
-  .bond-list-row:last-child{border-bottom:0}
-  .blr-logo{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0}
-  .blr-meta{flex:1;min-width:0}
-  .blr-meta .issuer{font-size:13px;font-weight:700;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .blr-meta .sub{font-size:11px;color:var(--fg3);margin-top:1px}
-  .blr-meta .pill-line{margin-top:4px}
-  .ipill{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700}
-  .ipill.top{background:var(--g3);color:var(--g2)}
-  .ipill.gov{background:#FEF9C3;color:#713F12}
-  .ipill.new{background:var(--g3);color:var(--g2)}
-  .blr-right{text-align:right}
-  .blr-right .v{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--g);letter-spacing:-.01em;line-height:1}
-  .blr-right .l{font-size:10px;font-weight:600;color:var(--fg3);text-transform:uppercase;letter-spacing:.05em}
+  /* Testimonial */
+  .testimonial {
+    margin: 0 16px 12px; background: #F9FAFB; border-radius: 14px; padding: 16px;
+    flex-shrink: 0;
+  }
+  .test-stars { font-size: 13px; margin-bottom: 8px; }
+  .test-quote { font-size: 12px; color: #0F1419; line-height: 1.5; font-style: italic; margin-bottom: 10px; }
+  .test-author { font-size: 11px; color: #697586; display: flex; align-items: center; gap: 6px; }
+  .test-avatar {
+    width: 24px; height: 24px; border-radius: 50%; background: #018E43;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: #fff;
+  }
 
-  /* ── tabbed card ─────────────────────────────── */
-  .tabbed-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-  .tabbed-card .tabs{display:flex;border-bottom:1px solid var(--border)}
-  .tabbed-card .tb-t{flex:1;padding:9px 0;background:none;border:none;font-family:inherit;font-size:12px;font-weight:600;color:var(--fg3);cursor:pointer}
-  .tabbed-card .tb-t.on{color:var(--dark);border-bottom:2px solid var(--dark)}
-  .tabbed-card .footer{display:flex;align-items:center;justify-content:center;gap:4px;padding:10px;font-size:12px;font-weight:600;color:var(--g);cursor:pointer;background:none;border:none;width:100%;font-family:inherit}
-
-  /* ── How bonds work (vertical rows) ─────────── */
-  .hbw-list{display:flex;flex-direction:column;gap:0}
-  .hbw-row{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border)}
-  .hbw-row:last-child{border-bottom:0}
-  .hbw-row .num{width:26px;height:26px;border-radius:50%;background:var(--dark);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;margin-top:1px}
-  .hbw-row .body .h{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:3px}
-  .hbw-row .body .p{font-size:12px;color:var(--fg2);line-height:1.5}
-
-  /* ── New on Aspero grid ───────────────────────── */
-  .new-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .new-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:12px}
-  .new-card .ttl{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:3px}
-  .new-card .sub{font-size:11px;color:var(--fg3)}
-  .new-card .ytm-num{font-family:var(--serif);font-size:26px;font-weight:600;color:var(--g);margin-top:8px;letter-spacing:-.01em;line-height:1}
-  .new-card .ytm-lbl{font-size:9.5px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
-
-  /* ── Testimonial ─────────────────────────────── */
-  .testimonial{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px}
-  .testimonial .quote{font-size:13px;line-height:1.65;color:var(--fg2);font-style:italic;margin-bottom:12px}
-  .testimonial .quote .hi{font-family:var(--serif);font-style:normal;font-weight:600;color:var(--dark)}
-  .testimonial .author{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--fg2)}
-  .testimonial .avi{width:32px;height:32px;border-radius:10px;background:var(--g3);color:var(--g2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
-
-  /* ── Trust card ──────────────────────────────── */
-  .trust-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-  .trust-row{display:flex;gap:12px;align-items:flex-start;padding:12px;border-bottom:1px solid var(--border)}
-  .trust-row:last-child{border-bottom:0}
-  .trust-row .ic{width:34px;height:34px;border-radius:10px;background:var(--g4);color:var(--g);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-  .trust-row .body .h{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:2px}
-  .trust-row .body .p{font-size:11.5px;color:var(--fg2);line-height:1.5}
-
-  /* ── Explore link ─────────────────────────────── */
-  .explore-row{display:flex;align-items:center;justify-content:center;gap:5px;padding:18px 0;font-size:13px;font-weight:700;color:var(--g)}
-
-  /* ── Tab bar ─────────────────────────────────── */
-  .tabbar{display:flex;background:var(--white);border-top:1px solid var(--border);padding:8px 0 20px;flex-shrink:0}
-  .tb-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;font-family:inherit;padding:4px 0}
-  .tb-btn svg{color:var(--fg3)}
-  .tb-btn .label{font-size:10px;font-weight:600;color:var(--fg3)}
-  .tb-btn.on svg,.tb-btn.on .label{color:var(--g)}
-
-  /* ── annotation panel ────────────────────────── */
-  .ann-panel{padding-top:8px}
-  .ann-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
-  .ann-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--fg3);margin-bottom:6px}
-  .ann-val{font-size:13px;font-weight:600;color:var(--dark);line-height:1.6}
-  .ann-val .hi{color:var(--g)}
-  .ann-ul{font-size:12px;color:var(--fg2);line-height:1.8;padding-left:16px}
-  .spec-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
-  .spec-row:last-child{border-bottom:0}
-  .spec-k{color:var(--fg3);font-weight:500}.spec-v{color:var(--dark);font-weight:700}
+  /* Tab bar */
+  .tab-bar { padding: 8px 0 16px; display: flex; border-top: 1px solid #E8ECF0; background: #fff; flex-shrink: 0; }
+  .tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .tab-icon { font-size: 18px; }
+  .tab-label { font-size: 9px; color: #9AA4B2; }
+  .tab-label.active { color: #018E43; font-weight: 700; }
 </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-const { useState } = React;
 
-/* ─── DATA ──────────────────────────────────────────────────── */
-const MATCHED = { issuer:'REC Limited', name:'PSU NCD 10.50% Mar 2028', isin:'INE020B07JZ4', rating:'AA+', type:'PSU · Secured', tenure:'24 months', ytm:10.5, amount:50000, monthly:438, colour:'#0E7A39', initials:'RE', faceValue:1000 };
-const SHORTER = { issuer:'Bajaj Finance', name:'NCD 9.80% Nov 2027', isin:'INE296A07PL2', rating:'AAA', type:'NBFC · Secured', tenure:'18 months', ytm:9.8, amount:50000, monthly:408, colour:'#1F3A93', initials:'BF', faceValue:1000 };
-const NHAI = { issuer:'NHAI', name:'54EC Capital Bonds', isin:'INE906B07GG6', rating:'AAA', type:'Govt · Secured', tenure:'5 years', ytm:8.05, colour:'#0E7A39', initials:'NH', faceValue:10000 };
-const LT = { issuer:'L&T Finance', name:'NCD 9.5% 2029', isin:'INE476A07NX8', rating:'AA+', ytm:13.85, tenure:'24 mo', colour:'#0050A5', initials:'LT', faceValue:1000 };
-const IIFL = { issuer:'IIFL Samasta', name:'NCD 10.75% 2027', isin:'INE917Y07034', rating:'AA-', ytm:13.5, tenure:'14 mo', colour:'#1B7E6A', initials:'IS', faceValue:1000 };
-const UGRO = { issuer:'U GRO Capital', name:'NCD 14.35% 2026', isin:'INE583D07039', rating:'A+', ytm:14.35, tenure:'9 mo', colour:'#523B7A', initials:'UG', faceValue:1000 };
-
-/* ─── ICONS ─────────────────────────────────────────────────── */
-const IC = (p) => <svg width={p.size||18} height={p.size||18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}>{p.children}</svg>;
-const ChevRight = (p) => <IC {...p}><polyline points="9 6 15 12 9 18"/></IC>;
-const HomeIcon = (p) => <IC {...p}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-4v-7H9v7H5a2 2 0 0 1-2-2z"/></IC>;
-const ChartIcon = (p) => <IC {...p}><path d="M3 3v18h18"/><path d="M7 14l4-4 4 3 5-7"/></IC>;
-const BriefcaseIcon = (p) => <IC {...p}><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></IC>;
-const StarIcon = (p) => <IC {...p}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></IC>;
-const MoreIcon = (p) => <IC {...p}><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></IC>;
-const BellIcon = (p) => <IC {...p}><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></IC>;
-const SearchIcon = (p) => <IC {...p}><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></IC>;
-const ShieldIcon = (p) => <IC {...p}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></IC>;
-const WalletIcon = (p) => <IC {...p}><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></IC>;
-const FileIcon = (p) => <IC {...p}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></IC>;
-const CloseIcon = (p) => <IC {...p}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></IC>;
-
-/* ─── StatusBar ─────────────────────────────────────────────── */
-const StatusBar = () => (
-  <div className="sb">
-    <div className="di"/>
-    <span className="t">9:41</span>
-    <svg width="54" height="13" viewBox="0 0 54 13" fill="#0F1419">
-      <rect x="0" y="7.5" width="3" height="5.5" rx=".7"/><rect x="5" y="5" width="3" height="8" rx=".7"/>
-      <rect x="10" y="2.5" width="3" height="10.5" rx=".7"/><rect x="15" y="0" width="3" height="13" rx=".7"/>
-      <rect x="22" y="3" width="12" height="10" rx="2.5" stroke="#0F1419" strokeWidth="1.2" fill="none"/>
-      <rect x="24" y="5" width="8" height="6" rx="1.5" fill="#0F1419"/>
-      <path d="M35.2 6v3.5c.9-.3 1.3-.9 1.3-1.75S36.1 6.3 35.2 6z"/>
-      <rect x="40" y="0" width="3.2" height="5.5" rx=".7"/><rect x="44.8" y="0" width="3.2" height="8" rx=".7"/>
-      <rect x="49.6" y="0" width="3.2" height="11" rx=".7"/>
-    </svg>
+<!-- ══════════════════════ SIDEBAR ══════════════════════ -->
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-title">RTT Homepage</div>
+    <div class="sidebar-sub">i8 · US-3 · Post-KYC</div>
   </div>
-);
 
-/* ─── TabBar ─────────────────────────────────────────────────── */
-const TabBar = () => (
-  <div className="tabbar">
-    {[['Home', HomeIcon], ['Bonds', ChartIcon], ['Portfolio', BriefcaseIcon], ['Learn', StarIcon], ['More', MoreIcon]].map(([name, Icon]) => (
-      <button key={name} className={`tb-btn ${name==='Home' ? 'on' : ''}`}>
-        <Icon size={20}/><span className="label">{name}</span>
-      </button>
-    ))}
+  <div class="nav-section-label">Homepage · US-3</div>
+  <div class="nav-item active" onclick="goTo(0)" id="nav-0">
+    <span class="num">A</span>Variant A — Infographic
   </div>
-);
+  <div class="nav-item" onclick="goTo(1)" id="nav-1">
+    <span class="num">B</span>Variant B — Video Cards
+  </div>
+</nav>
 
-/* ─── BondListRow ────────────────────────────────────────────── */
-const BondListRow = ({ bond, pill }) => (
-  <div className="bond-list-row">
-    <div className="blr-logo" style={{ background: bond.colour }}>{bond.initials}</div>
-    <div className="blr-meta">
-      <div className="issuer">{bond.issuer}</div>
-      <div className="sub">{bond.rating} · {bond.tenure} · Min ₹{((bond.faceValue||1000) * 10).toLocaleString('en-IN')}</div>
-      {pill && <div className="pill-line"><span className={`ipill ${pill.kind}`}>{pill.label}</span></div>}
+<!-- ══════════════════════ MAIN ══════════════════════ -->
+<div class="main">
+  <div class="main-header">
+    <div class="header-left">
+      <div class="screen-title" id="screen-title">Variant A — Infographic How Bonds Work</div>
+      <span class="screen-badge" id="screen-badge">US-3</span>
     </div>
-    <div className="blr-right">
-      <div className="v">{bond.ytm.toFixed(1)}%</div>
-      <div className="l">YTM</div>
+    <div class="nav-arrows">
+      <button class="arrow-btn" onclick="prev()">&#8592;</button>
+      <button class="arrow-btn" onclick="next()">&#8594;</button>
     </div>
   </div>
-);
 
-/* ─── NudgeCard ──────────────────────────────────────────────── */
-const NudgeCard = () => (
-  <div className="nudge-card">
-    <button className="dismiss"><CloseIcon size={12}/></button>
-    <div className="ey">Your first investment</div>
-    <div className="bn">REC Limited · NCD 10.50% Mar 2028</div>
-    <div className="bm">AA+ · 24 months · Moderate profile match</div>
-    <div className="nudge-monthly">
-      <div className="v"><span className="unit">₹</span><span className="num">438</span><span className="unit">&nbsp;/mo</span></div>
-      <div className="sub">per month on ₹50,000 · 10.50% YTM</div>
-    </div>
-    <div className="nudge-amt-row">
-      <span className="l">Investing</span>
-      <span style={{ display:'flex',alignItems:'center',gap:8 }}>
-        <span className="v">₹50,000</span>
-        <button className="change-link">change</button>
-      </span>
-    </div>
-    <div className="nudge-cta-row">
-      <button className="nudge-invest">Invest now →</button>
-      <button className="nudge-remind">Remind me later</button>
-    </div>
-  </div>
-);
+  <div class="content-area">
 
-/* ─── RTT Homepage ───────────────────────────────────────────── */
-const RttHomepage = ({ variant }) => (
-  <div className="phone-inner">
-    <StatusBar/>
-    <div className="topbar">
-      <div className="logo-sq">
-        <svg viewBox="0 0 80 80" fill="none" style={{ width:16,height:16 }}>
-          <path d="M40 10 L65 70 L52 70 L40 38 L28 70 L15 70 Z M40 52 L48 70 L32 70 Z" fill="#018E43"/>
-        </svg>
-      </div>
-      <span className="brand" style={{ marginLeft:8 }}>aspero</span>
-      <div className="rt">
-        <button className="iconbtn"><SearchIcon size={18}/></button>
-        <button className="iconbtn" style={{ position:'relative' }}><BellIcon size={18}/><span className="dot"/></button>
-      </div>
-    </div>
-
-    <div className="rtt-body">
-      {/* Welcome */}
-      <div style={{ padding:'14px 16px 4px' }}>
-        <div style={{ fontSize:11,color:'var(--fg3)',fontWeight:600,textTransform:'uppercase',letterSpacing:'.04em' }}>Welcome to Aspero</div>
-        <div style={{ fontSize:19,fontWeight:600,color:'var(--dark)',marginTop:2 }}>Hi Arjun</div>
-      </div>
-
-      {/* §1 Nudge card */}
-      <NudgeCard/>
-      <div style={{ padding:'8px 16px', display:'flex',alignItems:'center',gap:8,fontSize:11,color:'var(--fg3)' }}>
-        <ShieldIcon size={11}/>Your bonds settle into your own demat account.
-      </div>
-      <div className="sec-divider"/>
-
-      {/* §2 About this investment */}
-      <div className="rtt-sec">
-        <h3>About this investment</h3>
-        <div className="sub-line">
-          {variant === 'a' ? 'Two-card snapshot · zero-tap context' : 'Two short videos · 1–2 min each'}
-        </div>
-
-        {variant === 'a' ? (
-          <div className="about-grid">
-            <div className="about-card">
-              <div className="eyebrow">Bond snapshot</div>
-              <div className="ttl">What you're investing in</div>
-              <div className="stat-row">
-                <div className="stat"><div className="v">10.5%</div><div className="l">YTM</div></div>
-                <div className="stat"><div className="v">AA+</div><div className="l">Rating</div></div>
-                <div className="stat"><div className="v">24mo</div><div className="l">Tenure</div></div>
-              </div>
-              <div className="desc">REC funds power transmission projects across India. Coupons paid quarterly direct to your bank.</div>
+    <!-- ─── PAGE 0 · Variant A ─── -->
+    <div class="page active" id="page-0" style="align-items:flex-start;">
+      <div class="phone">
+        <div class="screen">
+          <!-- Header -->
+          <div class="home-header">
+            <div>
+              <div class="home-greeting">Good morning, Priya 👋</div>
+              <div class="home-sub">Complete your first investment</div>
             </div>
-            <div className="about-card">
-              <div className="eyebrow">About the issuer</div>
-              <div className="ttl">Who is borrowing</div>
-              <div className="stat-row">
-                <div className="stat"><div className="v">1969</div><div className="l">Founded</div></div>
-                <div className="stat"><div className="v">₹5.4L Cr</div><div className="l">AUM</div></div>
-                <div className="stat"><div className="v">0</div><div className="l">Defaults</div></div>
-              </div>
-              <div style={{ fontSize:10,fontWeight:700,color:'var(--fg3)',textTransform:'uppercase',letterSpacing:'.04em',marginTop:8 }}>56-yr repayment track record</div>
-              <div className="track-bar">
-                {Array.from({ length:14 }).map((_,i) => <span key={i} className="tb"/>)}
-              </div>
-              <div className="reg-row">
-                <span className="r">SEBI</span><span className="r">RBI</span><span className="r">PFRDA</span>
-              </div>
+            <div class="home-avatar">P</div>
+          </div>
+
+          <!-- Nudge card -->
+          <div class="nudge-card">
+            <div class="nudge-sparkle"></div>
+            <div class="nudge-tag">💡 Your personalised pick</div>
+            <div class="nudge-headline">Start earning monthly income on your savings</div>
+            <div class="nudge-amount-row">
+              <span class="nudge-rupee">₹</span>
+              <span class="nudge-amount">219</span>
+              <span class="nudge-per">/month</span>
+            </div>
+            <div class="nudge-sub">on ₹25,000 · REC Limited AA+ · 10.5% YTM</div>
+            <div class="nudge-btn-row">
+              <div class="nudge-primary">Invest ₹25,000 →</div>
+              <div class="nudge-secondary">Explore bonds</div>
             </div>
           </div>
-        ) : (
-          <div className="video-grid">
-            <div className="video-card bond">
-              <span className="pill">Bond</span>
-              <div className="corner-stat">
-                <div className="stat"><span className="v">10.5%</span><span className="l">YTM</span></div>
-                <div className="stat"><span className="v">AA+</span><span className="l">Rating</span></div>
-              </div>
-              <div className="play">
-                <span style={{ borderLeft:'12px solid #fff',borderTop:'8px solid transparent',borderBottom:'8px solid transparent',marginLeft:3 }}/>
-              </div>
-              <div className="ttl-text">What you're investing in</div>
-              <div className="duration">1:45</div>
+
+          <!-- How bonds work — Infographic style -->
+          <div class="sec-heading">How bonds work</div>
+
+          <div class="hbw-row">
+            <div class="hbw-step-col">
+              <div class="hbw-circle">1</div>
+              <div class="hbw-line"></div>
             </div>
-            <div className="video-card issuer">
-              <span className="pill">Issuer</span>
-              <div className="initials">REC</div>
-              <div className="founded">Founded 1969</div>
-              <div className="play">
-                <span style={{ borderLeft:'12px solid #fff',borderTop:'8px solid transparent',borderBottom:'8px solid transparent',marginLeft:3 }}/>
-              </div>
-              <div className="ttl-text">Who is borrowing your money</div>
-              <div className="duration">2:08</div>
+            <div class="hbw-body">
+              <div class="hbw-title">You lend money to a company</div>
+              <div class="hbw-desc">Invest ₹25,000 in REC Limited's bond — they borrow from you at 10.5% per year</div>
             </div>
           </div>
-        )}
-      </div>
-      <div className="sec-divider"/>
-
-      {/* §3 Popular with first-time investors */}
-      <div className="rtt-sec">
-        <div className="sec-head-row">
-          <h3>Popular with first-time investors</h3>
-          <button className="see-all">See all<ChevRight size={11}/></button>
-        </div>
-        <div className="bond-list">
-          <BondListRow bond={MATCHED} pill={{ kind:'top', label:'Top pick' }}/>
-          <BondListRow bond={SHORTER}/>
-          <BondListRow bond={NHAI} pill={{ kind:'gov', label:'Govt backed' }}/>
-        </div>
-      </div>
-      <div className="sec-divider"/>
-
-      {/* §4 Trending this month */}
-      <div className="rtt-sec">
-        <div className="sec-head-row">
-          <h3>Trending this month</h3>
-          <button className="see-all">See all<ChevRight size={11}/></button>
-        </div>
-        <div className="bond-list">
-          <BondListRow bond={LT}/>
-          <BondListRow bond={IIFL}/>
-        </div>
-      </div>
-      <div className="sec-divider"/>
-
-      {/* §5 Browse by category */}
-      <div className="rtt-sec">
-        <h3>Browse by category</h3>
-        <div style={{ height:10 }}/>
-        <div className="tabbed-card">
-          <div className="tabs">
-            {['High returns','Highly safe','Short term'].map((t,i) => (
-              <button key={t} className={`tb-t ${i===0 ? 'on' : ''}`}>{t}</button>
-            ))}
-          </div>
-          <div className="bond-list" style={{ borderRadius:0,border:'none' }}>
-            <BondListRow bond={UGRO} pill={{ kind:'top', label:'Top pick' }}/>
-            <BondListRow bond={IIFL}/>
-            <BondListRow bond={MATCHED}/>
-          </div>
-          <button className="footer">See all high-return bonds<ChevRight size={12}/></button>
-        </div>
-      </div>
-      <div className="sec-divider"/>
-
-      {/* §6 How bonds work */}
-      <div className="rtt-sec">
-        <h3>How bonds work</h3>
-        <div style={{ height:10 }}/>
-        <div className="hbw-list" style={{ background:'var(--white)',border:'1px solid var(--border)',borderRadius:12,padding:'0 12px' }}>
-          {[
-            { n:1, h:'You lend, the issuer borrows', p:'Pay once. The issuer takes your money to fund their business — roads, energy, lending.' },
-            { n:2, h:'They pay you every month / quarter', p:'Coupon payments hit your bank directly on a fixed schedule. No NAV swings.' },
-            { n:3, h:'You get your money back at maturity', p:'On the maturity date, the issuer returns your full principal. You\'re free to reinvest.' },
-          ].map(r => (
-            <div key={r.n} className="hbw-row">
-              <span className="num">{r.n}</span>
-              <div className="body"><div className="h">{r.h}</div><div className="p">{r.p}</div></div>
+          <div class="hbw-row">
+            <div class="hbw-step-col">
+              <div class="hbw-circle">2</div>
+              <div class="hbw-line"></div>
             </div>
-          ))}
-        </div>
-      </div>
-      <div className="sec-divider"/>
-
-      {/* §7 New on Aspero */}
-      <div className="rtt-sec">
-        <div className="sec-head-row">
-          <h3>New on Aspero</h3>
-          <button className="see-all">See all<ChevRight size={11}/></button>
-        </div>
-        <div className="new-grid">
-          <div className="new-card">
-            <span className="ipill new" style={{ marginBottom:8 }}>NEW · Listed 2d ago</span>
-            <div className="ttl">Bajaj Finance 9.80%</div>
-            <div className="sub">AAA · 18 months</div>
-            <div className="ytm-num">9.80%</div>
-            <div className="ytm-lbl">YTM</div>
-          </div>
-          <div className="new-card">
-            <span className="ipill new" style={{ marginBottom:8 }}>NEW · Listed 5d ago</span>
-            <div className="ttl">NHAI 54EC</div>
-            <div className="sub">AAA · 5 years</div>
-            <div className="ytm-num">8.05%</div>
-            <div className="ytm-lbl">YTM</div>
-          </div>
-        </div>
-      </div>
-      <div className="sec-divider"/>
-
-      {/* §8 What investors say */}
-      <div className="rtt-sec">
-        <h3>What investors say</h3>
-        <div style={{ height:10 }}/>
-        <div className="testimonial">
-          <div className="quote">
-            "Started with <span className="hi">₹25,000</span> just to test. Got my first coupon of <span className="hi">₹218</span> two months later, on time. Now I've invested <span className="hi">₹3.4 lakh</span> across 6 bonds."
-          </div>
-          <div className="author">
-            <span className="avi">PR</span>
-            <span><strong>Priyanka R.</strong> · Bengaluru · investing since Jan 2026</span>
-          </div>
-        </div>
-      </div>
-      <div className="sec-divider"/>
-
-      {/* §9 Your money is safe */}
-      <div className="rtt-sec">
-        <h3>Your money is safe</h3>
-        <div style={{ height:10 }}/>
-        <div className="trust-card">
-          {[
-            { Icon: ShieldIcon, h:'NSDL registered depository', p:'Your bonds are held in your own demat account — not with Aspero.' },
-            { Icon: ShieldIcon, h:'SEBI regulated platform', p:'Every bond listed is a SEBI-approved ISIN. Aspero is a registered stockbroker.' },
-            { Icon: FileIcon, h:'ISIN-level protection', p:'Each bond has a unique ISIN. Your holding is tracked independently in the depository.' },
-            { Icon: WalletIcon, h:'₹0 platform fee', p:'No subscription, no transaction fee. Aspero earns from the issuer, not from you.' },
-          ].map(({ Icon, h, p }) => (
-            <div key={h} className="trust-row">
-              <span className="ic"><Icon size={18}/></span>
-              <div className="body"><div className="h">{h}</div><div className="p">{p}</div></div>
+            <div class="hbw-body">
+              <div class="hbw-title">Earn ₹219 every month</div>
+              <div class="hbw-desc">Interest is paid monthly directly to your bank — like rent on your money</div>
             </div>
-          ))}
+          </div>
+          <div class="hbw-row">
+            <div class="hbw-step-col">
+              <div class="hbw-circle">3</div>
+            </div>
+            <div class="hbw-body">
+              <div class="hbw-title">Get your ₹25,000 back at end</div>
+              <div class="hbw-desc">At 24 months, full principal is returned. Total income: ₹5,256</div>
+            </div>
+          </div>
+
+          <!-- Top bonds -->
+          <div class="sec-heading" style="margin-top:6px;">Top bonds</div>
+          <div class="bond-row-item">
+            <div class="b-logo" style="background:#0E7A39;">RE</div>
+            <div class="b-info">
+              <div class="b-name">REC Limited</div>
+              <div class="b-detail">AA+ · 24M · Monthly payout</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="b-ytm">10.5%</div>
+              <div class="b-ytm-lbl">YTM p.a.</div>
+            </div>
+          </div>
+          <div class="bond-row-item">
+            <div class="b-logo" style="background:#1F3A93;">BF</div>
+            <div class="b-info">
+              <div class="b-name">Bajaj Finance</div>
+              <div class="b-detail">AAA · 18M · Monthly payout</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="b-ytm">9.8%</div>
+              <div class="b-ytm-lbl">YTM p.a.</div>
+            </div>
+          </div>
+
+          <!-- Testimonial -->
+          <div class="sec-heading" style="margin-top:2px;">What investors say</div>
+          <div class="testimonial">
+            <div class="test-stars">⭐⭐⭐⭐⭐</div>
+            <div class="test-quote">"I started with ₹25,000 and now I get ₹219 every month in my account. It's like a second salary — simple and predictable."</div>
+            <div class="test-author">
+              <div class="test-avatar">P</div>
+              Priyanka R. · Bengaluru · investing since Jan 2026
+            </div>
+          </div>
+
+          <!-- Tab bar -->
+          <div style="flex:1;min-height:8px;"></div>
+          <div class="tab-bar">
+            <div class="tab"><span class="tab-icon">🏠</span><span class="tab-label active">Home</span></div>
+            <div class="tab"><span class="tab-icon">🔍</span><span class="tab-label">Explore</span></div>
+            <div class="tab"><span class="tab-icon">💼</span><span class="tab-label">Portfolio</span></div>
+            <div class="tab"><span class="tab-icon">👤</span><span class="tab-label">Profile</span></div>
+          </div>
         </div>
       </div>
 
-      <div className="explore-row">
-        Explore all bonds <ChevRight size={13}/>
+      <!-- Annotation -->
+      <div class="annotation">
+        <div class="ann-card">
+          <div class="ann-label">Variant A — Infographic</div>
+          <div class="ann-text">"How bonds work" rendered as 3-step vertical flow with numbered circles and connector lines. No modal — all content visible on scroll.</div>
+        </div>
+        <div class="ann-card">
+          <div class="ann-label">Nudge Numbers</div>
+          <div class="ann-row"><span class="ann-key">Amount (₹10–25L band)</span><span class="ann-val">₹25,000</span></div>
+          <div class="ann-row"><span class="ann-key">Monthly income</span><span class="ann-val" style="color:#01B756;">₹219 (Fraunces 36px)</span></div>
+          <div class="ann-row"><span class="ann-key">Bond</span><span class="ann-val">REC Limited AA+</span></div>
+          <div class="ann-row"><span class="ann-key">YTM</span><span class="ann-val">10.5% · 24M</span></div>
+        </div>
+        <div class="ann-card">
+          <div class="ann-label">Testimonial (exact copy)</div>
+          <div class="ann-text">Priyanka R. · Bengaluru · investing since Jan 2026</div>
+        </div>
+        <div class="ann-card">
+          <div class="ann-label">Expected Impact</div>
+          <div class="impact-row"><div class="impact-dot"></div><div class="impact-text">D0 invest rate <span class="impact-num">+4pp</span></div></div>
+          <div class="impact-row"><div class="impact-dot"></div><div class="impact-text">GTV <span class="impact-num">+₹0.8–1.1Cr/mo</span></div></div>
+        </div>
       </div>
     </div>
 
-    <TabBar/>
-  </div>
-);
-
-/* ─── APP ────────────────────────────────────────────────────── */
-function App() {
-  const [variant, setVariant] = useState('a');
-
-  return (
-    <div className="outer">
-      <div className="ph">
-        <div className="ey">I8 · RTT Homepage · US-3 · Full 9-Section View</div>
-        <h1>RTT Homepage — All 9 Sections</h1>
-        <p>Shown only to RTT users with zero investments. §9 (trust markers) persists post-first-trade.</p>
-      </div>
-
-      {/* Variant toggle */}
-      <div className="var-toggle">
-        <button className={`var-btn ${variant==='a' ? 'on' : ''}`} onClick={() => setVariant('a')}>
-          Variant A · Infographic about-cards <span className="var-badge">Launch</span>
-        </button>
-        <button className={`var-btn ${variant==='b' ? 'on' : ''}`} onClick={() => setVariant('b')}>
-          Variant B · Video about-cards <span className="var-badge">Phase 2</span>
-        </button>
-      </div>
-
-      <div className="two-col">
-
-        {/* Left annotations */}
-        <div className="ann-panel">
-          <div className="ann-card">
-            <div className="ann-label">Audience</div>
-            <div className="ann-val">RTT users (KYC done) with <span className="hi">zero investments</span></div>
+    <!-- ─── PAGE 1 · Variant B ─── -->
+    <div class="page" id="page-1" style="align-items:flex-start;">
+      <div class="phone">
+        <div class="screen">
+          <!-- Header -->
+          <div class="home-header">
+            <div>
+              <div class="home-greeting">Good morning, Priya 👋</div>
+              <div class="home-sub">Complete your first investment</div>
+            </div>
+            <div class="home-avatar">P</div>
           </div>
-          <div className="ann-card">
-            <div className="ann-label">§9 persistence</div>
-            <div className="ann-val">Trust markers section persists post-first-trade. All other sections hidden after first investment.</div>
-          </div>
-          <div className="ann-card">
-            <div className="ann-label">Nudge card (§1)</div>
-            <ul className="ann-ul">
-              <li>Persists until first investment</li>
-              <li>Monthly income in Fraunces serif</li>
-              <li>Amount editable inline — no new screen</li>
-              <li>₹438/mo pre-calculated at ₹50K</li>
-            </ul>
-          </div>
-          <div className="ann-card">
-            <div className="ann-label">Variant A vs B</div>
-            <ul className="ann-ul">
-              <li><strong>A:</strong> Ships first (zero content dependency)</li>
-              <li><strong>B:</strong> Requires 1-2 min video per ISIN</li>
-              <li>Start Variant B with top 10 ISINs by volume</li>
-            </ul>
-          </div>
-          <div className="ann-card">
-            <div className="ann-label">How Bonds Work (§6)</div>
-            <div className="ann-val">Vertical row layout — numbered steps with heading + description. NOT horizontal columns.</div>
-          </div>
-          <div className="ann-card">
-            <div className="ann-label">Jira</div>
-            <div className="ann-val"><span className="hi">ASP-3253</span> · FE · US-3 · RTT homepage</div>
-          </div>
-        </div>
 
-        {/* Phone */}
-        <div className="phone-col">
-          <div className="phone-wrap">
-            <div className="phone">
-              <RttHomepage variant={variant}/>
+          <!-- Nudge card -->
+          <div class="nudge-card">
+            <div class="nudge-sparkle"></div>
+            <div class="nudge-tag">💡 Your personalised pick</div>
+            <div class="nudge-headline">Start earning monthly income on your savings</div>
+            <div class="nudge-amount-row">
+              <span class="nudge-rupee">₹</span>
+              <span class="nudge-amount">219</span>
+              <span class="nudge-per">/month</span>
+            </div>
+            <div class="nudge-sub">on ₹25,000 · REC Limited AA+ · 10.5% YTM</div>
+            <div class="nudge-btn-row">
+              <div class="nudge-primary">Invest ₹25,000 →</div>
+              <div class="nudge-secondary">Explore bonds</div>
             </div>
           </div>
-        </div>
 
-        {/* Right spec */}
-        <div className="ann-panel">
-          <div className="ann-card">
-            <div className="ann-label">Screen spec</div>
-            {[['Story','US-3 · ASP-3253'],['Height','~3400px (scrollable)'],['Owner','Hari (FE)'],['Effort','L'],['Stack','React Native'],['Disappears','After first investment (§9 stays)']].map(([k,v]) => (
-              <div key={k} className="spec-row"><span className="spec-k">{k}</span><span className="spec-v">{v}</span></div>
-            ))}
+          <!-- How bonds work — Video cards style -->
+          <div class="sec-heading">Learn in 60 seconds</div>
+
+          <div class="video-card">
+            <div class="video-thumb" style="background:linear-gradient(135deg,#012B18,#018E43);">
+              <div class="video-overlay"></div>
+              <div style="z-index:2;text-align:center;">
+                <div style="font-size:13px;color:rgba(255,255,255,0.8);margin-bottom:8px;">What is a bond?</div>
+                <div class="play-btn">▶</div>
+              </div>
+              <div class="video-duration">1:12</div>
+            </div>
+            <div class="video-info">
+              <div class="video-title">What is a bond and how does it work?</div>
+              <div class="video-sub">Earn ₹219/month on ₹25,000 · Simple explained</div>
+            </div>
           </div>
-          <div className="ann-card">
-            <div className="ann-label">Impact target</div>
-            <ul className="ann-ul">
-              <li>RTT → invest conversion: 5.1% → <strong>~9–11%</strong></li>
-              <li>Time-to-first-invest: D2.4 → <strong>D1.5</strong></li>
-              <li>+₹0.8–1.1Cr GTV/mo at current RTT scale</li>
-            </ul>
+
+          <div class="video-card">
+            <div class="video-thumb" style="background:linear-gradient(135deg,#1F3A93,#3730A3);">
+              <div class="video-overlay"></div>
+              <div style="z-index:2;text-align:center;">
+                <div style="font-size:13px;color:rgba(255,255,255,0.8);margin-bottom:8px;">Bonds vs FDs</div>
+                <div class="play-btn">▶</div>
+              </div>
+              <div class="video-duration">0:58</div>
+            </div>
+            <div class="video-info">
+              <div class="video-title">Bonds vs FD: which gives better returns?</div>
+              <div class="video-sub">10.5% YTM vs ~8% FD · Same safety · Higher yield</div>
+            </div>
           </div>
-          <div className="ann-card">
-            <div className="ann-label">Section visibility rules</div>
-            <ul className="ann-ul">
-              <li>§1 Nudge: hide after first investment</li>
-              <li>§2 About: hide after first investment</li>
-              <li>§3–§8: hide after first investment</li>
-              <li>§9 Trust: <strong>always visible</strong></li>
-            </ul>
+
+          <!-- Top bonds -->
+          <div class="sec-heading">Top bonds</div>
+          <div class="bond-row-item">
+            <div class="b-logo" style="background:#0E7A39;">RE</div>
+            <div class="b-info">
+              <div class="b-name">REC Limited</div>
+              <div class="b-detail">AA+ · 24M · Monthly payout</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="b-ytm">10.5%</div>
+              <div class="b-ytm-lbl">YTM p.a.</div>
+            </div>
           </div>
-          <div className="ann-card">
-            <div className="ann-label">Bond data (§3, §5)</div>
-            <ul className="ann-ul">
-              <li>REC Limited — AA+ · 10.5% · 24mo</li>
-              <li>Bajaj Finance — AAA · 9.8% · 18mo</li>
-              <li>NHAI 54EC — AAA · 8.05% · 5yr</li>
-              <li>L&T Finance — AA+ · 13.85% · 24mo</li>
-            </ul>
+          <div class="bond-row-item">
+            <div class="b-logo" style="background:#7C3AED;">PF</div>
+            <div class="b-info">
+              <div class="b-name">PFC Limited</div>
+              <div class="b-detail">AA+ · 36M · Quarterly payout</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="b-ytm">10.2%</div>
+              <div class="b-ytm-lbl">YTM p.a.</div>
+            </div>
+          </div>
+
+          <!-- Testimonial -->
+          <div class="sec-heading" style="margin-top:2px;">What investors say</div>
+          <div class="testimonial">
+            <div class="test-stars">⭐⭐⭐⭐⭐</div>
+            <div class="test-quote">"I started with ₹25,000 and now I get ₹219 every month in my account. It's like a second salary — simple and predictable."</div>
+            <div class="test-author">
+              <div class="test-avatar">P</div>
+              Priyanka R. · Bengaluru · investing since Jan 2026
+            </div>
+          </div>
+
+          <div style="flex:1;min-height:8px;"></div>
+          <div class="tab-bar">
+            <div class="tab"><span class="tab-icon">🏠</span><span class="tab-label active">Home</span></div>
+            <div class="tab"><span class="tab-icon">🔍</span><span class="tab-label">Explore</span></div>
+            <div class="tab"><span class="tab-icon">💼</span><span class="tab-label">Portfolio</span></div>
+            <div class="tab"><span class="tab-icon">👤</span><span class="tab-label">Profile</span></div>
           </div>
         </div>
       </div>
 
-      <div style={{ textAlign:'center',fontSize:11,color:'#9CA3AF',marginTop:48 }}>
-        I8 · RTT Homepage (R1) · ASP-263 · Design handoff May 2026 · aspero B2C
+      <!-- Annotation -->
+      <div class="annotation">
+        <div class="ann-card">
+          <div class="ann-label">Variant B — Video Cards</div>
+          <div class="ann-text">"Learn in 60 seconds" replaces the step-infographic. Two short-form video cards (bond explainer + bonds vs FDs) above the bond list.</div>
+        </div>
+        <div class="ann-card">
+          <div class="ann-label">Nudge Numbers</div>
+          <div class="ann-row"><span class="ann-key">Amount (₹10–25L band)</span><span class="ann-val">₹25,000</span></div>
+          <div class="ann-row"><span class="ann-key">Monthly income</span><span class="ann-val" style="color:#01B756;">₹219 (Fraunces 36px)</span></div>
+          <div class="ann-row"><span class="ann-key">Bond</span><span class="ann-val">REC Limited AA+</span></div>
+          <div class="ann-row"><span class="ann-key">YTM</span><span class="ann-val">10.5% · 24M</span></div>
+        </div>
+        <div class="ann-card">
+          <div class="ann-label">A/B Test</div>
+          <div class="ann-row"><span class="ann-key">Variant A</span><span class="ann-val">3-step infographic</span></div>
+          <div class="ann-row"><span class="ann-key">Variant B</span><span class="ann-val">60s video cards</span></div>
+          <div class="ann-row"><span class="ann-key">Primary metric</span><span class="ann-val">D0 invest%</span></div>
+          <div class="ann-row"><span class="ann-key">Secondary</span><span class="ann-val">Time-to-invest</span></div>
+        </div>
+        <div class="ann-card">
+          <div class="ann-label">Expected Impact</div>
+          <div class="impact-row"><div class="impact-dot"></div><div class="impact-text">D0 invest rate <span class="impact-num">+4pp</span></div></div>
+          <div class="impact-row"><div class="impact-dot"></div><div class="impact-text">GTV <span class="impact-num">+₹0.8–1.1Cr/mo</span></div></div>
+        </div>
       </div>
     </div>
-  );
+
+  </div><!-- /content-area -->
+</div><!-- /main -->
+
+<script>
+const SCREENS = [
+  { title: 'Variant A — Infographic How Bonds Work', badge: 'US-3' },
+  { title: 'Variant B — Video Cards How Bonds Work', badge: 'US-3' },
+];
+let current = 0;
+
+function goTo(idx) {
+  document.getElementById('page-' + current).classList.remove('active');
+  document.getElementById('nav-' + current).classList.remove('active');
+  current = idx;
+  document.getElementById('page-' + current).classList.add('active');
+  document.getElementById('nav-' + current).classList.add('active');
+  document.getElementById('screen-title').textContent = SCREENS[current].title;
+  document.getElementById('screen-badge').textContent = SCREENS[current].badge;
 }
-
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+function prev() { if (current > 0) goTo(current - 1); }
+function next() { if (current < SCREENS.length - 1) goTo(current + 1); }
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') prev();
+  if (e.key === 'ArrowRight') next();
+});
 </script>
 </body>
 </html>
