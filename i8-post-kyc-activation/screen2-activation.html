@@ -1316,8 +1316,8 @@ function App() {
                     <button key={v} onClick={() => setHomepageView(v)} style={{
                       padding:'6px 14px',borderRadius:20,border:'none',cursor:'pointer',
                       fontSize:12,fontWeight:700,letterSpacing:'.03em',fontFamily:'inherit',
-                      background: homepageView===v ? '#018E43' : 'rgba(255,255,255,.08)',
-                      color: homepageView===v ? '#fff' : 'rgba(255,255,255,.5)',
+                      background: homepageView===v ? '#018E43' : 'rgba(0,0,0,.07)',
+                      color: homepageView===v ? '#fff' : 'rgba(0,0,0,.45)',
                       transition:'all 140ms',
                     }}>{label}</button>
                   ))}
@@ -1326,10 +1326,10 @@ function App() {
                   <div style={{ display:'flex',gap:6 }}>
                     {[['a','Infographic'],['b','Video']].map(([v,label]) => (
                       <button key={v} onClick={() => setRttVariant(v)} style={{
-                        padding:'4px 12px',borderRadius:20,border:'1px solid rgba(255,255,255,.15)',cursor:'pointer',
+                        padding:'4px 12px',borderRadius:20,border:'1px solid rgba(0,0,0,.12)',cursor:'pointer',
                         fontSize:11,fontWeight:700,letterSpacing:'.03em',fontFamily:'inherit',
-                        background: rttVariant===v ? 'rgba(1,142,67,.25)' : 'transparent',
-                        color: rttVariant===v ? '#4ADE80' : 'rgba(255,255,255,.4)',
+                        background: rttVariant===v ? 'rgba(1,142,67,.12)' : 'rgba(0,0,0,.05)',
+                        color: rttVariant===v ? '#018E43' : 'rgba(0,0,0,.4)',
                         transition:'all 140ms',
                       }}>{label}</button>
                     ))}
