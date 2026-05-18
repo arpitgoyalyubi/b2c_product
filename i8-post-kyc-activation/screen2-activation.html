@@ -37,7 +37,8 @@
   .ph p{font-size:13px;color:var(--fg2)}
 
   /* ── tab bar ─────────────────────────────────── */
-  .tabs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:32px;background:rgba(15,20,25,.07);padding:5px;border-radius:14px;max-width:900px}
+  .tabs{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;justify-content:center;margin-bottom:32px;background:rgba(15,20,25,.07);padding:5px;border-radius:14px;max-width:900px;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
   .tab{font-family:inherit;cursor:pointer;border:0;padding:8px 16px;border-radius:10px;font-size:12px;font-weight:600;transition:all 140ms;background:transparent;color:var(--fg2)}
   .tab.on{background:var(--white);color:var(--dark);box-shadow:0 1px 4px rgba(0,0,0,.1)}
 
@@ -54,7 +55,7 @@
   .spec-k{color:var(--fg3);font-weight:500}.spec-v{color:var(--dark);font-weight:700}
 
   /* ── phone frame ─────────────────────────────── */
-  .phone-wrap{display:flex;justify-content:center;filter:drop-shadow(0 24px 56px rgba(15,20,25,.2))}
+  .phone-wrap{display:flex;flex-direction:column;align-items:center;filter:drop-shadow(0 24px 56px rgba(15,20,25,.2))}
   .phone{width:390px;border-radius:48px;background:var(--white);overflow:hidden;position:relative;border:1px solid rgba(15,20,25,.1)}
   .phone-inner{display:flex;flex-direction:column;height:100%;overflow:hidden;min-height:812px}
 
