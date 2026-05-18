@@ -28,11 +28,7 @@
     overflow:hidden;height:100vh;
     -webkit-font-smoothing:antialiased;
   }
-
-  /* ── Shell ──────────────────────────────────── */
   .shell{display:flex;height:100vh;overflow:hidden}
-
-  /* ── Sidebar ────────────────────────────────── */
   .sidebar{
     width:220px;flex-shrink:0;
     background:#0D1626;
@@ -72,16 +68,12 @@
     display:flex;align-items:center;justify-content:center;
   }
   .sb-item.active .sb-num{background:rgba(1,142,67,.3);color:#4ADE80}
-
-  /* ── Main area ──────────────────────────────── */
   .main{
     flex:1;
     display:flex;align-items:center;justify-content:center;
     overflow:hidden;
     background:radial-gradient(ellipse at 50% 30%, #0d1f2d 0%, #030A16 70%);
   }
-
-  /* ── Phone centering ─────────────────────────── */
   .phone-stage{
     display:flex;align-items:center;justify-content:center;
     width:100%;height:100%;overflow:auto;
@@ -429,6 +421,8 @@
 <body>
 <div id="root"></div>
 <script type="text/babel">
+const { useState } = React;
+
 const { useState } = React;
 
 /* ─── BOND DATA ──────────────────────────────────────────────── */
@@ -927,56 +921,16 @@ const WebScreen = () => (
 );
 
 /* ─── APP ─────────────────────────────────────────────────────── */
-/* ─── RTT HOMEPAGE ADDITIONAL DATA & COMPONENTS ─────────────── */
+
+/* ─── RTT ADDITIONAL DATA & COMPONENTS ──────────────────────── */
 const NHAI = { issuer:'NHAI', name:'54EC Capital Bonds', isin:'INE906B07GG6', rating:'AAA', type:'Govt · Secured', tenure:'5 years', ytm:8.05, colour:'#0E7A39', initials:'NH', faceValue:10000 };
 const LT = { issuer:'L&T Finance', name:'NCD 9.5% 2029', isin:'INE476A07NX8', rating:'AA+', ytm:13.85, tenure:'24 mo', colour:'#0050A5', initials:'LT', faceValue:1000 };
 const IIFL = { issuer:'IIFL Samasta', name:'NCD 10.75% 2027', isin:'INE917Y07034', rating:'AA-', ytm:13.5, tenure:'14 mo', colour:'#1B7E6A', initials:'IS', faceValue:1000 };
 const UGRO = { issuer:'U GRO Capital', name:'NCD 14.35% 2026', isin:'INE583D07039', rating:'A+', ytm:14.35, tenure:'9 mo', colour:'#523B7A', initials:'UG', faceValue:1000 };
 
 /* ─── ICONS ─────────────────────────────────────────────────── */
-const IC = (p) => <svg width={p.size||18} height={p.size||18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}>{p.children}</svg>;
-const ChevRight = (p) => <IC {...p}><polyline points="9 6 15 12 9 18"/></IC>;
-const HomeIcon = (p) => <IC {...p}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-4v-7H9v7H5a2 2 0 0 1-2-2z"/></IC>;
-const ChartIcon = (p) => <IC {...p}><path d="M3 3v18h18"/><path d="M7 14l4-4 4 3 5-7"/></IC>;
-const BriefcaseIcon = (p) => <IC {...p}><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></IC>;
-const StarIcon = (p) => <IC {...p}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></IC>;
-const MoreIcon = (p) => <IC {...p}><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></IC>;
-const BellIcon = (p) => <IC {...p}><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></IC>;
 const SearchIcon = (p) => <IC {...p}><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></IC>;
-const ShieldIcon = (p) => <IC {...p}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></IC>;
-const WalletIcon = (p) => <IC {...p}><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></IC>;
 const FileIcon = (p) => <IC {...p}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></IC>;
-const CloseIcon = (p) => <IC {...p}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></IC>;
-
-/* ─── StatusBar ─────────────────────────────────────────────── */
-const StatusBar = () => (
-  <div className="sb">
-    <div className="di"/>
-    <span className="t">9:41</span>
-    <svg width="54" height="13" viewBox="0 0 54 13" fill="#0F1419">
-      <rect x="0" y="7.5" width="3" height="5.5" rx=".7"/><rect x="5" y="5" width="3" height="8" rx=".7"/>
-      <rect x="10" y="2.5" width="3" height="10.5" rx=".7"/><rect x="15" y="0" width="3" height="13" rx=".7"/>
-      <rect x="22" y="3" width="12" height="10" rx="2.5" stroke="#0F1419" strokeWidth="1.2" fill="none"/>
-      <rect x="24" y="5" width="8" height="6" rx="1.5" fill="#0F1419"/>
-      <path d="M35.2 6v3.5c.9-.3 1.3-.9 1.3-1.75S36.1 6.3 35.2 6z"/>
-      <rect x="40" y="0" width="3.2" height="5.5" rx=".7"/><rect x="44.8" y="0" width="3.2" height="8" rx=".7"/>
-      <rect x="49.6" y="0" width="3.2" height="11" rx=".7"/>
-    </svg>
-  </div>
-);
-
-/* ─── TabBar ─────────────────────────────────────────────────── */
-const TabBar = () => (
-  <div className="tabbar">
-    {[['Home', HomeIcon], ['Bonds', ChartIcon], ['Portfolio', BriefcaseIcon], ['Learn', StarIcon], ['More', MoreIcon]].map(([name, Icon]) => (
-      <button key={name} className={`tb-btn ${name==='Home' ? 'on' : ''}`}>
-        <Icon size={20}/><span className="label">{name}</span>
-      </button>
-    ))}
-  </div>
-);
-
-/* ─── BondListRow ────────────────────────────────────────────── */
 const BondListRow = ({ bond, pill }) => (
   <div className="bond-list-row">
     <div className="blr-logo" style={{ background: bond.colour }}>{bond.initials}</div>
@@ -1250,9 +1204,9 @@ const RttHomepage = ({ variant }) => (
 
 /* ─── APP ────────────────────────────────────────────────────── */
 
-/* ─── APP ────────────────────────────────────────────────────── */
+/* ─── COMBINED APP ────────────────────────────────────────────── */
 function App() {
-  const [screen, setScreen] = React.useState('push');
+  const [screen, setScreen] = useState('push');
 
   const ACTIVATION_ITEMS = [
     { id:'push',    label:'Push Notification',   num:'1' },
@@ -1275,12 +1229,11 @@ function App() {
   const renderPhone = () => {
     if (screen === 'push')    return <PushNotif/>;
     if (screen === 'stateA')  return <StateA/>;
-    if (screen === 'stateA2') return <StateA whyOpen/>;
+    if (screen === 'stateA2') return <StateA whyOpen={true}/>;
     if (screen === 'stateB')  return <StateB/>;
     if (screen === 'stateC')  return <StateC/>;
     if (screen === 'nudge')   return <NudgeScreen/>;
-    if (screen === 'nudge2')  return <NudgeScreen editing/>;
-    if (screen === 'web')     return <WebScreen/>;
+    if (screen === 'nudge2')  return <NudgeScreen editing={true}/>;
     if (screen === 'rttA')    return <RttHomepage variant="a"/>;
     if (screen === 'rttB')    return <RttHomepage variant="b"/>;
     return null;
@@ -1293,7 +1246,6 @@ function App() {
           I8 · Post-KYC<br/>Activation
           <span>Screen &amp; Homepage Flows</span>
         </div>
-
         <div className="sb-section">
           <span className="sb-section-label">Post-KYC Activation</span>
           {ACTIVATION_ITEMS.map(item => (
@@ -1307,7 +1259,6 @@ function App() {
             </button>
           ))}
         </div>
-
         <div className="sb-section">
           <span className="sb-section-label">RTT Homepage</span>
           {RTT_ITEMS.map(item => (
@@ -1322,7 +1273,6 @@ function App() {
           ))}
         </div>
       </nav>
-
       <div className="main">
         <div className="phone-stage">
           {isWeb
