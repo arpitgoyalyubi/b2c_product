@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta name="version" content="v5-scroll-fix">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>I8 · Post-KYC Activation & RTT Homepage</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +31,7 @@
     overflow:hidden;height:100vh;
     -webkit-font-smoothing:antialiased;
   }
-  .shell{display:flex;height:100vh;overflow:hidden}
+  .shell{display:flex;height:100vh}
   .sidebar{
     width:220px;flex-shrink:0;
     background:#0D1626;
@@ -70,10 +73,13 @@
   .sb-item.active .sb-num{background:rgba(1,142,67,.3);color:#4ADE80}
   .main{
     flex:1;
+    min-width:0;
+    height:100vh;
     overflow-y:auto;
     background:radial-gradient(ellipse at 50% 30%, #0d1f2d 0%, #030A16 70%);
   }
-  .main::-webkit-scrollbar{display:none}
+  .main::-webkit-scrollbar{width:6px}
+  .main::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
   .phone-stage{
     display:flex;align-items:flex-start;justify-content:center;
     width:100%;min-height:100%;
