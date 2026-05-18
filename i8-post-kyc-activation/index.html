@@ -22,6 +22,14 @@
   .card-meta{font-size:11px;font-weight:600;color:#4ADE80;display:flex;align-items:center;gap:5px}
   .dot{width:6px;height:6px;border-radius:50%;background:#4ADE80}
   .tag{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px;background:rgba(1,142,67,.15);color:#4ADE80;margin-bottom:8px;letter-spacing:.04em;text-transform:uppercase}
+  .about{background:#0D1626;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;text-align:left;margin-bottom:28px}
+  .about-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:16px}
+  .variants{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .variant{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px}
+  .variant-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#4ADE80;margin-bottom:10px}
+  .variant-badge-dot{width:5px;height:5px;border-radius:50%;background:#4ADE80}
+  .variant-name{font-size:13px;font-weight:700;color:#fff;margin-bottom:6px}
+  .variant-desc{font-size:12px;color:rgba(255,255,255,.45);line-height:1.6}
 </style>
 </head>
 <body>
@@ -29,6 +37,22 @@
   <div class="eyebrow">I8 · Product Mocks</div>
   <h1>Post-KYC Activation</h1>
   <p class="sub">Two flows — activation screens (US-2/3/4) and the RTT homepage.<br/>REC Limited · ₹25,000 · ₹219/mo · 10.50% YTM</p>
+
+  <div class="about">
+    <div class="about-title">RTT Homepage · Two variants</div>
+    <div class="variants">
+      <div class="variant">
+        <div class="variant-badge"><span class="variant-badge-dot"></span>Variant A</div>
+        <div class="variant-name">Infographic</div>
+        <div class="variant-desc">Bond details presented as visual data cards — issuer profile, yield comparison, risk metrics, and market context. No video; all information is scannable and static.</div>
+      </div>
+      <div class="variant">
+        <div class="variant-badge"><span class="variant-badge-dot"></span>Variant B</div>
+        <div class="variant-name">Video</div>
+        <div class="variant-desc">The infographic block is replaced by a short explainer video about the bond issuer. Designed to build trust through storytelling before the user commits to investing.</div>
+      </div>
+    </div>
+  </div>
 
   <div class="cards">
     <a class="card" href="./screen2-activation.html">
@@ -43,7 +67,7 @@
       <div class="card-meta"><span class="dot"></span>8 screens · interactive</div>
     </a>
 
-    <a class="card" href="./rtt-homepage.html">
+    <a class="card" href="./screen2-activation.html">
       <div class="card-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
@@ -51,8 +75,8 @@
       </div>
       <div class="tag">US-3 · RTT</div>
       <div class="card-title">RTT Homepage</div>
-      <div class="card-desc">All 9 sections for KYC-done zero-investment users. Variant A (infographic) & B (video).</div>
-      <div class="card-meta"><span class="dot"></span>9 sections · 2 variants</div>
+      <div class="card-desc">Full RTT homepage with all 9 sections for KYC-done zero-investment users. Open the last two tabs (⑥) to switch between variants.</div>
+      <div class="card-meta"><span class="dot"></span>2 variants · tabs ⑥A &amp; ⑥B</div>
     </a>
   </div>
 </div>
