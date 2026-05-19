@@ -449,15 +449,15 @@
       <div class="slide-num">Signin Funnel · WoW</div>
       <div class="slide-ttl">Launch → Mobile →<br>Email → Signup</div>
       <div class="slide-sub">New users · weekly conversion</div>
-      <div class="hero-num">1/3</div>
-      <div class="hero-lbl">stage dropped</div>
-      <div class="hero-badge down">↓ 1 drop</div>
+      <div class="hero-num">—</div>
+      <div class="hero-lbl">All stages flat</div>
+      <div class="hero-badge flat">→ Stable</div>
       <div class="stat-list">
         <div class="stat-item">
           <span class="si-lbl">Period</span>
           <span class="si-val" style="font-size:.72rem;opacity:.7">May 11–17, 2026</span>
         </div>
-        <div class="stat-item"><span class="si-lbl">Launch → Mobile</span><span class="si-val">58.8% <span class="hero-badge down" style="font-size:.58rem;padding:2px 7px;margin-left:4px">-1.5pp</span></span></div><div class="stat-item"><span class="si-lbl">Mobile → Email</span><span class="si-val">72.7% <span class="hero-badge flat" style="font-size:.58rem;padding:2px 7px;margin-left:4px">-0.9pp</span></span></div><div class="stat-item"><span class="si-lbl">Email → Signup</span><span class="si-val">91.3% <span class="hero-badge flat" style="font-size:.58rem;padding:2px 7px;margin-left:4px">-0.6pp</span></span></div>
+        <div class="stat-item"><span class="si-lbl">Launch → Mobile</span><span class="si-val">35.2% <span class="hero-badge flat" style="font-size:.58rem;padding:2px 7px;margin-left:4px">-0.1pp</span></span></div><div class="stat-item"><span class="si-lbl">Mobile → Email</span><span class="si-val">72.7% <span class="hero-badge flat" style="font-size:.58rem;padding:2px 7px;margin-left:4px">-0.9pp</span></span></div><div class="stat-item"><span class="si-lbl">Email → Signup</span><span class="si-val">91.3% <span class="hero-badge flat" style="font-size:.58rem;padding:2px 7px;margin-left:4px">-0.6pp</span></span></div>
       </div>
     </div>
     <div class="right-panel">
@@ -476,13 +476,13 @@
                 Launch → Mobile
               </div>
               <div class="sfr-val">
-                58.8%
-                <span class="hero-badge down">-1.5pp</span>
+                35.2%
+                <span class="hero-badge flat">-0.1pp</span>
               </div>
-              <div class="sfr-prev">60.3%<br><span class="sfr-prev-lbl">prev wk</span></div>
+              <div class="sfr-prev">35.3%<br><span class="sfr-prev-lbl">prev wk</span></div>
               <div class="sfr-spark"><canvas id="sfwow-spark-launch_to_mobile" width="228" height="72"></canvas></div>
             </div>
-            <div class="sfr-chips"><span class="ins-chip chip-ok"><span class="ins-dot"></span><span class="ins-txt">No dominant platform culprit</span></span><span class="ins-chip chip-warn"><span class="ins-dot"></span><span class="ins-txt">WHERE ↓ Number Entered · 37.3% (-17.0pp)</span></span></div>
+            <div class="sfr-chips"><span class="ins-chip chip-ok"><span class="ins-dot"></span><span class="ins-txt">WHO ↑ iOS +16.0pp vs overall -0.1pp · 16.1pp divergence</span></span><span class="ins-chip chip-warn"><span class="ins-dot"></span><span class="ins-txt">WHERE ↓ Number Entered · 22.3% (-9.5pp)</span></span></div>
           </div>
           <div class="sfr-row" style="background:#fff">
             <div class="sfr-main">
@@ -526,7 +526,7 @@
   (function() {
     var ctx = document.getElementById('sfwow-spark-launch_to_mobile');
     if (!ctx) return;
-    var vals = [72.7, 68.5, 62.1, 65.5, 62.1, 58.4, 60.3, 58.8];
+    var vals = [65.4, 58.0, 49.3, 49.3, 42.7, 38.2, 35.3, 35.2];
     var color = '#3b82f6';
     new Chart(ctx, {
       type: 'line',
@@ -719,7 +719,6 @@
     });
   })();
   </script>
-
 
 <!-- Signin Dropout Slide A -->
 <div class="slide" id="s-dropout-s1" style="flex-direction:column;overflow-y:auto;">
