@@ -1,0 +1,9 @@
+{
+  "title": "SEO Dashboard",
+  "description": "Organic search performance — impressions, clicks, position trends for bond pages. Keyword opportunities, indexing coverage, page-level breakdown.",
+  "section": "analyses",
+  "icon": "🔍",
+  "accent": "#7C3AED",
+  "badges": [{"label": "SEO", "color": "purple"}, {"label": "Organic", "color": "purple"}],
+  "order": 3
+}

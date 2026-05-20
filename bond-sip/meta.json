@@ -1,0 +1,9 @@
+{
+  "title": "Bond SIP Prototype — ASP-3558",
+  "description": "Interactive prototype: 3 persona entry flows (P2b/P6/P7), 6-step SIP setup with live amount calculator + goal selector, full portfolio view with cashflow calendar.",
+  "section": "prototypes",
+  "icon": "🔁",
+  "accent": "#059669",
+  "badges": [{"label": "Prototype", "color": "green"}, {"label": "PRD v1", "color": "blue"}, {"label": "Apr 2026", "color": "purple"}],
+  "order": 1
+}

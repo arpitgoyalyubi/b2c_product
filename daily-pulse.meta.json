@@ -1,0 +1,9 @@
+{
+  "title": "Daily Pulse",
+  "description": "Daily snapshot of key product metrics — installs, signups, KYC completions, payments. Quick health check for the team.",
+  "section": "live-reports",
+  "icon": "⚡",
+  "accent": "#16A34A",
+  "badges": [{"label": "Metrics", "color": "green"}, {"label": "Live · Daily", "color": "green"}],
+  "order": 4
+}

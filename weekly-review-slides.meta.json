@@ -1,0 +1,9 @@
+{
+  "title": "Weekly Review Slides",
+  "description": "Slide-deck format of weekly funnel review. KYC microstages, dropout analysis, support ticket trends. Auto-generated every Monday.",
+  "section": "live-reports",
+  "icon": "🗂️",
+  "accent": "#2563EB",
+  "badges": [{"label": "Funnel", "color": "blue"}, {"label": "Live · Weekly", "color": "green"}],
+  "order": 2
+}

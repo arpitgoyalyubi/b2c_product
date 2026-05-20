@@ -134,6 +134,7 @@
   .badge-green  { background: var(--green-lt); color: var(--green); }
   .badge-purple { background: #F5F3FF; color: var(--purple); }
   .badge-amber  { background: #FFFBEB; color: var(--amber); }
+  .badge-gray   { background: #F1F5F9; color: var(--gray); }
 
   .arrow {
     margin-left: auto;
@@ -168,11 +169,10 @@
 
 <div class="wrap">
 
-  <!-- Live Reports -->
   <div class="section-label">Live Reports</div>
   <div class="card-grid">
 
-    <a class="card" href="weekly-review.html" style="--accent:#2563EB">
+    <a class="card" href="weekly-review.meta.html" style="--accent:#2563EB">
       <div class="card-icon">📊</div>
       <div class="card-title">Weekly Funnel Review</div>
       <div class="card-desc">Signup → KYC → Investment funnel metrics. Platform breakdown, WoW trends, GTV targets. Updated every Monday morning.</div>
@@ -183,8 +183,90 @@
       </div>
     </a>
 
-    <a class="card" href="seo-release.html" style="--accent:#7C3AED">
+    <a class="card" href="weekly-review-slides.meta.html" style="--accent:#2563EB">
+      <div class="card-icon">🗂️</div>
+      <div class="card-title">Weekly Review Slides</div>
+      <div class="card-desc">Slide-deck format of weekly funnel review. KYC microstages, dropout analysis, support ticket trends. Auto-generated every Monday.</div>
+      <div class="card-meta">
+        <span class="badge badge-blue">Funnel</span>
+        <span class="badge badge-green">Live · Weekly</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="install-to-signup.meta.html" style="--accent:#16A34A">
+      <div class="card-icon">📲</div>
+      <div class="card-title">Install → Signup Funnel</div>
+      <div class="card-desc">App install to signup activation funnel. Platform and device-tier breakdown, WoW trends, drop-off root causes. Auto-updated daily.</div>
+      <div class="card-meta">
+        <span class="badge badge-green">Acquisition</span>
+        <span class="badge badge-green">Live · Daily</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="daily-pulse.meta.html" style="--accent:#16A34A">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">Daily Pulse</div>
+      <div class="card-desc">Daily snapshot of key product metrics — installs, signups, KYC completions, payments. Quick health check for the team.</div>
+      <div class="card-meta">
+        <span class="badge badge-green">Metrics</span>
+        <span class="badge badge-green">Live · Daily</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="persona-quality-report.meta.html" style="--accent:#7C3AED">
+      <div class="card-icon">👥</div>
+      <div class="card-title">Persona Quality Report</div>
+      <div class="card-desc">Daily check on investor persona mix — P1 to P6 distribution, GTV per persona, quality flags. Alerts when persona mix drifts from target.</div>
+      <div class="card-meta">
+        <span class="badge badge-purple">Personas</span>
+        <span class="badge badge-green">Live · Daily</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="section-label">Analyses</div>
+  <div class="card-grid">
+
+    <a class="card" href="biometrics-impact.meta.html" style="--accent:#2563EB">
+      <div class="card-icon">🔐</div>
+      <div class="card-title">Biometrics Launch Impact</div>
+      <div class="card-desc">Post-launch analysis of biometric login adoption. Sign-in success rate uplift, drop-off reduction, platform breakdown by device tier.</div>
+      <div class="card-meta">
+        <span class="badge badge-blue">Analysis</span>
+        <span class="badge badge-blue">Auth</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="kyc-touchpoint.meta.html" style="--accent:#2563EB">
+      <div class="card-icon">🪪</div>
+      <div class="card-title">KYC Touchpoint Analysis</div>
+      <div class="card-desc">Step-by-step KYC funnel analysis — PAN, Aadhaar, liveness, bank verification. Drop-off points, time-to-complete, error rate breakdown.</div>
+      <div class="card-meta">
+        <span class="badge badge-blue">KYC</span>
+        <span class="badge badge-blue">Analysis</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="seo-dashboard.meta.html" style="--accent:#7C3AED">
       <div class="card-icon">🔍</div>
+      <div class="card-title">SEO Dashboard</div>
+      <div class="card-desc">Organic search performance — impressions, clicks, position trends for bond pages. Keyword opportunities, indexing coverage, page-level breakdown.</div>
+      <div class="card-meta">
+        <span class="badge badge-purple">SEO</span>
+        <span class="badge badge-purple">Organic</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="seo-release.meta.html" style="--accent:#7C3AED">
+      <div class="card-icon">📋</div>
       <div class="card-title">SEO Release Note — Apr 2026</div>
       <div class="card-desc">Full SEO sprint recap: 13 tickets shipped, SSR foundation, bond page rankings, issuer aggregator pages live. Impressions +3× in first week.</div>
       <div class="card-meta">
@@ -194,9 +276,113 @@
       </div>
     </a>
 
+    <a class="card" href="support-tickets/" style="--accent:#D97706">
+      <div class="card-icon">🎫</div>
+      <div class="card-title">Support Ticket Analysis — Apr 2026</div>
+      <div class="card-desc">Freshdesk ticket classification by root cause — KRA failures, bank link issues, liveness errors. Volume trends, top categories, recommended actions.</div>
+      <div class="card-meta">
+        <span class="badge badge-amber">Support</span>
+        <span class="badge badge-amber">April 2026</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="play-store/" style="--accent:#16A34A">
+      <div class="card-icon">🏪</div>
+      <div class="card-title">Play Store Metrics</div>
+      <div class="card-desc">Google Play Store performance — ratings, reviews, install funnel, store listing conversion. Benchmark vs fintech peers.</div>
+      <div class="card-meta">
+        <span class="badge badge-green">Android</span>
+        <span class="badge badge-blue">Analysis</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
   </div>
 
-  <!-- Jira Epics -->
+  <div class="section-label">Prototypes & Mocks</div>
+  <div class="card-grid">
+
+    <a class="card" href="bond-sip/" style="--accent:#059669">
+      <div class="card-icon">🔁</div>
+      <div class="card-title">Bond SIP Prototype — ASP-3558</div>
+      <div class="card-desc">Interactive prototype: 3 persona entry flows (P2b/P6/P7), 6-step SIP setup with live amount calculator + goal selector, full portfolio view with cashflow calendar.</div>
+      <div class="card-meta">
+        <span class="badge badge-green">Prototype</span>
+        <span class="badge badge-blue">PRD v1</span>
+        <span class="badge badge-purple">Apr 2026</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="blanket-sell-review/" style="--accent:#2563EB">
+      <div class="card-icon">📉</div>
+      <div class="card-title">Blanket Sell — Design Review</div>
+      <div class="card-desc">Design review for blanket sell feature — full exit flow, confirmation screens, portfolio impact preview, edge cases for partial and full liquidation.</div>
+      <div class="card-meta">
+        <span class="badge badge-blue">Design Review</span>
+        <span class="badge badge-blue">Portfolio</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="i8-post-kyc-activation/" style="--accent:#7C3AED">
+      <div class="card-icon">🚀</div>
+      <div class="card-title">Post-KYC Activation (I8)</div>
+      <div class="card-desc">Mocks for the I8 post-KYC activation flow — nudge screens, first-investment prompt, persona-matched bond recommendations shown after KYC completion.</div>
+      <div class="card-meta">
+        <span class="badge badge-purple">Prototype</span>
+        <span class="badge badge-purple">I8</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="isin-indexing/" style="--accent:#2563EB">
+      <div class="card-icon">📑</div>
+      <div class="card-title">ISIN Bond Directory — ASP-3439</div>
+      <div class="card-desc">SEO mock for the ISIN-indexed bond directory — individual bond landing pages, breadcrumb structure, schema markup, and internal link architecture.</div>
+      <div class="card-meta">
+        <span class="badge badge-purple">SEO</span>
+        <span class="badge badge-blue">Mocks</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="payment-retry-widget/" style="--accent:#D97706">
+      <div class="card-icon">💳</div>
+      <div class="card-title">Payment Retry Widget — ASP-3246</div>
+      <div class="card-desc">UI mocks for the I6 payment retry widget — inline retry prompt, failure reason display, UPI/net-banking fallback flow, and success confirmation.</div>
+      <div class="card-meta">
+        <span class="badge badge-amber">Prototype</span>
+        <span class="badge badge-amber">I6</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="put-option-exercise_mocks/" style="--accent:#2563EB">
+      <div class="card-icon">📈</div>
+      <div class="card-title">Put Option Exercise Mocks</div>
+      <div class="card-desc">UI change map for put option exercise on RDC Bond (YTP 15%). Screens for option eligibility, exercise confirmation, payout timeline, and portfolio impact.</div>
+      <div class="card-meta">
+        <span class="badge badge-blue">Mocks</span>
+        <span class="badge badge-blue">Bond Feature</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="referral-program/" style="--accent:#16A34A">
+      <div class="card-icon">🎁</div>
+      <div class="card-title">Referral Program</div>
+      <div class="card-desc">Mocks and specs for the Aspero referral program — referral invite flow, reward tracking dashboard, T&C screens, and share sheet design.</div>
+      <div class="card-meta">
+        <span class="badge badge-green">Prototype</span>
+        <span class="badge badge-green">Growth</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+
   <div class="section-label">Active Jira Epics</div>
   <div class="card-grid">
 
@@ -207,6 +393,7 @@
       <div class="card-meta">
         <span class="badge badge-purple">SEO</span>
         <span class="badge badge-blue">Jira ↗</span>
+        
       </div>
     </a>
 
@@ -217,6 +404,7 @@
       <div class="card-meta">
         <span class="badge badge-green">Payment</span>
         <span class="badge badge-blue">Jira ↗</span>
+        
       </div>
     </a>
 
@@ -227,6 +415,7 @@
       <div class="card-meta">
         <span class="badge badge-amber">Acquisition</span>
         <span class="badge badge-blue">Jira ↗</span>
+        
       </div>
     </a>
 
@@ -237,41 +426,34 @@
       <div class="card-meta">
         <span class="badge badge-blue">Repeat</span>
         <span class="badge badge-blue">Jira ↗</span>
+        
       </div>
     </a>
 
-  </div>
-
-  <!-- Prototypes -->
-  <div class="section-label">Product Prototypes</div>
-  <div class="card-grid">
-
-    <a class="card" href="bond-sip/index.html" style="--accent:#059669">
-      <div class="card-icon">🔁</div>
-      <div class="card-title">Bond SIP Prototype — ASP-3558</div>
-      <div class="card-desc">Interactive prototype: 3 persona entry flows (P2b/P6/P7), 6-step SIP setup with live amount calculator + goal selector, and full portfolio view with cashflow calendar and instalment history.</div>
+    <a class="card" href="https://goyubi.atlassian.net/browse/ASP-3472" target="_blank" rel="noopener" style="--accent:#7C3AED">
+      <div class="card-icon">💼</div>
+      <div class="card-title">Portfolio Revamp — ASP-3472</div>
+      <div class="card-desc">Portfolio 2.0 — Personal Analyst. Investment summary bar, holdings tab, insights tab, cashflow and payouts full-screen views.</div>
       <div class="card-meta">
-        <span class="badge badge-green">Prototype</span>
-        <span class="badge badge-blue">PRD v1</span>
-        <span class="badge badge-purple">Apr 2026</span>
-        <span class="arrow">→</span>
+        <span class="badge badge-purple">Portfolio</span>
+        <span class="badge badge-blue">Jira ↗</span>
+        
       </div>
     </a>
 
   </div>
 
-  <!-- Agents -->
   <div class="section-label">Agent Dashboards</div>
   <div class="card-grid">
 
-    <a class="card" href="https://github.com/yubisecurities/yubi-b2c-product-spec/actions" target="_blank" rel="noopener" style="--accent:#64748B">
+    <a class="card" href="https://github.com/arpitgoyalyubi/b2c_product/actions" target="_blank" rel="noopener" style="--accent:#64748B">
       <div class="card-icon">🤖</div>
       <div class="card-title">GitHub Actions — All Agents</div>
-      <div class="card-desc">Funnel agent (8 AM IST), Growth agent (9 AM IST), PM agent (8:45 AM IST), SEO agent (7:07 AM IST) — all running daily.</div>
+      <div class="card-desc">Funnel agent (8 AM IST), Growth agent (9 AM IST), PM agent (8:45 AM IST), SEO agent, Persona Quality agent — all running daily.</div>
       <div class="card-meta">
         <span class="badge badge-blue">CI/CD</span>
-        <span class="badge badge-green">4 agents live</span>
-        <span class="arrow">→</span>
+        <span class="badge badge-green">5 agents live</span>
+        
       </div>
     </a>
 
@@ -281,7 +463,7 @@
 
 <div class="wrap" style="padding-top: 0">
   <div class="footer">
-    Aspero B2C Product Hub · Updated Apr 29 2026 · <a href="https://github.com/yubisecurities/yubi-b2c-product-spec" style="color:var(--blue)">GitHub Repo ↗</a>
+    Aspero B2C Product Hub · Auto-generated May 20 2026 · <a href="https://github.com/arpitgoyalyubi/b2c_product" style="color:var(--blue)">GitHub Repo ↗</a>
   </div>
 </div>
 

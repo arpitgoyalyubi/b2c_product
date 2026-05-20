@@ -1,0 +1,9 @@
+{
+  "title": "Blanket Sell — Design Review",
+  "description": "Design review for blanket sell feature — full exit flow, confirmation screens, portfolio impact preview, edge cases for partial and full liquidation.",
+  "section": "prototypes",
+  "icon": "📉",
+  "accent": "#2563EB",
+  "badges": [{"label": "Design Review", "color": "blue"}, {"label": "Portfolio", "color": "blue"}],
+  "order": 2
+}

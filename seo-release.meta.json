@@ -1,0 +1,9 @@
+{
+  "title": "SEO Release Note — Apr 2026",
+  "description": "Full SEO sprint recap: 13 tickets shipped, SSR foundation, bond page rankings, issuer aggregator pages live. Impressions +3× in first week.",
+  "section": "analyses",
+  "icon": "📋",
+  "accent": "#7C3AED",
+  "badges": [{"label": "SEO", "color": "purple"}, {"label": "Updated Apr 28", "color": "green"}],
+  "order": 4
+}

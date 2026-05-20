@@ -1,0 +1,9 @@
+{
+  "title": "Weekly Funnel Review",
+  "description": "Signup → KYC → Investment funnel metrics. Platform breakdown, WoW trends, GTV targets. Updated every Monday morning.",
+  "section": "live-reports",
+  "icon": "📊",
+  "accent": "#2563EB",
+  "badges": [{"label": "Funnel", "color": "blue"}, {"label": "Live · Weekly", "color": "green"}],
+  "order": 1
+}

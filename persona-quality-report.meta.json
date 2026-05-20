@@ -1,0 +1,9 @@
+{
+  "title": "Persona Quality Report",
+  "description": "Daily check on investor persona mix — P1 to P6 distribution, GTV per persona, quality flags. Alerts when persona mix drifts from target.",
+  "section": "live-reports",
+  "icon": "👥",
+  "accent": "#7C3AED",
+  "badges": [{"label": "Personas", "color": "purple"}, {"label": "Live · Daily", "color": "green"}],
+  "order": 5
+}

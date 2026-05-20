@@ -1,0 +1,9 @@
+{
+  "title": "Install → Signup Funnel",
+  "description": "App install to signup activation funnel. Platform and device-tier breakdown, WoW trends, drop-off root causes. Auto-updated daily.",
+  "section": "live-reports",
+  "icon": "📲",
+  "accent": "#16A34A",
+  "badges": [{"label": "Acquisition", "color": "green"}, {"label": "Live · Daily", "color": "green"}],
+  "order": 3
+}

@@ -1,0 +1,9 @@
+{
+  "title": "KYC Touchpoint Analysis",
+  "description": "Step-by-step KYC funnel analysis — PAN, Aadhaar, liveness, bank verification. Drop-off points, time-to-complete, error rate breakdown.",
+  "section": "analyses",
+  "icon": "🪪",
+  "accent": "#2563EB",
+  "badges": [{"label": "KYC", "color": "blue"}, {"label": "Analysis", "color": "blue"}],
+  "order": 2
+}

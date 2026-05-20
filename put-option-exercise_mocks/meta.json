@@ -1,0 +1,9 @@
+{
+  "title": "Put Option Exercise Mocks",
+  "description": "UI change map for put option exercise on RDC Bond (YTP 15%). Screens for option eligibility, exercise confirmation, payout timeline, and portfolio impact.",
+  "section": "prototypes",
+  "icon": "📈",
+  "accent": "#2563EB",
+  "badges": [{"label": "Mocks", "color": "blue"}, {"label": "Bond Feature", "color": "blue"}],
+  "order": 6
+}

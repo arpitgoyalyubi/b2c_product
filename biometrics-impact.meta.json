@@ -1,0 +1,9 @@
+{
+  "title": "Biometrics Launch Impact",
+  "description": "Post-launch analysis of biometric login adoption. Sign-in success rate uplift, drop-off reduction, platform breakdown by device tier.",
+  "section": "analyses",
+  "icon": "🔐",
+  "accent": "#2563EB",
+  "badges": [{"label": "Analysis", "color": "blue"}, {"label": "Auth", "color": "blue"}],
+  "order": 1
+}

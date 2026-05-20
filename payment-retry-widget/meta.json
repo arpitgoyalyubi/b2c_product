@@ -1,0 +1,9 @@
+{
+  "title": "Payment Retry Widget — ASP-3246",
+  "description": "UI mocks for the I6 payment retry widget — inline retry prompt, failure reason display, UPI/net-banking fallback flow, and success confirmation.",
+  "section": "prototypes",
+  "icon": "💳",
+  "accent": "#D97706",
+  "badges": [{"label": "Prototype", "color": "amber"}, {"label": "I6", "color": "amber"}],
+  "order": 5
+}

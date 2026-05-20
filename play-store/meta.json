@@ -1,0 +1,9 @@
+{
+  "title": "Play Store Metrics",
+  "description": "Google Play Store performance — ratings, reviews, install funnel, store listing conversion. Benchmark vs fintech peers.",
+  "section": "analyses",
+  "icon": "🏪",
+  "accent": "#16A34A",
+  "badges": [{"label": "Android", "color": "green"}, {"label": "Analysis", "color": "blue"}],
+  "order": 6
+}

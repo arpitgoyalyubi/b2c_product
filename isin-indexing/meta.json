@@ -1,0 +1,9 @@
+{
+  "title": "ISIN Bond Directory — ASP-3439",
+  "description": "SEO mock for the ISIN-indexed bond directory — individual bond landing pages, breadcrumb structure, schema markup, and internal link architecture.",
+  "section": "prototypes",
+  "icon": "📑",
+  "accent": "#2563EB",
+  "badges": [{"label": "SEO", "color": "purple"}, {"label": "Mocks", "color": "blue"}],
+  "order": 4
+}

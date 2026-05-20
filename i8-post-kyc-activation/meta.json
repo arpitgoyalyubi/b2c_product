@@ -1,0 +1,9 @@
+{
+  "title": "Post-KYC Activation (I8)",
+  "description": "Mocks for the I8 post-KYC activation flow — nudge screens, first-investment prompt, persona-matched bond recommendations shown after KYC completion.",
+  "section": "prototypes",
+  "icon": "🚀",
+  "accent": "#7C3AED",
+  "badges": [{"label": "Prototype", "color": "purple"}, {"label": "I8", "color": "purple"}],
+  "order": 3
+}

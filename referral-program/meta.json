@@ -1,0 +1,9 @@
+{
+  "title": "Referral Program",
+  "description": "Mocks and specs for the Aspero referral program — referral invite flow, reward tracking dashboard, T&C screens, and share sheet design.",
+  "section": "prototypes",
+  "icon": "🎁",
+  "accent": "#16A34A",
+  "badges": [{"label": "Prototype", "color": "green"}, {"label": "Growth", "color": "green"}],
+  "order": 7
+}

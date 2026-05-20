@@ -1,0 +1,9 @@
+{
+  "title": "Support Ticket Analysis — Apr 2026",
+  "description": "Freshdesk ticket classification by root cause — KRA failures, bank link issues, liveness errors. Volume trends, top categories, recommended actions.",
+  "section": "analyses",
+  "icon": "🎫",
+  "accent": "#D97706",
+  "badges": [{"label": "Support", "color": "amber"}, {"label": "April 2026", "color": "amber"}],
+  "order": 5
+}
