@@ -89,56 +89,122 @@ tr:hover td { background:rgba(0,0,0,.02); }
 <div class="hdr">
   <div class="hdr-left">
     <h1>💳 Payment Health Report</h1>
-    <div class="sub">Aspero · Updated every 4 hours · Last run: 20 May 2026, 12:21 PM IST</div>
+    <div class="sub">Aspero · Updated every 4 hours · Last run: 20 May 2026, 12:43 PM IST</div>
   </div>
   <a class="back-link" href="https://arpitgoyalyubi.github.io/b2c_product/install-to-signup.html">← Install→Signup Report</a>
 </div>
 
 <div class="wrap-inner">
 
+<!-- VERDICT PANEL -->
+<div style="background:rgba(239,68,68,.06);border:1px solid #ef4444;
+  border-radius:10px;padding:18px 22px;margin-bottom:24px">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+    <span style="font-size:1.6rem;line-height:1">🔴</span>
+    <div style="flex:1">
+      <div style="font-size:1.05rem;font-weight:800;color:#ef4444">
+        Payment Health: NEEDS ATTENTION
+      </div>
+      <div style="font-size:.7rem;color:var(--text3);margin-top:3px">
+        1 critical issue · 1 warning · 53.0% of day elapsed · 20 May 2026, 12:43 PM IST
+      </div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px">
+    <div style="background:rgba(239,68,68,.06);border:1px solid #ef4444;border-radius:8px;padding:10px 14px"><div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#ef4444;margin-bottom:3px">🔴 Payment Gateway</div><div style="font-size:.75rem;color:var(--text2);line-height:1.5">Fail rate 44% (last 3d avg) — above 40% critical threshold</div></div><div style="background:rgba(5,150,105,.06);border:1px solid #059669;border-radius:8px;padding:10px 14px"><div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#059669;margin-bottom:3px">🟢 KYC Pipeline</div><div style="font-size:.75rem;color:var(--text2);line-height:1.5">Starters growing: ~211→~279/day — more payments incoming</div></div><div style="background:rgba(5,150,105,.06);border:1px solid #059669;border-radius:8px;padding:10px 14px"><div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#059669;margin-bottom:3px">🟢 Bond Demand</div><div style="font-size:.75rem;color:var(--text2);line-height:1.5">Views at 133.6% of 7d avg — on track</div></div><div style="background:rgba(239,68,68,.06);border:1px solid #ef4444;border-radius:8px;padding:10px 14px"><div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#ef4444;margin-bottom:3px">🔴 Persona Mix</div><div style="font-size:.75rem;color:var(--text2);line-height:1.5">P6 = 51% (ideal 25%), P1 = 17% — low ATV users dominating funnel</div></div>
+  </div>
+</div>
+
+<!-- ACTIVE ISSUES -->
+<div class="sec-title" style="margin-top:0">Active Issues</div>
+<div style="background:rgba(239,68,68,.08);border-left:3px solid #ef4444;
+  border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:10px">
+  <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
+    <span style="font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;
+      color:#ef4444;background:rgba(0,0,0,.08);padding:2px 6px;border-radius:3px">CRITICAL</span>
+    <span style="font-size:.85rem;font-weight:700;color:#ef4444">🔴 Payment fail rate critically high (above 40%)</span>
+  </div>
+  <div style="font-size:.78rem;color:var(--text2);line-height:1.6">Current fail rate 43.8% exceeds the 40% alert threshold. Review top error_reason below and raise with payment/engineering team.</div>
+  
+</div><div style="background:rgba(59,130,246,.08);border-left:3px solid #3b82f6;
+  border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:10px">
+  <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
+    <span style="font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;
+      color:#3b82f6;background:rgba(0,0,0,.08);padding:2px 6px;border-radius:3px">INFO</span>
+    <span style="font-size:.85rem;font-weight:700;color:#3b82f6">ℹ️ Top failure reason: '(none)' (46% of fails)</span>
+  </div>
+  <div style="font-size:.78rem;color:var(--text2);line-height:1.6">'(none)' accounts for 46% of payment failures in the last 7 days. Multiple failure modes present — investigate per-mode root causes.</div>
+  
+</div><div style="background:rgba(5,150,105,.08);border-left:3px solid #059669;
+  border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:10px">
+  <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
+    <span style="font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;
+      color:#059669;background:rgba(0,0,0,.08);padding:2px 6px;border-radius:3px">OK</span>
+    <span style="font-size:.85rem;font-weight:700;color:#059669">✅ KYC starters growing — payment volume should improve</span>
+  </div>
+  <div style="font-size:.78rem;color:var(--text2);line-height:1.6">KYC starters up from ~211/day to ~272/day. Payment volume should follow in 2–4 days.</div>
+  
+</div><div style="background:rgba(245,158,11,.08);border-left:3px solid #f59e0b;
+  border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:10px">
+  <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
+    <span style="font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;
+      color:#f59e0b;background:rgba(0,0,0,.08);padding:2px 6px;border-radius:3px">WARNING</span>
+    <span style="font-size:.85rem;font-weight:700;color:#f59e0b">🟡 Bond interest declining for top listings</span>
+  </div>
+  <div style="font-size:.78rem;color:var(--text2);line-height:1.6">Views have dropped >30% week-on-week for: 'AKARA CAPITAL ADVISORS PRIVATE LIMITED', 'SAMMAAN CAPITAL LIMITED', 'KEERTANA FINSERV PRIVATE LIMITED'. Consider refreshing homepage placement or push notification targeting these bonds.</div>
+  
+</div>
+
+<!-- SUPPORTING DATA DIVIDER -->
+<div style="border-top:2px dashed var(--border);margin:28px 0 24px;position:relative">
+  <span style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);
+    background:var(--surface);padding:0 12px;font-size:.65rem;font-weight:700;
+    text-transform:uppercase;letter-spacing:.12em;color:var(--text3)">Supporting Data</span>
+</div>
+
 <!-- ① TODAY'S RUN RATE -->
 <div class="sec-title">① Today's Run Rate — Projected Full Day vs 7-Day Benchmark</div>
 <div class="notice">
-  <strong>How to read:</strong> Today's partial count is annualised using 51.5% of day elapsed (IST).
-  Projected = partial ÷ 51.5%. Run-rate % = Projected ÷ 7-day daily average.
+  <strong>How to read:</strong> Today's partial count is annualised using 53.0% of day elapsed (IST).
+  Projected = partial ÷ 53.0%. Run-rate % = Projected ÷ 7-day daily average.
   🟢 ≥90% = on track · 🟡 70–89% = slightly below · 🔴 &lt;70% = investigate.
 </div>
 <div class="kpi-grid">
   <div class="kpi-card rose">
   <div class="kpi-label">Payment Initiated</div>
-  <div class="kpi-val">39</div>
-  <div class="kpi-wow down">▼ 62.9% of 7d avg</div>
-  <div class="kpi-sub">7d avg: 62 · 51.5% of day elapsed</div>
+  <div class="kpi-val">40</div>
+  <div class="kpi-wow down">▼ 64.5% of 7d avg</div>
+  <div class="kpi-sub">7d avg: 62 · 53.0% of day elapsed</div>
 </div>
   <div class="kpi-card rose">
   <div class="kpi-label">Payment Success</div>
   <div class="kpi-val">25</div>
   <div class="kpi-wow down">▼ 64.1% of 7d avg</div>
-  <div class="kpi-sub">7d avg: 39 · 51.5% of day elapsed</div>
+  <div class="kpi-sub">7d avg: 39 · 53.0% of day elapsed</div>
 </div>
   <div class="kpi-card rose">
   <div class="kpi-label">Payment Failed</div>
-  <div class="kpi-val">12</div>
-  <div class="kpi-wow down">▼ 44.4% of 7d avg</div>
-  <div class="kpi-sub">7d avg: 27 · 51.5% of day elapsed</div>
+  <div class="kpi-val">13</div>
+  <div class="kpi-wow down">▼ 48.1% of 7d avg</div>
+  <div class="kpi-sub">7d avg: 27 · 53.0% of day elapsed</div>
 </div>
   <div class="kpi-card yellow">
   <div class="kpi-label">KYC Starters</div>
-  <div class="kpi-val">214</div>
-  <div class="kpi-wow down">▼ 89.2% of 7d avg</div>
-  <div class="kpi-sub">7d avg: 240 · 51.5% of day elapsed</div>
+  <div class="kpi-val">209</div>
+  <div class="kpi-wow down">▼ 87.1% of 7d avg</div>
+  <div class="kpi-sub">7d avg: 240 · 53.0% of day elapsed</div>
 </div>
   <div class="kpi-card rose">
   <div class="kpi-label">KYC Done</div>
-  <div class="kpi-val">41</div>
-  <div class="kpi-wow down">▼ 58.6% of 7d avg</div>
-  <div class="kpi-sub">7d avg: 70 · 51.5% of day elapsed</div>
+  <div class="kpi-val">43</div>
+  <div class="kpi-wow down">▼ 61.4% of 7d avg</div>
+  <div class="kpi-sub">7d avg: 70 · 53.0% of day elapsed</div>
 </div>
   <div class="kpi-card green">
   <div class="kpi-label">Bond Detail Views</div>
-  <div class="kpi-val">1109</div>
-  <div class="kpi-wow up">▲ 130.9% of 7d avg</div>
-  <div class="kpi-sub">7d avg: 847 · 51.5% of day elapsed</div>
+  <div class="kpi-val">1132</div>
+  <div class="kpi-wow up">▲ 133.6% of 7d avg</div>
+  <div class="kpi-sub">7d avg: 847 · 53.0% of day elapsed</div>
 </div>
 </div>
 
@@ -215,12 +281,12 @@ tr:hover td { background:rgba(0,0,0,.02); }
   <td>897</td>
 </tr><tr style="background:rgba(59,130,246,.04);font-style:italic">
   <td class="tier-name">May 20 ← today</td>
-  <td>20</td>
-  <td>13 <span class="rate-dim">65.0%</span></td>
-  <td>6 <span class="warn">30.0%</span></td>
-  <td>110</td>
   <td>21</td>
-  <td>571</td>
+  <td>13 <span class="rate-dim">61.9%</span></td>
+  <td>7 <span class="warn">33.3%</span></td>
+  <td>111</td>
+  <td>23</td>
+  <td>600</td>
 </tr></tbody>
   </table>
 </div>
@@ -373,7 +439,7 @@ tr:hover td { background:rgba(0,0,0,.02); }
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Bond Name</th><th>7d Views</th><th>Today</th><th>Trend (wk)</th></tr></thead>
-        <tbody><tr><td class="tier-name">AKARA CAPITAL ADVISORS PRIVATE LIMITED</td><td style="text-align:right">4549</td><td style="text-align:right">165</td><td style="text-align:right"><span class="wow down">-30.2%</span></td></tr><tr><td class="tier-name">Adani Enterprises Limited</td><td style="text-align:right">1307</td><td style="text-align:right">78</td><td style="text-align:right"><span class="wow up">+25.7%</span></td></tr><tr><td class="tier-name">KEERTANA FINSERV PRIVATE LIMITED</td><td style="text-align:right">1031</td><td style="text-align:right">27</td><td style="text-align:right"><span class="wow down">-35.8%</span></td></tr><tr><td class="tier-name">SAMMAAN CAPITAL LIMITED</td><td style="text-align:right">786</td><td style="text-align:right">1</td><td style="text-align:right"><span class="wow down">-80.7%</span></td></tr><tr><td class="tier-name">RDC CONCRETEINDIA LIMITED</td><td style="text-align:right">728</td><td style="text-align:right">40</td><td style="text-align:right"><span class="wow down">-50.2%</span></td></tr><tr><td class="tier-name">NATIONAL HIGHWAYS INFRA TRUST</td><td style="text-align:right">642</td><td style="text-align:right">49</td><td style="text-align:right"><span class="wow up">+59.9%</span></td></tr><tr><td class="tier-name">Indel Money Limited</td><td style="text-align:right">509</td><td style="text-align:right">27</td><td style="text-align:right"><span class="wow down">-25.7%</span></td></tr><tr><td class="tier-name">MUFIN GREEN FINANCE LIMITED</td><td style="text-align:right">494</td><td style="text-align:right">124</td><td style="text-align:right"><span class="wow down">-71.4%</span></td></tr><tr><td class="tier-name">MONEYBOXX FINANCE LIMITED</td><td style="text-align:right">399</td><td style="text-align:right">31</td><td style="text-align:right"><span class="wow up">+7.8%</span></td></tr><tr><td class="tier-name">Kanakadurga Finance Limited</td><td style="text-align:right">380</td><td style="text-align:right">12</td><td style="text-align:right"><span class="wow up">+19.7%</span></td></tr></tbody>
+        <tbody><tr><td class="tier-name">AKARA CAPITAL ADVISORS PRIVATE LIMITED</td><td style="text-align:right">4549</td><td style="text-align:right">181</td><td style="text-align:right"><span class="wow down">-30.2%</span></td></tr><tr><td class="tier-name">Adani Enterprises Limited</td><td style="text-align:right">1307</td><td style="text-align:right">84</td><td style="text-align:right"><span class="wow up">+25.7%</span></td></tr><tr><td class="tier-name">KEERTANA FINSERV PRIVATE LIMITED</td><td style="text-align:right">1031</td><td style="text-align:right">30</td><td style="text-align:right"><span class="wow down">-35.8%</span></td></tr><tr><td class="tier-name">SAMMAAN CAPITAL LIMITED</td><td style="text-align:right">786</td><td style="text-align:right">1</td><td style="text-align:right"><span class="wow down">-80.7%</span></td></tr><tr><td class="tier-name">RDC CONCRETEINDIA LIMITED</td><td style="text-align:right">728</td><td style="text-align:right">43</td><td style="text-align:right"><span class="wow down">-50.2%</span></td></tr><tr><td class="tier-name">NATIONAL HIGHWAYS INFRA TRUST</td><td style="text-align:right">642</td><td style="text-align:right">51</td><td style="text-align:right"><span class="wow up">+59.9%</span></td></tr><tr><td class="tier-name">Indel Money Limited</td><td style="text-align:right">509</td><td style="text-align:right">33</td><td style="text-align:right"><span class="wow down">-25.7%</span></td></tr><tr><td class="tier-name">MUFIN GREEN FINANCE LIMITED</td><td style="text-align:right">494</td><td style="text-align:right">130</td><td style="text-align:right"><span class="wow down">-71.4%</span></td></tr><tr><td class="tier-name">MONEYBOXX FINANCE LIMITED</td><td style="text-align:right">399</td><td style="text-align:right">35</td><td style="text-align:right"><span class="wow up">+7.8%</span></td></tr><tr><td class="tier-name">Kanakadurga Finance Limited</td><td style="text-align:right">380</td><td style="text-align:right">13</td><td style="text-align:right"><span class="wow up">+19.7%</span></td></tr></tbody>
       </table>
     </div>
     <p style="font-size:.68rem;color:var(--text3);margin-top:8px">
@@ -391,72 +457,67 @@ tr:hover td { background:rgba(0,0,0,.02); }
   </div>
 </div>
 
-<!-- ⑥b PERSONA QUALITY AT KYC STARTED -->
-<div class="sec-title">⑥b Persona Quality at KYC Started — User Mix (Leading Indicator of Payment Quality)</div>
-<div class="notice">
-  <strong>Why this matters:</strong> P1 (Wealth Builder) + P4 (Business Investor) = high ATV, high conversion.
-  P6 (Young Aspirant, income ≤₹5L) = lower ATV, lower conviction. A shift toward P6 reduces payment volume
-  and GTV even if KYC numbers look stable. <strong>Ideal mix: P1=35% · P4=15% · P6=25% · P3=10%</strong>
+<!-- ⑥b PERSONA FUNNEL & PAYMENT IMPACT -->
+<div class="sec-title">⑥b Persona Funnel &amp; Payment Impact Analysis</div>
+
+<!-- Per-persona full funnel table -->
+<div class="tbl-wrap" style="margin-bottom:16px">
+  <table>
+    <thead>
+      <tr>
+        <th style="text-align:left">Persona</th>
+        <th>KYC Start<br><span style="font-weight:400">(7d)</span></th>
+        <th>KYC Done<br><span style="font-weight:400">(start→done%)</span></th>
+        <th>Payments<br><span style="font-weight:400">(7d)</span></th>
+        <th>Done→Pay%<br><span style="font-weight:400">conv rate</span></th>
+        <th>Converter<br><span style="font-weight:400">quality</span></th>
+        <th>KYC Start Trend<br><span style="font-weight:400">early wk → last 3d</span></th>
+      </tr>
+    </thead>
+    <tbody><tr><td><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#8b5cf6;margin-right:6px"></span><strong>P4 Business Investor</strong></td><td style="text-align:right">305</td><td style="text-align:right">0 <span class="dim">(0.0%)</span></td><td style="text-align:right">0</td><td style="text-align:right"><span class="bad">0.0%</span></td><td style="text-align:right"><span style="font-size:.68rem">🟢 High</span></td><td style="text-align:right"><span class="wow down">-22%</span><br><span class="dim" style="font-size:.68rem">43→45/day</span></td></tr><tr><td><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#3b82f6;margin-right:6px"></span><strong>P1 Wealth Builder</strong></td><td style="text-align:right">267</td><td style="text-align:right">0 <span class="dim">(0.0%)</span></td><td style="text-align:right">0</td><td style="text-align:right"><span class="bad">0.0%</span></td><td style="text-align:right"><span style="font-size:.68rem">🟢 High</span></td><td style="text-align:right"><span class="dim">-9%</span><br><span class="dim" style="font-size:.68rem">35→42/day</span></td></tr><tr><td><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#f59e0b;margin-right:6px"></span><strong>P6 Young Aspirant</strong></td><td style="text-align:right">783</td><td style="text-align:right">0 <span class="dim">(0.0%)</span></td><td style="text-align:right">0</td><td style="text-align:right"><span class="bad">0.0%</span></td><td style="text-align:right"><span style="font-size:.68rem">🔴 Low</span></td><td style="text-align:right"><span class="dim">+7%</span><br><span class="dim" style="font-size:.68rem">95→135/day</span></td></tr><tr><td><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#6b7280;margin-right:6px"></span><strong>P3 Cautious Saver</strong></td><td style="text-align:right">145</td><td style="text-align:right">0 <span class="dim">(0.0%)</span></td><td style="text-align:right">0</td><td style="text-align:right"><span class="bad">0.0%</span></td><td style="text-align:right"><span style="font-size:.68rem">🟡 Mid</span></td><td style="text-align:right"><span class="dim">+13%</span><br><span class="dim" style="font-size:.68rem">17→26/day</span></td></tr></tbody>
+  </table>
 </div>
+<p style="font-size:.68rem;color:var(--text3);margin-bottom:20px">
+  <strong>How to read:</strong> Done→Pay% = how many users who complete KYC then make a payment. High converters (P4, P1)
+  losing volume at KYC Start = fewer payments in 3–5 days. ⚠️ impact flag = declining high-converter acquisition.
+  KYC Start Trend = early week (D-7→D-4) daily avg → recent (D-3→D-1) daily avg.
+</p>
+
+<!-- Persona mix vs ideal (compact) -->
 <div class="two-col" style="align-items:start">
   <div>
     <div class="chart-card" style="margin-bottom:0">
       <h3>Current Week Persona Mix (KYC Starters)</h3>
       <p>Based on risk_occupation + risk_annual_income at RISK_PROFILING_SUBMITTED</p>
-      <div class="chart-wrap" style="height:240px">
+      <div class="chart-wrap" style="height:220px">
         <canvas id="personaDonut"></canvas>
       </div>
     </div>
   </div>
   <div>
-    <div class="sec-title" style="margin-top:0">Persona Mix: Current vs Previous 7d</div>
+    <div class="sec-title" style="margin-top:0">Mix vs Ideal + WoW</div>
     <div class="tbl-wrap">
       <table>
         <thead>
           <tr>
             <th style="text-align:left">Persona</th>
-            <th>Cur (count %)</th>
-            <th>Prev (count %)</th>
+            <th>Cur %</th>
             <th>WoW</th>
             <th>Ideal</th>
             <th>Gap</th>
           </tr>
         </thead>
-        <tbody><tr><td><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#3b82f6;margin-right:6px"></span><strong>P1 Wealth Builder</strong></td><td style="text-align:right">267 <span class="dim">(17.4%)</span></td><td style="text-align:right">258 <span class="dim">(20.6%)</span></td><td style="text-align:right"><span class="wow down">-3.2pp</span></td><td style="text-align:right"><span class="dim">35%</span></td><td style="text-align:right"><span class="bad">-17.6pp</span></td></tr><tr><td><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#8b5cf6;margin-right:6px"></span><strong>P4 Business Investor</strong></td><td style="text-align:right">305 <span class="dim">(19.9%)</span></td><td style="text-align:right">242 <span class="dim">(19.3%)</span></td><td style="text-align:right"><span class="wow up">+0.6pp</span></td><td style="text-align:right"><span class="dim">15%</span></td><td style="text-align:right"><span class="dim">+4.9pp</span></td></tr><tr><td><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#f59e0b;margin-right:6px"></span><strong>P6 Young Aspirant</strong></td><td style="text-align:right">783 <span class="dim">(51.1%)</span></td><td style="text-align:right">611 <span class="dim">(48.8%)</span></td><td style="text-align:right"><span class="wow up">+2.3pp</span></td><td style="text-align:right"><span class="dim">25%</span></td><td style="text-align:right"><span class="bad">+26.1pp</span></td></tr><tr><td><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#6b7280;margin-right:6px"></span><strong>P3 Cautious Saver</strong></td><td style="text-align:right">145 <span class="dim">(9.5%)</span></td><td style="text-align:right">106 <span class="dim">(8.5%)</span></td><td style="text-align:right"><span class="wow up">+1.0pp</span></td><td style="text-align:right"><span class="dim">10%</span></td><td style="text-align:right"><span class="dim">-0.5pp</span></td></tr><tr><td><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#d1d5db;margin-right:6px"></span><strong>Unknown</strong></td><td style="text-align:right">31 <span class="dim">(2.0%)</span></td><td style="text-align:right">34 <span class="dim">(2.7%)</span></td><td style="text-align:right"><span class="wow down">-0.7pp</span></td><td style="text-align:right"><span class="dim">—</span></td><td style="text-align:right"><span class="dim">—</span></td></tr></tbody>
+        <tbody><tr><td><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#3b82f6;margin-right:5px"></span><strong>P1 Wealth Builder</strong></td><td style="text-align:right">17.4%</td><td style="text-align:right"><span class="wow down">-3.2pp</span></td><td style="text-align:right"><span class="dim">35%</span></td><td style="text-align:right"><span class="bad">-17.6pp</span></td></tr><tr><td><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#8b5cf6;margin-right:5px"></span><strong>P4 Business Investor</strong></td><td style="text-align:right">19.9%</td><td style="text-align:right"><span class="wow up">+0.6pp</span></td><td style="text-align:right"><span class="dim">15%</span></td><td style="text-align:right"><span class="dim">+4.9pp</span></td></tr><tr><td><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#f59e0b;margin-right:5px"></span><strong>P6 Young Aspirant</strong></td><td style="text-align:right">51.1%</td><td style="text-align:right"><span class="wow up">+2.3pp</span></td><td style="text-align:right"><span class="dim">25%</span></td><td style="text-align:right"><span class="bad">+26.1pp</span></td></tr><tr><td><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#6b7280;margin-right:5px"></span><strong>P3 Cautious Saver</strong></td><td style="text-align:right">9.5%</td><td style="text-align:right"><span class="wow up">+1.0pp</span></td><td style="text-align:right"><span class="dim">10%</span></td><td style="text-align:right"><span class="dim">-0.5pp</span></td></tr><tr><td><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#d1d5db;margin-right:5px"></span><strong>Unknown</strong></td><td style="text-align:right">2.0%</td><td style="text-align:right"><span class="wow down">-0.7pp</span></td><td style="text-align:right"><span class="dim">—</span></td><td style="text-align:right"><span class="dim">—</span></td></tr></tbody>
       </table>
     </div>
-    <p style="font-size:.68rem;color:var(--text3);margin-top:8px">
-      Gap = current% minus ideal%. 🔴 ≥10pp off · 🟡 5–9pp off · grey = OK.<br>
-      P6 rising → expect lower payments &amp; GTV. P1/P4 rising → higher ATV, better payments.
+    <p style="font-size:.68rem;color:var(--text3);margin-top:6px">
+      🔴 ≥10pp off ideal · 🟡 5–9pp off · P1/P4 rising = better payments.
     </p>
   </div>
 </div>
 <br>
 
-<!-- ⑦ KEY FINDINGS & RECOMMENDATIONS -->
-<div class="sec-title">⑦ Key Findings &amp; Recommendations</div>
-
-<div style="background:rgba(239,68,68,.08);border-left:3px solid #ef4444;border-radius:0 8px 8px 0;
-  padding:12px 16px;margin-bottom:10px;">
-  <div style="font-size:.85rem;font-weight:700;color:#ef4444;margin-bottom:4px">🔴 Payment fail rate critically high (above 40%)</div>
-  <div style="font-size:.8rem;color:var(--text2);line-height:1.6">Current fail rate 43.8% exceeds the 40% alert threshold. Review top error_reason below and raise with payment/engineering team.</div>
-</div>
-<div style="background:rgba(59,130,246,.08);border-left:3px solid #3b82f6;border-radius:0 8px 8px 0;
-  padding:12px 16px;margin-bottom:10px;">
-  <div style="font-size:.85rem;font-weight:700;color:#3b82f6;margin-bottom:4px">ℹ️ Top failure reason: '(none)' (46% of fails)</div>
-  <div style="font-size:.8rem;color:var(--text2);line-height:1.6">'(none)' accounts for 46% of payment failures in the last 7 days. Multiple failure modes present — investigate per-mode root causes.</div>
-</div>
-<div style="background:rgba(5,150,105,.08);border-left:3px solid #059669;border-radius:0 8px 8px 0;
-  padding:12px 16px;margin-bottom:10px;">
-  <div style="font-size:.85rem;font-weight:700;color:#059669;margin-bottom:4px">✅ KYC starters growing — payment volume should improve</div>
-  <div style="font-size:.8rem;color:var(--text2);line-height:1.6">KYC starters up from ~211/day to ~272/day. Payment volume should follow in 2–4 days.</div>
-</div>
-<div style="background:rgba(245,158,11,.08);border-left:3px solid #f59e0b;border-radius:0 8px 8px 0;
-  padding:12px 16px;margin-bottom:10px;">
-  <div style="font-size:.85rem;font-weight:700;color:#f59e0b;margin-bottom:4px">🟡 Bond interest declining for top listings</div>
-  <div style="font-size:.8rem;color:var(--text2);line-height:1.6">Views have dropped >30% week-on-week for: 'AKARA CAPITAL ADVISORS PRIVATE LIMITED', 'SAMMAAN CAPITAL LIMITED', 'KEERTANA FINSERV PRIVATE LIMITED'. Consider refreshing homepage placement or push notification targeting these bonds.</div>
-</div>
-<p style="font-size:.68rem;color:var(--text3);margin-top:16px;margin-bottom:8px">
+<p style="font-size:.68rem;color:var(--text3);margin-top:8px;margin-bottom:8px">
   Auto-generated from live Amplitude data. Updates every 4 hours.
 </p>
 
@@ -473,9 +534,9 @@ tr:hover td { background:rgba(0,0,0,.02); }
     data: {
       labels,
       datasets: [
-        { label: 'Initiated',  data: [67, 54, 75, 55, 38, 73, 73, 20],  backgroundColor: 'rgba(59,130,246,.6)',  borderColor: '#3b82f6', borderWidth: 1 },
+        { label: 'Initiated',  data: [67, 54, 75, 55, 38, 73, 73, 21],  backgroundColor: 'rgba(59,130,246,.6)',  borderColor: '#3b82f6', borderWidth: 1 },
         { label: 'Success',    data: [48, 35, 44, 26, 29, 44, 46, 13],  backgroundColor: 'rgba(5,150,105,.6)',   borderColor: '#059669', borderWidth: 1 },
-        { label: 'Failed',     data: [20, 23, 36, 27, 12, 35, 34, 6],  backgroundColor: 'rgba(248,113,113,.6)', borderColor: '#f87171', borderWidth: 1 },
+        { label: 'Failed',     data: [20, 23, 36, 27, 12, 35, 34, 7],  backgroundColor: 'rgba(248,113,113,.6)', borderColor: '#f87171', borderWidth: 1 },
       ]
     },
     options: {
@@ -497,8 +558,8 @@ tr:hover td { background:rgba(0,0,0,.02); }
     data: {
       labels,
       datasets: [
-        { label: 'Fail Rate %',    data: [29.9, 42.6, 48.0, 49.1, 31.6, 47.9, 46.6, 30.0], borderColor: '#f87171', backgroundColor: 'rgba(248,113,113,.08)', tension: .3, fill: true, pointRadius: 4 },
-        { label: 'Success Rate %', data: [71.6, 64.8, 58.7, 47.3, 76.3, 60.3, 63.0, 65.0], borderColor: '#059669', backgroundColor: 'rgba(5,150,105,.08)',   tension: .3, fill: false, pointRadius: 4 },
+        { label: 'Fail Rate %',    data: [29.9, 42.6, 48.0, 49.1, 31.6, 47.9, 46.6, 33.3], borderColor: '#f87171', backgroundColor: 'rgba(248,113,113,.08)', tension: .3, fill: true, pointRadius: 4 },
+        { label: 'Success Rate %', data: [71.6, 64.8, 58.7, 47.3, 76.3, 60.3, 63.0, 61.9], borderColor: '#059669', backgroundColor: 'rgba(5,150,105,.08)',   tension: .3, fill: false, pointRadius: 4 },
       ]
     },
     options: {
@@ -548,9 +609,9 @@ tr:hover td { background:rgba(0,0,0,.02); }
     data: {
       labels,
       datasets: [
-        { label: 'Signups',      data: [443, 490, 534, 642, 727, 696, 779, 339],  borderColor: '#3b82f6', backgroundColor: 'transparent', tension: .3, pointRadius: 4, borderDash: [4,3] },
-        { label: 'KYC Starters', data: [188, 190, 213, 253, 282, 267, 287, 110], borderColor: '#8b5cf6', backgroundColor: 'rgba(139,92,246,.08)', tension: .3, fill: true, pointRadius: 4 },
-        { label: 'KYC Done',     data: [50, 57, 66, 71, 0, 155, 90, 21], borderColor: '#059669', backgroundColor: 'rgba(5,150,105,.08)',  tension: .3, fill: true, pointRadius: 4 },
+        { label: 'Signups',      data: [443, 490, 534, 642, 727, 696, 779, 351],  borderColor: '#3b82f6', backgroundColor: 'transparent', tension: .3, pointRadius: 4, borderDash: [4,3] },
+        { label: 'KYC Starters', data: [188, 190, 213, 253, 282, 267, 287, 111], borderColor: '#8b5cf6', backgroundColor: 'rgba(139,92,246,.08)', tension: .3, fill: true, pointRadius: 4 },
+        { label: 'KYC Done',     data: [50, 57, 66, 71, 0, 155, 90, 23], borderColor: '#059669', backgroundColor: 'rgba(5,150,105,.08)',  tension: .3, fill: true, pointRadius: 4 },
       ]
     },
     options: {
@@ -597,7 +658,7 @@ tr:hover td { background:rgba(0,0,0,.02); }
     type: 'bar',
     data: {
       labels,
-      datasets: [{ label: 'Bond Detail Views', data: [732, 891, 751, 866, 819, 974, 897, 571],
+      datasets: [{ label: 'Bond Detail Views', data: [732, 891, 751, 866, 819, 974, 897, 600],
         backgroundColor: 'rgba(139,92,246,.5)', borderColor: '#8b5cf6', borderWidth: 1 }]
     },
     options: {
