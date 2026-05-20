@@ -99,7 +99,7 @@ def collect_cards():
 
     # Root-level: foo.meta.json → foo.html
     for meta_file in sorted(REPO_ROOT.glob("*.meta.json")):
-        basename = meta_file.stem  # e.g. "weekly-review"
+        basename = meta_file.name.removesuffix('.meta.json')  # e.g. "weekly-review"
         href = f"{basename}.html"
         try:
             data = json.loads(meta_file.read_text())
