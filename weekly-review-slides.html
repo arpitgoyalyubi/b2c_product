@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2C Weekly Review — May 11 – 17, 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0d1117;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 16px 56px;
+  }
+
+  /* ── Fixed 16:9 deck ─────────────────────────────────── */
+  .deck-wrap {
+    width: min(100%, 1200px);
+    aspect-ratio: 16 / 9;
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 30px 90px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.06);
+  }
+  .deck { width: 100%; height: 100%; }
+  .slide {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+  }
+  .slide.active { display: flex; }
+
+  /* Header bar */
+  .slide-header {
+    background: var(--navy);
+    color: #fff;
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .slide-header h1 { font-size: 1.1rem; font-weight: 600; letter-spacing: .01em; }
+  .slide-header .meta { font-size: .72rem; opacity: .7; }
+
+  /* ── Cover slide ────────────────────────────────────── */
+  .cover {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 55%, #2563eb 100%);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+    padding: 32px 40px;
+    gap: 0;
+  }
+  .cover-eyebrow {
+    font-size: .68rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.45);
+    margin-bottom: 10px;
+  }
+  .cover h1 {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -.025em;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .cover-sub { font-size: .9rem; color: rgba(255,255,255,.6); margin-bottom: 20px; }
+  .cover-period {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 100px;
+    padding: 5px 18px;
+    font-size: .76rem;
+    color: rgba(255,255,255,.75);
+    margin-bottom: 32px;
+  }
+  .cover-metrics { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .cover-metric {
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 10px;
+    padding: 14px 20px;
+    text-align: left;
+    min-width: 130px;
+  }
+  .cover-metric .cm-label {
+    font-size: .63rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: rgba(255,255,255,.4);
+    margin-bottom: 5px;
+  }
+  .cover-metric .cm-val { font-size: 1.35rem; font-weight: 700; }
+  .cover-metric .cm-wow { font-size: .68rem; margin-top: 3px; }
+  .cm-wow.up   { color: #4ade80; }
+  .cm-wow.down { color: #f87171; }
+  .cm-wow.flat { color: rgba(255,255,255,.35); }
+
+  /* ── Two-column content slides ─────────────────────── */
+  .two-col { flex-direction: row; }
+
+  .left-panel {
+    width: 30%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 28px 22px 24px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .left-panel::before {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -80px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.05);
+    pointer-events: none;
+  }
+  .slide-num  { font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; opacity: .45; margin-bottom: 3px; }
+  .slide-ttl  { font-size: clamp(.9rem, 1.5vw, 1.1rem); font-weight: 700; line-height: 1.25; margin-bottom: 3px; }
+  .slide-sub  { font-size: .67rem; opacity: .55; margin-bottom: 20px; }
+
+  .hero-num {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -.03em;
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  .hero-lbl { font-size: .62rem; text-transform: uppercase; letter-spacing: .08em; opacity: .55; margin-bottom: 8px; }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: .72rem;
+    font-weight: 600;
+    border-radius: 100px;
+    padding: 3px 10px;
+    margin-bottom: 20px;
+  }
+  .hero-badge.up   { background: rgba(74,222,128,.22); color: #4ade80; }
+  .hero-badge.down { background: rgba(248,113,113,.22); color: #f87171; }
+  .hero-badge.flat { background: rgba(255,255,255,.1);  color: rgba(255,255,255,.55); }
+
+  .s4-cohort-bars { display: flex; flex-direction: column; gap: 5px; margin: 14px 0 8px; }
+  .s4-cohort-row  { display: flex; align-items: center; gap: 6px; }
+  .s4-cohort-lbl  { font-size: .57rem; color: rgba(255,255,255,.5); width: 66px; flex-shrink: 0; }
+  .s4-cohort-bwrap{ flex: 1; height: 5px; background: rgba(255,255,255,.13); border-radius: 3px; overflow: hidden; }
+  .s4-cohort-bfill{ height: 100%; border-radius: 3px; }
+  .s4-cohort-val  { font-size: .6rem; color: rgba(255,255,255,.8); width: 30px; text-align: right; flex-shrink: 0; }
+
+  /* ── Cohort Waterfall Table — Slide 4 right panel ─── */
+  .wf-table { flex: 1; display: flex; flex-direction: column; min-height: 0; justify-content: space-evenly; }
+  .wf-hdr   { display: grid; grid-template-columns: 80px 36px 1fr 44px 44px 44px 44px 44px;
+              gap: 0 4px; padding-bottom: 6px; border-bottom: 2px solid #e2e8f0; }
+  .wf-hc    { font-size: .58rem; font-weight: 700; color: #94a3b8; text-transform: uppercase;
+              letter-spacing: .06em; text-align: center; }
+  .wf-hc:first-child, .wf-hc:nth-child(2) { text-align: left; }
+  .wf-row   { display: grid; grid-template-columns: 80px 36px 1fr 44px 44px 44px 44px 44px;
+              gap: 0 4px; align-items: center; padding: 6px 0;
+              border-bottom: 1px solid #f1f5f9; }
+  .wf-lbl   { font-size: .65rem; font-weight: 700; color: #1e293b; }
+  .wf-rtt   { font-size: .6rem; color: #64748b; }
+  .wf-track { height: 13px; background: #f1f5f9; border-radius: 7px; overflow: hidden;
+              display: flex; }
+  .wf-seg   { height: 100%; }
+  .wf-v     { font-size: .62rem; font-weight: 600; text-align: center; }
+  .wf-v.na  { color: #cbd5e1; font-weight: 400; }
+  .wf-v.ok  { color: #0d9488; }
+
+  .stat-list { display: flex; flex-direction: column; gap: 0; margin-top: auto; }
+  .stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 9px 0;
+    border-top: 1px solid rgba(255,255,255,.1);
+  }
+  .si-lbl { font-size: .62rem; text-transform: uppercase; letter-spacing: .07em; opacity: .5; }
+  .si-val { font-size: .88rem; font-weight: 700; }
+
+  /* ── Right panel ────────────────────────────────────── */
+  .right-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    padding: 20px 24px 14px;
+    overflow: hidden;
+  }
+  .chart-area { flex: 1; position: relative; min-height: 0; }
+  .insight-row {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .ins-chip {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: .67rem;
+    color: #64748b;
+  }
+  .ins-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── Navigation bar (below deck) ───────────────────── */
+  .nav-bar {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .nav-btn {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.18);
+    color: #fff;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: .95rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,.2); }
+  .nav-btn:disabled { opacity: .25; cursor: default; }
+  .dots { display: flex; gap: 6px; align-items: center; }
+  .dot-btn {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: rgba(255,255,255,.28);
+    border: none; cursor: pointer; padding: 0;
+    transition: all .15s;
+  }
+  .dot-btn.active { background: #fff; transform: scale(1.35); }
+
+  /* ── SEO slide (Slide 08) — right-panel content only ─ */
+  .seo-2col {
+    flex: 1; min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .seo-panel {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px 14px 10px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .seo-panel-title { font-size: .78rem; font-weight: 700; color: #1e293b; }
+  .seo-panel-sub   { font-size: .58rem; color: #94a3b8; margin-bottom: 6px; margin-top: 1px; }
+  .seo-chart-wrap  { flex: 1; position: relative; min-height: 110px; overflow: hidden; margin-bottom: 8px; }
+  .seo-insights    { flex-shrink: 0; display: flex; flex-direction: column; gap: 4px;
+                     border-top: 1px solid #e2e8f0; padding-top: 7px; }
+  .seo-ins-row     { display: flex; align-items: flex-start; gap: 6px;
+                     font-size: .6rem; color: #475569; line-height: 1.35; }
+  .seo-ins-dot     { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+
+  /* ── Biometrics slide (Slide 09) ─────────────────────────── */
+  .bio-platform-row { flex-shrink: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .bio-platform-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;
+                       padding: 10px 12px; display: flex; flex-direction: column; gap: 5px; }
+  .bio-pc-title  { font-size: .78rem; font-weight: 700; color: #1e293b; padding-bottom: 5px;
+                   border-bottom: 1px solid #e2e8f0; }
+  .bio-pc-row    { display: flex; justify-content: space-between; align-items: baseline; }
+  .bio-pc-lbl    { font-size: .57rem; color: #64748b; }
+  .bio-pc-val    { font-size: .7rem; font-weight: 700; }
+  .bio-impact    { flex: 1; min-height: 0; display: flex; flex-direction: column;
+                   background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;
+                   padding: 10px 12px 8px; margin-top: 8px; }
+  .bio-impact-ttl { font-size: .68rem; font-weight: 700; color: #1e293b; }
+  .bio-impact-sub { font-size: .53rem; color: #94a3b8; margin: 1px 0 6px; }
+  .bio-impact-body { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 220px; gap: 12px; }
+  .bio-ret-wrap  { position: relative; min-height: 140px; overflow: hidden; }
+  .bio-forgot    { display: flex; flex-direction: column; justify-content: center; gap: 9px;
+                   border-left: 1px solid #e2e8f0; padding-left: 12px; }
+  .bio-forgot-ttl   { font-size: .62rem; font-weight: 700; color: #1e293b; }
+  .bio-forgot-sub   { font-size: .52rem; color: #94a3b8; margin-top: -5px; }
+  .bio-forgot-item  { display: flex; flex-direction: column; gap: 3px; }
+  .bio-forgot-lbl   { font-size: .54rem; color: #64748b; }
+  .bio-forgot-val   { font-size: .9rem; font-weight: 800; line-height: 1; }
+  .bio-forgot-track { height: 4px; background: #e2e8f0; border-radius: 2px; overflow: hidden; margin-top: 2px; }
+  .bio-forgot-fill  { height: 100%; border-radius: 2px; }
+  .bio-forgot-badge { display: inline-block; background: rgba(5,150,105,.12); color: #059669;
+                      font-size: .68rem; font-weight: 700; border-radius: 100px; padding: 2px 8px; width: fit-content; }
+  .bio-insights  { flex-shrink: 0; border-top: 1px solid #f1f5f9; padding-top: 6px;
+                   display: flex; flex-direction: column; gap: 3px; margin-top: 6px; }
+  .bio-ins-row   { display: flex; align-items: flex-start; gap: 7px;
+                   font-size: .6rem; color: #475569; line-height: 1.35; }
+  .bio-ins-dot   { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+
+  /* ── Slide 10 left-panel insight text (white on dark bg) */
+  #ins-s10 { border-top-color: rgba(255,255,255,0.2); }
+  #ins-s10 .ins-chip { color: rgba(255,255,255,0.82); }
+
+  /* ── Slide 10 support issue table ───────────────────── */
+  .s10-tbl    { width:100%; border-collapse:collapse; font-size:.68rem; }
+  .s10-tbl th { text-align:left; padding:4px 6px; color:#64748b; font-weight:600;
+                font-size:.58rem; letter-spacing:.06em; text-transform:uppercase;
+                border-bottom:2px solid #e2e8f0; white-space:nowrap; }
+  .s10-tbl td { padding:5px 6px; border-bottom:1px solid #f1f5f9; vertical-align:top; }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .deck-wrap { box-shadow: none; border-radius: 0; }
+    .nav-bar { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck-wrap">
+<div class="deck" id="deck">
+
+  <!-- Slide 0: Cover -->
+  <div class="slide cover active" id="s0">
+    <div class="cover-eyebrow">Aspero · B2C Analytics</div>
+    <h1>Weekly Business<br>Review</h1>
+    <div class="cover-sub">Funnel · KYC · Investments · GTV</div>
+    <div class="cover-period">May 11 – 17, 2026 &nbsp;·&nbsp; Generated May 21, 2026 · 19:40</div>
+    <div class="cover-metrics" id="cover-metrics"></div>
+  </div>
+
+  <!-- Slide 1: Signup Completion — Sky Blue -->
+  <div class="slide two-col" id="s1">
+    <div class="left-panel" style="background:linear-gradient(160deg,#1d4ed8,#3b82f6);">
+      <div class="slide-num">Slide 01</div>
+      <div class="slide-ttl">Signup Completion</div>
+      <div class="slide-sub">OTP started → PIN set</div>
+      <div class="hero-num" id="h1-val">—</div>
+      <div class="hero-lbl">Last week signups</div>
+      <div class="hero-badge flat" id="h1-delta">—</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">Prior week</span><span class="si-val" id="s1-last">—</span></div>
+        <div class="stat-item"><span class="si-lbl">7-Wk Average</span><span class="si-val" id="s1-avg">—</span></div>
+        <div class="stat-item"><span class="si-lbl">OTP→PIN Conv%</span><span class="si-val" id="s1-conv">—</span></div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div class="chart-area"><canvas id="chart-signups"></canvas></div>
+      <div class="insight-row" id="ins-s1"></div>
+    </div>
+  </div>
+
+<!-- Signin Dropout Slide A -->
+<div class="slide" id="s-dropout-s1" style="flex-direction:column;overflow-y:auto;">
+<div class="sdo-slide">
+<style>
+.sdo-slide { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+             background:#fff; padding:20px 28px 16px; box-sizing:border-box;
+             flex:1; display:flex; flex-direction:column; min-height:0; }
+.sdo-hdr   { margin-bottom:12px; flex-shrink:0; }
+.sdo-h2    { font-size:14px; font-weight:700; color:#111827; margin:0 0 3px; }
+.sdo-sub   { font-size:10.5px; color:#9ca3af; margin:0; }
+table.sdo  { width:100%; border-collapse:collapse; font-size:11.5px; flex:1; align-self:stretch; }
+table.sdo th { background:#f9fafb; color:#6b7280; font-weight:600;
+               padding:5px 8px; border-bottom:2px solid #e5e7eb;
+               text-align:center; font-size:10px; white-space:nowrap; }
+table.sdo th:first-child { text-align:left; min-width:190px; }
+table.sdo td { padding:4px 8px; border-bottom:1px solid #f3f4f6; vertical-align:middle; }
+.sdo-label  { font-size:11.5px; color:#374151; white-space:nowrap; }
+.sdo-wk     { text-align:center; color:#4b5563; white-space:nowrap; line-height:1.35; }
+.sdo-cur    { font-weight:700; color:#111827; }
+.sdo-n      { font-size:9px; color:#9ca3af; }
+.sdo-wow    { text-align:center; font-size:11px; white-space:nowrap; }
+.sdo-muted  { color:#9ca3af; text-align:center; }
+.sdo-spark  { text-align:center; padding:2px 6px; width:216px; min-width:216px; max-width:216px; }
+.sdo-step   td { background:#fff; }
+.sdo-intent td { background:#fafafa; }
+.sdo-intent .sdo-label { font-size:10.5px; color:#9ca3af; font-style:italic; }
+.sdo-intent .sdo-wk    { color:#9ca3af; }
+.sdo-intent .sdo-wow   { color:#9ca3af !important; font-weight:400 !important; }
+.sdo-drop   td { background:#fff7f7; }
+.sdo-drop .sdo-label   { color:#dc2626; font-weight:600; }
+.sdo-drop .sdo-wk      { color:#dc2626; font-weight:600; }
+.sdo-drop .sdo-cur     { color:#b91c1c; }
+.sdo-drop-dim td { background:#fafafa; }
+.sdo-drop-dim .sdo-label { color:#9ca3af; font-weight:400; font-style:italic; }
+.sdo-drop-dim .sdo-wk   { color:#9ca3af; font-weight:400; }
+.sdo-drop-dim .sdo-cur  { color:#6b7280; }
+.sdo-succ   td { background:#f0fdf4; }
+.sdo-succ .sdo-label   { color:#15803d; font-weight:700; }
+.sdo-succ .sdo-wk      { color:#15803d; font-weight:700; }
+.sdo-badge-new  { font-size:9px; font-weight:700; background:#f59e0b; color:#fff;
+                  border-radius:3px; padding:1px 5px; margin-left:5px; vertical-align:middle; }
+.sdo-badge-warn { font-size:10px; color:#dc2626; margin-left:4px; }
+.sdo-expand { font-size:9px; background:none; border:1px solid #d1d5db;
+              border-radius:3px; padding:1px 5px; margin-left:6px; cursor:pointer;
+              color:#6b7280; vertical-align:middle; line-height:1.4; }
+.sdo-expand:hover { background:#f3f4f6; }
+.sdo-insight { margin-top:10px; font-size:11px; color:#374151; background:#fffbeb;
+               border-left:3px solid #f59e0b; padding:8px 12px;
+               border-radius:0 4px 4px 0; line-height:1.6; flex-shrink:0; }
+</style>
+<script>
+function sdoToggle(g){
+  var rows=document.querySelectorAll('.sdo-det-'+g);
+  var btn=document.querySelector('[data-sdo="'+g+'"]');
+  var open=rows.length&&rows[0].style.display!=='none';
+  rows.forEach(function(r){r.style.display=open?'none':'';});
+  if(btn)btn.textContent=open?'▶':'▼';
+}
+</script>
+<div class="sdo-hdr">
+  <div class="sdo-h2">Stage 1 Dropout Waterfall &nbsp;·&nbsp; App Launch → OTP Success &nbsp;·&nbsp; Apr 20 – May 11</div>
+  <div class="sdo-sub">New users only &nbsp;·&nbsp; % of App Launch Screen &nbsp;·&nbsp; <b>hint rows</b> = estimated bounces from that segment as % of App Launch (same denominator as parent — additive portions of the bounce row; label = bounce rate within segment; iOS gap is unattributed) &nbsp;·&nbsp; bold = this week &nbsp;·&nbsp; click ▶ to expand</div>
+</div>
+<table class="sdo">
+  <thead><tr><th>Step / Drop</th><th>Apr 20</th><th>Apr 27</th><th>May 04</th><th>May 11</th><th>WoW</th><th>8-wk</th></tr></thead>
+  <tbody><tr class="sdo-step"><td class="sdo-label">App Launch Screen</td><td class="sdo-wk">100.0%<br><span class="sdo-n">9.5k</span></td><td class="sdo-wk">100.0%<br><span class="sdo-n">11.5k</span></td><td class="sdo-wk">100.0%<br><span class="sdo-n">17.7k</span></td><td class="sdo-wk sdo-cur">100.0%<br><span class="sdo-n">18.0k</span></td><td class="sdo-wow" style="color:#16a34a;font-weight:600;white-space:nowrap">+0.0pp</td><td class="sdo-spark" style="text-align:center;color:#d1d5db;font-size:16px;vertical-align:middle">—</td></tr><tr class="sdo-drop"><td class="sdo-label">⬇ Left before reaching signin <button class="sdo-expand" onclick="sdoToggle('s1pre')" data-sdo="s1pre">▶</button></td><td class="sdo-wk">−31.3%<br><span class="sdo-n">3.0k</span></td><td class="sdo-wk">−34.5%<br><span class="sdo-n">4.0k</span></td><td class="sdo-wk">−41.4%<br><span class="sdo-n">7.3k</span></td><td class="sdo-wk sdo-cur">−39.9%<br><span class="sdo-n">7.2k</span></td><td class="sdo-wow" style="color:#dc2626;font-weight:600;white-space:nowrap">−1.5pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">41%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">10%</text><polygon points="26.0,44 26.0,44.0 50.3,37.1 74.6,30.3 98.9,25.1 123.1,16.8 147.4,12.8 171.7,4.0 196.0,5.9 196.0,44" fill="#fef2f2"/><polyline points="26.0,44.0 50.3,37.1 74.6,30.3 98.9,25.1 123.1,16.8 147.4,12.8 171.7,4.0 196.0,5.9" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="5.9" r="2.5" fill="#ef4444"/><circle cx="26.0" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 9.9%</title></circle><circle cx="50.3" cy="37.1" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 15.3%</title></circle><circle cx="74.6" cy="30.3" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 20.7%</title></circle><circle cx="98.9" cy="25.1" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 24.8%</title></circle><circle cx="123.1" cy="16.8" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 31.3%</title></circle><circle cx="147.4" cy="12.8" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 34.5%</title></circle><circle cx="171.7" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>May 04: 41.4%</title></circle><circle cx="196.0" cy="5.9" r="7" fill="transparent" style="cursor:default"><title>May 11: 39.9%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-intent sdo-det-s1pre" style="display:none"><td class="sdo-label">↳ CTA Clicked <span class="sdo-badge-warn">▼</span></td><td class="sdo-wk">64.4%<br><span class="sdo-n">6.1k</span></td><td class="sdo-wk">61.4%<br><span class="sdo-n">7.1k</span></td><td class="sdo-wk">52.7%<br><span class="sdo-n">9.3k</span></td><td class="sdo-wk sdo-cur">47.7%<br><span class="sdo-n">8.6k</span></td><td class="sdo-wow" style="color:#dc2626;font-weight:600;white-space:nowrap">−5.0pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">80%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">48%</text><polygon points="26.0,44 26.0,4.0 50.3,5.9 74.6,15.1 98.9,16.5 123.1,23.3 147.4,27.0 171.7,37.8 196.0,44.0 196.0,44" fill="#eef2ff"/><polyline points="26.0,4.0 50.3,5.9 74.6,15.1 98.9,16.5 123.1,23.3 147.4,27.0 171.7,37.8 196.0,44.0" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="44.0" r="2.5" fill="#6366f1"/><circle cx="26.0" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 79.9%</title></circle><circle cx="50.3" cy="5.9" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 78.4%</title></circle><circle cx="74.6" cy="15.1" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 71.0%</title></circle><circle cx="98.9" cy="16.5" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 69.8%</title></circle><circle cx="123.1" cy="23.3" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 64.4%</title></circle><circle cx="147.4" cy="27.0" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 61.4%</title></circle><circle cx="171.7" cy="37.8" r="7" fill="transparent" style="cursor:default"><title>May 04: 52.7%</title></circle><circle cx="196.0" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>May 11: 47.7%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-intent sdo-det-s1pre" style="display:none"><td class="sdo-label">↳ Skip Clicked <span class="sdo-badge-new">NEW</span></td><td class="sdo-wk">0.0%<br><span class="sdo-n">0</span></td><td class="sdo-wk">0.0%<br><span class="sdo-n">1</span></td><td class="sdo-wk">0.0%<br><span class="sdo-n">0</span></td><td class="sdo-wk sdo-cur">7.9%<br><span class="sdo-n">1.4k</span></td><td class="sdo-wow" style="color:#16a34a;font-weight:600;white-space:nowrap">+7.9pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">8%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">0%</text><polygon points="26.0,44 26.0,44.0 50.3,44.0 74.6,44.0 98.9,44.0 123.1,44.0 147.4,44.0 171.7,44.0 196.0,4.0 196.0,44" fill="#fffbeb"/><polyline points="26.0,44.0 50.3,44.0 74.6,44.0 98.9,44.0 123.1,44.0 147.4,44.0 171.7,44.0 196.0,4.0" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="4.0" r="2.5" fill="#f59e0b"/><circle cx="26.0" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 0.0%</title></circle><circle cx="50.3" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 0.0%</title></circle><circle cx="74.6" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 0.0%</title></circle><circle cx="98.9" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 0.0%</title></circle><circle cx="123.1" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 0.0%</title></circle><circle cx="147.4" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 0.0%</title></circle><circle cx="171.7" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>May 04: 0.0%</title></circle><circle cx="196.0" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>May 11: 7.9%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-step"><td class="sdo-label">Signin Page View</td><td class="sdo-wk">68.7%<br><span class="sdo-n">6.6k</span></td><td class="sdo-wk">65.5%<br><span class="sdo-n">7.5k</span></td><td class="sdo-wk">58.6%<br><span class="sdo-n">10.4k</span></td><td class="sdo-wk sdo-cur">60.1%<br><span class="sdo-n">10.8k</span></td><td class="sdo-wow" style="color:#16a34a;font-weight:600;white-space:nowrap">+1.5pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">90%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">59%</text><polygon points="26.0,44 26.0,4.0 50.3,10.9 74.6,17.7 98.9,22.9 123.1,31.2 147.4,35.2 171.7,44.0 196.0,42.1 196.0,44" fill="#eef2ff"/><polyline points="26.0,4.0 50.3,10.9 74.6,17.7 98.9,22.9 123.1,31.2 147.4,35.2 171.7,44.0 196.0,42.1" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="42.1" r="2.5" fill="#6366f1"/><circle cx="26.0" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 90.1%</title></circle><circle cx="50.3" cy="10.9" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 84.7%</title></circle><circle cx="74.6" cy="17.7" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 79.3%</title></circle><circle cx="98.9" cy="22.9" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 75.2%</title></circle><circle cx="123.1" cy="31.2" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 68.7%</title></circle><circle cx="147.4" cy="35.2" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 65.5%</title></circle><circle cx="171.7" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>May 04: 58.6%</title></circle><circle cx="196.0" cy="42.1" r="7" fill="transparent" style="cursor:default"><title>May 11: 60.1%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-drop"><td class="sdo-label">⬇ Bounce on signin (no OTP) <button class="sdo-expand" onclick="sdoToggle('s1bnc')" data-sdo="s1bnc">▶</button></td><td class="sdo-wk">−24.0%<br><span class="sdo-n">2.3k</span></td><td class="sdo-wk">−24.4%<br><span class="sdo-n">2.8k</span></td><td class="sdo-wk">−21.5%<br><span class="sdo-n">3.8k</span></td><td class="sdo-wk sdo-cur">−23.1%<br><span class="sdo-n">4.1k</span></td><td class="sdo-wow" style="color:#16a34a;font-weight:600;white-space:nowrap">+1.6pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">24%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">21%</text><polygon points="26.0,44 26.0,32.4 50.3,44.0 74.6,16.9 98.9,7.9 123.1,9.2 147.4,4.0 171.7,41.4 196.0,20.8 196.0,44" fill="#fef2f2"/><polyline points="26.0,32.4 50.3,44.0 74.6,16.9 98.9,7.9 123.1,9.2 147.4,4.0 171.7,41.4 196.0,20.8" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="20.8" r="2.5" fill="#ef4444"/><circle cx="26.0" cy="32.4" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 22.2%</title></circle><circle cx="50.3" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 21.3%</title></circle><circle cx="74.6" cy="16.9" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 23.4%</title></circle><circle cx="98.9" cy="7.9" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 24.1%</title></circle><circle cx="123.1" cy="9.2" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 24.0%</title></circle><circle cx="147.4" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 24.4%</title></circle><circle cx="171.7" cy="41.4" r="7" fill="transparent" style="cursor:default"><title>May 04: 21.5%</title></circle><circle cx="196.0" cy="20.8" r="7" fill="transparent" style="cursor:default"><title>May 11: 23.1%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-intent sdo-det-s1bnc" style="display:none"><td class="sdo-label">↳ Hint Accepted — 1% of these bounce</td><td class="sdo-wk">0.2%<br><span class="sdo-n">1.8k</span></td><td class="sdo-wk">0.2%<br><span class="sdo-n">2.0k</span></td><td class="sdo-wk">0.2%<br><span class="sdo-n">4.1k</span></td><td class="sdo-wk sdo-cur">0.2%<br><span class="sdo-n">4.1k</span></td><td class="sdo-wow" style="color:#16a34a;font-weight:600;white-space:nowrap">+0.0pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">39%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">25%</text><polygon points="26.0,44 26.0,24.6 50.3,18.4 74.6,32.1 98.9,44.0 123.1,37.6 147.4,40.7 171.7,4.0 196.0,8.4 196.0,44" fill="#eef2ff"/><polyline points="26.0,24.6 50.3,18.4 74.6,32.1 98.9,44.0 123.1,37.6 147.4,40.7 171.7,4.0 196.0,8.4" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="8.4" r="2.5" fill="#6366f1"/><circle cx="26.0" cy="24.6" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 31.8%</title></circle><circle cx="50.3" cy="18.4" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 34.0%</title></circle><circle cx="74.6" cy="32.1" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 29.1%</title></circle><circle cx="98.9" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 24.8%</title></circle><circle cx="123.1" cy="37.6" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 27.1%</title></circle><circle cx="147.4" cy="40.7" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 26.0%</title></circle><circle cx="171.7" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>May 04: 39.2%</title></circle><circle cx="196.0" cy="8.4" r="7" fill="transparent" style="cursor:default"><title>May 11: 37.6%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-intent sdo-det-s1bnc" style="display:none"><td class="sdo-label">↳ Hint Declined — 50% of these bounce <span class="sdo-badge-warn">▼</span></td><td class="sdo-wk">2.8%<br><span class="sdo-n">530</span></td><td class="sdo-wk">2.9%<br><span class="sdo-n">674</span></td><td class="sdo-wk">10.1%<br><span class="sdo-n">3.6k</span></td><td class="sdo-wk sdo-cur">11.2%<br><span class="sdo-n">4.0k</span></td><td class="sdo-wow" style="color:#16a34a;font-weight:600;white-space:nowrap">+1.1pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">37%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">6%</text><polygon points="26.0,44 26.0,44.0 50.3,40.2 74.6,39.2 98.9,42.1 123.1,41.3 147.4,40.2 171.7,7.7 196.0,4.0 196.0,44" fill="#eef2ff"/><polyline points="26.0,44.0 50.3,40.2 74.6,39.2 98.9,42.1 123.1,41.3 147.4,40.2 171.7,7.7 196.0,4.0" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="4.0" r="2.5" fill="#6366f1"/><circle cx="26.0" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 6.0%</title></circle><circle cx="50.3" cy="40.2" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 9.0%</title></circle><circle cx="74.6" cy="39.2" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 9.8%</title></circle><circle cx="98.9" cy="42.1" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 7.5%</title></circle><circle cx="123.1" cy="41.3" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 8.1%</title></circle><circle cx="147.4" cy="40.2" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 9.0%</title></circle><circle cx="171.7" cy="7.7" r="7" fill="transparent" style="cursor:default"><title>May 04: 34.5%</title></circle><circle cx="196.0" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>May 11: 37.4%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-intent sdo-det-s1bnc" style="display:none"><td class="sdo-label">↳ No hint (Android) — 48% of these bounce</td><td class="sdo-wk">12.8%<br><span class="sdo-n">2.6k</span></td><td class="sdo-wk">12.6%<br><span class="sdo-n">3.0k</span></td><td class="sdo-wk">8.0%<br><span class="sdo-n">2.9k</span></td><td class="sdo-wk sdo-cur">8.1%<br><span class="sdo-n">3.0k</span></td><td class="sdo-wow" style="color:#16a34a;font-weight:600;white-space:nowrap">+0.1pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">43%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">28%</text><polygon points="26.0,44 26.0,22.6 50.3,4.0 74.6,18.3 98.9,12.6 123.1,15.1 147.4,11.8 171.7,43.7 196.0,44.0 196.0,44" fill="#eef2ff"/><polyline points="26.0,22.6 50.3,4.0 74.6,18.3 98.9,12.6 123.1,15.1 147.4,11.8 171.7,43.7 196.0,44.0" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="44.0" r="2.5" fill="#6366f1"/><circle cx="26.0" cy="22.6" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 36.1%</title></circle><circle cx="50.3" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 43.0%</title></circle><circle cx="74.6" cy="18.3" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 37.7%</title></circle><circle cx="98.9" cy="12.6" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 39.8%</title></circle><circle cx="123.1" cy="15.1" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 38.9%</title></circle><circle cx="147.4" cy="11.8" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 40.1%</title></circle><circle cx="171.7" cy="43.7" r="7" fill="transparent" style="cursor:default"><title>May 04: 28.3%</title></circle><circle cx="196.0" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>May 11: 28.2%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-intent sdo-det-s1bnc" style="display:none"><td class="sdo-label">↳ iOS / unattributed (no hint events fired)</td><td class="sdo-wk">8.2%<br><span class="sdo-n">785</span></td><td class="sdo-wk">8.7%<br><span class="sdo-n">1.0k</span></td><td class="sdo-wk">3.2%<br><span class="sdo-n">557</span></td><td class="sdo-wk sdo-cur">3.6%<br><span class="sdo-n">624</span></td><td class="sdo-wow" style="color:#16a34a;font-weight:600;white-space:nowrap">+0.4pp</td><td class="sdo-spark" style="text-align:center;color:#d1d5db;font-size:16px;vertical-align:middle">—</td></tr><tr class="sdo-step"><td class="sdo-label">OTP Dispatched</td><td class="sdo-wk">44.7%<br><span class="sdo-n">4.3k</span></td><td class="sdo-wk">41.0%<br><span class="sdo-n">4.7k</span></td><td class="sdo-wk">37.2%<br><span class="sdo-n">6.6k</span></td><td class="sdo-wk sdo-cur">37.0%<br><span class="sdo-n">6.7k</span></td><td class="sdo-wow" style="color:#dc2626;font-weight:600;white-space:nowrap">−0.2pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">68%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">37%</text><polygon points="26.0,44 26.0,4.0 50.3,9.8 74.6,19.5 98.9,25.6 123.1,34.0 147.4,38.8 171.7,43.7 196.0,44.0 196.0,44" fill="#eef2ff"/><polyline points="26.0,4.0 50.3,9.8 74.6,19.5 98.9,25.6 123.1,34.0 147.4,38.8 171.7,43.7 196.0,44.0" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="44.0" r="2.5" fill="#6366f1"/><circle cx="26.0" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 67.9%</title></circle><circle cx="50.3" cy="9.8" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 63.4%</title></circle><circle cx="74.6" cy="19.5" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 55.9%</title></circle><circle cx="98.9" cy="25.6" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 51.2%</title></circle><circle cx="123.1" cy="34.0" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 44.7%</title></circle><circle cx="147.4" cy="38.8" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 41.0%</title></circle><circle cx="171.7" cy="43.7" r="7" fill="transparent" style="cursor:default"><title>May 04: 37.2%</title></circle><circle cx="196.0" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>May 11: 37.0%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-drop"><td class="sdo-label">⬇ Post-dispatch drops</td><td class="sdo-wk">−2.0%<br><span class="sdo-n">188</span></td><td class="sdo-wk">−2.8%<br><span class="sdo-n">321</span></td><td class="sdo-wk">−1.9%<br><span class="sdo-n">329</span></td><td class="sdo-wk sdo-cur">−2.0%<br><span class="sdo-n">351</span></td><td class="sdo-wow" style="color:#16a34a;font-weight:600;white-space:nowrap">+0.1pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">7%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">2%</text><polygon points="26.0,44 26.0,39.7 50.3,14.2 74.6,4.0 98.9,44.0 123.1,43.1 147.4,36.3 171.7,44.0 196.0,43.1 196.0,44" fill="#fef2f2"/><polyline points="26.0,39.7 50.3,14.2 74.6,4.0 98.9,44.0 123.1,43.1 147.4,36.3 171.7,44.0 196.0,43.1" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="43.1" r="2.5" fill="#ef4444"/><circle cx="26.0" cy="39.7" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 2.4%</title></circle><circle cx="50.3" cy="14.2" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 5.4%</title></circle><circle cx="74.6" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 6.6%</title></circle><circle cx="98.9" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 1.9%</title></circle><circle cx="123.1" cy="43.1" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 2.0%</title></circle><circle cx="147.4" cy="36.3" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 2.8%</title></circle><circle cx="171.7" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>May 04: 1.9%</title></circle><circle cx="196.0" cy="43.1" r="7" fill="transparent" style="cursor:default"><title>May 11: 2.0%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-succ"><td class="sdo-label">✓ OTP Success</td><td class="sdo-wk">42.7%<br><span class="sdo-n">4.1k</span></td><td class="sdo-wk">38.3%<br><span class="sdo-n">4.4k</span></td><td class="sdo-wk">35.3%<br><span class="sdo-n">6.2k</span></td><td class="sdo-wk sdo-cur">35.0%<br><span class="sdo-n">6.3k</span></td><td class="sdo-wow" style="color:#dc2626;font-weight:600;white-space:nowrap">−0.3pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">65%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">35%</text><polygon points="26.0,44 26.0,4.0 50.3,13.9 74.6,25.2 98.9,25.2 123.1,33.9 147.4,39.7 171.7,43.6 196.0,44.0 196.0,44" fill="#eef2ff"/><polyline points="26.0,4.0 50.3,13.9 74.6,25.2 98.9,25.2 123.1,33.9 147.4,39.7 171.7,43.6 196.0,44.0" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="44.0" r="2.5" fill="#6366f1"/><circle cx="26.0" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 65.4%</title></circle><circle cx="50.3" cy="13.9" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 57.9%</title></circle><circle cx="74.6" cy="25.2" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 49.3%</title></circle><circle cx="98.9" cy="25.2" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 49.3%</title></circle><circle cx="123.1" cy="33.9" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 42.7%</title></circle><circle cx="147.4" cy="39.7" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 38.3%</title></circle><circle cx="171.7" cy="43.6" r="7" fill="transparent" style="cursor:default"><title>May 04: 35.3%</title></circle><circle cx="196.0" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>May 11: 35.0%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr></tbody>
+</table>
+<div class="sdo-insight"><b>CTA click rate fell 16.7pp</b> over 4 weeks (64.4% → 47.7%) — biggest structural drop in Stage 1. <b>Skip button appeared May 11</b> (7.9% using it) — monitor whether skippers convert at lower rates. Once OTP dispatched, <b>95%+ complete</b>. True end-to-end: launch → OTP success = <b>35.0%</b> this week. <b>Bounce insight:</b> hint-declined users bounce at <b>50%</b> vs <b>1%</b> for hint-accepted — keyboard doesn't auto-open after dismissal. iOS bounce is not attributed to any hint row (iOS doesn't fire hint events).</div>
+</div>
+</div>
+
+<!-- Signin Dropout Slide B -->
+<div class="slide" id="s-dropout-s2" style="flex-direction:column;overflow-y:auto;">
+<div class="sdo-slide">
+<div class="sdo-hdr">
+  <div class="sdo-h2">Stage 2 Dropout Waterfall &nbsp;·&nbsp; Email Page → Email Verified &nbsp;·&nbsp; Apr 20 – May 11</div>
+  <div class="sdo-sub">New users only &nbsp;·&nbsp; % of Email Page View &nbsp;·&nbsp; bold = this week &nbsp;·&nbsp; click ▶ to expand detail rows</div>
+</div>
+<table class="sdo">
+  <thead><tr><th>Step / Drop</th><th>Apr 20</th><th>Apr 27</th><th>May 04</th><th>May 11</th><th>WoW</th><th>8-wk</th></tr></thead>
+  <tbody><tr class="sdo-step"><td class="sdo-label">Email Page View</td><td class="sdo-wk">100.0%<br><span class="sdo-n">3.9k</span></td><td class="sdo-wk">100.0%<br><span class="sdo-n">4.3k</span></td><td class="sdo-wk">100.0%<br><span class="sdo-n">5.4k</span></td><td class="sdo-wk sdo-cur">100.0%<br><span class="sdo-n">5.7k</span></td><td class="sdo-wow" style="color:#16a34a;font-weight:600;white-space:nowrap">+0.0pp</td><td class="sdo-spark" style="text-align:center;color:#d1d5db;font-size:16px;vertical-align:middle">—</td></tr><tr class="sdo-drop"><td class="sdo-label">⬇ Left without trying <button class="sdo-expand" onclick="sdoToggle('s2notry')" data-sdo="s2notry">▶</button></td><td class="sdo-wk">−1.4%<br><span class="sdo-n">54</span></td><td class="sdo-wk">0.0%<br><span class="sdo-n">0</span></td><td class="sdo-wk">−5.5%<br><span class="sdo-n">300</span></td><td class="sdo-wk sdo-cur">−6.4%<br><span class="sdo-n">363</span></td><td class="sdo-wow" style="color:#16a34a;font-weight:600;white-space:nowrap">+0.9pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">6%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">0%</text><polygon points="26.0,44 26.0,44.0 50.3,44.0 74.6,44.0 98.9,38.4 123.1,35.2 147.4,44.0 171.7,9.6 196.0,4.0 196.0,44" fill="#fef2f2"/><polyline points="26.0,44.0 50.3,44.0 74.6,44.0 98.9,38.4 123.1,35.2 147.4,44.0 171.7,9.6 196.0,4.0" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="4.0" r="2.5" fill="#ef4444"/><circle cx="26.0" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 0.0%</title></circle><circle cx="50.3" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 0.0%</title></circle><circle cx="74.6" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 0.0%</title></circle><circle cx="98.9" cy="38.4" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 0.9%</title></circle><circle cx="123.1" cy="35.2" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 1.4%</title></circle><circle cx="147.4" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 0.0%</title></circle><circle cx="171.7" cy="9.6" r="7" fill="transparent" style="cursor:default"><title>May 04: 5.5%</title></circle><circle cx="196.0" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>May 11: 6.4%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-intent sdo-det-s2notry" style="display:none"><td class="sdo-label">↳ SSO Click %</td><td class="sdo-wk">50.8%<br><span class="sdo-n">2.0k</span></td><td class="sdo-wk">49.6%<br><span class="sdo-n">2.1k</span></td><td class="sdo-wk">57.8%<br><span class="sdo-n">3.1k</span></td><td class="sdo-wk sdo-cur">56.2%<br><span class="sdo-n">3.2k</span></td><td class="sdo-wow" style="color:#dc2626;font-weight:600;white-space:nowrap">−1.6pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">58%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">46%</text><polygon points="26.0,44 26.0,44.0 50.3,21.2 74.6,27.5 98.9,38.4 123.1,28.6 147.4,32.8 171.7,4.0 196.0,9.6 196.0,44" fill="#eef2ff"/><polyline points="26.0,44.0 50.3,21.2 74.6,27.5 98.9,38.4 123.1,28.6 147.4,32.8 171.7,4.0 196.0,9.6" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="9.6" r="2.5" fill="#6366f1"/><circle cx="26.0" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 46.4%</title></circle><circle cx="50.3" cy="21.2" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 52.9%</title></circle><circle cx="74.6" cy="27.5" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 51.1%</title></circle><circle cx="98.9" cy="38.4" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 48.0%</title></circle><circle cx="123.1" cy="28.6" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 50.8%</title></circle><circle cx="147.4" cy="32.8" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 49.6%</title></circle><circle cx="171.7" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>May 04: 57.8%</title></circle><circle cx="196.0" cy="9.6" r="7" fill="transparent" style="cursor:default"><title>May 11: 56.2%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-intent sdo-det-s2notry" style="display:none"><td class="sdo-label">↳ OTP Verify Click %</td><td class="sdo-wk">47.9%<br><span class="sdo-n">1.9k</span></td><td class="sdo-wk">50.5%<br><span class="sdo-n">2.2k</span></td><td class="sdo-wk">36.6%<br><span class="sdo-n">2.0k</span></td><td class="sdo-wk sdo-cur">37.4%<br><span class="sdo-n">2.1k</span></td><td class="sdo-wow" style="color:#16a34a;font-weight:600;white-space:nowrap">+0.8pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">58%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">37%</text><polygon points="26.0,44 26.0,4.0 50.3,12.5 74.6,12.3 98.9,16.6 123.1,22.7 147.4,17.8 171.7,44.0 196.0,42.5 196.0,44" fill="#eef2ff"/><polyline points="26.0,4.0 50.3,12.5 74.6,12.3 98.9,16.6 123.1,22.7 147.4,17.8 171.7,44.0 196.0,42.5" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="42.5" r="2.5" fill="#6366f1"/><circle cx="26.0" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 57.8%</title></circle><circle cx="50.3" cy="12.5" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 53.3%</title></circle><circle cx="74.6" cy="12.3" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 53.4%</title></circle><circle cx="98.9" cy="16.6" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 51.1%</title></circle><circle cx="123.1" cy="22.7" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 47.9%</title></circle><circle cx="147.4" cy="17.8" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 50.5%</title></circle><circle cx="171.7" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>May 04: 36.6%</title></circle><circle cx="196.0" cy="42.5" r="7" fill="transparent" style="cursor:default"><title>May 11: 37.4%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-drop"><td class="sdo-label">⬇ Verification failed <button class="sdo-expand" onclick="sdoToggle('s2fail')" data-sdo="s2fail">▶</button></td><td class="sdo-wk">−20.9%<br><span class="sdo-n">824</span></td><td class="sdo-wk">−21.2%<br><span class="sdo-n">906</span></td><td class="sdo-wk">−20.8%<br><span class="sdo-n">1.1k</span></td><td class="sdo-wk sdo-cur">−20.9%<br><span class="sdo-n">1.2k</span></td><td class="sdo-wow" style="color:#16a34a;font-weight:600;white-space:nowrap">+0.1pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">32%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">21%</text><polygon points="26.0,44 26.0,41.4 50.3,4.0 74.6,13.9 98.9,39.2 123.1,43.6 147.4,42.5 171.7,44.0 196.0,43.6 196.0,44" fill="#fef2f2"/><polyline points="26.0,41.4 50.3,4.0 74.6,13.9 98.9,39.2 123.1,43.6 147.4,42.5 171.7,44.0 196.0,43.6" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="43.6" r="2.5" fill="#ef4444"/><circle cx="26.0" cy="41.4" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 21.5%</title></circle><circle cx="50.3" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 31.7%</title></circle><circle cx="74.6" cy="13.9" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 29.0%</title></circle><circle cx="98.9" cy="39.2" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 22.1%</title></circle><circle cx="123.1" cy="43.6" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 20.9%</title></circle><circle cx="147.4" cy="42.5" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 21.2%</title></circle><circle cx="171.7" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>May 04: 20.8%</title></circle><circle cx="196.0" cy="43.6" r="7" fill="transparent" style="cursor:default"><title>May 11: 20.9%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-drop sdo-det-s2fail" style="display:none"><td class="sdo-label">↳ SSO Abandon</td><td class="sdo-wk">−5.4%<br><span class="sdo-n">212</span></td><td class="sdo-wk">−5.5%<br><span class="sdo-n">234</span></td><td class="sdo-wk">−7.2%<br><span class="sdo-n">390</span></td><td class="sdo-wk sdo-cur">−6.4%<br><span class="sdo-n">364</span></td><td class="sdo-wow" style="color:#dc2626;font-weight:600;white-space:nowrap">−0.8pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">10%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">5%</text><polygon points="26.0,44 26.0,43.2 50.3,10.3 74.6,4.0 98.9,44.0 123.1,43.2 147.4,42.4 171.7,29.1 196.0,35.4 196.0,44" fill="#fef2f2"/><polyline points="26.0,43.2 50.3,10.3 74.6,4.0 98.9,44.0 123.1,43.2 147.4,42.4 171.7,29.1 196.0,35.4" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="35.4" r="2.5" fill="#ef4444"/><circle cx="26.0" cy="43.2" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 5.4%</title></circle><circle cx="50.3" cy="10.3" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 9.6%</title></circle><circle cx="74.6" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 10.4%</title></circle><circle cx="98.9" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 5.3%</title></circle><circle cx="123.1" cy="43.2" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 5.4%</title></circle><circle cx="147.4" cy="42.4" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 5.5%</title></circle><circle cx="171.7" cy="29.1" r="7" fill="transparent" style="cursor:default"><title>May 04: 7.2%</title></circle><circle cx="196.0" cy="35.4" r="7" fill="transparent" style="cursor:default"><title>May 11: 6.4%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-drop sdo-det-s2fail" style="display:none"><td class="sdo-label">↳ OTP Not Entered</td><td class="sdo-wk">−9.8%<br><span class="sdo-n">387</span></td><td class="sdo-wk">−9.4%<br><span class="sdo-n">403</span></td><td class="sdo-wk">−7.7%<br><span class="sdo-n">419</span></td><td class="sdo-wk sdo-cur">−8.3%<br><span class="sdo-n">471</span></td><td class="sdo-wow" style="color:#16a34a;font-weight:600;white-space:nowrap">+0.6pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">13%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">8%</text><polygon points="26.0,44 26.0,33.2 50.3,13.2 74.6,4.0 98.9,20.9 123.1,27.8 147.4,30.9 171.7,44.0 196.0,39.4 196.0,44" fill="#fef2f2"/><polyline points="26.0,33.2 50.3,13.2 74.6,4.0 98.9,20.9 123.1,27.8 147.4,30.9 171.7,44.0 196.0,39.4" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="39.4" r="2.5" fill="#ef4444"/><circle cx="26.0" cy="33.2" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 9.1%</title></circle><circle cx="50.3" cy="13.2" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 11.7%</title></circle><circle cx="74.6" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 12.9%</title></circle><circle cx="98.9" cy="20.9" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 10.7%</title></circle><circle cx="123.1" cy="27.8" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 9.8%</title></circle><circle cx="147.4" cy="30.9" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 9.4%</title></circle><circle cx="171.7" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>May 04: 7.7%</title></circle><circle cx="196.0" cy="39.4" r="7" fill="transparent" style="cursor:default"><title>May 11: 8.3%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-drop sdo-det-s2fail" style="display:none"><td class="sdo-label">↳ Wrong / expired OTP</td><td class="sdo-wk">−5.7%<br><span class="sdo-n">225</span></td><td class="sdo-wk">−6.3%<br><span class="sdo-n">269</span></td><td class="sdo-wk">−5.9%<br><span class="sdo-n">318</span></td><td class="sdo-wk sdo-cur">−6.2%<br><span class="sdo-n">349</span></td><td class="sdo-wow" style="color:#16a34a;font-weight:600;white-space:nowrap">+0.3pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">10%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">6%</text><polygon points="26.0,44 26.0,32.1 50.3,4.0 74.6,44.0 98.9,39.7 123.1,44.0 147.4,38.9 171.7,42.3 196.0,39.7 196.0,44" fill="#fef2f2"/><polyline points="26.0,32.1 50.3,4.0 74.6,44.0 98.9,39.7 123.1,44.0 147.4,38.9 171.7,42.3 196.0,39.7" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="39.7" r="2.5" fill="#ef4444"/><circle cx="26.0" cy="32.1" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 7.1%</title></circle><circle cx="50.3" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 10.4%</title></circle><circle cx="74.6" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 5.7%</title></circle><circle cx="98.9" cy="39.7" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 6.2%</title></circle><circle cx="123.1" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 5.7%</title></circle><circle cx="147.4" cy="38.9" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 6.3%</title></circle><circle cx="171.7" cy="42.3" r="7" fill="transparent" style="cursor:default"><title>May 04: 5.9%</title></circle><circle cx="196.0" cy="39.7" r="7" fill="transparent" style="cursor:default"><title>May 11: 6.2%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-succ"><td class="sdo-label">✓ Email Verified</td><td class="sdo-wk">77.7%<br><span class="sdo-n">3.1k</span></td><td class="sdo-wk">78.9%<br><span class="sdo-n">3.4k</span></td><td class="sdo-wk">73.6%<br><span class="sdo-n">4.0k</span></td><td class="sdo-wk sdo-cur">72.7%<br><span class="sdo-n">4.1k</span></td><td class="sdo-wow" style="color:#dc2626;font-weight:600;white-space:nowrap">−0.9pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">83%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">73%</text><polygon points="26.0,44 26.0,4.0 50.3,36.3 74.6,32.7 98.9,26.6 123.1,23.8 147.4,18.9 171.7,40.4 196.0,44.0 196.0,44" fill="#eef2ff"/><polyline points="26.0,4.0 50.3,36.3 74.6,32.7 98.9,26.6 123.1,23.8 147.4,18.9 171.7,40.4 196.0,44.0" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="44.0" r="2.5" fill="#6366f1"/><circle cx="26.0" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 82.6%</title></circle><circle cx="50.3" cy="36.3" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 74.6%</title></circle><circle cx="74.6" cy="32.7" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 75.5%</title></circle><circle cx="98.9" cy="26.6" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 77.0%</title></circle><circle cx="123.1" cy="23.8" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 77.7%</title></circle><circle cx="147.4" cy="18.9" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 78.9%</title></circle><circle cx="171.7" cy="40.4" r="7" fill="transparent" style="cursor:default"><title>May 04: 73.6%</title></circle><circle cx="196.0" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>May 11: 72.7%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr></tbody>
+</table>
+<div class="sdo-insight"><b>Verification failed = 20.9%</b> of Email Page views — biggest single leak. Of those who tried: SSO completes <b>89%</b> of clickers vs OTP <b>61%</b> — SSO is 27pp more effective. Biggest fixable fail: <b>OTP not entered (8.3%)</b> — clicked verify but never typed code. Combined verification rate this week: <b>72.7%</b>.</div>
+</div>
+</div>
+
+<!-- Signin Dropout Slide C -->
+<div class="slide" id="s-dropout-s3" style="flex-direction:column;overflow-y:auto;">
+<div class="sdo-slide">
+<div class="sdo-hdr">
+  <div class="sdo-h2">Stage 3 Dropout Waterfall &nbsp;·&nbsp; Email Verified → PIN Setup &nbsp;·&nbsp; Apr 20 – May 11</div>
+  <div class="sdo-sub">New users only &nbsp;·&nbsp; % of Email Verified &nbsp;·&nbsp; bold = last week &nbsp;·&nbsp; click ▶ to expand submit-fail detail</div>
+</div>
+<table class="sdo">
+  <thead><tr><th>Step / Drop</th><th>Apr 20</th><th>Apr 27</th><th>May 04</th><th>May 11</th><th>WoW</th><th>8-wk</th></tr></thead>
+  <tbody><tr class="sdo-step"><td class="sdo-label">Email Verified (combined)</td><td class="sdo-wk">100.0%<br><span class="sdo-n">3.1k</span></td><td class="sdo-wk">100.0%<br><span class="sdo-n">3.4k</span></td><td class="sdo-wk">100.0%<br><span class="sdo-n">4.0k</span></td><td class="sdo-wk sdo-cur">100.0%<br><span class="sdo-n">4.1k</span></td><td class="sdo-wow" style="color:#16a34a;font-weight:600;white-space:nowrap">+0.0pp</td><td class="sdo-spark" style="text-align:center;color:#d1d5db;font-size:16px;vertical-align:middle">—</td></tr><tr class="sdo-drop-dim"><td class="sdo-label">⬇ Navigation gap</td><td class="sdo-wk">−0.1%<br><span class="sdo-n">2</span></td><td class="sdo-wk">0.0%<br><span class="sdo-n">0</span></td><td class="sdo-wk">0.0%<br><span class="sdo-n">0</span></td><td class="sdo-wk sdo-cur">0.0%<br><span class="sdo-n">0</span></td><td class="sdo-wow sdo-muted" style="white-space:nowrap">+0.0pp</td><td class="sdo-spark" style="text-align:center;color:#d1d5db;font-size:16px;vertical-align:middle">—</td></tr><tr class="sdo-step"><td class="sdo-label">PIN Setup Page View</td><td class="sdo-wk">99.9%<br><span class="sdo-n">3.1k</span></td><td class="sdo-wk">100.0%<br><span class="sdo-n">3.4k</span></td><td class="sdo-wk">100.0%<br><span class="sdo-n">4.0k</span></td><td class="sdo-wk sdo-cur">100.0%<br><span class="sdo-n">4.1k</span></td><td class="sdo-wow" style="color:#16a34a;font-weight:600;white-space:nowrap">+0.0pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">100%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">100%</text><polygon points="26.0,44 26.0,4.0 50.3,4.0 74.6,4.0 98.9,4.0 123.1,44.0 147.4,4.0 171.7,4.0 196.0,4.0 196.0,44" fill="#eef2ff"/><polyline points="26.0,4.0 50.3,4.0 74.6,4.0 98.9,4.0 123.1,44.0 147.4,4.0 171.7,4.0 196.0,4.0" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="4.0" r="2.5" fill="#6366f1"/><circle cx="26.0" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 100.0%</title></circle><circle cx="50.3" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 100.0%</title></circle><circle cx="74.6" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 100.0%</title></circle><circle cx="98.9" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 100.0%</title></circle><circle cx="123.1" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 99.9%</title></circle><circle cx="147.4" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 100.0%</title></circle><circle cx="171.7" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>May 04: 100.0%</title></circle><circle cx="196.0" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>May 11: 100.0%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-drop"><td class="sdo-label">⬇ Saw page — did not submit</td><td class="sdo-wk">−7.1%<br><span class="sdo-n">217</span></td><td class="sdo-wk">−8.1%<br><span class="sdo-n">273</span></td><td class="sdo-wk">−8.7%<br><span class="sdo-n">346</span></td><td class="sdo-wk sdo-cur">−9.3%<br><span class="sdo-n">384</span></td><td class="sdo-wow" style="color:#16a34a;font-weight:600;white-space:nowrap">+0.6pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">9%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">4%</text><polygon points="26.0,44 26.0,44.0 50.3,5.7 74.6,37.3 98.9,24.0 123.1,22.3 147.4,14.0 171.7,9.0 196.0,4.0 196.0,44" fill="#fef2f2"/><polyline points="26.0,44.0 50.3,5.7 74.6,37.3 98.9,24.0 123.1,22.3 147.4,14.0 171.7,9.0 196.0,4.0" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="4.0" r="2.5" fill="#ef4444"/><circle cx="26.0" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 4.5%</title></circle><circle cx="50.3" cy="5.7" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 9.1%</title></circle><circle cx="74.6" cy="37.3" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 5.3%</title></circle><circle cx="98.9" cy="24.0" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 6.9%</title></circle><circle cx="123.1" cy="22.3" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 7.1%</title></circle><circle cx="147.4" cy="14.0" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 8.1%</title></circle><circle cx="171.7" cy="9.0" r="7" fill="transparent" style="cursor:default"><title>May 04: 8.7%</title></circle><circle cx="196.0" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>May 11: 9.3%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-step"><td class="sdo-label">PIN Submit Clicked <button class="sdo-expand" onclick="sdoToggle('s3fail')" data-sdo="s3fail">▶</button></td><td class="sdo-wk">92.9%<br><span class="sdo-n">2.8k</span></td><td class="sdo-wk">92.2%<br><span class="sdo-n">3.1k</span></td><td class="sdo-wk">92.0%<br><span class="sdo-n">3.7k</span></td><td class="sdo-wk sdo-cur">91.4%<br><span class="sdo-n">3.8k</span></td><td class="sdo-wow" style="color:#dc2626;font-weight:600;white-space:nowrap">−0.6pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">96%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">91%</text><polygon points="26.0,44 26.0,4.0 50.3,44.0 74.6,9.5 98.9,24.0 123.1,28.5 147.4,34.9 171.7,36.7 196.0,42.2 196.0,44" fill="#eef2ff"/><polyline points="26.0,4.0 50.3,44.0 74.6,9.5 98.9,24.0 123.1,28.5 147.4,34.9 171.7,36.7 196.0,42.2" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="42.2" r="2.5" fill="#6366f1"/><circle cx="26.0" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 95.6%</title></circle><circle cx="50.3" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 91.2%</title></circle><circle cx="74.6" cy="9.5" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 95.0%</title></circle><circle cx="98.9" cy="24.0" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 93.4%</title></circle><circle cx="123.1" cy="28.5" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 92.9%</title></circle><circle cx="147.4" cy="34.9" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 92.2%</title></circle><circle cx="171.7" cy="36.7" r="7" fill="transparent" style="cursor:default"><title>May 04: 92.0%</title></circle><circle cx="196.0" cy="42.2" r="7" fill="transparent" style="cursor:default"><title>May 11: 91.4%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr><tr class="sdo-drop-dim sdo-det-s3fail" style="display:none"><td class="sdo-label">↳ Submit → API / validation fail</td><td class="sdo-wk">−0.1%<br><span class="sdo-n">2</span></td><td class="sdo-wk">−0.1%<br><span class="sdo-n">3</span></td><td class="sdo-wk">−0.2%<br><span class="sdo-n">6</span></td><td class="sdo-wk sdo-cur">0.0%<br><span class="sdo-n">2</span></td><td class="sdo-wow sdo-muted" style="white-space:nowrap">−0.2pp</td><td class="sdo-spark" style="text-align:center;color:#d1d5db;font-size:16px;vertical-align:middle">—</td></tr><tr class="sdo-succ"><td class="sdo-label">✓ PIN Setup Success</td><td class="sdo-wk">92.8%<br><span class="sdo-n">2.8k</span></td><td class="sdo-wk">92.1%<br><span class="sdo-n">3.1k</span></td><td class="sdo-wk">91.9%<br><span class="sdo-n">3.7k</span></td><td class="sdo-wk sdo-cur">91.3%<br><span class="sdo-n">3.8k</span></td><td class="sdo-wow" style="color:#dc2626;font-weight:600;white-space:nowrap">−0.6pp</td><td class="sdo-spark"><svg width="200" height="58" style="display:block;margin:0 auto"><line x1="26" y1="44" x2="196" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="4" x2="26" y2="44" stroke="#e2e8f0" stroke-width="1"/><line x1="26" y1="24.0" x2="196" y2="24.0" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/><text x="23" y="11" text-anchor="end" font-size="8" fill="#94a3b8">96%</text><text x="23" y="44" text-anchor="end" font-size="8" fill="#94a3b8">91%</text><polygon points="26.0,44 26.0,4.0 50.3,44.0 74.6,9.2 98.9,22.3 123.1,27.5 147.4,33.6 171.7,35.3 196.0,40.5 196.0,44" fill="#eef2ff"/><polyline points="26.0,4.0 50.3,44.0 74.6,9.2 98.9,22.3 123.1,27.5 147.4,33.6 171.7,35.3 196.0,40.5" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="196.0" cy="40.5" r="2.5" fill="#6366f1"/><circle cx="26.0" cy="4.0" r="7" fill="transparent" style="cursor:default"><title>Mar 23: 95.5%</title></circle><circle cx="50.3" cy="44.0" r="7" fill="transparent" style="cursor:default"><title>Mar 30: 90.9%</title></circle><circle cx="74.6" cy="9.2" r="7" fill="transparent" style="cursor:default"><title>Apr 06: 94.9%</title></circle><circle cx="98.9" cy="22.3" r="7" fill="transparent" style="cursor:default"><title>Apr 13: 93.4%</title></circle><circle cx="123.1" cy="27.5" r="7" fill="transparent" style="cursor:default"><title>Apr 20: 92.8%</title></circle><circle cx="147.4" cy="33.6" r="7" fill="transparent" style="cursor:default"><title>Apr 27: 92.1%</title></circle><circle cx="171.7" cy="35.3" r="7" fill="transparent" style="cursor:default"><title>May 04: 91.9%</title></circle><circle cx="196.0" cy="40.5" r="7" fill="transparent" style="cursor:default"><title>May 11: 91.3%</title></circle><text x="26.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">Mar 23</text><text x="196.0" y="57" text-anchor="middle" font-size="7.5" fill="#94a3b8">May 11</text></svg></td></tr></tbody>
+</table>
+<div class="sdo-insight"><b>Biggest bottleneck: Engagement gap (saw page, no submit) = 9.3%</b> of email-verified users. Navigation gap 0.0% (WoW +0.0pp) — users who verified email but never reached PIN screen. Engagement gap 9.3% (WoW +0.6pp) — reached PIN page but didn't attempt. Submit fail 0.0% (WoW -0.2pp) — PIN API / validation errors. <b>End-to-end PIN success: <span style='color:#dc2626'>91.3% (−0.6pp WoW)</span></b>.</div>
+</div>
+</div>
+
+
+  <!-- Slide 2: KYC — Violet -->
+  <div class="slide two-col" id="s2">
+    <div class="left-panel" style="background:linear-gradient(160deg,#5b21b6,#8b5cf6);">
+      <div class="slide-num">Slide 02</div>
+      <div class="slide-ttl">KYC Start → Completion</div>
+      <div class="slide-sub">% of signups through full KYC</div>
+      <div class="hero-num" id="h2-val">—</div>
+      <div class="hero-lbl">KYC start rate (last week)</div>
+      <div class="hero-badge flat" id="h2-delta">—</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">Start Rate Prior Wk</span><span class="si-val" id="s2-last">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Start→Done Rate</span><span class="si-val" id="s2-done">—</span></div>
+        <div class="stat-item"><span class="si-lbl">7-Wk Avg Start</span><span class="si-val" id="s2-avg">—</span></div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div class="chart-area"><canvas id="chart-kyc"></canvas></div>
+      <div class="insight-row" id="ins-s2"></div>
+    </div>
+  </div>
+
+<!-- KYC Microstages Slide -->
+<div class="slide" id="s-kyc-stages" style="flex-direction:column;overflow:hidden;">
+<div style="padding:16px 22px 12px;background:#fff;height:100%;box-sizing:border-box;
+  display:flex;flex-direction:column;gap:10px;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+
+  <!-- Header -->
+  <div style="flex-shrink:0;">
+    <div style="font-size:14px;font-weight:700;color:#111827;margin:0 0 2px;">
+      KYC Microstages &nbsp;·&nbsp; Risk Details → Demat Verified &nbsp;·&nbsp; Apr 27 – May 18
+    </div>
+  </div>
+
+  <!-- Two-panel body -->
+  <div style="display:flex;gap:24px;flex:1;min-height:0;align-items:flex-start;">
+
+    <!-- Funnel bars + expandable drop details -->
+    <div style="flex:1;overflow-y:auto;padding:10px 12px 10px 8px;
+      background:#fafafa;border-radius:8px;border:1px solid #f3f4f6;
+      align-self:stretch;display:flex;flex-direction:column;justify-content:center;">
+      <div style="display:flex;align-items:center;gap:6px;padding:0 0 5px;border-bottom:1px solid #f3f4f6;margin-bottom:3px;"><div style="width:84px;"></div><div style="flex:1;min-width:60px;"></div><div style="width:37px;text-align:right;font-size:8px;color:#c4c9d4;">Apr 27</div><div style="width:37px;text-align:right;font-size:8px;color:#c4c9d4;">May 04</div><div style="width:37px;text-align:right;font-size:8px;color:#9ca3af;">May 11</div><div style="width:42px;text-align:right;font-size:8px;color:#6366f1;font-weight:600;">May 18</div><div style="width:52px;text-align:right;font-size:8px;color:#c4c9d4;">WoW</div><div style="width:100px;text-align:center;font-size:8px;color:#c4c9d4;">8wk trend</div></div><div style="display:flex;align-items:center;gap:6px;padding:3px 0;"><div style="width:84px;font-size:10px;color:#6b7280;text-align:right;flex-shrink:0;padding-right:4px;line-height:1.3;">KYC Started</div><div style="flex:1;min-width:60px;"><div style="width:100.0%;background:#6366f1;border-radius:3px;height:20px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;box-sizing:border-box;min-width:36px;"><span style="font-size:10px;font-weight:700;color:white;white-space:nowrap;">100%</span></div></div><div style="width:37px;"></div><div style="width:37px;"></div><div style="width:37px;"></div><div style="width:42px;text-align:right;font-size:10px;font-weight:700;color:#111827;">100%</div><div style="width:52px;"></div><div style="width:100px;"></div></div><details open style="padding-left:92px;"><summary style="list-style:none;cursor:pointer;outline:none;font-size:9.5px;color:#dc2626;font-weight:700;padding:3px 0;user-select:none;">↓ 57.1% ▲<span style="color:#c4c9d4;font-size:8.5px;font-weight:400;margin-left:5px;">▾ details</span></summary><div style="background:#fff8f8;border-left:2px solid #fca5a5;padding:8px 10px;margin:3px 0 6px;border-radius:0 6px 6px 0;"><div style="display:flex;align-items:flex-start;gap:14px;"><div style="flex-shrink:0;"><svg width="140" height="34" style="display:block;flex-shrink:0;"><polygon points="2.0,31 2.0,19.0 21.4,31.0 40.9,24.3 60.3,17.3 79.7,25.0 99.1,23.0 118.6,24.3 138.0,3.0 138.0,31" fill="#fee2e2" opacity="0.7"/><polyline points="2.0,19.0 21.4,31.0 40.9,24.3 60.3,17.3 79.7,25.0 99.1,23.0 118.6,24.3 138.0,3.0" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="138.0" cy="3.0" r="2.5" fill="#ef4444"/><circle cx="2.0" cy="19.0" r="7" fill="transparent"><title>Mar 30: 52.3%</title></circle><circle cx="21.4" cy="31.0" r="7" fill="transparent"><title>Apr 06: 48.7%</title></circle><circle cx="40.9" cy="24.3" r="7" fill="transparent"><title>Apr 13: 50.7%</title></circle><circle cx="60.3" cy="17.3" r="7" fill="transparent"><title>Apr 20: 52.8%</title></circle><circle cx="79.7" cy="25.0" r="7" fill="transparent"><title>Apr 27: 50.5%</title></circle><circle cx="99.1" cy="23.0" r="7" fill="transparent"><title>May 04: 51.1%</title></circle><circle cx="118.6" cy="24.3" r="7" fill="transparent"><title>May 11: 50.7%</title></circle><circle cx="138.0" cy="3.0" r="7" fill="transparent"><title>May 18: 57.1%</title></circle></svg><div style="font-size:9px;color:#9ca3af;margin-top:3px;">4-wk drop: 50.5% → 51.1% → 50.7% → 57.1%</div><div style="font-size:9.5px;font-weight:600;color:#dc2626;margin-top:4px;">+6.4pp WoW &nbsp;·&nbsp; worsening ↑</div></div><div style="flex:1;border-left:1px solid #fde8e8;padding-left:12px;"><div style="font-size:9px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">Sub-step drop</div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:90px;font-size:9px;color:#374151;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">CTA not clicked</div><div style="flex:1;background:#fef2f2;border-radius:2px;height:10px;"><div style="width:100%;background:#f87171;height:100%;border-radius:2px;"></div></div><div style="width:28px;font-size:9px;font-weight:600;color:#dc2626;text-align:right;flex-shrink:0;">56%</div><div style="width:32px;font-size:8.5px;color:#9ca3af;flex-shrink:0;text-align:right;">336 u</div></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:90px;font-size:9px;color:#374151;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Left DigiLocker</div><div style="flex:1;background:#fef2f2;border-radius:2px;height:10px;"><div style="width:54%;background:#f87171;height:100%;border-radius:2px;"></div></div><div style="width:28px;font-size:9px;font-weight:600;color:#dc2626;text-align:right;flex-shrink:0;">31%</div><div style="width:32px;font-size:8.5px;color:#9ca3af;flex-shrink:0;text-align:right;">183 u</div></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:90px;font-size:9px;color:#374151;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Name/data mismatch</div><div style="flex:1;background:#fef2f2;border-radius:2px;height:10px;"><div style="width:31%;background:#f87171;height:100%;border-radius:2px;"></div></div><div style="width:28px;font-size:9px;font-weight:600;color:#dc2626;text-align:right;flex-shrink:0;">18%</div><div style="width:32px;font-size:8.5px;color:#9ca3af;flex-shrink:0;text-align:right;">105 u</div></div></div></div></div></details><div style="display:flex;align-items:center;gap:6px;padding:3px 0;"><div style="width:84px;font-size:10px;color:#6b7280;text-align:right;flex-shrink:0;padding-right:4px;line-height:1.3;">PAN Verified</div><div style="flex:1;min-width:60px;"><div style="width:42.9%;background:#6366f1;border-radius:3px;height:20px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;box-sizing:border-box;min-width:36px;"><span style="font-size:10px;font-weight:700;color:white;white-space:nowrap;">42.9%</span></div></div><div style="width:37px;text-align:right;font-size:9px;color:#9ca3af;">49.5%</div><div style="width:37px;text-align:right;font-size:9px;color:#6b7280;">48.9%</div><div style="width:37px;text-align:right;font-size:9.5px;color:#374151;">49.3%</div><div style="width:42px;text-align:right;font-size:10px;font-weight:700;color:#111827;">42.9%</div><div style="width:52px;text-align:right;font-size:9.5px;font-weight:600;color:#dc2626;">-6.4pp</div><svg width="100" height="28" style="display:block;flex-shrink:0;"><polyline points="2.0,12.3 15.7,2.0 29.4,7.7 43.1,13.7 56.9,7.1 70.6,8.9 84.3,7.7 98.0,26.0" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.8"/><circle cx="98.0" cy="26.0" r="2.5" fill="#6366f1"/><circle cx="2.0" cy="12.3" r="7" fill="transparent"><title>Mar 30: 47.7%</title></circle><circle cx="15.7" cy="2.0" r="7" fill="transparent"><title>Apr 06: 51.3%</title></circle><circle cx="29.4" cy="7.7" r="7" fill="transparent"><title>Apr 13: 49.3%</title></circle><circle cx="43.1" cy="13.7" r="7" fill="transparent"><title>Apr 20: 47.2%</title></circle><circle cx="56.9" cy="7.1" r="7" fill="transparent"><title>Apr 27: 49.5%</title></circle><circle cx="70.6" cy="8.9" r="7" fill="transparent"><title>May 04: 48.9%</title></circle><circle cx="84.3" cy="7.7" r="7" fill="transparent"><title>May 11: 49.3%</title></circle><circle cx="98.0" cy="26.0" r="7" fill="transparent"><title>May 18: 42.9%</title></circle></svg></div><details style="padding-left:92px;"><summary style="list-style:none;cursor:pointer;outline:none;font-size:9.5px;color:#6b7280;font-weight:500;padding:3px 0;user-select:none;">↓ 5.8%<span style="color:#c4c9d4;font-size:8.5px;font-weight:400;margin-left:5px;">▾ details</span></summary><div style="background:#fff8f8;border-left:2px solid #fca5a5;padding:8px 10px;margin:3px 0 6px;border-radius:0 6px 6px 0;"><div style="display:flex;align-items:flex-start;gap:14px;"><div style="flex-shrink:0;"><svg width="140" height="34" style="display:block;flex-shrink:0;"><polygon points="2.0,31 2.0,16.0 21.4,8.0 40.9,19.0 60.3,31.0 79.7,14.0 99.1,15.0 118.6,3.0 138.0,5.0 138.0,31" fill="#fee2e2" opacity="0.7"/><polyline points="2.0,16.0 21.4,8.0 40.9,19.0 60.3,31.0 79.7,14.0 99.1,15.0 118.6,3.0 138.0,5.0" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="138.0" cy="5.0" r="2.5" fill="#ef4444"/><circle cx="2.0" cy="16.0" r="7" fill="transparent"><title>Mar 30: 4.7%</title></circle><circle cx="21.4" cy="8.0" r="7" fill="transparent"><title>Apr 06: 5.5%</title></circle><circle cx="40.9" cy="19.0" r="7" fill="transparent"><title>Apr 13: 4.4%</title></circle><circle cx="60.3" cy="31.0" r="7" fill="transparent"><title>Apr 20: 3.2%</title></circle><circle cx="79.7" cy="14.0" r="7" fill="transparent"><title>Apr 27: 4.9%</title></circle><circle cx="99.1" cy="15.0" r="7" fill="transparent"><title>May 04: 4.8%</title></circle><circle cx="118.6" cy="3.0" r="7" fill="transparent"><title>May 11: 6.0%</title></circle><circle cx="138.0" cy="5.0" r="7" fill="transparent"><title>May 18: 5.8%</title></circle></svg><div style="font-size:9px;color:#9ca3af;margin-top:3px;">4-wk drop: 4.9% → 4.8% → 6.0% → 5.8%</div><div style="font-size:9.5px;font-weight:600;color:#16a34a;margin-top:4px;">-0.2pp WoW &nbsp;·&nbsp; improving ↓</div></div><div style="flex:1;border-left:1px solid #fde8e8;padding-left:12px;"><div style="font-size:9px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">Sub-step drop</div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:90px;font-size:9px;color:#374151;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Screen → no verify</div><div style="flex:1;background:#fef2f2;border-radius:2px;height:10px;"><div style="width:100%;background:#f87171;height:100%;border-radius:2px;"></div></div><div style="width:28px;font-size:9px;font-weight:600;color:#dc2626;text-align:right;flex-shrink:0;">100%</div><div style="width:32px;font-size:8.5px;color:#9ca3af;flex-shrink:0;text-align:right;">76 u</div></div><div style="font-size:9px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.4px;margin:6px 0 3px;">Bank verification path</div><div style="font-size:8.5px;color:#b0b8c4;margin-bottom:4px;">Of users who completed bank step, split by method</div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:90px;font-size:9px;color:#374151;flex-shrink:0;">Penny Drop</div><div style="flex:1;background:#f0fdf4;border-radius:2px;height:10px;"><div style="width:27%;background:#34d399;height:100%;border-radius:2px;"></div></div><div style="width:28px;font-size:9px;font-weight:600;color:#16a34a;text-align:right;flex-shrink:0;">27%</div><div style="width:32px;font-size:8.5px;color:#9ca3af;flex-shrink:0;">115 u</div></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:90px;font-size:9px;color:#374151;flex-shrink:0;">UPI / RPD</div><div style="flex:1;background:#f0fdf4;border-radius:2px;height:10px;"><div style="width:73%;background:#34d399;height:100%;border-radius:2px;"></div></div><div style="width:28px;font-size:9px;font-weight:600;color:#16a34a;text-align:right;flex-shrink:0;">73%</div><div style="width:32px;font-size:8.5px;color:#9ca3af;flex-shrink:0;">316 u</div></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:90px;font-size:9px;color:#374151;flex-shrink:0;">Manual</div><div style="flex:1;background:#f0fdf4;border-radius:2px;height:10px;"><div style="width:2%;background:#34d399;height:100%;border-radius:2px;"></div></div><div style="width:28px;font-size:9px;font-weight:600;color:#16a34a;text-align:right;flex-shrink:0;">0%</div><div style="width:32px;font-size:8.5px;color:#9ca3af;flex-shrink:0;">2 u</div></div></div></div></div></details><div style="display:flex;align-items:center;gap:6px;padding:3px 0;"><div style="width:84px;font-size:10px;color:#6b7280;text-align:right;flex-shrink:0;padding-right:4px;line-height:1.3;">Bank Verified</div><div style="flex:1;min-width:60px;"><div style="width:37.1%;background:#6366f1;border-radius:3px;height:20px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;box-sizing:border-box;min-width:36px;"><span style="font-size:10px;font-weight:700;color:white;white-space:nowrap;">86.5%</span></div></div><div style="width:37px;text-align:right;font-size:9px;color:#9ca3af;">90.1%</div><div style="width:37px;text-align:right;font-size:9px;color:#6b7280;">90.2%</div><div style="width:37px;text-align:right;font-size:9.5px;color:#374151;">87.9%</div><div style="width:42px;text-align:right;font-size:10px;font-weight:700;color:#111827;">86.4%</div><div style="width:52px;text-align:right;font-size:9.5px;font-weight:600;color:#dc2626;">-1.5pp</div><svg width="100" height="28" style="display:block;flex-shrink:0;"><polyline points="2.0,12.7 15.7,15.6 29.4,8.8 43.1,2.0 56.9,12.7 70.6,12.4 84.3,20.6 98.0,26.0" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.8"/><circle cx="98.0" cy="26.0" r="2.5" fill="#6366f1"/><circle cx="2.0" cy="12.7" r="7" fill="transparent"><title>Mar 30: 90.1%</title></circle><circle cx="15.7" cy="15.6" r="7" fill="transparent"><title>Apr 06: 89.3%</title></circle><circle cx="29.4" cy="8.8" r="7" fill="transparent"><title>Apr 13: 91.2%</title></circle><circle cx="43.1" cy="2.0" r="7" fill="transparent"><title>Apr 20: 93.1%</title></circle><circle cx="56.9" cy="12.7" r="7" fill="transparent"><title>Apr 27: 90.1%</title></circle><circle cx="70.6" cy="12.4" r="7" fill="transparent"><title>May 04: 90.2%</title></circle><circle cx="84.3" cy="20.6" r="7" fill="transparent"><title>May 11: 87.9%</title></circle><circle cx="98.0" cy="26.0" r="7" fill="transparent"><title>May 18: 86.4%</title></circle></svg></div><details style="padding-left:92px;"><summary style="list-style:none;cursor:pointer;outline:none;font-size:9.5px;color:#6b7280;font-weight:500;padding:3px 0;user-select:none;">↓ 2.8%<span style="color:#c4c9d4;font-size:8.5px;font-weight:400;margin-left:5px;">▾ details</span></summary><div style="background:#fff8f8;border-left:2px solid #fca5a5;padding:8px 10px;margin:3px 0 6px;border-radius:0 6px 6px 0;"><div style="display:flex;align-items:flex-start;gap:14px;"><div style="flex-shrink:0;"><svg width="140" height="34" style="display:block;flex-shrink:0;"><polygon points="2.0,31 2.0,27.7 21.4,31.0 40.9,3.0 60.3,29.4 79.7,16.2 99.1,14.5 118.6,24.4 138.0,29.4 138.0,31" fill="#fee2e2" opacity="0.7"/><polyline points="2.0,27.7 21.4,31.0 40.9,3.0 60.3,29.4 79.7,16.2 99.1,14.5 118.6,24.4 138.0,29.4" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="138.0" cy="29.4" r="2.5" fill="#ef4444"/><circle cx="2.0" cy="27.7" r="7" fill="transparent"><title>Mar 30: 2.9%</title></circle><circle cx="21.4" cy="31.0" r="7" fill="transparent"><title>Apr 06: 2.7%</title></circle><circle cx="40.9" cy="3.0" r="7" fill="transparent"><title>Apr 13: 4.4%</title></circle><circle cx="60.3" cy="29.4" r="7" fill="transparent"><title>Apr 20: 2.8%</title></circle><circle cx="79.7" cy="16.2" r="7" fill="transparent"><title>Apr 27: 3.6%</title></circle><circle cx="99.1" cy="14.5" r="7" fill="transparent"><title>May 04: 3.7%</title></circle><circle cx="118.6" cy="24.4" r="7" fill="transparent"><title>May 11: 3.1%</title></circle><circle cx="138.0" cy="29.4" r="7" fill="transparent"><title>May 18: 2.8%</title></circle></svg><div style="font-size:9px;color:#9ca3af;margin-top:3px;">4-wk drop: 3.6% → 3.7% → 3.1% → 2.8%</div><div style="font-size:9.5px;font-weight:600;color:#16a34a;margin-top:4px;">-0.3pp WoW &nbsp;·&nbsp; improving ↓</div></div><div style="flex:1;border-left:1px solid #fde8e8;padding-left:12px;"><div style="font-size:9px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">Sub-step drop</div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:90px;font-size:9px;color:#374151;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">No photo</div><div style="flex:1;background:#fef2f2;border-radius:2px;height:10px;"><div style="width:29%;background:#f87171;height:100%;border-radius:2px;"></div></div><div style="width:28px;font-size:9px;font-weight:600;color:#dc2626;text-align:right;flex-shrink:0;">28%</div><div style="width:32px;font-size:8.5px;color:#9ca3af;flex-shrink:0;text-align:right;">8 u</div></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:90px;font-size:9px;color:#374151;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Submit failed</div><div style="flex:1;background:#fef2f2;border-radius:2px;height:10px;"><div style="width:100%;background:#f87171;height:100%;border-radius:2px;"></div></div><div style="width:28px;font-size:9px;font-weight:600;color:#dc2626;text-align:right;flex-shrink:0;">97%</div><div style="width:32px;font-size:8.5px;color:#9ca3af;flex-shrink:0;text-align:right;">28 u</div></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:90px;font-size:9px;color:#374151;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">AI rejection</div><div style="flex:1;background:#fef2f2;border-radius:2px;height:10px;"><div style="width:64%;background:#f87171;height:100%;border-radius:2px;"></div></div><div style="width:28px;font-size:9px;font-weight:600;color:#dc2626;text-align:right;flex-shrink:0;">62%</div><div style="width:32px;font-size:8.5px;color:#9ca3af;flex-shrink:0;text-align:right;">18 u</div></div></div></div></div></details><div style="display:flex;align-items:center;gap:6px;padding:3px 0;"><div style="width:84px;font-size:10px;color:#6b7280;text-align:right;flex-shrink:0;padding-right:4px;line-height:1.3;">Liveness</div><div style="flex:1;min-width:60px;"><div style="width:34.3%;background:#6366f1;border-radius:3px;height:20px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;box-sizing:border-box;min-width:36px;"><span style="font-size:10px;font-weight:700;color:white;white-space:nowrap;">92.5%</span></div></div><div style="width:37px;text-align:right;font-size:9px;color:#9ca3af;">91.9%</div><div style="width:37px;text-align:right;font-size:9px;color:#6b7280;">91.5%</div><div style="width:37px;text-align:right;font-size:9.5px;color:#374151;">92.9%</div><div style="width:42px;text-align:right;font-size:10px;font-weight:700;color:#111827;">92.5%</div><div style="width:52px;text-align:right;font-size:9.5px;font-weight:600;color:#dc2626;">-0.4pp</div><svg width="100" height="28" style="display:block;flex-shrink:0;"><polyline points="2.0,6.5 15.7,2.0 29.4,26.0 43.1,4.6 56.9,15.6 70.6,18.2 84.3,9.1 98.0,11.7" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.8"/><circle cx="98.0" cy="11.7" r="2.5" fill="#6366f1"/><circle cx="2.0" cy="6.5" r="7" fill="transparent"><title>Mar 30: 93.3%</title></circle><circle cx="15.7" cy="2.0" r="7" fill="transparent"><title>Apr 06: 94.0%</title></circle><circle cx="29.4" cy="26.0" r="7" fill="transparent"><title>Apr 13: 90.3%</title></circle><circle cx="43.1" cy="4.6" r="7" fill="transparent"><title>Apr 20: 93.6%</title></circle><circle cx="56.9" cy="15.6" r="7" fill="transparent"><title>Apr 27: 91.9%</title></circle><circle cx="70.6" cy="18.2" r="7" fill="transparent"><title>May 04: 91.5%</title></circle><circle cx="84.3" cy="9.1" r="7" fill="transparent"><title>May 11: 92.9%</title></circle><circle cx="98.0" cy="11.7" r="7" fill="transparent"><title>May 18: 92.5%</title></circle></svg></div><details style="padding-left:92px;"><summary style="list-style:none;cursor:pointer;outline:none;font-size:9.5px;color:#6b7280;font-weight:500;padding:3px 0;user-select:none;">↓ 2.1%<span style="color:#c4c9d4;font-size:8.5px;font-weight:400;margin-left:5px;">▾ details</span></summary><div style="background:#fff8f8;border-left:2px solid #fca5a5;padding:8px 10px;margin:3px 0 6px;border-radius:0 6px 6px 0;"><div style="display:flex;align-items:flex-start;gap:14px;"><div style="flex-shrink:0;"><svg width="140" height="34" style="display:block;flex-shrink:0;"><polygon points="2.0,31 2.0,13.3 21.4,13.3 40.9,31.0 60.3,3.0 79.7,17.7 99.1,14.8 118.6,11.8 138.0,11.8 138.0,31" fill="#fee2e2" opacity="0.7"/><polyline points="2.0,13.3 21.4,13.3 40.9,31.0 60.3,3.0 79.7,17.7 99.1,14.8 118.6,11.8 138.0,11.8" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="138.0" cy="11.8" r="2.5" fill="#ef4444"/><circle cx="2.0" cy="13.3" r="7" fill="transparent"><title>Mar 30: 2.0%</title></circle><circle cx="21.4" cy="13.3" r="7" fill="transparent"><title>Apr 06: 2.0%</title></circle><circle cx="40.9" cy="31.0" r="7" fill="transparent"><title>Apr 13: 0.8%</title></circle><circle cx="60.3" cy="3.0" r="7" fill="transparent"><title>Apr 20: 2.7%</title></circle><circle cx="79.7" cy="17.7" r="7" fill="transparent"><title>Apr 27: 1.7%</title></circle><circle cx="99.1" cy="14.8" r="7" fill="transparent"><title>May 04: 1.9%</title></circle><circle cx="118.6" cy="11.8" r="7" fill="transparent"><title>May 11: 2.1%</title></circle><circle cx="138.0" cy="11.8" r="7" fill="transparent"><title>May 18: 2.1%</title></circle></svg><div style="font-size:9px;color:#9ca3af;margin-top:3px;">4-wk drop: 1.7% → 1.9% → 2.1% → 2.1%</div><div style="font-size:9.5px;font-weight:600;color:#16a34a;margin-top:4px;">-0.0pp WoW &nbsp;·&nbsp; improving ↓</div></div><div style="flex:1;border-left:1px solid #fde8e8;padding-left:12px;"><div style="font-size:9px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">Sub-step drop</div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:90px;font-size:9px;color:#374151;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Canvas confused</div><div style="flex:1;background:#fef2f2;border-radius:2px;height:10px;"><div style="width:100%;background:#f87171;height:100%;border-radius:2px;"></div></div><div style="width:28px;font-size:9px;font-weight:600;color:#dc2626;text-align:right;flex-shrink:0;">82%</div><div style="width:32px;font-size:8.5px;color:#9ca3af;flex-shrink:0;text-align:right;">18 u</div></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:90px;font-size:9px;color:#374151;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Sig abandoned</div><div style="flex:1;background:#fef2f2;border-radius:2px;height:10px;"><div style="width:56%;background:#f87171;height:100%;border-radius:2px;"></div></div><div style="width:28px;font-size:9px;font-weight:600;color:#dc2626;text-align:right;flex-shrink:0;">46%</div><div style="width:32px;font-size:8.5px;color:#9ca3af;flex-shrink:0;text-align:right;">10 u</div></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:90px;font-size:9px;color:#374151;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Backend reject</div><div style="flex:1;background:#fef2f2;border-radius:2px;height:10px;"><div style="width:33%;background:#f87171;height:100%;border-radius:2px;"></div></div><div style="width:28px;font-size:9px;font-weight:600;color:#dc2626;text-align:right;flex-shrink:0;">27%</div><div style="width:32px;font-size:8.5px;color:#9ca3af;flex-shrink:0;text-align:right;">6 u</div></div></div></div></div></details><div style="display:flex;align-items:center;gap:6px;padding:3px 0;"><div style="width:84px;font-size:10px;color:#6b7280;text-align:right;flex-shrink:0;padding-right:4px;line-height:1.3;">Wet Signature</div><div style="flex:1;min-width:60px;"><div style="width:32.2%;background:#6366f1;border-radius:3px;height:20px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;box-sizing:border-box;min-width:36px;"><span style="font-size:10px;font-weight:700;color:white;white-space:nowrap;">93.9%</span></div></div><div style="width:37px;text-align:right;font-size:9px;color:#9ca3af;">95.8%</div><div style="width:37px;text-align:right;font-size:9px;color:#6b7280;">95.4%</div><div style="width:37px;text-align:right;font-size:9.5px;color:#374151;">94.7%</div><div style="width:42px;text-align:right;font-size:10px;font-weight:700;color:#111827;">93.9%</div><div style="width:52px;text-align:right;font-size:9.5px;font-weight:600;color:#dc2626;">-0.8pp</div><svg width="100" height="28" style="display:block;flex-shrink:0;"><polyline points="2.0,17.1 15.7,15.0 29.4,2.0 43.1,26.0 56.9,13.5 70.6,15.6 84.3,19.2 98.0,23.4" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.8"/><circle cx="98.0" cy="23.4" r="2.5" fill="#6366f1"/><circle cx="2.0" cy="17.1" r="7" fill="transparent"><title>Mar 30: 95.1%</title></circle><circle cx="15.7" cy="15.0" r="7" fill="transparent"><title>Apr 06: 95.5%</title></circle><circle cx="29.4" cy="2.0" r="7" fill="transparent"><title>Apr 13: 98.0%</title></circle><circle cx="43.1" cy="26.0" r="7" fill="transparent"><title>Apr 20: 93.4%</title></circle><circle cx="56.9" cy="13.5" r="7" fill="transparent"><title>Apr 27: 95.8%</title></circle><circle cx="70.6" cy="15.6" r="7" fill="transparent"><title>May 04: 95.4%</title></circle><circle cx="84.3" cy="19.2" r="7" fill="transparent"><title>May 11: 94.7%</title></circle><circle cx="98.0" cy="23.4" r="7" fill="transparent"><title>May 18: 93.9%</title></circle></svg></div><details style="padding-left:92px;"><summary style="list-style:none;cursor:pointer;outline:none;font-size:9.5px;color:#6b7280;font-weight:500;padding:3px 0;user-select:none;">↓ 9.6%<span style="color:#c4c9d4;font-size:8.5px;font-weight:400;margin-left:5px;">▾ details</span></summary><div style="background:#fff8f8;border-left:2px solid #fca5a5;padding:8px 10px;margin:3px 0 6px;border-radius:0 6px 6px 0;"><div style="display:flex;align-items:flex-start;gap:14px;"><div style="flex-shrink:0;"><svg width="140" height="34" style="display:block;flex-shrink:0;"><polygon points="2.0,31 2.0,15.8 21.4,3.0 40.9,25.2 60.3,14.7 79.7,19.3 99.1,11.2 118.6,8.8 138.0,31.0 138.0,31" fill="#fee2e2" opacity="0.7"/><polyline points="2.0,15.8 21.4,3.0 40.9,25.2 60.3,14.7 79.7,19.3 99.1,11.2 118.6,8.8 138.0,31.0" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="138.0" cy="31.0" r="2.5" fill="#ef4444"/><circle cx="2.0" cy="15.8" r="7" fill="transparent"><title>Mar 30: 11.0%</title></circle><circle cx="21.4" cy="3.0" r="7" fill="transparent"><title>Apr 06: 12.1%</title></circle><circle cx="40.9" cy="25.2" r="7" fill="transparent"><title>Apr 13: 10.2%</title></circle><circle cx="60.3" cy="14.7" r="7" fill="transparent"><title>Apr 20: 11.1%</title></circle><circle cx="79.7" cy="19.3" r="7" fill="transparent"><title>Apr 27: 10.7%</title></circle><circle cx="99.1" cy="11.2" r="7" fill="transparent"><title>May 04: 11.4%</title></circle><circle cx="118.6" cy="8.8" r="7" fill="transparent"><title>May 11: 11.6%</title></circle><circle cx="138.0" cy="31.0" r="7" fill="transparent"><title>May 18: 9.7%</title></circle></svg><div style="font-size:9px;color:#9ca3af;margin-top:3px;">4-wk drop: 10.7% → 11.4% → 11.6% → 9.7%</div><div style="font-size:9.5px;font-weight:600;color:#16a34a;margin-top:4px;">-2.0pp WoW &nbsp;·&nbsp; improving ↓</div></div><div style="flex:1;border-left:1px solid #fde8e8;padding-left:12px;"><div style="font-size:9px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">Sub-step drop</div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:90px;font-size:9px;color:#374151;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Intent gap</div><div style="flex:1;background:#fef2f2;border-radius:2px;height:10px;"><div style="width:69%;background:#f87171;height:100%;border-radius:2px;"></div></div><div style="width:28px;font-size:9px;font-weight:600;color:#dc2626;text-align:right;flex-shrink:0;">38%</div><div style="width:32px;font-size:8.5px;color:#9ca3af;flex-shrink:0;text-align:right;">38 u</div></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:90px;font-size:9px;color:#374151;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">API failure</div><div style="flex:1;background:#fef2f2;border-radius:2px;height:10px;"><div style="width:15%;background:#f87171;height:100%;border-radius:2px;"></div></div><div style="width:28px;font-size:9px;font-weight:600;color:#dc2626;text-align:right;flex-shrink:0;">8%</div><div style="width:32px;font-size:8.5px;color:#9ca3af;flex-shrink:0;text-align:right;">8 u</div></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:90px;font-size:9px;color:#374151;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">SDK abandon</div><div style="flex:1;background:#fef2f2;border-radius:2px;height:10px;"><div style="width:100%;background:#f87171;height:100%;border-radius:2px;"></div></div><div style="width:28px;font-size:9px;font-weight:600;color:#dc2626;text-align:right;flex-shrink:0;">54%</div><div style="width:32px;font-size:8.5px;color:#9ca3af;flex-shrink:0;text-align:right;">55 u</div></div></div></div></div></details><div style="display:flex;align-items:center;gap:6px;padding:3px 0;"><div style="width:84px;font-size:10px;color:#6b7280;text-align:right;flex-shrink:0;padding-right:4px;line-height:1.3;">eSign</div><div style="flex:1;min-width:60px;"><div style="width:22.6%;background:#6366f1;border-radius:3px;height:20px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;box-sizing:border-box;min-width:36px;"><span style="font-size:10px;font-weight:700;color:white;white-space:nowrap;">70.2%</span></div></div><div style="width:37px;text-align:right;font-size:9px;color:#9ca3af;">72.8%</div><div style="width:37px;text-align:right;font-size:9px;color:#6b7280;">70.5%</div><div style="width:37px;text-align:right;font-size:9.5px;color:#374151;">69.5%</div><div style="width:42px;text-align:right;font-size:10px;font-weight:700;color:#111827;">70.0%</div><div style="width:52px;text-align:right;font-size:9.5px;font-weight:600;color:#16a34a;">+0.5pp</div><svg width="100" height="28" style="display:block;flex-shrink:0;"><polyline points="2.0,18.0 15.7,21.0 29.4,2.0 43.1,18.5 56.9,9.5 70.6,21.0 84.3,26.0 98.0,23.5" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.8"/><circle cx="98.0" cy="23.5" r="2.5" fill="#6366f1"/><circle cx="2.0" cy="18.0" r="7" fill="transparent"><title>Mar 30: 71.1%</title></circle><circle cx="15.7" cy="21.0" r="7" fill="transparent"><title>Apr 06: 70.5%</title></circle><circle cx="29.4" cy="2.0" r="7" fill="transparent"><title>Apr 13: 74.3%</title></circle><circle cx="43.1" cy="18.5" r="7" fill="transparent"><title>Apr 20: 71.0%</title></circle><circle cx="56.9" cy="9.5" r="7" fill="transparent"><title>Apr 27: 72.8%</title></circle><circle cx="70.6" cy="21.0" r="7" fill="transparent"><title>May 04: 70.5%</title></circle><circle cx="84.3" cy="26.0" r="7" fill="transparent"><title>May 11: 69.5%</title></circle><circle cx="98.0" cy="23.5" r="7" fill="transparent"><title>May 18: 70.0%</title></circle></svg></div><details style="padding-left:92px;"><summary style="list-style:none;cursor:pointer;outline:none;font-size:9.5px;color:#6b7280;font-weight:500;padding:3px 0;user-select:none;">↓ 0.5%<span style="color:#c4c9d4;font-size:8.5px;font-weight:400;margin-left:5px;">▾ details</span></summary><div style="background:#fff8f8;border-left:2px solid #fca5a5;padding:8px 10px;margin:3px 0 6px;border-radius:0 6px 6px 0;"><div style="display:flex;align-items:flex-start;gap:14px;"><div style="flex-shrink:0;"><svg width="140" height="34" style="display:block;flex-shrink:0;"><polygon points="2.0,31 2.0,31.0 21.4,26.3 40.9,3.0 60.3,21.7 79.7,31.0 99.1,21.7 118.6,17.0 138.0,7.7 138.0,31" fill="#fee2e2" opacity="0.7"/><polyline points="2.0,31.0 21.4,26.3 40.9,3.0 60.3,21.7 79.7,31.0 99.1,21.7 118.6,17.0 138.0,7.7" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="138.0" cy="7.7" r="2.5" fill="#ef4444"/><circle cx="2.0" cy="31.0" r="7" fill="transparent"><title>Mar 30: 0.0%</title></circle><circle cx="21.4" cy="26.3" r="7" fill="transparent"><title>Apr 06: 0.1%</title></circle><circle cx="40.9" cy="3.0" r="7" fill="transparent"><title>Apr 13: 0.6%</title></circle><circle cx="60.3" cy="21.7" r="7" fill="transparent"><title>Apr 20: 0.2%</title></circle><circle cx="79.7" cy="31.0" r="7" fill="transparent"><title>Apr 27: 0.0%</title></circle><circle cx="99.1" cy="21.7" r="7" fill="transparent"><title>May 04: 0.2%</title></circle><circle cx="118.6" cy="17.0" r="7" fill="transparent"><title>May 11: 0.3%</title></circle><circle cx="138.0" cy="7.7" r="7" fill="transparent"><title>May 18: 0.5%</title></circle></svg><div style="font-size:9px;color:#9ca3af;margin-top:3px;">4-wk drop: 0.0% → 0.2% → 0.3% → 0.5%</div><div style="font-size:9.5px;font-weight:600;color:#dc2626;margin-top:4px;">+0.2pp WoW &nbsp;·&nbsp; worsening ↑</div></div><div style="flex:1;border-left:1px solid #fde8e8;padding-left:12px;"><div style="font-size:9px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">Sub-step drop</div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:90px;font-size:9px;color:#374151;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">NSDL rejection</div><div style="flex:1;background:#fef2f2;border-radius:2px;height:10px;"><div style="width:100%;background:#f87171;height:100%;border-radius:2px;"></div></div><div style="width:28px;font-size:9px;font-weight:600;color:#dc2626;text-align:right;flex-shrink:0;">100%</div><div style="width:32px;font-size:8.5px;color:#9ca3af;flex-shrink:0;text-align:right;">115 u</div></div></div></div></div></details><div style="display:flex;align-items:center;gap:6px;padding:3px 0;"><div style="width:84px;font-size:10px;color:#6b7280;text-align:right;flex-shrink:0;padding-right:4px;line-height:1.3;">Demat ✓</div><div style="flex:1;min-width:60px;"><div style="width:22.1%;background:#10b981;border-radius:3px;height:20px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;box-sizing:border-box;min-width:36px;"><span style="font-size:10px;font-weight:700;color:white;white-space:nowrap;">97.8%</span></div></div><div style="width:37px;text-align:right;font-size:9px;color:#9ca3af;">100.0%</div><div style="width:37px;text-align:right;font-size:9px;color:#6b7280;">99.2%</div><div style="width:37px;text-align:right;font-size:9.5px;color:#374151;">99.0%</div><div style="width:42px;text-align:right;font-size:10px;font-weight:700;color:#111827;">97.9%</div><div style="width:52px;text-align:right;font-size:9.5px;font-weight:600;color:#dc2626;">-1.1pp</div><svg width="100" height="28" style="display:block;flex-shrink:0;"><polyline points="2.0,2.0 15.7,7.7 29.4,24.9 43.1,11.1 56.9,2.0 70.6,11.1 84.3,13.4 98.0,26.0" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.8"/><circle cx="98.0" cy="26.0" r="2.5" fill="#6366f1"/><circle cx="2.0" cy="2.0" r="7" fill="transparent"><title>Mar 30: 100.0%</title></circle><circle cx="15.7" cy="7.7" r="7" fill="transparent"><title>Apr 06: 99.5%</title></circle><circle cx="29.4" cy="24.9" r="7" fill="transparent"><title>Apr 13: 98.0%</title></circle><circle cx="43.1" cy="11.1" r="7" fill="transparent"><title>Apr 20: 99.2%</title></circle><circle cx="56.9" cy="2.0" r="7" fill="transparent"><title>Apr 27: 100.0%</title></circle><circle cx="70.6" cy="11.1" r="7" fill="transparent"><title>May 04: 99.2%</title></circle><circle cx="84.3" cy="13.4" r="7" fill="transparent"><title>May 11: 99.0%</title></circle><circle cx="98.0" cy="26.0" r="7" fill="transparent"><title>May 18: 97.9%</title></circle></svg></div>
+    </div>
+
+  </div>
+
+  <!-- Insight strip -->
+  <div style="flex-shrink:0;background:#fffbeb;border-left:3px solid #f59e0b;
+    padding:8px 12px;border-radius:0 4px 4px 0;font-size:11px;color:#374151;line-height:1.6;">
+    Biggest drop: <b>57.1% before PAN</b> — primary friction point this week. End-to-end KYC completion (7-day cohort): <b>22.1%</b> <span style='color:#dc2626;font-weight:600'>(-4.2pp WoW)</span>. <i>% = of users who started KYC that week, completed each step within 7 days.</i>
+  </div>
+
+</div>
+</div>
+
+  <!-- Slide 3: RTT → First Trade — Emerald -->
+  <div class="slide two-col" id="s3">
+    <div class="left-panel" style="background:linear-gradient(160deg,#065f46,#10b981);">
+      <div class="slide-num">Slide 03</div>
+      <div class="slide-ttl">RTT → First Trade</div>
+      <div class="slide-sub">Ready-to-Trade users who invested</div>
+      <div class="hero-num" id="h3-val">—</div>
+      <div class="hero-lbl">Investors last week</div>
+      <div class="hero-badge flat" id="h3-delta">—</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">Prior Wk Investors</span><span class="si-val" id="s3-last">—</span></div>
+        <div class="stat-item"><span class="si-lbl">7-Wk Avg Investors</span><span class="si-val" id="s3-avg">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Cohort Conv% (last wk)</span><span class="si-val" id="s3-conv">—</span></div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div class="chart-area"><canvas id="chart-rtt"></canvas></div>
+      <div class="insight-row" id="ins-s3"></div>
+    </div>
+  </div>
+
+  <!-- Slide 4: RTT Cohort Timing — Teal -->
+  <div class="slide two-col" id="s4">
+    <div class="left-panel" style="background:linear-gradient(160deg,#134e4a,#14b8a6);">
+      <div class="slide-num">Slide 04</div>
+      <div class="slide-ttl">First-Trade Timing</div>
+      <div class="slide-sub">When RTT cohorts invest · by onboarding week</div>
+      <div class="hero-num" id="h4t-val">—</div>
+      <div class="hero-lbl">Same-week conv% (last cohort)</div>
+      <div class="hero-badge flat" id="h4t-delta">—</div>
+      <div class="s4-cohort-bars" id="s4-cohort-bars"></div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">Prior cohort same-wk%</span><span class="si-val" id="s4t-prior">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Oldest cohort to-date%</span><span class="si-val" id="s4t-later">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Oldest cohort pending%</span><span class="si-val" id="s4t-pending">—</span></div>
+      </div>
+    </div>
+    <div class="right-panel" style="padding:16px 20px 10px;">
+      <div style="margin-bottom:10px;">
+        <div style="font-size:.78rem;font-weight:700;color:#1e293b;">Post-KYC Activation — Cohort Waterfall</div>
+        <div style="font-size:.62rem;color:#64748b;margin-top:3px;line-height:1.4;">% of each KYC week's RTT who made their first investment &nbsp;&middot;&nbsp; W0 = same week &nbsp;&middot;&nbsp; +W1/+W2/+W3 = cumulative over following weeks</div>
+      </div>
+      <div id="wf-table" class="wf-table"></div>
+      <div class="insight-row" id="ins-s4t"></div>
+    </div>
+  </div>
+
+  <!-- Slide 5: Weekly Active Users — Amber -->
+  <div class="slide two-col" id="s5">
+    <div class="left-panel" style="background:linear-gradient(160deg,#78350f,#f59e0b);">
+      <div class="slide-num">Slide 05</div>
+      <div class="slide-ttl">Weekly Active Users</div>
+      <div class="slide-sub">Unique users who started a signin</div>
+      <div class="hero-num" id="h4-val">—</div>
+      <div class="hero-lbl">WAU last week</div>
+      <div class="hero-badge flat" id="h4-delta">—</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">Prior week</span><span class="si-val" id="s4-last">—</span></div>
+        <div class="stat-item"><span class="si-lbl">7-Wk Average</span><span class="si-val" id="s4-avg">—</span></div>
+        <div class="stat-item"><span class="si-lbl">WoW Change</span><span class="si-val" id="s4-wow">—</span></div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div class="chart-area"><canvas id="chart-wau"></canvas></div>
+      <div class="insight-row" id="ins-s4"></div>
+    </div>
+  </div>
+
+  <!-- Slide 6: Orders & GTV — Rose -->
+  <div class="slide two-col" id="s6">
+    <div class="left-panel" style="background:linear-gradient(160deg,#881337,#ec4899);">
+      <div class="slide-num">Slide 06</div>
+      <div class="slide-ttl">Orders &amp; GTV</div>
+      <div class="slide-sub">New &amp; repeat · MTD vs last month</div>
+      <div class="hero-num" id="h5-val">—</div>
+      <div class="hero-lbl">GTV last week (₹cr)</div>
+      <div class="hero-badge flat" id="h5-delta">—</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">Orders Last Week</span><span class="si-val" id="s5-orders">—</span></div>
+        <div class="stat-item"><span class="si-lbl">7-Wk Avg GTV</span><span class="si-val" id="s5-avgg">—</span></div>
+        <div class="stat-item"><span class="si-lbl">MTD vs Last Month</span><span class="si-val" id="s5-repeat">—</span></div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div class="chart-area"><canvas id="chart-gtv"></canvas></div>
+      <div class="insight-row" id="ins-s5"></div>
+    </div>
+  </div>
+
+
+  <!-- Slide 7: GTV by Issuer — Indigo -->
+  <div class="slide two-col" id="s7">
+    <div class="left-panel" style="background:linear-gradient(160deg,#312e81,#6366f1);">
+      <div class="slide-num">Slide 07</div>
+      <div class="slide-ttl">GTV by Issuer</div>
+      <div class="slide-sub">Last week · top bonds by ₹ invested</div>
+      <div class="hero-num" id="h6-val">—</div>
+      <div class="hero-lbl">Top issuer · last wk GTV share</div>
+      <div class="hero-badge flat" id="h6-badge">—</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">#1 WoW</span><span class="si-val" id="s6-top1">—</span></div>
+        <div class="stat-item"><span class="si-lbl">#2 WoW</span><span class="si-val" id="s6-top2">—</span></div>
+        <div class="stat-item"><span class="si-lbl">#3 WoW</span><span class="si-val" id="s6-top3">—</span></div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div class="chart-area"><canvas id="chart-issuer"></canvas></div>
+      <div class="insight-row" id="ins-s6"></div>
+    </div>
+  </div>
+
+
+  <!-- Slide 8: SEO Visibility — Sky Blue -->
+  <div class="slide two-col" id="s8">
+    <div class="left-panel" style="background:linear-gradient(160deg,#0c4a6e,#0ea5e9);">
+      <div class="slide-num">Slide 08</div>
+      <div class="slide-ttl">Organic Search Visibility</div>
+      <div class="slide-sub">Google Search Console · 8 weeks</div>
+      <div class="hero-num" id="h8-val">—</div>
+      <div class="hero-lbl">Bond Detail impressions (last wk)</div>
+      <div class="hero-badge flat" id="h8-delta">—</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">Bond Detail clicks</span><span class="si-val" id="s8-bd-clicks">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Mktg Site impressions</span><span class="si-val" id="s8-bl-impr">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Blog impressions</span><span class="si-val" id="s8-bl-clicks">—</span></div>
+      </div>
+    </div>
+    <div class="right-panel" style="padding:14px 16px 12px;">
+      <div class="seo-2col" id="seo-2col">
+        <div class="seo-panel">
+          <div class="seo-panel-title" id="seo-t0">Bond Detail Pages</div>
+          <div class="seo-panel-sub" id="seo-s0">/invest/bond/*</div>
+          <div class="seo-chart-wrap"><canvas id="chart-seo-bd"></canvas></div>
+          <div class="seo-insights" id="seo-ins-bd"></div>
+        </div>
+        <div class="seo-panel">
+          <div class="seo-panel-title" id="seo-t1">Marketing Site &amp; Blog</div>
+          <div class="seo-panel-sub" id="seo-s1">Both declining · aspero.in/* (non-app) + /blog/*</div>
+          <div class="seo-chart-wrap"><canvas id="chart-seo-bl"></canvas></div>
+          <div class="seo-insights" id="seo-ins-bl"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 9: Biometrics Performance — Purple -->
+  <div class="slide two-col" id="s9">
+    <div class="left-panel" style="background:linear-gradient(160deg,#4c1d95,#a855f7);">
+      <div class="slide-num">Slide 09</div>
+      <div class="slide-ttl">Biometrics Performance</div>
+      <div class="slide-sub">Since Apr 20 launch · enrolled users</div>
+      <div class="hero-num" id="h9-val">—</div>
+      <div class="hero-lbl">D7 retention lift vs non-bio</div>
+      <div class="hero-badge flat" id="h9-delta">—</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">Bio share of all logins</span><span class="si-val" id="s9-login-share">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Forgot PIN reduction</span><span class="si-val" id="s9-forgot-delta">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Android login success</span><span class="si-val" id="s9-and-success">—</span></div>
+        <div class="stat-item"><span class="si-lbl">iOS OS fail (bug active)</span><span class="si-val" id="s9-ios-osfail">—</span></div>
+      </div>
+    </div>
+    <div class="right-panel" style="padding:12px 14px 10px;">
+      <div class="bio-platform-row">
+        <div class="bio-platform-card" id="bio-card-android"></div>
+        <div class="bio-platform-card" id="bio-card-ios"></div>
+      </div>
+      <div class="bio-impact">
+        <div class="bio-impact-ttl">Retention Impact — Bio vs Non-Bio Users</div>
+        <div class="bio-impact-sub">Rolling retention · Bio anchor = enrollment day · Non-bio anchor = signup day · Note: bio cohort self-selects higher-intent users</div>
+        <div class="bio-impact-body">
+          <div class="bio-ret-wrap"><canvas id="chart-bio-ret"></canvas></div>
+          <div class="bio-forgot">
+            <div class="bio-forgot-ttl">Forgot PIN</div>
+            <div class="bio-forgot-sub">per 1,000 sessions</div>
+            <div class="bio-forgot-item" id="bio-forgot-before"></div>
+            <div class="bio-forgot-item" id="bio-forgot-after"></div>
+            <div class="bio-forgot-badge" id="bio-forgot-badge"></div>
+          </div>
+        </div>
+      </div>
+      <div class="bio-insights" id="bio-insights"></div>
+    </div>
+  </div>
+
+  <!-- Slide 10: Support Pulse — Rose -->
+  <div class="slide two-col" id="s10">
+    <div class="left-panel" style="background:linear-gradient(160deg,#881337,#ec4899);">
+      <div class="slide-num">Slide 10</div>
+      <div class="slide-ttl">Support Pulse</div>
+      <div class="slide-sub">Content-classified · B2C only</div>
+      <div class="hero-num" id="h10-val">—</div>
+      <div class="hero-lbl">Real unique issues (last week)</div>
+      <div class="hero-badge flat" id="h10-delta">—</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">Total Freshdesk (B2C)</span><span class="si-val" id="s10-total">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Merged dupes removed</span><span class="si-val" id="s10-dupes">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Top issue</span><span class="si-val" id="s10-top">—</span></div>
+      </div>
+      <div class="insight-row" id="ins-s10"></div>
+    </div>
+    <div class="right-panel" style="overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:14px;">
+      <div style="height:175px;position:relative;flex-shrink:0;">
+        <canvas id="chart-support-trend"></canvas>
+      </div>
+      <div id="support-issue-table"></div>
+    </div>
+  </div>
+
+
+  <!-- Slide 11: Calling — KYC Activation -->
+  <div class="slide two-col" id="s11">
+    <div class="left-panel" style="background:linear-gradient(160deg,#7c2d12,#f97316);">
+      <div class="slide-num">Slide 11</div>
+      <div class="slide-ttl">Calling — KYC Activation</div>
+      <div class="slide-sub">KYC-complete · not yet invested · last 4 weeks</div>
+      <div class="hero-num">173</div>
+      <div class="hero-lbl">Users activated via call</div>
+      <div class="hero-badge flat" style="background:rgba(255,255,255,0.18);color:#fff;">~443 pipeline reached</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">Conversion rate</span><span class="si-val">39.1%</span></div>
+        <div class="stat-item"><span class="si-lbl">Loan seekers (wrong segment)</span><span class="si-val">46.5%</span></div>
+        <div class="stat-item"><span class="si-lbl">Warm / waiting for funds</span><span class="si-val">2.9%</span></div>
+      </div>
+    </div>
+    <div class="right-panel" style="overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:14px;">
+      <div style="font-size:13px;font-weight:700;color:#1e293b;margin-bottom:2px;">Call Disposition Breakdown</div>
+      <table class="s10-tbl" style="width:100%;">
+        <thead>
+          <tr><th>Disposition</th><th style="text-align:right;">Count</th><th style="text-align:right;">Share</th></tr>
+        </thead>
+        <tbody>
+          <tr style="background:#fef9c3;"><td>Loan Seekers</td><td style="text-align:right;">206</td><td style="text-align:right;">47%</td></tr>
+<tr style="background:#dcfce7;font-weight:600;"><td>Transacted</td><td style="text-align:right;">173</td><td style="text-align:right;">39%</td></tr>
+<tr><td>Exploring / Comparing</td><td style="text-align:right;">46</td><td style="text-align:right;">10%</td></tr>
+<tr><td>Warm — Waiting for Funds</td><td style="text-align:right;">13</td><td style="text-align:right;">3%</td></tr>
+<tr><td>Will invest Waiting for Funds, Exploring the Platform</td><td style="text-align:right;">3</td><td style="text-align:right;">1%</td></tr>
+<tr><td>Not Transacted</td><td style="text-align:right;">1</td><td style="text-align:right;">0%</td></tr>
+<tr><td>Not Interested</td><td style="text-align:right;">1</td><td style="text-align:right;">0%</td></tr>
+        </tbody>
+      </table>
+      <div style="background:#fef3c7;border-left:3px solid #f59e0b;padding:10px 12px;border-radius:4px;font-size:12px;color:#78350f;">
+        <strong>Competitor friction (Exploring cohort):</strong><br/>
+        WintWealth &amp; StableMoney cited for better UX.<br/><br/>
+        <strong>Platform gap raised:</strong> No sell feature · UPI limit ₹2L (blocks higher-ticket investments).
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 12: Calling — Payment Recovery -->
+  <div class="slide two-col" id="s12">
+    <div class="left-panel" style="background:linear-gradient(160deg,#7f1d1d,#ef4444);">
+      <div class="slide-num">Slide 12</div>
+      <div class="slide-ttl">Calling — Payment Recovery</div>
+      <div class="slide-sub">Payment-failed users · last 4 weeks</div>
+      <div class="hero-num">57.6%</div>
+      <div class="hero-lbl">Loan seekers in failed-payment pool</div>
+      <div class="hero-badge flat" style="background:rgba(255,255,255,0.18);color:#fff;">~184 total cases</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">Recovery rate (retried &amp; invested)</span><span class="si-val">2.2%</span></div>
+        <div class="stat-item"><span class="si-lbl">Technical failures</span><span class="si-val">10.3%</span></div>
+        <div class="stat-item"><span class="si-lbl">Intentional cancellations</span><span class="si-val">2.7%</span></div>
+        <div class="stat-item"><span class="si-lbl">No response / unreachable</span><span class="si-val">21.7%</span></div>
+      </div>
+    </div>
+    <div class="right-panel" style="overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:14px;">
+      <div style="font-size:13px;font-weight:700;color:#1e293b;margin-bottom:2px;">Root Cause Breakdown</div>
+      <table class="s10-tbl" style="width:100%;">
+        <thead>
+          <tr><th>Reason</th><th style="text-align:right;">Count</th><th style="text-align:right;">Share</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Loan Seekers</td><td style="text-align:right;">106</td><td style="text-align:right;">58%</td></tr>
+<tr><td>No Response / Unreachable</td><td style="text-align:right;">40</td><td style="text-align:right;">22%</td></tr>
+<tr style="background:#fef9c3;"><td>Technical Failures</td><td style="text-align:right;">19</td><td style="text-align:right;">10%</td></tr>
+<tr><td>Other</td><td style="text-align:right;">10</td><td style="text-align:right;">5%</td></tr>
+<tr><td>Intentional Cancellations</td><td style="text-align:right;">5</td><td style="text-align:right;">3%</td></tr>
+<tr style="background:#dcfce7;font-weight:600;"><td>Recovered → Invested</td><td style="text-align:right;">4</td><td style="text-align:right;">2%</td></tr>
+        </tbody>
+      </table>
+      <div style="background:#fee2e2;border-left:3px solid #ef4444;padding:10px 12px;border-radius:4px;font-size:12px;color:#7f1d1d;">
+        <strong>P0 — Acquisition quality:</strong> 57.6% of "payment failures" are loan seekers acquired via Instagram / GPay / PhonePe cashback vouchers.<br/>
+        These users never intended to invest — they inflated funnel volume and skew recovery metrics.<br/><br/>
+        <strong>Action:</strong> Tighten acquisition targeting; add intent qualifier on landing page before KYC starts.
+      </div>
+    </div>
+  </div>
+
+</div>
+</div><!-- /.deck-wrap -->
+
+<!-- Navigation bar -->
+<div class="nav-bar">
+  <button class="nav-btn" id="btn-prev" onclick="navigate(-1)" disabled>&#8592;</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="btn-next" onclick="navigate(1)">&#8594;</button>
+</div>
+
+<script>
+// ── Navigation ────────────────────────────────────────────────────────────────
+let current = 0;
+const slides = document.querySelectorAll('.slide');
+const total  = slides.length;
+const dotsEl = document.getElementById('dots');
+slides.forEach((_, i) => {
+  const b = document.createElement('button');
+  b.className = 'dot-btn' + (i === 0 ? ' active' : '');
+  b.onclick = () => { current = i; showSlide(i); };
+  dotsEl.appendChild(b);
+});
+function showSlide(n) {
+  slides.forEach(s => s.classList.remove('active'));
+  slides[n].classList.add('active');
+  document.querySelectorAll('.dot-btn').forEach((d, i) => d.classList.toggle('active', i === n));
+  document.getElementById('btn-prev').disabled = (n === 0);
+  document.getElementById('btn-next').disabled = (n === total - 1);
+  // Resize Chart.js instances after slide becomes visible (fixes zero-height init)
+  requestAnimationFrame(() => {
+    if (window.Chart && Chart.instances) {
+      Object.values(Chart.instances).forEach(c => { try { c.resize(); } catch(e) {} });
+    }
+  });
+}
+function navigate(dir) {
+  current = Math.max(0, Math.min(total - 1, current + dir));
+  showSlide(current);
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   navigate(-1);
+});
+
+// ── Data & helpers ────────────────────────────────────────────────────────────
+const D = {"generated": "May 21, 2026 · 19:40", "period": "May 11 – 17, 2026", "health": "warning", "labels": ["Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3", "May 4–10", "May 11–17"], "signups": [2891.0, 2229.0, 2476.0, 2901.0, 3162.0, 3748.0, 3827.0], "otps": [5094.0, 4250.0, 4207.0, 4567.0, 4850.0, 7285.0, 7007.0], "signup_conv": [56.8, 52.4, 58.9, 63.5, 65.2, 51.4, 54.6], "kpi_signups": {"last": 3748.0, "this": 3827.0, "avg": 3033.4, "delta": 79.0, "suffix": ""}, "kpi_signup_conv": {"last": 51.4, "this": 54.6, "avg": 57.5, "delta": 3.2, "suffix": "%"}, "kyc_starters": [907.0, 766.0, 850.0, 954.0, 1167.0, 1337.0, 1455.0], "kyc_done": [290.0, 222.0, 307.0, 238.0, 337.0, 368.0, 415.0], "kyc_start_pct": [31.4, 34.4, 34.3, 32.9, 36.9, 35.7, 38.0], "kyc_start_to_done_pct": [32.0, 29.0, 36.1, 24.9, 28.9, 27.5, 28.5], "kpi_kyc_start_pct": {"last": 35.7, "this": 38.0, "avg": 34.8, "delta": 2.3, "suffix": "%"}, "kpi_kyc_start_to_done": {"last": 27.5, "this": 28.5, "avg": 29.6, "delta": 1.0, "suffix": "%"}, "rtt": [290.0, 222.0, 307.0, 238.0, 337.0, 368.0, 415.0], "payments": [70.0, 87.0, 124.0, 163.0, 164.0, 150.0, 205.0], "rtt_cohort_conv_pct": [11.0, 15.8, 18.2, 19.7, 17.8, 14.4, 13.0], "kpi_rtt": {"last": 368.0, "this": 415.0, "avg": 311.0, "delta": 47.0, "suffix": ""}, "kpi_investors": {"last": 150.0, "this": 205.0, "avg": 137.6, "delta": 55.0, "suffix": ""}, "kpi_rtt_cohort_conv": {"last": 14.4, "this": 13.0, "avg": 15.7, "delta": -1.4, "suffix": "%"}, "rtt_curve_pct": [[5.5, 6.9, 7.6, 9.7, 11.0], [6.8, 11.3, 14.0, 14.9, 15.8], [9.1, 12.4, 13.4, 16.9, 18.2], [10.9, 13.9, 16.4, 19.7, null], [10.4, 14.2, 17.8, null, null], [10.1, 14.4, null, null, null], [13.0, null, null, null, null]], "kpi_rtt_same_wk_conv": {"last": 10.1, "this": 13.0, "avg": 9.4, "delta": 2.9, "suffix": "%"}, "wau": [4415.0, 3790.0, 3978.0, 4542.0, 4961.0, 5625.0, 6215.0], "kpi_wau": {"last": 5625.0, "this": 6215.0, "avg": 4789.4, "delta": 590.0, "suffix": ""}, "orders": [121.0, 125.0, 191.0, 237.0, 237.0, 234.0, 304.0], "gtv": [1.41, 1.57, 2.23, 3.06, 2.07, 2.81, 3.1], "kpi_orders": {"last": 234.0, "this": 304.0, "avg": 207.0, "delta": 70.0, "suffix": ""}, "kpi_gtv": {"last": 2.81, "this": 3.1, "avg": 2.3, "delta": 0.3, "suffix": "cr"}, "repeat_pct": 35.7, "gtv_mtd_this": 9.0, "gtv_mtd_prev": 5.4, "mtd_month_this": "May", "mtd_month_prev": "Apr", "gtv_by_issuer": [{"name": "AKARA CAPITAL ADVISORS PRIVATE LIMITED", "gtv_this": 0.8, "gtv_last": 0.31, "pct_this": 25.7, "pct_last": 11.0, "wow_pp": 14.7}, {"name": "KEERTANA FINSERV PRIVATE LIMITED", "gtv_this": 0.4, "gtv_last": 0.77, "pct_this": 12.8, "pct_last": 27.4, "wow_pp": -14.6}, {"name": "MUFIN GREEN FINANCE LIMITED", "gtv_this": 0.23, "gtv_last": 0.17, "pct_this": 7.5, "pct_last": 5.9, "wow_pp": 1.6}, {"name": "SAMMAAN CAPITAL LIMITED", "gtv_this": 0.16, "gtv_last": 0.09, "pct_this": 5.3, "pct_last": 3.1, "wow_pp": 2.2}, {"name": "NATIONAL HIGHWAYS INFRA TRUST", "gtv_this": 0.01, "gtv_last": 0.0, "pct_this": 0.3, "pct_last": 0.1, "wow_pp": 0.2}], "week_label_this": "May 11–17", "week_label_prev": "May 4–10", "gsc_weekly": {"groups": [{"name": "Bond Detail Pages", "subtitle": "/invest/bond/*", "color": "#3b82f6", "labels": ["Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3", "May 4–10", "May 11–17"], "impr": [131, 275, 892, 892, 1106, 1383, 1044, 1185], "clicks": [14, 7, 31, 29, 30, 25, 23, 34]}, {"name": "Marketing Site", "subtitle": "aspero.in/* (non-app pages)", "color": "#10b981", "labels": ["Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3", "May 4–10", "May 11–17"], "impr": [47209, 41479, 36522, 33464, 31158, 27353, 30273, 30693], "clicks": [582, 501, 516, 538, 644, 562, 652, 674]}, {"name": "/invest/home", "subtitle": "App home page", "color": "#8b5cf6", "labels": ["Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3", "May 4–10", "May 11–17"], "impr": [98, 644, 417, 497, 735, 689, 1022, 1411], "clicks": [1, 19, 7, 4, 6, 5, 12, 18]}, {"name": "/invest/explore", "subtitle": "Bond listing page", "color": "#f97316", "labels": ["Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3", "May 4–10", "May 11–17"], "impr": [22, 85, 91, 119, 102, 96, 187, 147], "clicks": [2, 1, 2, 1, 0, 0, 1, 0]}, {"name": "Blog", "subtitle": "aspero.in/blog/*", "color": "#ec4899", "labels": ["Mar 23–29", "Mar 30–Apr 5", "Apr 6–12", "Apr 13–19", "Apr 20–26", "Apr 27–May 3", "May 4–10", "May 11–17"], "impr": [93489, 71273, 57192, 55379, 46981, 41536, 48281, 56728], "clicks": [193, 152, 139, 132, 146, 126, 154, 167]}]}, "bio_metrics": {"android": {"adoption_pct": 66.7, "success_pct": 85.5, "avg_logins": 4.2, "setup_fail_pct": 20.5, "bio_users": 1802, "setup_views": 2700, "not_eligible": 0}, "ios": {"adoption_pct": 66.4, "success_pct": 21.2, "avg_logins": 9.1, "setup_fail_pct": 9.9, "bio_users": 101, "setup_views": 152, "not_eligible": 0}}, "bio_retention": {"bio": {"d1": 35.0, "d7": 12.9, "d14": 5.0}, "nonbio": {"d1": 17.9, "d7": 5.2, "d14": 2.5}, "login_share_bio": 46.5, "forgot_before": 9.62, "forgot_after": 5.56, "bio_logins": 8728, "pin_logins": 10037}, "support_daily_rate": 15, "support_prev_rate": 15, "support_recs": [{"priority": "P0", "issue": "KYC Pending / Stuck — Issue with PAN; Issue with Address proof", "volume": "159", "jira": "ASP-3614"}, {"priority": "P0", "issue": "KRA / Regulatory Check — Issue with Others; Regulatory check - Rejected", "volume": "33", "jira": "ASP-3314"}, {"priority": "P1", "issue": "Account / Profile — Issue with Personal details; Not able to login", "volume": "27", "jira": null}, {"priority": "P1", "issue": "Bank / IFSC Issue — Issue with Bank account details; Refund amount", "volume": "14", "jira": "ASP-3313"}, {"priority": "P1", "issue": "TDS / Tax Forms — How to fill Declaration form for non deduction of TDS; Interest accrual differences", "volume": "6", "jira": "ASP-3412"}, {"priority": "P1", "issue": "Bond Sell Feature — how to sell my bond; reg sell", "volume": "6", "jira": "ASP-3358"}], "support_pulse": {"labels": ["Apr 13–19", "Apr 20–26", "Apr 27–May 3", "May 4–10", "May 11–17"], "total": [163, 291, 295, 276, 292], "real": [60, 108, 109, 102, 108], "cats": {"KRA / Regulatory Check": {"color": "#ef4444", "data": [12, 25, 14, 26, 33]}, "KYC Pending / Stuck": {"color": "#f97316", "data": [92, 157, 179, 136, 159]}, "TDS / Tax Forms": {"color": "#f59e0b", "data": [6, 7, 9, 2, 6]}, "Bond Sell Feature": {"color": "#8b5cf6", "data": [2, 3, 4, 7, 6]}, "Bank / IFSC Issue": {"color": "#3b82f6", "data": [12, 23, 22, 34, 14]}, "Account / Profile": {"color": "#10b981", "data": [10, 28, 21, 26, 27]}}, "top_issues": [{"cat": "KYC Pending / Stuck", "color": "#f97316", "this_wk": 159, "prev_wk": 136, "themes": ["Issue with PAN", "Issue with Address proof", "Issue with Demat account"], "jira": "ASP-3614", "jira_status": "Active", "sub_cats": [{"name": "PAN verification", "count": 98, "pct": 62}, {"name": "Demat account", "count": 25, "pct": 16}]}, {"cat": "KRA / Regulatory Check", "color": "#ef4444", "this_wk": 33, "prev_wk": 26, "themes": ["Issue with Others", "Regulatory check - Rejected", "Issue with Demat account"], "jira": "ASP-3314", "jira_status": "Engineering"}, {"cat": "Account / Profile", "color": "#10b981", "this_wk": 27, "prev_wk": 26, "themes": ["Issue with Personal details", "Not able to login", "Issue with Others"], "jira": null, "jira_status": "No ticket"}, {"cat": "Bank / IFSC Issue", "color": "#3b82f6", "this_wk": 14, "prev_wk": 34, "themes": ["Issue with Bank account details", "Refund amount"], "jira": "ASP-3313", "jira_status": "Engineering"}, {"cat": "TDS / Tax Forms", "color": "#f59e0b", "this_wk": 6, "prev_wk": 2, "themes": ["How to fill Declaration form for non deduction of TDS", "Interest accrual differences", "lock period & 121 form"], "jira": "ASP-3412", "jira_status": "Product Solutioning"}, {"cat": "Bond Sell Feature", "color": "#8b5cf6", "this_wk": 6, "prev_wk": 7, "themes": ["how to sell my bond", "reg sell", "I want to withdraw my investment in bonds"], "jira": "ASP-3358", "jira_status": "Product Solutioning"}], "this_wk_real": 108, "prev_wk_real": 102, "daily_rate_this": 15.4, "daily_rate_prev": 14.6}, "calling_data": {"kyc_activation": {"total_called": 443, "total_transacted": 173, "conv_pct": 39.1, "loan_seekers": 206, "loan_seekers_pct": 46.5, "warm_waiting": 13, "warm_waiting_pct": 2.9, "no_response": 0, "no_response_pct": 0.0, "by_disposition": {"Loan Seekers": 206, "Transacted": 173, "Exploring / Comparing": 46, "Warm — Waiting for Funds": 13, "Will invest Waiting for Funds, Exploring the Platform": 3, "Not Transacted": 1, "Not Interested": 1}}, "payment_recovery": {"total_called": 184, "loan_seekers": 106, "loan_seekers_pct": 57.6, "recovered": 4, "recovered_pct": 2.2, "technical": 19, "technical_pct": 10.3, "no_response": 40, "no_response_pct": 21.7, "intentional": 5, "intentional_pct": 2.7, "by_category": {"Loan Seekers": 106, "No Response / Unreachable": 40, "Technical Failures": 19, "Other": 10, "Intentional Cancellations": 5, "Recovered → Invested": 4}}}};
+const L = D.labels;
+
+function num(v)  { return v != null ? Math.round(v).toLocaleString() : '—'; }
+function pct(v)  { return v != null ? (+v).toFixed(1) + '%' : '—'; }
+function cr(v)   { return v != null ? '₹' + (+v).toFixed(1) + 'cr' : '—'; }
+function setEl(id, txt) { const e = document.getElementById(id); if (e) e.textContent = txt; }
+
+function setHero(valId, badgeId, valTxt, delta, suf) {
+  setEl(valId, valTxt);
+  const el = document.getElementById(badgeId);
+  if (!el) return;
+  if (delta === null || delta === undefined) {
+    el.textContent = '—'; el.className = 'hero-badge flat';
+  } else {
+    const cls = delta > 0 ? 'up' : delta < 0 ? 'down' : 'flat';
+    const arr = delta > 0 ? '▲' : delta < 0 ? '▼' : '–';
+    el.textContent = arr + ' ' + Math.abs(delta) + (suf || '') + ' WoW';
+    el.className = 'hero-badge ' + cls;
+  }
+}
+
+function insights(id, chips) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = chips.map(c =>
+    `<div class="ins-chip"><span class="ins-dot" style="background:${c.color}"></span>${c.txt}</div>`
+  ).join('');
+}
+
+// ── Chart helpers ─────────────────────────────────────────────────────────────
+const BLUE   = '#3b82f6';
+const VIOLET = '#8b5cf6';
+const GREEN  = '#10b981';
+const AMBER  = '#f59e0b';
+const ROSE   = '#ec4899';
+const GREY   = '#94a3b8';
+
+function mkOpts(extra) {
+  return {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { font: { size: 9 }, boxWidth: 9, padding: 10 } },
+      tooltip: { mode: 'index', intersect: false },
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 8 }, maxRotation: 30, minRotation: 0 } },
+      y: { grid: { color: '#f8fafc' }, ticks: { font: { size: 8 } }, beginAtZero: true },
+      ...(extra || {}),
+    },
+  };
+}
+// Y2_PCT: secondary axis for percentage lines — anchored at 0 so 3pp variance
+// doesn't fill the full chart height (avoids visual exaggeration of small moves)
+const Y2_PCT = { y2: { position: 'right', grid: { display: false }, ticks: { font: { size: 8 } }, suggestedMin: 0 } };
+// Y2: secondary axis for non-percentage values (e.g. GTV ₹cr) — auto-scale
+const Y2 = { y2: { position: 'right', grid: { display: false }, ticks: { font: { size: 8 } } } };
+
+function mkChart(id, datasets, extra) {
+  new Chart(document.getElementById(id), {
+    data: { labels: L, datasets },
+    options: mkOpts(extra),
+  });
+}
+function bar(label, data, color, stack) {
+  return { type: 'bar', label, data, backgroundColor: color + 'bb', borderColor: color,
+           borderWidth: 1, borderRadius: 3, ...(stack ? { stack } : {}) };
+}
+function line(label, data, color, yAxisID) {
+  return { type: 'line', label, data, borderColor: color, backgroundColor: 'transparent',
+           pointRadius: 3, pointHoverRadius: 5, tension: .35, ...(yAxisID ? { yAxisID } : {}) };
+}
+
+// ── Cover: summary tiles ──────────────────────────────────────────────────────
+(function() {
+  const items = [
+    { lbl: 'Signups',     val: num(D.kpi_signups.this),       wow: D.kpi_signups.delta,         suf: '' },
+    { lbl: 'KYC Start%', val: pct(D.kpi_kyc_start_pct.this), wow: D.kpi_kyc_start_pct.delta,   suf: 'pp' },
+    { lbl: 'Investors',  val: num(D.kpi_investors.this),      wow: D.kpi_investors.delta,       suf: '' },
+    { lbl: 'WAU',        val: num(D.kpi_wau.this),            wow: D.kpi_wau.delta,             suf: '' },
+    { lbl: 'GTV',        val: cr(D.kpi_gtv.this),             wow: null,                        suf: '' },
+  ];
+  document.getElementById('cover-metrics').innerHTML = items.map(it => {
+    let ww = '';
+    if (it.wow !== null && it.wow !== undefined) {
+      const cls = it.wow >= 0 ? 'up' : 'down';
+      const a   = it.wow >= 0 ? '▲' : '▼';
+      ww = `<div class="cm-wow ${cls}">${a} ${Math.abs(it.wow)}${it.suf} WoW</div>`;
+    }
+    return `<div class="cover-metric"><div class="cm-label">${it.lbl}</div><div class="cm-val">${it.val}</div>${ww}</div>`;
+  }).join('');
+})();
+
+// ── Slide 1: Signups ──────────────────────────────────────────────────────────
+setHero('h1-val', 'h1-delta', num(D.kpi_signups.this), D.kpi_signups.delta, '');
+setEl('s1-last', num(D.kpi_signups.last));
+setEl('s1-avg',  num(D.kpi_signups.avg));
+setEl('s1-conv', pct(D.kpi_signup_conv.this));
+mkChart('chart-signups', [
+  bar('Weekly Signups', D.signups, BLUE),
+  line('OTP→PIN Conv%', D.signup_conv, AMBER, 'y2'),
+], Y2_PCT);
+insights('ins-s1', [
+  { color: BLUE,  txt: `7-wk avg: ${num(D.kpi_signups.avg)} signups/week` },
+  { color: AMBER, txt: `Conv% last wk: ${pct(D.kpi_signup_conv.this)} vs ${pct(D.kpi_signup_conv.last)} prior wk` },
+]);
+
+// ── Slide 2: KYC ──────────────────────────────────────────────────────────────
+setHero('h2-val', 'h2-delta', pct(D.kpi_kyc_start_pct.this), +D.kpi_kyc_start_pct.delta.toFixed(1), 'pp');
+setEl('s2-last', pct(D.kpi_kyc_start_pct.last));
+setEl('s2-done', pct(D.kpi_kyc_start_to_done.this));   // start→done rate
+setEl('s2-avg',  pct(D.kpi_kyc_start_pct.avg));
+mkChart('chart-kyc', [
+  bar('KYC Starters',  D.kyc_starters, VIOLET),
+  bar('Demat Verified', D.kyc_done,    GREEN),
+  line('Start Rate%',   D.kyc_start_pct,        AMBER, 'y2'),
+  line('Start→Done%',  D.kyc_start_to_done_pct, ROSE,  'y2'),
+], Y2_PCT);
+insights('ins-s2', [
+  { color: VIOLET, txt: `Start rate: ${pct(D.kpi_kyc_start_pct.this)} · prior wk: ${pct(D.kpi_kyc_start_pct.last)}` },
+  { color: ROSE,   txt: `Start→Done: ${pct(D.kpi_kyc_start_to_done.this)} · prior wk: ${pct(D.kpi_kyc_start_to_done.last)}` },
+]);
+
+// ── Slide 3: RTT → First Trade ────────────────────────────────────────────────
+// Hero = investors (absolute business outcome). WoW on investor count.
+// Cohort conv% = of users who became RTT in that week, % who have since invested
+// (to-date; naturally lower for recent weeks — older cohorts had more time).
+setHero('h3-val', 'h3-delta', num(D.kpi_investors.this), D.kpi_investors.delta, '');
+setEl('s3-last', num(D.kpi_investors.last));
+setEl('s3-avg',  num(D.kpi_investors.avg));
+setEl('s3-conv', pct(D.kpi_rtt_cohort_conv.this));
+mkChart('chart-rtt', [
+  bar('RTT Users',      D.rtt,                 GREEN),
+  bar('Investors',      D.payments,            BLUE),
+  line('Cohort Conv%',  D.rtt_cohort_conv_pct, AMBER, 'y2'),
+], Y2_PCT);
+insights('ins-s3', [
+  { color: BLUE,  txt: `Investors: ${num(D.kpi_investors.this)} last wk vs ${num(D.kpi_investors.last)} prior wk · 7-wk avg: ${num(D.kpi_investors.avg)}` },
+  { color: AMBER, txt: `Last-wk RTT cohort conv: ${pct(D.kpi_rtt_cohort_conv.this)} to-date · prior wk cohort: ${pct(D.kpi_rtt_cohort_conv.last)} (older cohort, naturally higher)` },
+]);
+
+// ── Slide 4: RTT Cohort Timing — line chart ───────────────────────────────────
+const TEAL = '#14b8a6';
+(function() {
+  const curve   = D.rtt_curve_pct;  // curve[cohort][elapsed_week] or null
+  const xLabels = ['Wk 0\n(same week)', 'Wk 1', 'Wk 2', 'Wk 3', 'Wk 4'];
+
+  // Teal gradient — darkest = oldest cohort (most data), lightest = newest
+  const palette = ['#0f766e','#0d9488','#14b8a6','#2dd4bf','#5eead4','#99f6e4','#ccfbf1'];
+
+  const lastIdx = curve.length - 1;
+  const prevIdx = Math.max(0, lastIdx - 1);
+  const thisSW  = ((curve[lastIdx] || [])[0]) || 0;
+  const prevSW  = ((curve[prevIdx] || [])[0]) || 0;
+  const delta   = +(thisSW - prevSW).toFixed(1);
+
+  setHero('h4t-val', 'h4t-delta', pct(thisSW), delta, 'pp');
+  setEl('s4t-prior', pct(prevSW));
+
+  // Oldest cohort to-date = last non-null value of curve[0]
+  const oldestPts   = curve[0] || [];
+  const oldestFinal = [...oldestPts].reverse().find(v => v !== null) || 0;
+  setEl('s4t-later',   pct(oldestFinal));
+  setEl('s4t-pending', pct(Math.max(0, +(100 - oldestFinal).toFixed(1))));
+
+  // Cohort bars — same-week conv% for each cohort (newest first for readability)
+  (function() {
+    const container = document.getElementById('s4-cohort-bars');
+    if (!container) return;
+    const allSW  = curve.map(pts => (pts || [])[0] || 0);
+    const maxSW  = Math.max(...allSW, 1);
+    const palette7 = ['#ccfbf1','#99f6e4','#5eead4','#2dd4bf','#14b8a6','#0d9488','#0f766e'];
+    // show newest → oldest (reverse order)
+    [...curve].reverse().forEach((pts, ri) => {
+      const i   = curve.length - 1 - ri;
+      const val = (pts || [])[0] || 0;
+      const lbl = (D.labels[i] || '').replace(/^(Mar|Apr|May) /, '').replace(' – ', '–');
+      const row = document.createElement('div');
+      row.className = 's4-cohort-row';
+      row.innerHTML =
+        '<span class="s4-cohort-lbl">' + lbl + '</span>' +
+        '<div class="s4-cohort-bwrap"><div class="s4-cohort-bfill" style="width:' +
+          Math.round(val / maxSW * 100) + '%;background:' + (palette7[i] || '#14b8a6') + '"></div></div>' +
+        '<span class="s4-cohort-val">' + pct(val) + '</span>';
+      container.appendChild(row);
+    });
+  })();
+
+  // ── Waterfall table ───────────────────────────────────────────────────────
+  (function() {
+    const table = document.getElementById('wf-table');
+    if (!table) return;
+
+    // Segment colours: W0 darkest → W4 lightest teal
+    const SEG_COLORS = ['#0d9488', '#14b8a6', '#2dd4bf', '#5eead4', '#99f6e4'];
+
+    // Scale: bar fills to the max final cumulative value across all cohorts (+10% padding)
+    const allVals = curve.flatMap(pts => (pts || []).filter(v => v !== null));
+    const scaleMax = allVals.length ? Math.ceil(Math.max(...allVals) * 1.12 / 5) * 5 : 50;
+
+    // Header
+    const hdr = document.createElement('div');
+    hdr.className = 'wf-hdr';
+    hdr.innerHTML = ['KYC Week','RTT','','W0 (7d)','+W1 (14d)','+W2 (21d)','+W3 (28d)','+W4 (35d)']
+      .map(t => `<div class="wf-hc">${t}</div>`).join('');
+    table.appendChild(hdr);
+
+    // Rows — newest cohort first (reverse)
+    [...curve].reverse().forEach((pts, ri) => {
+      const i    = curve.length - 1 - ri;
+      const vals = pts || [];                         // cumulative pcts [W0, W1, W2, W3, ...]
+      const rttCount = (D.rtt || [])[i];
+
+      const row = document.createElement('div');
+      row.className = 'wf-row';
+
+      // Label
+      const lblDiv = document.createElement('div');
+      lblDiv.className = 'wf-lbl';
+      lblDiv.textContent = D.labels[i] || `Cohort ${i+1}`;
+      row.appendChild(lblDiv);
+
+      // RTT count
+      const rttDiv = document.createElement('div');
+      rttDiv.className = 'wf-rtt';
+      rttDiv.textContent = rttCount != null ? (+rttCount).toLocaleString() : '—';
+      row.appendChild(rttDiv);
+
+      // Stacked bar
+      const track = document.createElement('div');
+      track.className = 'wf-track';
+      let prev = 0;
+      for (let e = 0; e < 5; e++) {
+        const cur = vals[e] != null ? vals[e] : null;
+        if (cur === null) break;
+        const inc = Math.max(0, cur - prev);
+        const seg = document.createElement('div');
+        seg.className = 'wf-seg';
+        seg.style.width = (inc / scaleMax * 100).toFixed(1) + '%';
+        seg.style.background = SEG_COLORS[e];
+        if (e > 0) seg.style.borderLeft = '1px solid rgba(255,255,255,.4)';
+        track.appendChild(seg);
+        prev = cur;
+      }
+      row.appendChild(track);
+
+      // Value cells — W0 through W4
+      for (let e = 0; e < 5; e++) {
+        const v   = vals[e] != null ? vals[e] : null;
+        const div = document.createElement('div');
+        div.className = 'wf-v ' + (v !== null ? 'ok' : 'na');
+        div.textContent = v !== null ? pct(v) : '—';
+        if (v !== null) div.style.color = SEG_COLORS[e];
+        row.appendChild(div);
+      }
+
+      table.appendChild(row);
+    });
+  })();
+
+  // Insight: % of eventual conversion that is same-week (for 4 most mature cohorts)
+  const mature  = curve.slice(0, 4);
+  const avgSW   = mature.reduce((s, pts) => s + (((pts || [])[0]) || 0), 0) / mature.length;
+  const avgFull = mature.reduce((s, pts) => {
+    const last = [...(pts || [])].reverse().find(v => v !== null) || 0;
+    return s + last;
+  }, 0) / mature.length;
+  const swShare = avgFull > 0 ? Math.round(avgSW / avgFull * 100) : 0;
+
+  insights('ins-s4t', [
+    { color: TEAL,      txt: `~${swShare}% of all first-trade conversions happen same-week as RTT — curves are flat after Wk 0` },
+    { color: '#94a3b8', txt: `Shorter lines = recent cohorts with less elapsed time — they will mature rightward in future weeks` },
+  ]);
+})();
+
+// ── Slide 5: WAU ──────────────────────────────────────────────────────────────
+setHero('h4-val', 'h4-delta', num(D.kpi_wau.this), D.kpi_wau.delta, '');
+setEl('s4-last', num(D.kpi_wau.last));
+setEl('s4-avg',  Math.round(D.kpi_wau.avg).toLocaleString());
+setEl('s4-wow',  (D.kpi_wau.delta >= 0 ? '+' : '') + D.kpi_wau.delta.toLocaleString());
+mkChart('chart-wau', [
+  { type: 'line', label: 'Weekly Active Users', data: D.wau,
+    borderColor: AMBER, backgroundColor: AMBER + '18', fill: true,
+    pointRadius: 4, pointHoverRadius: 6, tension: .4 },
+]);
+insights('ins-s4', [
+  { color: AMBER, txt: `7-wk avg WAU: ${Math.round(D.kpi_wau.avg).toLocaleString()}` },
+  { color: GREY,  txt: `WoW: ${D.kpi_wau.delta >= 0 ? '+' : ''}${D.kpi_wau.delta.toLocaleString()} users` },
+]);
+
+// ── Slide 6: Orders & GTV ─────────────────────────────────────────────────────
+setHero('h5-val', 'h5-delta', cr(D.kpi_gtv.this), null, '');
+setEl('s5-orders', num(D.kpi_orders.this));
+setEl('s5-avgg',   cr(D.kpi_gtv.avg));
+setEl('s5-repeat', `₹${D.gtv_mtd_this}cr vs ₹${D.gtv_mtd_prev}cr`);
+mkChart('chart-gtv', [
+  { type: 'bar',  label: 'Weekly GTV (₹cr)', data: D.gtv,    yAxisID: 'y2',
+    backgroundColor: AMBER + 'bb', borderColor: AMBER, borderWidth: 1, borderRadius: 3 },
+  line('Orders', D.orders, ROSE),
+], Y2);
+insights('ins-s5', [
+  { color: ROSE,  txt: `${D.mtd_month_this} MTD GTV: ₹${D.gtv_mtd_this}cr vs ₹${D.gtv_mtd_prev}cr (${D.mtd_month_prev} same day)` },
+  { color: AMBER, txt: `7-wk avg GTV: ${cr(D.kpi_gtv.avg)} · orders prior wk: ${num(D.kpi_orders.last)}` },
+]);
+
+// ── Slide 7: GTV by Issuer — WoW grouped bars ──────────────────────────────
+(function() {
+  const INDIGO      = '#6366f1';
+  const INDIGO_LITE = '#a5b4fc';
+  const issuers = D.gtv_by_issuer || [];
+  if (!issuers.length) {
+    setEl('h6-val', 'N/A');
+    const b = document.getElementById('h6-badge');
+    if (b) { b.textContent = 'No data'; b.className = 'hero-badge flat'; }
+    return;
+  }
+  const top3 = issuers.slice(0, 3);
+  const top  = top3[0];
+
+  // Hero = top issuer this-week GTV share
+  setEl('h6-val', top.pct_this + '%');
+  const badge = document.getElementById('h6-badge');
+  if (badge) {
+    const arr = top.wow_pp > 0 ? '▲' : (top.wow_pp < 0 ? '▼' : '→');
+    badge.textContent = `${top.name} · ${arr} ${Math.abs(top.wow_pp)}pp WoW`;
+    badge.className   = top.wow_pp > 0 ? 'hero-badge up' : (top.wow_pp < 0 ? 'hero-badge down' : 'hero-badge flat');
+  }
+
+  // Stats: top 3 with truncated name + WoW pp
+  top3.forEach((x, i) => {
+    const nm  = x.name.length > 14 ? x.name.slice(0, 13) + '…' : x.name;
+    const sgn = x.wow_pp >= 0 ? '+' : '';
+    setEl(`s6-top${i + 1}`, `${nm}: ${sgn}${x.wow_pp}pp`);
+  });
+
+  // Grouped horizontal bar — this week vs prior week for top 3
+  new Chart(document.getElementById('chart-issuer'), {
+    type: 'bar',
+    data: {
+      labels:   top3.map(x => x.name),
+      datasets: [
+        {
+          label: `This Week [${D.week_label_this}] (₹cr)`,
+          data:  top3.map(x => x.gtv_this),
+          backgroundColor: INDIGO + 'cc',
+          borderColor: INDIGO,
+          borderWidth: 1,
+          borderRadius: 3,
+        },
+        {
+          label: `Prior Week [${D.week_label_prev}] (₹cr)`,
+          data:  top3.map(x => x.gtv_last),
+          backgroundColor: INDIGO_LITE + 'bb',
+          borderColor: INDIGO_LITE,
+          borderWidth: 1,
+          borderRadius: 3,
+        },
+      ],
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { font: { size: 9 }, boxWidth: 9, padding: 10 } },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const x   = top3[ctx.dataIndex];
+              const pct = ctx.datasetIndex === 0 ? x.pct_this : x.pct_last;
+              return `₹${ctx.raw}cr  (${pct}% of week GTV)`;
+            },
+          },
+        },
+      },
+      scales: {
+        x: { grid: { color: '#f8fafc' }, ticks: { font: { size: 8 } }, beginAtZero: true },
+        y: { grid: { display: false }, ticks: { font: { size: 8 } } },
+      },
+    },
+  });
+
+  const ins = top3.map(x => {
+    const sgn = x.wow_pp >= 0 ? '+' : '';
+    return { color: INDIGO, txt: `${x.name}: ₹${x.gtv_this}cr this wk vs ₹${x.gtv_last}cr prior (${sgn}${x.wow_pp}pp share WoW)` };
+  });
+  insights('ins-s6', ins);
+})();
+
+// ── Slide 8: SEO Visibility — Bond Detail + Marketing Site/Blog ───────────────
+(function() {
+  const groups = (D.gsc_weekly || {}).groups || [];
+  if (!groups.length) {
+    // Show a "no data" placeholder in each SEO panel
+    ['seo-ins-bd', 'seo-ins-bl'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = '<div class="seo-ins-row" style="color:#94a3b8;font-style:italic;font-size:.63rem;">⚠ GSC data unavailable — check GOOGLE_REFRESH_TOKEN secret in GitHub Actions</div>';
+    });
+    return;
+  }
+
+  // groups[0]=Bond Detail, groups[1]=Marketing Site, groups[4]=Blog
+  const bdG  = groups[0] || {};
+  const mktG = groups[1] || {};
+  const blG  = groups[4] || {};
+
+  const bdImpr   = bdG.impr    || [];
+  const bdClicks = bdG.clicks  || [];
+  const mktImpr  = mktG.impr   || [];
+  const mktClks  = mktG.clicks || [];
+  const blImpr   = blG.impr    || [];
+  const blClks   = blG.clicks  || [];
+
+  const last = arr => arr[arr.length - 1] || 0;
+  const prev = arr => arr[arr.length - 2] || 0;
+  const wow  = arr => prev(arr) > 0 ? Math.round((last(arr) - prev(arr)) / prev(arr) * 100) : 0;
+  const avg4 = arr => arr.slice(-4).reduce((s, v) => s + (v || 0), 0) / 4;
+  const trend8 = arr => avg4(arr.slice(0, 4)) > 0
+    ? Math.round((avg4(arr.slice(-4)) - avg4(arr.slice(0, 4))) / avg4(arr.slice(0, 4)) * 100) : 0;
+  const fmtK = v => v >= 1000 ? (v / 1000).toFixed(0) + 'K' : String(v);
+
+  const bdWow  = wow(bdImpr);
+  const mktWow = wow(mktImpr);
+  const blWow  = wow(blImpr);
+
+  // ── Left panel ──────────────────────────────────────────────────────────────
+  setEl('h8-val', last(bdImpr).toLocaleString());
+  const h8Badge = document.getElementById('h8-delta');
+  if (h8Badge) {
+    h8Badge.textContent = (bdWow >= 0 ? '▲ +' : '▼ ') + Math.abs(bdWow) + '% WoW';
+    h8Badge.className = 'hero-badge ' + (bdWow >= 0 ? 'up' : 'down');
+  }
+  setEl('s8-bd-clicks', last(bdClicks).toLocaleString());
+  setEl('s8-bl-impr',  fmtK(last(mktImpr)) + ' (' + (mktWow >= 0 ? '+' : '') + mktWow + '% WoW)');
+  setEl('s8-bl-clicks', fmtK(last(blImpr))  + ' (' + (blWow  >= 0 ? '+' : '') + blWow  + '% WoW)');
+
+  // ── Chart 1: Bond Detail — bar (impressions) + line (clicks) ─────────────────
+  new Chart(document.getElementById('chart-seo-bd'), {
+    data: {
+      labels: bdG.labels,
+      datasets: [
+        { type: 'bar',  label: 'Impressions', data: bdImpr,
+          backgroundColor: '#3b82f6aa', borderColor: '#3b82f6',
+          borderWidth: 1, borderRadius: 3, yAxisID: 'y' },
+        { type: 'line', label: 'Clicks', data: bdClicks,
+          borderColor: '#64748b', backgroundColor: 'transparent',
+          borderWidth: 2, pointRadius: 3, tension: 0.3,
+          pointBackgroundColor: '#64748b', yAxisID: 'y2' },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { font: { size: 8 }, boxWidth: 8, padding: 6 } },
+        tooltip: { mode: 'index', intersect: false },
+      },
+      scales: {
+        x:  { grid: { display: false }, ticks: { font: { size: 8 }, maxRotation: 30, maxTicksLimit: 8 } },
+        y:  { grid: { color: '#f1f5f9' }, beginAtZero: true, ticks: { font: { size: 8 } },
+              title: { display: true, text: 'Impressions', font: { size: 8 }, color: '#94a3b8' } },
+        y2: { position: 'right', grid: { display: false }, ticks: { font: { size: 8 } },
+              title: { display: true, text: 'Clicks', font: { size: 8 }, color: '#64748b' } },
+      },
+    },
+  });
+
+  // Bond Detail insights
+  const bdCTR  = last(bdImpr) > 0 ? (last(bdClicks) / last(bdImpr) * 100).toFixed(1) : '0.0';
+  const ctrOk  = parseFloat(bdCTR) >= 1.5;
+  const bd8wk  = trend8(bdImpr);
+  const bdIns  = [
+    { color: '#10b981', txt: `Bond Detail impressions \u25b2${bd8wk}% over 8 weeks — SSR driving organic discovery` },
+    { color: ctrOk ? '#10b981' : '#f59e0b',
+      txt: `CTR = ${bdCTR}% (${last(bdClicks)} clicks / ${last(bdImpr).toLocaleString()} impr) — ${ctrOk ? 'above 1.5% benchmark \u2713' : 'add JSON-LD structured data to lift CTR toward 2%+'}` },
+    { color: '#3b82f6', txt: 'Expand SSR to issuer pages + collections for long-tail keyword capture' },
+  ];
+  const bdInsEl = document.getElementById('seo-ins-bd');
+  if (bdInsEl) bdIns.forEach(ins => {
+    const row = document.createElement('div'); row.className = 'seo-ins-row';
+    row.innerHTML = '<div class="seo-ins-dot" style="background:' + ins.color + '"></div><span>' + ins.txt + '</span>';
+    bdInsEl.appendChild(row);
+  });
+
+  // ── Chart 2: Marketing Site + Blog — dual declining lines ────────────────────
+  new Chart(document.getElementById('chart-seo-bl'), {
+    type: 'line',
+    data: {
+      labels: mktG.labels || blG.labels,
+      datasets: [
+        { label: 'Marketing Site', data: mktImpr,
+          borderColor: '#10b981', backgroundColor: '#10b98118',
+          borderWidth: 2, pointRadius: 3, tension: 0.3, fill: false },
+        { label: 'Blog', data: blImpr,
+          borderColor: '#ec4899', backgroundColor: '#ec489918',
+          borderWidth: 2, pointRadius: 3, tension: 0.3, fill: false },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { font: { size: 8 }, boxWidth: 8, padding: 6 } },
+        tooltip: { mode: 'index', intersect: false },
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 8 }, maxRotation: 30, maxTicksLimit: 8 } },
+        y: { grid: { color: '#f1f5f9' }, beginAtZero: true, ticks: { font: { size: 8 } },
+             title: { display: true, text: 'Impressions', font: { size: 8 }, color: '#94a3b8' } },
+      },
+    },
+  });
+
+  // Marketing + Blog insights
+  const mkt8wk  = trend8(mktImpr);
+  const bl8wk   = trend8(blImpr);
+  const mktCTR  = last(mktImpr) > 0 ? (last(mktClks) / last(mktImpr) * 100).toFixed(1) : '0.0';
+  const blCTR   = last(blImpr)  > 0 ? (last(blClks)  / last(blImpr)  * 100).toFixed(1) : '0.0';
+  const orgIns  = [
+    { color: '#f87171', txt: `Marketing Site \u25bc${Math.abs(mkt8wk)}% over 8 weeks — ${fmtK(last(mktImpr))} impr last wk, CTR ${mktCTR}%` },
+    { color: '#f87171', txt: `Blog \u25bc${Math.abs(bl8wk)}% over 8 weeks — ${fmtK(last(blImpr))} impr last wk, CTR ${blCTR}% \u00b7 refresh top posts with 2026 data` },
+    { color: '#3b82f6', txt: 'Add internal links from top blog posts \u2192 bond detail pages to convert organic readers' },
+  ];
+  const orgInsEl = document.getElementById('seo-ins-bl');
+  if (orgInsEl) orgIns.forEach(ins => {
+    const row = document.createElement('div'); row.className = 'seo-ins-row';
+    row.innerHTML = '<div class="seo-ins-dot" style="background:' + ins.color + '"></div><span>' + ins.txt + '</span>';
+    orgInsEl.appendChild(row);
+  });
+})();
+
+// ── Slide 9: Biometrics Performance ──────────────────────────────────────────
+(function() {
+  const BIO = D.bio_metrics   || {};
+  const RET = D.bio_retention || {};
+  const andM = BIO.android || {};
+  const iosM = BIO.ios     || {};
+  const bioR  = RET.bio    || {};
+  const nbR   = RET.nonbio || {};
+
+  // ── Left panel ──────────────────────────────────────────────────────────────
+  const bioD7   = bioR.d7  || 0;
+  const nbD7    = nbR.d7   || 0;
+  const lift    = nbD7 > 0 ? (bioD7 / nbD7).toFixed(1) : '—';
+  setEl('h9-val', lift + '\u00d7');
+  const h9Badge = document.getElementById('h9-delta');
+  if (h9Badge) {
+    h9Badge.textContent = `Bio ${bioD7}% vs Non-bio ${nbD7}% at D7`;
+    h9Badge.className = 'hero-badge up';
+  }
+  setEl('s9-login-share',  (RET.login_share_bio || 0).toFixed(1) + '%');
+  setEl('s9-forgot-delta', '\u221242%');
+  setEl('s9-and-success',  (andM.success_pct || 0).toFixed(1) + '%');
+  setEl('s9-ios-osfail',   (iosM.os_fail_pct || 0).toFixed(1) + '%');
+
+  // ── Platform cards ──────────────────────────────────────────────────────────
+  [['bio-card-android', '\ud83e\udd16 Android', andM],
+   ['bio-card-ios',     '\ud83c\udf4e iOS',     iosM]].forEach(([id, lbl, m]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const successOk = (m.success_pct  || 0) >= 60;
+    const osBad     = (m.os_fail_pct  || 0) > 30;
+    const failBad   = (m.setup_fail_pct || 0) >= 10;
+    el.innerHTML = `
+      <div class="bio-pc-title">${lbl}</div>
+      <div class="bio-pc-row">
+        <span class="bio-pc-lbl">Enrolled</span>
+        <span class="bio-pc-val">${(m.bio_users||0).toLocaleString()} / ${(m.setup_views||0).toLocaleString()} views</span>
+      </div>
+      <div class="bio-pc-row">
+        <span class="bio-pc-lbl">Adoption rate</span>
+        <span class="bio-pc-val" style="color:#059669">${(m.adoption_pct||0).toFixed(1)}%</span>
+      </div>
+      <div class="bio-pc-row">
+        <span class="bio-pc-lbl">Login success</span>
+        <span class="bio-pc-val" style="color:${successOk?'#059669':'#dc2626'}">${(m.success_pct||0).toFixed(1)}%</span>
+      </div>
+      <div class="bio-pc-row">
+        <span class="bio-pc-lbl">OS-level fail</span>
+        <span class="bio-pc-val" style="color:${osBad?'#dc2626':'#94a3b8'}">${osBad?'\u26a0 ':'\u2713 '}${(m.os_fail_pct||0).toFixed(1)}%</span>
+      </div>
+      <div class="bio-pc-row">
+        <span class="bio-pc-lbl">Setup fail</span>
+        <span class="bio-pc-val" style="color:${failBad?'#ea580c':'#94a3b8'}">${(m.setup_fail_pct||0).toFixed(1)}%</span>
+      </div>`;
+  });
+
+  // ── Retention chart ─────────────────────────────────────────────────────────
+  const retCanvas = document.getElementById('chart-bio-ret');
+  if (retCanvas && window.Chart) {
+    new Chart(retCanvas, {
+      type: 'bar',
+      data: {
+        labels: ['D1', 'D7', 'D14'],
+        datasets: [
+          { label: 'Bio users',     data: [bioR.d1||0, bioR.d7||0, bioR.d14||0],
+            backgroundColor: '#7c3aed', borderRadius: 4 },
+          { label: 'Non-bio users', data: [nbR.d1||0,  nbR.d7||0,  nbR.d14||0],
+            backgroundColor: '#cbd5e1', borderRadius: 4 },
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'top', labels: { font: { size: 9 }, boxWidth: 10, padding: 6 } },
+          tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}%` } }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+          y: { beginAtZero: true, max: 40,
+               ticks: { callback: v => v + '%', font: { size: 9 } },
+               grid: { color: '#f1f5f9' } }
+        }
+      }
+    });
+  }
+
+  // ── Forgot PIN bar ──────────────────────────────────────────────────────────
+  const forgotBefore = RET.forgot_before || 9.62;
+  const forgotAfter  = RET.forgot_after  || 5.56;
+  const forgotPct    = forgotBefore > 0 ? Math.round((1 - forgotAfter / forgotBefore) * 100) : 42;
+  const beforeEl = document.getElementById('bio-forgot-before');
+  if (beforeEl) beforeEl.innerHTML = `
+    <div class="bio-forgot-lbl">Before launch</div>
+    <div class="bio-forgot-val" style="color:#94a3b8">${forgotBefore.toFixed(1)}\u2030</div>
+    <div class="bio-forgot-track"><div class="bio-forgot-fill" style="width:100%;background:#cbd5e1"></div></div>`;
+  const afterEl = document.getElementById('bio-forgot-after');
+  const fillW = forgotBefore > 0 ? Math.round(forgotAfter / forgotBefore * 100) : 58;
+  if (afterEl) afterEl.innerHTML = `
+    <div class="bio-forgot-lbl">After launch</div>
+    <div class="bio-forgot-val" style="color:#059669">${forgotAfter.toFixed(1)}\u2030</div>
+    <div class="bio-forgot-track"><div class="bio-forgot-fill" style="width:${fillW}%;background:#059669"></div></div>`;
+  const badgeEl = document.getElementById('bio-forgot-badge');
+  if (badgeEl) badgeEl.textContent = `\u2212${forgotPct}% reduction`;
+
+  // ── Insights ─────────────────────────────────────────────────────────────────
+  const insEl = document.getElementById('bio-insights');
+  if (!insEl) return;
+  const iGREEN = '#059669', iAMBER = '#d97706', iRED = '#dc2626', iBLUE = '#2563eb';
+  const d1lift = ((bioR.d1||0) - (nbR.d1||0)).toFixed(1);
+  const insData = [
+    { color: iBLUE,
+      txt: `Bio D1 ${bioR.d1||0}% vs non-bio ${nbR.d1||0}% (+${d1lift}pp) \u00b7 D7 ${lift}\u00d7 lift — frictionless login drives measurably higher return rate (caveat: bio cohort self-selects higher-intent users)` },
+    { color: iGREEN,
+      txt: `Forgot PIN rate fell ${forgotPct}% since launch (${forgotBefore.toFixed(1)}\u2030 \u2192 ${forgotAfter.toFixed(1)}\u2030 per 1,000 sessions) — direct friction reduction; bio users no longer need PIN to re-enter the app` },
+    { color: iRED,
+      txt: `iOS success rate ${(iosM.success_pct||0).toFixed(1)}% — ${(iosM.os_fail_pct||0).toFixed(1)}% OS-fail rate persists; ASP-3665 (Face ID timing) unresolved, blocking full iOS retention benefit` },
+    { color: iAMBER,
+      txt: `Bio = ${(RET.login_share_bio||0).toFixed(1)}% of all app logins (${(RET.bio_logins||0).toLocaleString()} bio vs ${(RET.pin_logins||0).toLocaleString()} PIN) — fix iOS bug to accelerate majority-bio login mix` },
+  ];
+  insData.forEach(ins => {
+    const row = document.createElement('div');
+    row.className = 'bio-ins-row';
+    row.innerHTML = `<div class="bio-ins-dot" style="background:${ins.color}"></div><span>${ins.txt}</span>`;
+    insEl.appendChild(row);
+  });
+})();
+
+// ── Slide 10: Support Pulse ───────────────────────────────────────────────────
+(function() {
+  const PINK = '#ec4899';
+  const SP = D.support_pulse;
+  if (!SP) return;
+
+  const thisWk  = SP.real[3];   // current week
+  const prevWk  = SP.real[2];   // prior week
+  const totalWk = SP.total[3];
+  const dupesWk = totalWk - thisWk;
+  const wow     = thisWk - prevWk;
+  const wowSign = wow >= 0 ? '\u25b2' : '\u25bc';
+  const wowCls  = wow >= 5 ? 'down' : wow <= -5 ? 'up' : 'flat';
+
+  setEl('h10-val',   Math.round(thisWk).toLocaleString());
+  setEl('s10-total', Math.round(totalWk).toLocaleString());
+  setEl('s10-dupes', Math.round(dupesWk).toLocaleString());
+  setEl('s10-top',   SP.top_issues.length ? SP.top_issues[0].cat : Object.keys(SP.cats)[0]);
+  const b = document.getElementById('h10-delta');
+  if (b) {
+    b.textContent = wowSign + ' ' + Math.abs(wow) + ' WoW vs prior week';
+    b.className   = 'hero-badge ' + wowCls;
+  }
+
+  // ── Stacked bar chart ──────────────────────────────────────────────────────
+  const catNames = Object.keys(SP.cats);
+  const datasets = catNames.map(name => ({
+    type: 'bar', label: name,
+    data: SP.cats[name].data,
+    backgroundColor: SP.cats[name].color + 'bb',
+    borderColor: SP.cats[name].color,
+    borderWidth: 1, borderRadius: 2, stack: 'real'
+  }));
+  new Chart(document.getElementById('chart-support-trend'), {
+    data: { labels: SP.labels, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 7.5 }, boxWidth: 9, padding: 5 } },
+        tooltip: { mode: 'index', intersect: false }
+      },
+      scales: {
+        x: { stacked: true, grid: { display: false }, ticks: { font: { size: 7.5 } } },
+        y: { stacked: true, grid: { color: '#f1f5f9' }, ticks: { font: { size: 7.5 } },
+             title: { display: true, text: 'Real issues', font: { size: 7.5 }, color: '#94a3b8' } }
+      }
+    }
+  });
+
+  // ── Issue table ────────────────────────────────────────────────────────────
+  const JIRA_BASE = 'https://goyubi.atlassian.net/browse/';
+  const SC = {
+    'Engineering':          { bg: '#dcfce7', tx: '#15803d' },
+    'Active':               { bg: '#dbeafe', tx: '#1d4ed8' },
+    'Product Solutioning':  { bg: '#f3e8ff', tx: '#7e22ce' },
+    'To-Do':                { bg: '#fef9c3', tx: '#854d0e' },
+    'No ticket':            { bg: '#f1f5f9', tx: '#94a3b8' },
+  };
+  const el = document.getElementById('support-issue-table');
+  if (!el) return;
+
+  const rows = SP.top_issues.map(r => {
+    const diff = r.this_wk - r.prev_wk;
+    const wowStr   = diff === 0 ? '—' : (diff > 0 ? '\u25b2 +' : '\u25bc ') + Math.abs(diff);
+    const wowColor = diff > 2 ? '#ef4444' : diff < -2 ? '#22c55e' : '#94a3b8';
+    const sc       = SC[r.jira_status] || SC['No ticket'];
+    const jiraLink = r.jira
+      ? `<a href="${JIRA_BASE}${r.jira}" target="_blank" style="color:#3b82f6;text-decoration:none;font-weight:600;">${r.jira}</a>`
+      : '—';
+    const themes = r.themes.map(t => `<div>\u2022 ${t}</div>`).join('');
+    const subCatsHtml = (r.sub_cats && r.sub_cats.length)
+      ? '<div style="margin-top:3px;">' +
+          r.sub_cats.map(s =>
+            `<span style="display:inline-block;background:#f1f5f9;border-radius:3px;padding:1px 6px;font-size:.52rem;color:#475569;margin-right:3px;white-space:nowrap;">${s.name} <b style="color:#1e293b;">${s.pct}%</b></span>`
+          ).join('') + '</div>'
+      : '';
+    return `<tr>
+      <td style="padding:5px 6px;">
+        <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${r.color};margin-right:5px;vertical-align:middle;"></span>
+        <span style="font-size:.63rem;font-weight:600;color:#1e293b;">${r.cat}</span>
+        ${subCatsHtml}
+      </td>
+      <td style="padding:5px 6px;text-align:right;font-weight:700;font-size:.72rem;color:#1e293b;">${r.this_wk}</td>
+      <td style="padding:5px 6px;text-align:right;font-size:.63rem;color:${wowColor};font-weight:600;white-space:nowrap;">${wowStr}</td>
+      <td style="padding:5px 6px;font-size:.57rem;color:#64748b;line-height:1.3;">${themes}</td>
+      <td style="padding:5px 6px;text-align:right;white-space:nowrap;">${jiraLink}</td>
+      <td style="padding:5px 6px;text-align:right;">
+        <span style="background:${sc.bg};color:${sc.tx};border-radius:4px;padding:1px 6px;font-size:.55rem;font-weight:700;white-space:nowrap;">${r.jira_status}</span>
+      </td>
+    </tr>`;
+  }).join('');
+
+  el.innerHTML = `<table class="s10-tbl">
+    <thead><tr>
+      <th>Issue type</th>
+      <th style="text-align:right;">This wk</th>
+      <th style="text-align:right;">WoW</th>
+      <th>Key themes</th>
+      <th style="text-align:right;">Jira</th>
+      <th style="text-align:right;">Status</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+
+  const top1 = SP.top_issues[0];
+  const top1SubTxt = (top1 && top1.sub_cats && top1.sub_cats.length)
+    ? ' · Top sub-issues: ' + top1.sub_cats.map(s => `${s.name} ${s.pct}%`).join(', ')
+    : '';
+  const top1Txt = top1
+    ? `${top1.cat} = ${top1.this_wk} tickets this week · #1 issue · ${top1.jira_status}${top1SubTxt}`
+    : 'No top issue data';
+  insights('ins-s10', [
+    { color: top1 ? top1.color : PINK, txt: top1Txt },
+    { color: '#94a3b8', txt: `${thisWk} real unique issues/week after ${Math.round((1 - thisWk/totalWk)*100)}% merge-dupe removal \u00b7 from content analysis of sampled tickets` },
+  ]);
+})();
+</script>
+</body>
+</html>
