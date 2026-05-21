@@ -746,6 +746,172 @@
     </div>
   </div>
 
+
+  <!-- Slide 5: PIN Token Expired ────────────────────────────────────────────── -->
+  <div class="slide two-col" id="s5">
+    <div class="left-panel">
+      <div class="slide-num">Session Drops · 14-Day</div>
+      <div class="slide-ttl">PIN Token Expired</div>
+      <div class="slide-sub">Users with no re-engagement after session expired · today</div>
+      <div class="hero-block">
+        <div class="hero-val">583</div>
+        <div class="hero-lbl">sessions expired today</div>
+      </div>
+      <div style="margin-top:14px;display:flex;flex-direction:column;gap:5px">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:8px;background:#f0fdf4">
+          <span style="font-size:.72rem;color:#166534;font-weight:600">Re-engaged (home reached)</span>
+          <span style="font-size:.9rem;font-weight:700;color:#16a34a">415 · 71.2%</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:8px;background:#fef2f2">
+          <span style="font-size:.72rem;color:#991b1b;font-weight:600">Dropped (no re-engagement)</span>
+          <span style="font-size:.9rem;font-weight:700;color:#ef4444">168 · 28.8%
+            <span class="badge down" style="font-size:.62rem;margin-left:4px">▲ 5.9pp DoD</span>
+          </span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:8px;background:#f8fafc">
+          <span style="font-size:.72rem;color:#64748b;font-weight:600">13-day avg drop rate</span>
+          <span style="font-size:.85rem;font-weight:600;color:#475569">49.1%</span>
+        </div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div class="sfr-header">
+        <span>Metric</span>
+        <span style="text-align:right">Today · DoD</span>
+        <span style="text-align:right">Yesterday</span>
+        <span style="text-align:center">14-Day Trend</span>
+      </div>
+      <div class="sfr-rows">
+        <div class="sfr-row" style="background:#fafcff">
+          <div>
+            <div class="sfr-stage">Expired</div>
+            <div class="sfr-desc">PIN_TOKEN_EXPIRED unique users</div>
+          </div>
+          <div style="text-align:right">
+            <div class="sfr-today">583</div>
+            <div class="badge up">-19</div>
+          </div>
+          <div style="text-align:right">
+            <div class="sfr-prev">602</div>
+          </div>
+          <canvas id="spPinExp" width="160" height="44" style="display:block;margin:auto"></canvas>
+        </div>
+        <div class="sfr-row">
+          <div>
+            <div class="sfr-stage">Re-engaged</div>
+            <div class="sfr-desc">HOME_PAGE_VIEW after expiry</div>
+          </div>
+          <div style="text-align:right">
+            <div class="sfr-today" style="color:#16a34a">415</div>
+            <div class="badge down">-49</div>
+          </div>
+          <div style="text-align:right">
+            <div class="sfr-prev">464</div>
+          </div>
+          <canvas id="spPinRe" width="160" height="44" style="display:block;margin:auto"></canvas>
+        </div>
+        <div class="sfr-row" style="background:#fafcff">
+          <div>
+            <div class="sfr-stage">Drop Rate</div>
+            <div class="sfr-desc">% expired with no re-engagement</div>
+          </div>
+          <div style="text-align:right">
+            <div class="sfr-today" style="color:#ef4444">28.8%</div>
+            <div class="badge down">▲ 5.9pp</div>
+          </div>
+          <div style="text-align:right">
+            <div class="sfr-prev">22.9%</div>
+          </div>
+          <canvas id="spPinDropPct" width="160" height="44" style="display:block;margin:auto"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 6: Biometrics Health ─────────────────────────────────────────────── -->
+  <div class="slide two-col" id="s6">
+    <div class="left-panel">
+      <div class="slide-num">Biometrics · 14-Day</div>
+      <div class="slide-ttl">Biometric Auth</div>
+      <div class="slide-sub">Setup funnel + login funnel · today  ⚠ 2 anomalies</div>
+      <div style="margin-top:10px;display:flex;flex-direction:column;gap:5px">
+        <!-- Eligible row -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-radius:8px;background:#f0f9ff">
+          <span style="font-size:.71rem;color:#0c4a6e;font-weight:600">Device eligible (saw setup screen)</span>
+          <span style="font-size:.88rem;font-weight:700;color:#0284c7">766
+            <span class="badge up" style="font-size:.6rem;margin-left:3px">+30</span>
+          </span>
+        </div>
+        <!-- Setup enabled -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-radius:8px;background:#f0fdf4">
+          <span style="font-size:.71rem;color:#166534;font-weight:600">Enabled biometrics</span>
+          <span style="font-size:.88rem;font-weight:700;color:#16a34a">517 · 67.5%</span>
+        </div>
+        <!-- Skipped -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-radius:8px;background:#fafaf9">
+          <span style="font-size:.71rem;color:#78716c;font-weight:600">Skipped setup</span>
+          <span style="font-size:.88rem;font-weight:600;color:#a8a29e">232 · 30.3%</span>
+        </div>
+        <!-- Setup failed with anomaly badge -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-radius:8px;background:#fff7ed">
+          <span style="font-size:.71rem;color:#9a3412;font-weight:600">
+            Setup failed ⚠ ANOMALY (+56.9%)
+          </span>
+          <span style="font-size:.88rem;font-weight:700;color:#ea580c">63 · 8.2%</span>
+        </div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div class="sfr-header">
+        <span>Login Event</span>
+        <span style="text-align:right">Today</span>
+        <span style="text-align:right">New / All</span>
+        <span style="text-align:center">14-Day Trend</span>
+      </div>
+      <div class="sfr-rows">
+        <div class="sfr-row" style="background:#fafcff">
+          <div>
+            <div class="sfr-stage">Login Attempts</div>
+            <div class="sfr-desc">BIOMETRIC_LOGIN_CLICKED</div>
+          </div>
+          <div style="text-align:right">
+            <div class="sfr-today">604</div>
+          </div>
+          <div style="text-align:right">
+            <div class="sfr-prev" style="font-size:.72rem">375 / 604</div>
+          </div>
+          <canvas id="spBioClick" width="160" height="44" style="display:block;margin:auto"></canvas>
+        </div>
+        <div class="sfr-row">
+          <div>
+            <div class="sfr-stage" style="color:#10b981">Login Verified</div>
+            <div class="sfr-desc">CHALLENGE_VERIFIED · 72.8% success</div>
+          </div>
+          <div style="text-align:right">
+            <div class="sfr-today" style="color:#10b981">440</div>
+          </div>
+          <div style="text-align:right">
+            <div class="sfr-prev" style="font-size:.72rem">276 / 440</div>
+          </div>
+          <canvas id="spBioVerif" width="160" height="44" style="display:block;margin:auto"></canvas>
+        </div>
+        <div class="sfr-row" style="background:#fafcff">
+          <div>
+            <div class="sfr-stage" style="color:#ef4444">Verify Failed</div>
+            <div class="sfr-desc">BIOMETRIC_VERIFY_FAILED · 38.1% of attempts</div>
+          </div>
+          <div style="text-align:right">
+            <div class="sfr-today" style="color:#ef4444">230</div>
+          </div>
+          <div style="text-align:right">
+            <div class="sfr-prev" style="font-size:.72rem">134 / 230</div>
+          </div>
+          <canvas id="spBioFail" width="160" height="44" style="display:block;margin:auto"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 </div><!-- /.deck-wrap -->
 
@@ -958,6 +1124,16 @@ function sparklineCount(id, labels, vals, color) {
 sparklineCount('spTxTotal',  ["05-07", "05-08", "05-09", "05-10", "05-11", "05-12", "05-13", "05-14", "05-15", "05-16", "05-17", "05-18", "05-19", "05-20", "05-21"], [30, 26, 20, 16, 29, 43, 48, 35, 44, 26, 29, 44, 46, 34, 27],  '#f97316');
 sparklineCount('spTxNew',    ["05-07", "05-08", "05-09", "05-10", "05-11", "05-12", "05-13", "05-14", "05-15", "05-16", "05-17", "05-18", "05-19", "05-20", "05-21"], [15, 11, 11, 3, 15, 20, 18, 15, 25, 5, 7, 22, 19, 11, 11],    '#3b82f6');
 sparklineCount('spTxRepeat', ["05-07", "05-08", "05-09", "05-10", "05-11", "05-12", "05-13", "05-14", "05-15", "05-16", "05-17", "05-18", "05-19", "05-20", "05-21"], [15, 15, 9, 13, 14, 23, 30, 20, 19, 21, 22, 22, 27, 23, 16], '#8b5cf6');
+
+// ── PIN Token Expired sparklines ──────────────────────────────────────────────
+sparklineCount('spPinExp',     ["05-08", "05-09", "05-10", "05-11", "05-12", "05-13", "05-14", "05-15", "05-16", "05-17", "05-18", "05-19", "05-20", "05-21"], [314, 297, 383, 495, 604, 474, 558, 506, 572, 517, 617, 584, 602, 583],  '#f97316');
+sparklineCount('spPinRe',      ["05-08", "05-09", "05-10", "05-11", "05-12", "05-13", "05-14", "05-15", "05-16", "05-17", "05-18", "05-19", "05-20", "05-21"], [214, 196, 164, 222, 258, 236, 264, 243, 235, 225, 293, 250, 464, 415], '#10b981');
+sparkline(     'spPinDropPct', ["05-08", "05-09", "05-10", "05-11", "05-12", "05-13", "05-14", "05-15", "05-16", "05-17", "05-18", "05-19", "05-20", "05-21"], [31.8, 34.0, 57.2, 55.2, 57.3, 50.2, 52.7, 52.0, 58.9, 56.5, 52.5, 57.2, 22.9, 28.8], '#ef4444');
+
+// ── Biometric sparklines ──────────────────────────────────────────────────────
+sparklineCount('spBioClick', ["05-08", "05-09", "05-10", "05-11", "05-12", "05-13", "05-14", "05-15", "05-16", "05-17", "05-18", "05-19", "05-20", "05-21"], [430, 379, 389, 455, 569, 497, 549, 519, 571, 544, 584, 609, 625, 604], '#3b82f6');
+sparklineCount('spBioVerif', ["05-08", "05-09", "05-10", "05-11", "05-12", "05-13", "05-14", "05-15", "05-16", "05-17", "05-18", "05-19", "05-20", "05-21"], [332, 285, 284, 355, 432, 382, 424, 382, 421, 400, 441, 442, 453, 440], '#10b981');
+sparklineCount('spBioFail',  ["05-08", "05-09", "05-10", "05-11", "05-12", "05-13", "05-14", "05-15", "05-16", "05-17", "05-18", "05-19", "05-20", "05-21"], [153, 128, 156, 155, 188, 166, 195, 189, 199, 199, 218, 221, 237, 230], '#ef4444');
 </script>
 </body>
 </html>
