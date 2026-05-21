@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pre-Order Behavior Pattern · Aspero</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:#0d1117; --surface:#ffffff; --surface2:#f8fafc; --border:#e2e8f0;
+  --text:#1e293b; --text2:#64748b; --text3:#94a3b8;
+  --blue:#3b82f6; --blue-dim:rgba(59,130,246,.10);
+  --violet:#8b5cf6; --violet-dim:rgba(139,92,246,.10);
+  --green:#059669; --green-dim:rgba(5,150,105,.10);
+  --rose:#f87171; --rose-dim:rgba(248,113,113,.10);
+  --amber:#d97706; --amber-dim:rgba(217,119,6,.10);
+  --indigo:#6366f1;
+  --radius:10px;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--bg); color:var(--text); min-height:100vh; }
+
+.hdr { background:linear-gradient(135deg,#0d1f3c,#1c3a6a);
+  padding:16px 24px; display:flex; align-items:center;
+  justify-content:space-between; flex-wrap:wrap; gap:8px;
+  border-bottom:1px solid #30363d; border-radius:14px 14px 0 0; }
+.hdr-left h1 { font-size:1.1rem; font-weight:700; color:#93c5fd; }
+.hdr-left .sub { font-size:.72rem; color:#94a3b8; margin-top:2px; }
+.back-link { font-size:.75rem; color:#93c5fd; text-decoration:none; opacity:.8; }
+.back-link:hover { opacity:1; }
+
+.wrap { max-width:1100px; margin:0 auto; padding:0 0 60px;
+  background:var(--surface);
+  box-shadow:0 30px 90px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.06);
+  border-radius:14px; }
+.wrap-inner { padding:24px 24px 0; }
+
+.notice { background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px;
+  padding:10px 16px; margin-bottom:20px; font-size:.78rem; color:#1e40af; }
+.notice strong { color:#1e3a8a; }
+
+.sec-title { font-size:.72rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--text2); margin-bottom:12px; }
+
+/* KPI grid */
+.kpi-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(155px,1fr));
+  gap:12px; margin-bottom:28px; }
+.kpi-card { background:var(--surface2); border:1px solid var(--border);
+  border-radius:var(--radius); padding:14px 16px; border-top:3px solid var(--border); }
+.kpi-card.blue   { border-top-color:var(--blue); }
+.kpi-card.violet { border-top-color:var(--violet); }
+.kpi-card.green  { border-top-color:var(--green); }
+.kpi-card.rose   { border-top-color:var(--rose); }
+.kpi-card.amber  { border-top-color:var(--amber); }
+.kpi-card.indigo { border-top-color:var(--indigo); }
+.kpi-label { font-size:.63rem; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--text3); margin-bottom:6px; }
+.kpi-val { font-size:1.5rem; font-weight:800; letter-spacing:-.03em; color:var(--text); }
+.kpi-sub { font-size:.66rem; color:var(--text3); margin-top:4px; line-height:1.4; }
+.kpi-badge { display:inline-block; font-size:.62rem; font-weight:700;
+  padding:2px 6px; border-radius:4px; margin-top:5px; }
+.kpi-badge.bad  { background:var(--rose-dim);   color:#b91c1c; }
+.kpi-badge.warn { background:var(--amber-dim);  color:#92400e; }
+.kpi-badge.good { background:var(--green-dim);  color:#065f46; }
+.kpi-badge.info { background:var(--blue-dim);   color:#1e40af; }
+
+/* chart cards */
+.chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px; }
+.chart-grid.wide { grid-template-columns:1fr; }
+@media(max-width:700px){ .chart-grid { grid-template-columns:1fr; } }
+.chart-card { background:var(--surface2); border:1px solid var(--border);
+  border-radius:var(--radius); padding:16px 18px; }
+.chart-card h3 { font-size:.8rem; font-weight:700; color:var(--text); margin-bottom:4px; }
+.chart-card .chart-sub { font-size:.68rem; color:var(--text3); margin-bottom:14px; }
+.chart-wrap { position:relative; height:240px; }
+.chart-wrap.tall { height:300px; }
+.chart-wrap.short { height:200px; }
+
+/* funnel visual */
+.funnel-wrap { padding:8px 0; }
+.funnel-step { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+.funnel-bar-outer { flex:1; background:#f1f5f9; border-radius:6px; height:40px;
+  position:relative; overflow:hidden; }
+.funnel-bar-inner { height:100%; border-radius:6px; display:flex;
+  align-items:center; padding:0 14px; transition:width .6s ease; }
+.funnel-bar-inner span { font-size:.8rem; font-weight:700; color:#fff;
+  white-space:nowrap; text-shadow:0 1px 2px rgba(0,0,0,.3); }
+.funnel-meta { width:200px; flex-shrink:0; }
+.funnel-meta .fm-label { font-size:.76rem; font-weight:600; color:var(--text); }
+.funnel-meta .fm-sub   { font-size:.66rem; color:var(--text3); margin-top:2px; }
+.funnel-arrow { text-align:center; color:var(--text3); font-size:.8rem;
+  margin:-6px 0; padding-left:214px; }
+
+/* insight box */
+.insight-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:12px; margin-bottom:24px; }
+.insight { background:var(--surface2); border:1px solid var(--border);
+  border-left:4px solid var(--border); border-radius:var(--radius);
+  padding:14px 16px; }
+.insight.blue   { border-left-color:var(--blue); }
+.insight.violet { border-left-color:var(--violet); }
+.insight.amber  { border-left-color:var(--amber); }
+.insight.green  { border-left-color:var(--green); }
+.insight.rose   { border-left-color:var(--rose); }
+.insight-title { font-size:.74rem; font-weight:700; color:var(--text); margin-bottom:5px; }
+.insight-body  { font-size:.72rem; color:var(--text2); line-height:1.55; }
+.insight-body strong { color:var(--text); }
+
+/* platform table */
+.tbl-wrap { background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); overflow:auto; margin-bottom:24px; }
+table { width:100%; border-collapse:collapse; font-size:.82rem; }
+thead tr { background:var(--surface2); }
+th { padding:10px 14px; text-align:right; font-size:.68rem; font-weight:600;
+  text-transform:uppercase; letter-spacing:.06em; color:var(--text2);
+  border-bottom:1px solid var(--border); white-space:nowrap; }
+th:first-child { text-align:left; }
+td { padding:9px 14px; text-align:right; border-bottom:1px solid #f1f5f9; }
+td:first-child { text-align:left; font-weight:600; }
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:rgba(0,0,0,.02); }
+.plat-ios     { color:#6366f1; }
+.plat-android { color:#10b981; }
+.plat-web     { color:#3b82f6; }
+.val-hi { color:var(--amber); font-weight:700; }
+
+/* caveat */
+.caveat { background:#fffbeb; border:1px solid #fcd34d; border-radius:8px;
+  padding:10px 16px; margin-top:4px; margin-bottom:24px;
+  font-size:.75rem; color:#78350f; line-height:1.6; }
+.caveat strong { color:#92400e; }
+
+/* footer */
+.footer { text-align:center; font-size:.7rem; color:var(--text3); padding:16px 24px 8px;
+  border-top:1px solid var(--border); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hdr">
+    <div class="hdr-left">
+      <h1>Pre-Order Behavior Pattern</h1>
+      <div class="sub">What users do before placing a bond investment · May 4–18 2026 · Amplitude</div>
+    </div>
+    <a class="back-link" href="index.html">← Back to Hub</a>
+  </div>
+
+  <div class="wrap-inner">
+
+    <div class="notice">
+      <strong>Data window:</strong> May 4–18 2026 (15 days).
+      <code>BOND_DETAILS_PAGE_VIEW</code> event was broken Mar 11 – May 3 2026 — excluded from analysis.
+      Payer counts from segmentation are slightly overcounted (daily unique sum); funnel counts are exact.
+    </div>
+
+    <!-- KPI cards -->
+    <div class="sec-title">Key Metrics · May 4–18 2026</div>
+    <div class="kpi-grid">
+      <div class="kpi-card blue">
+        <div class="kpi-label">Bond Page Viewers</div>
+        <div class="kpi-val">6,935</div>
+        <div class="kpi-sub">Unique users who viewed ≥1 bond detail page</div>
+      </div>
+      <div class="kpi-card rose">
+        <div class="kpi-label">View → Pay Conv.</div>
+        <div class="kpi-val">4.9%</div>
+        <div class="kpi-sub">Of bond viewers who completed payment</div>
+        <span class="kpi-badge bad">92% drop off</span>
+      </div>
+      <div class="kpi-card amber">
+        <div class="kpi-label">Invest Tap Rate</div>
+        <div class="kpi-val">8.0%</div>
+        <div class="kpi-sub">Of viewers who tapped the Invest CTA</div>
+        <span class="kpi-badge warn">1-in-12 viewers</span>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-label">Tap → Pay Conv.</div>
+        <div class="kpi-val">60.7%</div>
+        <div class="kpi-sub">Of CTA tappers who completed payment</div>
+        <span class="kpi-badge good">High commitment</span>
+      </div>
+      <div class="kpi-card violet">
+        <div class="kpi-label">Avg Bond Views</div>
+        <div class="kpi-val">16.2</div>
+        <div class="kpi-sub">Bond detail pages viewed per payer before investing</div>
+        <span class="kpi-badge info">Heavy research</span>
+      </div>
+      <div class="kpi-card indigo">
+        <div class="kpi-label">Avg App Opens</div>
+        <div class="kpi-val">36.9</div>
+        <div class="kpi-sub">HOME_PAGE_VIEW events per payer (session proxy)</div>
+        <span class="kpi-badge info">High engagement</span>
+      </div>
+    </div>
+
+    <!-- Funnel visual -->
+    <div class="sec-title">Conversion Funnel</div>
+    <div class="chart-card" style="margin-bottom:24px;">
+      <h3>Bond Detail View → Payment Successful</h3>
+      <div class="chart-sub">Ordered funnel · May 4–18 2026 · Amplitude Funnel API (exact counts)</div>
+      <div class="funnel-wrap">
+
+        <div class="funnel-step">
+          <div class="funnel-meta">
+            <div class="fm-label">Bond Detail Page Viewed</div>
+            <div class="fm-sub">6,935 users · 100%</div>
+          </div>
+          <div class="funnel-bar-outer">
+            <div class="funnel-bar-inner" style="width:100%;background:#3b82f6;">
+              <span>6,935 users</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="funnel-arrow">↓ 8.0% tapped Invest</div>
+
+        <div class="funnel-step">
+          <div class="funnel-meta">
+            <div class="fm-label">Payment Initiated</div>
+            <div class="fm-sub">555 users · 8.0% of viewers</div>
+          </div>
+          <div class="funnel-bar-outer">
+            <div class="funnel-bar-inner" style="width:8.0%;background:#d97706;min-width:120px;">
+              <span>555 users</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="funnel-arrow">↓ 60.7% completed</div>
+
+        <div class="funnel-step">
+          <div class="funnel-meta">
+            <div class="fm-label">Payment Successful</div>
+            <div class="fm-sub">337 users · 4.9% of viewers</div>
+          </div>
+          <div class="funnel-bar-outer">
+            <div class="funnel-bar-inner" style="width:4.9%;background:#059669;min-width:100px;">
+              <span>337 users</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Charts row 1 -->
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>Payers by Platform</h3>
+        <div class="chart-sub">Distribution of paying users (payer-days, May 4–18 2026)</div>
+        <div class="chart-wrap short"><canvas id="platformDonut"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Avg Bond Detail Views per Payer</h3>
+        <div class="chart-sub">How many bond pages viewed before paying, by platform</div>
+        <div class="chart-wrap short"><canvas id="bondViewsBar"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Charts row 2 -->
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>Avg App Opens per Payer</h3>
+        <div class="chart-sub">HOME_PAGE_VIEW count as session proxy, by platform (15-day window)</div>
+        <div class="chart-wrap short"><canvas id="appOpensBar"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Funnel Drop-off Breakdown</h3>
+        <div class="chart-sub">Where users fall out of the bond-view → payment funnel</div>
+        <div class="chart-wrap short"><canvas id="dropoffBar"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Platform table -->
+    <div class="sec-title">Platform Breakdown</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Platform</th>
+            <th>Payers (est.)</th>
+            <th>Share of Payers</th>
+            <th>Avg Bond Views</th>
+            <th>Avg App Opens</th>
+            <th>Bond Views / App Open</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="plat-android">Android</td>
+            <td>390</td>
+            <td>80.2%</td>
+            <td class="val-hi">12.0</td>
+            <td class="val-hi">28.6</td>
+            <td>0.42</td>
+          </tr>
+          <tr>
+            <td class="plat-ios">iOS</td>
+            <td>49</td>
+            <td>10.1%</td>
+            <td>10.7</td>
+            <td>19.2</td>
+            <td>0.56</td>
+          </tr>
+          <tr>
+            <td class="plat-web">Web</td>
+            <td>50</td>
+            <td>10.3%</td>
+            <td>10.0</td>
+            <td>16.5</td>
+            <td>0.61</td>
+          </tr>
+          <tr style="background:var(--surface2);font-weight:700;">
+            <td>Overall</td>
+            <td>489 (est.)</td>
+            <td>100%</td>
+            <td>16.2*</td>
+            <td>36.9*</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size:.68rem;color:var(--text3);margin-top:-18px;margin-bottom:24px;padding-left:4px;">
+      * Overall avg uses exact funnel payer count (337) as denominator. Per-platform uses payer-days (i=1 sum, slight overcount).
+      "Bond Views / App Open" = how often a session results in a bond page view.
+    </div>
+
+    <!-- Insights -->
+    <div class="sec-title">Key Insights</div>
+    <div class="insight-grid">
+      <div class="insight rose">
+        <div class="insight-title">92% of viewers never invest</div>
+        <div class="insight-body">6,598 users read bond pages and leave without tapping Invest.
+          The bottleneck is <strong>browse-to-tap</strong>, not tap-to-pay (60.7% complete once they tap).</div>
+      </div>
+      <div class="insight amber">
+        <div class="insight-title">Heavy research product</div>
+        <div class="insight-body">Payers viewed <strong>16.2 bond pages</strong> and opened the app
+          <strong>37 times</strong> before investing. Users are comparing extensively — this is a high-consideration
+          purchase, not impulse.</div>
+      </div>
+      <div class="insight blue">
+        <div class="insight-title">Android users research more</div>
+        <div class="insight-body">Android payers: 12 bond views + 28.6 app opens.
+          iOS/Web payers: ~10 views + 16–19 opens. Android (lower-income tiers) is
+          <strong>more cautious</strong> and needs more reassurance before committing.</div>
+      </div>
+      <div class="insight green">
+        <div class="insight-title">Once they tap, they pay</div>
+        <div class="insight-body">60.7% tap-to-pay conversion is strong. Payment UX and checkout
+          flow are <strong>not the problem</strong>. Focus interventions on getting users
+          to tap Invest, not on reducing payment friction.</div>
+      </div>
+      <div class="insight violet">
+        <div class="insight-title">iOS/Web decide faster</div>
+        <div class="insight-body">iOS users: 19.2 app opens vs 28.6 for Android.
+          Higher-income, higher-conviction buyers who trust the product faster.
+          Consistent with 3–4× higher conversion rate vs Android (from Stage 11 data).</div>
+      </div>
+      <div class="insight amber">
+        <div class="insight-title">Bond pages are research, not buy</div>
+        <div class="insight-body">With only 0.42–0.61 bond views per app open, most sessions
+          don't include bond research. Users open the app for other reasons,
+          <strong>then sometimes</strong> browse bonds. Consider surfacing bond recommendations on the home page.</div>
+      </div>
+    </div>
+
+    <div class="caveat">
+      <strong>Caveats:</strong>
+      <code>BOND_DETAILS_PAGE_VIEW</code> event was broken Mar 11–May 3 2026 — only May 4–18 data used (15 days).
+      · Session proxy = <code>HOME_PAGE_VIEW</code> (<code>[Amplitude] Session Start</code> invalid in project 506002).
+      · Payer counts from segmentation API (<code>i=1</code>) sum daily uniques — slight overcount for cross-day users.
+      · Funnel step counts are exact (Amplitude Funnel API).
+      · Per-platform counts don't sum to overall funnel payers because funnel uses ordered sequence (viewers who then paid)
+      while segmentation counts all payers with a platform filter.
+    </div>
+
+  </div><!-- /wrap-inner -->
+
+  <div class="footer">
+    Pre-Order Pattern Analysis · Aspero B2C · Data: Amplitude project 506002 · Generated May 21 2026
+  </div>
+</div><!-- /wrap -->
+
+<script>
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+Chart.defaults.color = '#64748b';
+
+// 1. Platform donut
+new Chart(document.getElementById('platformDonut'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Android', 'iOS', 'Web'],
+    datasets: [{
+      data: [390, 49, 50],
+      backgroundColor: ['#10b981','#6366f1','#3b82f6'],
+      borderWidth: 2,
+      borderColor: '#f8fafc',
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'right', labels: { boxWidth: 12, padding: 14, font: { size: 12 } } },
+      tooltip: {
+        callbacks: {
+          label: ctx => ` ${ctx.label}: ${ctx.raw} payers (${Math.round(ctx.raw/489*100)}%)`
+        }
+      }
+    },
+    cutout: '62%',
+  }
+});
+
+// 2. Avg bond views bar
+new Chart(document.getElementById('bondViewsBar'), {
+  type: 'bar',
+  data: {
+    labels: ['Android', 'iOS', 'Web'],
+    datasets: [{
+      label: 'Avg bond detail views',
+      data: [12.0, 10.7, 10.0],
+      backgroundColor: ['#10b981','#6366f1','#3b82f6'],
+      borderRadius: 6,
+      barThickness: 36,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true, max: 18,
+        grid: { color: '#f1f5f9' },
+        ticks: { font: { size: 11 } },
+        title: { display: true, text: 'Avg pages viewed', font: { size: 11 } }
+      },
+      x: { grid: { display: false }, ticks: { font: { size: 12 } } }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.raw} bond pages` } },
+      annotation: {}
+    }
+  }
+});
+
+// 3. Avg app opens bar
+new Chart(document.getElementById('appOpensBar'), {
+  type: 'bar',
+  data: {
+    labels: ['Android', 'iOS', 'Web'],
+    datasets: [{
+      label: 'Avg app opens (HOME_PAGE_VIEW)',
+      data: [28.6, 19.2, 16.5],
+      backgroundColor: ['rgba(16,185,129,.7)','rgba(99,102,241,.7)','rgba(59,130,246,.7)'],
+      borderColor:      ['#10b981','#6366f1','#3b82f6'],
+      borderWidth: 2,
+      borderRadius: 6,
+      barThickness: 36,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true, max: 40,
+        grid: { color: '#f1f5f9' },
+        ticks: { font: { size: 11 } },
+        title: { display: true, text: 'Avg HOME_PAGE_VIEWs', font: { size: 11 } }
+      },
+      x: { grid: { display: false }, ticks: { font: { size: 12 } } }
+    },
+    plugins: { legend: { display: false } }
+  }
+});
+
+// 4. Drop-off breakdown (stacked / waterfall-style)
+new Chart(document.getElementById('dropoffBar'), {
+  type: 'bar',
+  data: {
+    labels: ['Viewed Bond Page', 'Tapped Invest', 'Paid Successfully'],
+    datasets: [{
+      label: 'Users',
+      data: [6935, 555, 337],
+      backgroundColor: ['#3b82f6','#d97706','#059669'],
+      borderRadius: 6,
+      barThickness: 48,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: { color: '#f1f5f9' },
+        ticks: {
+          font: { size: 11 },
+          callback: v => v >= 1000 ? (v/1000).toFixed(1)+'k' : v
+        }
+      },
+      x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const pct = [100, 8.0, 4.9][ctx.dataIndex];
+            return ` ${ctx.raw.toLocaleString()} users (${pct}% of viewers)`;
+          }
+        }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
