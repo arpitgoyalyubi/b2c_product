@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pre-Order Behavior Pattern · Aspero</title>
+<title>First Payment Journey · Aspero</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 :root {
@@ -14,7 +14,7 @@
   --green:#059669; --green-dim:rgba(5,150,105,.10);
   --rose:#f87171; --rose-dim:rgba(248,113,113,.10);
   --amber:#d97706; --amber-dim:rgba(217,119,6,.10);
-  --indigo:#6366f1;
+  --indigo:#6366f1; --slate:#64748b;
   --radius:10px;
 }
 * { box-sizing:border-box; margin:0; padding:0; }
@@ -36,12 +36,16 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   border-radius:14px; }
 .wrap-inner { padding:24px 24px 0; }
 
-.notice { background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px;
-  padding:10px 16px; margin-bottom:20px; font-size:.78rem; color:#1e40af; }
-.notice strong { color:#1e3a8a; }
-
 .sec-title { font-size:.72rem; font-weight:700; text-transform:uppercase;
   letter-spacing:.1em; color:var(--text2); margin-bottom:12px; }
+
+.notice { background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px;
+  padding:10px 16px; margin-bottom:20px; font-size:.78rem; color:#1e40af; line-height:1.7; }
+.notice strong { color:#1e3a8a; }
+
+.warn-banner { background:#fff7ed; border:1px solid #fed7aa; border-radius:8px;
+  padding:12px 16px; margin-bottom:20px; font-size:.8rem; color:#9a3412; line-height:1.7; }
+.warn-banner strong { color:#7c2d12; }
 
 /* KPI grid */
 .kpi-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(155px,1fr));
@@ -56,49 +60,80 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 .kpi-card.indigo { border-top-color:var(--indigo); }
 .kpi-label { font-size:.63rem; text-transform:uppercase; letter-spacing:.1em;
   color:var(--text3); margin-bottom:6px; }
-.kpi-val { font-size:1.5rem; font-weight:800; letter-spacing:-.03em; color:var(--text); }
-.kpi-sub { font-size:.66rem; color:var(--text3); margin-top:4px; line-height:1.4; }
+.kpi-val { font-size:1.4rem; font-weight:800; letter-spacing:-.03em; color:var(--text); }
+.kpi-sub { font-size:.64rem; color:var(--text3); margin-top:4px; line-height:1.4; }
 .kpi-badge { display:inline-block; font-size:.62rem; font-weight:700;
   padding:2px 6px; border-radius:4px; margin-top:5px; }
 .kpi-badge.bad  { background:var(--rose-dim);   color:#b91c1c; }
 .kpi-badge.warn { background:var(--amber-dim);  color:#92400e; }
 .kpi-badge.good { background:var(--green-dim);  color:#065f46; }
 .kpi-badge.info { background:var(--blue-dim);   color:#1e40af; }
+.kpi-badge.dark { background:#f1f5f9; color:var(--slate); }
 
-/* chart cards */
+/* Journey path cards */
+.path-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px; }
+@media(max-width:720px) { .path-grid { grid-template-columns:1fr; } }
+.path-card { background:var(--surface2); border:1px solid var(--border);
+  border-radius:var(--radius); padding:16px 18px; }
+.path-card h3 { font-size:.8rem; font-weight:700; color:var(--text); margin-bottom:2px; }
+.path-card .path-sub { font-size:.66rem; color:var(--text3); margin-bottom:14px; }
+.path-steps { display:flex; flex-direction:column; gap:0; }
+.path-step { display:flex; align-items:center; gap:10px; padding:6px 0; }
+.step-dot { width:28px; height:28px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:.68rem; font-weight:800; color:#fff; }
+.step-dot.entry  { background:var(--blue); }
+.step-dot.mid    { background:var(--violet); }
+.step-dot.invest { background:var(--amber); }
+.step-dot.pay    { background:var(--green); }
+.step-body { flex:1; }
+.step-name { font-size:.76rem; font-weight:600; color:var(--text); }
+.step-meta { font-size:.66rem; color:var(--text3); margin-top:1px; }
+.step-count { font-size:.82rem; font-weight:800; color:var(--text); min-width:48px; text-align:right; }
+.step-pct   { font-size:.64rem; font-weight:600; margin-left:4px; }
+.step-pct.good { color:var(--green); }
+.step-pct.warn { color:var(--amber); }
+.step-pct.bad  { color:var(--rose);  }
+.path-arrow { padding-left:14px; color:var(--text3); font-size:.7rem; }
+.conv-badge { display:inline-block; font-size:.62rem; font-weight:700;
+  padding:3px 8px; border-radius:12px; margin-top:8px; }
+.conv-badge.hi   { background:var(--green-dim); color:#065f46; }
+.conv-badge.mid  { background:var(--amber-dim); color:#92400e; }
+.conv-badge.lo   { background:var(--rose-dim);  color:#b91c1c; }
+
+/* Comparison chart */
 .chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px; }
-.chart-grid.wide { grid-template-columns:1fr; }
-@media(max-width:700px){ .chart-grid { grid-template-columns:1fr; } }
+@media(max-width:680px){ .chart-grid { grid-template-columns:1fr; } }
 .chart-card { background:var(--surface2); border:1px solid var(--border);
   border-radius:var(--radius); padding:16px 18px; }
 .chart-card h3 { font-size:.8rem; font-weight:700; color:var(--text); margin-bottom:4px; }
 .chart-card .chart-sub { font-size:.68rem; color:var(--text3); margin-bottom:14px; }
-.chart-wrap { position:relative; height:240px; }
-.chart-wrap.tall { height:300px; }
-.chart-wrap.short { height:200px; }
+.chart-wrap { position:relative; height:220px; }
 
-/* funnel visual */
-.funnel-wrap { padding:8px 0; }
-.funnel-step { display:flex; align-items:center; gap:14px; margin-bottom:6px; }
-.funnel-bar-outer { flex:1; background:#f1f5f9; border-radius:6px; height:40px;
-  position:relative; overflow:hidden; }
-.funnel-bar-inner { height:100%; border-radius:6px; display:flex;
-  align-items:center; padding:0 14px; transition:width .6s ease; }
-.funnel-bar-inner span { font-size:.8rem; font-weight:700; color:#fff;
-  white-space:nowrap; text-shadow:0 1px 2px rgba(0,0,0,.3); }
-.funnel-meta { width:200px; flex-shrink:0; }
-.funnel-meta .fm-label { font-size:.76rem; font-weight:600; color:var(--text); }
-.funnel-meta .fm-sub   { font-size:.66rem; color:var(--text3); margin-top:2px; }
-.funnel-arrow { display:flex; align-items:center; gap:14px;
-  color:var(--text3); font-size:.76rem; font-style:italic; margin:2px 0 6px; }
-.funnel-arrow::before { content:''; width:200px; flex-shrink:0; }
+/* Entry table */
+.tbl-wrap { background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); overflow:auto; margin-bottom:24px; }
+table { width:100%; border-collapse:collapse; font-size:.82rem; }
+thead tr { background:var(--surface2); }
+th { padding:10px 14px; text-align:right; font-size:.66rem; font-weight:600;
+  text-transform:uppercase; letter-spacing:.06em; color:var(--text2);
+  border-bottom:1px solid var(--border); white-space:nowrap; }
+th:first-child { text-align:left; }
+td { padding:8px 14px; text-align:right; border-bottom:1px solid #f1f5f9; font-size:.8rem; }
+td:first-child { text-align:left; }
+tr:last-child td { border-bottom:none; }
+.entry-name { font-weight:600; color:var(--text); font-size:.78rem; }
+.entry-event { font-size:.62rem; color:var(--text3); font-family:monospace; }
+.conv-hi { color:var(--green); font-weight:700; }
+.conv-mid { color:var(--amber); font-weight:700; }
+.conv-lo { color:var(--rose); }
+.dark-row td { color:var(--text3); background:#f8fafc; font-style:italic; }
 
-/* insight box */
+/* Insight cards */
 .insight-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
   gap:12px; margin-bottom:24px; }
 .insight { background:var(--surface2); border:1px solid var(--border);
-  border-left:4px solid var(--border); border-radius:var(--radius);
-  padding:14px 16px; }
+  border-left:4px solid var(--border); border-radius:var(--radius); padding:14px 16px; }
 .insight.blue   { border-left-color:var(--blue); }
 .insight.violet { border-left-color:var(--violet); }
 .insight.amber  { border-left-color:var(--amber); }
@@ -108,315 +143,398 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 .insight-body  { font-size:.72rem; color:var(--text2); line-height:1.55; }
 .insight-body strong { color:var(--text); }
 
-/* platform table */
-.tbl-wrap { background:var(--surface); border:1px solid var(--border);
-  border-radius:var(--radius); overflow:auto; margin-bottom:24px; }
-table { width:100%; border-collapse:collapse; font-size:.82rem; }
-thead tr { background:var(--surface2); }
-th { padding:10px 14px; text-align:right; font-size:.68rem; font-weight:600;
-  text-transform:uppercase; letter-spacing:.06em; color:var(--text2);
-  border-bottom:1px solid var(--border); white-space:nowrap; }
-th:first-child { text-align:left; }
-td { padding:9px 14px; text-align:right; border-bottom:1px solid #f1f5f9; }
-td:first-child { text-align:left; font-weight:600; }
-tr:last-child td { border-bottom:none; }
-tr:hover td { background:rgba(0,0,0,.02); }
-.plat-ios     { color:#6366f1; }
-.plat-android { color:#10b981; }
-.plat-web     { color:#3b82f6; }
-.val-hi { color:var(--amber); font-weight:700; }
-
-/* caveat */
 .caveat { background:#fffbeb; border:1px solid #fcd34d; border-radius:8px;
-  padding:10px 16px; margin-top:4px; margin-bottom:24px;
-  font-size:.75rem; color:#78350f; line-height:1.6; }
+  padding:10px 16px; margin-bottom:24px; font-size:.75rem; color:#78350f; line-height:1.7; }
 .caveat strong { color:#92400e; }
 
-/* footer */
-.footer { text-align:center; font-size:.7rem; color:var(--text3); padding:16px 24px 8px;
-  border-top:1px solid var(--border); }
+.footer { text-align:center; font-size:.7rem; color:var(--text3);
+  padding:16px 24px 8px; border-top:1px solid var(--border); }
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="hdr">
     <div class="hdr-left">
-      <h1>Pre-Order Behavior Pattern</h1>
-      <div class="sub">What users do before placing a bond investment · May 4–18 2026 · Amplitude</div>
+      <h1>First Payment Journey</h1>
+      <div class="sub">What users do before making their first bond investment · May 4–18 2026 · Amplitude ordered funnels (strictly pre-payment)</div>
     </div>
     <a class="back-link" href="index.html">← Back to Hub</a>
   </div>
 
   <div class="wrap-inner">
 
+    <div class="warn-banner">
+      <strong>⚠ 80% of first-payment journeys are dark.</strong>
+      The Homepage KycStatusCard, PortfolioStarterCard, and NonInvestedHoldingCard are not instrumented.
+      All funnels below reflect <strong>only the visible ~20% of journeys</strong> through tracked touchpoints.
+      Instrumentation tickets: <code>HOME_PAGE_KYC_STATUS_CARD_CLICK</code> (P0), <code>PORTFOLIO_KYC_CTA_CLICK</code> (P1).
+    </div>
+
     <div class="notice">
-      <strong>Data window:</strong> May 4–18 2026 (15 days).
-      <code>BOND_DETAILS_PAGE_VIEW</code> event was broken Mar 11 – May 3 2026 — excluded from analysis.
-      Payer counts from segmentation are slightly overcounted (daily unique sum); funnel counts are exact.
-      <br><strong>Measurement scope:</strong> Bond view and home visit counts reflect the <em>full 15-day window</em> for each user group — not strictly pre-payment. The ordered funnel (below) confirms sequence (bond view → payment) but event totals include post-payment browsing too.
-      <br><strong>Home screen visits:</strong> <code>HOME_PAGE_VIEW</code> fires every time the home screen is navigated to (including after each bond detail view in a session), not once per app launch.
+      <strong>Methodology:</strong> All funnels are <em>ordered sequences</em> via Amplitude Funnel API — each step is guaranteed to occur before the next. Bond Detail → Payment step = strictly pre-payment. Data: May 4–18 2026 (15 days). <code>BOND_DETAILS_PAGE_VIEW</code> was broken Mar 11–May 3.
+      All counts = unique users.
     </div>
 
     <!-- KPI cards -->
-    <div class="sec-title">Key Metrics · May 4–18 2026</div>
+    <div class="sec-title">Key Metrics — All Payers · May 4–18 2026</div>
     <div class="kpi-grid">
-      <div class="kpi-card blue">
-        <div class="kpi-label">Bond Page Viewers</div>
-        <div class="kpi-val">6,935</div>
-        <div class="kpi-sub">Unique users who viewed ≥1 bond detail page</div>
-      </div>
       <div class="kpi-card rose">
-        <div class="kpi-label">View → Pay Conv.</div>
-        <div class="kpi-val">4.9%</div>
-        <div class="kpi-sub">Of bond viewers who completed payment</div>
-        <span class="kpi-badge bad">92% drop off</span>
+        <div class="kpi-label">Dark (uninstrumented)</div>
+        <div class="kpi-val">~80%</div>
+        <div class="kpi-sub">of first-payment journeys have no tracked entry event</div>
+        <span class="kpi-badge dark">KycStatusCard</span>
+      </div>
+      <div class="kpi-card blue">
+        <div class="kpi-label">Bond detail viewers</div>
+        <div class="kpi-val">6,933</div>
+        <div class="kpi-sub">Unique users who viewed ≥1 bond detail page in window</div>
       </div>
       <div class="kpi-card amber">
-        <div class="kpi-label">Invest Tap Rate</div>
-        <div class="kpi-val">8.0%</div>
-        <div class="kpi-sub">Of viewers who tapped the Invest CTA</div>
-        <span class="kpi-badge warn">1-in-12 viewers</span>
+        <div class="kpi-label">Bond detail → Invest tap</div>
+        <div class="kpi-val">8.2%</div>
+        <div class="kpi-sub">Of bond detail viewers who tapped Invest CTA</div>
+        <span class="kpi-badge warn">Universal drop-off point</span>
       </div>
       <div class="kpi-card green">
-        <div class="kpi-label">Tap → Pay Conv.</div>
-        <div class="kpi-val">60.7%</div>
+        <div class="kpi-label">Invest tap → Payment</div>
+        <div class="kpi-val">61.6%</div>
         <div class="kpi-sub">Of CTA tappers who completed payment</div>
-        <span class="kpi-badge good">High commitment</span>
+        <span class="kpi-badge good">High intent signal</span>
       </div>
       <div class="kpi-card violet">
-        <div class="kpi-label">Avg Bond Views</div>
-        <div class="kpi-val">16.2</div>
-        <div class="kpi-sub">Bond detail pages per payer in 15-day window (incl. post-payment)</div>
-        <span class="kpi-badge info">Heavy research</span>
+        <div class="kpi-label">Best entry conversion</div>
+        <div class="kpi-val">10.5%</div>
+        <div class="kpi-sub">Short Tenure tile → payment (end-to-end)</div>
+        <span class="kpi-badge good">2× baseline</span>
       </div>
       <div class="kpi-card indigo">
-        <div class="kpi-label">Avg Home Screen Visits</div>
-        <div class="kpi-val">36.9</div>
-        <div class="kpi-sub">HOME_PAGE_VIEW navigations per payer — fires on every home return, not per session</div>
-        <span class="kpi-badge warn">Not = app opens</span>
+        <div class="kpi-label">Highest-volume path</div>
+        <div class="kpi-val">3,895</div>
+        <div class="kpi-sub">Users clicked WAYLF Bonds tab → 269 paid (6.9%)</div>
+        <span class="kpi-badge info">WAYLF path</span>
       </div>
     </div>
 
-    <!-- Funnel visual -->
-    <div class="sec-title">Conversion Funnel</div>
-    <div class="chart-card" style="margin-bottom:24px;">
-      <h3>Bond Detail View → Payment Successful</h3>
-      <div class="chart-sub">Ordered funnel · May 4–18 2026 · Amplitude Funnel API (exact counts)</div>
-      <div class="funnel-wrap">
+    <!-- Journey paths -->
+    <div class="sec-title">Instrumented Journey Paths — Unique Users, Ordered Funnels</div>
+    <div class="path-grid">
 
-        <div class="funnel-step">
-          <div class="funnel-meta">
-            <div class="fm-label">Bond Detail Page Viewed</div>
-            <div class="fm-sub">6,935 users · 100%</div>
+      <!-- WAYLF path -->
+      <div class="path-card">
+        <h3>Path 1 — WAYLF Bonds Tab → Explore → Bond Detail → Pay</h3>
+        <div class="path-sub">Highest-volume tracked path · 6.9% end-to-end conversion</div>
+        <div class="path-steps">
+          <div class="path-step">
+            <div class="step-dot entry">1</div>
+            <div class="step-body"><div class="step-name">WAYLF Bonds tab click</div><div class="step-meta">HOME_PAGE_WAYLF_BONDS_CLICK</div></div>
+            <div class="step-count">3,895</div>
           </div>
-          <div class="funnel-bar-outer">
-            <div class="funnel-bar-inner" style="width:100%;background:#3b82f6;">
-              <span>6,935 users</span>
-            </div>
+          <div class="path-arrow">↓ 99.9%</div>
+          <div class="path-step">
+            <div class="step-dot mid">2</div>
+            <div class="step-body"><div class="step-name">Explore page viewed</div><div class="step-meta">EXPLORE_PAGE_VIEW</div></div>
+            <div class="step-count">3,892 <span class="step-pct good">99.9%</span></div>
           </div>
-        </div>
-
-        <div class="funnel-arrow">↓ 8.0% tapped Invest</div>
-
-        <div class="funnel-step">
-          <div class="funnel-meta">
-            <div class="fm-label">Payment Initiated</div>
-            <div class="fm-sub">555 users · 8.0% of viewers</div>
+          <div class="path-arrow">↓ 81.1%</div>
+          <div class="path-step">
+            <div class="step-dot mid">3</div>
+            <div class="step-body"><div class="step-name">Bond detail page viewed</div><div class="step-meta">BOND_DETAILS_PAGE_VIEW</div></div>
+            <div class="step-count">3,156 <span class="step-pct good">81.1%</span></div>
           </div>
-          <div class="funnel-bar-outer">
-            <div class="funnel-bar-inner" style="width:8.0%;background:#d97706;min-width:120px;">
-              <span>555 users</span>
-            </div>
+          <div class="path-arrow">↓ 10.0%</div>
+          <div class="path-step">
+            <div class="step-dot invest">4</div>
+            <div class="step-body"><div class="step-name">Invest CTA tapped</div><div class="step-meta">PAYMENT_INITIATED</div></div>
+            <div class="step-count">317 <span class="step-pct warn">10.0%</span></div>
           </div>
-        </div>
-
-        <div class="funnel-arrow">↓ 60.7% completed</div>
-
-        <div class="funnel-step">
-          <div class="funnel-meta">
-            <div class="fm-label">Payment Successful</div>
-            <div class="fm-sub">337 users · 4.9% of viewers</div>
-          </div>
-          <div class="funnel-bar-outer">
-            <div class="funnel-bar-inner" style="width:4.9%;background:#059669;min-width:100px;">
-              <span>337 users</span>
-            </div>
+          <div class="path-arrow">↓ 84.9%</div>
+          <div class="path-step">
+            <div class="step-dot pay">5</div>
+            <div class="step-body"><div class="step-name">Payment completed</div><div class="step-meta">PAYMENT_SUCCESSFUL</div></div>
+            <div class="step-count">269 <span class="step-pct good">84.9%</span></div>
           </div>
         </div>
-
+        <span class="conv-badge hi">6.9% end-to-end · 269 paid</span>
       </div>
+
+      <!-- High Yield tile path -->
+      <div class="path-card">
+        <h3>Path 2 — Homepage High Yield Tile → Bond Detail → Pay</h3>
+        <div class="path-sub">Highest-volume homepage tile · 9.7% end-to-end conversion</div>
+        <div class="path-steps">
+          <div class="path-step">
+            <div class="step-dot entry">1</div>
+            <div class="step-body"><div class="step-name">High Yield bond tile tapped</div><div class="step-meta">HOME_PAGE_HIGH_YIELD_BOND_SELECT</div></div>
+            <div class="step-count">2,001</div>
+          </div>
+          <div class="path-arrow">↓ 96.3%</div>
+          <div class="path-step">
+            <div class="step-dot mid">2</div>
+            <div class="step-body"><div class="step-name">Bond detail page viewed</div><div class="step-meta">BOND_DETAILS_PAGE_VIEW</div></div>
+            <div class="step-count">1,927 <span class="step-pct good">96.3%</span></div>
+          </div>
+          <div class="path-arrow">↓ 11.2%</div>
+          <div class="path-step">
+            <div class="step-dot invest">3</div>
+            <div class="step-body"><div class="step-name">Invest CTA tapped</div><div class="step-meta">PAYMENT_INITIATED</div></div>
+            <div class="step-count">215 <span class="step-pct warn">11.2%</span></div>
+          </div>
+          <div class="path-arrow">↓ 86.0%</div>
+          <div class="path-step">
+            <div class="step-dot pay">4</div>
+            <div class="step-body"><div class="step-name">Payment completed</div><div class="step-meta">PAYMENT_SUCCESSFUL</div></div>
+            <div class="step-count">185 <span class="step-pct good">86.0%</span></div>
+          </div>
+        </div>
+        <span class="conv-badge hi">9.7% end-to-end · 185 paid</span>
+      </div>
+
+      <!-- Explore direct path -->
+      <div class="path-card">
+        <h3>Path 3 — Explore Tab → Bond Detail → Pay</h3>
+        <div class="path-sub">Explore as entry (without WAYLF) · 3.9% end-to-end</div>
+        <div class="path-steps">
+          <div class="path-step">
+            <div class="step-dot entry">1</div>
+            <div class="step-body"><div class="step-name">Explore page viewed</div><div class="step-meta">EXPLORE_PAGE_VIEW</div></div>
+            <div class="step-count">8,905</div>
+          </div>
+          <div class="path-arrow">↓ 55.5%</div>
+          <div class="path-step">
+            <div class="step-dot mid">2</div>
+            <div class="step-body"><div class="step-name">Bond detail page viewed</div><div class="step-meta">BOND_DETAILS_PAGE_VIEW</div></div>
+            <div class="step-count">4,938 <span class="step-pct warn">55.5%</span></div>
+          </div>
+          <div class="path-arrow">↓ 11.4%</div>
+          <div class="path-step">
+            <div class="step-dot invest">3</div>
+            <div class="step-body"><div class="step-name">Invest CTA tapped</div><div class="step-meta">PAYMENT_INITIATED</div></div>
+            <div class="step-count">561 <span class="step-pct warn">11.4%</span></div>
+          </div>
+          <div class="path-arrow">↓ 61.5%</div>
+          <div class="path-step">
+            <div class="step-dot pay">4</div>
+            <div class="step-body"><div class="step-name">Payment completed</div><div class="step-meta">PAYMENT_SUCCESSFUL</div></div>
+            <div class="step-count">345 <span class="step-pct good">61.5%</span></div>
+          </div>
+        </div>
+        <span class="conv-badge lo">3.9% end-to-end · 345 paid</span>
+      </div>
+
+      <!-- Issuer path -->
+      <div class="path-card">
+        <h3>Path 4 — Issuer Page → Bond Detail → Pay</h3>
+        <div class="path-sub">Highest invest-tap rate (14.6%) — most intent of any path</div>
+        <div class="path-steps">
+          <div class="path-step">
+            <div class="step-dot entry">1</div>
+            <div class="step-body"><div class="step-name">Issuer page selected</div><div class="step-meta">ISSUER_SELECT</div></div>
+            <div class="step-count">466</div>
+          </div>
+          <div class="path-arrow">↓ 76.4%</div>
+          <div class="path-step">
+            <div class="step-dot mid">2</div>
+            <div class="step-body"><div class="step-name">Bond detail page viewed</div><div class="step-meta">BOND_DETAILS_PAGE_VIEW</div></div>
+            <div class="step-count">356 <span class="step-pct warn">76.4%</span></div>
+          </div>
+          <div class="path-arrow">↓ 14.6%</div>
+          <div class="path-step">
+            <div class="step-dot invest">3</div>
+            <div class="step-body"><div class="step-name">Invest CTA tapped</div><div class="step-meta">PAYMENT_INITIATED</div></div>
+            <div class="step-count">52 <span class="step-pct good">14.6%</span></div>
+          </div>
+          <div class="path-arrow">↓ 86.5%</div>
+          <div class="path-step">
+            <div class="step-dot pay">4</div>
+            <div class="step-body"><div class="step-name">Payment completed</div><div class="step-meta">PAYMENT_SUCCESSFUL</div></div>
+            <div class="step-count">45 <span class="step-pct good">86.5%</span></div>
+          </div>
+        </div>
+        <span class="conv-badge hi">9.7% end-to-end · 45 paid · highest intent</span>
+      </div>
+
     </div>
 
-    <!-- Charts row 1 -->
+    <!-- Entry point comparison charts -->
+    <div class="sec-title">Entry Point Comparison — End-to-End Conversion (Entry → Payment)</div>
     <div class="chart-grid">
       <div class="chart-card">
-        <h3>Payers by Platform</h3>
-        <div class="chart-sub">Distribution of paying users (payer-days, May 4–18 2026)</div>
-        <div class="chart-wrap short"><canvas id="platformDonut"></canvas></div>
+        <h3>End-to-End Conversion Rate by Entry Point</h3>
+        <div class="chart-sub">% of users who entered via each touchpoint and completed payment · ordered funnel</div>
+        <div class="chart-wrap"><canvas id="entryConvChart"></canvas></div>
       </div>
       <div class="chart-card">
-        <h3>Avg Bond Detail Views per Payer</h3>
-        <div class="chart-sub">How many bond pages viewed before paying, by platform</div>
-        <div class="chart-wrap short"><canvas id="bondViewsBar"></canvas></div>
+        <h3>Volume: Users Entering Each Path</h3>
+        <div class="chart-sub">Unique users who fired the entry event · May 4–18 2026</div>
+        <div class="chart-wrap"><canvas id="entryVolChart"></canvas></div>
       </div>
     </div>
 
-    <!-- Charts row 2 -->
-    <div class="chart-grid">
-      <div class="chart-card">
-        <h3>Avg Home Screen Visits per Payer</h3>
-        <div class="chart-sub">HOME_PAGE_VIEW navigations by platform · fires on every home return, not per app launch</div>
-        <div class="chart-wrap short"><canvas id="appOpensBar"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <h3>Funnel Drop-off Breakdown</h3>
-        <div class="chart-sub">Where users fall out of the bond-view → payment funnel</div>
-        <div class="chart-wrap short"><canvas id="dropoffBar"></canvas></div>
-      </div>
-    </div>
-
-    <!-- Comparison section: payers vs non-payers, 1tx vs 2+tx -->
-    <div class="sec-title">Engagement Comparison — Who Pays vs Who Doesn't</div>
-    <div class="chart-grid">
-      <div class="chart-card">
-        <h3>Avg Bond Detail Views — by User Group</h3>
-        <div class="chart-sub">Post-KYC non-payers · first-time investors (1 tx in 180d) · repeat investors (2+tx in 180d)</div>
-        <div class="chart-wrap short"><canvas id="compBondViews"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <h3>Avg Home Screen Visits — by User Group</h3>
-        <div class="chart-sub">HOME_PAGE_VIEW navigations per user · full 15-day window · non-payers barely return after KYC</div>
-        <div class="chart-wrap short"><canvas id="compHomeVisits"></canvas></div>
-      </div>
-    </div>
-    <div class="caveat" style="margin-top:-12px;">
-      <strong>Non-payer group:</strong> KYC_DEMAT_VERIFIED users who did not fire PAYMENT_SUCCESSFUL in the 15-day window (approx. 383 users).
-      · <strong>1-tx group:</strong> users with exactly 1 payment in the last 180 days (139 payer-days).
-      · <strong>2+tx group:</strong> users with ≥2 payments in 180 days (344 payer-days). Both payer groups include activity before AND after their payments in the 15-day window.
-    </div>
-
-    <!-- Platform table -->
-    <div class="sec-title">Platform Breakdown</div>
+    <!-- Full entry table -->
+    <div class="sec-title">All Instrumented Entry Points — Funnel Detail</div>
     <div class="tbl-wrap">
       <table>
         <thead>
           <tr>
-            <th>Platform</th>
-            <th>Payers (est.)</th>
-            <th>Share of Payers</th>
-            <th>Avg Bond Views</th>
-            <th>Avg Home Screen Visits</th>
-            <th>Bond Views / Home Visit</th>
+            <th>Entry touchpoint</th>
+            <th>Users entered</th>
+            <th>→ Bond detail</th>
+            <th>→ Invest tap</th>
+            <th>→ Payment</th>
+            <th>End-to-end conv.</th>
+            <th>Tap → pay</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="plat-android">Android</td>
-            <td>390</td>
-            <td>80.2%</td>
-            <td class="val-hi">12.0</td>
-            <td class="val-hi">28.6</td>
-            <td>0.42</td>
+            <td>
+              <div class="entry-name">High Yield tile (homepage)</div>
+              <div class="entry-event">HOME_PAGE_HIGH_YIELD_BOND_SELECT</div>
+            </td>
+            <td>2,001</td>
+            <td>1,927 <span style="color:var(--text3);font-size:.7rem">(96%)</span></td>
+            <td>215 <span style="color:var(--amber);font-size:.7rem">(11.2%)</span></td>
+            <td>185</td>
+            <td class="conv-hi">9.7%</td>
+            <td>86.0%</td>
           </tr>
           <tr>
-            <td class="plat-ios">iOS</td>
-            <td>49</td>
-            <td>10.1%</td>
-            <td>10.7</td>
-            <td>19.2</td>
-            <td>0.56</td>
-          </tr>
-          <tr>
-            <td class="plat-web">Web</td>
-            <td>50</td>
-            <td>10.3%</td>
-            <td>10.0</td>
-            <td>16.5</td>
-            <td>0.61</td>
-          </tr>
-          <tr style="background:var(--surface2);font-weight:700;">
-            <td>Overall</td>
-            <td>489 (est.)</td>
+            <td>
+              <div class="entry-name">Short Tenure tile (homepage)</div>
+              <div class="entry-event">HOME_PAGE_SHORT_TENURE_BOND_SELECT</div>
+            </td>
+            <td>200</td>
+            <td>191 <span style="color:var(--text3);font-size:.7rem">(96%)</span></td>
+            <td>21 <span style="color:var(--amber);font-size:.7rem">(11.0%)</span></td>
+            <td>21</td>
+            <td class="conv-hi">10.5%</td>
             <td>100%</td>
-            <td>16.2*</td>
-            <td>36.9*</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="entry-name">Issuer page</div>
+              <div class="entry-event">ISSUER_SELECT</div>
+            </td>
+            <td>466</td>
+            <td>356 <span style="color:var(--text3);font-size:.7rem">(76%)</span></td>
+            <td>52 <span style="color:var(--amber);font-size:.7rem">(14.6%)</span></td>
+            <td>45</td>
+            <td class="conv-hi">9.7%</td>
+            <td>86.5%</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="entry-name">WAYLF Bonds tab → Explore</div>
+              <div class="entry-event">HOME_PAGE_WAYLF_BONDS_CLICK</div>
+            </td>
+            <td>3,895</td>
+            <td>3,156 <span style="color:var(--text3);font-size:.7rem">(81%)</span></td>
+            <td>317 <span style="color:var(--amber);font-size:.7rem">(10.0%)</span></td>
+            <td>269</td>
+            <td class="conv-mid">6.9%</td>
+            <td>84.9%</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="entry-name">Highly Rated tile (homepage)</div>
+              <div class="entry-event">HOME_PAGE_HIGHLY_RATED_BOND_SELECT</div>
+            </td>
+            <td>721</td>
+            <td>696 <span style="color:var(--text3);font-size:.7rem">(97%)</span></td>
+            <td>59 <span style="color:var(--amber);font-size:.7rem">(8.5%)</span></td>
+            <td>42</td>
+            <td class="conv-mid">5.8%</td>
+            <td>71.2%</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="entry-name">Explore tab (all, incl. direct)</div>
+              <div class="entry-event">EXPLORE_PAGE_VIEW</div>
+            </td>
+            <td>8,905</td>
+            <td>4,938 <span style="color:var(--text3);font-size:.7rem">(55%)</span></td>
+            <td>561 <span style="color:var(--amber);font-size:.7rem">(11.4%)</span></td>
+            <td>345</td>
+            <td class="conv-mid">3.9%</td>
+            <td>61.5%</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="entry-name">Low Ticket Size tile (homepage)</div>
+              <div class="entry-event">HOME_PAGE_LOW_TICKET_SIZE_BOND_SELECT</div>
+            </td>
+            <td>94</td>
+            <td>89 <span style="color:var(--text3);font-size:.7rem">(95%)</span></td>
+            <td>6 <span style="color:var(--amber);font-size:.7rem">(6.7%)</span></td>
+            <td>5</td>
+            <td class="conv-lo">5.3%</td>
+            <td>83.3%</td>
+          </tr>
+          <tr class="dark-row">
+            <td>
+              <div class="entry-name">KycStatusCard / PortfolioStarterCard</div>
+              <div class="entry-event">NOT INSTRUMENTED — P0 gap</div>
+            </td>
+            <td>~80%</td>
+            <td>—</td><td>—</td><td>—</td>
+            <td>unknown</td>
+            <td>unknown</td>
+          </tr>
+          <tr style="background:var(--surface2);font-weight:700;font-size:.78rem;">
+            <td>Overall (Bond Detail → Pay baseline)</td>
+            <td>6,933</td>
             <td>—</td>
+            <td>571 (8.2%)</td>
+            <td>352</td>
+            <td>5.1%</td>
+            <td>61.6%</td>
           </tr>
         </tbody>
       </table>
-    </div>
-    <div style="font-size:.68rem;color:var(--text3);margin-top:-18px;margin-bottom:24px;padding-left:4px;">
-      * Overall avg uses exact funnel payer count (337) as denominator. Per-platform uses payer-days (i=1 sum, slight overcount).
-      "Bond Views / App Open" = how often a session results in a bond page view.
     </div>
 
     <!-- Insights -->
     <div class="sec-title">Key Insights</div>
     <div class="insight-grid">
       <div class="insight rose">
-        <div class="insight-title">92% of viewers never invest</div>
-        <div class="insight-body">6,598 users read bond pages and leave without tapping Invest.
-          The bottleneck is <strong>browse-to-tap</strong>, not tap-to-pay (60.7% complete once they tap).</div>
+        <div class="insight-title">80% of journeys are dark — fix KycStatusCard first</div>
+        <div class="insight-body">Only ~20% of first-payment journeys go through tracked touchpoints. <strong>KycStatusCard on homepage</strong> (uninstrumented) is estimated to drive 50–60% of all first payments. Adding <code>HOME_PAGE_KYC_STATUS_CARD_CLICK</code> is the single highest-ROI instrumentation change.</div>
       </div>
       <div class="insight amber">
-        <div class="insight-title">Heavy research product</div>
-        <div class="insight-body">Payers viewed <strong>16.2 bond pages</strong> and opened the app
-          <strong>37 times</strong> before investing. Users are comparing extensively — this is a high-consideration
-          purchase, not impulse.</div>
-      </div>
-      <div class="insight blue">
-        <div class="insight-title">Android users research more</div>
-        <div class="insight-body">Android payers: 12 bond views + 28.6 app opens.
-          iOS/Web payers: ~10 views + 16–19 opens. Android (lower-income tiers) is
-          <strong>more cautious</strong> and needs more reassurance before committing.</div>
+        <div class="insight-title">Bond detail → Invest tap is the universal drop-off</div>
+        <div class="insight-body">Across every path, only <strong>8–11% of bond detail viewers tap Invest</strong>. This is consistent regardless of entry — homepage tile, Explore, or Issuer. The bond detail page is where the buying decision is made (and lost). It's the highest-leverage optimization surface.</div>
       </div>
       <div class="insight green">
-        <div class="insight-title">Once they tap, they pay</div>
-        <div class="insight-body">60.7% tap-to-pay conversion is strong. Payment UX and checkout
-          flow are <strong>not the problem</strong>. Focus interventions on getting users
-          to tap Invest, not on reducing payment friction.</div>
+        <div class="insight-title">Homepage tiles convert 2× better than Explore</div>
+        <div class="insight-body">High Yield (9.7%) and Short Tenure (10.5%) tiles convert at 2× the baseline (5.1%). Reason: <strong>tile taps are already intent-signaling</strong> — the user chose a category before landing on the bond. Explore browsers are still deciding.</div>
+      </div>
+      <div class="insight blue">
+        <div class="insight-title">Issuer path = highest invest-tap rate (14.6%)</div>
+        <div class="insight-body">Users who navigate via issuer have the <strong>strongest conviction before reaching bond detail</strong>. They came looking for a specific issuer. 14.6% tap Invest vs 8.2% baseline. Low volume (466 users) but highest quality signal — worth amplifying.</div>
       </div>
       <div class="insight violet">
-        <div class="insight-title">iOS/Web decide faster</div>
-        <div class="insight-body">iOS users: 19.2 app opens vs 28.6 for Android.
-          Higher-income, higher-conviction buyers who trust the product faster.
-          Consistent with 3–4× higher conversion rate vs Android (from Stage 11 data).</div>
+        <div class="insight-title">WAYLF path users are most committed once they tap</div>
+        <div class="insight-body">WAYLF → Explore path: <strong>84.9% tap-to-pay</strong> vs 61.6% baseline. Once a user has browsed Explore and tapped Invest, they follow through. The problem is the 10% tap rate — 90% of WAYLF-path bond viewers still don't tap.</div>
       </div>
       <div class="insight amber">
-        <div class="insight-title">Bond pages are research, not buy</div>
-        <div class="insight-body">With only 0.42–0.61 bond views per app open, most sessions
-          don't include bond research. Users open the app for other reasons,
-          <strong>then sometimes</strong> browse bonds. Consider surfacing bond recommendations on the home page.</div>
-      </div>
-      <div class="insight rose">
-        <div class="insight-title">Non-payers churn after KYC</div>
-        <div class="insight-body">Post-KYC non-payers have just <strong>0.13 home visits and 1.93 bond views</strong>
-          in the 15-day window. They almost entirely ghost the app after completing KYC.
-          This is the biggest activation gap — they finished KYC but never came back to invest.</div>
-      </div>
-      <div class="insight violet">
-        <div class="insight-title">First-time investors research 50% more</div>
-        <div class="insight-body">1-tx users: <strong>19.7 bond views, 49 home visits</strong>.
-          2+tx users: 13.1 views, 32 visits. First-time investors browse more
-          before their second purchase — they're warm but undecided. A targeted nudge here
-          would drive repeat investment more than acquisition.</div>
+        <div class="insight-title">Explore → Bond Detail conversion is 55.5% — room to improve</div>
+        <div class="insight-body">Only <strong>55.5% of Explore viewers tap a bond to view its detail</strong>. Homepage tile clickers go to bond detail at 94–96% (direct link). Explore requires the user to browse and self-select. Better recommendations and bond sorting on Explore would improve this step.</div>
       </div>
     </div>
 
     <div class="caveat">
       <strong>Caveats:</strong>
-      <code>BOND_DETAILS_PAGE_VIEW</code> event was broken Mar 11–May 3 2026 — only May 4–18 data used (15 days).
-      · Session proxy = <code>HOME_PAGE_VIEW</code> (<code>[Amplitude] Session Start</code> invalid in project 506002).
-      · Payer counts from segmentation API (<code>i=1</code>) sum daily uniques — slight overcount for cross-day users.
-      · Funnel step counts are exact (Amplitude Funnel API).
-      · Per-platform counts don't sum to overall funnel payers because funnel uses ordered sequence (viewers who then paid)
-      while segmentation counts all payers with a platform filter.
+      All funnel counts = unique users (Amplitude Funnel API, ordered sequences).
+      · <code>BOND_DETAILS_PAGE_VIEW</code> was broken Mar 11–May 3 2026 — only May 4–18 data used (15 days).
+      · Payers counted across paths are NOT mutually exclusive — one user may appear in multiple path funnels if they visited multiple entry points.
+      · "Dark" 80% estimate from KYC Touchpoint analysis (May 7–13 2026), not directly measured in this window.
+      · Short Tenure 100% tap-to-pay is a small-sample artifact (21 users only).
     </div>
 
   </div><!-- /wrap-inner -->
 
   <div class="footer">
-    Pre-Order Pattern Analysis · Aspero B2C · Data: Amplitude project 506002 · Generated May 21 2026
+    First Payment Journey · Aspero B2C · Data: Amplitude project 506002 · Generated May 21 2026
   </div>
 </div><!-- /wrap -->
 
@@ -424,189 +542,68 @@ tr:hover td { background:rgba(0,0,0,.02); }
 Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 Chart.defaults.color = '#64748b';
 
-// 1. Platform donut
-new Chart(document.getElementById('platformDonut'), {
-  type: 'doughnut',
-  data: {
-    labels: ['Android', 'iOS', 'Web'],
-    datasets: [{
-      data: [390, 49, 50],
-      backgroundColor: ['#10b981','#6366f1','#3b82f6'],
-      borderWidth: 2,
-      borderColor: '#f8fafc',
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: {
-      legend: { position: 'right', labels: { boxWidth: 12, padding: 14, font: { size: 12 } } },
-      tooltip: {
-        callbacks: {
-          label: ctx => ` ${ctx.label}: ${ctx.raw} payers (${Math.round(ctx.raw/489*100)}%)`
-        }
-      }
-    },
-    cutout: '62%',
-  }
-});
+const entryLabels = ['Short Tenure\ntile', 'High Yield\ntile', 'Issuer\npage', 'WAYLF\nBonds', 'Highly Rated\ntile', 'Explore\npage', 'Low Ticket\ntile'];
+const convRates   = [10.5, 9.7, 9.7, 6.9, 5.8, 3.9, 5.3];
+const colors      = ['#059669','#10b981','#10b981','#3b82f6','#d97706','#d97706','#f59e0b'];
 
-// 2. Avg bond views bar
-new Chart(document.getElementById('bondViewsBar'), {
+// Chart 1: conversion rates
+new Chart(document.getElementById('entryConvChart'), {
   type: 'bar',
   data: {
-    labels: ['Android', 'iOS', 'Web'],
+    labels: entryLabels,
     datasets: [{
-      label: 'Avg bond detail views',
-      data: [12.0, 10.7, 10.0],
-      backgroundColor: ['#10b981','#6366f1','#3b82f6'],
+      label: 'End-to-end conversion %',
+      data: convRates,
+      backgroundColor: colors,
       borderRadius: 6,
-      barThickness: 36,
+      barThickness: 32,
     }]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
     scales: {
-      y: {
-        beginAtZero: true, max: 18,
-        grid: { color: '#f1f5f9' },
-        ticks: { font: { size: 11 } },
-        title: { display: true, text: 'Avg pages viewed', font: { size: 11 } }
-      },
-      x: { grid: { display: false }, ticks: { font: { size: 12 } } }
+      y: { beginAtZero: true, max: 14,
+           grid: { color: '#f1f5f9' },
+           ticks: { font: { size: 11 }, callback: v => v + '%' },
+           title: { display: true, text: 'Entry → Payment conv. %', font: { size: 11 } } },
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
     },
     plugins: {
       legend: { display: false },
-      tooltip: { callbacks: { label: ctx => ` ${ctx.raw} bond pages` } },
-      annotation: {}
+      tooltip: { callbacks: { label: ctx => ` ${ctx.raw}% end-to-end conversion` } }
     }
   }
 });
 
-// 3. Avg app opens bar
-new Chart(document.getElementById('appOpensBar'), {
-  type: 'bar',
-  data: {
-    labels: ['Android', 'iOS', 'Web'],
-    datasets: [{
-      label: 'Avg app opens (HOME_PAGE_VIEW)',
-      data: [28.6, 19.2, 16.5],
-      backgroundColor: ['rgba(16,185,129,.7)','rgba(99,102,241,.7)','rgba(59,130,246,.7)'],
-      borderColor:      ['#10b981','#6366f1','#3b82f6'],
-      borderWidth: 2,
-      borderRadius: 6,
-      barThickness: 36,
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    scales: {
-      y: {
-        beginAtZero: true, max: 40,
-        grid: { color: '#f1f5f9' },
-        ticks: { font: { size: 11 } },
-        title: { display: true, text: 'Avg HOME_PAGE_VIEWs', font: { size: 11 } }
-      },
-      x: { grid: { display: false }, ticks: { font: { size: 12 } } }
-    },
-    plugins: { legend: { display: false } }
-  }
-});
+// Chart 2: volume
+const volLabels = ['WAYLF\nBonds', 'Explore\npage', 'High Yield\ntile', 'Highly Rated\ntile', 'Issuer\npage', 'Short Tenure\ntile', 'Low Ticket\ntile'];
+const volData   = [3895, 8905, 2001, 721, 466, 200, 94];
+const volColors = ['#3b82f6','#d97706','#10b981','#d97706','#10b981','#059669','#f59e0b'];
 
-// 5. Comparison: avg bond views by group
-const compGroups = ['Non-payer\n(post KYC)', 'First-time investor\n(1 tx / 180d)', 'Repeat investor\n(2+ tx / 180d)'];
-new Chart(document.getElementById('compBondViews'), {
+new Chart(document.getElementById('entryVolChart'), {
   type: 'bar',
   data: {
-    labels: ['Non-payer\n(post KYC)', 'First-time investor\n(1 tx)', 'Repeat investor\n(2+ tx)'],
+    labels: volLabels,
     datasets: [{
-      label: 'Avg bond detail views',
-      data: [1.93, 19.70, 13.08],
-      backgroundColor: ['#94a3b8','#f59e0b','#10b981'],
+      label: 'Users who entered via this path',
+      data: volData,
+      backgroundColor: volColors,
       borderRadius: 6,
-      barThickness: 44,
+      barThickness: 32,
     }]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
     scales: {
-      y: { beginAtZero: true, max: 25, grid: { color: '#f1f5f9' },
-           ticks: { font: { size: 11 } },
-           title: { display: true, text: 'Avg bond pages viewed', font: { size: 11 } } },
-      x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+      y: { beginAtZero: true,
+           grid: { color: '#f1f5f9' },
+           ticks: { font: { size: 11 }, callback: v => v >= 1000 ? (v/1000).toFixed(1)+'k' : v },
+           title: { display: true, text: 'Unique users', font: { size: 11 } } },
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
     },
     plugins: {
       legend: { display: false },
-      tooltip: { callbacks: { label: ctx => ` ${ctx.raw} bond pages` } }
-    }
-  }
-});
-
-// 6. Comparison: avg home screen visits by group
-new Chart(document.getElementById('compHomeVisits'), {
-  type: 'bar',
-  data: {
-    labels: ['Non-payer\n(post KYC)', 'First-time investor\n(1 tx)', 'Repeat investor\n(2+ tx)'],
-    datasets: [{
-      label: 'Avg HOME_PAGE_VIEW navigations',
-      data: [0.13, 49.05, 32.27],
-      backgroundColor: ['rgba(148,163,184,.6)','rgba(245,158,11,.7)','rgba(16,185,129,.7)'],
-      borderColor:      ['#94a3b8','#f59e0b','#10b981'],
-      borderWidth: 2,
-      borderRadius: 6,
-      barThickness: 44,
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    scales: {
-      y: { beginAtZero: true, max: 60, grid: { color: '#f1f5f9' },
-           ticks: { font: { size: 11 } },
-           title: { display: true, text: 'Avg home screen visits', font: { size: 11 } } },
-      x: { grid: { display: false }, ticks: { font: { size: 11 } } }
-    },
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: ctx => ` ${ctx.raw} home visits` } }
-    }
-  }
-});
-
-// 4. Drop-off breakdown (stacked / waterfall-style)
-new Chart(document.getElementById('dropoffBar'), {
-  type: 'bar',
-  data: {
-    labels: ['Viewed Bond Page', 'Tapped Invest', 'Paid Successfully'],
-    datasets: [{
-      label: 'Users',
-      data: [6935, 555, 337],
-      backgroundColor: ['#3b82f6','#d97706','#059669'],
-      borderRadius: 6,
-      barThickness: 48,
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    scales: {
-      y: {
-        beginAtZero: true,
-        grid: { color: '#f1f5f9' },
-        ticks: {
-          font: { size: 11 },
-          callback: v => v >= 1000 ? (v/1000).toFixed(1)+'k' : v
-        }
-      },
-      x: { grid: { display: false }, ticks: { font: { size: 11 } } }
-    },
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: ctx => {
-            const pct = [100, 8.0, 4.9][ctx.dataIndex];
-            return ` ${ctx.raw.toLocaleString()} users (${pct}% of viewers)`;
-          }
-        }
-      }
+      tooltip: { callbacks: { label: ctx => ` ${ctx.raw.toLocaleString()} users entered` } }
     }
   }
 });
