@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Post-KYC First-Payment Behavior · Aspero Analytics</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg:     #F8FAFC;
+    --card:   #FFFFFF;
+    --border: #E3E8EF;
+    --text1:  #121926;
+    --text2:  #4B5565;
+    --text3:  #697586;
+    --text4:  #9AA4B2;
+    --blue:   #2563EB;
+    --blue2:  #DBEAFE;
+    --green:  #16A34A;
+    --green2: #DCFCE7;
+    --amber:  #D97706;
+    --amber2: #FEF3C7;
+    --red:    #DC2626;
+    --red2:   #FEE2E2;
+    --purple: #7C3AED;
+    --purple2:#EDE9FE;
+    --teal:   #0D9488;
+    --teal2:  #CCFBF1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text1); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.6; }
+
+  /* ── layout ── */
+  .page { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
+  .section { margin-bottom: 40px; }
+  .section-title { font-size: 1rem; font-weight: 700; color: var(--text1); margin-bottom: 4px; letter-spacing: .01em; }
+  .section-sub   { font-size: .8rem; color: var(--text3); margin-bottom: 16px; }
+
+  /* ── header ── */
+  .report-header { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin-bottom: 32px; }
+  .report-header h1 { font-size: 1.45rem; font-weight: 800; color: var(--text1); margin-bottom: 6px; }
+  .report-header p  { font-size: .85rem; color: var(--text2); max-width: 680px; line-height: 1.7; }
+  .tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .tag { display: inline-flex; align-items: center; gap: 4px; font-size: .72rem; font-weight: 600; padding: 3px 10px; border-radius: 99px; }
+  .tag-blue   { background: var(--blue2);   color: var(--blue);   }
+  .tag-green  { background: var(--green2);  color: var(--green);  }
+  .tag-amber  { background: var(--amber2);  color: var(--amber);  }
+  .tag-purple { background: var(--purple2); color: var(--purple); }
+
+  /* ── warning banner ── */
+  .warn-box { background: var(--amber2); border: 1px solid #FCD34D; border-radius: 8px; padding: 12px 16px; margin-bottom: 24px; font-size: .82rem; color: #92400E; }
+  .warn-box strong { font-weight: 700; }
+  .info-box { background: var(--blue2); border: 1px solid #93C5FD; border-radius: 8px; padding: 12px 16px; margin-bottom: 24px; font-size: .82rem; color: #1E40AF; }
+
+  /* ── kpi cards ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 16px; }
+  .kpi-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+  .kpi-card .kpi-label { font-size: .74rem; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .kpi-card .kpi-value { font-size: 2rem; font-weight: 800; color: var(--text1); line-height: 1; }
+  .kpi-card .kpi-sub   { font-size: .78rem; color: var(--text3); margin-top: 4px; }
+  .kpi-card.accent-blue   { border-left: 4px solid var(--blue);   }
+  .kpi-card.accent-green  { border-left: 4px solid var(--green);  }
+  .kpi-card.accent-amber  { border-left: 4px solid var(--amber);  }
+  .kpi-card.accent-purple { border-left: 4px solid var(--purple); }
+  .kpi-card.accent-teal   { border-left: 4px solid var(--teal);   }
+
+  /* ── chart cards ── */
+  .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 24px; }
+  .chart-card .chart-title { font-size: .9rem; font-weight: 700; color: var(--text1); margin-bottom: 4px; }
+  .chart-card .chart-sub   { font-size: .78rem; color: var(--text3); margin-bottom: 18px; }
+  .chart-wrap { position: relative; }
+  .chart-wrap.h300 { height: 300px; }
+  .chart-wrap.h360 { height: 360px; }
+  .chart-wrap.h400 { height: 400px; }
+  .chart-wrap.h440 { height: 440px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media(max-width:700px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ── funnel ── */
+  .funnel-wrap { display: flex; flex-direction: column; gap: 8px; }
+  .funnel-step { display: flex; align-items: center; gap: 16px; }
+  .funnel-label { width: 170px; flex-shrink: 0; font-size: .8rem; font-weight: 600; color: var(--text2); text-align: right; }
+  .funnel-bar-outer { flex: 1; background: var(--bg); border-radius: 6px; height: 36px; overflow: hidden; }
+  .funnel-bar-inner { height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 12px; font-size: .82rem; font-weight: 700; color: #fff; transition: width .6s ease; min-width: 60px; }
+  .funnel-meta { width: 110px; flex-shrink: 0; font-size: .78rem; color: var(--text3); }
+  .funnel-arrow { display: flex; align-items: center; gap: 14px; color: var(--text3); font-size: .76rem; font-style: italic; margin: 2px 0 6px; }
+  .funnel-arrow::before { content: ''; width: 170px; flex-shrink: 0; }
+
+  /* ── tp table ── */
+  .tp-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+  .tp-table th { padding: 8px 12px; text-align: left; font-weight: 700; font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text3); background: var(--bg); border-bottom: 2px solid var(--border); }
+  .tp-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .tp-table tr:last-child td { border-bottom: none; }
+  .tp-table tr:hover td { background: var(--bg); }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: .72rem; font-weight: 700; }
+  .pill-high  { background: var(--green2);  color: var(--green); }
+  .pill-med   { background: var(--amber2);  color: var(--amber); }
+  .pill-low   { background: var(--red2);    color: var(--red);   }
+  .pill-blue  { background: var(--blue2);   color: var(--blue);  }
+  .lift-bar { height: 6px; border-radius: 3px; background: var(--blue); margin-top: 3px; }
+
+  /* ── insights ── */
+  .insight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 16px; }
+  .insight-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+  .insight-card .i-num { font-size: 1.6rem; font-weight: 800; margin-bottom: 4px; }
+  .insight-card .i-label { font-size: .82rem; color: var(--text2); }
+  .insight-card .i-sub   { font-size: .76rem; color: var(--text4); margin-top: 4px; }
+
+  /* ── gap table ── */
+  .gap-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+  .gap-table th { padding: 8px 12px; text-align: left; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--text3); background: var(--bg); border-bottom: 2px solid var(--border); }
+  .gap-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .gap-table tr:last-child td { border-bottom: none; }
+  .dot-red   { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--red);   margin-right: 6px; }
+  .dot-amber { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--amber); margin-right: 6px; }
+  .dot-green { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--green); margin-right: 6px; }
+
+  /* ── synergy ── */
+  .synergy-row { display: flex; align-items: stretch; gap: 1px; border-radius: 10px; overflow: hidden; margin-top: 8px; }
+  .synergy-box { flex: 1; padding: 20px 16px; text-align: center; }
+  .synergy-box .s-pct { font-size: 1.8rem; font-weight: 800; }
+  .synergy-box .s-label { font-size: .78rem; color: var(--text3); margin-top: 4px; }
+  .synergy-box .s-sub   { font-size: .72rem; color: var(--text4); margin-top: 2px; }
+  .synergy-low  { background: #FEF2F2; }
+  .synergy-high { background: #ECFDF5; }
+  .synergy-arrow { display: flex; align-items: center; justify-content: center; background: var(--bg); padding: 8px; font-size: 1.2rem; color: var(--text3); }
+  .multiplier-badge { display: inline-block; background: var(--green); color: #fff; font-size: .78rem; font-weight: 700; padding: 3px 10px; border-radius: 99px; margin-top: 6px; }
+
+  /* misc */
+  .note { font-size: .76rem; color: var(--text4); margin-top: 10px; font-style: italic; }
+  .section-divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── HEADER ── -->
+  <div class="report-header">
+    <h1>Post-KYC First-Payment Behavior</h1>
+    <p>
+      Analyzes what users do between completing KYC (demat verified) and making their first bond investment.
+      Compares <strong>Cohort A (converters)</strong> — users who paid within 14 days of KYC — against
+      <strong>Cohort B (non-converters)</strong> — users who completed KYC but have not yet paid.
+    </p>
+    <div class="tag-row">
+      <span class="tag tag-blue">May 4–18 2026</span>
+      <span class="tag tag-green">Live Amplitude data</span>
+      <span class="tag tag-amber">First-time investors</span>
+      <span class="tag tag-purple">Post-KYC cohort</span>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>Cohort definition:</strong> Base = users who fired <code>KYC_DEMAT_VERIFIED</code> in rolling 14 days &nbsp;·&nbsp;
+    Cohort A = Base + <code>PAYMENT_SUCCESSFUL ≥ 1</code> in same window (≈ first payment) &nbsp;·&nbsp;
+    Cohort B = Base − Cohort A
+  </div>
+
+  <!-- ── S1: COHORT OVERVIEW ── -->
+  <div class="section">
+    <div class="section-title">1 · Cohort Overview</div>
+    <div class="section-sub">May 4–18 2026 · rolling 14-day window</div>
+    <div class="kpi-grid">
+      <div class="kpi-card accent-blue">
+        <div class="kpi-label">KYC Completed (Base)</div>
+        <div class="kpi-value">740</div>
+        <div class="kpi-sub">Unique users — demat verified</div>
+      </div>
+      <div class="kpi-card accent-green">
+        <div class="kpi-label">First-time Payers · Cohort A</div>
+        <div class="kpi-value">170</div>
+        <div class="kpi-sub">23.0% of KYC-done users paid within 14 days</div>
+      </div>
+      <div class="kpi-card accent-amber">
+        <div class="kpi-label">Non-Payers · Cohort B</div>
+        <div class="kpi-value">570</div>
+        <div class="kpi-sub">77.0% completed KYC but haven't invested yet</div>
+      </div>
+      <div class="kpi-card accent-purple">
+        <div class="kpi-label">Baseline Conversion Rate</div>
+        <div class="kpi-value">23%</div>
+        <div class="kpi-sub">Post-KYC → First payment (14-day window)</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ── S2: CORE FUNNEL ── -->
+  <div class="section">
+    <div class="section-title">2 · Core Funnel — Converters Only</div>
+    <div class="section-sub">Ordered funnel for Cohort A: once a KYC-done user opens a bond detail, almost no one drops off before paying</div>
+
+    <div class="two-col">
+      <div class="chart-card">
+        <div class="chart-title">KYC → Bond Detail → Payment</div>
+        <div class="chart-sub">131 of 170 converters had a traceable ordered path through all steps</div>
+        <div class="funnel-wrap" style="margin-top:8px">
+
+          <div class="funnel-step">
+            <div class="funnel-label">KYC Demat Verified</div>
+            <div class="funnel-bar-outer">
+              <div class="funnel-bar-inner" style="width:100%;background:#2563EB">131 users</div>
+            </div>
+            <div class="funnel-meta">100%</div>
+          </div>
+          <div class="funnel-arrow">→ 95.4% proceed</div>
+
+          <div class="funnel-step">
+            <div class="funnel-label">Bond Detail Page</div>
+            <div class="funnel-bar-outer">
+              <div class="funnel-bar-inner" style="width:95.4%;background:#16A34A">125 users</div>
+            </div>
+            <div class="funnel-meta">95.4%</div>
+          </div>
+          <div class="funnel-arrow">→ 99.2% proceed</div>
+
+          <div class="funnel-step">
+            <div class="funnel-label">Payment Initiated</div>
+            <div class="funnel-bar-outer">
+              <div class="funnel-bar-inner" style="width:94.7%;background:#7C3AED">124 users</div>
+            </div>
+            <div class="funnel-meta">94.7%</div>
+          </div>
+          <div class="funnel-arrow">→ 100% complete</div>
+
+          <div class="funnel-step">
+            <div class="funnel-label">Payment Successful</div>
+            <div class="funnel-bar-outer">
+              <div class="funnel-bar-inner" style="width:94.7%;background:#0D9488">124 users</div>
+            </div>
+            <div class="funnel-meta">94.7%</div>
+          </div>
+        </div>
+        <p class="note">Once a converter opens a bond detail page, 99.2% initiate payment and 100% complete it. The bottleneck is reaching bond detail — not the payment step.</p>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">Where the 23% conv rate comes from</div>
+        <div class="chart-sub">Step-to-step drop across the full 170-user cohort</div>
+        <div class="chart-wrap h300">
+          <canvas id="funnelBreakdownChart"></canvas>
+        </div>
+        <p class="note">Out of 170 converters, 39 paid without a traceable ordered path (direct link, push notification, or sequence variation). The ordered funnel captures the dominant journey.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ── S3: TOUCHPOINT METRICS ── -->
+  <div class="section">
+    <div class="section-title">3 · Touchpoint Metrics — Converters vs Non-Converters</div>
+    <div class="section-sub">
+      For each path: <strong>Path Conv%</strong> = of all post-KYC users who used this path, % who paid (last-touch proxy).
+      <strong>Lift</strong> = how much more likely a converter used this path vs a non-converter.
+      Reach index can exceed 100% — it counts user-session days across the 14-day window, not unique users.
+      A user can appear in multiple touchpoints — these are not mutually exclusive.
+    </div>
+
+    <div class="chart-card" style="margin-bottom:20px">
+      <div class="chart-title">Path Conversion Rate vs Lift — Discovery Touchpoints</div>
+      <div class="chart-sub">Higher conv% = more payment-proximate path. Higher lift = stronger converter signal. Bubble size = total path users (base).</div>
+      <div class="chart-wrap h400">
+        <canvas id="bubbleChart"></canvas>
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-bottom:20px">
+      <div class="chart-card">
+        <div class="chart-title">Path Conv% by Touchpoint</div>
+        <div class="chart-sub">Of all post-KYC users who used each path, % who eventually paid</div>
+        <div class="chart-wrap h360">
+          <canvas id="pathConvChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Converter Lift by Touchpoint</div>
+        <div class="chart-sub">How many times more likely a converter used this path vs non-converter</div>
+        <div class="chart-wrap h360">
+          <canvas id="liftChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Full Touchpoint Table</div>
+      <div class="chart-sub">All metrics per path. Sorted by Path Conv% descending. <em>NEW_BOND_CARD_CLICK returns 0 events — widget may not be active in KYC_DONE_INVESTMENT_PENDING layout.</em></div>
+      <table class="tp-table">
+        <thead>
+          <tr>
+            <th>Touchpoint</th>
+            <th>Path Conv%</th>
+            <th>Lift vs Non-conv</th>
+            <th>Conv Volume</th>
+            <th>Total Path Users</th>
+            <th>Priority</th>
+          </tr>
+        </thead>
+        <tbody id="tpTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ── S4: PRIORITIZATION MATRIX ── -->
+  <div class="section">
+    <div class="section-title">4 · UI/UX Prioritization Matrix</div>
+    <div class="section-sub">Reach (x-axis: total path users) vs Path Conv% (y-axis). Guides where to invest product effort.</div>
+
+    <div class="two-col">
+      <div class="chart-card">
+        <div class="chart-title">Reach × Conversion Matrix</div>
+        <div class="chart-sub">X = total post-KYC users on this path · Y = % who paid · Size = converter volume</div>
+        <div class="chart-wrap h400">
+          <canvas id="matrixChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">What each quadrant means</div>
+        <div class="chart-sub">Action framework for each position in the matrix</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px">
+          <div style="background:#ECFDF5;border-radius:8px;padding:14px">
+            <div style="font-size:.78rem;font-weight:700;color:#16A34A;margin-bottom:6px">↑ HIGH REACH · HIGH CONV</div>
+            <div style="font-size:.82rem;color:#166534;font-weight:600">🚀 Scale it up</div>
+            <div style="font-size:.76rem;color:#166534;margin-top:4px">High Yield Tile, WAYLF — more surface area, better placement, A/B the CTA</div>
+          </div>
+          <div style="background:#DBEAFE;border-radius:8px;padding:14px">
+            <div style="font-size:.78rem;font-weight:700;color:#1E40AF;margin-bottom:6px">↑ LOW REACH · HIGH CONV</div>
+            <div style="font-size:.82rem;color:#1E3A8A;font-weight:600">🔍 Fix discoverability</div>
+            <div style="font-size:.76rem;color:#1E3A8A;margin-top:4px">Short Tenure Tile — highest conv% but fewest users. Make it more prominent.</div>
+          </div>
+          <div style="background:#FEF3C7;border-radius:8px;padding:14px">
+            <div style="font-size:.78rem;font-weight:700;color:#92400E;margin-bottom:6px">↓ HIGH REACH · LOW CONV</div>
+            <div style="font-size:.82rem;color:#78350F;font-weight:600">🔧 Fix the UX</div>
+            <div style="font-size:.76rem;color:#78350F;margin-top:4px">Explore Page — highest traffic but lowest conv%. Better curated discovery, reduce overwhelm.</div>
+          </div>
+          <div style="background:#F3F4F6;border-radius:8px;padding:14px">
+            <div style="font-size:.78rem;font-weight:700;color:#6B7280;margin-bottom:6px">↓ LOW REACH · LOW CONV</div>
+            <div style="font-size:.82rem;color:#374151;font-weight:600">⏸ Deprioritize</div>
+            <div style="font-size:.76rem;color:#374151;margin-top:4px">Low Ticket Tile — both reach and conv are low. Not a current bottleneck.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ── S5: MULTI-TOUCH ATTRIBUTION ── -->
+  <div class="section">
+    <div class="section-title">5 · Multi-Touch Attribution</div>
+    <div class="section-sub">
+      True last-touch attribution requires per-user event sequences (not available from Amplitude's aggregated API).
+      These are the closest valid approximations: <strong>Path Conv%</strong> as a last-touch proxy, and <strong>Path Synergy</strong> as multi-touch signal.
+    </div>
+
+    <!-- 5a: attribution comparison table -->
+    <div class="chart-card" style="margin-bottom:20px">
+      <div class="chart-title">5a · Attribution Lens Comparison</div>
+      <div class="chart-sub">Three ways to look at which path is most payment-proximate. Path Effectiveness = last-touch proxy. Converter Signal = differential vs non-payers. Journey Presence = how often converters visited this path.</div>
+      <table class="tp-table">
+        <thead>
+          <tr>
+            <th>Touchpoint</th>
+            <th>Path Effectiveness<br><span style="font-weight:400;font-style:italic">Last-touch proxy (conv%)</span></th>
+            <th>Converter Signal<br><span style="font-weight:400;font-style:italic">Lift vs non-converters</span></th>
+            <th>Journey Presence<br><span style="font-weight:400;font-style:italic">Engagement index (A)</span></th>
+            <th>Attribution Priority</th>
+          </tr>
+        </thead>
+        <tbody id="attrTableBody"></tbody>
+      </table>
+      <p class="note">Journey Presence can exceed 100% because it sums user-session days across the 14-day window (e.g. a converter who visits Explore on 3 separate days = counted 3×). Treat it as relative engagement intensity, not unique user %.</p>
+    </div>
+
+    <!-- 5b: path synergy -->
+    <div class="two-col" style="margin-bottom:20px">
+      <div class="chart-card">
+        <div class="chart-title">5b · Path Synergy — Explore vs Tile vs Both</div>
+        <div class="chart-sub">Conv% for users who used Explore only vs users who used both Explore + a Homepage tile (High Yield as tile proxy)</div>
+
+        <div class="synergy-row" style="margin-top:16px">
+          <div class="synergy-box synergy-low">
+            <div class="s-pct" style="color:#DC2626">18.5%</div>
+            <div class="s-label">Explore Only</div>
+            <div class="s-sub">Used Explore, no homepage tile</div>
+          </div>
+          <div class="synergy-arrow">→</div>
+          <div class="synergy-box synergy-high">
+            <div class="s-pct" style="color:#16A34A">51.4%</div>
+            <div class="s-label">Explore + Tile</div>
+            <div class="s-sub">Used both Explore and a homepage tile</div>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:12px">
+          <span class="multiplier-badge">2.8× synergy lift</span>
+        </div>
+        <p class="note" style="margin-top:12px">Users who combine both paths convert at 2.8× the rate of Explore-only users. Multi-surface exploration is a strong predictor of payment. Design the homepage to push users across multiple touchpoints.</p>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">5c · Path Conv% Ranking (Last-Touch Proxy)</div>
+        <div class="chart-sub">Which path is closest to payment in the converter journey</div>
+        <div class="chart-wrap h300">
+          <canvas id="lastTouchChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5d: attribution model note -->
+    <div class="warn-box">
+      <strong>Attribution limitation:</strong> True first-touch, last-touch, time-decay, and U-shaped attribution require per-user event sequences with timestamps — not available via Amplitude's aggregated API.
+      The metrics above are valid approximations: <strong>Path Conv%</strong> (conditional probability of payment given path usage) and <strong>Lift</strong> (differential engagement signal). They are not causal attribution.
+      A user counted in 3 touchpoints contributes to all 3 denominators — this is correct and intentional (touchpoints are not mutually exclusive).
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ── S6: MULTI-TOUCH DEPTH ── -->
+  <div class="section">
+    <div class="section-title">6 · Multi-Touch Depth — How Many Paths Did They Use?</div>
+    <div class="section-sub">Avg number of distinct discovery touchpoints engaged across the 14-day window (sum of per-path engagement / cohort size). Converters vs non-converters.</div>
+
+    <div class="two-col">
+      <div class="chart-card">
+        <div class="chart-title">Avg Discovery Paths Used</div>
+        <div class="chart-sub">Engagement score across 8 discovery touchpoints (Explore, 5 tiles, WAYLF, Issuer)</div>
+        <div style="display:flex;gap:24px;align-items:flex-end;margin:20px 0 8px">
+          <div>
+            <div style="font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--green);margin-bottom:4px">Converters (A)</div>
+            <div style="font-size:3.5rem;font-weight:900;color:var(--text1);line-height:1">6.66</div>
+            <div style="font-size:.78rem;color:var(--text3)">avg paths / user</div>
+          </div>
+          <div style="font-size:1.4rem;color:var(--text4);margin-bottom:16px">vs</div>
+          <div>
+            <div style="font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--amber);margin-bottom:4px">Non-Converters (B)</div>
+            <div style="font-size:3.5rem;font-weight:900;color:var(--text1);line-height:1">2.85</div>
+            <div style="font-size:.78rem;color:var(--text3)">avg paths / user</div>
+          </div>
+          <div style="margin-bottom:16px">
+            <span style="background:#DCFCE7;color:#16A34A;font-size:.85rem;font-weight:800;padding:6px 14px;border-radius:99px">2.3× more</span>
+          </div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:14px;font-size:.82rem;color:var(--text2);line-height:1.7">
+          Converters explore <strong>2.3× more touchpoints</strong> than non-converters.
+          Deep multi-surface exploration is a strong behavioral signal of intent to invest.
+          Non-converters largely stay on one surface (Explore page) without clicking into tiles or issuers.
+        </div>
+        <p class="note">Scores can exceed 1.0 per path because users who return to the same surface on multiple days are counted per visit — reflects engagement intensity across the 14-day window.</p>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">Engagement Score Breakdown by Path</div>
+        <div class="chart-sub">Converters vs non-converters — relative engagement per discovery path</div>
+        <div class="chart-wrap h360">
+          <canvas id="depthCompChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ── S7: DEPTH METRICS ── -->
+  <div class="section">
+    <div class="section-title">7 · Journey Depth — Converters</div>
+    <div class="section-sub">Total event counts per converter across the 14-day window. Reflects how much exploration happens before the first payment.</div>
+    <div class="kpi-grid">
+      <div class="kpi-card accent-blue">
+        <div class="kpi-label">Avg Bond Detail Views</div>
+        <div class="kpi-value">13.3</div>
+        <div class="kpi-sub">Bond detail pages opened per converter before paying</div>
+      </div>
+      <div class="kpi-card accent-green">
+        <div class="kpi-label">Avg Explore Page Visits</div>
+        <div class="kpi-value">14.4</div>
+        <div class="kpi-sub">Explore screen visits per converter (multi-session)</div>
+      </div>
+      <div class="kpi-card accent-purple">
+        <div class="kpi-label">Avg App Opens</div>
+        <div class="kpi-value">26.3</div>
+        <div class="kpi-sub">HOME_PAGE_VIEW fires — proxy for app sessions</div>
+      </div>
+      <div class="kpi-card accent-teal">
+        <div class="kpi-label">Bond Views per App Open</div>
+        <div class="kpi-value">0.51</div>
+        <div class="kpi-sub">~1 in 2 app opens results in a bond detail view</div>
+      </div>
+    </div>
+    <div style="margin-top:16px" class="info-box">
+      <strong>Interpretation:</strong> A typical converter opens the app ~26 times, visits Explore ~14 times, and views ~13 different bond pages before making their first payment.
+      This is not a low-consideration purchase — users research extensively. Product must support this discovery phase, not rush users to payment.
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ── S8: INSTRUMENTATION GAPS ── -->
+  <div class="section">
+    <div class="section-title">8 · Instrumentation Gaps</div>
+    <div class="section-sub">Known blindspots in this analysis due to missing analytics events in the codebase</div>
+
+    <div class="chart-card">
+      <table class="gap-table">
+        <thead>
+          <tr>
+            <th>Gap</th>
+            <th>Severity</th>
+            <th>What's missing</th>
+            <th>Impact on this analysis</th>
+            <th>Fix</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>"Explore bonds" CTA click</strong><br><span style="font-size:.76rem;color:var(--text4)">KycDoneInvestmentPendingWidget</span></td>
+            <td><span class="dot-red"></span>P0</td>
+            <td>No analytics event on the primary CTA shown to all KYC-done users on homepage</td>
+            <td>Can't distinguish CTA-driven Explore visits from bottom nav taps — both merge into EXPLORE_PAGE_VIEW</td>
+            <td>Add event before <code>navigation.navigate(EXPLORE_SCREEN)</code> in KycDoneInvestmentPending.tsx</td>
+          </tr>
+          <tr>
+            <td><strong>Bottom nav Explore tab press</strong><br><span style="font-size:.76rem;color:var(--text4)">TabNavigation.tsx</span></td>
+            <td><span class="dot-red"></span>P0</td>
+            <td>No <code>listeners</code> prop with analytics on any bottom tab (Home, Explore, Portfolio, Profile)</td>
+            <td>EXPLORE_PAGE_VIEW is a combined signal — CTA + tab press undifferentiated</td>
+            <td>Add <code>listeners={{ tabPress: () =&gt; postEvent(BOTTOM_NAV_EXPLORE_TAP) }}</code> to each Tab.Screen</td>
+          </tr>
+          <tr>
+            <td><strong>NEW_BOND_CARD_CLICK</strong><br><span style="font-size:.76rem;color:var(--text4)">homeRevamp / BOND_TILES widget</span></td>
+            <td><span class="dot-amber"></span>P1</td>
+            <td>Event returns 0 across the entire analysis window for this cohort</td>
+            <td>Newly Added Bonds widget may not be rendering for KYC_DONE_INVESTMENT_PENDING users or event not wired</td>
+            <td>Verify widget is rendering and event is posted correctly for this user category</td>
+          </tr>
+          <tr>
+            <td><strong>Exact first/last touch ordering</strong><br><span style="font-size:.76rem;color:var(--text4)">All screens</span></td>
+            <td><span class="dot-amber"></span>P1</td>
+            <td>Per-user event sequences not available from Amplitude's aggregated API</td>
+            <td>Path Conv% is a proxy for last-touch, not true last-touch attribution</td>
+            <td>Use Amplitude's raw export API or Pathfinder for session-level analysis</td>
+          </tr>
+          <tr>
+            <td><strong>Source param on EXPLORE_PAGE_VIEW</strong><br><span style="font-size:.76rem;color:var(--text4)">BondExplorePage.tsx</span></td>
+            <td><span class="dot-amber"></span>P2</td>
+            <td>explorePageView event has no source property — can't tell how user arrived</td>
+            <td>All Explore visits look the same regardless of origin</td>
+            <td>Pass <code>source</code> as route param, read it in BondExplorePage, attach to event payload</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+// ── data ──────────────────────────────────────────────────────────────────────
+const TOUCHPOINTS = [
+  { label: "Short Tenure Tile",  pathConv: 58.1, lift: 4.64, aU: 18,  baseU: 31,   reachA: 10.6 },
+  { label: "Payment Initiated",  pathConv: 54.3, lift: 3.98, aU: 177, baseU: 326,  reachA: 104.1 },
+  { label: "High Yield Tile",    pathConv: 51.5, lift: 3.56, aU: 185, baseU: 359,  reachA: 108.8 },
+  { label: "WAYLF",              pathConv: 47.8, lift: 3.07, aU: 326, baseU: 682,  reachA: 191.8 },
+  { label: "Issuer",             pathConv: 46.5, lift: 2.92, aU: 40,  baseU: 86,   reachA: 23.5  },
+  { label: "Highly Rated Tile",  pathConv: 40.0, lift: 2.24, aU: 44,  baseU: 110,  reachA: 25.9  },
+  { label: "Low Ticket Tile",    pathConv: 40.0, lift: 2.24, aU: 2,   baseU: 5,    reachA: 1.2   },
+  { label: "Bond Detail Page",   pathConv: 36.5, lift: 1.93, aU: 514, baseU: 1409, reachA: 302.4 },
+  { label: "Explore Page",       pathConv: 34.8, lift: 1.79, aU: 517, baseU: 1484, reachA: 304.1 },
+];
+
+// discovery only (for matrix & prioritization — exclude outcome events)
+const DISCOVERY = TOUCHPOINTS.filter(t =>
+  !["Payment Initiated","Bond Detail Page"].includes(t.label)
+);
+
+const COLORS = [
+  '#2563EB','#16A34A','#D97706','#7C3AED','#0D9488',
+  '#DC2626','#EA580C','#0891B2','#BE185D'
+];
+
+// ── funnel breakdown chart (S2) ───────────────────────────────────────────────
+new Chart(document.getElementById('funnelBreakdownChart'), {
+  type: 'bar',
+  data: {
+    labels: ['KYC Done\n(170)', 'Traceable\nOrdered Path', 'Viewed\nBond Detail', 'Initiated\nPayment', 'Paid'],
+    datasets: [{
+      label: 'Users',
+      data: [170, 131, 125, 124, 124],
+      backgroundColor: ['#DBEAFE','#2563EB','#16A34A','#7C3AED','#0D9488'],
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { grid: { color: '#F1F5F9' }, ticks: { color: '#697586', font: { size: 11 } } },
+      x: { grid: { display: false }, ticks: { color: '#697586', font: { size: 10 }, maxRotation: 0 } }
+    }
+  }
+});
+
+// ── path conv chart (S3) ──────────────────────────────────────────────────────
+new Chart(document.getElementById('pathConvChart'), {
+  type: 'bar',
+  data: {
+    labels: TOUCHPOINTS.map(t => t.label),
+    datasets: [{
+      label: 'Path Conv%',
+      data: TOUCHPOINTS.map(t => t.pathConv),
+      backgroundColor: TOUCHPOINTS.map((t,i) => COLORS[i % COLORS.length] + 'CC'),
+      borderColor:     TOUCHPOINTS.map((t,i) => COLORS[i % COLORS.length]),
+      borderWidth: 1,
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.raw}%` } }
+    },
+    scales: {
+      x: { grid: { color: '#F1F5F9' }, ticks: { color: '#697586', font: { size: 11 } },
+           title: { display: true, text: 'Path Conv% (% of path users who paid)', color: '#9AA4B2', font: { size: 10 } } },
+      y: { grid: { display: false }, ticks: { color: '#697586', font: { size: 11 } } }
+    }
+  }
+});
+
+// ── lift chart (S3) ───────────────────────────────────────────────────────────
+new Chart(document.getElementById('liftChart'), {
+  type: 'bar',
+  data: {
+    labels: TOUCHPOINTS.map(t => t.label),
+    datasets: [{
+      label: 'Lift vs Non-converter',
+      data: TOUCHPOINTS.map(t => t.lift),
+      backgroundColor: TOUCHPOINTS.map(t => t.lift >= 3 ? '#DCFCE7' : t.lift >= 2 ? '#FEF3C7' : '#FEE2E2'),
+      borderColor:     TOUCHPOINTS.map(t => t.lift >= 3 ? '#16A34A' : t.lift >= 2 ? '#D97706' : '#DC2626'),
+      borderWidth: 1,
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.raw}×` } }
+    },
+    scales: {
+      x: { grid: { color: '#F1F5F9' }, ticks: { color: '#697586', font: { size: 11 } },
+           title: { display: true, text: 'Lift multiplier (× baseline)', color: '#9AA4B2', font: { size: 10 } } },
+      y: { grid: { display: false }, ticks: { color: '#697586', font: { size: 11 } } }
+    }
+  }
+});
+
+// ── bubble chart (S3 overview) ────────────────────────────────────────────────
+new Chart(document.getElementById('bubbleChart'), {
+  type: 'bubble',
+  data: {
+    datasets: DISCOVERY.map((t, i) => ({
+      label: t.label,
+      data: [{ x: t.lift, y: t.pathConv, r: Math.max(6, Math.sqrt(t.baseU) * 0.9) }],
+      backgroundColor: COLORS[i % COLORS.length] + '99',
+      borderColor:     COLORS[i % COLORS.length],
+      borderWidth: 2,
+    }))
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'right', labels: { font: { size: 11 }, color: '#4B5565', boxWidth: 10, padding: 10 } },
+      tooltip: { callbacks: {
+        label: ctx => {
+          const t = DISCOVERY[ctx.datasetIndex];
+          return [`${t.label}`, `Path Conv: ${t.pathConv}%`, `Lift: ${t.lift}×`, `Users: ${t.baseU}`];
+        }
+      }}
+    },
+    scales: {
+      x: {
+        title: { display: true, text: 'Converter Lift (×)', color: '#9AA4B2', font: { size: 11 } },
+        min: 1, max: 6,
+        grid: { color: '#F1F5F9' }, ticks: { color: '#697586', font: { size: 11 } }
+      },
+      y: {
+        title: { display: true, text: 'Path Conv% (last-touch proxy)', color: '#9AA4B2', font: { size: 11 } },
+        min: 20, max: 70,
+        grid: { color: '#F1F5F9' }, ticks: { color: '#697586', font: { size: 11 }, callback: v => v + '%' }
+      }
+    }
+  }
+});
+
+// ── prioritization matrix (S4) ────────────────────────────────────────────────
+new Chart(document.getElementById('matrixChart'), {
+  type: 'bubble',
+  data: {
+    datasets: DISCOVERY.map((t, i) => ({
+      label: t.label,
+      data: [{ x: t.baseU, y: t.pathConv, r: Math.max(6, Math.sqrt(t.aU) * 1.2) }],
+      backgroundColor: COLORS[i % COLORS.length] + '99',
+      borderColor:     COLORS[i % COLORS.length],
+      borderWidth: 2,
+    }))
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'right', labels: { font: { size: 11 }, color: '#4B5565', boxWidth: 10, padding: 8 } },
+      tooltip: { callbacks: {
+        label: ctx => {
+          const t = DISCOVERY[ctx.datasetIndex];
+          return [`${t.label}`, `Reach: ${t.baseU} users`, `Conv: ${t.pathConv}%`, `Converters: ${t.aU}`];
+        }
+      }},
+      annotation: {}
+    },
+    scales: {
+      x: {
+        title: { display: true, text: 'Total path users (reach / opportunity size)', color: '#9AA4B2', font: { size: 11 } },
+        grid: { color: '#F1F5F9' }, ticks: { color: '#697586', font: { size: 11 } }
+      },
+      y: {
+        title: { display: true, text: 'Path Conv%', color: '#9AA4B2', font: { size: 11 } },
+        min: 20, max: 70,
+        grid: { color: '#F1F5F9' }, ticks: { color: '#697586', font: { size: 11 }, callback: v => v + '%' }
+      }
+    }
+  }
+});
+
+// ── last-touch proxy chart (S5c) ──────────────────────────────────────────────
+new Chart(document.getElementById('lastTouchChart'), {
+  type: 'bar',
+  data: {
+    labels: TOUCHPOINTS.map(t => t.label),
+    datasets: [{
+      label: 'Path Conv% (last-touch proxy)',
+      data: TOUCHPOINTS.map(t => t.pathConv),
+      backgroundColor: TOUCHPOINTS.map(t =>
+        t.pathConv >= 50 ? '#DCFCE7' : t.pathConv >= 40 ? '#FEF3C7' : '#DBEAFE'),
+      borderColor: TOUCHPOINTS.map(t =>
+        t.pathConv >= 50 ? '#16A34A' : t.pathConv >= 40 ? '#D97706' : '#2563EB'),
+      borderWidth: 1, borderRadius: 4,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.raw}%` } }
+    },
+    scales: {
+      x: { grid: { color: '#F1F5F9' }, ticks: { color: '#697586', font: { size: 11 } },
+           title: { display: true, text: '% of path users who paid', color: '#9AA4B2', font: { size: 10 } } },
+      y: { grid: { display: false }, ticks: { color: '#697586', font: { size: 11 } } }
+    }
+  }
+});
+
+// ── depth comparison chart (S6) ───────────────────────────────────────────────
+const DISC_LABELS = ["Explore","High Yield","Highly Rated","Short Tenure","Low Ticket","WAYLF","Issuer","Newly Added"];
+const DISC_A      = [304.1, 108.8, 25.9, 10.6, 1.2, 191.8, 23.5, 0.0];
+const DISC_B      = [169.6,  30.5, 11.6,  2.3, 0.5,  62.5,  8.1, 0.0];
+
+new Chart(document.getElementById('depthCompChart'), {
+  type: 'bar',
+  data: {
+    labels: DISC_LABELS,
+    datasets: [
+      { label: 'Converters (A)', data: DISC_A, backgroundColor: '#2563EB99', borderColor: '#2563EB', borderWidth: 1, borderRadius: 3 },
+      { label: 'Non-converters (B)', data: DISC_B, backgroundColor: '#D9780699', borderColor: '#D97806', borderWidth: 1, borderRadius: 3 },
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 }, color: '#4B5565' } },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.raw} (engagement index)` } }
+    },
+    scales: {
+      x: { grid: { color: '#F1F5F9' }, ticks: { color: '#697586', font: { size: 10 } },
+           title: { display: true, text: 'Engagement index (user-session days / cohort size × 100)', color: '#9AA4B2', font: { size: 9 } } },
+      y: { grid: { display: false }, ticks: { color: '#697586', font: { size: 10 } } }
+    }
+  }
+});
+
+// ── touchpoint table (S3) ─────────────────────────────────────────────────────
+const tpBody = document.getElementById('tpTableBody');
+TOUCHPOINTS.forEach(t => {
+  const priority = t.pathConv >= 50 && t.baseU >= 300 ? '<span class="pill pill-high">Scale Up</span>'
+    : t.pathConv >= 50 && t.baseU < 300 ? '<span class="pill pill-blue">Surface More</span>'
+    : t.pathConv >= 40 ? '<span class="pill pill-med">Optimise UX</span>'
+    : '<span class="pill pill-low">Monitor</span>';
+
+  const liftClass = t.lift >= 3.5 ? 'pill-high' : t.lift >= 2.5 ? 'pill-med' : 'pill-low';
+  tpBody.innerHTML += `
+    <tr>
+      <td><strong>${t.label}</strong></td>
+      <td><strong>${t.pathConv}%</strong>
+        <div class="lift-bar" style="width:${Math.min(t.pathConv*1.4,100)}%;background:${t.pathConv>=50?'#16A34A':t.pathConv>=40?'#D97706':'#2563EB'}"></div>
+      </td>
+      <td><span class="pill ${liftClass}">${t.lift}×</span></td>
+      <td>${t.aU.toLocaleString()}</td>
+      <td>${t.baseU.toLocaleString()}</td>
+      <td>${priority}</td>
+    </tr>`;
+});
+
+// ── attribution table (S5a) ───────────────────────────────────────────────────
+const attrBody = document.getElementById('attrTableBody');
+const attrData = [
+  { label: "Short Tenure Tile",  pathConv: 58.1, lift: 4.64, reachA: 10.6,  priority: "🔍 Surface More" },
+  { label: "High Yield Tile",    pathConv: 51.5, lift: 3.56, reachA: 108.8, priority: "🚀 Scale Up" },
+  { label: "WAYLF",              pathConv: 47.8, lift: 3.07, reachA: 191.8, priority: "🚀 Scale Up" },
+  { label: "Issuer",             pathConv: 46.5, lift: 2.92, reachA: 23.5,  priority: "🔍 Surface More" },
+  { label: "Highly Rated Tile",  pathConv: 40.0, lift: 2.24, reachA: 25.9,  priority: "🔧 Optimise" },
+  { label: "Low Ticket Tile",    pathConv: 40.0, lift: 2.24, reachA: 1.2,   priority: "⏸ Deprioritise" },
+  { label: "Bond Detail Page",   pathConv: 36.5, lift: 1.93, reachA: 302.4, priority: "🔧 Optimise" },
+  { label: "Explore Page",       pathConv: 34.8, lift: 1.79, reachA: 304.1, priority: "🔧 Fix UX" },
+];
+attrData.forEach(t => {
+  const effClass = t.pathConv >= 50 ? 'pill-high' : t.pathConv >= 40 ? 'pill-med' : 'pill-low';
+  const sigClass = t.lift >= 3.5 ? 'pill-high' : t.lift >= 2.5 ? 'pill-med' : 'pill-low';
+  attrBody.innerHTML += `
+    <tr>
+      <td><strong>${t.label}</strong></td>
+      <td><span class="pill ${effClass}">${t.pathConv}%</span></td>
+      <td><span class="pill ${sigClass}">${t.lift}×</span></td>
+      <td>${t.reachA}%</td>
+      <td>${t.priority}</td>
+    </tr>`;
+});
+</script>
+</body>
+</html>
