@@ -214,7 +214,7 @@
   <div class="meta">
     Aspero (Yubi B2C) &nbsp;|&nbsp;
     Cohort window: <span>May 7 – 20, 2026</span> &nbsp;|&nbsp;
-    Last updated: <span>2026-05-21 09:29:30 UTC</span>
+    Last updated: <span>2026-05-21 09:58:47 UTC</span>
   </div>
 </div>
 
@@ -249,18 +249,18 @@
     <div class="chart-wrap" style="display:flex;flex-direction:column;justify-content:center;padding:24px">
       <div class="chart-label">7-Day Summary</div>
       <div style="font-size:28px;font-weight:800;color:#f0f6fc;margin:8px 0">
-        70.1%
+        57.2%
       </div>
       <div style="color:#8b949e;font-size:13px;margin-bottom:16px">OTP → Signup (7-day avg)</div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
         <div style="background:#0d1117;border:1px solid #21262d;border-radius:6px;padding:12px">
           <div style="font-size:11px;color:#8b949e;text-transform:uppercase;margin-bottom:4px">Avg Daily Signups</div>
-          <div style="font-size:20px;font-weight:700;color:#6fcf97">627</div>
+          <div style="font-size:20px;font-weight:700;color:#6fcf97">656</div>
         </div>
         <div style="background:#0d1117;border:1px solid #21262d;border-radius:6px;padding:12px">
           <div style="font-size:11px;color:#8b949e;text-transform:uppercase;margin-bottom:4px">Peak Day</div>
-          <div style="font-size:20px;font-weight:700;color:#58a6ff">751</div>
+          <div style="font-size:20px;font-weight:700;color:#58a6ff">779</div>
         </div>
         <div style="background:#0d1117;border:1px solid #21262d;border-radius:6px;padding:12px">
           <div style="font-size:11px;color:#8b949e;text-transform:uppercase;margin-bottom:4px">SSO Rate (avg)</div>
@@ -275,7 +275,7 @@
   </div>
 
   <div class="insight-chip red">
-    Biggest drop: 05-14 — OTP→Signup rate dipped to 63.3% (7-day low). PIN setup is the key friction point (~30% of OTP-verified users abandon here).
+    Biggest drop: 05-14 — OTP→Signup rate dipped to 46.7% (7-day low). PIN setup is the key friction point (~30% of OTP-verified users abandon here).
   </div>
 </div>
 
@@ -287,7 +287,7 @@
     KYC Cohort Table — Current State
   </div>
   <div class="section-sub">
-    Segmentation API · behavioral cohort segment · each row = users who signed up on that date · avgs: Risk=33.3% PAN=15.8% Demat=8.5%
+    Segmentation API · behavioral cohort segment · each row = users who signed up on that date · avgs: Risk=33.4% PAN=15.8% Demat=8.5%
   </div>
 
   <div style="overflow-x:auto">
@@ -431,10 +431,10 @@
       <td><span class="badge badge-yellow">5d</span></td>
       <td class="num">642</td>
       <td style="background:#2d2a14;color:#f2c94c;font-weight:600">33.2%</td>
-      <td style="background:#1a472a;color:#6fcf97;font-weight:600">17.8%</td>
-      <td>14.3%</td>
-      <td>14.0%</td>
-      <td>13.4%</td>
+      <td style="background:#1a472a;color:#6fcf97;font-weight:600">17.9%</td>
+      <td>14.5%</td>
+      <td>14.2%</td>
+      <td>13.6%</td>
       <td>8.7%</td>
       <td style="background:#2d2a14;color:#f2c94c;font-weight:600">8.3%</td>
       <td>1.1%</td>
@@ -457,8 +457,8 @@
       <td><span class="badge badge-red">3d new</span></td>
       <td class="num">696</td>
       <td style="background:#4a1a1a;color:#eb5757;font-weight:600">31.6%</td>
-      <td style="background:#4a1a1a;color:#eb5757;font-weight:600">14.9%</td>
-      <td>13.6%</td>
+      <td style="background:#2d2a14;color:#f2c94c;font-weight:600">15.1%</td>
+      <td>13.8%</td>
       <td>12.4%</td>
       <td>11.2%</td>
       <td>8.5%</td>
@@ -482,11 +482,11 @@
       <td>05-20</td>
       <td><span class="badge badge-red">1d new</span></td>
       <td class="num">726</td>
-      <td style="background:#1a472a;color:#6fcf97;font-weight:600">47.0%</td>
-      <td style="background:#1a472a;color:#6fcf97;font-weight:600">18.2%</td>
+      <td style="background:#1a472a;color:#6fcf97;font-weight:600">48.8%</td>
+      <td style="background:#1a472a;color:#6fcf97;font-weight:600">18.3%</td>
       <td>14.6%</td>
-      <td>13.8%</td>
-      <td>12.9%</td>
+      <td>13.9%</td>
+      <td>13.1%</td>
       <td>7.7%</td>
       <td style="background:#4a1a1a;color:#eb5757;font-weight:600">7.4%</td>
       <td>1.2%</td>
@@ -534,7 +534,7 @@
       <div class="card-drop">Submit Click → API Success → eSign Complete</div>
       <canvas id="esignWaterfallChart"></canvas>
       <div class="callout yellow">
-        3.8pp drop Submit→Done — Aadhaar OTP delivery failures and session timeouts
+        3.9pp drop Submit→Done — Aadhaar OTP delivery failures and session timeouts
       </div>
     </div>
 
@@ -586,19 +586,19 @@ new Chart(document.getElementById('signupVolumeChart'), {
     datasets: [
       {
         label: 'OTP Verified',
-        data: [758, 787, 787, 695, 652, 730, 622, 743, 756, 825, 943, 904, 1078, 1012],
+        data: [1259, 1327, 1176, 1008, 936, 1093, 918, 1049, 964, 1111, 1159, 1145, 1283, 1321],
         backgroundColor: 'rgba(88,166,255,0.7)',
         borderRadius: 3,
       },
       {
-        label: 'PIN Page (email verified)',
-        data: [547, 609, 600, 537, 488, 537, 438, 533, 558, 655, 741, 705, 817, 744],
+        label: 'Email Verified',
+        data: [609, 648, 649, 576, 523, 571, 475, 558, 585, 682, 779, 730, 837, 785],
         backgroundColor: 'rgba(163,113,247,0.7)',
         borderRadius: 3,
       },
       {
         label: 'Signup Complete',
-        data: [501, 559, 545, 496, 445, 483, 404, 470, 508, 615, 693, 669, 751, 680],
+        data: [550, 602, 585, 535, 475, 516, 443, 490, 534, 642, 727, 696, 779, 726],
         backgroundColor: 'rgba(111,207,151,0.85)',
         borderRadius: 3,
       },
@@ -626,7 +626,7 @@ new Chart(document.getElementById('signupRateChart'), {
     datasets: [
       {
         label: 'OTP→Email Page%',
-        data: [99.6, 98.9, 98.9, 98.6, 99.2, 99.0, 99.4, 99.5, 99.7, 99.6, 99.4, 99.3, 99.6, 99.4],
+        data: [74.1, 70.5, 78.0, 81.7, 81.1, 76.8, 78.9, 77.4, 84.2, 80.3, 86.3, 83.5, 88.3, 82.3],
         borderColor: '#58a6ff',
         backgroundColor: 'rgba(88,166,255,0.1)',
         tension: 0.3,
@@ -634,8 +634,8 @@ new Chart(document.getElementById('signupRateChart'), {
         fill: false,
       },
       {
-        label: 'OTP→PIN Page%',
-        data: [72.2, 77.4, 76.2, 77.3, 74.8, 73.6, 70.4, 71.7, 73.8, 79.4, 78.6, 78.0, 75.8, 73.5],
+        label: 'OTP→Email Verified%',
+        data: [48.4, 48.8, 55.2, 57.1, 55.9, 52.2, 51.7, 53.2, 60.7, 61.4, 67.2, 63.8, 65.2, 59.4],
         borderColor: '#a371f7',
         backgroundColor: 'rgba(163,113,247,0.1)',
         tension: 0.3,
@@ -644,7 +644,7 @@ new Chart(document.getElementById('signupRateChart'), {
       },
       {
         label: 'OTP→Signup%',
-        data: [66.1, 71.0, 69.3, 71.4, 68.3, 66.2, 65.0, 63.3, 67.2, 74.5, 73.5, 74.0, 69.7, 67.2],
+        data: [43.7, 45.4, 49.7, 53.1, 50.7, 47.2, 48.3, 46.7, 55.4, 57.8, 62.7, 60.8, 60.7, 55.0],
         borderColor: '#6fcf97',
         backgroundColor: 'rgba(111,207,151,0.15)',
         tension: 0.3,
@@ -795,21 +795,21 @@ function makeWaterfall(ctx, labels, values, color) {
 makeWaterfall(
   document.getElementById('panWaterfallChart'),
   ['Screen View', 'CTA Click', 'SDK Init', 'SDK Callback', 'PAN Verified'],
-  [101.7, 73.1, 70.3, 55.5, 55.5],
+  [101.7, 73.3, 70.3, 55.5, 55.5],
   '#58a6ff'
 );
 
 makeWaterfall(
   document.getElementById('esignWaterfallChart'),
   ['Submit Click', 'API Success', 'eSign Done'],
-  [29.4, 28.3, 25.6],
+  [29.4, 28.2, 25.5],
   '#a371f7'
 );
 
 makeWaterfall(
   document.getElementById('dematWaterfallChart'),
   ['NSDL Sent', 'NSDL Callback', 'Demat Verified'],
-  [25.5, 29.0, 25.2],
+  [25.5, 28.9, 25.2],
   '#6fcf97'
 );
 
