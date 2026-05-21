@@ -153,6 +153,8 @@ tr:hover td { background:rgba(0,0,0,.02); }
       <strong>Data window:</strong> May 4–18 2026 (15 days).
       <code>BOND_DETAILS_PAGE_VIEW</code> event was broken Mar 11 – May 3 2026 — excluded from analysis.
       Payer counts from segmentation are slightly overcounted (daily unique sum); funnel counts are exact.
+      <br><strong>Measurement scope:</strong> Bond view and home visit counts reflect the <em>full 15-day window</em> for each user group — not strictly pre-payment. The ordered funnel (below) confirms sequence (bond view → payment) but event totals include post-payment browsing too.
+      <br><strong>Home screen visits:</strong> <code>HOME_PAGE_VIEW</code> fires every time the home screen is navigated to (including after each bond detail view in a session), not once per app launch.
     </div>
 
     <!-- KPI cards -->
@@ -184,14 +186,14 @@ tr:hover td { background:rgba(0,0,0,.02); }
       <div class="kpi-card violet">
         <div class="kpi-label">Avg Bond Views</div>
         <div class="kpi-val">16.2</div>
-        <div class="kpi-sub">Bond detail pages viewed per payer before investing</div>
+        <div class="kpi-sub">Bond detail pages per payer in 15-day window (incl. post-payment)</div>
         <span class="kpi-badge info">Heavy research</span>
       </div>
       <div class="kpi-card indigo">
-        <div class="kpi-label">Avg App Opens</div>
+        <div class="kpi-label">Avg Home Screen Visits</div>
         <div class="kpi-val">36.9</div>
-        <div class="kpi-sub">HOME_PAGE_VIEW events per payer (session proxy)</div>
-        <span class="kpi-badge info">High engagement</span>
+        <div class="kpi-sub">HOME_PAGE_VIEW navigations per payer — fires on every home return, not per session</div>
+        <span class="kpi-badge warn">Not = app opens</span>
       </div>
     </div>
 
@@ -262,8 +264,8 @@ tr:hover td { background:rgba(0,0,0,.02); }
     <!-- Charts row 2 -->
     <div class="chart-grid">
       <div class="chart-card">
-        <h3>Avg App Opens per Payer</h3>
-        <div class="chart-sub">HOME_PAGE_VIEW count as session proxy, by platform (15-day window)</div>
+        <h3>Avg Home Screen Visits per Payer</h3>
+        <div class="chart-sub">HOME_PAGE_VIEW navigations by platform · fires on every home return, not per app launch</div>
         <div class="chart-wrap short"><canvas id="appOpensBar"></canvas></div>
       </div>
       <div class="chart-card">
@@ -271,6 +273,26 @@ tr:hover td { background:rgba(0,0,0,.02); }
         <div class="chart-sub">Where users fall out of the bond-view → payment funnel</div>
         <div class="chart-wrap short"><canvas id="dropoffBar"></canvas></div>
       </div>
+    </div>
+
+    <!-- Comparison section: payers vs non-payers, 1tx vs 2+tx -->
+    <div class="sec-title">Engagement Comparison — Who Pays vs Who Doesn't</div>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>Avg Bond Detail Views — by User Group</h3>
+        <div class="chart-sub">Post-KYC non-payers · first-time investors (1 tx in 180d) · repeat investors (2+tx in 180d)</div>
+        <div class="chart-wrap short"><canvas id="compBondViews"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Avg Home Screen Visits — by User Group</h3>
+        <div class="chart-sub">HOME_PAGE_VIEW navigations per user · full 15-day window · non-payers barely return after KYC</div>
+        <div class="chart-wrap short"><canvas id="compHomeVisits"></canvas></div>
+      </div>
+    </div>
+    <div class="caveat" style="margin-top:-12px;">
+      <strong>Non-payer group:</strong> KYC_DEMAT_VERIFIED users who did not fire PAYMENT_SUCCESSFUL in the 15-day window (approx. 383 users).
+      · <strong>1-tx group:</strong> users with exactly 1 payment in the last 180 days (139 payer-days).
+      · <strong>2+tx group:</strong> users with ≥2 payments in 180 days (344 payer-days). Both payer groups include activity before AND after their payments in the 15-day window.
     </div>
 
     <!-- Platform table -->
@@ -283,8 +305,8 @@ tr:hover td { background:rgba(0,0,0,.02); }
             <th>Payers (est.)</th>
             <th>Share of Payers</th>
             <th>Avg Bond Views</th>
-            <th>Avg App Opens</th>
-            <th>Bond Views / App Open</th>
+            <th>Avg Home Screen Visits</th>
+            <th>Bond Views / Home Visit</th>
           </tr>
         </thead>
         <tbody>
@@ -365,6 +387,19 @@ tr:hover td { background:rgba(0,0,0,.02); }
         <div class="insight-body">With only 0.42–0.61 bond views per app open, most sessions
           don't include bond research. Users open the app for other reasons,
           <strong>then sometimes</strong> browse bonds. Consider surfacing bond recommendations on the home page.</div>
+      </div>
+      <div class="insight rose">
+        <div class="insight-title">Non-payers churn after KYC</div>
+        <div class="insight-body">Post-KYC non-payers have just <strong>0.13 home visits and 1.93 bond views</strong>
+          in the 15-day window. They almost entirely ghost the app after completing KYC.
+          This is the biggest activation gap — they finished KYC but never came back to invest.</div>
+      </div>
+      <div class="insight violet">
+        <div class="insight-title">First-time investors research 50% more</div>
+        <div class="insight-body">1-tx users: <strong>19.7 bond views, 49 home visits</strong>.
+          2+tx users: 13.1 views, 32 visits. First-time investors browse more
+          before their second purchase — they're warm but undecided. A targeted nudge here
+          would drive repeat investment more than acquisition.</div>
       </div>
     </div>
 
@@ -474,6 +509,65 @@ new Chart(document.getElementById('appOpensBar'), {
       x: { grid: { display: false }, ticks: { font: { size: 12 } } }
     },
     plugins: { legend: { display: false } }
+  }
+});
+
+// 5. Comparison: avg bond views by group
+const compGroups = ['Non-payer\n(post KYC)', 'First-time investor\n(1 tx / 180d)', 'Repeat investor\n(2+ tx / 180d)'];
+new Chart(document.getElementById('compBondViews'), {
+  type: 'bar',
+  data: {
+    labels: ['Non-payer\n(post KYC)', 'First-time investor\n(1 tx)', 'Repeat investor\n(2+ tx)'],
+    datasets: [{
+      label: 'Avg bond detail views',
+      data: [1.93, 19.70, 13.08],
+      backgroundColor: ['#94a3b8','#f59e0b','#10b981'],
+      borderRadius: 6,
+      barThickness: 44,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: { beginAtZero: true, max: 25, grid: { color: '#f1f5f9' },
+           ticks: { font: { size: 11 } },
+           title: { display: true, text: 'Avg bond pages viewed', font: { size: 11 } } },
+      x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.raw} bond pages` } }
+    }
+  }
+});
+
+// 6. Comparison: avg home screen visits by group
+new Chart(document.getElementById('compHomeVisits'), {
+  type: 'bar',
+  data: {
+    labels: ['Non-payer\n(post KYC)', 'First-time investor\n(1 tx)', 'Repeat investor\n(2+ tx)'],
+    datasets: [{
+      label: 'Avg HOME_PAGE_VIEW navigations',
+      data: [0.13, 49.05, 32.27],
+      backgroundColor: ['rgba(148,163,184,.6)','rgba(245,158,11,.7)','rgba(16,185,129,.7)'],
+      borderColor:      ['#94a3b8','#f59e0b','#10b981'],
+      borderWidth: 2,
+      borderRadius: 6,
+      barThickness: 44,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: { beginAtZero: true, max: 60, grid: { color: '#f1f5f9' },
+           ticks: { font: { size: 11 } },
+           title: { display: true, text: 'Avg home screen visits', font: { size: 11 } } },
+      x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.raw} home visits` } }
+    }
   }
 });
 
