@@ -186,63 +186,62 @@
 
   <hr class="section-divider">
 
-  <!-- ── S2: CORE FUNNEL ── -->
+  <!-- ── S2: TOP 3 CONVERTER PATHS ── -->
   <div class="section">
-    <div class="section-title">2 · Core Funnel — Converters Only</div>
-    <div class="section-sub">Ordered funnel for Cohort A: once a KYC-done user opens a bond detail, almost no one drops off before paying</div>
+    <div class="section-title">2 · Top 3 Converter Paths</div>
+    <div class="section-sub">The 3 discovery routes most used by the 170 converters before paying. Ranked by converter engagement volume. All paths converge at Bond Detail → Payment — getting users to open a bond detail is the real bottleneck, not the payment step.</div>
 
-    <div class="two-col">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px">
+
+      <!-- Path 1: Explore Page -->
       <div class="chart-card">
-        <div class="chart-title">KYC → Bond Detail → Payment</div>
-        <div class="chart-sub">131 of 170 converters had a traceable ordered path through all steps</div>
-        <div class="funnel-wrap" style="margin-top:8px">
-
-          <div class="funnel-step">
-            <div class="funnel-label">KYC Demat Verified</div>
-            <div class="funnel-bar-outer">
-              <div class="funnel-bar-inner" style="width:100%;background:#2563EB">131 users</div>
-            </div>
-            <div class="funnel-meta">100%</div>
-          </div>
-          <div class="funnel-arrow">→ 95.4% proceed</div>
-
-          <div class="funnel-step">
-            <div class="funnel-label">Bond Detail Page</div>
-            <div class="funnel-bar-outer">
-              <div class="funnel-bar-inner" style="width:95.4%;background:#16A34A">125 users</div>
-            </div>
-            <div class="funnel-meta">95.4%</div>
-          </div>
-          <div class="funnel-arrow">→ 99.2% proceed</div>
-
-          <div class="funnel-step">
-            <div class="funnel-label">Payment Initiated</div>
-            <div class="funnel-bar-outer">
-              <div class="funnel-bar-inner" style="width:94.7%;background:#7C3AED">124 users</div>
-            </div>
-            <div class="funnel-meta">94.7%</div>
-          </div>
-          <div class="funnel-arrow">→ 100% complete</div>
-
-          <div class="funnel-step">
-            <div class="funnel-label">Payment Successful</div>
-            <div class="funnel-bar-outer">
-              <div class="funnel-bar-inner" style="width:94.7%;background:#0D9488">124 users</div>
-            </div>
-            <div class="funnel-meta">94.7%</div>
-          </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="background:#2563EB;color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0">1</span>
+          <div class="chart-title" style="margin:0">Explore Page</div>
         </div>
-        <p class="note">Once a converter opens a bond detail page, 99.2% initiate payment and 100% complete it. The bottleneck is reaching bond detail — not the payment step.</p>
+        <div style="font-size:.82rem;color:var(--text3);margin-bottom:12px">Explore → Bond Detail → Payment</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
+          <span style="background:#DBEAFE;color:#1D4ED8;border-radius:6px;padding:3px 8px;font-size:.75rem;font-weight:600">517 conv. sessions</span>
+          <span style="background:#DCFCE7;color:#166534;border-radius:6px;padding:3px 8px;font-size:.75rem;font-weight:600">34.8% path conv</span>
+        </div>
+        <div style="font-size:.82rem;color:var(--text3);margin-bottom:8px">Lift: <strong style="color:var(--text1)">1.79×</strong> vs non-converters</div>
+        <p class="note">Highest volume surface. Both intent-driven and casual browsers visit Explore — lower selectivity but primary entry point from the homepage CTA for KYC-done users.</p>
       </div>
 
+      <!-- Path 2: WAYLF -->
       <div class="chart-card">
-        <div class="chart-title">Where the 23% conv rate comes from</div>
-        <div class="chart-sub">Step-to-step drop across the full 170-user cohort</div>
-        <div class="chart-wrap h300">
-          <canvas id="funnelBreakdownChart"></canvas>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="background:#16A34A;color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0">2</span>
+          <div class="chart-title" style="margin:0">WAYLF</div>
         </div>
-        <p class="note">Out of 170 converters, 39 paid without a traceable ordered path (direct link, push notification, or sequence variation). The ordered funnel captures the dominant journey.</p>
+        <div style="font-size:.82rem;color:var(--text3);margin-bottom:12px">WAYLF → Bond Detail → Payment</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
+          <span style="background:#DBEAFE;color:#1D4ED8;border-radius:6px;padding:3px 8px;font-size:.75rem;font-weight:600">326 conv. sessions</span>
+          <span style="background:#DCFCE7;color:#166534;border-radius:6px;padding:3px 8px;font-size:.75rem;font-weight:600">47.8% path conv</span>
+        </div>
+        <div style="font-size:.82rem;color:var(--text3);margin-bottom:8px">Lift: <strong style="color:var(--text1)">3.07×</strong> vs non-converters</div>
+        <p class="note">High-intent path. Converters are 3× more likely to use WAYLF than non-converters. Personalised bond surfacing is a strong pre-payment signal.</p>
       </div>
+
+      <!-- Path 3: High Yield Tile -->
+      <div class="chart-card">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="background:#D97706;color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0">3</span>
+          <div class="chart-title" style="margin:0">High Yield Tile</div>
+        </div>
+        <div style="font-size:.82rem;color:var(--text3);margin-bottom:12px">High Yield Tile → Bond Detail → Payment</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
+          <span style="background:#DBEAFE;color:#1D4ED8;border-radius:6px;padding:3px 8px;font-size:.75rem;font-weight:600">185 conv. sessions</span>
+          <span style="background:#DCFCE7;color:#166534;border-radius:6px;padding:3px 8px;font-size:.75rem;font-weight:600">51.5% path conv</span>
+        </div>
+        <div style="font-size:.82rem;color:var(--text3);margin-bottom:8px">Lift: <strong style="color:var(--text1)">3.56×</strong> vs non-converters</div>
+        <p class="note">Highest-efficiency homepage tile. 51.5% of users who tap High Yield eventually pay — strongest path conv among high-volume touchpoints. Yield-led discovery is the most payment-proximate homepage route.</p>
+      </div>
+
+    </div>
+
+    <div class="info-box">
+      <strong>Key insight:</strong> All 170 converters reached Bond Detail before paying. The bottleneck is not the payment step — it is getting post-KYC users to open any bond detail page. These 3 paths are the proven routes that get users there. Prioritise surfacing them for all KYC-done users.
     </div>
   </div>
 
@@ -580,28 +579,6 @@ const COLORS = [
   '#2563EB','#16A34A','#D97706','#7C3AED','#0D9488',
   '#DC2626','#EA580C','#0891B2','#BE185D'
 ];
-
-// ── funnel breakdown chart (S2) ───────────────────────────────────────────────
-new Chart(document.getElementById('funnelBreakdownChart'), {
-  type: 'bar',
-  data: {
-    labels: ['KYC Done\n(170)', 'Traceable\nOrdered Path', 'Viewed\nBond Detail', 'Initiated\nPayment', 'Paid'],
-    datasets: [{
-      label: 'Users',
-      data: [170, 131, 125, 124, 124],
-      backgroundColor: ['#DBEAFE','#2563EB','#16A34A','#7C3AED','#0D9488'],
-      borderRadius: 6,
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      y: { grid: { color: '#F1F5F9' }, ticks: { color: '#697586', font: { size: 11 } } },
-      x: { grid: { display: false }, ticks: { color: '#697586', font: { size: 10 }, maxRotation: 0 } }
-    }
-  }
-});
 
 // ── path conv chart (S3) ──────────────────────────────────────────────────────
 new Chart(document.getElementById('pathConvChart'), {
