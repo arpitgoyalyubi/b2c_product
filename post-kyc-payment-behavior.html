@@ -189,59 +189,103 @@
   <!-- ── S2: TOP 3 CONVERTER PATHS ── -->
   <div class="section">
     <div class="section-title">2 · Top 3 Converter Paths</div>
-    <div class="section-sub">The 3 discovery routes most used by the 170 converters before paying. Ranked by converter engagement volume. All paths converge at Bond Detail → Payment — getting users to open a bond detail is the real bottleneck, not the payment step.</div>
+    <div class="section-sub">The 3 homepage surfaces used by converters before paying. Ranked by total converter engagement volume. All direct-to-Bond-Detail paths bypass Explore entirely. Data window: May 4–18 2026 · 147 converters.</div>
 
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px">
 
-      <!-- Path 1: Explore Page -->
+      <!-- Path 1: Explore Screen -->
       <div class="chart-card">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
           <span style="background:#2563EB;color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0">1</span>
-          <div class="chart-title" style="margin:0">Explore Page</div>
+          <div class="chart-title" style="margin:0">Explore Screen</div>
         </div>
-        <div style="font-size:.82rem;color:var(--text3);margin-bottom:12px">Explore → Bond Detail → Payment</div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
-          <span style="background:#DBEAFE;color:#1D4ED8;border-radius:6px;padding:3px 8px;font-size:.75rem;font-weight:600">517 conv. sessions</span>
-          <span style="background:#DCFCE7;color:#166534;border-radius:6px;padding:3px 8px;font-size:.75rem;font-weight:600">34.8% path conv</span>
+        <div style="font-size:.81rem;color:var(--text3);margin-bottom:10px">? → Explore → Bond Detail → Payment</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+          <span style="background:#DBEAFE;color:#1D4ED8;border-radius:6px;padding:3px 8px;font-size:.75rem;font-weight:600">471 conv. sessions</span>
+          <span style="background:#DCFCE7;color:#166534;border-radius:6px;padding:3px 8px;font-size:.75rem;font-weight:600">34.9% path conv</span>
         </div>
-        <div style="font-size:.82rem;color:var(--text3);margin-bottom:8px">Lift: <strong style="color:var(--text1)">1.79×</strong> vs non-converters</div>
-        <p class="note">Highest volume surface. Both intent-driven and casual browsers visit Explore — lower selectivity but primary entry point from the homepage CTA for KYC-done users.</p>
+        <div style="font-size:.82rem;color:var(--text3);margin-bottom:10px">Lift: <strong style="color:var(--text1)">1.92×</strong> vs non-converters</div>
+        <p class="note">Highest volume surface. Entry source is undifferentiated — bottom nav tap, WAYLF redirect, KYC-done CTA, and push notifications all merge into one <code>EXPLORE_PAGE_VIEW</code> event with no source attribution.</p>
       </div>
 
-      <!-- Path 2: WAYLF -->
+      <!-- Path 2: High Yield Widget -->
       <div class="chart-card">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
           <span style="background:#16A34A;color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0">2</span>
-          <div class="chart-title" style="margin:0">WAYLF</div>
+          <div class="chart-title" style="margin:0">High Yield Widget</div>
         </div>
-        <div style="font-size:.82rem;color:var(--text3);margin-bottom:12px">WAYLF → Bond Detail → Payment</div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
-          <span style="background:#DBEAFE;color:#1D4ED8;border-radius:6px;padding:3px 8px;font-size:.75rem;font-weight:600">326 conv. sessions</span>
-          <span style="background:#DCFCE7;color:#166534;border-radius:6px;padding:3px 8px;font-size:.75rem;font-weight:600">47.8% path conv</span>
+        <div style="font-size:.81rem;color:var(--text3);margin-bottom:10px">Homepage widget → Bond Detail → Payment</div>
+        <!-- Bond Tap sub-row -->
+        <div style="background:var(--bg);border-radius:8px;padding:8px 10px;margin-bottom:6px">
+          <div style="font-size:.76rem;font-weight:600;color:var(--text2);margin-bottom:4px">Bond Tap (individual card)</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#DBEAFE;color:#1D4ED8;border-radius:5px;padding:2px 7px;font-size:.74rem;font-weight:600">162 conv. sessions</span>
+            <span style="background:#DCFCE7;color:#166534;border-radius:5px;padding:2px 7px;font-size:.74rem;font-weight:600">50.8% conv</span>
+            <span style="background:#F3F4F6;color:#374151;border-radius:5px;padding:2px 7px;font-size:.74rem;font-weight:600">3.71× lift</span>
+          </div>
         </div>
-        <div style="font-size:.82rem;color:var(--text3);margin-bottom:8px">Lift: <strong style="color:var(--text1)">3.07×</strong> vs non-converters</div>
-        <p class="note">High-intent path. Converters are 3× more likely to use WAYLF than non-converters. Personalised bond surfacing is a strong pre-payment signal.</p>
+        <!-- View All sub-row -->
+        <div style="background:var(--bg);border-radius:8px;padding:8px 10px;margin-bottom:10px">
+          <div style="font-size:.76rem;font-weight:600;color:var(--text2);margin-bottom:4px">View All → listing → Bond Detail</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#DBEAFE;color:#1D4ED8;border-radius:5px;padding:2px 7px;font-size:.74rem;font-weight:600">50 conv. sessions</span>
+            <span style="background:#DCFCE7;color:#166534;border-radius:5px;padding:2px 7px;font-size:.74rem;font-weight:600">61.0% conv</span>
+            <span style="background:#F3F4F6;color:#374151;border-radius:5px;padding:2px 7px;font-size:.74rem;font-weight:600">5.61× lift</span>
+          </div>
+        </div>
+        <p class="note">View All has higher conv% (61%) than direct bond tap (51%) — users who browse the full listing are more intent-signalled. Combined: 212 converter sessions.</p>
       </div>
 
-      <!-- Path 3: High Yield Tile -->
+      <!-- Path 3: Bond Categories -->
       <div class="chart-card">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
           <span style="background:#D97706;color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0">3</span>
-          <div class="chart-title" style="margin:0">High Yield Tile</div>
+          <div class="chart-title" style="margin:0">Bond Categories</div>
         </div>
-        <div style="font-size:.82rem;color:var(--text3);margin-bottom:12px">High Yield Tile → Bond Detail → Payment</div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
-          <span style="background:#DBEAFE;color:#1D4ED8;border-radius:6px;padding:3px 8px;font-size:.75rem;font-weight:600">185 conv. sessions</span>
-          <span style="background:#DCFCE7;color:#166534;border-radius:6px;padding:3px 8px;font-size:.75rem;font-weight:600">51.5% path conv</span>
+        <div style="font-size:.81rem;color:var(--text3);margin-bottom:10px">Category tile → Bond Detail → Payment</div>
+        <!-- Highly Rated -->
+        <div style="background:var(--bg);border-radius:8px;padding:7px 10px;margin-bottom:5px">
+          <div style="font-size:.75rem;font-weight:600;color:var(--text2);margin-bottom:3px">Highly Rated</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;font-size:.73rem">
+            <span style="background:#DBEAFE;color:#1D4ED8;border-radius:4px;padding:1px 6px;font-weight:600">Bond Tap: 37 · 39.4%</span>
+            <span style="background:#DCFCE7;color:#166534;border-radius:4px;padding:1px 6px;font-weight:600">View All: 63 · 55.3%</span>
+          </div>
         </div>
-        <div style="font-size:.82rem;color:var(--text3);margin-bottom:8px">Lift: <strong style="color:var(--text1)">3.56×</strong> vs non-converters</div>
-        <p class="note">Highest-efficiency homepage tile. 51.5% of users who tap High Yield eventually pay — strongest path conv among high-volume touchpoints. Yield-led discovery is the most payment-proximate homepage route.</p>
+        <!-- Short Tenure -->
+        <div style="background:var(--bg);border-radius:8px;padding:7px 10px;margin-bottom:5px">
+          <div style="font-size:.75rem;font-weight:600;color:var(--text2);margin-bottom:3px">Short Tenure</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;font-size:.73rem">
+            <span style="background:#DBEAFE;color:#1D4ED8;border-radius:4px;padding:1px 6px;font-weight:600">Bond Tap: 16 · 59.3%</span>
+            <span style="background:#DCFCE7;color:#166534;border-radius:4px;padding:1px 6px;font-weight:600">View All: 6 · 60.0%</span>
+          </div>
+        </div>
+        <!-- Low Ticket -->
+        <div style="background:var(--bg);border-radius:8px;padding:7px 10px;margin-bottom:10px">
+          <div style="font-size:.75rem;font-weight:600;color:var(--text2);margin-bottom:3px">Low Ticket</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;font-size:.73rem">
+            <span style="background:#DBEAFE;color:#1D4ED8;border-radius:4px;padding:1px 6px;font-weight:600">Bond Tap: 1 · 25.0%</span>
+            <span style="background:#DCFCE7;color:#166534;border-radius:4px;padding:1px 6px;font-weight:600">View All: 6 · 46.2%</span>
+          </div>
+        </div>
+        <p class="note">Highly Rated View All (4.44× lift) and Short Tenure View All (5.39× lift) are the strongest sub-paths. Combined ~129 converter sessions across all 3 sub-sections.</p>
       </div>
 
     </div>
 
     <div class="info-box">
-      <strong>Key insight:</strong> All 170 converters reached Bond Detail before paying. The bottleneck is not the payment step — it is getting post-KYC users to open any bond detail page. These 3 paths are the proven routes that get users there. Prioritise surfacing them for all KYC-done users.
+      <strong>Key insight:</strong> All 147 converters reached Bond Detail before paying. The bottleneck is getting post-KYC users to open any bond detail — not the payment step. High Yield Widget and Bond Categories drive directly to Bond Detail with 50–61% path conv, vs Explore at 34.9%.
+    </div>
+
+    <!-- Instrumentation gaps subnote -->
+    <div class="warn-box" style="margin-top:12px">
+      <strong>Missing instrumentation on these paths:</strong>
+      <ul style="margin:8px 0 0 0;padding-left:18px;font-size:.81rem;line-height:1.9">
+        <li><strong>No <code>source</code> param on <code>EXPLORE_PAGE_VIEW</code></strong> — WAYLF redirect, bottom nav Explore tap, KYC-done homepage CTA ("Explore bonds"), and push notifications all fire the same event. Path 1 is an undifferentiated pool; true per-source volumes are unknown.</li>
+        <li><strong>KYC-done CTA has no analytics event</strong> — <code>KycDoneInvestmentPendingWidget</code>'s primary "Explore bonds" CTA navigates to Explore with zero tracking. Likely the single largest unmeasured entry point for this cohort.</li>
+        <li><strong>Bottom nav Explore tab has no event</strong> — no <code>tabPress</code> listener on any bottom tab; all bottom-nav-driven Explore visits are invisible.</li>
+        <li><strong>View All → listing → Bond Detail gap</strong> — <code>HIGH_YIELD_VIEW_ALL_SELECT</code> / <code>HIGHLY_RATED_VIEW_ALL_SELECT</code> etc. fire when the listing screen opens, but no event fires when a user picks a specific bond <em>from within</em> that listing. The listing-to-detail step is untracked for all three sections.</li>
+        <li><strong><code>NEW_BOND_CARD_CLICK</code> = 0 events</strong> — Newly Added Bonds widget returns zero events for this cohort; likely not rendering for KYC-done users or event is not wired in the current layout.</li>
+      </ul>
     </div>
   </div>
 
@@ -559,15 +603,20 @@
 <script>
 // ── data ──────────────────────────────────────────────────────────────────────
 const TOUCHPOINTS = [
-  { label: "Short Tenure Tile",  pathConv: 58.1, lift: 4.64, aU: 18,  baseU: 31,   reachA: 10.6 },
-  { label: "Payment Initiated",  pathConv: 54.3, lift: 3.98, aU: 177, baseU: 326,  reachA: 104.1 },
-  { label: "High Yield Tile",    pathConv: 51.5, lift: 3.56, aU: 185, baseU: 359,  reachA: 108.8 },
-  { label: "WAYLF",              pathConv: 47.8, lift: 3.07, aU: 326, baseU: 682,  reachA: 191.8 },
-  { label: "Issuer",             pathConv: 46.5, lift: 2.92, aU: 40,  baseU: 86,   reachA: 23.5  },
-  { label: "Highly Rated Tile",  pathConv: 40.0, lift: 2.24, aU: 44,  baseU: 110,  reachA: 25.9  },
-  { label: "Low Ticket Tile",    pathConv: 40.0, lift: 2.24, aU: 2,   baseU: 5,    reachA: 1.2   },
-  { label: "Bond Detail Page",   pathConv: 36.5, lift: 1.93, aU: 514, baseU: 1409, reachA: 302.4 },
-  { label: "Explore Page",       pathConv: 34.8, lift: 1.79, aU: 517, baseU: 1484, reachA: 304.1 },
+  // sorted by pathConv desc (outcome events at bottom)
+  { label: "High Yield Widget — View All",        pathConv: 61.0, lift: 5.61, aU: 50,  baseU: 82,   reachA: 34.0  },
+  { label: "Bond Cat. Short Tenure — View All",   pathConv: 60.0, lift: 5.39, aU: 6,   baseU: 10,   reachA: 4.1   },
+  { label: "Bond Cat. Short Tenure — Bond Tap",   pathConv: 59.3, lift: 5.22, aU: 16,  baseU: 27,   reachA: 10.9  },
+  { label: "Bond Cat. Highly Rated — View All",   pathConv: 55.3, lift: 4.44, aU: 63,  baseU: 114,  reachA: 42.9  },
+  { label: "Payment Initiated",                   pathConv: 54.1, lift: 4.23, aU: 153, baseU: 283,  reachA: 104.1 },
+  { label: "High Yield Widget — Bond Tap",        pathConv: 50.8, lift: 3.71, aU: 162, baseU: 319,  reachA: 110.2 },
+  { label: "WAYLF → Explore",                    pathConv: 49.2, lift: 3.48, aU: 306, baseU: 622,  reachA: 208.2 },
+  { label: "Bond Cat. Low Ticket — View All",     pathConv: 46.2, lift: 3.08, aU: 6,   baseU: 13,   reachA: 4.1   },
+  { label: "Issuer Widget",                       pathConv: 45.6, lift: 3.01, aU: 36,  baseU: 79,   reachA: 24.5  },
+  { label: "Bond Cat. Highly Rated — Bond Tap",   pathConv: 39.4, lift: 2.33, aU: 37,  baseU: 94,   reachA: 25.2  },
+  { label: "Bond Detail Page",                    pathConv: 36.3, lift: 2.05, aU: 463, baseU: 1274, reachA: 315.0 },
+  { label: "Explore Page",                        pathConv: 34.9, lift: 1.92, aU: 471, baseU: 1350, reachA: 320.4 },
+  { label: "Bond Cat. Low Ticket — Bond Tap",     pathConv: 25.0, lift: 1.20, aU: 1,   baseU: 4,    reachA: 0.7   },
 ];
 
 // discovery only (for matrix & prioritization — exclude outcome events)
