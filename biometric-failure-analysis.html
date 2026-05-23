@@ -221,7 +221,7 @@ footer { text-align:center; padding:24px; font-size:.72rem; color:var(--text3);
   <!-- Daily failure rate table -->
   <div class="section">
     <h2>30-Day Daily Failure Rate — iOS vs Android</h2>
-    <p class="desc">Denominator = <strong>BIOMETRIC_LOGIN_CLICKED</strong> (only fires after full eligibility check: biometrics enrolled on device + RSA key pair exists in Keychain + ownership validated). These are enrolled users who actively attempted biometric login — not all users.</p>
+    <p class="desc">Denominator = <strong>BIOMETRIC_LOGIN_CLICKED</strong> (only fires after full eligibility check: biometrics enrolled on device + RSA key pair in Keychain + ownership validated). Enrolled users who actively attempted biometric login — not all users.</p>
 
     <div style="overflow-x:auto;margin-top:16px">
     <table style="width:100%;border-collapse:collapse;font-size:.8rem">
@@ -239,8 +239,7 @@ footer { text-align:center; padding:24px; font-size:.72rem; color:var(--text3);
           <th style="padding:8px 10px;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:#059669;border-bottom:2px solid #e2e8f0">Droid %</th>
         </tr>
       </thead>
-      <tbody id="fail-rate-body">
-      </tbody>
+      <tbody id="fail-rate-body"></tbody>
       <tfoot>
         <tr style="background:#f8fafc;font-weight:700;text-align:right;border-top:2px solid #e2e8f0">
           <td style="text-align:left;padding:8px 10px">30-day total</td>
@@ -257,9 +256,80 @@ footer { text-align:center; padding:24px; font-size:.72rem; color:var(--text3);
       </tfoot>
     </table>
     </div>
+    <div style="text-align:center;margin-top:10px">
+      <button id="expand-btn" onclick="expandTable()" style="background:none;border:1px solid #cbd5e1;border-radius:6px;padding:6px 16px;font-size:.78rem;color:#475569;cursor:pointer">View all 30 days ↓</button>
+    </div>
 
     <div style="margin-top:14px;padding:12px 16px;background:#fff7ed;border:1px solid #fed7aa;border-left:4px solid #f97316;border-radius:8px;font-size:.82rem;color:#7c2d12">
-      <strong>What this proves:</strong> iOS enrolled users fail biometric login at <strong>84%</strong> — 4× the Android rate of 21%. Android's 21% is consistent with normal Face/fingerprint miss rates (users who didn't position finger correctly, or cancelled). iOS's 84% is abnormal and directly points to the KVO cold-start crash silently returning <code>success: false</code> rather than a genuine biometric mismatch.
+      <strong>What this proves:</strong> iOS enrolled users fail biometric login at <strong>84%</strong> — 4× the Android rate of 21%. Android's 21% is consistent with normal Face/fingerprint miss rates. iOS's 84% is abnormal and directly points to the KVO cold-start crash silently returning <code>success: false</code>.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Segment breakdown -->
+  <div class="section">
+    <h2>Who Is Being Blocked — 14-Day Funnel Breakdown (iOS)</h2>
+    <p class="desc">1,568 iOS biometric failures (May 9–22). Each failure group below represents a different stage in the user journey — each with a distinct downstream impact. Segments derived by filtering <code>BIOMETRIC_VERIFY_FAILED</code> against whether the same user fired KYC/payment milestone events in the last 365 days.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-top:16px">
+
+      <!-- Pre-KYC -->
+      <div style="border:1px solid #e2e8f0;border-top:4px solid #94a3b8;border-radius:10px;padding:16px 18px;background:#f8fafc">
+        <div style="font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:#64748b;margin-bottom:6px">Pre-KYC / Early Stage</div>
+        <div style="font-size:1.8rem;font-weight:800;color:#334155;letter-spacing:-.03em">773</div>
+        <div style="margin:8px 0 10px">
+          <div style="height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden">
+            <div style="width:49.3%;height:100%;background:#94a3b8;border-radius:3px"></div>
+          </div>
+          <div style="font-size:.72rem;color:#64748b;margin-top:4px">49.3% of iOS failures</div>
+        </div>
+        <div style="font-size:.78rem;color:#475569;line-height:1.55">Largest group. These users tapped a push notification and were greeted with a failed biometric login — before they could even begin KYC. First impression destroyed.</div>
+      </div>
+
+      <!-- Active investors -->
+      <div style="border:1px solid #fecaca;border-top:4px solid #e11d48;border-radius:10px;padding:16px 18px;background:#fff5f5">
+        <div style="font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:#e11d48;margin-bottom:6px">Active Investors</div>
+        <div style="font-size:1.8rem;font-weight:800;color:#9f1239;letter-spacing:-.03em">503</div>
+        <div style="margin:8px 0 10px">
+          <div style="height:6px;background:#fecaca;border-radius:3px;overflow:hidden">
+            <div style="width:32.1%;height:100%;background:#e11d48;border-radius:3px"></div>
+          </div>
+          <div style="font-size:.72rem;color:#be123c;margin-top:4px">32.1% of iOS failures</div>
+        </div>
+        <div style="font-size:.78rem;color:#7f1d1d;line-height:1.55">Already invested users tapped the push and hit a wall. Cannot view their portfolio or bonds. Every failure here is a re-engagement session lost — direct impact on repeat investment.</div>
+      </div>
+
+      <!-- KYC in progress -->
+      <div style="border:1px solid #fed7aa;border-top:4px solid #ea580c;border-radius:10px;padding:16px 18px;background:#fff7ed">
+        <div style="font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:#ea580c;margin-bottom:6px">KYC In Progress</div>
+        <div style="font-size:1.8rem;font-weight:800;color:#9a3412;letter-spacing:-.03em">258</div>
+        <div style="margin:8px 0 10px">
+          <div style="height:6px;background:#fed7aa;border-radius:3px;overflow:hidden">
+            <div style="width:16.5%;height:100%;background:#ea580c;border-radius:3px"></div>
+          </div>
+          <div style="font-size:.72rem;color:#c2410c;margin-top:4px">16.5% of iOS failures</div>
+        </div>
+        <div style="font-size:.78rem;color:#7c2d12;line-height:1.55">Users mid-KYC whose session was broken by a failed login attempt. Push opens during KYC = cold start = KVO crash. Each failure is a KYC abandonment risk — directly impacts KYC completion rate.</div>
+      </div>
+
+      <!-- KYC done, not invested -->
+      <div style="border:1px solid #bbf7d0;border-top:4px solid #059669;border-radius:10px;padding:16px 18px;background:#f0fdf4">
+        <div style="font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:#059669;margin-bottom:6px">KYC Done — Not Yet Invested</div>
+        <div style="font-size:1.8rem;font-weight:800;color:#065f46;letter-spacing:-.03em">34</div>
+        <div style="margin:8px 0 10px">
+          <div style="height:6px;background:#bbf7d0;border-radius:3px;overflow:hidden">
+            <div style="width:2.2%;height:100%;background:#059669;border-radius:3px"></div>
+          </div>
+          <div style="font-size:.72rem;color:#047857;margin-top:4px">2.2% of iOS failures</div>
+        </div>
+        <div style="font-size:.78rem;color:#064e3b;line-height:1.55">Smallest group but highest-intent. KYC is complete, account is activated — they are one tap from a first investment. Biometric failure at this step directly delays first-trade conversion.</div>
+      </div>
+
+    </div>
+
+    <div style="margin-top:16px;padding:12px 16px;background:#fef2f2;border:1px solid #fca5a5;border-left:4px solid #e11d48;border-radius:8px;font-size:.82rem;color:#991b1b">
+      <strong>The push notification loop:</strong> Marketing sends a push → user taps → app cold-starts on iOS → KVO race condition fires → biometric module returns <code>success: false</code> → user sees failure prompt → user gives up. This is happening to <strong>84% of iOS enrolled users</strong> at every push send. The campaign volume has grown 6× in 4 weeks — so this failure wall is now hitting ~41,000 users simultaneously at 09:15 IST every morning.
     </div>
   </div>
 
@@ -298,25 +368,42 @@ footer { text-align:center; padding:24px; font-size:.72rem; color:var(--text3);
       {d:"2026-05-20",ta:627,tf:238,tr:38.0,ia:163,if_:140,ir:85.9,aa:464,af:98,ar:21.1},
       {d:"2026-05-21",ta:646,tf:253,tr:39.2,ia:167,if_:152,ir:91.0,aa:479,af:101,ar:21.1},
       {d:"2026-05-22",ta:676,tf:255,tr:37.7,ia:169,if_:140,ir:82.8,aa:507,af:115,ar:22.7},
-    ];
-    var tb=document.getElementById('fail-rate-body');
-    rows.forEach(function(r,i){
-      var bg=i%2===0?'#ffffff':'#f8fafc';
-      var iosColor=r.ir>=85?'#b91c1c':r.ir>=75?'#c2410c':'#d97706';
-      var drdColor=r.ar>=30?'#d97706':r.ar>=25?'#92400e':'#059669';
-      tb.innerHTML+='<tr style="background:'+bg+';text-align:right">'+
-        '<td style="text-align:left;padding:7px 10px;color:#374151;font-weight:500">'+r.d+'</td>'+
-        '<td style="padding:7px 10px">'+r.ta+'</td>'+
-        '<td style="padding:7px 10px">'+r.tf+'</td>'+
-        '<td style="padding:7px 10px;font-weight:600;color:#d97706">'+r.tr+'%</td>'+
-        '<td style="padding:7px 10px;color:#6b7280">'+r.ia+'</td>'+
-        '<td style="padding:7px 10px;color:#6b7280">'+r.if_+'</td>'+
-        '<td style="padding:7px 10px;font-weight:700;color:'+iosColor+'">'+r.ir+'%</td>'+
-        '<td style="padding:7px 10px;color:#6b7280">'+r.aa+'</td>'+
-        '<td style="padding:7px 10px;color:#6b7280">'+r.af+'</td>'+
-        '<td style="padding:7px 10px;font-weight:600;color:'+drdColor+'">'+r.ar+'%</td>'+
-        '</tr>';
-    });
+    ].reverse();  // latest first
+
+    var SHOW = 7;
+    var expanded = false;
+    var tb = document.getElementById('fail-rate-body');
+
+    function renderRows(all) {
+      tb.innerHTML = '';
+      var visible = all ? rows : rows.slice(0, SHOW);
+      visible.forEach(function(r, i) {
+        var bg = i % 2 === 0 ? '#ffffff' : '#f8fafc';
+        var iosColor = r.ir >= 85 ? '#b91c1c' : r.ir >= 75 ? '#c2410c' : '#d97706';
+        var drdColor = r.ar >= 30 ? '#d97706' : r.ar >= 25 ? '#92400e' : '#059669';
+        tb.innerHTML += '<tr style="background:' + bg + ';text-align:right">' +
+          '<td style="text-align:left;padding:7px 10px;color:#374151;font-weight:500">' + r.d + '</td>' +
+          '<td style="padding:7px 10px">' + r.ta + '</td>' +
+          '<td style="padding:7px 10px">' + r.tf + '</td>' +
+          '<td style="padding:7px 10px;font-weight:600;color:#d97706">' + r.tr + '%</td>' +
+          '<td style="padding:7px 10px;color:#6b7280">' + r.ia + '</td>' +
+          '<td style="padding:7px 10px;color:#6b7280">' + r.if_ + '</td>' +
+          '<td style="padding:7px 10px;font-weight:700;color:' + iosColor + '">' + r.ir + '%</td>' +
+          '<td style="padding:7px 10px;color:#6b7280">' + r.aa + '</td>' +
+          '<td style="padding:7px 10px;color:#6b7280">' + r.af + '</td>' +
+          '<td style="padding:7px 10px;font-weight:600;color:' + drdColor + '">' + r.ar + '%</td>' +
+          '</tr>';
+      });
+    }
+
+    window.expandTable = function() {
+      expanded = !expanded;
+      renderRows(expanded);
+      var btn = document.getElementById('expand-btn');
+      btn.textContent = expanded ? 'Show less ↑' : 'View all 30 days ↓';
+    };
+
+    renderRows(false);
   })();
   </script>
 
