@@ -217,57 +217,60 @@
       <div class="icon icon-red">🎯</div>
       <div class="hd-text">
         <h2>Where non-completers abandon — per question</h2>
-        <p>Derived from unique users per <code>questionId</code> in <code>RISK_PROFILING_ANSWER_SELECTED</code>. The form has 6 questions: 5 MCQ + 1 text input (Q3, no event).</p>
+        <p>Derived from <code>RISK_PROFILING_ANSWER_SELECTED</code> unique users per <code>questionId</code>, <strong>completers (5,771) subtracted at each step</strong> to isolate non-completer behaviour. The form has 6 questions: 5 MCQ + 1 text input (Q3, no event).</p>
       </div>
     </div>
 
-    <!-- question funnel -->
+    <!-- question funnel — non-completers only (completers subtracted at each step) -->
+    <div style="margin-bottom:12px;padding:10px 14px;background:#FEF9C3;border:1px solid #FDE047;border-radius:6px;font-size:12px;color:#713F12">
+      ℹ️ <strong>How to read this:</strong> Each step shows how many of the <strong>4,364 non-completers</strong> reached that question. Completers (5,771) are excluded. Bars are sized relative to 4,364 = 100%.
+    </div>
     <div class="funnel-step" style="background:#F8FAFC;border-radius:8px;padding:14px 16px;margin-bottom:4px;border:none">
-      <div class="funnel-label" style="font-weight:700">Viewed screen<div class="funnel-sub">All viewers</div></div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:#2563EB"></div></div>
-      <div class="funnel-num">10,135</div>
-      <div class="funnel-pct" style="color:var(--blue);font-weight:700">100%</div>
+      <div class="funnel-label" style="font-weight:700">Total non-completers<div class="funnel-sub">Viewers who never submitted</div></div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:#6B7280"></div></div>
+      <div class="funnel-num">4,364</div>
+      <div class="funnel-pct" style="color:#6B7280;font-weight:700">100%</div>
       <div class="funnel-drop"></div>
     </div>
-    <div class="drop-arrow">↓ −1,401 never selected any MCQ</div>
+    <div class="drop-arrow">↓ −1,401 never tapped any MCQ (left on load screen)</div>
     <div class="funnel-step">
       <div class="funnel-label"><span class="badge badge-blue" style="margin-bottom:4px">Q0</span> Occupation</div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:86.2%;background:#2563EB"></div></div>
-      <div class="funnel-num">8,734</div>
-      <div class="funnel-pct">86.2%</div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:67.9%;background:#2563EB"></div></div>
+      <div class="funnel-num">2,963</div>
+      <div class="funnel-pct">67.9%</div>
       <div class="funnel-drop"></div>
     </div>
-    <div class="drop-arrow">↓ −782 dropped here</div>
+    <div class="drop-arrow">↓ −782 dropped after Q0</div>
     <div class="funnel-step">
       <div class="funnel-label"><span class="badge badge-blue" style="margin-bottom:4px">Q1</span> Annual Income</div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:78.5%;background:#3B82F6"></div></div>
-      <div class="funnel-num">7,952</div>
-      <div class="funnel-pct">78.5%</div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:50.0%;background:#3B82F6"></div></div>
+      <div class="funnel-num">2,181</div>
+      <div class="funnel-pct">50.0%</div>
       <div class="funnel-drop">−782</div>
     </div>
-    <div class="drop-arrow" style="color:var(--red);font-weight:700;font-size:14px">↓ −1,323 dropped here ← BIGGEST DROP</div>
+    <div class="drop-arrow" style="color:var(--red);font-weight:700;font-size:14px">↓ −1,323 dropped here ← BIGGEST DROP (30.3% of all non-completers)</div>
     <div class="funnel-step" style="border:2px solid var(--red);border-radius:8px;padding:14px 16px">
       <div class="funnel-label"><span class="badge badge-red" style="margin-bottom:4px">Q2</span> Net Worth <span class="badge badge-red" style="margin-left:6px">Most friction</span></div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:65.4%;background:#EF4444"></div></div>
-      <div class="funnel-num">6,629</div>
-      <div class="funnel-pct" style="color:var(--red);font-weight:700">65.4%</div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:19.7%;background:#EF4444"></div></div>
+      <div class="funnel-num">858</div>
+      <div class="funnel-pct" style="color:var(--red);font-weight:700">19.7%</div>
       <div class="funnel-drop" style="font-size:12px">−1,323</div>
     </div>
-    <div class="drop-arrow">↓ −702 dropped here (incl. Q3 text input)</div>
+    <div class="drop-arrow">↓ −702 dropped after Q2 / Q3 text input (Father/Husband Name)</div>
     <div class="funnel-step">
-      <div class="funnel-label"><span class="badge badge-amber" style="margin-bottom:4px">Q4</span> Marital Status<div class="funnel-sub">Q3 = text input (Father/Husband Name)</div></div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:58.5%;background:#F59E0B"></div></div>
-      <div class="funnel-num">5,927</div>
-      <div class="funnel-pct">58.5%</div>
+      <div class="funnel-label"><span class="badge badge-amber" style="margin-bottom:4px">Q4</span> Marital Status<div class="funnel-sub">Q3 = text input, no MCQ event fired</div></div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:3.6%;background:#F59E0B"></div></div>
+      <div class="funnel-num">156</div>
+      <div class="funnel-pct">3.6%</div>
       <div class="funnel-drop">−702</div>
     </div>
-    <div class="drop-arrow">↓ −156 dropped here</div>
-    <div class="funnel-step" style="background:#F0FDF4;border-radius:8px;padding:14px 16px;border:none">
-      <div class="funnel-label" style="color:var(--green);font-weight:700">✓ Completed</div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:57.0%;background:#16A34A"></div></div>
-      <div class="funnel-num" style="color:var(--green)">5,771</div>
-      <div class="funnel-pct" style="color:var(--green);font-weight:700">57.0%</div>
-      <div class="funnel-drop" style="color:var(--green)">−156</div>
+    <div class="drop-arrow">↓ −156 gave up at the last question</div>
+    <div class="funnel-step" style="background:#F9FAFB;border-radius:8px;padding:14px 16px;border:1px dashed #D1D5DB">
+      <div class="funnel-label" style="color:#6B7280;font-weight:700">0 non-completers remain<div class="funnel-sub">All 4,364 accounted for</div></div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:0%;background:#6B7280"></div></div>
+      <div class="funnel-num" style="color:#6B7280">0</div>
+      <div class="funnel-pct" style="color:#6B7280">0%</div>
+      <div class="funnel-drop" style="color:#6B7280">−156</div>
     </div>
 
     <div style="margin-top:24px">
