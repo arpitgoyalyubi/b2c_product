@@ -482,8 +482,121 @@
     </table>
   </div>
 
-  <!-- ── SECTION 6: Attribution Analysis ── -->
-  <div class="section-label">Section 6 — Marketing Attribution: Who Completes vs Drops</div>
+  <!-- ── SECTION 6: Platform Analysis ── -->
+  <div class="section-label">Section 6 — Platform Breakdown: Android · iOS · Web</div>
+
+  <div class="card">
+    <div class="section-hd">
+      <div class="icon icon-blue">📱</div>
+      <div class="hd-text">
+        <h2>Signup → Risk Profiling Viewed → Submitted by platform</h2>
+        <p>Full 3-step funnel per platform. Android is 94.5% of volume but has the <em>lowest</em> completion rate. iOS and Web both outperform by ~10pp.</p>
+      </div>
+    </div>
+
+    <!-- Platform KPI chips -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px">
+      <!-- Android -->
+      <div style="border:2px solid #E3E8EF;border-radius:10px;padding:16px;position:relative">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gray);margin-bottom:8px">🤖 Android</div>
+        <div style="font-size:28px;font-weight:800;color:var(--text)">53.9%</div>
+        <div style="font-size:12px;color:var(--gray);margin-bottom:10px">completion rate</div>
+        <div style="font-size:12px;line-height:1.7;color:var(--text)">
+          <span style="display:block">16,300 signups</span>
+          <span style="display:block">→ 10,040 viewed <strong style="color:var(--gray)">(61.6%)</strong></span>
+          <span style="display:block">→ 5,412 submitted <strong style="color:var(--text)">(53.9%)</strong></span>
+        </div>
+        <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--gray)">
+          94.5% of all viewers · 280 API errors
+        </div>
+        <div style="position:absolute;top:14px;right:14px;background:#FEF2F2;color:#DC2626;font-size:10px;font-weight:700;padding:3px 7px;border-radius:4px">Lowest rate</div>
+      </div>
+      <!-- iOS -->
+      <div style="border:2px solid #6EE7B7;border-radius:10px;padding:16px;position:relative">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gray);margin-bottom:8px">🍎 iOS</div>
+        <div style="font-size:28px;font-weight:800;color:#059669">64.5%</div>
+        <div style="font-size:12px;color:var(--gray);margin-bottom:10px">completion rate</div>
+        <div style="font-size:12px;line-height:1.7;color:var(--text)">
+          <span style="display:block">624 signups</span>
+          <span style="display:block">→ 335 viewed <strong style="color:var(--gray)">(53.7%)</strong></span>
+          <span style="display:block">→ 216 submitted <strong style="color:#059669">(64.5%)</strong></span>
+        </div>
+        <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--gray)">
+          3.2% of all viewers · 7 API errors
+        </div>
+        <div style="position:absolute;top:14px;right:14px;background:#ECFDF5;color:#059669;font-size:10px;font-weight:700;padding:3px 7px;border-radius:4px">+10.6pp vs Android</div>
+      </div>
+      <!-- Web -->
+      <div style="border:2px solid #93C5FD;border-radius:10px;padding:16px;position:relative">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gray);margin-bottom:8px">🌐 Web</div>
+        <div style="font-size:28px;font-weight:800;color:#2563EB">62.9%</div>
+        <div style="font-size:12px;color:var(--gray);margin-bottom:10px">completion rate</div>
+        <div style="font-size:12px;line-height:1.7;color:var(--text)">
+          <span style="display:block">318 signups</span>
+          <span style="display:block">→ 245 viewed <strong style="color:var(--blue)">(77.0%)</strong></span>
+          <span style="display:block">→ 154 submitted <strong style="color:#2563EB">(62.9%)</strong></span>
+        </div>
+        <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--gray)">
+          2.3% of all viewers · 6 API errors · highest signup→view%
+        </div>
+        <div style="position:absolute;top:14px;right:14px;background:#EFF6FF;color:#2563EB;font-size:10px;font-weight:700;padding:3px 7px;border-radius:4px">+9.0pp vs Android</div>
+      </div>
+    </div>
+
+    <!-- Screen refire ratio by platform -->
+    <h3 style="font-size:14px;font-weight:700;color:var(--text);margin:0 0 12px">Screen refire ratio (totals ÷ uniques) — the useEffect bug affects all 3 platforms</h3>
+    <table class="bar-table" style="margin-bottom:24px">
+      <thead><tr>
+        <th>Platform</th><th>Unique viewers</th><th>Total screen views</th><th>Ratio</th><th style="text-align:left;padding-left:12px">Severity</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>🍎 iOS</td><td>335</td><td>7,438</td>
+          <td><strong style="color:var(--red)">22.2×</strong></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-red" style="width:100%"></div></div><span style="font-size:11px;margin-left:6px;color:var(--red)">Worst</span></div></td>
+        </tr>
+        <tr>
+          <td>🌐 Web</td><td>245</td><td>4,930</td>
+          <td><strong style="color:var(--red)">20.1×</strong></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-red" style="width:88%"></div></div></div></td>
+        </tr>
+        <tr>
+          <td>🤖 Android</td><td>10,040</td><td>192,576</td>
+          <td><strong style="color:var(--red)">19.2×</strong></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-red" style="width:83%"></div></div></div></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="background:#FEF9C3;border:1px solid #FDE047;border-radius:6px;padding:10px 14px;font-size:12px;color:#713F12;margin-bottom:8px">
+      ⚠️ The useEffect bug (ASP-3815) fires <code>RISK_PROFILING_SCREEN_VIEWED</code> ~20× per user on <em>every</em> platform. iOS is worst at 22.2×. All Amplitude "viewed" counts in this report are ~20× inflated — and Google/Meta campaigns optimising on this event are wasting ~95% of their signal budget.
+    </div>
+
+    <!-- Answer selection avg/user by platform -->
+    <h3 style="font-size:14px;font-weight:700;color:var(--text);margin:16px 0 12px">Answer selections per user — how far users get on each platform</h3>
+    <table class="bar-table">
+      <thead><tr>
+        <th>Platform</th><th>Unique selectors</th><th>Total selections</th><th>Avg selections/user</th><th style="text-align:left;padding-left:12px">Engagement depth</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>🤖 Android</td><td>8,433</td><td>48,445</td><td><strong>5.7</strong></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-blue" style="width:100%"></div></div><span style="font-size:11px;margin-left:6px;color:var(--gray)">5 MCQ questions = expected max ~5</span></div></td>
+        </tr>
+        <tr>
+          <td>🍎 iOS</td><td>273</td><td>1,484</td><td><strong>5.4</strong></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-blue" style="width:95%"></div></div></div></td>
+        </tr>
+        <tr>
+          <td>🌐 Web</td><td>196</td><td>995</td><td><strong>5.1</strong></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-blue" style="width:89%"></div></div></div></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;font-size:12px;color:var(--gray)">Avg &gt;5 across all platforms confirms users are re-selecting answers (the form has exactly 5 MCQ questions). Consistent with the multi-session evidence in Section 3.</div>
+  </div>
+
+  <!-- ── SECTION 7: Attribution Analysis ── -->
+  <div class="section-label">Section 7 — Marketing Attribution: Who Completes vs Drops</div>
 
   <div class="card">
     <div class="section-hd">
@@ -676,7 +789,7 @@
   </div>
 
   <!-- ── SECTION 7: Jira Tickets ── -->
-  <div class="section-label">Section 7 — Jira Tickets Raised</div>
+  <div class="section-label">Section 8 — Jira Tickets Raised</div>
 
   <div class="card">
     <div class="section-hd">
