@@ -429,57 +429,408 @@
   </div>
 
   <!-- ── SECTION 5: Daily data ── -->
-  <div class="section-label">Section 5 — Daily Signups → Risk Profiling Views (30 days)</div>
+  <div class="section-label">Section 5 — Daily Funnel: Reach Rate &amp; Completion Rate (30 days)</div>
 
   <div class="card">
     <div class="section-hd">
       <div class="icon icon-blue">📅</div>
       <div class="hd-text">
-        <h2>Day-by-day reach rate</h2>
-        <p>Of users who sign up on a given day, how many land on risk profiling the same day. Range: 55–69%. Note: same-day comparison, not strict cohort.</p>
+        <h2>Day-by-day reach rate &amp; completion rate with campaign context</h2>
+        <p>Same-day comparison (not strict cohort). <strong>Reach %</strong> = viewed ÷ signups that day. <strong>Compl %</strong> = submitted ÷ viewed that day. <strong>Camp wtd %</strong> = weighted expected completion rate based on that day's paid campaign mix. <strong>Gap</strong> = actual compl % minus expected — large negative gaps that aren't explained by campaign mix suggest other factors (backend issues, UX regressions).</p>
       </div>
     </div>
+
+    <!-- Legend -->
+    <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:11px;margin-bottom:14px;align-items:center">
+      <span><strong>Color:</strong></span>
+      <span style="color:var(--green);font-weight:700">■ Good</span>
+      <span style="color:var(--blue);font-weight:700">■ OK</span>
+      <span style="color:var(--amber);font-weight:700">■ Watch</span>
+      <span style="margin-left:8px"><strong>Reach %:</strong> ≥65% good · 59–65% ok · &lt;59% watch</span>
+      <span><strong>Compl %:</strong> ≥57% good · 52–57% ok · &lt;52% watch</span>
+      <span style="margin-left:8px"><span style="background:#FEF2F2;color:#DC2626;font-size:10px;font-weight:700;padding:2px 5px;border-radius:3px">−Xpp</span> gap &lt;−4pp</span>
+      <span><span style="background:#ECFDF5;color:#059669;font-size:10px;font-weight:700;padding:2px 5px;border-radius:3px">+Xpp</span> gap &gt;+4pp</span>
+    </div>
+
     <table class="daily-table">
       <thead>
-        <tr><th>Date</th><th>Signups</th><th>Risk Views</th><th>Reach %</th></tr>
+        <tr>
+          <th style="text-align:left">Date</th>
+          <th>Signups</th>
+          <th>Viewed</th>
+          <th>Reach %</th>
+          <th>Submitted</th>
+          <th>Compl %</th>
+          <th>Camp wtd %</th>
+          <th style="text-align:center">Gap</th>
+          <th style="text-align:left;padding-left:8px">Dominant paid campaign</th>
+        </tr>
       </thead>
-      <tbody>
-        <tr><td>2026-04-26</td><td>458</td><td>264</td><td class="conv-med">57.6%</td></tr>
-        <tr><td>2026-04-27</td><td>379</td><td>252</td><td class="conv-hi">66.5%</td></tr>
-        <tr><td>2026-04-28</td><td>364</td><td>217</td><td class="conv-med">59.6%</td></tr>
-        <tr><td>2026-04-29</td><td>411</td><td>262</td><td class="conv-med">63.7%</td></tr>
-        <tr><td>2026-04-30</td><td>424</td><td>261</td><td class="conv-med">61.6%</td></tr>
-        <tr><td>2026-05-01</td><td>488</td><td>308</td><td class="conv-med">63.1%</td></tr>
-        <tr><td>2026-05-02</td><td>552</td><td>322</td><td class="conv-lo">58.3%</td></tr>
-        <tr><td>2026-05-03</td><td>544</td><td>323</td><td class="conv-med">59.4%</td></tr>
-        <tr><td>2026-05-04</td><td>435</td><td>250</td><td class="conv-lo">57.5%</td></tr>
-        <tr><td>2026-05-05</td><td>476</td><td>311</td><td class="conv-hi">65.3%</td></tr>
-        <tr><td>2026-05-06</td><td>565</td><td>321</td><td class="conv-lo">56.8%</td></tr>
-        <tr><td>2026-05-07</td><td>550</td><td>340</td><td class="conv-med">61.8%</td></tr>
-        <tr><td>2026-05-08</td><td>602</td><td>388</td><td class="conv-med">64.5%</td></tr>
-        <tr><td>2026-05-09</td><td>585</td><td>390</td><td class="conv-hi">66.7%</td></tr>
-        <tr><td>2026-05-10</td><td>535</td><td>344</td><td class="conv-med">64.3%</td></tr>
-        <tr><td>2026-05-11</td><td>475</td><td>289</td><td class="conv-med">60.8%</td></tr>
-        <tr><td>2026-05-12</td><td>516</td><td>334</td><td class="conv-med">64.7%</td></tr>
-        <tr><td>2026-05-13</td><td>443</td><td>290</td><td class="conv-hi">65.5%</td></tr>
-        <tr><td>2026-05-14</td><td>490</td><td>326</td><td class="conv-hi">66.5%</td></tr>
-        <tr><td>2026-05-15</td><td>534</td><td>320</td><td class="conv-med">59.9%</td></tr>
-        <tr><td>2026-05-16</td><td>642</td><td>434</td><td class="conv-hi">67.6%</td></tr>
-        <tr><td>2026-05-17</td><td>727</td><td>462</td><td class="conv-med">63.5%</td></tr>
-        <tr><td>2026-05-18</td><td>696</td><td>411</td><td class="conv-med">59.1%</td></tr>
-        <tr><td>2026-05-19</td><td>779</td><td>473</td><td class="conv-med">60.7%</td></tr>
-        <tr><td>2026-05-20</td><td>726</td><td>406</td><td class="conv-lo">55.9%</td></tr>
-        <tr><td>2026-05-21</td><td>891</td><td>523</td><td class="conv-lo">58.7%</td></tr>
-        <tr><td>2026-05-22</td><td>743</td><td>460</td><td class="conv-med">61.9%</td></tr>
-        <tr><td>2026-05-23</td><td>702</td><td>429</td><td class="conv-med">61.1%</td></tr>
-        <tr><td>2026-05-24</td><td>689</td><td>395</td><td class="conv-lo">57.3%</td></tr>
-        <tr><td>2026-05-25</td><td>569</td><td>346</td><td class="conv-med">60.8%</td></tr>
-        <tr><td>2026-05-26</td><td>198</td><td>136</td><td class="conv-hi">68.7%</td></tr>
+      <!-- Older 16 days — hidden by default -->
+      <tbody id="older-rows" style="display:none">
+        <tr>
+          <td>2026-04-26</td>
+          <td>458</td>
+          <td>264</td>
+          <td class="conv-lo">57.6%</td>
+          <td>143</td>
+          <td class="conv-med">54.2%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">55.4%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-1.2pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-04-27</td>
+          <td>379</td>
+          <td>252</td>
+          <td class="conv-hi">66.5%</td>
+          <td>133</td>
+          <td class="conv-med">52.8%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">55.2%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-2.4pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr style="background:#FFF5F5">
+          <td>2026-04-28</td>
+          <td>364</td>
+          <td>217</td>
+          <td class="conv-med">59.6%</td>
+          <td>104</td>
+          <td class="conv-lo">47.9%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">55.0%</td>
+          <td style="text-align:center"><span style="background:#FEF2F2;color:#DC2626;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap">-7.1pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct — unexplained drop</span></td>
+        </tr>
+        <tr>
+          <td>2026-04-29</td>
+          <td>411</td>
+          <td>262</td>
+          <td class="conv-med">63.7%</td>
+          <td>137</td>
+          <td class="conv-med">52.3%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">55.6%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-3.3pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-04-30</td>
+          <td>424</td>
+          <td>261</td>
+          <td class="conv-med">61.6%</td>
+          <td>144</td>
+          <td class="conv-med">55.2%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">56.2%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-1.1pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-01</td>
+          <td>488</td>
+          <td>308</td>
+          <td class="conv-med">63.1%</td>
+          <td>181</td>
+          <td class="conv-hi">58.8%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">55.5%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">+3.2pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-02</td>
+          <td>552</td>
+          <td>322</td>
+          <td class="conv-lo">58.3%</td>
+          <td>168</td>
+          <td class="conv-med">52.2%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">56.1%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-3.9pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-03</td>
+          <td>544</td>
+          <td>323</td>
+          <td class="conv-med">59.4%</td>
+          <td>187</td>
+          <td class="conv-hi">57.9%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">56.7%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">+1.2pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-04</td>
+          <td>435</td>
+          <td>250</td>
+          <td class="conv-lo">57.5%</td>
+          <td>148</td>
+          <td class="conv-hi">59.2%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">55.9%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">+3.3pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-05</td>
+          <td>476</td>
+          <td>311</td>
+          <td class="conv-hi">65.3%</td>
+          <td>172</td>
+          <td class="conv-med">55.3%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">55.6%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-0.3pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-06</td>
+          <td>565</td>
+          <td>321</td>
+          <td class="conv-lo">56.8%</td>
+          <td>173</td>
+          <td class="conv-med">53.9%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">55.2%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-1.3pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-07</td>
+          <td>550</td>
+          <td>340</td>
+          <td class="conv-med">61.8%</td>
+          <td>179</td>
+          <td class="conv-med">52.6%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">54.1%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-1.5pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:#DC2626;font-size:11px;font-weight:600">PaymentSuccess_tCPA (47.7%)</span></td>
+        </tr>
+        <tr style="background:#FFF5F5">
+          <td>2026-05-08</td>
+          <td>602</td>
+          <td>388</td>
+          <td class="conv-med">64.5%</td>
+          <td>184</td>
+          <td class="conv-lo">47.4%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">54.2%</td>
+          <td style="text-align:center"><span style="background:#FEF2F2;color:#DC2626;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap">-6.7pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct — unexplained drop</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-09</td>
+          <td>585</td>
+          <td>390</td>
+          <td class="conv-hi">66.7%</td>
+          <td>211</td>
+          <td class="conv-med">54.1%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">54.2%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-0.1pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-10</td>
+          <td>535</td>
+          <td>344</td>
+          <td class="conv-med">64.3%</td>
+          <td>180</td>
+          <td class="conv-med">52.3%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">53.7%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-1.4pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-11</td>
+          <td>475</td>
+          <td>289</td>
+          <td class="conv-med">60.8%</td>
+          <td>157</td>
+          <td class="conv-med">54.3%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">54.6%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-0.3pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:#059669;font-size:11px;font-weight:600">BankVerified_tCPA (61.1%)</span></td>
+        </tr>
+      </tbody>
+      <!-- Latest 15 days — always visible -->
+      <tbody id="recent-rows">
+        <tr>
+          <td>2026-05-12</td>
+          <td>516</td>
+          <td>334</td>
+          <td class="conv-med">64.7%</td>
+          <td>167</td>
+          <td class="conv-lo">50.0%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">53.9%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-3.9pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-13</td>
+          <td>443</td>
+          <td>290</td>
+          <td class="conv-hi">65.5%</td>
+          <td>165</td>
+          <td class="conv-med">56.9%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">54.5%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">+2.4pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-14</td>
+          <td>490</td>
+          <td>326</td>
+          <td class="conv-hi">66.5%</td>
+          <td>174</td>
+          <td class="conv-med">53.4%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">53.8%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-0.4pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:#DC2626;font-size:11px;font-weight:600">PaymentSuccess_tCPA (47.7%)</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-15</td>
+          <td>534</td>
+          <td>320</td>
+          <td class="conv-med">59.9%</td>
+          <td>187</td>
+          <td class="conv-hi">58.4%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">54.0%</td>
+          <td style="text-align:center"><span style="background:#ECFDF5;color:#059669;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap">+4.4pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-16</td>
+          <td>642</td>
+          <td>434</td>
+          <td class="conv-hi">67.6%</td>
+          <td>235</td>
+          <td class="conv-med">54.1%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">53.0%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">+1.2pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:#DC2626;font-size:11px;font-weight:600">PaymentSuccess_NewUser (46.5%)</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-17</td>
+          <td>727</td>
+          <td>462</td>
+          <td class="conv-med">63.5%</td>
+          <td>259</td>
+          <td class="conv-med">56.1%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">52.9%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">+3.2pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:#DC2626;font-size:11px;font-weight:600">PaymentSuccess_NewUser (46.5%)</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-18</td>
+          <td>696</td>
+          <td>411</td>
+          <td class="conv-med">59.1%</td>
+          <td>241</td>
+          <td class="conv-hi">58.6%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">53.9%</td>
+          <td style="text-align:center"><span style="background:#ECFDF5;color:#059669;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap">+4.7pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-19</td>
+          <td>779</td>
+          <td>473</td>
+          <td class="conv-med">60.7%</td>
+          <td>270</td>
+          <td class="conv-hi">57.1%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">53.6%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">+3.5pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-20</td>
+          <td>726</td>
+          <td>406</td>
+          <td class="conv-lo">55.9%</td>
+          <td>218</td>
+          <td class="conv-med">53.7%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">52.9%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">+0.8pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-21</td>
+          <td>891</td>
+          <td>523</td>
+          <td class="conv-lo">58.7%</td>
+          <td>267</td>
+          <td class="conv-lo">51.1%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">51.6%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-0.6pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:#DC2626;font-size:11px;font-weight:600">PaymentSuccess_NewUser (46.5%)</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-22</td>
+          <td>743</td>
+          <td>460</td>
+          <td class="conv-med">61.9%</td>
+          <td>228</td>
+          <td class="conv-lo">49.6%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">52.9%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-3.3pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-23</td>
+          <td>702</td>
+          <td>429</td>
+          <td class="conv-med">61.1%</td>
+          <td>232</td>
+          <td class="conv-med">54.1%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">54.3%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-0.2pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr style="background:#F0FDF4">
+          <td>2026-05-24</td>
+          <td>689</td>
+          <td>395</td>
+          <td class="conv-lo">57.3%</td>
+          <td>251</td>
+          <td class="conv-hi">63.5%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">55.2%</td>
+          <td style="text-align:center"><span style="background:#ECFDF5;color:#059669;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap">+8.3pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-25</td>
+          <td>569</td>
+          <td>346</td>
+          <td class="conv-med">60.8%</td>
+          <td>203</td>
+          <td class="conv-hi">58.7%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">53.8%</td>
+          <td style="text-align:center"><span style="background:#ECFDF5;color:#059669;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap">+4.9pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
+        <tr>
+          <td>2026-05-26</td>
+          <td>255</td>
+          <td>163</td>
+          <td class="conv-med">63.9%</td>
+          <td>84</td>
+          <td class="conv-lo">51.5%</td>
+          <td style="text-align:right;font-size:11px;color:var(--gray)">53.7%</td>
+          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-2.2pp</span></td>
+          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
+        </tr>
         <tr style="background:var(--bg);font-weight:700;border-top:2px solid var(--border)">
-          <td>30-Day Total</td><td>17,188</td><td>10,587</td><td class="conv-med">61.6%</td>
+          <td>30-Day Total</td><td>17,245</td><td>10,614</td><td class="conv-med">61.5%</td>
+          <td>5,782</td><td class="conv-med">54.5%</td>
+          <td colspan="3" style="text-align:left;font-size:11px;font-weight:400;color:var(--gray);padding-left:4px">Reach range: 55.9–67.6% · Completion range: 47.4–63.5%</td>
         </tr>
       </tbody>
     </table>
+
+    <!-- Toggle button -->
+    <div style="margin-top:14px;text-align:center">
+      <button id="toggle-older" onclick="(function(){var b=document.getElementById('older-rows');var btn=document.getElementById('toggle-older');if(b.style.display==='none'){b.style.display='';btn.textContent='▲ Show latest 15 days only';}else{b.style.display='none';btn.textContent='▼ Show 16 earlier days (Apr 26 – May 11)';};})()"
+        style="background:#F1F5F9;border:1px solid var(--border);border-radius:6px;padding:8px 18px;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer">
+        ▼ Show 16 earlier days (Apr 26 – May 11)
+      </button>
+    </div>
+
+    <div style="margin-top:14px;padding:10px 14px;background:#F0F9FF;border:1px solid #BAE6FD;border-radius:6px;font-size:12px;color:#0369A1">
+      <strong>Campaign context interpretation:</strong> When Gap ≥ −4pp but completion is low, the campaign mix is partially responsible — those are days PaymentSuccess_NewUser/tCPA campaigns drove the traffic (both carry ~47% historical completion rates). When Gap ≤ −5pp despite organic dominance (Apr 28, May 8), campaign mix doesn't explain the dip — investigate backend errors or UX issues on those specific dates.
+    </div>
   </div>
 
   <!-- ── SECTION 6: Platform Analysis ── -->
@@ -768,7 +1119,7 @@
         <div>
           <div style="font-weight:700;color:#059669;margin-bottom:4px">✅ Scale these</div>
           <ul style="margin:0;padding-left:18px;line-height:1.8">
-            <li><strong>YouTube (ACI)</strong> — 68.9% completion, +14.6pp. Highest quality channel by far. Increase budget.</li>
+            <li><strong>YouTube (ACI)</strong> — 68.9% completion, +14.6pp. Highest quality channel by far. Increase budget. <strong>Note: 100% Android</strong> (311 viewers, 209 submitted = 67.2%) — higher completion is genuine audience quality, not a platform effect.</li>
             <li><strong>BankVerified campaign</strong> — 61.1%. Deep-funnel intent signal works. Keep bidding on it.</li>
             <li><strong>In-market + Purchase Signal audiences</strong> — 61%. Audience quality > creative quality.</li>
           </ul>
