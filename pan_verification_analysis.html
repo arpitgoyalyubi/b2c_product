@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PAN Verification Deep-Dive · Aspero</title>
+<style>
+:root {
+  --bg:#0d1117; --surface:#ffffff; --surface2:#f8fafc; --border:#e2e8f0;
+  --text:#1e293b; --text2:#64748b; --text3:#94a3b8;
+  --blue:#3b82f6; --blue-dim:rgba(59,130,246,.10);
+  --violet:#8b5cf6; --violet-dim:rgba(139,92,246,.10);
+  --green:#059669; --green-dim:rgba(5,150,105,.10);
+  --rose:#f87171; --rose-dim:rgba(248,113,113,.10);
+  --yellow:#d97706; --yellow-dim:rgba(217,119,6,.10);
+  --orange:#ea580c; --orange-dim:rgba(234,88,12,.10);
+  --radius:10px;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--bg); color:var(--text); min-height:100vh; }
+
+.hdr { background:linear-gradient(135deg,#0d1f3c,#1c3a6a);
+  padding:16px 24px; display:flex; align-items:center;
+  justify-content:space-between; flex-wrap:wrap; gap:8px;
+  border-bottom:1px solid #30363d; border-radius:14px 14px 0 0; }
+.hdr-left h1 { font-size:1.1rem; font-weight:700; color:#93c5fd; }
+.hdr-left .sub { font-size:.72rem; color:#94a3b8; margin-top:2px; }
+.back-link { font-size:.75rem; color:#93c5fd; text-decoration:none; opacity:.8; }
+.back-link:hover { opacity:1; }
+
+.wrap { max-width:1280px; margin:0 auto; padding:0 0 60px;
+  background:var(--surface);
+  box-shadow:0 30px 90px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.06);
+  border-radius:14px; }
+.wrap-inner { padding:24px 24px 0; }
+
+.sec-title { font-size:.72rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--text2); margin-bottom:12px; }
+
+/* KPI cards */
+.kpi-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+  gap:12px; margin-bottom:28px; }
+.kpi-card { background:var(--surface2); border:1px solid var(--border);
+  border-radius:var(--radius); padding:14px 16px;
+  border-top:3px solid var(--border); }
+.kpi-card.blue   { border-top-color:var(--blue); }
+.kpi-card.violet { border-top-color:var(--violet); }
+.kpi-card.green  { border-top-color:var(--green); }
+.kpi-card.rose   { border-top-color:var(--rose); }
+.kpi-card.yellow { border-top-color:var(--yellow); }
+.kpi-card.orange { border-top-color:var(--orange); }
+.kpi-label { font-size:.65rem; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--text3); margin-bottom:6px; }
+.kpi-val { font-size:1.5rem; font-weight:800; letter-spacing:-.03em; margin-bottom:4px; color:var(--text); }
+.kpi-wow { font-size:.72rem; font-weight:600; }
+.kpi-wow.up   { color:var(--green); }
+.kpi-wow.down { color:var(--rose); }
+.kpi-sub { font-size:.65rem; color:var(--text3); margin-top:3px; }
+
+/* tables */
+.tbl-wrap { background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); overflow:auto; margin-bottom:28px; }
+table { width:100%; border-collapse:collapse; font-size:.82rem; }
+thead tr { background:var(--surface2); }
+th { padding:10px 14px; text-align:right; font-size:.68rem; font-weight:600;
+  text-transform:uppercase; letter-spacing:.06em; color:var(--text2);
+  border-bottom:1px solid var(--border); white-space:nowrap; }
+th:first-child { text-align:left; }
+td { padding:9px 14px; text-align:right; border-bottom:1px solid #f1f5f9; white-space:nowrap; }
+td:first-child { text-align:left; font-weight:600; }
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:#f8fafc; }
+.highlight-row td { background:#fff7ed !important; font-weight:700; }
+.badge { display:inline-block; padding:2px 7px; border-radius:20px;
+  font-size:.68rem; font-weight:700; }
+.badge.down { background:var(--rose-dim); color:#dc2626; }
+.badge.up   { background:var(--green-dim); color:var(--green); }
+.badge.warn { background:var(--yellow-dim); color:var(--yellow); }
+.badge.neutral { background:#f1f5f9; color:var(--text2); }
+
+/* driver cards */
+.driver-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
+  gap:16px; margin-bottom:28px; }
+.driver-card { border:1px solid var(--border); border-radius:var(--radius);
+  padding:16px 18px; border-left:4px solid var(--border); }
+.driver-card.primary   { border-left-color:#ef4444; background:#fff5f5; }
+.driver-card.secondary { border-left-color:var(--yellow); background:#fffbeb; }
+.driver-card.tertiary  { border-left-color:var(--violet); background:#faf5ff; }
+.driver-num { font-size:.65rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:.12em; color:var(--text3); margin-bottom:4px; }
+.driver-title { font-size:.9rem; font-weight:700; color:var(--text); margin-bottom:6px; }
+.driver-metric { font-size:1.3rem; font-weight:800; color:#ef4444; margin-bottom:4px; }
+.driver-card.secondary .driver-metric { color:var(--yellow); }
+.driver-card.tertiary  .driver-metric { color:var(--violet); }
+.driver-desc { font-size:.78rem; color:var(--text2); line-height:1.5; }
+
+/* action table */
+.action-table { width:100%; border-collapse:collapse; font-size:.82rem; margin-bottom:28px; }
+.action-table th { padding:10px 14px; text-align:left; font-size:.68rem; font-weight:600;
+  text-transform:uppercase; letter-spacing:.06em; color:var(--text2);
+  border-bottom:2px solid var(--border); background:var(--surface2); }
+.action-table td { padding:10px 14px; border-bottom:1px solid #f1f5f9; vertical-align:top; }
+.action-table tr:last-child td { border-bottom:none; }
+.p0 { display:inline-block; padding:2px 8px; border-radius:20px;
+  font-size:.68rem; font-weight:700; background:#fef2f2; color:#dc2626; }
+.p1 { display:inline-block; padding:2px 8px; border-radius:20px;
+  font-size:.68rem; font-weight:700; background:#fffbeb; color:#d97706; }
+
+/* section divider */
+.sec-divider { height:1px; background:var(--border); margin:32px 0 24px; }
+.sec-header { display:flex; align-items:baseline; gap:10px; margin-bottom:16px; }
+.sec-header h2 { font-size:1rem; font-weight:700; color:var(--text); }
+.sec-header .sec-note { font-size:.75rem; color:var(--text3); }
+
+/* pill group */
+.pill-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+.pill { padding:4px 12px; border-radius:20px; font-size:.75rem; font-weight:600;
+  background:var(--surface2); border:1px solid var(--border); color:var(--text2); }
+.pill.active { background:var(--blue-dim); border-color:var(--blue); color:var(--blue); }
+
+/* funnel viz */
+.funnel-bars { display:flex; flex-direction:column; gap:8px; margin-bottom:28px; }
+.funnel-step { display:flex; align-items:center; gap:12px; }
+.funnel-label { font-size:.75rem; font-weight:600; color:var(--text2); width:200px; flex-shrink:0; }
+.funnel-bar-wrap { flex:1; background:#f1f5f9; border-radius:4px; height:26px; overflow:hidden; }
+.funnel-bar { height:100%; border-radius:4px; display:flex; align-items:center;
+  padding:0 10px; font-size:.72rem; font-weight:700; color:#fff; white-space:nowrap;
+  transition:width .6s ease; }
+.funnel-pct { font-size:.78rem; font-weight:700; color:var(--text); width:52px; text-align:right; }
+.funnel-wow { font-size:.68rem; font-weight:600; width:70px; }
+
+/* note box */
+.note-box { background:#f0f9ff; border:1px solid #bae6fd; border-radius:8px;
+  padding:10px 16px; margin-bottom:20px; font-size:.78rem; color:#0c4a6e;
+  line-height:1.55; }
+.note-box strong { color:#075985; }
+.warn-box { background:#fffbeb; border:1px solid #fcd34d; border-radius:8px;
+  padding:10px 16px; margin-bottom:20px; font-size:.78rem; color:#92400e;
+  line-height:1.55; }
+.warn-box strong { color:#78350f; }
+
+/* platform badges */
+.plat-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
+.plat { padding:4px 10px; border-radius:6px; font-size:.72rem; font-weight:600; }
+.plat.android { background:#dcfce7; color:#166534; }
+.plat.ios     { background:#ede9fe; color:#5b21b6; }
+.plat.web     { background:#e0f2fe; color:#075985; }
+
+footer { text-align:center; padding:24px; font-size:.72rem; color:var(--text3); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-left">
+      <h1>KYC → PAN Verification Deep-Dive</h1>
+      <div class="sub">Apr 06 – May 25, 2026 &nbsp;·&nbsp; 8-week cohort-correct analysis &nbsp;·&nbsp; Denominator = KYC starters each week</div>
+    </div>
+    <a class="back-link" href="https://arpitgoyalyubi.github.io/b2c_product">← All reports</a>
+  </div>
+
+  <div class="wrap-inner">
+
+    <!-- KPI ROW -->
+    <div style="margin-top:24px; margin-bottom:8px;">
+      <div class="sec-title">Headline metrics — May 18 (last complete week) vs Apr 06 baseline</div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card rose">
+        <div class="kpi-label">PAN Verified%</div>
+        <div class="kpi-val">44.3%</div>
+        <div class="kpi-wow down">▼ 7.0pp vs Apr 06</div>
+        <div class="kpi-sub">Was 51.3% · Apr 06</div>
+      </div>
+      <div class="kpi-card blue">
+        <div class="kpi-label">KYC Starters</div>
+        <div class="kpi-val">1,852</div>
+        <div class="kpi-wow up">▲ 2.4× vs Apr 06</div>
+        <div class="kpi-sub">Was 766 · Apr 06</div>
+      </div>
+      <div class="kpi-card rose">
+        <div class="kpi-label">CTA Click%</div>
+        <div class="kpi-val">66.1%</div>
+        <div class="kpi-wow down">▼ 8.2pp structural</div>
+        <div class="kpi-sub">Was 74.3% · Apr 06</div>
+      </div>
+      <div class="kpi-card yellow">
+        <div class="kpi-label">DigiLocker Abandon%</div>
+        <div class="kpi-val">19.8%</div>
+        <div class="kpi-wow neutral" style="color:var(--text3);">→ Stable (17–20%)</div>
+        <div class="kpi-sub">Not worsening</div>
+      </div>
+      <div class="kpi-card orange">
+        <div class="kpi-label">PAN Not in Vault%</div>
+        <div class="kpi-val">15.0%</div>
+        <div class="kpi-wow down">▲ 5.4pp spike</div>
+        <div class="kpi-sub">Was 9.6% · Apr 06</div>
+      </div>
+      <div class="kpi-card violet">
+        <div class="kpi-label">Backup Flow Success%</div>
+        <div class="kpi-val">43.8%</div>
+        <div class="kpi-wow down">▼ 19.8pp WoW</div>
+        <div class="kpi-sub">Was 63.6% · May 11</div>
+      </div>
+      <div class="kpi-card rose">
+        <div class="kpi-label">PAN Failed% (floor)</div>
+        <div class="kpi-val">28.1%</div>
+        <div class="kpi-wow neutral" style="color:var(--text3);">→ Persistent 24–28%</div>
+        <div class="kpi-sub">Structural hard failure</div>
+      </div>
+    </div>
+
+    <!-- DRIVERS -->
+    <div class="sec-divider"></div>
+    <div class="sec-title">Three independent drivers of the decline</div>
+    <div class="driver-grid">
+      <div class="driver-card primary">
+        <div class="driver-num">Driver 1 · Primary · Structural</div>
+        <div class="driver-title">Fewer users click the DigiLocker CTA</div>
+        <div class="driver-metric">74.3% → 66.1%</div>
+        <div class="driver-desc">CTA Click% has declined -8.2pp over 8 weeks with no recovery. Something changed in the PAN screen UX between April and May that's causing more users to not engage. This is the single largest lever. ~152 additional users per week are now dropping off before even starting DigiLocker.</div>
+      </div>
+      <div class="driver-card secondary">
+        <div class="driver-num">Driver 2 · Stable · Not worsening</div>
+        <div class="driver-title">DigiLocker abandonment (mid-flow drop)</div>
+        <div class="driver-metric">17–20% stable</div>
+        <div class="driver-desc">Users who open the DigiLocker SDK but never return have been flat at 17–20% throughout. iOS is an exception at 25–44% abandon (small volume, 38–58 users/week). This is a persistent structural loss but not a new problem driving the decline.</div>
+      </div>
+      <div class="driver-card tertiary">
+        <div class="driver-num">Driver 3 · Acute · May 18 double-hit</div>
+        <div class="driver-title">PAN not in vault + backup flow collapse</div>
+        <div class="driver-metric">+53 extra lost users</div>
+        <div class="driver-desc">In May 18: vault miss volume doubled (77→130 users) AND backup flow success halved (63.6%→43.8%) simultaneously. At the May 11 backup rate, 57 more users would have verified. This double-hit explains the -5.6pp single-week drop in May 18.</div>
+      </div>
+    </div>
+
+    <!-- FUNNEL VIZ -->
+    <div class="sec-divider"></div>
+    <div class="sec-header">
+      <h2>Full funnel — Apr 06 vs May 18 comparison</h2>
+      <span class="sec-note">All % = of KYC starters that week</span>
+    </div>
+    <div class="note-box">
+      <strong>Cohort methodology:</strong> Every step uses <code>KYC_RISKDETAILS_SUBMIT</code> as the anchor (denominator) via Amplitude Funnel API with 7-day conversion window. This eliminates time bias — all percentages represent "of users who started KYC that week, how many reached this step within 7 days."
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:28px;">
+      <div>
+        <div style="font-size:.78rem; font-weight:700; color:var(--text2); margin-bottom:12px;">Apr 06 · 766 KYC starters</div>
+        <div class="funnel-bars">
+          <div class="funnel-step">
+            <div class="funnel-label">KYC Started</div>
+            <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:#3b82f6;">100%</div></div>
+            <div class="funnel-pct">100%</div>
+          </div>
+          <div class="funnel-step">
+            <div class="funnel-label">CTA Clicked</div>
+            <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:74.3%;background:#6366f1;">74.3%</div></div>
+            <div class="funnel-pct">74.3%</div>
+          </div>
+          <div class="funnel-step">
+            <div class="funnel-label">SDK Initiated</div>
+            <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:71.4%;background:#8b5cf6;">71.4%</div></div>
+            <div class="funnel-pct">71.4%</div>
+          </div>
+          <div class="funnel-step">
+            <div class="funnel-label">SDK Callback</div>
+            <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:58.6%;background:#a78bfa;">58.6%</div></div>
+            <div class="funnel-pct">58.6%</div>
+          </div>
+          <div class="funnel-step">
+            <div class="funnel-label">Output API Event</div>
+            <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:53.1%;background:#c4b5fd;">53.1%</div></div>
+            <div class="funnel-pct">53.1%</div>
+          </div>
+          <div class="funnel-step">
+            <div class="funnel-label">PAN Verified ✓</div>
+            <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:51.3%;background:#059669;">51.3%</div></div>
+            <div class="funnel-pct">51.3%</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:.78rem; font-weight:700; color:#dc2626; margin-bottom:12px;">May 18 · 1,852 KYC starters (2.4× volume)</div>
+        <div class="funnel-bars">
+          <div class="funnel-step">
+            <div class="funnel-label">KYC Started</div>
+            <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:#3b82f6;">100%</div></div>
+            <div class="funnel-pct">100%</div>
+          </div>
+          <div class="funnel-step">
+            <div class="funnel-label">CTA Clicked</div>
+            <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:66.1%;background:#f97316;">66.1%</div></div>
+            <div class="funnel-pct" style="color:#dc2626;font-weight:800;">66.1%</div>
+          </div>
+          <div class="funnel-step">
+            <div class="funnel-label">SDK Initiated</div>
+            <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:63.6%;background:#fb923c;">63.6%</div></div>
+            <div class="funnel-pct">63.6%</div>
+          </div>
+          <div class="funnel-step">
+            <div class="funnel-label">SDK Callback</div>
+            <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:51.1%;background:#fbbf24;">51.1%</div></div>
+            <div class="funnel-pct">51.1%</div>
+          </div>
+          <div class="funnel-step">
+            <div class="funnel-label">Output API Event</div>
+            <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:46.8%;background:#fcd34d;">46.8%</div></div>
+            <div class="funnel-pct">46.8%</div>
+          </div>
+          <div class="funnel-step">
+            <div class="funnel-label">PAN Verified ✓</div>
+            <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:44.3%;background:#dc2626;">44.3%</div></div>
+            <div class="funnel-pct" style="color:#dc2626;font-weight:800;">44.3%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN TABLE -->
+    <div class="sec-divider"></div>
+    <div class="sec-header">
+      <h2>Full funnel — 8-week trend (all % of KYC starters)</h2>
+    </div>
+    <div class="warn-box">
+      <strong>Note:</strong> <code>AADHAAR_PAN_INITIAL_SCREEN_VIEW</code> (PAN Screen) is unreliably instrumented — CTA click count exceeds screen view count in most weeks. PAN Screen column is omitted; use CTA Click% as the top-of-funnel anchor.
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>KYC Starters</th>
+            <th>CTA Click%</th>
+            <th>SDK Init%</th>
+            <th>SDK Callback%</th>
+            <th>Output API%</th>
+            <th>PAN Verified%</th>
+            <th>PAN Failed%</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Apr 06</td><td>766</td><td>74.3%</td><td>71.4%</td><td>58.6%</td><td>53.1%</td>
+            <td><strong style="color:var(--green)">51.3%</strong></td><td>24.3%</td>
+          </tr>
+          <tr>
+            <td>Apr 13</td><td>850</td><td>71.5%</td><td>68.9%</td><td>55.6%</td><td>51.1%</td>
+            <td>49.3% <span class="badge down">▼2.0pp</span></td><td>26.0%</td>
+          </tr>
+          <tr>
+            <td>Apr 20</td><td>954</td><td>70.3%</td><td>66.5%</td><td>53.5%</td><td>49.5%</td>
+            <td>47.2% <span class="badge down">▼2.1pp</span></td><td>27.8%</td>
+          </tr>
+          <tr>
+            <td>Apr 27</td><td>1,167</td><td>70.0%</td><td>67.4%</td><td>56.1%</td><td>50.9%</td>
+            <td>49.8% <span class="badge up">▲2.6pp</span></td><td>24.3%</td>
+          </tr>
+          <tr>
+            <td>May 04</td><td>1,337</td><td>71.7%</td><td>67.5%</td><td>54.6%</td><td>49.5%</td>
+            <td>49.2%</td><td>28.0%</td>
+          </tr>
+          <tr>
+            <td>May 11</td><td>1,455</td><td>69.7%</td><td>66.9%</td><td>55.4%</td><td>51.0%</td>
+            <td>49.9%</td><td>26.6%</td>
+          </tr>
+          <tr class="highlight-row">
+            <td>May 18 ⚡</td><td>1,852</td>
+            <td style="color:#dc2626;font-weight:800;">66.1%</td>
+            <td>63.6%</td><td>51.1%</td><td>46.8%</td>
+            <td style="color:#dc2626;font-weight:800;">44.3% <span class="badge down">▼5.6pp</span></td>
+            <td>28.1%</td>
+          </tr>
+          <tr style="color:var(--text3);">
+            <td>May 25 (partial)</td><td>311</td><td>67.2%</td><td>65.1%</td><td>50.2%</td><td>47.3%</td>
+            <td>42.4% <span class="badge down">▼1.9pp</span></td><td>26.7%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- STEP-TO-STEP TABLE -->
+    <div class="sec-header">
+      <h2>Step-to-step conversion rates</h2>
+      <span class="sec-note">Each column = step N / step N-1</span>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>KYC Start</th>
+            <th>CTA / KYC</th>
+            <th>Init / CTA</th>
+            <th>CB / Init</th>
+            <th>Abandon%</th>
+            <th>Out / CB</th>
+            <th>Verify / Out</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Apr 06</td><td>766</td><td>74.3%</td><td>96.1%</td><td>82.1%</td><td>17.9%</td><td>90.6%</td><td>96.6%</td></tr>
+          <tr><td>Apr 13</td><td>850</td><td>71.5%</td><td>96.4%</td><td>80.7%</td><td>19.3%</td><td>91.8%</td><td>96.5%</td></tr>
+          <tr><td>Apr 20</td><td>954</td><td>70.3%</td><td>94.5%</td><td>80.4%</td><td>19.6%</td><td>92.5%</td><td>95.3%</td></tr>
+          <tr><td>Apr 27</td><td>1,167</td><td>70.0%</td><td>96.3%</td><td>83.2%</td><td>16.8%</td><td>90.7%</td><td>97.8%</td></tr>
+          <tr><td>May 04</td><td>1,337</td><td>71.7%</td><td>94.2%</td><td>80.8%</td><td>19.2%</td><td>90.7%</td><td>99.4%</td></tr>
+          <tr><td>May 11</td><td>1,455</td><td>69.7%</td><td>96.0%</td><td>82.8%</td><td>17.2%</td><td>92.1%</td><td>97.8%</td></tr>
+          <tr class="highlight-row">
+            <td>May 18 ⚡</td><td>1,852</td>
+            <td style="color:#dc2626;font-weight:800;">66.1%</td>
+            <td>96.3%</td><td>80.2%</td>
+            <td style="color:#ea580c;font-weight:700;">19.8%</td>
+            <td>91.6%</td>
+            <td style="color:#dc2626;font-weight:800;">94.7%</td>
+          </tr>
+          <tr style="color:var(--text3);"><td>May 25 (partial)</td><td>311</td><td>67.2%</td><td>97.1%</td><td>76.8%</td><td>23.2%</td><td>93.6%</td><td>90.4%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- DIGILOCKER ABANDONMENT + PLATFORM -->
+    <div class="sec-divider"></div>
+    <div class="sec-header">
+      <h2>DigiLocker abandonment — by platform (May 18)</h2>
+      <span class="sec-note">Abandon% = (SDK Initiated − SDK Callback) / SDK Initiated</span>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Platform</th><th>KYC Start</th><th>→ SDK Init%</th>
+            <th>→ Callback%</th><th>Abandon%</th><th>CB→Verify%</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Overall</td><td>1,852</td><td>63.6%</td><td>51.1%</td><td>19.7%</td><td>86.8%</td></tr>
+          <tr><td><span class="plat android">Android</span></td><td>1,688</td><td>64.5%</td><td>52.1%</td><td>19.2%</td><td>83.5%</td></tr>
+          <tr><td><span class="plat ios">iOS</span></td><td>58</td><td>77.6%</td><td>51.7%</td>
+            <td style="color:#dc2626;font-weight:800;">33.3%</td><td>93.3%</td></tr>
+          <tr><td><span class="plat web">Web</span></td><td>55</td><td>76.4%</td><td>58.2%</td><td>23.8%</td>
+            <td style="color:#ea580c;font-weight:700;">75.0%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- VAULT MISS + BACKUP -->
+    <div class="sec-divider"></div>
+    <div class="sec-header">
+      <h2>DigiLocker output — isPanFetched breakdown + backup flow</h2>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px;">
+      <div class="note-box">
+        <strong>PAN Vault Miss%</strong> = users who completed DigiLocker but their PAN was not linked in their DigiLocker account (<code>isPanFetched = false</code>). These users are routed to the manual backup flow.
+      </div>
+      <div class="note-box">
+        <strong>Backup Success%</strong> = of users with PAN not in vault, the % who still reached <code>KYC_PAN_VERIFIED</code> via the manual backup flow. Was improving week-over-week until May 18.
+      </div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Week</th><th>Output API Event</th>
+            <th>PAN in Vault</th><th>PAN NOT in Vault</th>
+            <th>Vault Miss%</th><th>Backup Verified</th><th>Backup Success%</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Apr 06</td><td>407</td><td>364 (89%)</td><td>39 (10%)</td><td>9.6%</td><td>17 / 39</td><td>43.6%</td></tr>
+          <tr><td>Apr 13</td><td>434</td><td>388 (89%)</td><td>43 (10%)</td><td>9.9%</td><td>23 / 43</td><td>53.5%</td></tr>
+          <tr><td>Apr 20</td><td>472</td><td>399 (84%)</td><td>72 (15%)</td>
+            <td><span class="badge warn">15.3% ↑</span></td><td>34 / 72</td><td>47.2%</td></tr>
+          <tr><td>Apr 27</td><td>594</td><td>519 (87%)</td><td>72 (12%)</td><td>12.1%</td><td>36 / 72</td><td>50.0%</td></tr>
+          <tr><td>May 04</td><td>662</td><td>580 (88%)</td><td>71 (11%)</td><td>10.7%</td><td>40 / 71</td><td>56.3%</td></tr>
+          <tr><td>May 11</td><td>742</td><td>655 (88%)</td><td>77 (10%)</td><td>10.4%</td><td>49 / 77</td>
+            <td style="color:var(--green);font-weight:800;">63.6% ↑</td></tr>
+          <tr class="highlight-row">
+            <td>May 18 ⚡</td><td>867</td><td>722 (83%)</td>
+            <td style="color:#dc2626;font-weight:800;">130 (15%)</td>
+            <td><span class="badge down">15.0% ↑</span></td>
+            <td>57 / 130</td>
+            <td style="color:#dc2626;font-weight:800;">43.8% <span class="badge down">▼19.8pp</span></td>
+          </tr>
+          <tr style="color:var(--text3);"><td>May 25 (partial)</td><td>146</td><td>123 (84%)</td><td>21 (14%)</td><td>14.4%</td><td>5 / 21</td><td>23.8%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PLATFORM SPLIT OUTPUT API -->
+    <div class="sec-header">
+      <h2>isPanFetched breakdown by platform — May 18</h2>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Platform</th><th>KYC Start</th><th>Output API%</th>
+            <th>PAN in Vault%</th><th>Vault Miss%</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Overall</td><td>1,852</td><td>46.8%</td><td>83.3%</td><td>15.0%</td></tr>
+          <tr><td><span class="plat android">Android</span></td><td>1,688</td><td>47.4%</td><td>83.9%</td><td>14.5% (116 users)</td></tr>
+          <tr><td><span class="plat ios">iOS</span></td><td>58</td><td>51.7%</td><td>80.0%</td><td>16.7% (5 users)</td></tr>
+          <tr><td><span class="plat web">Web</span></td><td>55</td><td>58.2%</td><td>71.9%</td>
+            <td style="color:#dc2626;font-weight:800;">21.9% (7 users)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="sec-divider"></div>
+    <div class="sec-title">Recommended actions</div>
+    <table class="action-table">
+      <thead>
+        <tr>
+          <th style="width:80px;">Priority</th>
+          <th style="width:200px;">Action</th>
+          <th>What it fixes</th>
+          <th>Expected impact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="p0">P0</span></td>
+          <td><strong>Investigate PAN screen UX change</strong></td>
+          <td>CTA Click% has declined 8.2pp since Apr 06. Identify any redesign, A/B test, or content change on the <code>AADHAAR_PAN_INITIAL_SCREEN</code> that went live between Apr 06–18.</td>
+          <td>Recovering CTA% from 66% back to 74% = ~150 extra users/week entering the DigiLocker flow</td>
+        </tr>
+        <tr>
+          <td><span class="p0">P0</span></td>
+          <td><strong>Investigate May 18 backup flow collapse</strong></td>
+          <td>Backup flow success dropped 20pp in one week (63.6%→43.8%) while vault miss volume doubled. Check if a new acquisition cohort is less document-ready, or if a UI/flow bug was introduced.</td>
+          <td>Restoring to 64% success rate = ~26 additional verifications per week from vault-miss users</td>
+        </tr>
+        <tr>
+          <td><span class="p1">P1</span></td>
+          <td><strong>Add pre-check prompt before DigiLocker launch</strong></td>
+          <td>~15% of users who complete DigiLocker don't have PAN linked in their vault. A prompt — "Make sure your PAN is linked in your DigiLocker account before continuing" — reduces surprise drop-offs and may improve backup flow intent.</td>
+          <td>Could reduce vault miss% from 15% → 8–10% for prepared users</td>
+        </tr>
+        <tr>
+          <td><span class="p1">P1</span></td>
+          <td><strong>Fix iOS DigiLocker abandonment</strong></td>
+          <td>iOS users who open DigiLocker abandon at 33% vs 19% on Android. Small absolute volume (58 users/week) but the rate indicates a platform-specific SDK or UX issue.</td>
+          <td>Bringing iOS abandon% to Android parity = ~8 additional verified users/week</td>
+        </tr>
+        <tr>
+          <td><span class="p1">P1</span></td>
+          <td><strong>Fix AppsFlyer → Amplitude user property sync</strong></td>
+          <td>Campaign/adgroup attribution properties (<code>gp:[AppsFlyer] campaign</code> etc.) are in the Amplitude taxonomy but return no data for KYC events. Engineering needs to call <code>amplitude.setUserProperties()</code> with attribution data after the AppsFlyer SDK callback.</td>
+          <td>Unblocks channel-level funnel analysis — critical for understanding which acquisition campaigns drive low-quality KYC cohorts</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text3);">Ongoing</td>
+          <td><strong>Fix <code>callbackResponse</code> instrumentation</strong></td>
+          <td>The <code>callbackResponse</code> property on <code>HYPERVERGE_DIGILOCKER_SDK_CALLBACK_RECEIVED</code> always returns <code>0</code> — the HyperVerge SDK result (success/failure/cancelled) is not being passed to the Amplitude event.</td>
+          <td>Would enable distinguishing real callback failures from user-cancelled flows</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- DEFINITIONS -->
+    <div class="sec-divider"></div>
+    <div class="sec-title">Event definitions</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:28px; font-size:.78rem;">
+      <div style="background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px 16px;">
+        <div style="font-weight:700; margin-bottom:8px; color:var(--text);">Funnel events (in order)</div>
+        <div style="color:var(--text2); line-height:2;">
+          <code>KYC_RISKDETAILS_SUBMIT</code> — KYC started (anchor/denominator)<br>
+          <code>AADHAAR_PAN_INITIAL_SCREEN_START_DIGILOCKER_CTA_CLICK</code> — CTA tapped<br>
+          <code>HYPERVERGE_DIGILOCKER_SDK_INITIATED</code> — DigiLocker SDK opened<br>
+          <code>HYPERVERGE_DIGILOCKER_SDK_CALLBACK_RECEIVED</code> — Returned from DigiLocker<br>
+          <code>DIGILOCKER_OUTPUT_API_SUCCESS_RESPONSE</code> — Output API fired<br>
+          <code>KYC_PAN_VERIFIED</code> — PAN verified (success endpoint)<br>
+          <code>KYC_PAN_FAILED</code> — Hard PAN failure
+        </div>
+      </div>
+      <div style="background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px 16px;">
+        <div style="font-weight:700; margin-bottom:8px; color:var(--text);">Derived metrics</div>
+        <div style="color:var(--text2); line-height:2;">
+          <strong>Abandon%</strong> = (SDK Init − SDK Callback) / SDK Init<br>
+          <strong>Vault Miss%</strong> = <code>isPanFetched=false</code> / Output API event count<br>
+          <strong>Backup Success%</strong> = of vault-miss users, % reaching KYC_PAN_VERIFIED<br>
+          <strong>CB→Verify%</strong> = KYC_PAN_VERIFIED / SDK Callback<br>
+          <strong>All %s</strong> cohort-correct: 7-day window from KYC_RISKDETAILS_SUBMIT
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /wrap-inner -->
+
+  <footer>
+    KYC → PAN Verification Analysis · Aspero · Data: Amplitude Analytics · Generated May 26, 2026
+  </footer>
+
+</div><!-- /wrap -->
+</body>
+</html>
