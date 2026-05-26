@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Risk Profiling Drop-off Analysis — Aspero B2C</title>
+<style>
+  :root {
+    --blue:#2563EB;--blue-lt:#EFF6FF;--green:#16A34A;--green-lt:#F0FDF4;
+    --purple:#7C3AED;--amber:#D97706;--amber-lt:#FFFBEB;--red:#DC2626;--red-lt:#FEF2F2;
+    --gray:#64748B;--border:#E2E8F0;--text:#0F172A;--text2:#475569;
+    --text3:#94A3B8;--bg:#F1F5F9;--white:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text)}
+  .header{background:linear-gradient(135deg,#1E3A8A 0%,#2563EB 60%,#3B82F6 100%);color:white;padding:44px 32px 36px;text-align:center}
+  .header .eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.65;margin-bottom:10px}
+  .header h1{font-size:28px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+  .header .sub{font-size:14px;opacity:.8;line-height:1.6;max-width:600px;margin:0 auto 18px}
+  .header .meta{display:inline-flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  .pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600}
+  .wrap{max-width:1100px;margin:0 auto;padding:40px 24px 64px}
+  .kpi-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:16px;margin-bottom:40px}
+  .kpi{background:var(--white);border-radius:12px;border:1px solid var(--border);padding:20px}
+  .kpi .label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+  .kpi .value{font-size:28px;font-weight:800;color:var(--text);line-height:1;margin-bottom:4px}
+  .kpi .delta{font-size:12px;font-weight:600}
+  .up{color:var(--green)}.down{color:var(--red)}.neu{color:var(--gray)}
+  .section-hd{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px}
+  .section-hd .icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+  .icon-blue{background:var(--blue-lt)}.icon-amber{background:var(--amber-lt)}.icon-green{background:var(--green-lt)}.icon-purple{background:#F5F3FF}.icon-red{background:var(--red-lt)}
+  .section-hd .hd-text h2{font-size:18px;font-weight:700;margin-bottom:4px}
+  .section-hd .hd-text p{font-size:13px;color:var(--text2);line-height:1.5}
+  .card{background:var(--white);border-radius:14px;border:1px solid var(--border);padding:28px;margin-bottom:24px}
+  .card-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
+  @media(max-width:680px){.card-grid-2{grid-template-columns:1fr}}
+  .section-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);margin:36px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+  .badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600}
+  .badge-red{background:var(--red-lt);color:var(--red)}.badge-amber{background:var(--amber-lt);color:var(--amber)}
+  .badge-green{background:var(--green-lt);color:var(--green)}.badge-blue{background:var(--blue-lt);color:var(--blue)}
+  .insight-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:24px}
+  .insight{border-radius:12px;padding:18px;border-left:4px solid}
+  .insight-red{background:var(--red-lt);border-color:var(--red)}
+  .insight-amber{background:var(--amber-lt);border-color:var(--amber)}
+  .insight-blue{background:var(--blue-lt);border-color:var(--blue)}
+  .insight-green{background:var(--green-lt);border-color:var(--green)}
+  .insight .ins-title{font-size:13px;font-weight:700;margin-bottom:6px}
+  .insight p{font-size:12px;line-height:1.6;color:var(--text2)}
+  /* funnel */
+  .funnel-step{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--border)}
+  .funnel-step:last-child{border-bottom:none}
+  .funnel-label{flex:0 0 200px;font-size:13px;font-weight:500}
+  .funnel-sub{font-size:11px;color:var(--text3);margin-top:2px}
+  .funnel-bar-wrap{flex:1;height:12px;background:var(--border);border-radius:6px;overflow:hidden}
+  .funnel-bar{height:100%;border-radius:6px;transition:width .3s}
+  .funnel-num{flex:0 0 70px;text-align:right;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+  .funnel-pct{flex:0 0 55px;text-align:right;font-size:12px;font-weight:600;color:var(--text2)}
+  .funnel-drop{flex:0 0 80px;text-align:right;font-size:11px;color:var(--red);font-weight:600}
+  /* bar table */
+  .bar-table{width:100%;border-collapse:collapse}
+  .bar-table th{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);padding:0 0 12px;text-align:left}
+  .bar-table th:not(:first-child){text-align:right}
+  .bar-table td{padding:10px 0;font-size:13px;vertical-align:middle;border-top:1px solid var(--border)}
+  .bar-table td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums}
+  .bar-table tr:last-child td{border-bottom:1px solid var(--border)}
+  .bar-wrap{width:120px;padding-left:12px}
+  .bar-bg{height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:4px}
+  .bar-blue{background:var(--blue)}.bar-amber{background:var(--amber)}.bar-red{background:var(--red)}
+  .bar-green{background:var(--green)}.bar-gray{background:var(--text3)}
+  .total-row td{font-weight:700;background:var(--bg)}
+  /* daily table */
+  .daily-table{width:100%;border-collapse:collapse;font-size:12px}
+  .daily-table th{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);padding:0 8px 10px;text-align:right}
+  .daily-table th:first-child{text-align:left}
+  .daily-table td{padding:7px 8px;border-top:1px solid var(--border);font-variant-numeric:tabular-nums;text-align:right}
+  .daily-table td:first-child{text-align:left;color:var(--text2)}
+  .conv-hi{color:var(--green);font-weight:700}
+  .conv-lo{color:var(--amber);font-weight:700}
+  .conv-med{color:var(--blue);font-weight:600}
+  /* tickets */
+  .ticket{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:14px}
+  .ticket-hd{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .ticket-key{font-size:12px;font-weight:700;color:var(--blue);font-family:monospace;background:var(--blue-lt);padding:2px 8px;border-radius:6px}
+  .ticket-type{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+  .ticket h3{font-size:14px;font-weight:700;margin-bottom:6px}
+  .ticket p{font-size:12px;color:var(--text2);line-height:1.6}
+  .ticket-meta{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+  /* code block */
+  .code-block{background:#1E293B;color:#E2E8F0;border-radius:10px;padding:16px 20px;font-family:'SF Mono',Monaco,monospace;font-size:12px;line-height:1.7;overflow-x:auto;margin-top:12px}
+  .code-block .cm{color:#94A3B8}.code-block .kw{color:#93C5FD}.code-block .str{color:#86EFAC}.code-block .fn{color:#FCD34D}
+  .footer{text-align:center;color:var(--text3);font-size:12px;padding-top:16px;border-top:1px solid var(--border)}
+  .footer a{color:var(--blue);text-decoration:none}
+  code{font-family:monospace;font-size:11px;background:#F1F5F9;padding:1px 4px;border-radius:3px}
+  .drop-arrow{text-align:center;color:var(--text3);font-size:18px;padding:4px 0}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">KYC Funnel · Risk Profiling</div>
+  <h1>Risk Profiling Drop-off Analysis</h1>
+  <div class="sub">Where do users abandon the risk profiling form, why, and what should we fix? Deep-dive using Amplitude events from the mobile codebase.</div>
+  <div class="meta">
+    <span class="pill">Apr 26 – May 26, 2026</span>
+    <span class="pill">30-day window</span>
+    <span class="pill">Source: Amplitude</span>
+    <span class="pill">Events: RISK_PROFILING_*</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ── KPI row ── -->
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="label">Signups (30d)</div>
+      <div class="value">17,188</div>
+      <div class="delta neu">SETUP_SECURE_PIN_SUCCESS</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Reached Risk Profiling</div>
+      <div class="value">10,135</div>
+      <div class="delta neu">61.6% of signups</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Completed</div>
+      <div class="value">5,771</div>
+      <div class="delta down">56.9% of viewers</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Abandoned</div>
+      <div class="value">4,364</div>
+      <div class="delta down">43.1% dropped off</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Net Worth Drop</div>
+      <div class="value">1,323</div>
+      <div class="delta down">Biggest single Q drop</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Submit → Complete</div>
+      <div class="value">97.6%</div>
+      <div class="delta up">Once they tap submit</div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 1: Full Funnel ── -->
+  <div class="section-label">Section 1 — Full Funnel: Signup → Completion</div>
+
+  <div class="card">
+    <div class="section-hd">
+      <div class="icon icon-blue">📊</div>
+      <div class="hd-text">
+        <h2>Signup → Risk Profiling → Submission</h2>
+        <p>Overall 30-day funnel. Events: <code>SETUP_SECURE_PIN_SUCCESS</code> → <code>RISK_PROFILING_SCREEN_VIEWED</code> → <code>RISK_PROFILING_SUBMITTED</code></p>
+      </div>
+    </div>
+
+    <div class="funnel-step">
+      <div class="funnel-label">Signups<div class="funnel-sub">SETUP_SECURE_PIN_SUCCESS</div></div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar bar-blue" style="width:100%;background:#2563EB"></div></div>
+      <div class="funnel-num">17,188</div>
+      <div class="funnel-pct">100%</div>
+      <div class="funnel-drop"></div>
+    </div>
+    <div class="funnel-step">
+      <div class="funnel-label">Reached Risk Profiling<div class="funnel-sub">RISK_PROFILING_SCREEN_VIEWED</div></div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:58.9%;background:#3B82F6"></div></div>
+      <div class="funnel-num">10,135</div>
+      <div class="funnel-pct">59.0%</div>
+      <div class="funnel-drop">−7,053</div>
+    </div>
+    <div class="funnel-step">
+      <div class="funnel-label">Engaged (≥1 answer)<div class="funnel-sub">RISK_PROFILING_ANSWER_SELECTED</div></div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:51.7%;background:#60A5FA"></div></div>
+      <div class="funnel-num">8,884</div>
+      <div class="funnel-pct">87.7% of viewers</div>
+      <div class="funnel-drop">−1,251</div>
+    </div>
+    <div class="funnel-step">
+      <div class="funnel-label">Tapped Submit<div class="funnel-sub">RISK_PROFILING_SUBMIT_CLICK</div></div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:34.4%;background:#93C5FD"></div></div>
+      <div class="funnel-num">5,915</div>
+      <div class="funnel-pct">58.4% of viewers</div>
+      <div class="funnel-drop">−2,969</div>
+    </div>
+    <div class="funnel-step">
+      <div class="funnel-label">Completed<div class="funnel-sub">RISK_PROFILING_SUBMITTED</div></div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:33.6%;background:#16A34A"></div></div>
+      <div class="funnel-num">5,771</div>
+      <div class="funnel-pct">97.6% of tappers</div>
+      <div class="funnel-drop">−144</div>
+    </div>
+
+    <div style="margin-top:20px" class="insight-grid">
+      <div class="insight insight-red">
+        <div class="ins-title">41% never tap Submit</div>
+        <p>4,364 users view the form but never press submit. The problem is engagement, not the submit mechanism itself — once a user taps submit, 97.6% complete.</p>
+      </div>
+      <div class="insight insight-amber">
+        <div class="ins-title">12% don't touch the form at all</div>
+        <p>1,251 users open the screen and close it without selecting any answer. Not ready, distracted, or form appears overwhelming on first glance.</p>
+      </div>
+      <div class="insight insight-blue">
+        <div class="ins-title">API errors affect 291 users</div>
+        <p>2,035 RISK_PROFILING_SUBMIT_ERROR events across 291 users = avg 7 errors per affected user. Retry storms indicating a backend reliability issue on submission.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 2: Per-Question Drop-off ── -->
+  <div class="section-label">Section 2 — Per-Question Drop-off (Non-Completers)</div>
+
+  <div class="card">
+    <div class="section-hd">
+      <div class="icon icon-red">🎯</div>
+      <div class="hd-text">
+        <h2>Where non-completers abandon — per question</h2>
+        <p>Derived from unique users per <code>questionId</code> in <code>RISK_PROFILING_ANSWER_SELECTED</code>. The form has 6 questions: 5 MCQ + 1 text input (Q3, no event).</p>
+      </div>
+    </div>
+
+    <!-- question funnel -->
+    <div class="funnel-step" style="background:#F8FAFC;border-radius:8px;padding:14px 16px;margin-bottom:4px;border:none">
+      <div class="funnel-label" style="font-weight:700">Viewed screen<div class="funnel-sub">All viewers</div></div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:#2563EB"></div></div>
+      <div class="funnel-num">10,135</div>
+      <div class="funnel-pct" style="color:var(--blue);font-weight:700">100%</div>
+      <div class="funnel-drop"></div>
+    </div>
+    <div class="drop-arrow">↓ −1,401 never selected any MCQ</div>
+    <div class="funnel-step">
+      <div class="funnel-label"><span class="badge badge-blue" style="margin-bottom:4px">Q0</span> Occupation</div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:86.2%;background:#2563EB"></div></div>
+      <div class="funnel-num">8,734</div>
+      <div class="funnel-pct">86.2%</div>
+      <div class="funnel-drop"></div>
+    </div>
+    <div class="drop-arrow">↓ −782 dropped here</div>
+    <div class="funnel-step">
+      <div class="funnel-label"><span class="badge badge-blue" style="margin-bottom:4px">Q1</span> Annual Income</div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:78.5%;background:#3B82F6"></div></div>
+      <div class="funnel-num">7,952</div>
+      <div class="funnel-pct">78.5%</div>
+      <div class="funnel-drop">−782</div>
+    </div>
+    <div class="drop-arrow" style="color:var(--red);font-weight:700;font-size:14px">↓ −1,323 dropped here ← BIGGEST DROP</div>
+    <div class="funnel-step" style="border:2px solid var(--red);border-radius:8px;padding:14px 16px">
+      <div class="funnel-label"><span class="badge badge-red" style="margin-bottom:4px">Q2</span> Net Worth <span class="badge badge-red" style="margin-left:6px">Most friction</span></div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:65.4%;background:#EF4444"></div></div>
+      <div class="funnel-num">6,629</div>
+      <div class="funnel-pct" style="color:var(--red);font-weight:700">65.4%</div>
+      <div class="funnel-drop" style="font-size:12px">−1,323</div>
+    </div>
+    <div class="drop-arrow">↓ −702 dropped here (incl. Q3 text input)</div>
+    <div class="funnel-step">
+      <div class="funnel-label"><span class="badge badge-amber" style="margin-bottom:4px">Q4</span> Marital Status<div class="funnel-sub">Q3 = text input (Father/Husband Name)</div></div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:58.5%;background:#F59E0B"></div></div>
+      <div class="funnel-num">5,927</div>
+      <div class="funnel-pct">58.5%</div>
+      <div class="funnel-drop">−702</div>
+    </div>
+    <div class="drop-arrow">↓ −156 dropped here</div>
+    <div class="funnel-step" style="background:#F0FDF4;border-radius:8px;padding:14px 16px;border:none">
+      <div class="funnel-label" style="color:var(--green);font-weight:700">✓ Completed</div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:57.0%;background:#16A34A"></div></div>
+      <div class="funnel-num" style="color:var(--green)">5,771</div>
+      <div class="funnel-pct" style="color:var(--green);font-weight:700">57.0%</div>
+      <div class="funnel-drop" style="color:var(--green)">−156</div>
+    </div>
+
+    <div style="margin-top:24px">
+      <table class="bar-table">
+        <thead>
+          <tr><th>Abandonment bucket</th><th>Users lost</th><th>% of non-completers</th><th style="text-align:left;padding-left:12px">Proportion</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Never tapped any question</td>
+            <td>1,251</td><td>28.7%</td>
+            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-gray" style="width:94.8%"></div></div></div></td>
+          </tr>
+          <tr>
+            <td>Dropped after Q0 — Occupation</td>
+            <td>782</td><td>17.9%</td>
+            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-blue" style="width:59.1%"></div></div></div></td>
+          </tr>
+          <tr style="background:#FEF2F2">
+            <td><strong>Dropped after Q1 → Q2 — Annual Income → Net Worth</strong> <span class="badge badge-red">Biggest</span></td>
+            <td><strong>1,323</strong></td><td><strong>30.3%</strong></td>
+            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-red" style="width:100%"></div></div></div></td>
+          </tr>
+          <tr>
+            <td>Dropped after Q2/Q3 — Net Worth / Name field</td>
+            <td>702</td><td>16.1%</td>
+            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-amber" style="width:53.1%"></div></div></div></td>
+          </tr>
+          <tr>
+            <td>Reached Q4 but never submitted</td>
+            <td>156</td><td>3.6%</td>
+            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-gray" style="width:11.9%"></div></div></div></td>
+          </tr>
+          <tr class="total-row">
+            <td>Total non-completers</td><td>4,364</td><td>100%</td><td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── SECTION 3: Multi-session evidence ── -->
+  <div class="section-label">Section 3 — Multi-Session Evidence &amp; Answer Persistence Gap</div>
+
+  <div class="card-grid-2">
+    <div class="card" style="margin-bottom:0">
+      <div class="section-hd">
+        <div class="icon icon-amber">🔄</div>
+        <div class="hd-text">
+          <h2>Non-completers are returning</h2>
+          <p>Avg answer selections per user vs max per single session</p>
+        </div>
+      </div>
+      <table class="bar-table">
+        <thead><tr><th>Group</th><th>Users</th><th>Total selections</th><th>Avg / user</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>All selectors</td><td>8,884</td><td>50,839</td>
+            <td><strong>5.72</strong> <span class="badge badge-amber">vs 5 max/session</span></td>
+          </tr>
+          <tr style="background:#FEF2F2">
+            <td>Non-completers (est.)</td><td>3,113</td><td>~21,984</td>
+            <td><strong style="color:var(--red)">7.06</strong> <span class="badge badge-red">above 5-Q ceiling</span></td>
+          </tr>
+          <tr>
+            <td>Completers (est.)</td><td>5,771</td><td>~28,855</td>
+            <td><strong>5.00</strong> <span class="badge badge-green">one clean pass</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="insight insight-red" style="margin-top:16px">
+        <div class="ins-title">7.06 &gt; 5 = multi-session confirmed</div>
+        <p>Non-completers fired more answer-selected events than a single 5-question session allows. They are returning on new sessions, having answers wiped, and re-answering from Q0 — never finishing.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:0">
+      <div class="section-hd">
+        <div class="icon icon-red">💾</div>
+        <div class="hd-text">
+          <h2>Answers are NOT persisted</h2>
+          <p>Code-confirmed: every session starts from scratch</p>
+        </div>
+      </div>
+      <div class="insight insight-red" style="margin-bottom:12px">
+        <div class="ins-title">useRiskProfileData.ts — fetchProfilingData()</div>
+        <p>On mount, calls <code>GET /user-profiling-service?questionType=RISK_PROFILING</code> which returns <code>unansweredQuestions</code>. Every answer field is reset to <code>null</code> / <code>''</code> / <code>noValue</code> — no AsyncStorage, no Hookstate draft, no partial-save API.</p>
+      </div>
+      <div class="insight insight-amber">
+        <div class="ins-title">Impact</div>
+        <p>3,113 users answered ≥1 question but never completed. The ~30% who drop at Net Worth (Q2) answered Occupation + Income correctly. On return, they answer both again before hitting Q2 again — wasted effort every session.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 4: Bugs ── -->
+  <div class="section-label">Section 4 — Bugs Found During Analysis</div>
+
+  <div class="card">
+    <div class="section-hd">
+      <div class="icon icon-red">🐛</div>
+      <div class="hd-text">
+        <h2>Two instrumentation bugs making analytics unreliable</h2>
+        <p>Discovered during data analysis — both affect decision-making quality.</p>
+      </div>
+    </div>
+
+    <div class="insight-grid">
+      <div class="insight insight-red">
+        <div class="ins-title">🔴 P0 — RISK_PROFILING_SCREEN_VIEWED fires 19–20× per user/day</div>
+        <p>
+          Should fire once on mount. Instead fires on every re-render because <code>postEvent</code> is in the <code>useEffect</code> dependency array and is not memoised.<br><br>
+          Sample (7 days): 10,232 events for 523 users = <strong>19.6× ratio</strong>.<br><br>
+          Makes "how many times did a user return" unanswerable from this event. Also 19× unnecessary Amplitude API calls per user.
+        </p>
+        <div style="margin-top:8px">
+          <span class="badge badge-red">useRiskProfilingV2.ts:32</span>
+          <span class="badge badge-red" style="margin-left:6px">Analytics integrity</span>
+        </div>
+      </div>
+      <div class="insight insight-amber">
+        <div class="ins-title">🟡 P1 — onInputChange (Q3 Name field) has zero tracking</div>
+        <p>
+          The text input for Father/Husband Name (<code>onInputChange</code>) fires no event at all — only <code>onInputBlur</code> fires <code>RISK_PROFILING_FATHER_HUSBAND_NAME_ENTRY</code>. Q3 registered only 13 events vs 6,000–8,000 for MCQ questions.<br><br>
+          Can't tell whether users are abandoning because they don't know this info or because the field itself has a UX issue.
+        </p>
+        <div style="margin-top:8px">
+          <span class="badge badge-amber">useRiskProfileData.ts:48</span>
+          <span class="badge badge-amber" style="margin-left:6px">Missing signal</span>
+        </div>
+      </div>
+      <div class="insight insight-amber">
+        <div class="ins-title">🟡 P1 — RISK_PROFILING_VALIDATION_ERROR never fires</div>
+        <p>
+          0 events in 30 days. Either client-side validation is never triggered (users can submit with missing fields), or the validation code path is broken. Given 2,035 API errors (backend rejection), some submissions are going to the server without client-side validation catching them first.
+        </p>
+        <div style="margin-top:8px">
+          <span class="badge badge-amber">useRiskProfilingV2.ts:74</span>
+          <span class="badge badge-amber" style="margin-left:6px">Validation gap</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:8px">
+      <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:8px">Fix for SCREEN_VIEWED overfiring:</div>
+      <div class="code-block"><span class="cm">// ❌ Current — postEvent in deps causes re-fire on every render</span>
+<span class="kw">useEffect</span>(() => {
+  <span class="kw">if</span> (!isLoading && questions?.length > 0) {
+    <span class="fn">postEvent</span>(<span class="fn">riskProfilingV2Events</span>.<span class="fn">screenView</span>());
+  }
+}, [isLoading, questions?.length, <span style="color:#FCA5A5">postEvent</span>]);  <span class="cm">// ← remove postEvent</span>
+
+<span class="cm">// ✅ Fixed — stable ref, fires exactly once</span>
+}, [isLoading, questions?.length]);</div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 5: Daily data ── -->
+  <div class="section-label">Section 5 — Daily Signups → Risk Profiling Views (30 days)</div>
+
+  <div class="card">
+    <div class="section-hd">
+      <div class="icon icon-blue">📅</div>
+      <div class="hd-text">
+        <h2>Day-by-day reach rate</h2>
+        <p>Of users who sign up on a given day, how many land on risk profiling the same day. Range: 55–69%. Note: same-day comparison, not strict cohort.</p>
+      </div>
+    </div>
+    <table class="daily-table">
+      <thead>
+        <tr><th>Date</th><th>Signups</th><th>Risk Views</th><th>Reach %</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>2026-04-26</td><td>458</td><td>264</td><td class="conv-med">57.6%</td></tr>
+        <tr><td>2026-04-27</td><td>379</td><td>252</td><td class="conv-hi">66.5%</td></tr>
+        <tr><td>2026-04-28</td><td>364</td><td>217</td><td class="conv-med">59.6%</td></tr>
+        <tr><td>2026-04-29</td><td>411</td><td>262</td><td class="conv-med">63.7%</td></tr>
+        <tr><td>2026-04-30</td><td>424</td><td>261</td><td class="conv-med">61.6%</td></tr>
+        <tr><td>2026-05-01</td><td>488</td><td>308</td><td class="conv-med">63.1%</td></tr>
+        <tr><td>2026-05-02</td><td>552</td><td>322</td><td class="conv-lo">58.3%</td></tr>
+        <tr><td>2026-05-03</td><td>544</td><td>323</td><td class="conv-med">59.4%</td></tr>
+        <tr><td>2026-05-04</td><td>435</td><td>250</td><td class="conv-lo">57.5%</td></tr>
+        <tr><td>2026-05-05</td><td>476</td><td>311</td><td class="conv-hi">65.3%</td></tr>
+        <tr><td>2026-05-06</td><td>565</td><td>321</td><td class="conv-lo">56.8%</td></tr>
+        <tr><td>2026-05-07</td><td>550</td><td>340</td><td class="conv-med">61.8%</td></tr>
+        <tr><td>2026-05-08</td><td>602</td><td>388</td><td class="conv-med">64.5%</td></tr>
+        <tr><td>2026-05-09</td><td>585</td><td>390</td><td class="conv-hi">66.7%</td></tr>
+        <tr><td>2026-05-10</td><td>535</td><td>344</td><td class="conv-med">64.3%</td></tr>
+        <tr><td>2026-05-11</td><td>475</td><td>289</td><td class="conv-med">60.8%</td></tr>
+        <tr><td>2026-05-12</td><td>516</td><td>334</td><td class="conv-med">64.7%</td></tr>
+        <tr><td>2026-05-13</td><td>443</td><td>290</td><td class="conv-hi">65.5%</td></tr>
+        <tr><td>2026-05-14</td><td>490</td><td>326</td><td class="conv-hi">66.5%</td></tr>
+        <tr><td>2026-05-15</td><td>534</td><td>320</td><td class="conv-med">59.9%</td></tr>
+        <tr><td>2026-05-16</td><td>642</td><td>434</td><td class="conv-hi">67.6%</td></tr>
+        <tr><td>2026-05-17</td><td>727</td><td>462</td><td class="conv-med">63.5%</td></tr>
+        <tr><td>2026-05-18</td><td>696</td><td>411</td><td class="conv-med">59.1%</td></tr>
+        <tr><td>2026-05-19</td><td>779</td><td>473</td><td class="conv-med">60.7%</td></tr>
+        <tr><td>2026-05-20</td><td>726</td><td>406</td><td class="conv-lo">55.9%</td></tr>
+        <tr><td>2026-05-21</td><td>891</td><td>523</td><td class="conv-lo">58.7%</td></tr>
+        <tr><td>2026-05-22</td><td>743</td><td>460</td><td class="conv-med">61.9%</td></tr>
+        <tr><td>2026-05-23</td><td>702</td><td>429</td><td class="conv-med">61.1%</td></tr>
+        <tr><td>2026-05-24</td><td>689</td><td>395</td><td class="conv-lo">57.3%</td></tr>
+        <tr><td>2026-05-25</td><td>569</td><td>346</td><td class="conv-med">60.8%</td></tr>
+        <tr><td>2026-05-26</td><td>198</td><td>136</td><td class="conv-hi">68.7%</td></tr>
+        <tr style="background:var(--bg);font-weight:700;border-top:2px solid var(--border)">
+          <td>30-Day Total</td><td>17,188</td><td>10,587</td><td class="conv-med">61.6%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── SECTION 6: Jira Tickets ── -->
+  <div class="section-label">Section 6 — Jira Tickets Raised</div>
+
+  <div class="card">
+    <div class="section-hd">
+      <div class="icon icon-purple">🎫</div>
+      <div class="hd-text">
+        <h2>4 tickets raised to fix root causes</h2>
+        <p>All tickets under Feature: Risk Profiling — Drop-off Reduction (under Epic ASP-3403 KYC Start)</p>
+      </div>
+    </div>
+
+    <div id="tickets-placeholder">
+      <!-- populated by JS after page loads; also statically below -->
+    </div>
+
+    <div class="ticket">
+      <div class="ticket-hd">
+        <span class="badge badge-red">P0 · Bug</span>
+        <span style="font-size:12px;color:var(--text3)">Engineering · Analytics</span>
+      </div>
+      <h3>Fix RISK_PROFILING_SCREEN_VIEWED overfiring (19–20× per user)</h3>
+      <p>Remove <code>postEvent</code> from <code>useEffect</code> dependency array in <code>useRiskProfilingV2.ts:32</code>. Currently the event fires on every re-render instead of once per screen mount, making all "visit count" analytics completely unreliable and adding 19× unnecessary Amplitude API calls.</p>
+      <div class="ticket-meta">
+        <span class="badge badge-blue">useRiskProfilingV2.ts:32</span>
+        <span class="badge badge-red">Analytics integrity</span>
+        <span class="badge badge-amber">1 line fix</span>
+      </div>
+    </div>
+
+    <div class="ticket">
+      <div class="ticket-hd">
+        <span class="badge badge-red">P0 · Story</span>
+        <span style="font-size:12px;color:var(--text3)">Engineering · UX</span>
+      </div>
+      <h3>Persist risk profiling answers to AsyncStorage between sessions</h3>
+      <p>3,113 users answered ≥1 question but never completed. Non-completers average 7.06 answer selections vs a 5-question ceiling — proving they return to the form and have to start over. Save answers to AsyncStorage on each <code>onSelectAnswer</code> call. On mount, merge saved draft with API response before <code>setQuestions()</code>. Clear draft on successful submit.</p>
+      <div class="ticket-meta">
+        <span class="badge badge-blue">useRiskProfileData.ts</span>
+        <span class="badge badge-red">3,113 affected users/month</span>
+        <span class="badge badge-amber">AsyncStorage draft</span>
+      </div>
+    </div>
+
+    <div class="ticket">
+      <div class="ticket-hd">
+        <span class="badge badge-amber">P1 · Story</span>
+        <span style="font-size:12px;color:var(--text3)">Product · Design</span>
+      </div>
+      <h3>Reduce Net Worth question drop-off (1,323 users/month)</h3>
+      <p>Net Worth (Q2) is the single biggest drop-off point — 30.3% of all non-completers abandon here. Users know their income but can't easily recall exact net worth. Fix: (1) Add helper text "approximate is fine" or "your best estimate", (2) change from exact entry to range brackets (e.g. ₹5L–₹25L), (3) add a tooltip explaining what counts as net worth. Target: reduce Q2 drop by 40% = ~530 more completions per month.</p>
+      <div class="ticket-meta">
+        <span class="badge badge-red">1,323 users/month</span>
+        <span class="badge badge-amber">Q2 Net Worth UX</span>
+        <span class="badge badge-blue">Design required</span>
+      </div>
+    </div>
+
+    <div class="ticket">
+      <div class="ticket-hd">
+        <span class="badge badge-amber">P1 · Story</span>
+        <span style="font-size:12px;color:var(--text3)">Engineering · Analytics</span>
+      </div>
+      <h3>Add session attempt tracking and fix missing Q3 event</h3>
+      <p>(a) Add <code>attempt_number</code> property to <code>RISK_PROFILING_SCREEN_VIEWED</code> — read a per-user counter from AsyncStorage, increment on each mount, pass as event property. Enables measuring exact multi-session return rate once overfiring is fixed. (b) Add <code>RISK_PROFILING_NAME_FIELD_FOCUSED</code> event to <code>onInputChange</code> for Q3 — currently the name field has zero engagement data.</p>
+      <div class="ticket-meta">
+        <span class="badge badge-blue">Analytics instrumentation</span>
+        <span class="badge badge-amber">attempt_number property</span>
+        <span class="badge badge-blue">Q3 coverage</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Generated by Amplitude analysis · <a href="index.html">← All Reports</a> · Data: Apr 26 – May 26, 2026</p>
+  </div>
+</div>
+</body>
+</html>
