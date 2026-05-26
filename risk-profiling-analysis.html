@@ -482,8 +482,201 @@
     </table>
   </div>
 
-  <!-- ── SECTION 6: Jira Tickets ── -->
-  <div class="section-label">Section 6 — Jira Tickets Raised</div>
+  <!-- ── SECTION 6: Attribution Analysis ── -->
+  <div class="section-label">Section 6 — Marketing Attribution: Who Completes vs Drops</div>
+
+  <div class="card">
+    <div class="section-hd">
+      <div class="icon icon-blue">📊</div>
+      <div class="hd-text">
+        <h2>Risk profiling completion rate by marketing channel, campaign &amp; ad group</h2>
+        <p>Unique viewers and completers of <code>RISK_PROFILING_SCREEN_VIEWED</code> → <code>RISK_PROFILING_SUBMITTED</code> grouped by AppsFlyer user properties. 30-day window. <strong>Overall: 10,541 viewers → 5,719 completers (54.3% baseline)</strong>. Labels may be truncated by Amplitude API.</p>
+      </div>
+    </div>
+
+    <!-- top insight chips -->
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px">
+      <div style="background:#ECFDF5;border:1px solid #6EE7B7;border-radius:8px;padding:10px 14px;flex:1;min-width:200px">
+        <div style="font-size:11px;font-weight:700;color:#065F46;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">🟢 Best channel</div>
+        <div style="font-size:22px;font-weight:800;color:#059669">ACI_YouTube</div>
+        <div style="font-size:13px;color:#065F46"><strong>68.9%</strong> completion · 286 users · +14.6pp vs avg</div>
+      </div>
+      <div style="background:#FEF2F2;border:1px solid #FCA5A5;border-radius:8px;padding:10px 14px;flex:1;min-width:200px">
+        <div style="font-size:11px;font-weight:700;color:#991B1B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">🔴 Worst channel</div>
+        <div style="font-size:22px;font-weight:800;color:#DC2626">ACE_Display</div>
+        <div style="font-size:13px;color:#991B1B"><strong>36.2%</strong> completion · 94 users · −18.1pp vs avg</div>
+      </div>
+      <div style="background:#FEF2F2;border:1px solid #FCA5A5;border-radius:8px;padding:10px 14px;flex:1;min-width:200px">
+        <div style="font-size:11px;font-weight:700;color:#991B1B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">🔴 Worst source</div>
+        <div style="font-size:22px;font-weight:800;color:#DC2626">appnext_int</div>
+        <div style="font-size:13px;color:#991B1B"><strong>22.2%</strong> completion · 45 users · −32pp vs avg</div>
+      </div>
+      <div style="background:#EFF6FF;border:1px solid #93C5FD;border-radius:8px;padding:10px 14px;flex:1;min-width:200px">
+        <div style="font-size:11px;font-weight:700;color:#1E40AF;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">📌 Google Ads share</div>
+        <div style="font-size:22px;font-weight:800;color:#2563EB">52.7%</div>
+        <div style="font-size:13px;color:#1E40AF">of all viewers · 51.0% completion (−3.3pp vs avg)</div>
+      </div>
+    </div>
+
+    <!-- ── Channel breakdown ── -->
+    <h3 style="font-size:14px;font-weight:700;color:var(--text);margin:0 0 12px">By Channel <span style="font-size:12px;font-weight:400;color:var(--gray)">(ACI = App Campaign Install, ACE = App Campaign Engagement/re-engagement)</span></h3>
+    <table class="bar-table" style="margin-bottom:28px">
+      <thead><tr>
+        <th>Channel</th><th>Viewers</th><th>Completers</th><th>Completion %</th><th style="text-align:left;padding-left:12px">vs 54.3% avg</th>
+      </tr></thead>
+      <tbody>
+        <tr style="background:#ECFDF5">
+          <td><strong>ACI_YouTube</strong> <span class="badge badge-green">Best</span></td>
+          <td>286</td><td>197</td><td><strong style="color:var(--green)">68.9%</strong></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#16A34A"></div></div><span style="font-size:11px;color:var(--green);margin-left:6px">+14.6pp</span></div></td>
+        </tr>
+        <tr>
+          <td>Organic / unattributed</td>
+          <td>4,732</td><td>2,742</td><td>57.9%</td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-blue" style="width:78%;"></div></div><span style="font-size:11px;color:var(--gray);margin-left:6px">+3.6pp</span></div></td>
+        </tr>
+        <tr>
+          <td>Brightspot (DSP)</td>
+          <td>302</td><td>177</td><td>58.6%</td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-blue" style="width:79%;"></div></div><span style="font-size:11px;color:var(--gray);margin-left:6px">+4.3pp</span></div></td>
+        </tr>
+        <tr>
+          <td>ACI_Display</td>
+          <td>2,566</td><td>1,314</td><td>51.2%</td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-amber" style="width:50%;"></div></div><span style="font-size:11px;color:var(--amber);margin-left:6px">−3.1pp</span></div></td>
+        </tr>
+        <tr>
+          <td>ACI_Search</td>
+          <td>2,569</td><td>1,267</td><td>49.3%</td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-amber" style="width:45%;"></div></div><span style="font-size:11px;color:var(--amber);margin-left:6px">−5.0pp</span></div></td>
+        </tr>
+        <tr>
+          <td>ACE_YouTube (re-engagement)</td>
+          <td>24</td><td>12</td><td>50.0%</td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-amber" style="width:46%;"></div></div><span style="font-size:11px;color:var(--amber);margin-left:6px">−4.3pp</span></div></td>
+        </tr>
+        <tr style="background:#FEF2F2">
+          <td><strong>ACE_Display (re-engagement)</strong> <span class="badge badge-red">Watch</span></td>
+          <td>94</td><td>34</td><td><strong style="color:var(--red)">36.2%</strong></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-red" style="width:20%;"></div></div><span style="font-size:11px;color:var(--red);margin-left:6px">−18.1pp</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ── Campaign breakdown ── -->
+    <h3 style="font-size:14px;font-weight:700;color:var(--text);margin:0 0 12px">By Campaign <span style="font-size:12px;font-weight:400;color:var(--gray)">(top campaigns, min 40 viewers)</span></h3>
+    <table class="bar-table" style="margin-bottom:28px">
+      <thead><tr>
+        <th>Campaign</th><th>Viewers</th><th>Completers</th><th>Completion %</th><th style="text-align:left;padding-left:12px">vs 54.3% avg</th>
+      </tr></thead>
+      <tbody>
+        <tr style="background:#ECFDF5">
+          <td>DS_…_BankVerified_tcpa_4dec25 <span class="badge badge-green">Best intent</span></td>
+          <td>1,716</td><td>1,049</td><td><strong style="color:var(--green)">61.1%</strong></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#16A34A"></div></div><span style="font-size:11px;color:var(--green);margin-left:6px">+6.9pp</span></div></td>
+        </tr>
+        <tr>
+          <td>Organic / unattributed</td>
+          <td>3,502</td><td>2,072</td><td>59.2%</td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-blue" style="width:89%;"></div></div><span style="font-size:11px;color:var(--gray);margin-left:6px">+4.9pp</span></div></td>
+        </tr>
+        <tr>
+          <td>DS_…_PaymentSuccess_tcpa_22ndSept25</td>
+          <td>2,371</td><td>1,130</td><td>47.7%</td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-amber" style="width:40%;"></div></div><span style="font-size:11px;color:var(--amber);margin-left:6px">−6.6pp</span></div></td>
+        </tr>
+        <tr>
+          <td>DS_…_PaymentSuccess_NewUser_14052025</td>
+          <td>808</td><td>376</td><td>46.5%</td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-amber" style="width:35%;"></div></div><span style="font-size:11px;color:var(--amber);margin-left:6px">−7.7pp</span></div></td>
+        </tr>
+        <tr style="background:#FEF2F2">
+          <td>DS_…_PaymentSuccess_Firebase_24042025</td>
+          <td>507</td><td>212</td><td><strong style="color:var(--red)">41.8%</strong></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-red" style="width:25%;"></div></div><span style="font-size:11px;color:var(--red);margin-left:6px">−12.4pp</span></div></td>
+        </tr>
+        <tr style="background:#FEF2F2">
+          <td>spero_UACe_Install-KYC_Bonds_05052025</td>
+          <td>111</td><td>43</td><td><strong style="color:var(--red)">38.7%</strong></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-red" style="width:18%;"></div></div><span style="font-size:11px;color:var(--red);margin-left:6px">−15.5pp</span></div></td>
+        </tr>
+        <tr style="background:#FEF2F2">
+          <td>spero_ADS_Appnex… (AppNexus/Xandr)</td>
+          <td>45</td><td>10</td><td><strong style="color:var(--red)">22.2%</strong></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-red" style="width:5%;"></div></div><span style="font-size:11px;color:var(--red);margin-left:6px">−32.0pp</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ── Ad Group breakdown ── -->
+    <h3 style="font-size:14px;font-weight:700;color:var(--text);margin:0 0 12px">By Ad Group <span style="font-size:12px;font-weight:400;color:var(--gray)">(audience signal matters most)</span></h3>
+    <table class="bar-table" style="margin-bottom:28px">
+      <thead><tr>
+        <th>Ad Group</th><th>Viewers</th><th>Completers</th><th>Completion %</th><th style="text-align:left;padding-left:12px">vs 54.3% avg</th>
+      </tr></thead>
+      <tbody>
+        <tr style="background:#ECFDF5">
+          <td>in-market audience (…9dec) <span class="badge badge-green">High intent</span></td>
+          <td>856</td><td>524</td><td><strong style="color:var(--green)">61.2%</strong></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#16A34A"></div></div><span style="font-size:11px;color:var(--green);margin-left:6px">+6.9pp</span></div></td>
+        </tr>
+        <tr style="background:#ECFDF5">
+          <td>Purchase Signal (…12012025) <span class="badge badge-green">High intent</span></td>
+          <td>757</td><td>462</td><td><strong style="color:var(--green)">61.0%</strong></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:99%;background:#16A34A"></div></div><span style="font-size:11px;color:var(--green);margin-left:6px">+6.7pp</span></div></td>
+        </tr>
+        <tr>
+          <td>Organic / unattributed</td>
+          <td>4,139</td><td>2,425</td><td>58.6%</td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-blue" style="width:78%;"></div></div><span style="font-size:11px;color:var(--gray);margin-left:6px">+4.3pp</span></div></td>
+        </tr>
+        <tr>
+          <td>opentargeting_age_householdincome_filtered</td>
+          <td>1,941</td><td>946</td><td>48.7%</td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-amber" style="width:40%;"></div></div><span style="font-size:11px;color:var(--amber);margin-left:6px">−5.7pp</span></div></td>
+        </tr>
+        <tr style="background:#FEF2F2">
+          <td>New_Creatives_FD01_CIK_Oct25 <span class="badge badge-red">High vol, low quality</span></td>
+          <td>1,706</td><td>760</td><td><strong style="color:var(--red)">44.5%</strong></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-red" style="width:28%;"></div></div><span style="font-size:11px;color:var(--red);margin-left:6px">−9.8pp</span></div></td>
+        </tr>
+        <tr style="background:#FEF2F2">
+          <td>onds_UACe_Install-KYC_05052025</td>
+          <td>111</td><td>43</td><td><strong style="color:var(--red)">38.7%</strong></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-red" style="width:16%;"></div></div><span style="font-size:11px;color:var(--red);margin-left:6px">−15.7pp</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Insight box -->
+    <div style="background:#F0F9FF;border:1px solid #BAE6FD;border-radius:8px;padding:16px 20px">
+      <div style="font-size:13px;font-weight:700;color:#0369A1;margin-bottom:12px">📌 What this means for marketing</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px;color:var(--text)">
+        <div>
+          <div style="font-weight:700;color:#059669;margin-bottom:4px">✅ Scale these</div>
+          <ul style="margin:0;padding-left:18px;line-height:1.8">
+            <li><strong>YouTube (ACI)</strong> — 68.9% completion, +14.6pp. Highest quality channel by far. Increase budget.</li>
+            <li><strong>BankVerified campaign</strong> — 61.1%. Deep-funnel intent signal works. Keep bidding on it.</li>
+            <li><strong>In-market + Purchase Signal audiences</strong> — 61%. Audience quality > creative quality.</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-weight:700;color:#DC2626;margin-bottom:4px">🛑 Investigate / pause</div>
+          <ul style="margin:0;padding-left:18px;line-height:1.8">
+            <li><strong>AppNexus source</strong> — 22.2% completion. Only 45 users but extremely low quality. Likely incentivised traffic.</li>
+            <li><strong>ACE_Display (re-engagement)</strong> — 36.2%. Re-engaging lapsed users with display is not working for form completion. Try push instead.</li>
+            <li><strong>New_Creatives_FD01_CIK_Oct25 ad group</strong> — 1,706 users at 44.5%. Largest low-quality ad group. Review creative targeting — broad FD01 audience is bringing in weak intent.</li>
+          </ul>
+        </div>
+      </div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid #BAE6FD;font-size:12px;color:#0369A1">
+        ⚠️ <strong>Correlation caveat:</strong> Completion rate differences could reflect both campaign quality (audience intent) AND the broken UX (19× screen re-views, answers not persisted). Fixing ASP-3815 + ASP-3816 first will compress these gaps — re-measure attribution after the fix ships.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 7: Jira Tickets ── -->
+  <div class="section-label">Section 7 — Jira Tickets Raised</div>
 
   <div class="card">
     <div class="section-hd">
