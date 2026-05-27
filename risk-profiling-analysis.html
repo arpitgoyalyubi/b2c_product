@@ -256,9 +256,22 @@
       <div class="funnel-pct" style="color:var(--red);font-weight:700">19.7%</div>
       <div class="funnel-drop" style="font-size:12px">−1,323</div>
     </div>
-    <div class="drop-arrow">↓ −702 dropped after Q3 Net Worth / Q4 text input (Father/Husband Name)</div>
+    <div class="drop-arrow" style="color:var(--amber);font-weight:700;font-size:13px">↓ −702 dropped here ← text input barrier (Father/Husband Name, Q4 — 858 saw it, only ~156 passed)</div>
+    <div class="funnel-step" style="border:2px dashed #F59E0B;border-radius:8px;padding:14px 16px;background:#FFFBEB">
+      <div class="funnel-label">
+        <span class="badge badge-amber" style="margin-bottom:4px">Q4</span>
+        Father / Husband Name <em style="font-size:11px;color:#9AA4B2;font-style:normal">(text input)</em>
+        <span style="display:inline-block;background:#FEF3C7;color:#92400E;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;margin-left:6px">⚠ Tracking broken — only 13 events captured</span>
+        <div class="funnel-sub" style="margin-top:4px">onInputBlur fires <code>RISK_PROFILING_FATHER_HUSBAND_NAME_ENTRY</code> — but only 13 events vs ~858 expected. Exact drop unattributable: some abandon immediately on seeing the text field; some start typing then quit. Fix tracked in ASP-3818.</div>
+      </div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:3.6%;background:#F59E0B;opacity:0.45"></div></div>
+      <div class="funnel-num" style="color:#92400E">≥156 <span style="font-size:11px;font-weight:400;color:#9AA4B2">(min — inferred from Q5 reach; only 13 events tracked)</span></div>
+      <div class="funnel-pct" style="color:#9AA4B2">—</div>
+      <div class="funnel-drop" style="color:var(--amber)">−702</div>
+    </div>
+    <div class="drop-arrow">↓ 156 completed Q4 and reached Q5</div>
     <div class="funnel-step">
-      <div class="funnel-label"><span class="badge badge-amber" style="margin-bottom:4px">Q5</span> Marital Status<div class="funnel-sub">Q4 = text input (Father/Husband Name), no MCQ event fired</div></div>
+      <div class="funnel-label"><span class="badge badge-amber" style="margin-bottom:4px">Q5</span> Marital Status</div>
       <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:3.6%;background:#F59E0B"></div></div>
       <div class="funnel-num">156</div>
       <div class="funnel-pct">3.6%</div>
@@ -281,28 +294,28 @@
         <tbody>
           <tr>
             <td>Never tapped any question</td>
-            <td>1,251</td><td>28.7%</td>
-            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-gray" style="width:94.8%"></div></div></div></td>
+            <td>1,401</td><td>32.1%</td>
+            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-gray" style="width:100%"></div></div></div></td>
           </tr>
           <tr>
             <td>Dropped after Q1 — Occupation</td>
             <td>782</td><td>17.9%</td>
-            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-blue" style="width:59.1%"></div></div></div></td>
+            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-blue" style="width:55.8%"></div></div></div></td>
           </tr>
           <tr style="background:#FEF2F2">
             <td><strong>Dropped after Q2 Annual Income → Q3 Net Worth</strong> <span class="badge badge-red">Biggest</span></td>
             <td><strong>1,323</strong></td><td><strong>30.3%</strong></td>
-            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-red" style="width:100%"></div></div></div></td>
+            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-red" style="width:94.4%"></div></div></div></td>
           </tr>
           <tr>
             <td>Dropped after Q3/Q4 — Net Worth / Father/Husband Name</td>
             <td>702</td><td>16.1%</td>
-            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-amber" style="width:53.1%"></div></div></div></td>
+            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-amber" style="width:50.1%"></div></div></div></td>
           </tr>
           <tr>
             <td>Reached Q5 Marital Status but never submitted</td>
             <td>156</td><td>3.6%</td>
-            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-gray" style="width:11.9%"></div></div></div></td>
+            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-gray" style="width:11.1%"></div></div></div></td>
           </tr>
           <tr class="total-row">
             <td>Total non-completers</td><td>4,364</td><td>100%</td><td></td>
