@@ -346,7 +346,183 @@
   </div>
 
   <!-- ── SECTION 3: Multi-session evidence ── -->
-  <div class="section-label">Section 3 — Multi-Session Evidence &amp; Answer Persistence Gap</div>
+  <!-- Section 3: Design Recommendations -->
+  <div class="section-label">Section 3 — Design Recommendations (from screen review)</div>
+  <div class="card">
+    <div class="section-hd">
+      <div class="icon icon-purple">🎨</div>
+      <div class="hd-text">
+        <h2>Screen-by-screen UX issues &amp; fixes</h2>
+        <p>Based on review of the 4 production screens (Q1 Occupation → Q2 Annual Income → Q3 Net Worth → Q4+Q5+Declaration). Issues are ranked P0/P1/P2 by drop-off impact.</p>
+      </div>
+    </div>
+
+    <!-- Screen 1 -->
+    <div style="margin-bottom:28px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border)">
+        <span style="background:#7C3AED;color:white;border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700">Screen 1</span>
+        <span style="font-size:15px;font-weight:700">Q1 — What is your occupation?</span>
+        <span class="badge badge-amber">2 issues</span>
+      </div>
+
+      <table class="bar-table" style="margin-bottom:0">
+        <thead>
+          <tr>
+            <th style="width:48px">Pri</th>
+            <th style="width:240px">Issue</th>
+            <th>What users experience</th>
+            <th>Recommendation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-red">P0</span></td>
+            <td style="font-weight:600">Verbose intro text hides MCQ tiles</td>
+            <td style="color:var(--text2)">The subtitle "It is always better to know each other before longer commitments…" is 27 words of marketing copy. On small screens (iPhone SE, budget Android) this pushes all 7 tiles off-screen — users see only text and no options. Likely the primary driver of the <strong>1,514 users (38.3%) who never tapped any MCQ</strong> at all.</td>
+            <td style="color:var(--text2)">Replace with a 1-line label max: <em>"Help us personalise your experience"</em>. Move the longer copy to a collapsed "Why we ask" tooltip. Ensures MCQ tiles are visible above the fold on all screen sizes.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-amber">P1</span></td>
+            <td style="font-weight:600">7 options = asymmetric layout</td>
+            <td style="color:var(--text2)">A 2-column grid with 7 items leaves "Others" alone in the last row — visually unbalanced, feels like a broken UI to some users.</td>
+            <td style="color:var(--text2)">Merge "Agriculture" + "Others" into "Self-Employed / Other" to get 7→6 (even grid). Or use a 3-column grid for 7 items. Also: rename "Housewife" → "Homemaker" for inclusivity.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Screen 2 -->
+    <div style="margin-bottom:28px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border)">
+        <span style="background:#2563EB;color:white;border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700">Screen 2</span>
+        <span style="font-size:15px;font-weight:700">Q2 — What is your annual income?</span>
+        <span class="badge badge-blue">1 issue</span>
+      </div>
+
+      <table class="bar-table" style="margin-bottom:0">
+        <thead>
+          <tr>
+            <th style="width:48px">Pri</th>
+            <th style="width:240px">Issue</th>
+            <th>What users experience</th>
+            <th>Recommendation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-amber">P1</span></td>
+            <td style="font-weight:600">"Annual" income not disambiguated</td>
+            <td style="color:var(--text2)">Tier-3/4 users and daily wage earners may think "monthly." If they pick "Below 1 lakh" meaning ₹8,333/month, the answer is wrong — corrupting persona data and bond recommendations downstream.</td>
+            <td style="color:var(--text2)">Add a grey subtext beneath the question: <em>"Per year, before tax"</em>. No UI change needed — just one line of helper text. Also add a "Why we ask" tooltip: <em>"We use this to suggest bonds that match your investment capacity."</em></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Screen 3 -->
+    <div style="margin-bottom:28px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border)">
+        <span style="background:#DC2626;color:white;border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700">Screen 3</span>
+        <span style="font-size:15px;font-weight:700">Q3 — What is your net worth?</span>
+        <span class="badge badge-red">Biggest dropout · −1,323 users (30.3%)</span>
+      </div>
+
+      <table class="bar-table" style="margin-bottom:0">
+        <thead>
+          <tr>
+            <th style="width:48px">Pri</th>
+            <th style="width:240px">Issue</th>
+            <th>What users experience</th>
+            <th>Recommendation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-red">P0</span></td>
+            <td style="font-weight:600">"Net worth" is undefined — users stall</td>
+            <td style="color:var(--text2)">Retail users don't know if net worth includes their home loan, PF, gold, car, or just savings. No tooltip or definition exists. Users who can't answer correctly in 5 seconds abandon — explaining most of the 1,323 dropout here.</td>
+            <td style="color:var(--text2)">Add a collapsible hint under the question: <em>"Net worth = total assets (savings, investments, property) minus total liabilities (loans, debts). Approximate is fine."</em> This is ASP-3817 scope — adding helper text is a 30-min code change with large impact.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-red">P0</span></td>
+            <td style="font-weight:600">Bottom bucket starts too high (₹10 lakh)</td>
+            <td style="color:var(--text2)">The lowest option is "Below 10 lakh." Many young users (age 22–28, P6 persona) have net worth under ₹1 lakh. They don't see themselves in any bucket and abandon rather than pick an incorrect option.</td>
+            <td style="color:var(--text2)">Add "Below 1 lakh" as the first option, rename current "Below 10 lakh" → "1 to 10 lakhs." This requires a data migration consideration but is a direct conversion fix.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-amber">P1</span></td>
+            <td style="font-weight:600">Icons visually identical to income screen (Q2)</td>
+            <td style="color:var(--text2)">Both Q2 and Q3 use the same rupee coin/bag icons in the same 2-column layout. A skimming user can't tell they've moved to a different question without reading the title carefully.</td>
+            <td style="color:var(--text2)">Use distinct icons for Q3 — e.g., a piggy bank, house, or balance scale motif — to visually differentiate "assets" from "income." Alternatively change the tile background colour for each question.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Screen 4 -->
+    <div style="margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border)">
+        <span style="background:#D97706;color:white;border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700">Screen 4</span>
+        <span style="font-size:15px;font-weight:700">Q4 Father/Husband Name + Q5 Marital Status + Declaration</span>
+        <span class="badge badge-amber">3 issues · −702 users after Q3</span>
+      </div>
+
+      <table class="bar-table" style="margin-bottom:0">
+        <thead>
+          <tr>
+            <th style="width:48px">Pri</th>
+            <th style="width:240px">Issue</th>
+            <th>What users experience</th>
+            <th>Recommendation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-red">P0</span></td>
+            <td style="font-weight:600">4 different input types on one screen</td>
+            <td style="color:var(--text2)">Text input (Father/Husband name) + MCQ tiles (Marital status) + Checkbox (PEP declaration) + 4 paragraphs of legal text — all on the same screen. This is a classic UX overload pattern. Users who reach the end of Q3 already tired get hit with this wall.</td>
+            <td style="color:var(--text2)">Split into two separate steps: (A) Q4 text + Q5 marital status, then (B) PEP + Declarations as a dedicated consent screen. This removes the cognitive mismatch and makes the progress bar feel more accurate.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-amber">P1</span></td>
+            <td style="font-weight:600">"Father / Husband name" purpose unexplained</td>
+            <td style="color:var(--text2)">No placeholder text or tooltip explains why this is collected. For unmarried women, the label is confusing ("is this my father's or future husband's name?"). Users who don't understand skip or enter wrong data.</td>
+            <td style="color:var(--text2)">Add placeholder text: <em>"As per your Aadhaar / PAN record"</em> and a "?" tooltip: <em>"Required for KYC verification with SEBI. Enter your father's name if unmarried."</em> This sets clear expectations without changing the requirement.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-amber">P1</span></td>
+            <td style="font-weight:600">Submit CTA buried below declarations</td>
+            <td style="color:var(--text2)">The Submit button is below 4 dense legal paragraphs. On a 6-inch phone with medium font size, the button is not visible until the user scrolls past all declarations. Many users don't realise they're almost done.</td>
+            <td style="color:var(--text2)">Pin the Submit CTA to the bottom of the screen (sticky footer). Show a "Scroll to review declarations" nudge above it on first load. This is a layout-only change — no logic change needed.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Summary priority table -->
+    <div style="background:var(--bg);border-radius:10px;padding:20px;margin-top:20px">
+      <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);margin-bottom:14px">Priority summary — 8 design fixes</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
+        <div style="background:var(--red-lt);border-radius:8px;padding:14px;border-left:3px solid var(--red)">
+          <div style="font-size:20px;font-weight:800;color:var(--red)">4</div>
+          <div style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:4px">P0 — Do now</div>
+          <div style="font-size:11px;color:var(--text2)">Intro text cut · Net worth tooltip · Bottom bucket fix · Screen 4 split</div>
+        </div>
+        <div style="background:var(--amber-lt);border-radius:8px;padding:14px;border-left:3px solid var(--amber)">
+          <div style="font-size:20px;font-weight:800;color:var(--amber)">4</div>
+          <div style="font-size:12px;font-weight:700;color:var(--amber);margin-bottom:4px">P1 — Next sprint</div>
+          <div style="font-size:11px;color:var(--text2)">7→6 tile grid · Annual income helper · Q3 icon differentiation · Father/Husband tooltip · Sticky CTA</div>
+        </div>
+        <div style="background:var(--blue-lt);border-radius:8px;padding:14px;border-left:3px solid var(--blue)">
+          <div style="font-size:20px;font-weight:800;color:var(--blue)">~25%</div>
+          <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:4px">Potential uplift</div>
+          <div style="font-size:11px;color:var(--text2)">Estimated completion rate improvement if all P0 fixes ship. Current baseline: 57.1%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="section-label">Section 4 — Multi-Session Evidence &amp; Answer Persistence Gap</div>
 
   <div class="card-grid-2">
     <div class="card" style="margin-bottom:0">
@@ -400,7 +576,7 @@
   </div>
 
   <!-- ── SECTION 4: Bugs ── -->
-  <div class="section-label">Section 4 — Bugs Found During Analysis</div>
+  <div class="section-label">Section 5 — Bugs Found During Analysis</div>
 
   <div class="card">
     <div class="section-hd">
@@ -462,7 +638,7 @@
   </div>
 
   <!-- ── SECTION 5: Daily data ── -->
-  <div class="section-label">Section 5 — Daily Funnel: Reach Rate &amp; Completion Rate (May 1–26)</div>
+  <div class="section-label">Section 6 — Daily Funnel: Reach Rate &amp; Completion Rate (May 1–26)</div>
 
   <div class="card">
     <div class="section-hd">
@@ -812,7 +988,7 @@
   </div>
 
   <!-- ── SECTION 6: Platform Analysis ── -->
-  <div class="section-label">Section 6 — Platform Breakdown: Android · iOS · Web</div>
+  <div class="section-label">Section 7 — Platform Breakdown: Android · iOS · Web</div>
 
   <div class="card">
     <div class="section-hd">
@@ -925,7 +1101,7 @@
   </div>
 
   <!-- ── SECTION 7: Attribution Analysis ── -->
-  <div class="section-label">Section 7 — Marketing Attribution: Who Completes vs Drops</div>
+  <div class="section-label">Section 8 — Marketing Attribution: Who Completes vs Drops</div>
 
   <div class="card">
     <div class="section-hd">
@@ -1118,7 +1294,7 @@
   </div>
 
   <!-- ── SECTION 7: Jira Tickets ── -->
-  <div class="section-label">Section 8 — Jira Tickets Raised</div>
+  <div class="section-label">Section 9 — Jira Tickets Raised</div>
 
   <div class="card">
     <div class="section-hd">
@@ -1190,181 +1366,7 @@
     </div>
   </div>
 
-  <!-- Section 9: Design Recommendations -->
-  <div class="section-label">Section 9 — Design Recommendations (from screen review)</div>
-  <div class="card">
-    <div class="section-hd">
-      <div class="icon icon-purple">🎨</div>
-      <div class="hd-text">
-        <h2>Screen-by-screen UX issues &amp; fixes</h2>
-        <p>Based on review of the 4 production screens (Q1 Occupation → Q2 Annual Income → Q3 Net Worth → Q4+Q5+Declaration). Issues are ranked P0/P1/P2 by drop-off impact.</p>
-      </div>
-    </div>
 
-    <!-- Screen 1 -->
-    <div style="margin-bottom:28px">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border)">
-        <span style="background:#7C3AED;color:white;border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700">Screen 1</span>
-        <span style="font-size:15px;font-weight:700">Q1 — What is your occupation?</span>
-        <span class="badge badge-amber">2 issues</span>
-      </div>
-
-      <table class="bar-table" style="margin-bottom:0">
-        <thead>
-          <tr>
-            <th style="width:48px">Pri</th>
-            <th style="width:240px">Issue</th>
-            <th>What users experience</th>
-            <th>Recommendation</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="badge badge-red">P0</span></td>
-            <td style="font-weight:600">Verbose intro text hides MCQ tiles</td>
-            <td style="color:var(--text2)">The subtitle "It is always better to know each other before longer commitments…" is 27 words of marketing copy. On small screens (iPhone SE, budget Android) this pushes all 7 tiles off-screen — users see only text and no options. Likely the primary driver of the <strong>1,514 users (38.3%) who never tapped any MCQ</strong> at all.</td>
-            <td style="color:var(--text2)">Replace with a 1-line label max: <em>"Help us personalise your experience"</em>. Move the longer copy to a collapsed "Why we ask" tooltip. Ensures MCQ tiles are visible above the fold on all screen sizes.</td>
-          </tr>
-          <tr>
-            <td><span class="badge badge-amber">P1</span></td>
-            <td style="font-weight:600">7 options = asymmetric layout</td>
-            <td style="color:var(--text2)">A 2-column grid with 7 items leaves "Others" alone in the last row — visually unbalanced, feels like a broken UI to some users.</td>
-            <td style="color:var(--text2)">Merge "Agriculture" + "Others" into "Self-Employed / Other" to get 7→6 (even grid). Or use a 3-column grid for 7 items. Also: rename "Housewife" → "Homemaker" for inclusivity.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Screen 2 -->
-    <div style="margin-bottom:28px">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border)">
-        <span style="background:#2563EB;color:white;border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700">Screen 2</span>
-        <span style="font-size:15px;font-weight:700">Q2 — What is your annual income?</span>
-        <span class="badge badge-blue">1 issue</span>
-      </div>
-
-      <table class="bar-table" style="margin-bottom:0">
-        <thead>
-          <tr>
-            <th style="width:48px">Pri</th>
-            <th style="width:240px">Issue</th>
-            <th>What users experience</th>
-            <th>Recommendation</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="badge badge-amber">P1</span></td>
-            <td style="font-weight:600">"Annual" income not disambiguated</td>
-            <td style="color:var(--text2)">Tier-3/4 users and daily wage earners may think "monthly." If they pick "Below 1 lakh" meaning ₹8,333/month, the answer is wrong — corrupting persona data and bond recommendations downstream.</td>
-            <td style="color:var(--text2)">Add a grey subtext beneath the question: <em>"Per year, before tax"</em>. No UI change needed — just one line of helper text. Also add a "Why we ask" tooltip: <em>"We use this to suggest bonds that match your investment capacity."</em></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Screen 3 -->
-    <div style="margin-bottom:28px">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border)">
-        <span style="background:#DC2626;color:white;border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700">Screen 3</span>
-        <span style="font-size:15px;font-weight:700">Q3 — What is your net worth?</span>
-        <span class="badge badge-red">Biggest dropout · −1,323 users (30.3%)</span>
-      </div>
-
-      <table class="bar-table" style="margin-bottom:0">
-        <thead>
-          <tr>
-            <th style="width:48px">Pri</th>
-            <th style="width:240px">Issue</th>
-            <th>What users experience</th>
-            <th>Recommendation</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="badge badge-red">P0</span></td>
-            <td style="font-weight:600">"Net worth" is undefined — users stall</td>
-            <td style="color:var(--text2)">Retail users don't know if net worth includes their home loan, PF, gold, car, or just savings. No tooltip or definition exists. Users who can't answer correctly in 5 seconds abandon — explaining most of the 1,323 dropout here.</td>
-            <td style="color:var(--text2)">Add a collapsible hint under the question: <em>"Net worth = total assets (savings, investments, property) minus total liabilities (loans, debts). Approximate is fine."</em> This is ASP-3817 scope — adding helper text is a 30-min code change with large impact.</td>
-          </tr>
-          <tr>
-            <td><span class="badge badge-red">P0</span></td>
-            <td style="font-weight:600">Bottom bucket starts too high (₹10 lakh)</td>
-            <td style="color:var(--text2)">The lowest option is "Below 10 lakh." Many young users (age 22–28, P6 persona) have net worth under ₹1 lakh. They don't see themselves in any bucket and abandon rather than pick an incorrect option.</td>
-            <td style="color:var(--text2)">Add "Below 1 lakh" as the first option, rename current "Below 10 lakh" → "1 to 10 lakhs." This requires a data migration consideration but is a direct conversion fix.</td>
-          </tr>
-          <tr>
-            <td><span class="badge badge-amber">P1</span></td>
-            <td style="font-weight:600">Icons visually identical to income screen (Q2)</td>
-            <td style="color:var(--text2)">Both Q2 and Q3 use the same rupee coin/bag icons in the same 2-column layout. A skimming user can't tell they've moved to a different question without reading the title carefully.</td>
-            <td style="color:var(--text2)">Use distinct icons for Q3 — e.g., a piggy bank, house, or balance scale motif — to visually differentiate "assets" from "income." Alternatively change the tile background colour for each question.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Screen 4 -->
-    <div style="margin-bottom:16px">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border)">
-        <span style="background:#D97706;color:white;border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700">Screen 4</span>
-        <span style="font-size:15px;font-weight:700">Q4 Father/Husband Name + Q5 Marital Status + Declaration</span>
-        <span class="badge badge-amber">3 issues · −702 users after Q3</span>
-      </div>
-
-      <table class="bar-table" style="margin-bottom:0">
-        <thead>
-          <tr>
-            <th style="width:48px">Pri</th>
-            <th style="width:240px">Issue</th>
-            <th>What users experience</th>
-            <th>Recommendation</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="badge badge-red">P0</span></td>
-            <td style="font-weight:600">4 different input types on one screen</td>
-            <td style="color:var(--text2)">Text input (Father/Husband name) + MCQ tiles (Marital status) + Checkbox (PEP declaration) + 4 paragraphs of legal text — all on the same screen. This is a classic UX overload pattern. Users who reach the end of Q3 already tired get hit with this wall.</td>
-            <td style="color:var(--text2)">Split into two separate steps: (A) Q4 text + Q5 marital status, then (B) PEP + Declarations as a dedicated consent screen. This removes the cognitive mismatch and makes the progress bar feel more accurate.</td>
-          </tr>
-          <tr>
-            <td><span class="badge badge-amber">P1</span></td>
-            <td style="font-weight:600">"Father / Husband name" purpose unexplained</td>
-            <td style="color:var(--text2)">No placeholder text or tooltip explains why this is collected. For unmarried women, the label is confusing ("is this my father's or future husband's name?"). Users who don't understand skip or enter wrong data.</td>
-            <td style="color:var(--text2)">Add placeholder text: <em>"As per your Aadhaar / PAN record"</em> and a "?" tooltip: <em>"Required for KYC verification with SEBI. Enter your father's name if unmarried."</em> This sets clear expectations without changing the requirement.</td>
-          </tr>
-          <tr>
-            <td><span class="badge badge-amber">P1</span></td>
-            <td style="font-weight:600">Submit CTA buried below declarations</td>
-            <td style="color:var(--text2)">The Submit button is below 4 dense legal paragraphs. On a 6-inch phone with medium font size, the button is not visible until the user scrolls past all declarations. Many users don't realise they're almost done.</td>
-            <td style="color:var(--text2)">Pin the Submit CTA to the bottom of the screen (sticky footer). Show a "Scroll to review declarations" nudge above it on first load. This is a layout-only change — no logic change needed.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Summary priority table -->
-    <div style="background:var(--bg);border-radius:10px;padding:20px;margin-top:20px">
-      <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);margin-bottom:14px">Priority summary — 8 design fixes</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
-        <div style="background:var(--red-lt);border-radius:8px;padding:14px;border-left:3px solid var(--red)">
-          <div style="font-size:20px;font-weight:800;color:var(--red)">4</div>
-          <div style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:4px">P0 — Do now</div>
-          <div style="font-size:11px;color:var(--text2)">Intro text cut · Net worth tooltip · Bottom bucket fix · Screen 4 split</div>
-        </div>
-        <div style="background:var(--amber-lt);border-radius:8px;padding:14px;border-left:3px solid var(--amber)">
-          <div style="font-size:20px;font-weight:800;color:var(--amber)">4</div>
-          <div style="font-size:12px;font-weight:700;color:var(--amber);margin-bottom:4px">P1 — Next sprint</div>
-          <div style="font-size:11px;color:var(--text2)">7→6 tile grid · Annual income helper · Q3 icon differentiation · Father/Husband tooltip · Sticky CTA</div>
-        </div>
-        <div style="background:var(--blue-lt);border-radius:8px;padding:14px;border-left:3px solid var(--blue)">
-          <div style="font-size:20px;font-weight:800;color:var(--blue)">~25%</div>
-          <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:4px">Potential uplift</div>
-          <div style="font-size:11px;color:var(--text2)">Estimated completion rate improvement if all P0 fixes ship. Current baseline: 57.1%</div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <div class="footer">
     <p>Generated by Amplitude analysis · <a href="index.html">← All Reports</a> · Data: May 1–27, 2026</p>
