@@ -102,8 +102,8 @@
   <h1>Risk Profiling Drop-off Analysis</h1>
   <div class="sub">Where do users abandon the risk profiling form, why, and what should we fix? Deep-dive using Amplitude events from the mobile codebase.</div>
   <div class="meta">
-    <span class="pill">Apr 26 – May 26, 2026</span>
-    <span class="pill">30-day window</span>
+    <span class="pill">May 1 – 27, 2026</span>
+    <span class="pill">27-day window</span>
     <span class="pill">Source: Amplitude</span>
     <span class="pill">Events: RISK_PROFILING_*</span>
   </div>
@@ -153,7 +153,7 @@
       <div class="icon icon-blue">📊</div>
       <div class="hd-text">
         <h2>Signup → Risk Profiling → Submission</h2>
-        <p>Overall 30-day funnel. Events: <code>SETUP_SECURE_PIN_SUCCESS</code> → <code>RISK_PROFILING_SCREEN_VIEWED</code> → <code>RISK_PROFILING_SUBMITTED</code></p>
+        <p>Overall May 1–27 funnel. Events: <code>SETUP_SECURE_PIN_SUCCESS</code> → <code>RISK_PROFILING_SCREEN_VIEWED</code> → <code>RISK_PROFILING_SUBMITTED</code></p>
       </div>
     </div>
 
@@ -365,7 +365,7 @@
             <td><strong>5.72</strong> <span class="badge badge-amber">vs 5 max/session</span></td>
           </tr>
           <tr style="background:#FEF2F2">
-            <td>Non-completers (≥1 Q, Apr 26–May 26)</td><td>3,113</td><td>~24,499</td>
+            <td>Non-completers (≥1 Q, May 1–27)</td><td>3,113</td><td>~24,499</td>
             <td><strong style="color:var(--red)">7.87</strong> <span class="badge badge-red">above 5-Q ceiling</span></td>
           </tr>
           <tr>
@@ -462,7 +462,7 @@
   </div>
 
   <!-- ── SECTION 5: Daily data ── -->
-  <div class="section-label">Section 5 — Daily Funnel: Reach Rate &amp; Completion Rate (30 days)</div>
+  <div class="section-label">Section 5 — Daily Funnel: Reach Rate &amp; Completion Rate (May 1–26)</div>
 
   <div class="card">
     <div class="section-hd">
@@ -499,63 +499,8 @@
           <th style="text-align:left;padding-left:8px">Dominant paid campaign</th>
         </tr>
       </thead>
-      <!-- Older 16 days — hidden by default -->
+      <!-- Older 11 days — hidden by default -->
       <tbody id="older-rows" style="display:none">
-        <tr>
-          <td>2026-04-26</td>
-          <td>458</td>
-          <td>264</td>
-          <td class="conv-lo">57.6%</td>
-          <td>143</td>
-          <td class="conv-med">54.2%</td>
-          <td style="text-align:right;font-size:11px;color:var(--gray)">55.4%</td>
-          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-1.2pp</span></td>
-          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
-        </tr>
-        <tr>
-          <td>2026-04-27</td>
-          <td>379</td>
-          <td>252</td>
-          <td class="conv-hi">66.5%</td>
-          <td>133</td>
-          <td class="conv-med">52.8%</td>
-          <td style="text-align:right;font-size:11px;color:var(--gray)">55.2%</td>
-          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-2.4pp</span></td>
-          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
-        </tr>
-        <tr style="background:#FFF5F5">
-          <td>2026-04-28</td>
-          <td>364</td>
-          <td>217</td>
-          <td class="conv-med">59.6%</td>
-          <td>104</td>
-          <td class="conv-lo">47.9%</td>
-          <td style="text-align:right;font-size:11px;color:var(--gray)">55.0%</td>
-          <td style="text-align:center"><span style="background:#FEF2F2;color:#DC2626;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap">-7.1pp</span></td>
-          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct — unexplained drop</span></td>
-        </tr>
-        <tr>
-          <td>2026-04-29</td>
-          <td>411</td>
-          <td>262</td>
-          <td class="conv-med">63.7%</td>
-          <td>137</td>
-          <td class="conv-med">52.3%</td>
-          <td style="text-align:right;font-size:11px;color:var(--gray)">55.6%</td>
-          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-3.3pp</span></td>
-          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
-        </tr>
-        <tr>
-          <td>2026-04-30</td>
-          <td>424</td>
-          <td>261</td>
-          <td class="conv-med">61.6%</td>
-          <td>144</td>
-          <td class="conv-med">55.2%</td>
-          <td style="text-align:right;font-size:11px;color:var(--gray)">56.2%</td>
-          <td style="text-align:center"><span style="background:#F1F5F9;color:#64748B;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap">-1.1pp</span></td>
-          <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
-        </tr>
         <tr>
           <td>2026-05-01</td>
           <td>488</td>
@@ -846,8 +791,8 @@
           <td style="text-align:left;padding-left:8px"><span style="color:var(--gray);font-size:11px">Organic / direct</span></td>
         </tr>
         <tr style="background:var(--bg);font-weight:700;border-top:2px solid var(--border)">
-          <td>30-Day Total</td><td>17,245</td><td>10,614</td><td class="conv-med">61.5%</td>
-          <td>5,782</td><td class="conv-med">54.5%</td>
+          <td>May 1–26 Total</td><td>15,209</td><td>9,358</td><td class="conv-med">61.5%</td>
+          <td>5,121</td><td class="conv-med">54.7%</td>
           <td colspan="3" style="text-align:left;font-size:11px;font-weight:400;color:var(--gray);padding-left:4px">Reach range: 55.9–67.6% · Completion range: 47.4–63.5%</td>
         </tr>
       </tbody>
@@ -855,14 +800,14 @@
 
     <!-- Toggle button -->
     <div style="margin-top:14px;text-align:center">
-      <button id="toggle-older" onclick="(function(){var b=document.getElementById('older-rows');var btn=document.getElementById('toggle-older');if(b.style.display==='none'){b.style.display='';btn.textContent='▲ Show latest 15 days only';}else{b.style.display='none';btn.textContent='▼ Show 16 earlier days (Apr 26 – May 11)';};})()"
+      <button id="toggle-older" onclick="(function(){var b=document.getElementById('older-rows');var btn=document.getElementById('toggle-older');if(b.style.display==='none'){b.style.display='';btn.textContent='▲ Show latest 15 days only';}else{b.style.display='none';btn.textContent='▼ Show 11 earlier days (May 1 – May 11)';};})()"
         style="background:#F1F5F9;border:1px solid var(--border);border-radius:6px;padding:8px 18px;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer">
-        ▼ Show 16 earlier days (Apr 26 – May 11)
+        ▼ Show 11 earlier days (May 1 – May 11)
       </button>
     </div>
 
     <div style="margin-top:14px;padding:10px 14px;background:#F0F9FF;border:1px solid #BAE6FD;border-radius:6px;font-size:12px;color:#0369A1">
-      <strong>Campaign context interpretation:</strong> When Gap ≥ −4pp but completion is low, the campaign mix is partially responsible — those are days PaymentSuccess_NewUser/tCPA campaigns drove the traffic (both carry ~47% historical completion rates). When Gap ≤ −5pp despite organic dominance (Apr 28, May 8), campaign mix doesn't explain the dip — investigate backend errors or UX issues on those specific dates.
+      <strong>Campaign context interpretation:</strong> When Gap ≥ −4pp but completion is low, the campaign mix is partially responsible — those are days PaymentSuccess_NewUser/tCPA campaigns drove the traffic (both carry ~47% historical completion rates). When Gap ≤ −5pp despite organic dominance (e.g. May 8: −6.7pp), campaign mix doesn't explain the dip — investigate backend errors or UX issues on those specific dates.
     </div>
   </div>
 
@@ -987,7 +932,7 @@
       <div class="icon icon-blue">📊</div>
       <div class="hd-text">
         <h2>Risk profiling completion rate by marketing channel, campaign &amp; ad group</h2>
-        <p>Unique viewers and completers of <code>RISK_PROFILING_SCREEN_VIEWED</code> → <code>RISK_PROFILING_SUBMITTED</code> grouped by AppsFlyer user properties. 30-day window. <strong>Overall: 10,541 viewers → 5,719 completers (54.3% baseline)</strong>. Labels may be truncated by Amplitude API.</p>
+        <p>Unique viewers and completers of <code>RISK_PROFILING_SCREEN_VIEWED</code> → <code>RISK_PROFILING_SUBMITTED</code> grouped by AppsFlyer user properties. May 1–27, 2026. <strong>Overall: 10,541 viewers → 5,719 completers (54.3% baseline)</strong>. Labels may be truncated by Amplitude API.</p>
       </div>
     </div>
 
@@ -1246,7 +1191,7 @@
   </div>
 
   <div class="footer">
-    <p>Generated by Amplitude analysis · <a href="index.html">← All Reports</a> · Data: Apr 26–May 26 (funnel) · May 1–27 (per-question), 2026</p>
+    <p>Generated by Amplitude analysis · <a href="index.html">← All Reports</a> · Data: May 1–27, 2026</p>
   </div>
 </div>
 </body>
