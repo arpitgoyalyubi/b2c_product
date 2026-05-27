@@ -217,7 +217,7 @@
       <div class="icon icon-red">🎯</div>
       <div class="hd-text">
         <h2>Where non-completers abandon — per question</h2>
-        <p>Derived from <code>RISK_PROFILING_ANSWER_SELECTED</code> unique users per <code>questionId</code>, <strong>completers (5,771) subtracted at each step</strong> to isolate non-completer behaviour. The form has 6 questions: 4 MCQ + 1 text input (Q5 Father/Husband Name, no MCQ event) + 1 declaration checkbox (required before Submit CTA activates).</p>
+        <p>Derived from <code>RISK_PROFILING_ANSWER_SELECTED</code> unique users per <code>questionId</code>, <strong>completers (5,771) subtracted at each step</strong> to isolate non-completer behaviour. The form has 6 steps: 4 MCQ (Occupation → Annual Income → Net Worth → Marital Status) + 1 text input (Q4 Father/Husband Name, no MCQ event) + 1 PEP checkbox ("I confirm I am not a Politically Exposed Person" — required before Submit CTA activates).</p>
       </div>
     </div>
 
@@ -234,31 +234,31 @@
     </div>
     <div class="drop-arrow">↓ −1,401 never tapped any MCQ (left on load screen)</div>
     <div class="funnel-step">
-      <div class="funnel-label"><span class="badge badge-blue" style="margin-bottom:4px">Q1</span> Annual Income (Gross)</div>
+      <div class="funnel-label"><span class="badge badge-blue" style="margin-bottom:4px">Q1</span> Occupation</div>
       <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:67.9%;background:#2563EB"></div></div>
       <div class="funnel-num">2,963</div>
       <div class="funnel-pct">67.9%</div>
       <div class="funnel-drop"></div>
     </div>
-    <div class="drop-arrow">↓ −782 dropped after Q1 — Annual Income</div>
+    <div class="drop-arrow">↓ −782 dropped after Q1 — Occupation</div>
     <div class="funnel-step">
-      <div class="funnel-label"><span class="badge badge-blue" style="margin-bottom:4px">Q2</span> Net Worth</div>
+      <div class="funnel-label"><span class="badge badge-blue" style="margin-bottom:4px">Q2</span> Annual Income</div>
       <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:50.0%;background:#3B82F6"></div></div>
       <div class="funnel-num">2,181</div>
       <div class="funnel-pct">50.0%</div>
       <div class="funnel-drop">−782</div>
     </div>
-    <div class="drop-arrow" style="color:var(--red);font-weight:700;font-size:14px">↓ −1,323 dropped here ← BIGGEST DROP (30.3% of all non-completers — abandoned after Net Worth, before Occupation)</div>
+    <div class="drop-arrow" style="color:var(--red);font-weight:700;font-size:14px">↓ −1,323 dropped here ← BIGGEST DROP (30.3% of all non-completers — abandoned after Annual Income, before Net Worth)</div>
     <div class="funnel-step" style="border:2px solid var(--red);border-radius:8px;padding:14px 16px">
-      <div class="funnel-label"><span class="badge badge-red" style="margin-bottom:4px">Q3</span> Occupation <span class="badge badge-red" style="margin-left:6px">Most friction</span></div>
+      <div class="funnel-label"><span class="badge badge-red" style="margin-bottom:4px">Q3</span> Net Worth <span class="badge badge-red" style="margin-left:6px">Most friction</span></div>
       <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:19.7%;background:#EF4444"></div></div>
       <div class="funnel-num">858</div>
       <div class="funnel-pct" style="color:var(--red);font-weight:700">19.7%</div>
       <div class="funnel-drop" style="font-size:12px">−1,323</div>
     </div>
-    <div class="drop-arrow">↓ −702 dropped after Q3 Occupation / Q5 text input (Father/Husband Name)</div>
+    <div class="drop-arrow">↓ −702 dropped after Q3 Net Worth / Q4 text input (Father/Husband Name)</div>
     <div class="funnel-step">
-      <div class="funnel-label"><span class="badge badge-amber" style="margin-bottom:4px">Q4</span> Marital Status<div class="funnel-sub">Q5 = text input (Father/Husband Name), no MCQ event fired</div></div>
+      <div class="funnel-label"><span class="badge badge-amber" style="margin-bottom:4px">Q5</span> Marital Status<div class="funnel-sub">Q4 = text input (Father/Husband Name), no MCQ event fired</div></div>
       <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:3.6%;background:#F59E0B"></div></div>
       <div class="funnel-num">156</div>
       <div class="funnel-pct">3.6%</div>
@@ -285,22 +285,22 @@
             <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-gray" style="width:94.8%"></div></div></div></td>
           </tr>
           <tr>
-            <td>Dropped after Q1 — Annual Income (Gross)</td>
+            <td>Dropped after Q1 — Occupation</td>
             <td>782</td><td>17.9%</td>
             <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-blue" style="width:59.1%"></div></div></div></td>
           </tr>
           <tr style="background:#FEF2F2">
-            <td><strong>Dropped after Q2 Net Worth → Q3 Occupation</strong> <span class="badge badge-red">Biggest</span></td>
+            <td><strong>Dropped after Q2 Annual Income → Q3 Net Worth</strong> <span class="badge badge-red">Biggest</span></td>
             <td><strong>1,323</strong></td><td><strong>30.3%</strong></td>
             <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-red" style="width:100%"></div></div></div></td>
           </tr>
           <tr>
-            <td>Dropped after Q3/Q5 — Occupation / Father/Husband Name</td>
+            <td>Dropped after Q3/Q4 — Net Worth / Father/Husband Name</td>
             <td>702</td><td>16.1%</td>
             <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-amber" style="width:53.1%"></div></div></div></td>
           </tr>
           <tr>
-            <td>Reached Q4 Marital Status but never submitted</td>
+            <td>Reached Q5 Marital Status but never submitted</td>
             <td>156</td><td>3.6%</td>
             <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-gray" style="width:11.9%"></div></div></div></td>
           </tr>
@@ -343,7 +343,7 @@
       </table>
       <div class="insight insight-red" style="margin-top:16px">
         <div class="ins-title">7.06 &gt; 5 = multi-session confirmed</div>
-        <p>Non-completers fired more answer-selected events than a single 4-MCQ session allows. They are returning on new sessions, having answers wiped, and re-answering from Annual Income (Q1) — never finishing.</p>
+        <p>Non-completers fired more answer-selected events than a single 4-MCQ session allows. They are returning on new sessions, having answers wiped, and re-answering from Occupation (Q1) — never finishing.</p>
       </div>
     </div>
 
@@ -361,7 +361,7 @@
       </div>
       <div class="insight insight-amber">
         <div class="ins-title">Impact</div>
-        <p>3,113 users answered ≥1 question but never completed. The ~30% who abandon before Occupation (Q3) answered Annual Income + Net Worth correctly. On return, they answer both again before hitting Q3 again — wasted effort every session.</p>
+        <p>3,113 users answered ≥1 question but never completed. The ~30% who abandon before Net Worth (Q3) answered Occupation + Annual Income correctly. On return, they answer both again before hitting Q3 again — wasted effort every session.</p>
       </div>
     </div>
   </div>
@@ -392,9 +392,9 @@
         </div>
       </div>
       <div class="insight insight-amber">
-        <div class="ins-title">🟡 P1 — onInputChange (Q5 Name field) has zero tracking</div>
+        <div class="ins-title">🟡 P1 — onInputChange (Q4 Name field) has zero tracking</div>
         <p>
-          The text input for Father/Husband Name (<code>onInputChange</code>) fires no event at all — only <code>onInputBlur</code> fires <code>RISK_PROFILING_FATHER_HUSBAND_NAME_ENTRY</code>. Q5 registered only 13 events vs 6,000–8,000 for MCQ questions.<br><br>
+          The text input for Father/Husband Name (<code>onInputChange</code>) fires no event at all — only <code>onInputBlur</code> fires <code>RISK_PROFILING_FATHER_HUSBAND_NAME_ENTRY</code>. Q4 registered only 13 events vs 6,000–8,000 for MCQ questions.<br><br>
           Can't tell whether users are abandoning because they don't know this info or because the field itself has a UX issue.
         </p>
         <div style="margin-top:8px">
@@ -1188,10 +1188,10 @@
         <span style="font-size:12px;color:var(--text3)">Product · Design</span>
       </div>
       <h3>Reduce Net Worth question drop-off (1,323 users/month)</h3>
-      <p>Net Worth (Q2) is the single biggest drop-off point — 30.3% of all non-completers abandon here. Users know their income but can't easily recall exact net worth. Fix: (1) Add helper text "approximate is fine" or "your best estimate", (2) change from exact entry to range brackets (e.g. ₹5L–₹25L), (3) add a tooltip explaining what counts as net worth. Target: reduce Q2 drop by 40% = ~530 more completions per month.</p>
+      <p>Net Worth (Q3) is the single biggest drop-off point — 30.3% of all non-completers abandon here. Users know their income but can't easily recall exact net worth. Fix: (1) Add helper text "approximate is fine" or "your best estimate", (2) change from exact entry to range brackets (e.g. ₹5L–₹25L), (3) add a tooltip explaining what counts as net worth. Target: reduce Q3 drop by 40% = ~530 more completions per month.</p>
       <div class="ticket-meta">
         <span class="badge badge-red">1,323 users/month</span>
-        <span class="badge badge-amber">Q2 Net Worth UX</span>
+        <span class="badge badge-amber">Q3 Net Worth UX</span>
         <span class="badge badge-blue">Design required</span>
       </div>
     </div>
@@ -1202,12 +1202,12 @@
         <span class="badge badge-amber">P1 · Story</span>
         <span style="font-size:12px;color:var(--text3)">Engineering · Analytics</span>
       </div>
-      <h3>Add session attempt tracking and fix missing Q5 event</h3>
-      <p>(a) Add <code>attempt_number</code> property to <code>RISK_PROFILING_SCREEN_VIEWED</code> — read a per-user counter from AsyncStorage, increment on each mount, pass as event property. Enables measuring exact multi-session return rate once overfiring is fixed. (b) Add <code>RISK_PROFILING_NAME_FIELD_FOCUSED</code> event to <code>onInputChange</code> for Q5 (Father/Husband Name) — currently the name field has zero engagement data.</p>
+      <h3>Add session attempt tracking and fix missing Q4 event</h3>
+      <p>(a) Add <code>attempt_number</code> property to <code>RISK_PROFILING_SCREEN_VIEWED</code> — read a per-user counter from AsyncStorage, increment on each mount, pass as event property. Enables measuring exact multi-session return rate once overfiring is fixed. (b) Add <code>RISK_PROFILING_NAME_FIELD_FOCUSED</code> event to <code>onInputChange</code> for Q4 (Father/Husband Name) — currently the name field has zero engagement data.</p>
       <div class="ticket-meta">
         <span class="badge badge-blue">Analytics instrumentation</span>
         <span class="badge badge-amber">attempt_number property</span>
-        <span class="badge badge-blue">Q5 coverage</span>
+        <span class="badge badge-blue">Q4 coverage</span>
       </div>
     </div>
   </div>
