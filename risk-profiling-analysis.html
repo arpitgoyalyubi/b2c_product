@@ -93,6 +93,43 @@
   .footer a{color:var(--blue);text-decoration:none}
   code{font-family:monospace;font-size:11px;background:#F1F5F9;padding:1px 4px;border-radius:3px}
   .drop-arrow{text-align:center;color:var(--text3);font-size:18px;padding:4px 0}
+
+  /* ── Section 2 redesign ── */
+  .q-funnel{margin-top:4px}
+  .q-funnel-hdr{display:grid;grid-template-columns:220px 1fr 72px 50px 58px;gap:0 12px;padding:0 4px 8px;border-bottom:2px solid var(--border);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gray)}
+  .q-funnel-row{display:grid;grid-template-columns:220px 1fr 72px 50px 58px;gap:0 12px;align-items:center;padding:10px 4px;border-bottom:1px solid #F1F5F9}
+  .q-row-base{background:#F8FAFC;border-radius:6px}
+  .q-row-alert{background:#FEF2F2;border-left:3px solid #EF4444;padding-left:9px;border-radius:0 6px 6px 0}
+  .q-row-partial{background:#FFFBEB;border-left:3px solid #F59E0B;padding-left:9px;border-radius:0 6px 6px 0}
+  .q-lbl{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:13px}
+  .q-bar-wrap{height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden}
+  .q-bar{height:100%;border-radius:4px}
+  .q-num{text-align:right;font-weight:700;font-size:14px;color:var(--text1)}
+  .q-pct{text-align:right;font-size:13px;color:#4B5565}
+  .q-drop{text-align:right;font-size:12px}
+  .q-drop-sm{color:#9AA4B2}
+  .q-drop-red{color:#DC2626;font-weight:700}
+  .q-drop-amber{color:#D97706;font-weight:600}
+  .q-red{color:#DC2626;font-weight:700}
+  .q-amber{color:#D97706;font-weight:700}
+  .q-muted{color:#9AA4B2}
+  .q-spacer{font-size:12px;padding:5px 4px 5px 232px;color:#9AA4B2;line-height:1.3}
+  .q-sp-red{color:#DC2626;font-weight:700;font-size:13px}
+  .q-sp-amber{color:#D97706;font-weight:600}
+  .q-footnote{font-size:11px;color:#6B7280;background:#FFFDF5;padding:6px 10px 6px 14px;border-left:2px solid #FDE68A;margin:2px 4px 4px 4px;border-radius:0 4px 4px 0;line-height:1.5}
+  .qbadge{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap}
+  .qb-blue{background:#EFF6FF;color:#2563EB}
+  .qb-red{background:#FEF2F2;color:#DC2626}
+  .qb-amber{background:#FFFBEB;color:#D97706}
+  .qb-sm{font-size:10px;padding:1px 5px}
+  .q-insights{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+  .q-insight{padding:14px 16px;border-radius:10px}
+  .q-insight-red{background:#FEF2F2}
+  .q-insight-amber{background:#FFFBEB}
+  .q-insight-num{font-size:22px;font-weight:800;color:#DC2626;margin-bottom:3px}
+  .q-insight-amber .q-insight-num{color:#D97706}
+  .q-insight-label{font-size:12px;color:#4B5565;line-height:1.4}
+  .src-chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#6B7280;background:#F1F5F9;padding:4px 10px;border-radius:20px;margin:6px 0 18px}
 </style>
 </head>
 <body>
@@ -149,201 +186,121 @@
   <div class="section-label">Section 1 — Full Funnel: Signup → Completion</div>
 
   <div class="card">
-    <div class="section-hd">
-      <div class="icon icon-blue">📊</div>
-      <div class="hd-text">
-        <h2>Signup → Risk Profiling → Submission</h2>
-        <p>Overall May 1–27 funnel. Events: <code>SETUP_SECURE_PIN_SUCCESS</code> → <code>RISK_PROFILING_SCREEN_VIEWED</code> → <code>RISK_PROFILING_SUBMITTED</code></p>
-      </div>
-    </div>
+  <div class="section-label">Section 2 — Per-Question Drop-off (Non-Completers)</div>
 
-    <div class="funnel-step">
-      <div class="funnel-label">Signups<div class="funnel-sub">SETUP_SECURE_PIN_SUCCESS</div></div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar bar-blue" style="width:100%;background:#2563EB"></div></div>
-      <div class="funnel-num">17,188</div>
-      <div class="funnel-pct">100%</div>
-      <div class="funnel-drop"></div>
-    </div>
-    <div class="funnel-step">
-      <div class="funnel-label">Reached Risk Profiling<div class="funnel-sub">RISK_PROFILING_SCREEN_VIEWED</div></div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:58.9%;background:#3B82F6"></div></div>
-      <div class="funnel-num">10,135</div>
-      <div class="funnel-pct">59.0%</div>
-      <div class="funnel-drop">−7,053</div>
-    </div>
-    <div class="funnel-step">
-      <div class="funnel-label">Engaged (≥1 answer)<div class="funnel-sub">RISK_PROFILING_ANSWER_SELECTED</div></div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:51.7%;background:#60A5FA"></div></div>
-      <div class="funnel-num">8,884</div>
-      <div class="funnel-pct">87.7% of viewers</div>
-      <div class="funnel-drop">−1,251</div>
-    </div>
-    <div class="funnel-step">
-      <div class="funnel-label">Tapped Submit<div class="funnel-sub">RISK_PROFILING_SUBMIT_CLICK</div></div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:34.4%;background:#93C5FD"></div></div>
-      <div class="funnel-num">5,915</div>
-      <div class="funnel-pct">58.4% of viewers</div>
-      <div class="funnel-drop">−2,969</div>
-    </div>
-    <div class="funnel-step">
-      <div class="funnel-label">Completed<div class="funnel-sub">RISK_PROFILING_SUBMITTED</div></div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:33.6%;background:#16A34A"></div></div>
-      <div class="funnel-num">5,771</div>
-      <div class="funnel-pct">97.6% of tappers</div>
-      <div class="funnel-drop">−144</div>
-    </div>
-
-    <div style="margin-top:20px" class="insight-grid">
-      <div class="insight insight-red">
-        <div class="ins-title">43% never tap Submit</div>
-        <p>~3,957 users view the form but never press submit (May 1–27, monthly unique users). The problem is engagement, not the submit mechanism itself — once a user taps submit, 97.6% complete.</p>
-      </div>
-      <div class="insight insight-amber">
-        <div class="ins-title">16% don't touch the form at all</div>
-        <p>~1,514 users open the screen and close it without selecting any answer (May 1–27). Not ready, distracted, or form appears overwhelming on first glance.</p>
-      </div>
-      <div class="insight insight-blue">
-        <div class="ins-title">API errors affect 291 users</div>
-        <p>2,035 RISK_PROFILING_SUBMIT_ERROR events across 291 users = avg 7 errors per affected user. Retry storms indicating a backend reliability issue on submission.</p>
-      </div>
+  <div class="section-hd">
+    <div class="icon icon-red">🎯</div>
+    <div class="hd-text">
+      <h2>Where non-completers abandon — per question</h2>
+      <p>3,957 users started risk profiling but never submitted (May 1–27). Completers (5,268) are excluded. Each row shows how many reached that question.</p>
     </div>
   </div>
 
-  <!-- ── SECTION 2: Per-Question Drop-off ── -->
-  <div class="section-label">Section 2 — Per-Question Drop-off (Non-Completers)</div>
+  <div class="src-chip">Source: <code>RISK_PROFILING_ANSWER_SELECTED</code> filtered by <code>questionId</code> · monthly unique users · May 1–27 2026</div>
 
-  <div class="card">
-    <div class="section-hd">
-      <div class="icon icon-red">🎯</div>
-      <div class="hd-text">
-        <h2>Where non-completers abandon — per question</h2>
-        <p>Each question step is derived from <code>RISK_PROFILING_ANSWER_SELECTED</code> filtered by the <code>questionId</code> property (Q1=0, Q2=1, Q3=2, Q5=4) using monthly unique users (Amplitude <code>interval=30</code>) — not a sum of daily uniques, which would double-count multi-day users. Completers (5,268) subtracted at each step. <strong>Q4 (Father/Husband Name) is a text input</strong> — fires <code>RISK_PROFILING_FATHER_HUSBAND_NAME_ENTRY</code> on blur (3,439 unique users in May, but fewer than completers count — tracking is partial). Period: May 1–27 2026.</p>
-      </div>
-    </div>
-
-    <!-- question funnel — non-completers only (completers subtracted at each step) -->
-    <div style="margin-bottom:12px;padding:8px 12px;background:#F8FAFC;border-left:3px solid #CBD5E1;border-radius:4px;font-size:12px;color:#4B5565">
-      Non-completers only (3,957). Completers (5,268) excluded. Bars = % of 3,957. &nbsp;·&nbsp; Source: <code>RISK_PROFILING_ANSWER_SELECTED</code> unique users by <code>questionId</code>, monthly bucket (May 1–27).
+  <div class="q-funnel">
+    <!-- Column headers -->
+    <div class="q-funnel-hdr">
+      <div>Step</div>
+      <div></div>
+      <div style="text-align:right">Users</div>
+      <div style="text-align:right">%</div>
+      <div style="text-align:right">Drop</div>
     </div>
 
     <!-- Total base -->
-    <div class="funnel-step" style="background:#F8FAFC;border-radius:8px;padding:12px 16px;border:none">
-      <div class="funnel-label" style="font-weight:700;color:#4B5565">Total non-completers</div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:#CBD5E1"></div></div>
-      <div class="funnel-num">3,957</div>
-      <div class="funnel-pct" style="color:#6B7280;font-weight:700">100%</div>
-      <div class="funnel-drop"></div>
+    <div class="q-funnel-row q-row-base">
+      <div class="q-lbl" style="font-weight:700;color:#4B5565">All non-completers</div>
+      <div class="q-bar-wrap"><div class="q-bar" style="width:100%;background:#CBD5E1"></div></div>
+      <div class="q-num" style="color:#4B5565">3,957</div>
+      <div class="q-pct" style="font-weight:700">100%</div>
+      <div class="q-drop"></div>
     </div>
 
-    <div class="drop-arrow" style="color:#9AA4B2">↓ −1,514 left before answering anything</div>
+    <div class="q-spacer">↓ 1,514 never tapped a single question (38.3% of non-completers)</div>
 
     <!-- Q1 -->
-    <div class="funnel-step">
-      <div class="funnel-label"><span class="badge badge-blue">Q1</span> Occupation</div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:61.7%;background:#2563EB"></div></div>
-      <div class="funnel-num">2,443</div>
-      <div class="funnel-pct">61.7%</div>
-      <div class="funnel-drop">−1,514</div>
+    <div class="q-funnel-row">
+      <div class="q-lbl"><span class="qbadge qb-blue">Q1</span> Occupation</div>
+      <div class="q-bar-wrap"><div class="q-bar" style="width:61.7%;background:#3B82F6"></div></div>
+      <div class="q-num">2,443</div>
+      <div class="q-pct">61.7%</div>
+      <div class="q-drop q-drop-sm">−1,514</div>
     </div>
 
-    <div class="drop-arrow" style="color:#9AA4B2">↓ −664 stopped after Q1</div>
+    <div class="q-spacer">↓ 664 stopped after Q1</div>
 
     <!-- Q2 -->
-    <div class="funnel-step">
-      <div class="funnel-label"><span class="badge badge-blue">Q2</span> Annual Income</div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:45.0%;background:#3B82F6"></div></div>
-      <div class="funnel-num">1,779</div>
-      <div class="funnel-pct">45.0%</div>
-      <div class="funnel-drop">−664</div>
+    <div class="q-funnel-row">
+      <div class="q-lbl"><span class="qbadge qb-blue">Q2</span> Annual Income</div>
+      <div class="q-bar-wrap"><div class="q-bar" style="width:45%;background:#3B82F6"></div></div>
+      <div class="q-num">1,779</div>
+      <div class="q-pct">45.0%</div>
+      <div class="q-drop q-drop-sm">−664</div>
     </div>
 
-    <div class="drop-arrow" style="color:var(--red);font-weight:700">↓ −1,060 stopped here — biggest in-form drop (26.8%)</div>
+    <div class="q-spacer q-sp-red">↓ 1,060 stopped here — biggest in-form exit · 26.8% of all non-completers</div>
 
     <!-- Q3 — most friction -->
-    <div class="funnel-step" style="border:2px solid var(--red);border-radius:8px;padding:12px 16px">
-      <div class="funnel-label"><span class="badge badge-red">Q3</span> Net Worth <span class="badge badge-red" style="margin-left:6px">Most friction</span></div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:18.2%;background:#EF4444"></div></div>
-      <div class="funnel-num">719</div>
-      <div class="funnel-pct" style="color:var(--red);font-weight:700">18.2%</div>
-      <div class="funnel-drop">−1,060</div>
+    <div class="q-funnel-row q-row-alert">
+      <div class="q-lbl"><span class="qbadge qb-red">Q3</span> Net Worth <span class="qbadge qb-red qb-sm">Most friction</span></div>
+      <div class="q-bar-wrap"><div class="q-bar" style="width:18.2%;background:#EF4444"></div></div>
+      <div class="q-num q-red">719</div>
+      <div class="q-pct q-red">18.2%</div>
+      <div class="q-drop q-drop-red">−1,060</div>
     </div>
 
-    <div class="drop-arrow" style="color:#F59E0B;font-weight:600">↓ −602 stopped at Q4 text input (tracking partial — see ASP-3818)</div>
+    <div class="q-spacer q-sp-amber">↓ 602 stopped at Q4 · text input with partial tracking ⚠</div>
 
-    <!-- Q4 — text input, partial tracking -->
-    <div class="funnel-step" style="border:1px dashed #F59E0B;border-radius:8px;padding:12px 16px;background:#FFFBEB">
-      <div class="funnel-label">
-        <span class="badge badge-amber">Q4</span> Father / Husband Name
-        <span style="font-size:11px;color:#9AA4B2;margin-left:4px">(text input)</span>
-        <span style="font-size:10px;font-weight:700;color:#92400E;background:#FEF3C7;padding:1px 5px;border-radius:3px;margin-left:6px">⚠ partial tracking</span>
-        <div class="funnel-sub">719 non-completers reached this step. 3,439 unique users fired Q4 blur event — but 5,268 completers exist, so ~35% of completers bypassed Q4 tracking. ASP-3818 tracks the fix.</div>
-      </div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:18.2%;background:#F59E0B;opacity:0.4"></div></div>
-      <div class="funnel-num" style="color:#92400E">≥117</div>
-      <div class="funnel-pct" style="color:#9AA4B2">—</div>
-      <div class="funnel-drop" style="color:#F59E0B">−602</div>
+    <!-- Q4 — partial tracking -->
+    <div class="q-funnel-row q-row-partial">
+      <div class="q-lbl"><span class="qbadge qb-amber">Q4</span> Father / Husband Name <span class="qbadge qb-amber qb-sm">⚠ partial</span></div>
+      <div class="q-bar-wrap"><div class="q-bar" style="width:18.2%;background:#F59E0B;opacity:0.35"></div></div>
+      <div class="q-num q-amber">≥117</div>
+      <div class="q-pct q-muted">—</div>
+      <div class="q-drop q-drop-amber">−602</div>
     </div>
+    <div class="q-footnote">Text input · fires <code>RISK_PROFILING_FATHER_HUSBAND_NAME_ENTRY</code> on blur. 3,439 users fired it but 5,268 completers exist → ~35% of completers bypassed this event. Fix tracked in <strong>ASP-3818</strong>.</div>
 
-    <div class="drop-arrow" style="color:#9AA4B2">↓ 117 answered Q5 — Q4 completion count partially tracked</div>
+    <div class="q-spacer">↓ 117 answered Q5 · Q4 completion count is a lower bound</div>
 
     <!-- Q5 -->
-    <div class="funnel-step">
-      <div class="funnel-label"><span class="badge badge-amber">Q5</span> Marital Status</div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:3.0%;background:#F59E0B"></div></div>
-      <div class="funnel-num">117</div>
-      <div class="funnel-pct">3.0%</div>
-      <div class="funnel-drop"></div>
+    <div class="q-funnel-row">
+      <div class="q-lbl"><span class="qbadge qb-amber">Q5</span> Marital Status</div>
+      <div class="q-bar-wrap"><div class="q-bar" style="width:3%;background:#F59E0B"></div></div>
+      <div class="q-num">117</div>
+      <div class="q-pct">3.0%</div>
+      <div class="q-drop q-drop-sm"></div>
     </div>
 
-    <div class="drop-arrow" style="color:#9AA4B2">↓ −117 dropped at Q5 (last question)</div>
+    <div class="q-spacer">↓ 117 dropped at Q5 — last question before submission</div>
 
     <!-- Terminal -->
-    <div class="funnel-step" style="background:#F9FAFB;border-radius:8px;padding:12px 16px;border:1px dashed #D1D5DB">
-      <div class="funnel-label" style="color:#9AA4B2">All 3,957 non-completers accounted for</div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:0%;background:#CBD5E1"></div></div>
-      <div class="funnel-num" style="color:#9AA4B2">0</div>
-      <div class="funnel-pct" style="color:#9AA4B2">0%</div>
-      <div class="funnel-drop" style="color:#9AA4B2">−117</div>
-    </div>
-
-    <div style="margin-top:24px">
-      <table class="bar-table">
-        <thead>
-          <tr><th>Abandonment bucket</th><th>Users lost</th><th>% of non-completers</th><th style="text-align:left;padding-left:12px">Proportion</th></tr>
-        </thead>
-        <tbody>
-          <tr style="background:#F8FAFC">
-            <td><strong>Never tapped any question</strong> <span class="badge badge-red">Biggest</span></td>
-            <td><strong>1,514</strong></td><td><strong>38.3%</strong></td>
-            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-gray" style="width:100%"></div></div></div></td>
-          </tr>
-          <tr>
-            <td>Dropped after Q1 — Occupation</td>
-            <td>664</td><td>16.8%</td>
-            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-blue" style="width:43.9%"></div></div></div></td>
-          </tr>
-          <tr style="background:#FEF2F2">
-            <td><strong>Dropped after Q2 Annual Income → Q3 Net Worth</strong> <span class="badge badge-red">Biggest in-form drop</span></td>
-            <td><strong>1,060</strong></td><td><strong>26.8%</strong></td>
-            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-red" style="width:70.0%"></div></div></div></td>
-          </tr>
-          <tr>
-            <td>Dropped after Q3/Q4 — Net Worth / Father/Husband Name</td>
-            <td>602</td><td>15.2%</td>
-            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-amber" style="width:39.8%"></div></div></div></td>
-          </tr>
-          <tr>
-            <td>Reached Q5 Marital Status but never submitted</td>
-            <td>117</td><td>3.0%</td>
-            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill bar-gray" style="width:7.7%"></div></div></div></td>
-          </tr>
-          <tr class="total-row">
-            <td>Total non-completers</td><td>3,957</td><td>100%</td><td></td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="q-funnel-row q-row-base">
+      <div class="q-lbl" style="color:#9AA4B2">All 3,957 non-completers accounted for</div>
+      <div class="q-bar-wrap"></div>
+      <div class="q-num" style="color:#9AA4B2">0</div>
+      <div class="q-pct" style="color:#9AA4B2">0%</div>
+      <div class="q-drop q-drop-sm">−117</div>
     </div>
   </div>
+
+  <!-- Key insight chips -->
+  <div class="q-insights">
+    <div class="q-insight q-insight-red">
+      <div class="q-insight-num">38.3%</div>
+      <div class="q-insight-label">never tapped a question — bounced before engaging</div>
+    </div>
+    <div class="q-insight q-insight-red">
+      <div class="q-insight-num">26.8%</div>
+      <div class="q-insight-label">dropped at Q3 Net Worth — biggest in-form exit point</div>
+    </div>
+    <div class="q-insight q-insight-amber">
+      <div class="q-insight-num">15.2%</div>
+      <div class="q-insight-label">stopped at Q4 text input (tracking gap · see ASP-3818)</div>
+    </div>
+  </div>
+</div>
 
   <!-- ── SECTION 3: Multi-session evidence ── -->
   <!-- Section 3: Design Recommendations -->
