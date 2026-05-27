@@ -217,13 +217,13 @@
       <div class="icon icon-red">🎯</div>
       <div class="hd-text">
         <h2>Where non-completers abandon — per question</h2>
-        <p>Derived from <code>RISK_PROFILING_ANSWER_SELECTED</code> unique users per <code>questionId</code>, <strong>completers (5,771) subtracted at each step</strong> to isolate non-completer behaviour. The form has 6 steps: 4 MCQ (Occupation → Annual Income → Net Worth → Marital Status) + 1 text input (Q4 Father/Husband Name, no MCQ event) + 1 PEP checkbox ("I confirm I am not a Politically Exposed Person" — required before Submit CTA activates).</p>
+        <p>Each question step is derived from <code>RISK_PROFILING_ANSWER_SELECTED</code> filtered by the <code>questionId</code> property (Q1 = 0, Q2 = 1, Q3 = 2, Q5 = 4). Completers (5,771) subtracted at each step to isolate non-completer behaviour. <strong>Q4 (Father/Husband Name) is a text input</strong> — it fires a separate event (<code>RISK_PROFILING_FATHER_HUSBAND_NAME_ENTRY</code>) with no <code>questionId</code>, so Q4 completion count is independently unverifiable from the MCQ funnel; only Q5 reach (156) provides a lower-bound proxy.</p>
       </div>
     </div>
 
     <!-- question funnel — non-completers only (completers subtracted at each step) -->
     <div style="margin-bottom:12px;padding:8px 12px;background:#F8FAFC;border-left:3px solid #CBD5E1;border-radius:4px;font-size:12px;color:#4B5565">
-      Non-completers only (4,364). Completers (5,771) excluded. Bars = % of 4,364.
+      Non-completers only (4,364). Completers (5,771) excluded. Bars = % of 4,364. &nbsp;·&nbsp; Per-question counts = <code>RISK_PROFILING_ANSWER_SELECTED</code> unique users filtered by <code>questionId</code> property.
     </div>
 
     <!-- Total base -->
@@ -284,7 +284,7 @@
       <div class="funnel-drop" style="color:#F59E0B">−702</div>
     </div>
 
-    <div class="drop-arrow" style="color:#9AA4B2">↓ 156 passed Q4 and reached Q5</div>
+    <div class="drop-arrow" style="color:#9AA4B2">↓ 156 answered Q5 — Q4 completion count unknown (13 events only)</div>
 
     <!-- Q5 -->
     <div class="funnel-step">
