@@ -222,68 +222,88 @@
     </div>
 
     <!-- question funnel — non-completers only (completers subtracted at each step) -->
-    <div style="margin-bottom:12px;padding:10px 14px;background:#FEF9C3;border:1px solid #FDE047;border-radius:6px;font-size:12px;color:#713F12">
-      ℹ️ <strong>How to read this:</strong> Each step shows how many of the <strong>4,364 non-completers</strong> reached that question. Completers (5,771) are excluded. Bars are sized relative to 4,364 = 100%.
+    <div style="margin-bottom:12px;padding:8px 12px;background:#F8FAFC;border-left:3px solid #CBD5E1;border-radius:4px;font-size:12px;color:#4B5565">
+      Non-completers only (4,364). Completers (5,771) excluded. Bars = % of 4,364.
     </div>
-    <div class="funnel-step" style="background:#F8FAFC;border-radius:8px;padding:14px 16px;margin-bottom:4px;border:none">
-      <div class="funnel-label" style="font-weight:700">Total non-completers<div class="funnel-sub">Viewers who never submitted</div></div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:#6B7280"></div></div>
+
+    <!-- Total base -->
+    <div class="funnel-step" style="background:#F8FAFC;border-radius:8px;padding:12px 16px;border:none">
+      <div class="funnel-label" style="font-weight:700;color:#4B5565">Total non-completers</div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:#CBD5E1"></div></div>
       <div class="funnel-num">4,364</div>
       <div class="funnel-pct" style="color:#6B7280;font-weight:700">100%</div>
       <div class="funnel-drop"></div>
     </div>
-    <div class="drop-arrow">↓ −1,401 never tapped any MCQ (left on load screen)</div>
+
+    <div class="drop-arrow" style="color:#9AA4B2">↓ −1,401 left before answering anything</div>
+
+    <!-- Q1 -->
     <div class="funnel-step">
-      <div class="funnel-label"><span class="badge badge-blue" style="margin-bottom:4px">Q1</span> Occupation</div>
+      <div class="funnel-label"><span class="badge badge-blue">Q1</span> Occupation</div>
       <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:67.9%;background:#2563EB"></div></div>
       <div class="funnel-num">2,963</div>
       <div class="funnel-pct">67.9%</div>
-      <div class="funnel-drop"></div>
+      <div class="funnel-drop">−1,401</div>
     </div>
-    <div class="drop-arrow">↓ −782 dropped after Q1 — Occupation</div>
+
+    <div class="drop-arrow" style="color:#9AA4B2">↓ −782 stopped after Q1</div>
+
+    <!-- Q2 -->
     <div class="funnel-step">
-      <div class="funnel-label"><span class="badge badge-blue" style="margin-bottom:4px">Q2</span> Annual Income</div>
+      <div class="funnel-label"><span class="badge badge-blue">Q2</span> Annual Income</div>
       <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:50.0%;background:#3B82F6"></div></div>
       <div class="funnel-num">2,181</div>
       <div class="funnel-pct">50.0%</div>
       <div class="funnel-drop">−782</div>
     </div>
-    <div class="drop-arrow" style="color:var(--red);font-weight:700;font-size:14px">↓ −1,323 dropped here ← BIGGEST DROP (30.3% of all non-completers — abandoned after Annual Income, before Net Worth)</div>
-    <div class="funnel-step" style="border:2px solid var(--red);border-radius:8px;padding:14px 16px">
-      <div class="funnel-label"><span class="badge badge-red" style="margin-bottom:4px">Q3</span> Net Worth <span class="badge badge-red" style="margin-left:6px">Most friction</span></div>
+
+    <div class="drop-arrow" style="color:var(--red);font-weight:700">↓ −1,323 stopped here — biggest single drop (30.3%)</div>
+
+    <!-- Q3 — most friction -->
+    <div class="funnel-step" style="border:2px solid var(--red);border-radius:8px;padding:12px 16px">
+      <div class="funnel-label"><span class="badge badge-red">Q3</span> Net Worth <span class="badge badge-red" style="margin-left:6px">Most friction</span></div>
       <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:19.7%;background:#EF4444"></div></div>
       <div class="funnel-num">858</div>
       <div class="funnel-pct" style="color:var(--red);font-weight:700">19.7%</div>
-      <div class="funnel-drop" style="font-size:12px">−1,323</div>
+      <div class="funnel-drop">−1,323</div>
     </div>
-    <div class="drop-arrow" style="color:var(--amber);font-weight:700;font-size:13px">↓ −702 dropped here ← text input barrier (Father/Husband Name, Q4 — 858 saw it, only ~156 passed)</div>
-    <div class="funnel-step" style="border:2px dashed #F59E0B;border-radius:8px;padding:14px 16px;background:#FFFBEB">
+
+    <div class="drop-arrow" style="color:#F59E0B;font-weight:600">↓ −702 stopped at Q4 text input (tracking broken — see ASP-3818)</div>
+
+    <!-- Q4 — text input, broken tracking -->
+    <div class="funnel-step" style="border:1px dashed #F59E0B;border-radius:8px;padding:12px 16px;background:#FFFBEB">
       <div class="funnel-label">
-        <span class="badge badge-amber" style="margin-bottom:4px">Q4</span>
-        Father / Husband Name <em style="font-size:11px;color:#9AA4B2;font-style:normal">(text input)</em>
-        <span style="display:inline-block;background:#FEF3C7;color:#92400E;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;margin-left:6px">⚠ Tracking broken — only 13 events captured</span>
-        <div class="funnel-sub" style="margin-top:4px">onInputBlur fires <code>RISK_PROFILING_FATHER_HUSBAND_NAME_ENTRY</code> — but only 13 events vs ~858 expected. Exact drop unattributable: some abandon immediately on seeing the text field; some start typing then quit. Fix tracked in ASP-3818.</div>
+        <span class="badge badge-amber">Q4</span> Father / Husband Name
+        <span style="font-size:11px;color:#9AA4B2;margin-left:4px">(text input)</span>
+        <span style="font-size:10px;font-weight:700;color:#92400E;background:#FEF3C7;padding:1px 5px;border-radius:3px;margin-left:6px">⚠ 13 events tracked</span>
+        <div class="funnel-sub">858 reached this step; only ≥156 confirmed to have passed (inferred from Q5). ASP-3818 tracks the fix.</div>
       </div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:3.6%;background:#F59E0B;opacity:0.45"></div></div>
-      <div class="funnel-num" style="color:#92400E">≥156 <span style="font-size:11px;font-weight:400;color:#9AA4B2">(min — inferred from Q5 reach; only 13 events tracked)</span></div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:19.7%;background:#F59E0B;opacity:0.4"></div></div>
+      <div class="funnel-num" style="color:#92400E">≥156</div>
       <div class="funnel-pct" style="color:#9AA4B2">—</div>
-      <div class="funnel-drop" style="color:var(--amber)">−702</div>
+      <div class="funnel-drop" style="color:#F59E0B">−702</div>
     </div>
-    <div class="drop-arrow">↓ 156 completed Q4 and reached Q5</div>
+
+    <div class="drop-arrow" style="color:#9AA4B2">↓ 156 passed Q4 and reached Q5</div>
+
+    <!-- Q5 -->
     <div class="funnel-step">
-      <div class="funnel-label"><span class="badge badge-amber" style="margin-bottom:4px">Q5</span> Marital Status</div>
+      <div class="funnel-label"><span class="badge badge-amber">Q5</span> Marital Status</div>
       <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:3.6%;background:#F59E0B"></div></div>
       <div class="funnel-num">156</div>
       <div class="funnel-pct">3.6%</div>
-      <div class="funnel-drop">−702</div>
+      <div class="funnel-drop"></div>
     </div>
-    <div class="drop-arrow">↓ −156 gave up at the last question</div>
-    <div class="funnel-step" style="background:#F9FAFB;border-radius:8px;padding:14px 16px;border:1px dashed #D1D5DB">
-      <div class="funnel-label" style="color:#6B7280;font-weight:700">0 non-completers remain<div class="funnel-sub">All 4,364 accounted for</div></div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:0%;background:#6B7280"></div></div>
-      <div class="funnel-num" style="color:#6B7280">0</div>
-      <div class="funnel-pct" style="color:#6B7280">0%</div>
-      <div class="funnel-drop" style="color:#6B7280">−156</div>
+
+    <div class="drop-arrow" style="color:#9AA4B2">↓ −156 dropped at Q5 (last question)</div>
+
+    <!-- Terminal -->
+    <div class="funnel-step" style="background:#F9FAFB;border-radius:8px;padding:12px 16px;border:1px dashed #D1D5DB">
+      <div class="funnel-label" style="color:#9AA4B2">All 4,364 non-completers accounted for</div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:0%;background:#CBD5E1"></div></div>
+      <div class="funnel-num" style="color:#9AA4B2">0</div>
+      <div class="funnel-pct" style="color:#9AA4B2">0%</div>
+      <div class="funnel-drop" style="color:#9AA4B2">−156</div>
     </div>
 
     <div style="margin-top:24px">
