@@ -769,12 +769,18 @@ new Chart(document.getElementById('kraPctChart'), {
       label: 'Success %',
       data: KRA_PCT,
       borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.08)',
-      fill: true, tension: 0.3, pointRadius: 3,
+      fill: true, tension: 0.3, pointRadius: 4, pointHoverRadius: 7,
     }],
   },
   options: {
     responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { labels: { font: FONT } } },
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { labels: { font: FONT } },
+      tooltip: {
+        callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + '%' },
+      },
+    },
     scales: {
       x: { grid: GRID, ticks: { font: FONT, maxTicksLimit: 10 } },
       y: { grid: GRID, ticks: { font: FONT, callback: v => v + '%' }, min: 50, max: 100 },
@@ -844,12 +850,18 @@ new Chart(document.getElementById('amlPctChart'), {
       label: 'Pass %',
       data: AML_PCT,
       borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.08)',
-      fill: true, tension: 0.3, pointRadius: 3,
+      fill: true, tension: 0.3, pointRadius: 4, pointHoverRadius: 7,
     }],
   },
   options: {
     responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { labels: { font: FONT } } },
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { labels: { font: FONT } },
+      tooltip: {
+        callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + '%' },
+      },
+    },
     scales: {
       x: { grid: GRID, ticks: { font: FONT, maxTicksLimit: 10 } },
       y: { grid: GRID, ticks: { font: FONT, callback: v => v + '%' }, min: 90, max: 101 },
