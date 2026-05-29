@@ -111,6 +111,30 @@ body {
 .insight-body  { font-size: 13px; color: #374151; line-height: 1.55; }
 .insight-body strong { color: #111827; }
 
+/* ── Competitive Benchmark ── */
+.bench-section { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+.bench-video-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 18px 20px; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
+.bench-video-title { font-size: 13px; font-weight: 700; color: #111827; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.bench-video-title .bench-app-tag { font-size: 10px; font-weight: 600; background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; border-radius: 5px; padding: 2px 8px; }
+.bench-video-card video { width: 100%; border-radius: 10px; border: 1px solid #e5e7eb; background: #000; display: block; }
+.bench-video-caption { margin-top: 10px; font-size: 11px; color: #9ca3af; line-height: 1.45; }
+.bench-insights-col { display: flex; flex-direction: column; gap: 14px; }
+.bench-metric { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px 18px; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
+.bench-metric-header { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: #9ca3af; margin-bottom: 10px; }
+.bench-compare-row { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+.bench-app-name { font-size: 12px; color: #6b7280; width: 80px; flex-shrink: 0; }
+.bench-bar-wrap { flex: 1; background: #f3f4f6; border-radius: 6px; height: 22px; overflow: hidden; position: relative; }
+.bench-bar { height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 8px; font-size: 11px; font-weight: 700; color: #fff; white-space: nowrap; }
+.bench-bar-them { background: linear-gradient(90deg, #16a34a, #22c55e); }
+.bench-bar-us   { background: linear-gradient(90deg, #dc2626, #ef4444); }
+.bench-verdict { margin-top: 8px; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; }
+.bench-verdict.bad { background: #fef2f2; color: #991b1b; border-left: 3px solid #ef4444; }
+.bench-verdict.ok  { background: #f0fdf4; color: #15803d; border-left: 3px solid #22c55e; }
+.bench-action { background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; padding: 14px 18px; }
+.bench-action-title { font-size: 12px; font-weight: 700; color: #92400e; margin-bottom: 6px; }
+.bench-action-body  { font-size: 12px; color: #78350f; line-height: 1.55; }
+.bench-action-body strong { color: #451a03; }
+
 /* ── Recovery panels ── */
 .recovery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .recovery-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
@@ -651,6 +675,63 @@ footer { text-align: center; color: #9ca3af; font-size: 12px; padding-top: 40px;
   </div>
 </div>
 
+<!-- Competitive Benchmark -->
+<div class="section">
+  <h2>Competitive Benchmark <span class="s-sub">SDK Load Time — Vested vs Aspero</span></h2>
+  <hr class="section-divider">
+</div>
+<div class="bench-section">
+  <div class="bench-video-card">
+    <div class="bench-video-title">
+      Vested App — Hyperverge DigiLocker Flow
+      <span class="bench-app-tag">Competitor Reference</span>
+    </div>
+    <video controls preload="metadata" style="max-height:420px;">
+      <source src="vested-hv-digilocker.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="bench-video-caption">
+      Source: Vested app (May 2026). Hyperverge DigiLocker SDK initialises and renders consent screen in <strong>~3–4 seconds</strong> from the moment user taps "Verify via DigiLocker". Recording captured on a mid-range Android device.
+    </div>
+  </div>
+
+  <div class="bench-insights-col">
+    <div class="bench-metric">
+      <div class="bench-metric-header">⏱ SDK Load Time</div>
+      <div class="bench-compare-row">
+        <div class="bench-app-name">Vested (HV)</div>
+        <div class="bench-bar-wrap">
+          <div class="bench-bar bench-bar-them" style="width:27%">~3–4s</div>
+        </div>
+      </div>
+      <div class="bench-compare-row">
+        <div class="bench-app-name">Aspero</div>
+        <div class="bench-bar-wrap">
+          <div class="bench-bar bench-bar-us" style="width:100%">10–15s</div>
+        </div>
+      </div>
+      <div class="bench-verdict bad">⚠️ Aspero is 3–5× slower to load the DigiLocker SDK — a direct contributor to the 18–22% mid-flow abandonment rate.</div>
+    </div>
+
+    <div class="bench-metric">
+      <div class="bench-metric-header">📉 Impact on Funnel</div>
+      <div style="font-size:13px;color:#374151;line-height:1.6;">
+        A <strong>10–15s blank loading screen</strong> before the DigiLocker consent UI appears creates two problems:<br><br>
+        <strong>1. Perceived crash:</strong> Users assume the app froze and abandon (back-tap or force-close). This matches the <strong>18–22% "SDK mid-flow drop"</strong> tracked in the trend charts above.<br><br>
+        <strong>2. Trust erosion:</strong> A slow, blank SDK load signals a low-quality integration — users on Aadhaar-based KYC are already anxious about sharing sensitive data.
+      </div>
+    </div>
+
+    <div class="bench-action">
+      <div class="bench-action-title">🔧 Engineering Action — P1</div>
+      <div class="bench-action-body">
+        Investigate <strong>why Hyperverge SDK takes 10–15s</strong> to initialise in Aspero vs 3–4s in Vested. Likely causes: (1) SDK initialised lazily on screen mount instead of pre-warming in background; (2) additional network round-trip for config/token before SDK launch; (3) older SDK version without startup optimisations.<br><br>
+        <strong>Target:</strong> ≤4s SDK load. Estimated recovery: <strong>~8–12pp reduction in mid-flow abandonment</strong> (from 20% → ~10%) = ~140–180 additional verified users/week at current volume.
+      </div>
+    </div>
+  </div>
+</div>
+
 </div><!-- /tab-digilocker -->
 
 
@@ -1005,28 +1086,39 @@ const baseOpts = {
     g.addColorStop(1, 'rgba(5,150,105,0.0)');
     return g;
   };
+  const panVolume = [762, 835, 930, 1119, 1317, 1459, 1819, 931];
   new Chart(document.getElementById('trendChart'), {
     type:'line',
     data:{ labels:LABELS, datasets:[
-      line('Tapped CTA %',              [79.8, 76.5, 78.0, 77.7, 77.8, 76.3, 73.6, 71.6], '#4f46e5'),
-      line('Returned from DigiLocker %',[62.2, 59.0, 58.1, 61.1, 58.0, 58.7, 55.5, 55.7], '#2563eb'),
-      line('Backend OK %',              [56.6, 54.1, 53.4, 55.3, 52.5, 53.9, 50.9, 50.8], '#0891b2'),
+      { type:'bar', label:'Users on PAN screen', data:panVolume,
+        backgroundColor:'rgba(99,102,241,0.10)', borderColor:'rgba(99,102,241,0.28)',
+        borderWidth:1, borderRadius:4, yAxisID:'y2', order:2 },
+      { ...line('Tapped CTA %',              [79.8, 76.5, 78.0, 77.7, 77.8, 76.3, 73.6, 71.6], '#4f46e5'), yAxisID:'y', order:1 },
+      { ...line('Returned from DigiLocker %',[62.2, 59.0, 58.1, 61.1, 58.0, 58.7, 55.5, 55.7], '#2563eb'), yAxisID:'y', order:1 },
+      { ...line('Backend OK %',              [56.6, 54.1, 53.4, 55.3, 52.5, 53.9, 50.9, 50.8], '#0891b2'), yAxisID:'y', order:1 },
       { label:'✅ Verified (E2E) %', data:heroData, borderColor:'#059669',
         backgroundColor: function(ctx){ return heroGrad(ctx); },
         borderWidth:3, pointRadius:ptRadius(heroData),
         pointBackgroundColor:ptBg(heroData,'#059669'),
-        pointBorderColor:ptBg(heroData,'#059669'), tension:0.35, fill:true },
+        pointBorderColor:ptBg(heroData,'#059669'), tension:0.35, fill:true, yAxisID:'y', order:1 },
     ]},
     options:{
       ...baseOpts,
       plugins:{ ...baseOpts.plugins,
         legend:{ position:'bottom', labels:{ boxWidth:10, padding:18, font:{size:11} } },
         tooltip:{ mode:'index', intersect:false,
-          callbacks:{ label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + '%' } }
+          callbacks:{ label: ctx => ctx.dataset.yAxisID === 'y2'
+            ? ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' users'
+            : ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + '%' } }
       },
       scales:{
         x:{ grid:{color:'#f3f4f6'}, ticks:{font:{size:10}, maxRotation:30} },
-        y:{ min:35, max:85, grid:{color:'#f3f4f6'}, ticks:{callback:v=>v+'%', font:{size:11}} }
+        y:{ min:35, max:85, grid:{color:'#f3f4f6'}, ticks:{callback:v=>v+'%', font:{size:11}} },
+        y2:{ position:'right', min:0, max:2400,
+          grid:{ drawOnChartArea:false },
+          ticks:{ callback:v=>v.toLocaleString(), font:{size:10}, color:'rgba(99,102,241,0.7)' },
+          title:{ display:true, text:'Users on PAN screen', font:{size:10}, color:'rgba(99,102,241,0.8)' }
+        }
       }
     }
   });
