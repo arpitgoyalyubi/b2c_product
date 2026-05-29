@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DigiLocker Funnel Analysis</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1117; --card: #1a1d27; --border: #2a2d3e;
+    --text: #e2e8f0; --muted: #8892a4; --accent: #6366f1;
+    --green: #10b981; --red: #ef4444; --yellow: #f59e0b;
+    --blue: #3b82f6; --purple: #8b5cf6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; }
+  .container { max-width: 1280px; margin: 0 auto; padding: 24px 20px; }
+  .header { margin-bottom: 32px; }
+  .header h1 { font-size: 24px; font-weight: 700; color: #fff; }
+  .header .sub { color: var(--muted); margin-top: 4px; font-size: 13px; }
+  .header .badge { display: inline-block; background: #1e3a5f; color: #60a5fa; border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 600; margin-left: 10px; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+  .kpi { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+  .kpi .label { color: var(--muted); font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+  .kpi .val { font-size: 28px; font-weight: 700; color: #fff; }
+  .kpi .sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .kpi .wow { font-size: 13px; font-weight: 600; margin-top: 6px; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .grid-full { margin-bottom: 20px; }
+
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+  .card h2 { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 16px; }
+  .card h2 span { font-size: 12px; color: var(--muted); font-weight: 400; margin-left: 6px; }
+  .chart-wrap { position: relative; }
+
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { color: var(--muted); font-weight: 500; text-align: right; padding: 8px 12px; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; }
+  th:first-child { text-align: left; }
+  td { padding: 9px 12px; text-align: right; border-bottom: 1px solid #1e2130; }
+  td:first-child { text-align: left; color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #1e2130; }
+  .bold td { font-weight: 600; color: #fff; }
+  .indent { padding-left: 24px !important; color: var(--muted) !important; font-size: 12px; }
+  .indent2 { padding-left: 40px !important; color: var(--muted) !important; font-size: 12px; }
+
+  .wow-up { color: var(--green); }
+  .wow-down { color: var(--red); }
+  .wow-neutral { color: var(--muted); }
+  .tag { display: inline-block; border-radius: 3px; padding: 1px 6px; font-size: 11px; font-weight: 600; }
+  .tag-g { background: #064e3b; color: #34d399; }
+  .tag-r { background: #7f1d1d; color: #fca5a5; }
+  .tag-y { background: #78350f; color: #fcd34d; }
+
+  .section-title { font-size: 16px; font-weight: 600; color: #fff; margin: 28px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+  .insight { background: #1e2130; border-left: 3px solid var(--accent); border-radius: 6px; padding: 12px 16px; margin-top: 12px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .insight strong { color: var(--text); }
+  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 32px 0 16px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>DigiLocker KYC Funnel Analysis <span class="badge">8-week trend</span></h1>
+    <div class="sub">PAN + Aadhaar verification via Hyperverge DigiLocker SDK &nbsp;·&nbsp; Generated May 29, 2026 18:53</div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="label">End-to-end conversion</div>
+      <div class="val">42.5%</div>
+      <div class="sub">This week (partial) · 396 verified / 931 on PAN screen</div>
+      <div class="wow"><span class="wow-up">▲0.1pp</span> vs last week (42.4%)</div>
+    </div>
+    <div class="kpi">
+      <div class="label">PAN screen visitors</div>
+      <div class="val">931</div>
+      <div class="sub">This week · last week: 1,819</div>
+      <div class="wow"><span class="wow-down">-888</span> vs last week</div>
+    </div>
+    <div class="kpi">
+      <div class="label">SDK mid-flow drop</div>
+      <div class="val">19.4%</div>
+      <div class="sub">Opened DigiLocker, never returned</div>
+      <div class="wow"><span class="wow-down">▼2.1pp</span> vs last week (21.5%)</div>
+    </div>
+    <div class="kpi">
+      <div class="label">PAN fetch failures</div>
+      <div class="val">5.5%</div>
+      <div class="sub">Of PAN screen users · fallback success: 6.0%</div>
+      <div class="wow"><span class="wow-up">▲1.8pp</span> vs last week (3.7%)</div>
+    </div>
+  </div>
+
+  <!-- 8-week trend: E2E + Volume -->
+  <div class="section-title">8-Week Trends</div>
+  <div class="grid-2">
+    <div class="card">
+      <h2>End-to-end conversion <span>% of PAN screen → VERIFIED</span></h2>
+      <div class="chart-wrap"><canvas id="e2eChart" height="200"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>Weekly volume <span>users reaching PAN screen</span></h2>
+      <div class="chart-wrap"><canvas id="volChart" height="200"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Step conversion trends -->
+  <div class="grid-2">
+    <div class="card">
+      <h2>Step conversion rates <span>% of previous step</span></h2>
+      <div class="chart-wrap"><canvas id="stepsChart" height="220"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>Failure breakdown <span>% of PAN screen users</span></h2>
+      <div class="chart-wrap"><canvas id="failChart" height="220"></canvas></div>
+    </div>
+  </div>
+
+  <!-- SDK drop + Abandonment -->
+  <div class="grid-2">
+    <div class="card">
+      <h2>SDK mid-flow drop & abandonment <span>% of respective entry</span></h2>
+      <div class="chart-wrap"><canvas id="dropChart" height="200"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>Recovery rates <span>% at each recovery step</span></h2>
+      <div class="chart-wrap"><canvas id="recChart" height="200"></canvas></div>
+    </div>
+  </div>
+
+  <!-- This week vs Last week funnel -->
+  <div class="section-title">This Week vs Last Week</div>
+  <div class="grid-2">
+    <div class="card">
+      <h2>Funnel comparison <span>% of PAN screen users</span></h2>
+      <div class="chart-wrap"><canvas id="funnelBar" height="240"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>Detailed numbers</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Step</th><th>Last wk n</th><th>Last wk %</th><th>This wk n</th><th>This wk %</th><th>WoW</th></tr></thead>
+          <tbody>
+            <tr class="bold"><td>PAN Screen</td><td>1,819</td><td>100%</td><td>931</td><td>100%</td><td>—</td></tr>
+            <tr><td class="indent">↳ CTA Click</td><td>1,338</td><td>73.6%</td><td>665</td><td>71.4%</td><td><span class="wow-down">▼2.2pp</span></td></tr>
+            <tr><td class="indent2">↳ SDK Initiated</td><td>1,286</td><td>70.7%</td><td>644</td><td>69.2%</td><td><span class="wow-down">▼1.5pp</span></td></tr>
+            <tr><td class="indent2">↳ SDK Callback</td><td>1,010</td><td>55.5%</td><td>519</td><td>55.7%</td><td><span class="wow-up">▲0.2pp</span></td></tr>
+            <tr><td class="indent2">↳ Output API OK</td><td>926</td><td>50.9%</td><td>473</td><td>50.8%</td><td><span class="wow-down">▼0.1pp</span></td></tr>
+            <tr class="bold"><td class="indent">✅ VERIFIED</td><td>772</td><td>42.4%</td><td>396</td><td>42.5%</td><td><span class="wow-up">▲0.1pp</span></td></tr>
+            <tr><td class="indent">❌ AADHAAR fail</td><td>114</td><td>6.3%</td><td>29</td><td>3.1%</td><td><span class="wow-down">▼3.2pp</span></td></tr>
+            <tr><td class="indent">❌ PAN fail</td><td>68</td><td>3.7%</td><td>51</td><td>5.5%</td><td><span class="wow-up">▲1.8pp</span></td></tr>
+            <tr><td class="indent">❌ ERROR</td><td>52</td><td>2.9%</td><td>18</td><td>1.9%</td><td><span class="wow-down">▼1.0pp</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recovery deep dive -->
+  <div class="section-title">Recovery Funnel Deep-Dive</div>
+  <div class="grid-2">
+    <div class="card">
+      <h2>AADHAAR_FETCH_FAILED recovery</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Step</th><th>Last wk n</th><th>Last wk %</th><th>This wk n</th><th>This wk %</th><th>WoW</th></tr></thead>
+          <tbody>
+            <tr class="bold"><td>AADHAAR failed</td><td>113</td><td>6.3% of screen</td><td>29</td><td>3.1% of screen</td><td><span class="wow-down">▼3.2pp</span></td></tr>
+            <tr><td class="indent">↳ Clicked Retry</td><td>94</td><td>83.2%</td><td>21</td><td>72.4%</td><td><span class="wow-down">▼10.8pp</span></td></tr>
+            <tr class="bold"><td class="indent2">✅ Verified after retry</td><td>21</td><td>22.3% of retriers</td><td>3</td><td>14.3% of retriers</td><td><span class="wow-down">▼8.0pp</span></td></tr>
+            <tr><td class="indent2">❌ Failed again</td><td>73</td><td>77.7%</td><td>18</td><td>85.7%</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="insight"><strong>Only 1 in 4 retries succeed.</strong> 82% of Aadhaar-failed users retry, but 77% fail again — structural DigiLocker account issue that a retry cannot fix. Consider surfacing a clear explanation instead of a generic retry.</div>
+    </div>
+    <div class="card">
+      <h2>PAN_FETCH_FAILED recovery</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Step</th><th>Last wk n</th><th>Last wk %</th><th>This wk n</th><th>This wk %</th><th>WoW</th></tr></thead>
+          <tbody>
+            <tr class="bold"><td>PAN failed</td><td>68</td><td>3.7% of screen</td><td>51</td><td>5.5% of screen</td><td><span class="wow-up">▲1.8pp</span></td></tr>
+            <tr><td class="indent">↳ Clicked 'Add PAN'</td><td>66</td><td>97.1%</td><td>50</td><td>98.0%</td><td><span class="wow-up">▲0.9pp</span></td></tr>
+            <tr class="bold"><td class="indent2">✅ Pusher success</td><td>3</td><td>4.5% of fallback</td><td>3</td><td>6.0% of fallback</td><td><span class="wow-up">▲1.5pp</span></td></tr>
+            <tr><td class="indent2">❌ Name mismatch fail</td><td>59</td><td>89.4%</td><td>45</td><td>90.0%</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="insight"><strong>97% click the fallback — but 95% fail.</strong> Extremely high intent (nearly all PAN-failed users attempt manual entry) but near-zero success due to Aadhaar/PAN name mismatch. LLM-based name fuzzy matching or pre-verification before showing the fallback would fix this.</div>
+    </div>
+  </div>
+
+  <footer>DigiLocker Funnel · Yubi B2C · May 29, 2026 18:53 · Denominator = AADHAAR_PAN_INITIAL_SCREEN_VIEW (Individual)</footer>
+</div>
+
+<script>
+Chart.defaults.color = '#8892a4';
+Chart.defaults.borderColor = '#2a2d3e';
+const LABELS = ["Apr 06\u2013Apr 12", "Apr 13\u2013Apr 19", "Apr 20\u2013Apr 26", "Apr 27\u2013May 03", "May 04\u2013May 10", "May 11\u2013May 17", "May 18\u2013May 24", "(partial) May 25\u2013May 29"];
+const LW_IDX = LABELS.length - 2;
+const TW_IDX = LABELS.length - 1;
+
+function pointColors(data, baseColor, lwColor, twColor) {
+  return data.map((_, i) => i === LW_IDX ? lwColor : i === TW_IDX ? twColor : baseColor);
+}
+
+function lineDataset(label, data, color, opts={}) {
+  return {
+    label, data,
+    borderColor: color, backgroundColor: color + '22',
+    borderWidth: 2, pointRadius: 4, pointHoverRadius: 6,
+    tension: 0.3, fill: false,
+    pointBackgroundColor: pointColors(data, color, '#facc15', '#818cf8'),
+    pointBorderColor: pointColors(data, color, '#facc15', '#818cf8'),
+    pointRadius: data.map((_,i) => i===LW_IDX||i===TW_IDX ? 7 : 4),
+    ...opts
+  };
+}
+
+const commonOpts = {
+  responsive: true,
+  plugins: {
+    legend: { position: 'bottom', labels: { boxWidth: 12, padding: 16, font: { size: 12 } } },
+    tooltip: { mode: 'index', intersect: false }
+  },
+  scales: {
+    x: { grid: { color: '#1e2130' }, ticks: { font: { size: 11 }, maxRotation: 30 } },
+    y: { grid: { color: '#1e2130' }, ticks: { font: { size: 11 } } }
+  }
+};
+
+// E2E chart
+new Chart(document.getElementById('e2eChart'), {
+  type: 'line',
+  data: { labels: LABELS, datasets: [lineDataset('E2E conversion %', [50.4, 48.4, 45.2, 48.4, 45.6, 47.6, 42.4, 42.5], '#6366f1')] },
+  options: { ...commonOpts, scales: { ...commonOpts.scales, y: { ...commonOpts.scales.y, min: 30, max: 60, ticks: { callback: v => v+'%' } } } }
+});
+
+// Volume chart
+new Chart(document.getElementById('volChart'), {
+  type: 'bar',
+  data: {
+    labels: LABELS,
+    datasets: [{ label: 'PAN Screen users', data: [762, 835, 930, 1119, 1317, 1459, 1819, 931],
+      backgroundColor: LABELS.map((_,i) => i===LW_IDX ? '#facc1566' : i===TW_IDX ? '#818cf866' : '#3b82f633'),
+      borderColor:     LABELS.map((_,i) => i===LW_IDX ? '#facc15' : i===TW_IDX ? '#818cf8' : '#3b82f6'),
+      borderWidth: 1.5
+    }]
+  },
+  options: { ...commonOpts }
+});
+
+// Steps chart
+new Chart(document.getElementById('stepsChart'), {
+  type: 'line',
+  data: { labels: LABELS, datasets: [
+    lineDataset('CTA/PAN %',      [79.8, 76.5, 78.0, 77.7, 77.8, 76.3, 73.6, 71.4],     '#10b981'),
+    lineDataset('CB/SDK %',       [81.3, 80.0, 78.8, 81.8, 79.4, 80.3, 78.5, 80.6], '#f59e0b'),
+    lineDataset('OutOK/CB %',     [90.9, 91.7, 92.0, 90.5, 90.6, 91.7, 91.7, 91.1],     '#3b82f6'),
+    lineDataset('VER/OutOK %',    [89.1, 89.4, 84.5, 87.6, 86.8, 88.4, 83.4, 83.7], '#8b5cf6'),
+  ]},
+  options: { ...commonOpts, scales: { ...commonOpts.scales, y: { ...commonOpts.scales.y, min: 60, max: 105, ticks: { callback: v => v+'%' } } } }
+});
+
+// Failure chart
+new Chart(document.getElementById('failChart'), {
+  type: 'line',
+  data: { labels: LABELS, datasets: [
+    lineDataset('AADHAAR fail %', [2.6, 1.9, 3.2, 3.3, 3.2, 2.1, 6.3, 3.1], '#ef4444'),
+    lineDataset('PAN fail %',     [3.9, 4.2, 5.6, 4.2, 4.5, 4.6, 3.7, 5.5], '#f97316'),
+    lineDataset('ERROR %',        [1.6, 1.4, 1.4, 1.0, 1.8, 2.0, 2.9, 1.9],'#6b7280'),
+  ]},
+  options: { ...commonOpts, scales: { ...commonOpts.scales, y: { ...commonOpts.scales.y, min: 0, ticks: { callback: v => v+'%' } } } }
+});
+
+// Drop chart
+new Chart(document.getElementById('dropChart'), {
+  type: 'line',
+  data: { labels: LABELS, datasets: [
+    lineDataset('SDK mid-flow drop %', [18.7, 20.0, 21.2, 18.2, 20.6, 19.7, 21.5, 19.4], '#ef4444'),
+    lineDataset('Pure abandonment %',  [13.9, 18.8, 16.3, 15.5, 16.2, 18.0, 19.3, 22.2],  '#f97316'),
+  ]},
+  options: { ...commonOpts, scales: { ...commonOpts.scales, y: { ...commonOpts.scales.y, min: 0, ticks: { callback: v => v+'%' } } } }
+});
+
+// Recovery chart
+new Chart(document.getElementById('recChart'), {
+  type: 'line',
+  data: { labels: LABELS, datasets: [
+    lineDataset('Aadhaar→retry %',    [85.0, 92.9, 65.5, 77.1, 76.3, 92.6, 83.2, 72.4], '#10b981'),
+    lineDataset('Retry→verified %',   [11.8, 23.1, 21.1, 18.5, 10.3, 16.0, 22.3, 14.3],   '#6366f1'),
+    lineDataset('PAN fail→fallback %',[7.1, 5.7, 2.0, 6.8, 3.6, 3.0, 4.5, 6.0],    '#f59e0b'),
+  ]},
+  options: { ...commonOpts, scales: { ...commonOpts.scales, y: { ...commonOpts.scales.y, min: 0, max: 105, ticks: { callback: v => v+'%' } } } }
+});
+
+// Funnel grouped bar
+new Chart(document.getElementById('funnelBar'), {
+  type: 'bar',
+  data: {
+    labels: ["PAN Screen", "CTA Click", "SDK Init", "SDK Callback", "Output OK", "VERIFIED"],
+    datasets: [
+      { label: 'Last week', data: [100, 73.6, 70.7, 55.5, 50.9, 42.4], backgroundColor: '#facc1566', borderColor: '#facc15', borderWidth: 1.5 },
+      { label: 'This week', data: [100, 71.4, 69.2, 55.7, 50.8, 42.5], backgroundColor: '#818cf866', borderColor: '#818cf8', borderWidth: 1.5 },
+    ]
+  },
+  options: { ...commonOpts, scales: { ...commonOpts.scales, y: { ...commonOpts.scales.y, min: 0, max: 105, ticks: { callback: v => v+'%' } } } }
+});
+</script>
+</body>
+</html>
