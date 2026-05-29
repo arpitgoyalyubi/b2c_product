@@ -44,7 +44,7 @@ body {
 
 /* ── Funnel ── */
 .funnel-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
-.funnel-row { display: grid; grid-template-columns: 260px 1fr 210px; gap: 12px; align-items: center; padding: 6px 0; }
+.funnel-row { display: grid; grid-template-columns: 260px 1fr 270px; gap: 12px; align-items: center; padding: 6px 0; }
 .funnel-label { display: flex; align-items: flex-start; gap: 10px; }
 .step-num { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: #f3f4f6; color: #374151; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
 .step-name { font-size: 13px; font-weight: 600; color: #111827; }
@@ -126,6 +126,14 @@ body {
 .cmp-table .row-fail td:first-child { color: #dc2626; }
 
 footer { text-align: center; color: #9ca3af; font-size: 12px; padding-top: 40px; border-top: 1px solid #e5e7eb; margin-top: 40px; }
+
+/* ── Sparkline tooltip ── */
+#spark-tip {
+  position: fixed; pointer-events: none; display: none; z-index: 9999;
+  background: #111827; color: #fff; font-size: 12px; font-weight: 500;
+  padding: 5px 10px; border-radius: 6px; white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
 </style>
 </head>
 <body>
@@ -139,7 +147,7 @@ footer { text-align: center; color: #9ca3af; font-size: 12px; padding-top: 40px;
   <div class="meta">
     PAN + Aadhaar verification · Hyperverge DigiLocker SDK &nbsp;·&nbsp;
     Denominator = users who reached the PAN verification screen &nbsp;·&nbsp;
-    Generated May 29, 2026 19:17
+    Generated May 29, 2026 19:33
   </div>
 </div>
 
@@ -155,7 +163,7 @@ footer { text-align: center; color: #9ca3af; font-size: 12px; padding-top: 40px;
     <div class="kpi-label">Users on PAN screen</div>
     <div class="kpi-val">931</div>
     <div class="kpi-sub">This week (4 days) · last week: 1,819</div>
-    <div class="kpi-wow"><svg width="120" height="36" xmlns="http://www.w3.org/2000/svg"><polygon points="2,35 2.0,33.0 18.6,30.9 35.1,28.2 51.7,22.9 68.3,17.2 84.9,13.2 101.4,3.0 118.0,28.2 118.0,35" fill="#2563eb" opacity="0.15"/><polyline points="2.0,33.0 18.6,30.9 35.1,28.2 51.7,22.9 68.3,17.2 84.9,13.2 101.4,3.0 118.0,28.2" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="118.0" cy="28.2" r="2.5" fill="#dc2626"/></svg></div>
+    <div class="kpi-wow"><svg width="160" height="36" xmlns="http://www.w3.org/2000/svg" style="overflow:visible"><polygon points="2,35 2.0,33.0 24.3,30.9 46.6,28.2 68.9,22.9 91.1,17.2 113.4,13.2 135.7,3.0 158.0,28.2 158.0,35" fill="#2563eb" opacity="0.15"/><polyline points="2.0,33.0 24.3,30.9 46.6,28.2 68.9,22.9 91.1,17.2 113.4,13.2 135.7,3.0 158.0,28.2" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="2.0" cy="33.0" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 06–Apr 12: 762 users" style="cursor:default"/><circle cx="24.3" cy="30.9" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 13–Apr 19: 835 users" style="cursor:default"/><circle cx="46.6" cy="28.2" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 20–Apr 26: 930 users" style="cursor:default"/><circle cx="68.9" cy="22.9" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 27–May 03: 1119 users" style="cursor:default"/><circle cx="91.1" cy="17.2" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 04–May 10: 1317 users" style="cursor:default"/><circle cx="113.4" cy="13.2" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 11–May 17: 1459 users" style="cursor:default"/><circle cx="135.7" cy="3.0" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 18–May 24: 1819 users" style="cursor:default"/><circle cx="158.0" cy="28.2" r="2.5" fill="#dc2626" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 25–May 29 ↗: 931 users" style="cursor:default"/></svg></div>
   </div>
   <div class="kpi">
     <div class="kpi-label">Mid-DigiLocker drop</div>
@@ -216,7 +224,7 @@ footer { text-align: center; color: #9ca3af; font-size: 12px; padding-top: 40px;
           <div class="funnel-meta">
             <span class="cum-pct ">100%</span>
             
-            <div class="meta-row2"><svg width="90" height="28" xmlns="http://www.w3.org/2000/svg"><polygon points="2,27 2.0,25.0 14.3,23.5 26.6,21.5 38.9,17.6 51.1,13.4 63.4,10.5 75.7,3.0 88.0,21.5 88.0,27" fill="#374151" opacity="0.15"/><polyline points="2.0,25.0 14.3,23.5 26.6,21.5 38.9,17.6 51.1,13.4 63.4,10.5 75.7,3.0 88.0,21.5" fill="none" stroke="#374151" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="88.0" cy="21.5" r="2.5" fill="#dc2626"/></svg></div>
+            <div class="meta-row2"><svg width="160" height="28" xmlns="http://www.w3.org/2000/svg" style="overflow:visible"><polygon points="2,27 2.0,25.0 24.3,23.5 46.6,21.5 68.9,17.6 91.1,13.4 113.4,10.5 135.7,3.0 158.0,21.5 158.0,27" fill="#374151" opacity="0.15"/><polyline points="2.0,25.0 24.3,23.5 46.6,21.5 68.9,17.6 91.1,13.4 113.4,10.5 135.7,3.0 158.0,21.5" fill="none" stroke="#374151" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="2.0" cy="25.0" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 06–Apr 12: 762%" style="cursor:default"/><circle cx="24.3" cy="23.5" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 13–Apr 19: 835%" style="cursor:default"/><circle cx="46.6" cy="21.5" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 20–Apr 26: 930%" style="cursor:default"/><circle cx="68.9" cy="17.6" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 27–May 03: 1119%" style="cursor:default"/><circle cx="91.1" cy="13.4" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 04–May 10: 1317%" style="cursor:default"/><circle cx="113.4" cy="10.5" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 11–May 17: 1459%" style="cursor:default"/><circle cx="135.7" cy="3.0" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 18–May 24: 1819%" style="cursor:default"/><circle cx="158.0" cy="21.5" r="2.5" fill="#dc2626" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 25–May 29 ↗: 931%" style="cursor:default"/></svg></div>
           </div>
         </div>
   
@@ -243,7 +251,7 @@ footer { text-align: center; color: #9ca3af; font-size: 12px; padding-top: 40px;
           <div class="funnel-meta">
             <span class="cum-pct ">73.6%</span>
             <span class="step-over-step">← 73.6% of prev step</span>
-            <div class="meta-row2"><span class="badge-bad">▼ 2.0pp</span><svg width="90" height="28" xmlns="http://www.w3.org/2000/svg"><polygon points="2,27 2.0,3.0 14.3,11.9 26.6,7.8 38.9,8.6 51.1,8.4 63.4,12.4 75.7,19.6 88.0,25.0 88.0,27" fill="#4f46e5" opacity="0.15"/><polyline points="2.0,3.0 14.3,11.9 26.6,7.8 38.9,8.6 51.1,8.4 63.4,12.4 75.7,19.6 88.0,25.0" fill="none" stroke="#4f46e5" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="88.0" cy="25.0" r="2.5" fill="#dc2626"/></svg></div>
+            <div class="meta-row2"><span class="badge-bad">▼ 2.0pp</span><svg width="160" height="28" xmlns="http://www.w3.org/2000/svg" style="overflow:visible"><polygon points="2,27 2.0,3.0 24.3,11.9 46.6,7.8 68.9,8.6 91.1,8.4 113.4,12.4 135.7,19.6 158.0,25.0 158.0,27" fill="#4f46e5" opacity="0.15"/><polyline points="2.0,3.0 24.3,11.9 46.6,7.8 68.9,8.6 91.1,8.4 113.4,12.4 135.7,19.6 158.0,25.0" fill="none" stroke="#4f46e5" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="2.0" cy="3.0" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 06–Apr 12: 79.8%" style="cursor:default"/><circle cx="24.3" cy="11.9" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 13–Apr 19: 76.5%" style="cursor:default"/><circle cx="46.6" cy="7.8" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 20–Apr 26: 78.0%" style="cursor:default"/><circle cx="68.9" cy="8.6" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 27–May 03: 77.7%" style="cursor:default"/><circle cx="91.1" cy="8.4" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 04–May 10: 77.8%" style="cursor:default"/><circle cx="113.4" cy="12.4" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 11–May 17: 76.3%" style="cursor:default"/><circle cx="135.7" cy="19.6" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 18–May 24: 73.6%" style="cursor:default"/><circle cx="158.0" cy="25.0" r="2.5" fill="#dc2626" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 25–May 29 ↗: 71.6%" style="cursor:default"/></svg></div>
           </div>
         </div>
   
@@ -270,7 +278,7 @@ footer { text-align: center; color: #9ca3af; font-size: 12px; padding-top: 40px;
           <div class="funnel-meta">
             <span class="cum-pct ">70.7%</span>
             <span class="step-over-step">← 96.1% of prev step</span>
-            <div class="meta-row2"><span class="badge-bad">▼ 1.3pp</span><svg width="90" height="28" xmlns="http://www.w3.org/2000/svg"><polygon points="2,27 2.0,3.0 14.3,11.4 26.6,11.7 38.9,8.6 51.1,13.8 63.4,13.5 75.7,21.0 88.0,25.0 88.0,27" fill="#7c3aed" opacity="0.15"/><polyline points="2.0,3.0 14.3,11.4 26.6,11.7 38.9,8.6 51.1,13.8 63.4,13.5 75.7,21.0 88.0,25.0" fill="none" stroke="#7c3aed" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="88.0" cy="25.0" r="2.5" fill="#dc2626"/></svg></div>
+            <div class="meta-row2"><span class="badge-bad">▼ 1.3pp</span><svg width="160" height="28" xmlns="http://www.w3.org/2000/svg" style="overflow:visible"><polygon points="2,27 2.0,3.0 24.3,11.4 46.6,11.7 68.9,8.6 91.1,13.8 113.4,13.5 135.7,21.0 158.0,25.0 158.0,27" fill="#7c3aed" opacity="0.15"/><polyline points="2.0,3.0 24.3,11.4 46.6,11.7 68.9,8.6 91.1,13.8 113.4,13.5 135.7,21.0 158.0,25.0" fill="none" stroke="#7c3aed" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="2.0" cy="3.0" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 06–Apr 12: 76.5%" style="cursor:default"/><circle cx="24.3" cy="11.4" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 13–Apr 19: 73.8%" style="cursor:default"/><circle cx="46.6" cy="11.7" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 20–Apr 26: 73.7%" style="cursor:default"/><circle cx="68.9" cy="8.6" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 27–May 03: 74.7%" style="cursor:default"/><circle cx="91.1" cy="13.8" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 04–May 10: 73.0%" style="cursor:default"/><circle cx="113.4" cy="13.5" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 11–May 17: 73.1%" style="cursor:default"/><circle cx="135.7" cy="21.0" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 18–May 24: 70.7%" style="cursor:default"/><circle cx="158.0" cy="25.0" r="2.5" fill="#dc2626" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 25–May 29 ↗: 69.4%" style="cursor:default"/></svg></div>
           </div>
         </div>
   
@@ -297,7 +305,7 @@ footer { text-align: center; color: #9ca3af; font-size: 12px; padding-top: 40px;
           <div class="funnel-meta">
             <span class="cum-pct ">55.5%</span>
             <span class="step-over-step">← 78.5% of prev step</span>
-            <div class="meta-row2"><span class="badge-neutral">—</span><svg width="90" height="28" xmlns="http://www.w3.org/2000/svg"><polygon points="2,27 2.0,3.0 14.3,13.5 26.6,16.5 38.9,6.6 51.1,16.8 63.4,14.5 75.7,25.0 88.0,24.3 88.0,27" fill="#2563eb" opacity="0.15"/><polyline points="2.0,3.0 14.3,13.5 26.6,16.5 38.9,6.6 51.1,16.8 63.4,14.5 75.7,25.0 88.0,24.3" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="88.0" cy="24.3" r="2.5" fill="#059669"/></svg></div>
+            <div class="meta-row2"><span class="badge-neutral">—</span><svg width="160" height="28" xmlns="http://www.w3.org/2000/svg" style="overflow:visible"><polygon points="2,27 2.0,3.0 24.3,13.5 46.6,16.5 68.9,6.6 91.1,16.8 113.4,14.5 135.7,25.0 158.0,24.3 158.0,27" fill="#2563eb" opacity="0.15"/><polyline points="2.0,3.0 24.3,13.5 46.6,16.5 68.9,6.6 91.1,16.8 113.4,14.5 135.7,25.0 158.0,24.3" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="2.0" cy="3.0" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 06–Apr 12: 62.2%" style="cursor:default"/><circle cx="24.3" cy="13.5" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 13–Apr 19: 59.0%" style="cursor:default"/><circle cx="46.6" cy="16.5" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 20–Apr 26: 58.1%" style="cursor:default"/><circle cx="68.9" cy="6.6" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 27–May 03: 61.1%" style="cursor:default"/><circle cx="91.1" cy="16.8" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 04–May 10: 58.0%" style="cursor:default"/><circle cx="113.4" cy="14.5" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 11–May 17: 58.7%" style="cursor:default"/><circle cx="135.7" cy="25.0" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 18–May 24: 55.5%" style="cursor:default"/><circle cx="158.0" cy="24.3" r="2.5" fill="#059669" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 25–May 29 ↗: 55.7%" style="cursor:default"/></svg></div>
           </div>
         </div>
   
@@ -324,7 +332,7 @@ footer { text-align: center; color: #9ca3af; font-size: 12px; padding-top: 40px;
           <div class="funnel-meta">
             <span class="cum-pct ">50.9%</span>
             <span class="step-over-step">← 91.7% of prev step</span>
-            <div class="meta-row2"><span class="badge-neutral">—</span><svg width="90" height="28" xmlns="http://www.w3.org/2000/svg"><polygon points="2,27 2.0,3.0 14.3,12.5 26.6,15.1 38.9,7.9 51.1,18.6 63.4,13.2 75.7,24.6 88.0,25.0 88.0,27" fill="#0891b2" opacity="0.15"/><polyline points="2.0,3.0 14.3,12.5 26.6,15.1 38.9,7.9 51.1,18.6 63.4,13.2 75.7,24.6 88.0,25.0" fill="none" stroke="#0891b2" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="88.0" cy="25.0" r="2.5" fill="#dc2626"/></svg></div>
+            <div class="meta-row2"><span class="badge-neutral">—</span><svg width="160" height="28" xmlns="http://www.w3.org/2000/svg" style="overflow:visible"><polygon points="2,27 2.0,3.0 24.3,12.5 46.6,15.1 68.9,7.9 91.1,18.6 113.4,13.2 135.7,24.6 158.0,25.0 158.0,27" fill="#0891b2" opacity="0.15"/><polyline points="2.0,3.0 24.3,12.5 46.6,15.1 68.9,7.9 91.1,18.6 113.4,13.2 135.7,24.6 158.0,25.0" fill="none" stroke="#0891b2" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="2.0" cy="3.0" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 06–Apr 12: 56.6%" style="cursor:default"/><circle cx="24.3" cy="12.5" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 13–Apr 19: 54.1%" style="cursor:default"/><circle cx="46.6" cy="15.1" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 20–Apr 26: 53.4%" style="cursor:default"/><circle cx="68.9" cy="7.9" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 27–May 03: 55.3%" style="cursor:default"/><circle cx="91.1" cy="18.6" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 04–May 10: 52.5%" style="cursor:default"/><circle cx="113.4" cy="13.2" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 11–May 17: 53.9%" style="cursor:default"/><circle cx="135.7" cy="24.6" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 18–May 24: 50.9%" style="cursor:default"/><circle cx="158.0" cy="25.0" r="2.5" fill="#dc2626" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 25–May 29 ↗: 50.8%" style="cursor:default"/></svg></div>
           </div>
         </div>
   
@@ -351,7 +359,7 @@ footer { text-align: center; color: #9ca3af; font-size: 12px; padding-top: 40px;
           <div class="funnel-meta">
             <span class="cum-pct success-pct">42.4%</span>
             <span class="step-over-step">← 83.4% of prev step</span>
-            <div class="meta-row2"><span class="badge-neutral">—</span><svg width="90" height="28" xmlns="http://www.w3.org/2000/svg"><polygon points="2,27 2.0,3.0 14.3,8.5 26.6,17.3 38.9,8.5 51.1,16.2 63.4,10.7 75.7,25.0 88.0,24.7 88.0,27" fill="#059669" opacity="0.15"/><polyline points="2.0,3.0 14.3,8.5 26.6,17.3 38.9,8.5 51.1,16.2 63.4,10.7 75.7,25.0 88.0,24.7" fill="none" stroke="#059669" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="88.0" cy="24.7" r="2.5" fill="#059669"/></svg></div>
+            <div class="meta-row2"><span class="badge-neutral">—</span><svg width="160" height="28" xmlns="http://www.w3.org/2000/svg" style="overflow:visible"><polygon points="2,27 2.0,3.0 24.3,8.5 46.6,17.3 68.9,8.5 91.1,16.2 113.4,10.7 135.7,25.0 158.0,24.7 158.0,27" fill="#059669" opacity="0.15"/><polyline points="2.0,3.0 24.3,8.5 46.6,17.3 68.9,8.5 91.1,16.2 113.4,10.7 135.7,25.0 158.0,24.7" fill="none" stroke="#059669" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="2.0" cy="3.0" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 06–Apr 12: 50.4%" style="cursor:default"/><circle cx="24.3" cy="8.5" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 13–Apr 19: 48.4%" style="cursor:default"/><circle cx="46.6" cy="17.3" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 20–Apr 26: 45.2%" style="cursor:default"/><circle cx="68.9" cy="8.5" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 27–May 03: 48.4%" style="cursor:default"/><circle cx="91.1" cy="16.2" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 04–May 10: 45.6%" style="cursor:default"/><circle cx="113.4" cy="10.7" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 11–May 17: 47.6%" style="cursor:default"/><circle cx="135.7" cy="25.0" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 18–May 24: 42.4%" style="cursor:default"/><circle cx="158.0" cy="24.7" r="2.5" fill="#059669" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 25–May 29 ↗: 42.5%" style="cursor:default"/></svg></div>
           </div>
         </div>
 
@@ -509,7 +517,7 @@ footer { text-align: center; color: #9ca3af; font-size: 12px; padding-top: 40px;
   </div>
 </div>
 
-<footer>DigiLocker KYC Funnel &nbsp;·&nbsp; Yubi B2C &nbsp;·&nbsp; May 29, 2026 19:17 &nbsp;·&nbsp; Denominator: AADHAAR_PAN_INITIAL_SCREEN_VIEW (Individual)</footer>
+<footer>DigiLocker KYC Funnel &nbsp;·&nbsp; Yubi B2C &nbsp;·&nbsp; May 29, 2026 19:33 &nbsp;·&nbsp; Denominator: AADHAAR_PAN_INITIAL_SCREEN_VIEW (Individual)</footer>
 </div>
 
 <script>
@@ -557,6 +565,24 @@ new Chart(document.getElementById('failChart'), {
   ]},
   options:{ ...baseOpts, scales:{ ...baseOpts.scales, y:{ ...baseOpts.scales.y, min:0, ticks:{callback:v=>v+'%'} } } }
 });
+
+// Sparkline hover tooltips
+(function() {
+  const tip = document.createElement('div');
+  tip.id = 'spark-tip';
+  document.body.appendChild(tip);
+  document.querySelectorAll('.spark-dot').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      tip.textContent = el.dataset.tip;
+      tip.style.display = 'block';
+    });
+    el.addEventListener('mousemove', e => {
+      tip.style.left = (e.clientX + 14) + 'px';
+      tip.style.top  = (e.clientY - 30) + 'px';
+    });
+    el.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+  });
+})();
 </script>
 </body>
 </html>
