@@ -126,6 +126,36 @@ body {
 .rec-insight { background: #f9fafb; border-radius: 8px; padding: 10px 14px; margin-top: 12px; font-size: 12px; color: #6b7280; line-height: 1.5; }
 .rec-insight strong { color: #374151; }
 
+
+/* ── Trend section upgrade ── */
+.trend-section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; }
+.trend-section-header h2 { font-size: 17px; font-weight: 700; color: #111827; }
+.trend-meta { font-size: 12px; color: #9ca3af; }
+.trend-hero { background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 22px 24px; box-shadow: 0 1px 3px rgba(0,0,0,.05); margin-bottom: 14px; }
+.trend-hero-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.trend-hero-head h3 { font-size: 14px; font-weight: 700; color: #111827; }
+.trend-hero-sub { font-size: 12px; color: #9ca3af; margin-bottom: 18px; }
+.trend-legend { display: flex; gap: 16px; flex-wrap: wrap; }
+.trend-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #6b7280; }
+.trend-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.trend-sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.trend-sub-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px 20px; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
+.trend-sub-card h3 { font-size: 13px; font-weight: 700; color: #111827; margin-bottom: 2px; }
+.trend-sub-card .chart-sub { font-size: 11px; color: #9ca3af; margin-bottom: 14px; }
+.trend-insight-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+.trend-insight { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px 16px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+.trend-insight.down { border-top: 3px solid #ef4444; }
+.trend-insight.up   { border-top: 3px solid #f59e0b; }
+.trend-insight.ok   { border-top: 3px solid #059669; }
+.trend-insight.neu  { border-top: 3px solid #6b7280; }
+.ti-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: #9ca3af; margin-bottom: 8px; }
+.ti-val   { font-size: 22px; font-weight: 800; color: #111827; line-height: 1; margin-bottom: 6px; }
+.ti-val .ti-arrow { font-size: 16px; }
+.ti-body  { font-size: 12px; color: #6b7280; line-height: 1.5; }
+.ti-body strong { color: #374151; }
+.dot-lw { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #f59e0b; vertical-align: middle; margin-right: 3px; }
+.dot-tw { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #818cf8; vertical-align: middle; margin-right: 3px; }
+
 /* ── Trend charts ── */
 .chart-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 20px; }
 .chart-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
@@ -459,20 +489,58 @@ footer { text-align: center; color: #9ca3af; font-size: 12px; padding-top: 40px;
 </div>
 
 <!-- 8-week trend charts -->
-<div class="section">
-  <h2>8-Week Trend</h2>
+<div class="section" style="margin-bottom:18px;">
+  <div class="trend-section-header">
+    <h2>8-Week Trend</h2>
+    <span class="trend-meta"><span class="dot-lw"></span> Last week &nbsp; <span class="dot-tw"></span> This week (partial)</span>
+  </div>
   <hr class="section-divider">
 </div>
-<div class="chart-grid">
-  <div class="chart-card">
-    <h3>Funnel step conversion rates</h3>
-    <div class="chart-sub">% of users at each step — yellow dot = last week, purple dot = this week</div>
-    <div class="chart-wrap"><canvas id="trendChart" height="200"></canvas></div>
+
+<!-- Trend insights row -->
+<div class="trend-insight-row">
+  <div class="trend-insight down">
+    <div class="ti-label">E2E conversion trend</div>
+    <div class="ti-val"><span class="ti-arrow" style="color:#ef4444">↘</span> −7.9pp</div>
+    <div class="ti-body"><strong>50.4% → 42.5%</strong> over 8 weeks as volume grew 2.4×. More users, proportionally fewer converting.</div>
   </div>
-  <div class="chart-card">
-    <h3>Failure & loss rates</h3>
-    <div class="chart-sub">% of PAN screen users</div>
-    <div class="chart-wrap"><canvas id="failChart" height="200"></canvas></div>
+  <div class="trend-insight up">
+    <div class="ti-label">Pre-CTA abandonment</div>
+    <div class="ti-val"><span class="ti-arrow" style="color:#f59e0b">↗</span> +8.1pp</div>
+    <div class="ti-body"><strong>Fastest-growing leak</strong> — 13.9% → 22.0%. Fixing this has the highest ceiling impact on E2E conversion.</div>
+  </div>
+  <div class="trend-insight neu">
+    <div class="ti-label">Mid-DigiLocker drop</div>
+    <div class="ti-val" style="color:#6b7280">~20%</div>
+    <div class="ti-body"><strong>Structural, stable</strong> at 18–22% for 8 weeks. Users open DigiLocker but never return — consent or account linking issue.</div>
+  </div>
+  <div class="trend-insight ok">
+    <div class="ti-label">Aadhaar fail spike</div>
+    <div class="ti-val"><span class="ti-arrow" style="color:#059669">↘</span> 6.3% → 3.1%</div>
+    <div class="ti-body">Spike in May 18 week <strong>recovered this week</strong>. PAN fail trending up (3.7% → 5.5%) — watch closely.</div>
+  </div>
+</div>
+
+<!-- Hero: conversion funnel chart (full width) -->
+<div class="trend-hero">
+  <div class="trend-hero-head">
+    <h3>Funnel step conversion rates</h3>
+  </div>
+  <div class="trend-hero-sub">% of users who reached each step, as share of PAN screen users</div>
+  <div class="chart-wrap"><canvas id="trendChart" height="130"></canvas></div>
+</div>
+
+<!-- Sub charts: split failure modes -->
+<div class="trend-sub-grid">
+  <div class="trend-sub-card">
+    <h3>Mid-funnel leakage</h3>
+    <div class="chart-sub">SDK mid-flow drop + pre-CTA abandonment — % of PAN screen users</div>
+    <div class="chart-wrap"><canvas id="leakChart" height="160"></canvas></div>
+  </div>
+  <div class="trend-sub-card">
+    <h3>Error rates</h3>
+    <div class="chart-sub">Aadhaar fetch fail + PAN fetch fail — % of PAN screen users</div>
+    <div class="chart-wrap"><canvas id="errorChart" height="160"></canvas></div>
   </div>
 </div>
 
@@ -928,26 +996,68 @@ const baseOpts = {
   }
 };
 
-new Chart(document.getElementById('trendChart'), {
-  type:'line',
-  data:{ labels:LABELS, datasets:[
-    line('Tapped CTA %',              [79.8, 76.5, 78.0, 77.7, 77.8, 76.3, 73.6, 71.6], '#4f46e5'),
-    line('Returned from DigiLocker %',[62.2, 59.0, 58.1, 61.1, 58.0, 58.7, 55.5, 55.7], '#2563eb'),
-    line('Backend OK %',              [56.6, 54.1, 53.4, 55.3, 52.5, 53.9, 50.9, 50.8], '#0891b2'),
-    line('✅ Verified (E2E) %',       [50.4, 48.4, 45.2, 48.4, 45.6, 47.6, 42.4, 42.5], '#059669'),
-  ]},
-  options:{ ...baseOpts, scales:{ ...baseOpts.scales, y:{ ...baseOpts.scales.y, min:35, ticks:{callback:v=>v+'%'} } } }
-});
+// ── Hero chart: funnel step conversion rates ──
+(function(){
+  const heroData = [50.4, 48.4, 45.2, 48.4, 45.6, 47.6, 42.4, 42.5];
+  const heroGrad = (ctx) => {
+    const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, ctx.chart.height);
+    g.addColorStop(0, 'rgba(5,150,105,0.22)');
+    g.addColorStop(1, 'rgba(5,150,105,0.0)');
+    return g;
+  };
+  new Chart(document.getElementById('trendChart'), {
+    type:'line',
+    data:{ labels:LABELS, datasets:[
+      line('Tapped CTA %',              [79.8, 76.5, 78.0, 77.7, 77.8, 76.3, 73.6, 71.6], '#4f46e5'),
+      line('Returned from DigiLocker %',[62.2, 59.0, 58.1, 61.1, 58.0, 58.7, 55.5, 55.7], '#2563eb'),
+      line('Backend OK %',              [56.6, 54.1, 53.4, 55.3, 52.5, 53.9, 50.9, 50.8], '#0891b2'),
+      { label:'✅ Verified (E2E) %', data:heroData, borderColor:'#059669',
+        backgroundColor: function(ctx){ return heroGrad(ctx); },
+        borderWidth:3, pointRadius:ptRadius(heroData),
+        pointBackgroundColor:ptBg(heroData,'#059669'),
+        pointBorderColor:ptBg(heroData,'#059669'), tension:0.35, fill:true },
+    ]},
+    options:{
+      ...baseOpts,
+      plugins:{ ...baseOpts.plugins,
+        legend:{ position:'bottom', labels:{ boxWidth:10, padding:18, font:{size:11} } },
+        tooltip:{ mode:'index', intersect:false,
+          callbacks:{ label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + '%' } }
+      },
+      scales:{
+        x:{ grid:{color:'#f3f4f6'}, ticks:{font:{size:10}, maxRotation:30} },
+        y:{ min:35, max:85, grid:{color:'#f3f4f6'}, ticks:{callback:v=>v+'%', font:{size:11}} }
+      }
+    }
+  });
+})();
 
-new Chart(document.getElementById('failChart'), {
+// ── Sub chart 1: mid-funnel leakage ──
+new Chart(document.getElementById('leakChart'), {
   type:'line',
   data:{ labels:LABELS, datasets:[
     line('SDK mid-flow drop %',   [18.7, 20.0, 21.2, 18.2, 20.6, 19.7, 21.5, 19.7], '#ef4444'),
     line('Pre-CTA abandonment %', [13.9, 18.8, 16.3, 15.5, 16.2, 18.0, 19.3, 22.0], '#f97316'),
-    line('Aadhaar fail %',        [2.6,  1.9,  3.2,  3.3,  3.2,  2.1,  6.3,  3.1],  '#dc2626'),
-    line('PAN fail %',            [3.9,  4.2,  5.6,  4.2,  4.5,  4.6,  3.7,  5.5],  '#f59e0b'),
   ]},
-  options:{ ...baseOpts, scales:{ ...baseOpts.scales, y:{ ...baseOpts.scales.y, min:0, ticks:{callback:v=>v+'%'} } } }
+  options:{ ...baseOpts,
+    scales:{ ...baseOpts.scales,
+      y:{ min:0, max:30, grid:{color:'#f3f4f6'}, ticks:{callback:v=>v+'%', font:{size:11}} }
+    }
+  }
+});
+
+// ── Sub chart 2: error rates ──
+new Chart(document.getElementById('errorChart'), {
+  type:'line',
+  data:{ labels:LABELS, datasets:[
+    line('Aadhaar fail %', [2.6, 1.9, 3.2, 3.3, 3.2, 2.1, 6.3, 3.1], '#dc2626'),
+    line('PAN fail %',     [3.9, 4.2, 5.6, 4.2, 4.5, 4.6, 3.7, 5.5], '#d97706'),
+  ]},
+  options:{ ...baseOpts,
+    scales:{ ...baseOpts.scales,
+      y:{ min:0, max:10, grid:{color:'#f3f4f6'}, ticks:{callback:v=>v+'%', font:{size:11}} }
+    }
+  }
 });
 
 // Sparkline hover tooltips
