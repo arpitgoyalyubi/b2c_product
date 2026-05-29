@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KYC Funnel Analytics · Yubi B2C</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #f8f9fb;
+  color: #111827;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.page { max-width: 1200px; margin: 0 auto; padding: 32px 20px 64px; }
+
+/* ── Header ── */
+.page-header { margin-bottom: 28px; }
+.page-header h1 { font-size: 22px; font-weight: 700; color: #111827; }
+.page-header .meta { color: #6b7280; font-size: 13px; margin-top: 4px; }
+.chip { display: inline-block; background: #ede9fe; color: #4f46e5; border-radius: 20px; padding: 2px 10px; font-size: 11px; font-weight: 600; margin-left: 8px; vertical-align: middle; }
+.chip.partial { background: #fef3c7; color: #92400e; }
+.chip.alert { background: #fee2e2; color: #991b1b; }
+
+/* ── Tabs ── */
+.tab-bar {
+  display: flex; gap: 4px; border-bottom: 2px solid #e5e7eb;
+  margin-bottom: 32px;
+}
+.tab-btn {
+  padding: 10px 20px; font-size: 13px; font-weight: 600;
+  color: #6b7280; background: none; border: none; border-bottom: 2px solid transparent;
+  margin-bottom: -2px; cursor: pointer; border-radius: 6px 6px 0 0;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.tab-btn:hover { color: #4f46e5; background: #f5f3ff; }
+.tab-btn.active { color: #4f46e5; border-bottom-color: #4f46e5; background: #f5f3ff; }
+.tab-btn.future { color: #d1d5db; cursor: default; }
+.tab-btn.future:hover { color: #d1d5db; background: none; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ── Section titles ── */
+.section { margin: 36px 0 20px; }
+.section h2 { font-size: 16px; font-weight: 700; color: #111827; display: flex; align-items: center; gap: 10px; }
+.section h2 .s-sub { font-size: 13px; font-weight: 400; color: #6b7280; }
+.section-divider { border: none; border-top: 1px solid #e5e7eb; margin-top: 8px; }
+
+/* ── KPI row ── */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 32px; }
+.kpi { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
+.kpi.kpi-alert { border-color: #fca5a5; background: #fff5f5; }
+.kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: #6b7280; margin-bottom: 10px; }
+.kpi-val { font-size: 32px; font-weight: 800; color: #111827; line-height: 1; }
+.kpi-val.danger { color: #dc2626; }
+.kpi-sub { font-size: 12px; color: #9ca3af; margin-top: 6px; }
+.kpi-wow { margin-top: 10px; font-size: 13px; font-weight: 600; }
+
+/* ── Badges ── */
+.badge-good    { background: #d1fae5; color: #065f46; border-radius: 4px; padding: 2px 7px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.badge-bad     { background: #fee2e2; color: #991b1b; border-radius: 4px; padding: 2px 7px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.badge-neutral { background: #f3f4f6; color: #6b7280; border-radius: 4px; padding: 2px 7px; font-size: 12px; white-space: nowrap; }
+.badge-warn    { background: #fef3c7; color: #92400e; border-radius: 4px; padding: 2px 7px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+
+/* ── Funnel (linear) ── */
+.funnel-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
+.funnel-row { display: grid; grid-template-columns: 260px 1fr 270px; gap: 12px; align-items: center; padding: 6px 0; }
+.funnel-label { display: flex; align-items: flex-start; gap: 10px; }
+.step-num { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: #f3f4f6; color: #374151; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+.step-name { font-size: 13px; font-weight: 600; color: #111827; }
+.step-sub  { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+.funnel-track { background: #f3f4f6; border-radius: 8px; height: 38px; position: relative; overflow: hidden; }
+.funnel-fill { height: 100%; border-radius: 8px; display: flex; align-items: center; padding: 0 12px; min-width: 36px; transition: width .4s ease; }
+.bar-count { font-size: 12px; font-weight: 700; color: #fff; white-space: nowrap; }
+.funnel-meta { display: flex; flex-direction: column; gap: 4px; }
+.cum-pct { font-size: 20px; font-weight: 800; color: #111827; line-height: 1; }
+.success-pct { color: #059669; }
+.step-over-step { font-size: 11px; color: #9ca3af; }
+.meta-row2 { display: flex; align-items: center; gap: 8px; margin-top: 2px; }
+
+/* ── Drop rows ── */
+.drop-row { display: flex; align-items: center; gap: 10px; padding: 6px 0 6px 20px; }
+.drop-arrow { color: #d1d5db; font-size: 16px; margin-left: 110px; }
+.drop-text { font-size: 12px; color: #9ca3af; }
+.drop-text strong { color: #374151; }
+.drop-pct { color: #ef4444; font-weight: 600; }
+
+/* ── Outcomes strip ── */
+.outcomes { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; margin-top: 20px; }
+.outcome-card { border-radius: 10px; padding: 14px 16px; }
+.outcome-card.success { background: #ecfdf5; border: 1px solid #a7f3d0; }
+.outcome-card.fail    { background: #fff7ed; border: 1px solid #fed7aa; }
+.outcome-card.fail2   { background: #fef2f2; border: 1px solid #fecaca; }
+.outcome-card.neutral { background: #f3f4f6; border: 1px solid #e5e7eb; }
+.outcome-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+.outcome-card.success .outcome-label { color: #065f46; }
+.outcome-card.fail    .outcome-label { color: #9a3412; }
+.outcome-card.fail2   .outcome-label { color: #991b1b; }
+.outcome-card.neutral .outcome-label { color: #374151; }
+.outcome-n  { font-size: 24px; font-weight: 800; color: #111827; }
+.outcome-pct { font-size: 12px; color: #6b7280; margin-top: 2px; }
+
+/* ── Insight boxes ── */
+.insight-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+.insight { background: #fff; border: 1px solid #e5e7eb; border-left: 4px solid #4f46e5; border-radius: 10px; padding: 14px 16px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+.insight.warn  { border-left-color: #f59e0b; }
+.insight.alert { border-left-color: #ef4444; }
+.insight-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: #6b7280; margin-bottom: 6px; }
+.insight-body  { font-size: 13px; color: #374151; line-height: 1.55; }
+.insight-body strong { color: #111827; }
+
+/* ── Recovery panels ── */
+.recovery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.recovery-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
+.recovery-card h3 { font-size: 14px; font-weight: 700; color: #111827; margin-bottom: 16px; }
+.rec-step { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.rec-bar-wrap { flex: 1; background: #f3f4f6; border-radius: 6px; height: 28px; overflow: hidden; }
+.rec-bar { height: 100%; border-radius: 6px; display: flex; align-items: center; padding: 0 10px; }
+.rec-bar-label { font-size: 11px; font-weight: 700; color: #fff; white-space: nowrap; }
+.rec-label { width: 150px; font-size: 12px; color: #374151; }
+.rec-pct   { width: 50px; text-align: right; font-size: 13px; font-weight: 700; color: #111827; }
+.rec-wow   { width: 80px; text-align: right; }
+.rec-arrow { font-size: 11px; color: #d1d5db; margin-left: 154px; padding: 2px 0; }
+.rec-insight { background: #f9fafb; border-radius: 8px; padding: 10px 14px; margin-top: 12px; font-size: 12px; color: #6b7280; line-height: 1.5; }
+.rec-insight strong { color: #374151; }
+
+/* ── Trend charts ── */
+.chart-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 20px; }
+.chart-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
+.chart-card h3 { font-size: 13px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+.chart-card .chart-sub { font-size: 12px; color: #9ca3af; margin-bottom: 16px; }
+.chart-wrap { position: relative; }
+
+/* ── Comparison table ── */
+.cmp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.cmp-table th { color: #6b7280; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; padding: 8px 14px; border-bottom: 2px solid #e5e7eb; text-align: right; background: #f9fafb; }
+.cmp-table th:first-child { text-align: left; }
+.cmp-table td { padding: 10px 14px; text-align: right; border-bottom: 1px solid #f3f4f6; color: #374151; }
+.cmp-table td:first-child { text-align: left; }
+.cmp-table tr:last-child td { border-bottom: none; }
+.cmp-table tr:hover td { background: #f9fafb; }
+.cmp-table .row-bold td { font-weight: 700; color: #111827; }
+.cmp-table .row-indent td:first-child { padding-left: 28px; color: #6b7280; }
+.cmp-table .row-indent2 td:first-child { padding-left: 44px; color: #9ca3af; font-size: 12px; }
+.cmp-table .row-success td { color: #059669; font-weight: 600; }
+.cmp-table .row-fail td:first-child { color: #dc2626; }
+.cmp-table .row-section td { background: #f9fafb; font-weight: 600; color: #374151; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+
+/* ── Bank split funnel ── */
+.bank-funnel-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
+.bank-pre-row {
+  display: grid; grid-template-columns: 260px 1fr 270px;
+  gap: 12px; align-items: center; padding: 6px 0 12px;
+  border-bottom: 1px dashed #e5e7eb; margin-bottom: 12px;
+}
+.bank-pre-label { font-size: 11px; color: #9ca3af; padding: 4px 0 4px 34px; }
+.bank-entry-row {
+  display: grid; grid-template-columns: 260px 1fr 270px;
+  gap: 12px; align-items: center; padding: 6px 0;
+}
+.split-divider {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 0; color: #9ca3af; font-size: 11px;
+  margin: 4px 0;
+}
+.split-line { flex: 1; height: 1px; background: #e5e7eb; }
+.split-label { white-space: nowrap; }
+.bank-paths { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 4px 0; }
+.bank-path { background: #f9fafb; border-radius: 10px; padding: 16px; border: 1px solid #f3f4f6; }
+.bank-path-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 12px; }
+.bank-path-title.upi { color: #4f46e5; }
+.bank-path-title.manual { color: #0891b2; }
+.bpath-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.bpath-label { width: 170px; font-size: 12px; color: #374151; flex-shrink: 0; }
+.bpath-track { flex: 1; background: #e5e7eb; border-radius: 6px; height: 28px; overflow: hidden; position: relative; }
+.bpath-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; padding: 0 8px; }
+.bpath-n { font-size: 11px; font-weight: 700; color: #fff; white-space: nowrap; }
+.bpath-pct { width: 48px; text-align: right; font-size: 12px; font-weight: 700; color: #374151; flex-shrink: 0; }
+.bpath-drop { font-size: 11px; color: #d1d5db; padding: 1px 0 1px 180px; }
+.bank-outcome-row {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
+  margin-top: 16px; padding-top: 16px;
+  border-top: 1px dashed #e5e7eb;
+}
+.bank-alert-banner {
+  background: #fef2f2; border: 1px solid #fca5a5; border-radius: 10px;
+  padding: 12px 16px; margin-bottom: 16px;
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.bank-alert-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.bank-alert-text { font-size: 13px; color: #374151; line-height: 1.5; }
+.bank-alert-text strong { color: #991b1b; }
+
+footer { text-align: center; color: #9ca3af; font-size: 12px; padding-top: 40px; border-top: 1px solid #e5e7eb; margin-top: 40px; }
+
+/* ── Sparkline tooltip ── */
+#spark-tip {
+  position: fixed; pointer-events: none; display: none; z-index: 9999;
+  background: #111827; color: #fff; font-size: 12px; font-weight: 500;
+  padding: 5px 10px; border-radius: 6px; white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- Header -->
+<div class="page-header">
+  <h1>KYC Funnel Analytics
+    <span class="chip">Yubi B2C</span>
+  </h1>
+  <div class="meta">
+    Step-by-step funnel breakdowns for each KYC stage &nbsp;·&nbsp;
+    Generated May 29, 2026 &nbsp;·&nbsp; Week = Mon–Sun IST
+  </div>
+</div>
+
+<!-- Tab bar -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('digilocker', this)">🪪 DigiLocker (PAN + Aadhaar)</button>
+  <button class="tab-btn" onclick="showTab('bank', this)">🏦 Bank Verification</button>
+  <button class="tab-btn future" title="Coming soon">💳 Demat (coming soon)</button>
+  <button class="tab-btn future" title="Coming soon">🤳 Liveness (coming soon)</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  TAB 1: DIGILOCKER                                             -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="tab-digilocker" class="tab-content active">
+
+<!-- KPI row -->
+<div class="kpi-row">
+  <div class="kpi">
+    <div class="kpi-label">End-to-end conversion</div>
+    <div class="kpi-val">42.5%</div>
+    <div class="kpi-sub">This week · 396 verified of 931 on screen</div>
+    <div class="kpi-wow"><span class="badge-neutral">—</span> vs last week (42.4%)</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Users on PAN screen</div>
+    <div class="kpi-val">931</div>
+    <div class="kpi-sub">This week (4 days) · last week: 1,819</div>
+    <div class="kpi-wow"><svg width="160" height="36" xmlns="http://www.w3.org/2000/svg" style="overflow:visible"><polygon points="2,35 2.0,33.0 24.3,30.9 46.6,28.2 68.9,22.9 91.1,17.2 113.4,13.2 135.7,3.0 158.0,28.2 158.0,35" fill="#2563eb" opacity="0.15"/><polyline points="2.0,33.0 24.3,30.9 46.6,28.2 68.9,22.9 91.1,17.2 113.4,13.2 135.7,3.0 158.0,28.2" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="2.0" cy="33.0" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 06–Apr 12: 762 users" style="cursor:default"/><circle cx="24.3" cy="30.9" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 13–Apr 19: 835 users" style="cursor:default"/><circle cx="46.6" cy="28.2" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 20–Apr 26: 930 users" style="cursor:default"/><circle cx="68.9" cy="22.9" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="Apr 27–May 03: 1119 users" style="cursor:default"/><circle cx="91.1" cy="17.2" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 04–May 10: 1317 users" style="cursor:default"/><circle cx="113.4" cy="13.2" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 11–May 17: 1459 users" style="cursor:default"/><circle cx="135.7" cy="3.0" r="5" fill="transparent" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 18–May 24: 1819 users" style="cursor:default"/><circle cx="158.0" cy="28.2" r="2.5" fill="#dc2626" stroke="transparent" stroke-width="8" class="spark-dot" data-tip="May 25–May 29: 931 users" style="cursor:default"/></svg></div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Mid-DigiLocker drop</div>
+    <div class="kpi-val">19.7%</div>
+    <div class="kpi-sub">Opened DigiLocker, never returned · 127 users</div>
+    <div class="kpi-wow"><span class="badge-good">▼ 1.8pp</span> vs last week (21.5%)</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Verification failures</div>
+    <div class="kpi-val">10.5%</div>
+    <div class="kpi-sub">Aadhaar fail 3.1% · PAN fail 5.5% · Error 1.9%</div>
+    <div class="kpi-wow"><span class="badge-good">▼ 1.4pp</span> vs last week</div>
+  </div>
+</div>
+
+<!-- Insights -->
+<div class="section">
+  <h2>Key Insights <span class="s-sub">auto-generated from this week's data</span></h2>
+  <hr class="section-divider">
+</div>
+<div class="insight-row">
+  <div class="insight alert">
+    <div class="insight-title">📉 8-week trend</div>
+    <div class="insight-body">End-to-end conversion is <strong>↘ declining</strong> — from <strong>50.4%</strong> (Apr 6) to <strong>42.5%</strong> now, a <strong>7.9pp shift</strong> as volume grew 2.4×. More users, proportionally fewer converting.</div>
+  </div>
+  <div class="insight warn">
+    <div class="insight-title">⚠️ Biggest loss bucket</div>
+    <div class="insight-body">The largest single drop is <strong>pre-CTA abandonment</strong> at <strong>26.4%</strong> of all users. Fixing this has the highest ceiling impact on end-to-end conversion.</div>
+  </div>
+  <div class="insight alert">
+    <div class="insight-title">🔴 Recovery almost non-existent</div>
+    <div class="insight-body">Of 68 users whose PAN fetch failed last week, <strong>97% clicked the fallback</strong> — but <strong>only 4.5% succeeded</strong>. High intent, near-zero rescue. Name mismatch (Aadhaar vs PAN records) is the root cause.</div>
+  </div>
+</div>
+
+<!-- The Funnel -->
+<div class="section">
+  <h2>The Funnel <span class="s-sub">last week · May 18–May 24 · sparklines = 8-week trend · dot color = WoW direction</span></h2>
+  <hr class="section-divider">
+</div>
+<div class="funnel-card">
+        <div class="funnel-row" id="frow-1">
+          <div class="funnel-label">
+            <span class="step-num">1</span>
+            <div>
+              <div class="step-name">Landed on verification screen</div>
+              <div class="step-sub">Reached PAN + Aadhaar step in KYC</div>
+            </div>
+          </div>
+          <div class="funnel-bar-col">
+            <div class="funnel-track">
+              <div class="funnel-fill " style="width:100%; background:linear-gradient(90deg,#374151,#374151cc)">
+                <span class="bar-count">1,819</span>
+              </div>
+            </div>
+          </div>
+          <div class="funnel-meta">
+            <span class="cum-pct ">100%</span>
+            <div class="meta-row2"><svg width="160" height="28" xmlns="http://www.w3.org/2000/svg" style="overflow:visible"><polygon points="2,27 2.0,25.0 24.3,23.5 46.6,21.5 68.9,17.6 91.1,13.4 113.4,10.5 135.7,3.0 158.0,21.5 158.0,27" fill="#374151" opacity="0.15"/><polyline points="2.0,25.0 24.3,23.5 46.6,21.5 68.9,17.6 91.1,13.4 113.4,10.5 135.7,3.0 158.0,21.5" fill="none" stroke="#374151" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+          </div>
+        </div>
+        <div class="drop-row">
+          <div class="drop-arrow">↓</div>
+          <div class="drop-text"><strong>481</strong> dropped here &nbsp;·&nbsp; <span class="drop-pct">26.4% of users</span> &nbsp;·&nbsp; 130 switched to HUF journey · 351 abandoned without action</div>
+        </div>
+        <div class="funnel-row" id="frow-2">
+          <div class="funnel-label">
+            <span class="step-num">2</span>
+            <div>
+              <div class="step-name">Tapped Start DigiLocker</div>
+              <div class="step-sub">Chose to verify via Aadhaar/PAN from DigiLocker</div>
+            </div>
+          </div>
+          <div class="funnel-bar-col">
+            <div class="funnel-track">
+              <div class="funnel-fill " style="width:73.6%; background:linear-gradient(90deg,#4f46e5,#4f46e5cc)">
+                <span class="bar-count">1,338</span>
+              </div>
+            </div>
+          </div>
+          <div class="funnel-meta">
+            <span class="cum-pct ">73.6%</span>
+            <span class="step-over-step">← 73.6% of prev step</span>
+            <div class="meta-row2"><span class="badge-bad">▼ 2.0pp</span><svg width="160" height="28" xmlns="http://www.w3.org/2000/svg" style="overflow:visible"><polygon points="2,27 2.0,3.0 24.3,11.9 46.6,7.8 68.9,8.6 91.1,8.4 113.4,12.4 135.7,19.6 158.0,25.0 158.0,27" fill="#4f46e5" opacity="0.15"/><polyline points="2.0,3.0 24.3,11.9 46.6,7.8 68.9,8.6 91.1,8.4 113.4,12.4 135.7,19.6 158.0,25.0" fill="none" stroke="#4f46e5" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+          </div>
+        </div>
+        <div class="drop-row">
+          <div class="drop-arrow">↓</div>
+          <div class="drop-text"><strong>52</strong> dropped here &nbsp;·&nbsp; <span class="drop-pct">2.9% of users</span> &nbsp;·&nbsp; CTA click → SDK launch gap (token generation failures)</div>
+        </div>
+        <div class="funnel-row" id="frow-3">
+          <div class="funnel-label">
+            <span class="step-num">3</span>
+            <div>
+              <div class="step-name">DigiLocker app opened</div>
+              <div class="step-sub">Hyperverge SDK launched, user entered DigiLocker</div>
+            </div>
+          </div>
+          <div class="funnel-bar-col">
+            <div class="funnel-track">
+              <div class="funnel-fill " style="width:70.7%; background:linear-gradient(90deg,#7c3aed,#7c3aedcc)">
+                <span class="bar-count">1,286</span>
+              </div>
+            </div>
+          </div>
+          <div class="funnel-meta">
+            <span class="cum-pct ">70.7%</span>
+            <span class="step-over-step">← 96.1% of prev step</span>
+            <div class="meta-row2"><span class="badge-bad">▼ 1.3pp</span><svg width="160" height="28" xmlns="http://www.w3.org/2000/svg" style="overflow:visible"><polygon points="2,27 2.0,3.0 24.3,11.4 46.6,11.7 68.9,8.6 91.1,13.8 113.4,13.5 135.7,21.0 158.0,25.0 158.0,27" fill="#7c3aed" opacity="0.15"/><polyline points="2.0,3.0 24.3,11.4 46.6,11.7 68.9,8.6 91.1,13.8 113.4,13.5 135.7,21.0 158.0,25.0" fill="none" stroke="#7c3aed" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+          </div>
+        </div>
+        <div class="drop-row">
+          <div class="drop-arrow">↓</div>
+          <div class="drop-text"><strong>276</strong> dropped here &nbsp;·&nbsp; <span class="drop-pct">15.2% of users</span> &nbsp;·&nbsp; Opened DigiLocker but never returned — app killed, timeout, or session expired</div>
+        </div>
+        <div class="funnel-row" id="frow-4">
+          <div class="funnel-label">
+            <span class="step-num">4</span>
+            <div>
+              <div class="step-name">Returned from DigiLocker</div>
+              <div class="step-sub">SDK callback received (any outcome — approved or cancelled)</div>
+            </div>
+          </div>
+          <div class="funnel-bar-col">
+            <div class="funnel-track">
+              <div class="funnel-fill " style="width:55.5%; background:linear-gradient(90deg,#2563eb,#2563ebcc)">
+                <span class="bar-count">1,010</span>
+              </div>
+            </div>
+          </div>
+          <div class="funnel-meta">
+            <span class="cum-pct ">55.5%</span>
+            <span class="step-over-step">← 78.5% of prev step</span>
+            <div class="meta-row2"><span class="badge-neutral">—</span></div>
+          </div>
+        </div>
+        <div class="drop-row">
+          <div class="drop-arrow">↓</div>
+          <div class="drop-text"><strong>84</strong> dropped here &nbsp;·&nbsp; <span class="drop-pct">4.6% of users</span> &nbsp;·&nbsp; Backend API call failed (network / timeout)</div>
+        </div>
+        <div class="funnel-row" id="frow-5">
+          <div class="funnel-label">
+            <span class="step-num">5</span>
+            <div>
+              <div class="step-name">Backend processed result</div>
+              <div class="step-sub">Output API returned — indicates what was fetched</div>
+            </div>
+          </div>
+          <div class="funnel-bar-col">
+            <div class="funnel-track">
+              <div class="funnel-fill " style="width:50.9%; background:linear-gradient(90deg,#0891b2,#0891b2cc)">
+                <span class="bar-count">926</span>
+              </div>
+            </div>
+          </div>
+          <div class="funnel-meta">
+            <span class="cum-pct ">50.9%</span>
+            <span class="step-over-step">← 91.7% of prev step</span>
+            <div class="meta-row2"><span class="badge-neutral">—</span></div>
+          </div>
+        </div>
+        <div class="drop-row">
+          <div class="drop-arrow">↓</div>
+          <div class="drop-text"><strong>154</strong> dropped here &nbsp;·&nbsp; <span class="drop-pct">8.5% of users</span> &nbsp;·&nbsp; Aadhaar not fetched: 114 users · PAN not fetched: 68 users · Error: 52 users</div>
+        </div>
+        <div class="funnel-row" id="frow-6">
+          <div class="funnel-label">
+            <span class="step-num">6</span>
+            <div>
+              <div class="step-name">✅ PAN + Aadhaar verified</div>
+              <div class="step-sub">Both documents fetched and name match passed</div>
+            </div>
+          </div>
+          <div class="funnel-bar-col">
+            <div class="funnel-track">
+              <div class="funnel-fill funnel-success" style="width:42.4%; background:linear-gradient(90deg,#059669,#10b981)">
+                <span class="bar-count">772</span>
+              </div>
+            </div>
+          </div>
+          <div class="funnel-meta">
+            <span class="cum-pct success-pct">42.4%</span>
+            <span class="step-over-step">← 83.4% of prev step</span>
+            <div class="meta-row2"><span class="badge-neutral">—</span></div>
+          </div>
+        </div>
+
+  <div style="margin-top:20px; padding-top:16px; border-top:1px dashed #e5e7eb;">
+    <div style="font-size:12px; font-weight:600; color:#6b7280; margin-bottom:12px; text-transform:uppercase; letter-spacing:.05em;">Where did the other 57.6% go?</div>
+    <div class="outcomes">
+      <div class="outcome-card success">
+        <div class="outcome-label">✅ Verified</div>
+        <div class="outcome-n">772</div>
+        <div class="outcome-pct">42.4% of users</div>
+      </div>
+      <div class="outcome-card neutral">
+        <div class="outcome-label">🚪 Left before CTA</div>
+        <div class="outcome-n">481</div>
+        <div class="outcome-pct">26.4% · HUF: 130 · Abandoned: 351</div>
+      </div>
+      <div class="outcome-card neutral">
+        <div class="outcome-label">📵 Lost in DigiLocker</div>
+        <div class="outcome-n">276</div>
+        <div class="outcome-pct">15.2% · app killed or timed out mid-flow</div>
+      </div>
+      <div class="outcome-card fail">
+        <div class="outcome-label">❌ Fetch failures</div>
+        <div class="outcome-n">234</div>
+        <div class="outcome-pct">Aadhaar: 114 · PAN: 68 · Error: 52</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 8-week trend charts -->
+<div class="section">
+  <h2>8-Week Trend</h2>
+  <hr class="section-divider">
+</div>
+<div class="chart-grid">
+  <div class="chart-card">
+    <h3>Funnel step conversion rates</h3>
+    <div class="chart-sub">% of users at each step — yellow dot = last week, purple dot = this week</div>
+    <div class="chart-wrap"><canvas id="trendChart" height="200"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <h3>Failure & loss rates</h3>
+    <div class="chart-sub">% of PAN screen users</div>
+    <div class="chart-wrap"><canvas id="failChart" height="200"></canvas></div>
+  </div>
+</div>
+
+<!-- This week vs Last week comparison -->
+<div class="section">
+  <h2>This Week vs Last Week <span class="s-sub">step-by-step numbers</span></h2>
+  <hr class="section-divider">
+</div>
+<div class="chart-card" style="margin-bottom:20px;">
+  <table class="cmp-table">
+    <thead>
+      <tr>
+        <th>Step</th>
+        <th>May 18–May 24<br><span style="font-weight:400;color:#9ca3af">n</span></th>
+        <th>May 18–May 24<br><span style="font-weight:400;color:#9ca3af">% of screen</span></th>
+        <th>May 25–May 29 (partial)<br><span style="font-weight:400;color:#9ca3af">n</span></th>
+        <th>May 25–May 29 (partial)<br><span style="font-weight:400;color:#9ca3af">% of screen</span></th>
+        <th>WoW</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="row-bold"><td>Landed on PAN screen</td><td>1,819</td><td>100%</td><td>931</td><td>100%</td><td>—</td></tr>
+      <tr class="row-indent"><td>↳ Tapped Start DigiLocker</td><td>1,338</td><td>73.6%</td><td>667</td><td>71.6%</td><td><span class="badge-bad">▼ 2.0pp</span></td></tr>
+      <tr class="row-indent2"><td>↳ DigiLocker opened</td><td>1,286</td><td>70.7%</td><td>646</td><td>69.4%</td><td><span class="badge-bad">▼ 1.3pp</span></td></tr>
+      <tr class="row-indent2"><td>↳ Returned from DigiLocker</td><td>1,010</td><td>55.5%</td><td>519</td><td>55.7%</td><td><span class="badge-neutral">—</span></td></tr>
+      <tr class="row-indent2"><td>↳ Backend processed</td><td>926</td><td>50.9%</td><td>473</td><td>50.8%</td><td><span class="badge-neutral">—</span></td></tr>
+      <tr class="row-bold row-success"><td>✅ Verified (end-to-end)</td><td>772</td><td>42.4%</td><td>396</td><td>42.5%</td><td><span class="badge-neutral">—</span></td></tr>
+      <tr class="row-indent row-fail"><td>❌ Aadhaar fetch failed</td><td>114</td><td>6.3%</td><td>29</td><td>3.1%</td><td><span class="badge-good">▼ 3.2pp</span></td></tr>
+      <tr class="row-indent row-fail"><td>❌ PAN fetch failed</td><td>68</td><td>3.7%</td><td>51</td><td>5.5%</td><td><span class="badge-bad">▲ 1.8pp</span></td></tr>
+      <tr class="row-indent row-fail"><td>❌ Error</td><td>52</td><td>2.9%</td><td>18</td><td>1.9%</td><td><span class="badge-good">▼ 1.0pp</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Recovery -->
+<div class="section">
+  <h2>What happens to users who fail? <span class="s-sub">last week data</span></h2>
+  <hr class="section-divider">
+</div>
+<div class="recovery-grid">
+  <div class="recovery-card">
+    <h3>🔐 Aadhaar not fetched → Retry path</h3>
+    <div class="rec-step">
+      <div class="rec-label">Aadhaar fetch failed</div>
+      <div class="rec-bar-wrap"><div class="rec-bar" style="width:100%;background:#ef4444"><span class="rec-bar-label">113 users</span></div></div>
+      <div class="rec-pct">100%</div>
+      <div class="rec-wow"></div>
+    </div>
+    <div class="rec-arrow">↓ sees "Retry Verification" button</div>
+    <div class="rec-step">
+      <div class="rec-label">Clicked Retry</div>
+      <div class="rec-bar-wrap"><div class="rec-bar" style="width:83.2%;background:#f97316"><span class="rec-bar-label">94</span></div></div>
+      <div class="rec-pct">83.2%</div>
+      <div class="rec-wow"><span class="badge-bad">▼ 10.8pp</span></div>
+    </div>
+    <div class="rec-arrow">↓ goes through DigiLocker again</div>
+    <div class="rec-step">
+      <div class="rec-label" style="color:#059669;font-weight:600;">✅ Verified after retry</div>
+      <div class="rec-bar-wrap"><div class="rec-bar" style="width:22.3%;background:#059669;min-width:8px"><span class="rec-bar-label">21</span></div></div>
+      <div class="rec-pct" style="color:#059669">22.3%</div>
+      <div class="rec-wow"><span class="badge-bad">▼ 8.0pp</span></div>
+    </div>
+    <div class="rec-step">
+      <div class="rec-label" style="color:#dc2626;">❌ Failed again</div>
+      <div class="rec-bar-wrap"><div class="rec-bar" style="width:77.7%;background:#fca5a5;min-width:8px"><span class="rec-bar-label" style="color:#991b1b">73</span></div></div>
+      <div class="rec-pct" style="color:#dc2626">77.7%</div>
+      <div class="rec-wow"></div>
+    </div>
+    <div class="rec-insight">
+      <strong>80% retry</strong>, but only <strong>1 in 4 succeed</strong>.
+      Root cause is structural (DigiLocker account not linked or consent not set) — a retry cannot fix it.
+      Better error message needed instead of generic retry.
+    </div>
+  </div>
+  <div class="recovery-card">
+    <h3>🪪 PAN not fetched → Manual fallback path</h3>
+    <div class="rec-step">
+      <div class="rec-label">PAN fetch failed</div>
+      <div class="rec-bar-wrap"><div class="rec-bar" style="width:100%;background:#f97316"><span class="rec-bar-label">68 users</span></div></div>
+      <div class="rec-pct">100%</div>
+      <div class="rec-wow"></div>
+    </div>
+    <div class="rec-arrow">↓ sees "Add PAN Details" button</div>
+    <div class="rec-step">
+      <div class="rec-label">Went to fallback screen</div>
+      <div class="rec-bar-wrap"><div class="rec-bar" style="width:97.1%;background:#f59e0b"><span class="rec-bar-label">66</span></div></div>
+      <div class="rec-pct">97.1%</div>
+      <div class="rec-wow"><span class="badge-good">▲ 0.9pp</span></div>
+    </div>
+    <div class="rec-arrow">↓ manually enters PAN number · backend runs name match</div>
+    <div class="rec-step">
+      <div class="rec-label" style="color:#059669;font-weight:600;">✅ Name matched — verified</div>
+      <div class="rec-bar-wrap"><div class="rec-bar" style="width:4.5%;background:#059669;min-width:8px"><span class="rec-bar-label">3</span></div></div>
+      <div class="rec-pct" style="color:#059669">4.5%</div>
+      <div class="rec-wow"><span class="badge-good">▲ 1.5pp</span></div>
+    </div>
+    <div class="rec-step">
+      <div class="rec-label" style="color:#dc2626;">❌ Name mismatch — rejected</div>
+      <div class="rec-bar-wrap"><div class="rec-bar" style="width:89.4%;background:#fca5a5;min-width:8px"><span class="rec-bar-label" style="color:#991b1b">59</span></div></div>
+      <div class="rec-pct" style="color:#dc2626">89.4%</div>
+      <div class="rec-wow"></div>
+    </div>
+    <div class="rec-insight">
+      <strong>97% show high intent</strong> (tap the fallback), but <strong>95% fail anyway</strong> —
+      Aadhaar name ≠ PAN registry name.
+      LLM-based fuzzy name matching or a pre-check before showing fallback would rescue most of these users.
+    </div>
+  </div>
+</div>
+
+</div><!-- /tab-digilocker -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  TAB 2: BANK VERIFICATION                                      -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="tab-bank" class="tab-content">
+
+<!-- KPI row -->
+<div class="kpi-row">
+  <div class="kpi">
+    <div class="kpi-label">End-to-end conversion</div>
+    <div class="kpi-val">86.6%</div>
+    <div class="kpi-sub">Last week · 705 verified of 814 on screen</div>
+    <div class="kpi-wow"><span class="badge-bad">▼ 2.3pp</span> this week (84.3%)</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Bank Account View</div>
+    <div class="kpi-val">814</div>
+    <div class="kpi-sub">Last week (May 19–25) · this week: 344 (4 days)</div>
+    <div class="kpi-wow"><span class="badge-neutral">—</span></div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Pre-screen drop (eng issue)</div>
+    <div class="kpi-val">3.9%</div>
+    <div class="kpi-sub">KYC PAN Verified → Bank View · 34 users LW</div>
+    <div class="kpi-wow"><span class="badge-neutral">—</span> stable both weeks · needs fix</div>
+  </div>
+  <div class="kpi kpi-alert">
+    <div class="kpi-label">🚨 RPD Init Error (this week)</div>
+    <div class="kpi-val danger">9.0%</div>
+    <div class="kpi-sub">31 users couldn't get UPI QR · was 0% last week</div>
+    <div class="kpi-wow"><span class="badge-bad">▲ new this week</span> — P0 investigation needed</div>
+  </div>
+</div>
+
+<!-- Alert banner -->
+<div class="bank-alert-banner">
+  <div class="bank-alert-icon">🚨</div>
+  <div class="bank-alert-text">
+    <strong>P0 — New RPD Init Error this week (May 26–29):</strong> 31 users (9% of Bank Account View) are hitting failures on <code>/reverse-penny-drop/initiate</code> — the UPI QR and deep links are not being generated. This was <strong>0 errors last week</strong>. These users are falling back to manual entry, masking the overall conversion impact. Likely a backend infra regression — needs immediate investigation.
+  </div>
+</div>
+
+<!-- Insights -->
+<div class="section">
+  <h2>Key Insights <span class="s-sub">last week + this week</span></h2>
+  <hr class="section-divider">
+</div>
+<div class="insight-row">
+  <div class="insight warn">
+    <div class="insight-title">⚠️ Biggest in-funnel drop</div>
+    <div class="insight-body">Of 673 users who opened a UPI app last week, only <strong>576 completed the ₹1 payment</strong> — <strong>97 users (14.4%) abandoned inside their UPI app</strong>. This is the single largest loss point in the bank funnel. Possible causes: wrong beneficiary shown, app friction, or users testing intent only.</div>
+  </div>
+  <div class="insight alert">
+    <div class="insight-title">🔧 Engineering: 3.9% pre-screen drop</div>
+    <div class="insight-body">Exactly <strong>3.9% of users</strong> who complete PAN verification never reach the Bank Account View screen — stable across both weeks (<strong>34 LW, 14 TW</strong>). Root cause: a 3-second success modal + KYC refresh API call must complete before the bank screen renders. Reduce modal to ≤1s or make the refresh non-blocking to recover ~30 users/week.</div>
+  </div>
+  <div class="insight">
+    <div class="insight-title">🔀 7.2% tried both UPI + manual</div>
+    <div class="insight-body">At least <strong>59 users last week</strong> clicked a UPI provider <em>and</em> also entered their account number manually in the same week — meaning their UPI payment failed or expired and they switched to manual. The overlap is higher in weeks where UPI failure rates are elevated (e.g., this week with RPD init errors).</div>
+  </div>
+</div>
+
+<!-- The Bank Funnel -->
+<div class="section">
+  <h2>The Funnel <span class="s-sub">last week · May 19–25 · UPI and manual paths run in parallel from the same screen</span></h2>
+  <hr class="section-divider">
+</div>
+
+<div class="bank-funnel-card">
+
+  <!-- Pre-screen step -->
+  <div class="bank-pre-row">
+    <div class="funnel-label">
+      <span class="step-num" style="background:#fef3c7;color:#92400e;">!</span>
+      <div>
+        <div class="step-name">KYC PAN Verified <span style="font-size:11px;font-weight:400;color:#9ca3af">[BE event]</span></div>
+        <div class="step-sub">Backend confirms PAN + Aadhaar — triggers navigation to bank screen</div>
+      </div>
+    </div>
+    <div>
+      <div class="funnel-track">
+        <div class="funnel-fill" style="width:100%;background:linear-gradient(90deg,#6b7280,#9ca3af)">
+          <span class="bar-count">865</span>
+        </div>
+      </div>
+    </div>
+    <div class="funnel-meta">
+      <span class="cum-pct" style="color:#6b7280;">100%</span>
+    </div>
+  </div>
+  <div class="drop-row" style="padding-left:0;">
+    <div class="drop-arrow" style="margin-left:110px;">↓</div>
+    <div class="drop-text"><strong>34 users (3.9%)</strong> never reach bank screen · <span class="drop-pct">app exits during 3s PAN success modal or KYC refresh API delay</span> · <strong>engineering fix available</strong></div>
+  </div>
+
+  <!-- Entry row -->
+  <div class="bank-entry-row">
+    <div class="funnel-label">
+      <span class="step-num" style="background:#374151;color:#fff;">1</span>
+      <div>
+        <div class="step-name">Bank Account View</div>
+        <div class="step-sub">User reaches bank verification screen · denominator for all steps below</div>
+      </div>
+    </div>
+    <div>
+      <div class="funnel-track">
+        <div class="funnel-fill" style="width:100%;background:linear-gradient(90deg,#374151,#374151cc)">
+          <span class="bar-count">814</span>
+        </div>
+      </div>
+    </div>
+    <div class="funnel-meta">
+      <span class="cum-pct">100%</span>
+      <span class="step-over-step">96.1% from KYC PAN Verified</span>
+    </div>
+  </div>
+
+  <!-- Path split label -->
+  <div class="split-divider" style="margin: 12px 0 8px;">
+    <div class="split-line"></div>
+    <div class="split-label" style="color:#9ca3af; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.05em;">UPI &amp; Manual paths shown on the same screen — user chooses</div>
+    <div class="split-line"></div>
+  </div>
+
+  <!-- Two-column paths -->
+  <div class="bank-paths">
+
+    <!-- UPI / RPD Path -->
+    <div class="bank-path">
+      <div class="bank-path-title upi">📱 UPI Path (Reverse Penny Drop)</div>
+      <div style="font-size:11px;color:#9ca3af;margin-bottom:12px;">RPD initiates automatically on page load · user taps a UPI app to pay ₹1</div>
+
+      <div class="bpath-row">
+        <div class="bpath-label">Provider clicked</div>
+        <div class="bpath-track">
+          <div class="bpath-fill" style="width:83.9%;background:#4f46e5">
+            <span class="bpath-n">683</span>
+          </div>
+        </div>
+        <div class="bpath-pct">83.9%</div>
+      </div>
+      <div class="bpath-drop">↓ deep link opens UPI app</div>
+      <div class="bpath-row">
+        <div class="bpath-label">UPI app opened</div>
+        <div class="bpath-track">
+          <div class="bpath-fill" style="width:82.7%;background:#6366f1">
+            <span class="bpath-n">673</span>
+          </div>
+        </div>
+        <div class="bpath-pct">82.7%</div>
+      </div>
+      <div class="bpath-drop">↓ user completes ₹1 payment · polling every 3s</div>
+      <div class="bpath-row">
+        <div class="bpath-label">₹1 payment done</div>
+        <div class="bpath-track">
+          <div class="bpath-fill" style="width:70.8%;background:#7c3aed">
+            <span class="bpath-n">576</span>
+          </div>
+        </div>
+        <div class="bpath-pct">70.8%</div>
+      </div>
+      <div class="bpath-drop" style="color:#ef4444;">↑ <strong style="color:#ef4444;">97 users (14.4%) opened app but didn't pay</strong> — biggest drop</div>
+      <div class="bpath-drop">↓ BE runs name match against PAN async</div>
+      <div class="bpath-row">
+        <div class="bpath-label" style="color:#059669;font-weight:600;">✅ KYC Verified — RPD</div>
+        <div class="bpath-track">
+          <div class="bpath-fill" style="width:67.8%;background:#059669">
+            <span class="bpath-n">552</span>
+          </div>
+        </div>
+        <div class="bpath-pct" style="color:#059669;">67.8%</div>
+      </div>
+
+      <!-- Failure signals -->
+      <div style="margin-top:14px; padding-top:12px; border-top:1px solid #e5e7eb;">
+        <div style="font-size:11px;font-weight:600;color:#9ca3af;margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em;">Failure signals (LW)</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="background:#fef2f2;color:#991b1b;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:600;">Link expired: 33 (4.1%)</span>
+          <span style="background:#fef2f2;color:#991b1b;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:600;">Payment failed: 33 (4.1%)</span>
+          <span style="background:#fef2f2;color:#991b1b;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:600;">Provider error: 2 (0.2%)</span>
+        </div>
+        <div style="margin-top:6px;display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="background:#fef3c7;color:#92400e;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:600;">🚨 TW: RPD init error 31 (9.0%) — was 0 LW</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Manual / PD Path -->
+    <div class="bank-path">
+      <div class="bank-path-title manual">📝 Manual Path (Penny Drop)</div>
+      <div style="font-size:11px;color:#9ca3af;margin-bottom:12px;">User taps "Enter manually" · types account number + IFSC · BE does penny drop async</div>
+
+      <div class="bpath-row">
+        <div class="bpath-label">Account number typed</div>
+        <div class="bpath-track">
+          <div class="bpath-fill" style="width:23.3%;background:#0891b2">
+            <span class="bpath-n">190</span>
+          </div>
+        </div>
+        <div class="bpath-pct">23.3%</div>
+      </div>
+      <div class="bpath-drop">↓ user fills IFSC + submits</div>
+      <div class="bpath-row">
+        <div class="bpath-label">Form submitted</div>
+        <div class="bpath-track">
+          <div class="bpath-fill" style="width:21.5%;background:#0e7490">
+            <span class="bpath-n">175</span>
+          </div>
+        </div>
+        <div class="bpath-pct">21.5%</div>
+      </div>
+      <div class="bpath-drop">↓ pending verification modal · BE does penny drop</div>
+      <div class="bpath-row">
+        <div class="bpath-label" style="color:#059669;font-weight:600;">✅ KYC Verified — PD</div>
+        <div class="bpath-track">
+          <div class="bpath-fill" style="width:18.8%;background:#059669">
+            <span class="bpath-n">153</span>
+          </div>
+        </div>
+        <div class="bpath-pct" style="color:#059669;">18.8%</div>
+      </div>
+
+      <!-- Path note -->
+      <div style="margin-top:14px; padding-top:12px; border-top:1px solid #e5e7eb;">
+        <div style="font-size:11px;font-weight:600;color:#9ca3af;margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em;">Path context</div>
+        <div style="font-size:12px;color:#6b7280;line-height:1.6;">
+          <strong>23.3%</strong> enter account details — higher than expected because<br>
+          some (~59) are UPI-failed users switching paths.<br>
+          <strong>Validation errors:</strong> 55 users (6.6%) hit form errors LW.<br>
+          <strong>Submit API errors:</strong> 4 users (0.5%) LW.
+        </div>
+      </div>
+
+      <!-- Overlap note -->
+      <div style="margin-top:12px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:10px 12px;font-size:12px;color:#0c4a6e;">
+        <strong>≥59 users tried both paths</strong> — UPI failed or expired, then switched to manual entry. This overlap is why UPI% + manual% &gt; 100%.
+      </div>
+    </div>
+  </div>
+
+  <!-- Combined outcome -->
+  <div class="bank-outcome-row">
+    <div class="outcome-card success" style="grid-column:span 1;">
+      <div class="outcome-label">✅ Total Bank Verified</div>
+      <div class="outcome-n">705</div>
+      <div class="outcome-pct">86.6% of Bank Account View · RPD: 552 · PD: 153</div>
+    </div>
+    <div class="outcome-card neutral">
+      <div class="outcome-label">🔀 Tried both paths</div>
+      <div class="outcome-n">≥59</div>
+      <div class="outcome-pct">7.2% · UPI failed → switched to manual</div>
+    </div>
+    <div class="outcome-card fail2">
+      <div class="outcome-label">❌ Not verified (engaged but stuck)</div>
+      <div class="outcome-n">109</div>
+      <div class="outcome-pct">13.4% · UPI app opened but payment abandoned · manual form started but not finished</div>
+    </div>
+  </div>
+
+</div><!-- /bank-funnel-card -->
+
+<!-- This week vs Last week comparison -->
+<div class="section">
+  <h2>This Week vs Last Week <span class="s-sub">step-by-step · all counts from Amplitude funnel API anchored on Bank Account View</span></h2>
+  <hr class="section-divider">
+</div>
+<div class="chart-card" style="margin-bottom:20px;">
+  <table class="cmp-table">
+    <thead>
+      <tr>
+        <th>Step</th>
+        <th>May 19–25 (LW)<br><span style="font-weight:400;color:#9ca3af">n</span></th>
+        <th>May 19–25 (LW)<br><span style="font-weight:400;color:#9ca3af">% of BAV</span></th>
+        <th>May 26–29 (TW, partial)<br><span style="font-weight:400;color:#9ca3af">n</span></th>
+        <th>May 26–29 (TW, partial)<br><span style="font-weight:400;color:#9ca3af">% of BAV</span></th>
+        <th>WoW</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="row-bold"><td>KYC PAN Verified [BE]</td><td>865</td><td>—</td><td>359</td><td>—</td><td>—</td></tr>
+      <tr class="row-indent row-fail"><td>↳ Never reached Bank screen (eng issue)</td><td>34</td><td>3.9%</td><td>14</td><td>3.9%</td><td><span class="badge-neutral">—</span></td></tr>
+      <tr class="row-bold"><td>Bank Account View (denominator)</td><td>814</td><td>100%</td><td>344</td><td>100%</td><td>—</td></tr>
+      <tr class="row-section"><td colspan="6">UPI / RPD Path</td></tr>
+      <tr class="row-indent"><td>↳ UPI provider clicked</td><td>683</td><td>83.9%</td><td>267</td><td>77.6%</td><td><span class="badge-bad">▼ 6.3pp</span></td></tr>
+      <tr class="row-indent2"><td>↳ UPI app opened (deep link)</td><td>673</td><td>82.7%</td><td>263</td><td>76.5%</td><td><span class="badge-bad">▼ 6.2pp</span></td></tr>
+      <tr class="row-indent2"><td>↳ ₹1 payment completed</td><td>576</td><td>70.8%</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr class="row-indent2 row-success"><td>↳ ✅ KYC Verified — RPD [BE]</td><td>552</td><td>67.8%</td><td>215</td><td>62.5%</td><td><span class="badge-bad">▼ 5.3pp</span></td></tr>
+      <tr class="row-indent row-fail"><td>↳ RPD init error (can't get QR)</td><td>0</td><td>0.0%</td><td>31</td><td>9.0%</td><td><span class="badge-bad">▲ 9.0pp 🚨</span></td></tr>
+      <tr class="row-indent row-fail"><td>↳ Link expired</td><td>33</td><td>4.1%</td><td>11</td><td>3.2%</td><td><span class="badge-good">▼ 0.9pp</span></td></tr>
+      <tr class="row-indent row-fail"><td>↳ Payment failed</td><td>33</td><td>4.1%</td><td>8</td><td>2.3%</td><td><span class="badge-good">▼ 1.8pp</span></td></tr>
+      <tr class="row-section"><td colspan="6">Manual / PD Path</td></tr>
+      <tr class="row-indent"><td>↳ Account number entered</td><td>190</td><td>23.3%</td><td>94</td><td>27.3%</td><td><span class="badge-warn">▲ 4.0pp (RPD errors pushing to manual)</span></td></tr>
+      <tr class="row-indent2"><td>↳ Form submitted</td><td>175</td><td>21.5%</td><td>88</td><td>25.6%</td><td><span class="badge-warn">▲ 4.1pp</span></td></tr>
+      <tr class="row-indent2 row-success"><td>↳ ✅ KYC Verified — PD [BE]</td><td>153</td><td>18.8%</td><td>75</td><td>21.8%</td><td><span class="badge-warn">▲ 3.0pp (not organic growth)</span></td></tr>
+      <tr class="row-section"><td colspan="6">Combined Outcome</td></tr>
+      <tr class="row-bold row-success"><td>✅ Total Bank Verified (RPD + PD)</td><td>705</td><td>86.6%</td><td>290</td><td>84.3%</td><td><span class="badge-bad">▼ 2.3pp</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+</div><!-- /tab-bank -->
+
+<footer>KYC Funnel Analytics &nbsp;·&nbsp; Yubi B2C &nbsp;·&nbsp; May 29, 2026 &nbsp;·&nbsp; DigiLocker denominator: AADHAAR_PAN_INITIAL_SCREEN_VIEW &nbsp;·&nbsp; Bank denominator: BANK_ACCOUNT_VIEW (Amplitude funnel API)</footer>
+</div><!-- /page -->
+
+<div id="spark-tip"></div>
+
+<script>
+// Tab switching
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  // Re-render charts when switching to digilocker tab (canvas may have been hidden)
+  if (id === 'digilocker') {
+    Object.values(Chart.instances).forEach(c => c.resize());
+  }
+}
+
+Chart.defaults.color = '#6b7280';
+Chart.defaults.borderColor = '#f3f4f6';
+const LABELS = ["Apr 06\u2013Apr 12", "Apr 13\u2013Apr 19", "Apr 20\u2013Apr 26", "Apr 27\u2013May 03", "May 04\u2013May 10", "May 11\u2013May 17", "May 18\u2013May 24", "May 25\u2013May 29\u2197"];
+const LW = LABELS.length - 2, TW = LABELS.length - 1;
+
+function ptRadius(data) { return data.map((_,i) => i===LW||i===TW ? 7 : 3); }
+function ptBg(data, col) { return data.map((_,i) => i===LW ? '#f59e0b' : i===TW ? '#818cf8' : col); }
+function line(label, data, color, opts={}) {
+  return { label, data, borderColor:color, backgroundColor:color+'18', borderWidth:2,
+    pointRadius:ptRadius(data), pointBackgroundColor:ptBg(data,color),
+    pointBorderColor:ptBg(data,color), tension:0.35, fill:false, ...opts };
+}
+
+const baseOpts = {
+  responsive:true,
+  plugins:{ legend:{ position:'bottom', labels:{ boxWidth:10, padding:14, font:{size:11} } },
+            tooltip:{ mode:'index', intersect:false } },
+  scales:{
+    x:{ grid:{color:'#f3f4f6'}, ticks:{font:{size:10}, maxRotation:30} },
+    y:{ grid:{color:'#f3f4f6'}, ticks:{font:{size:11}} }
+  }
+};
+
+new Chart(document.getElementById('trendChart'), {
+  type:'line',
+  data:{ labels:LABELS, datasets:[
+    line('Tapped CTA %',              [79.8, 76.5, 78.0, 77.7, 77.8, 76.3, 73.6, 71.6], '#4f46e5'),
+    line('Returned from DigiLocker %',[62.2, 59.0, 58.1, 61.1, 58.0, 58.7, 55.5, 55.7], '#2563eb'),
+    line('Backend OK %',              [56.6, 54.1, 53.4, 55.3, 52.5, 53.9, 50.9, 50.8], '#0891b2'),
+    line('✅ Verified (E2E) %',       [50.4, 48.4, 45.2, 48.4, 45.6, 47.6, 42.4, 42.5], '#059669'),
+  ]},
+  options:{ ...baseOpts, scales:{ ...baseOpts.scales, y:{ ...baseOpts.scales.y, min:35, ticks:{callback:v=>v+'%'} } } }
+});
+
+new Chart(document.getElementById('failChart'), {
+  type:'line',
+  data:{ labels:LABELS, datasets:[
+    line('SDK mid-flow drop %',   [18.7, 20.0, 21.2, 18.2, 20.6, 19.7, 21.5, 19.7], '#ef4444'),
+    line('Pre-CTA abandonment %', [13.9, 18.8, 16.3, 15.5, 16.2, 18.0, 19.3, 22.0], '#f97316'),
+    line('Aadhaar fail %',        [2.6,  1.9,  3.2,  3.3,  3.2,  2.1,  6.3,  3.1],  '#dc2626'),
+    line('PAN fail %',            [3.9,  4.2,  5.6,  4.2,  4.5,  4.6,  3.7,  5.5],  '#f59e0b'),
+  ]},
+  options:{ ...baseOpts, scales:{ ...baseOpts.scales, y:{ ...baseOpts.scales.y, min:0, ticks:{callback:v=>v+'%'} } } }
+});
+
+// Sparkline hover tooltips
+(function() {
+  const tip = document.getElementById('spark-tip');
+  document.querySelectorAll('.spark-dot').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      tip.textContent = el.dataset.tip;
+      tip.style.display = 'block';
+    });
+    el.addEventListener('mousemove', e => {
+      tip.style.left = (e.clientX + 14) + 'px';
+      tip.style.top  = (e.clientY - 30) + 'px';
+    });
+    el.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+  });
+})();
+</script>
+</body>
+</html>
