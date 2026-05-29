@@ -41,6 +41,8 @@ body {
 .tab-btn.future:hover { color: #d1d5db; background: none; }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
+.tab-iframe-wrap { width: 100%; height: calc(100vh - 120px); min-height: 700px; border: none; overflow: hidden; }
+.tab-iframe-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
 
 /* ── Section titles ── */
 .section { margin: 36px 0 20px; }
@@ -276,8 +278,8 @@ footer { text-align: center; color: #9ca3af; font-size: 12px; padding-top: 40px;
 <div class="tab-bar">
   <button class="tab-btn active" onclick="showTab('digilocker', this)">🪪 DigiLocker (PAN + Aadhaar)</button>
   <button class="tab-btn" onclick="showTab('bank', this)">🏦 Bank Verification</button>
-  <button class="tab-btn future" title="Coming soon">💳 Demat (coming soon)</button>
-  <button class="tab-btn future" title="Coming soon">🤳 Liveness (coming soon)</button>
+  <button class="tab-btn" onclick="showTab('kra', this)">🔍 KRA + AML Check</button>
+  <button class="tab-btn" onclick="showTab('riskprofiling', this)">📊 Risk Profiling</button>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════════ -->
@@ -1035,6 +1037,29 @@ footer { text-align: center; color: #9ca3af; font-size: 12px; padding-top: 40px;
 </div>
 
 </div><!-- /tab-bank -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  TAB 3: KRA + AML CHECK                                        -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="tab-kra" class="tab-content">
+  <div class="tab-iframe-wrap">
+    <iframe src="https://arpitgoyalyubi.github.io/b2c_product/kra-aml-check-report.html"
+            allowfullscreen loading="lazy" title="KRA + AML Check Report"></iframe>
+  </div>
+</div><!-- /tab-kra -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  TAB 4: RISK PROFILING                                         -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="tab-riskprofiling" class="tab-content">
+  <div class="tab-iframe-wrap">
+    <iframe src="https://arpitgoyalyubi.github.io/b2c_product/risk-profiling-analysis.html"
+            allowfullscreen loading="lazy" title="Risk Profiling Analysis"></iframe>
+  </div>
+</div><!-- /tab-riskprofiling -->
+
 
 <footer>KYC Funnel Analytics &nbsp;·&nbsp; Yubi B2C &nbsp;·&nbsp; May 29, 2026 &nbsp;·&nbsp; DigiLocker denominator: AADHAAR_PAN_INITIAL_SCREEN_VIEW &nbsp;·&nbsp; Bank denominator: BANK_ACCOUNT_VIEW (Amplitude funnel API)</footer>
 </div><!-- /page -->
