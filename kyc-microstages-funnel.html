@@ -712,23 +712,24 @@ footer { text-align: center; color: #9ca3af; font-size: 12px; padding-top: 40px;
           <div class="bench-bar bench-bar-us" style="width:100%">10–15s</div>
         </div>
       </div>
-      <div class="bench-verdict bad">⚠️ Aspero is 3–5× slower to load the DigiLocker SDK — a direct contributor to the 18–22% mid-flow abandonment rate.</div>
+      <div class="bench-verdict bad">⚠️ Aspero is 3–5× slower — but funnel data shows most users who tap the CTA do successfully load the SDK. This is a UX quality gap, not the primary funnel drop driver.</div>
     </div>
 
     <div class="bench-metric">
-      <div class="bench-metric-header">📉 Impact on Funnel</div>
+      <div class="bench-metric-header">📉 Where the Drop Actually Happens</div>
       <div style="font-size:13px;color:#374151;line-height:1.6;">
-        A <strong>10–15s blank loading screen</strong> before the DigiLocker consent UI appears creates two problems:<br><br>
-        <strong>1. Perceived crash:</strong> Users assume the app froze and abandon (back-tap or force-close). This matches the <strong>18–22% "SDK mid-flow drop"</strong> tracked in the trend charts above.<br><br>
-        <strong>2. Trust erosion:</strong> A slow, blank SDK load signals a low-quality integration — users on Aadhaar-based KYC are already anxious about sharing sensitive data.
+        The <strong>18–22% mid-flow drop</strong> occurs <em>inside</em> DigiLocker after the SDK has already loaded — not during the loading phase. Users are reaching the consent/auth screen but abandoning there. Likely causes:<br><br>
+        <strong>1. Aadhaar mobile not linked:</strong> Users without a registered mobile on Aadhaar can't receive the OTP — no path forward.<br><br>
+        <strong>2. DigiLocker consent friction:</strong> Multi-step consent flow inside the SDK confuses or overwhelms users unfamiliar with DigiLocker.<br><br>
+        <strong>3. OTP failure / timeout:</strong> Network issues or expired OTPs mid-flow cause drop-off with no retry affordance.
       </div>
     </div>
 
     <div class="bench-action">
-      <div class="bench-action-title">🔧 Engineering Action — P1</div>
+      <div class="bench-action-title">🔍 What SDK Load Time Does Affect</div>
       <div class="bench-action-body">
-        Investigate <strong>why Hyperverge SDK takes 10–15s</strong> to initialise in Aspero vs 3–4s in Vested. Likely causes: (1) SDK initialised lazily on screen mount instead of pre-warming in background; (2) additional network round-trip for config/token before SDK launch; (3) older SDK version without startup optimisations.<br><br>
-        <strong>Target:</strong> ≤4s SDK load. Estimated recovery: <strong>~8–12pp reduction in mid-flow abandonment</strong> (from 20% → ~10%) = ~140–180 additional verified users/week at current volume.
+        While SDK load time doesn't directly drive the 18–22% in-flow abandonment, a <strong>10–15s blank screen is still a UX problem</strong> — it erodes trust before the user even sees the consent screen, and may contribute to the <strong>13–22% pre-CTA abandonment</strong> (users who see the screen but never tap the button).<br><br>
+        <strong>Priority:</strong> Fixing SDK load time is P2. The higher-leverage P1 is understanding <em>why users abandon inside DigiLocker</em> — Hyperverge should surface exit-point data from the SDK callback.
       </div>
     </div>
   </div>
