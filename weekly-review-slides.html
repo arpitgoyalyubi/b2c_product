@@ -1165,121 +1165,138 @@ function sdoToggle(g){
     </div>
   </div>
 
-  <!-- Slide 13: PMM Journey Gaps — Amber/Orange -->
+  <!-- Slide 13: Journey Coverage — Interactive Funnel Map -->
+  <style>
+    #s13 .s13r { cursor:pointer; border-radius:5px; border:1px solid transparent; display:flex; align-items:center; gap:8px; padding:5px 9px; margin-bottom:2px; transition:background .12s,border-color .12s; }
+    #s13 .s13r:hover { background:#f1f5f9; border-color:#e2e8f0; }
+    #s13 .s13r.on { background:#fff7ed !important; border-color:#fed7aa !important; }
+    #s13 .s13-sec { font-size:10px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:.06em; padding:2px 6px; background:#f8fafc; border-radius:3px; margin:4px 0 3px; }
+    #s13 .s13-dot { width:11px; height:11px; border-radius:50%; flex-shrink:0; }
+    #s13 .s13-name { font-size:12px; font-weight:600; color:#1e293b; flex:1; }
+    #s13 .s13-badge { font-size:10px; font-weight:600; padding:2px 8px; border-radius:10px; white-space:nowrap; flex-shrink:0; }
+  </style>
   <div class="slide two-col" id="s13">
     <div class="left-panel" style="background:linear-gradient(160deg,#78350f,#f97316);">
       <div class="slide-num">Slide 13</div>
-      <div class="slide-ttl">PMM Journey Gaps</div>
-      <div class="slide-sub">30-day WebEngage audit</div>
-      <div class="hero-num">9</div>
-      <div class="hero-lbl">gaps found (3 broken · 6 missing)</div>
-      <div class="hero-badge flat" style="background:rgba(255,255,255,0.18);color:#fff;">0 of 3 signup stages covered</div>
+      <div class="slide-ttl">Re-engagement Coverage</div>
+      <div class="slide-sub">Signup &amp; KYC · WebEngage</div>
+      <div class="hero-num" style="font-size:2.8rem;">10</div>
+      <div class="hero-lbl">stages users drop silently</div>
+      <div class="hero-badge flat" style="background:rgba(255,255,255,0.18);color:#fff;font-size:11px;">Only 1 of 11 has an active journey</div>
       <div class="stat-list">
-        <div class="stat-item"><span class="si-lbl">Bank journey miss rate</span><span class="si-val">99%+</span></div>
-        <div class="stat-item"><span class="si-lbl">Selfie journey CTC conv</span><span class="si-val">0</span></div>
-        <div class="stat-item"><span class="si-lbl">WA journey ROAS</span><span class="si-val">0.4×</span></div>
-        <div class="stat-item"><span class="si-lbl">Paused journeys</span><span class="si-val">1</span></div>
+        <div class="stat-item">
+          <span class="si-lbl" style="display:flex;align-items:center;gap:5px;">
+            <span style="width:9px;height:9px;background:#4ade80;border-radius:50%;flex-shrink:0;display:inline-block;"></span>Active
+          </span><span class="si-val">1</span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl" style="display:flex;align-items:center;gap:5px;">
+            <span style="width:9px;height:9px;background:#fbbf24;border-radius:50%;flex-shrink:0;display:inline-block;"></span>Broken / Paused
+          </span><span class="si-val">3</span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl" style="display:flex;align-items:center;gap:5px;">
+            <span style="width:9px;height:9px;background:#f87171;border-radius:50%;flex-shrink:0;display:inline-block;"></span>No Journey
+          </span><span class="si-val">7</span>
+        </div>
       </div>
     </div>
-    <div class="right-panel" style="overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:8px;">
-      <div style="background:#fef3c7;border-left:3px solid #f59e0b;padding:6px 10px;border-radius:4px;font-size:11px;color:#78350f;">
-        Revenue not shown for signup/KYC journeys — CTC conversions only (no attribution until invest event)
+
+    <div class="right-panel" style="padding:10px 12px;display:flex;flex-direction:column;gap:0;overflow-y:auto;">
+
+      <!-- Detail panel — hidden until a stage is clicked -->
+      <div id="s13-dp" style="display:none;margin-bottom:8px;border-radius:6px;padding:8px 12px;font-size:11.5px;line-height:1.6;flex-shrink:0;border-left:4px solid #f97316;">
+        <div style="font-size:12px;font-weight:700;margin-bottom:3px;" id="s13-dp-t"></div>
+        <div id="s13-dp-b" style="color:inherit;opacity:0.9;"></div>
+      </div>
+      <div id="s13-hint" style="font-size:10.5px;color:#94a3b8;text-align:center;font-style:italic;padding:2px 0 6px;flex-shrink:0;">Click any stage to see the gap</div>
+
+      <!-- SIGNUP -->
+      <div class="s13-sec">Signup</div>
+
+      <div class="s13r" onclick="s13p(this,'Mobile OTP — Zero Re-engagement','Users who see the OTP screen but do not verify, or verify and then drop, receive no nudge. The highest-volume top-of-funnel dropout has zero re-engagement built.','#f87171','#fff1f2','#7f1d1d')">
+        <span class="s13-dot" style="background:#f87171;border:2px solid #fca5a5;"></span>
+        <span class="s13-name">Mobile OTP Verified</span>
+        <span class="s13-badge" style="background:#fee2e2;color:#dc2626;">No Journey</span>
       </div>
 
-      <!-- Broken journeys -->
-      <div style="font-size:12px;font-weight:700;color:#dc2626;border-bottom:1px solid #fca5a5;padding-bottom:3px;">Broken / Paused Journeys</div>
-      <table class="s10-tbl" style="width:100%;">
-        <thead>
-          <tr>
-            <th>Journey</th>
-            <th>Stage</th>
-            <th>Root Cause</th>
-            <th style="text-align:right;">30d CTC</th>
-            <th style="text-align:right;">Fix Priority</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="background:#fee2e2;">
-            <td>Bank Verification</td>
-            <td>Stage 6</td>
-            <td>Wrong trigger: <span style="font-family:monospace;font-size:10px;background:#fecaca;padding:1px 3px;border-radius:2px;">KYC_BANK_VERIFIED</span> fires ~3×/mo — use <span style="font-family:monospace;font-size:10px;background:#fecaca;padding:1px 3px;border-radius:2px;">_PD</span> / <span style="font-family:monospace;font-size:10px;background:#fecaca;padding:1px 3px;border-radius:2px;">_REVERSE_PD</span></td>
-            <td style="text-align:right;font-weight:700;">3</td>
-            <td style="text-align:right;color:#dc2626;font-weight:700;">P0</td>
-          </tr>
-          <tr style="background:#fee2e2;">
-            <td>Selfie / Liveness</td>
-            <td>Stage 7</td>
-            <td>Journey live but 0 CTC conv in 30 days — audit trigger event &amp; entry timing</td>
-            <td style="text-align:right;font-weight:700;">0</td>
-            <td style="text-align:right;color:#dc2626;font-weight:700;">P0</td>
-          </tr>
-          <tr style="background:#fef9c3;">
-            <td>Welcome KYC (Push)</td>
-            <td>Post-signup</td>
-            <td>Paused + wrong entry event; misses users who complete PIN setup</td>
-            <td style="text-align:right;">—</td>
-            <td style="text-align:right;color:#d97706;font-weight:700;">P0</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="s13r" onclick="s13p(this,'Email OTP — Drop-offs Go Cold','After verifying mobile, users confirm their email. Dropouts here receive zero follow-up — no automated re-trigger sequence exists for email verification.','#f87171','#fff1f2','#7f1d1d')">
+        <span class="s13-dot" style="background:#f87171;border:2px solid #fca5a5;"></span>
+        <span class="s13-name">Email OTP Verified</span>
+        <span class="s13-badge" style="background:#fee2e2;color:#dc2626;">No Journey</span>
+      </div>
 
-      <!-- Missing journeys -->
-      <div style="font-size:12px;font-weight:700;color:#d97706;border-bottom:1px solid #fde68a;padding-bottom:3px;margin-top:4px;">Missing Journeys (not built)</div>
-      <table class="s10-tbl" style="width:100%;">
-        <thead>
-          <tr>
-            <th>Missing Journey</th>
-            <th>Trigger / Signal</th>
-            <th>Stage</th>
-            <th>Channel (cost)</th>
-            <th style="text-align:right;">Priority</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="background:#fee2e2;">
-            <td>Post-Signup → KYC Start</td>
-            <td><span style="font-family:monospace;font-size:10px;background:#f1f5f9;padding:1px 3px;border-radius:2px;">SETUP_SECURE_PIN_SUCCESS</span> → no KYC within 24h</td>
-            <td>Post S3</td>
-            <td>Push (₹0)</td>
-            <td style="text-align:right;color:#dc2626;font-weight:700;">P0</td>
-          </tr>
-          <tr>
-            <td>Wet Signature Dropout</td>
-            <td>Stuck pre-<span style="font-family:monospace;font-size:10px;background:#f1f5f9;padding:1px 3px;border-radius:2px;">KYC_WET_SIGNATURE_VERIFIED</span></td>
-            <td>Stage 8</td>
-            <td>Push (₹0) + WA (₹0.9)</td>
-            <td style="text-align:right;color:#d97706;font-weight:700;">P1</td>
-          </tr>
-          <tr>
-            <td>DigiLocker Mid-Flow Dropout</td>
-            <td><span style="font-family:monospace;font-size:10px;background:#f1f5f9;padding:1px 3px;border-radius:2px;">KYC_RISKDETAILS_SUBMIT</span> → no <span style="font-family:monospace;font-size:10px;background:#f1f5f9;padding:1px 3px;border-radius:2px;">KYC_PAN_VERIFIED</span></td>
-            <td>Stage 5</td>
-            <td>Push (₹0) + WA (₹0.9)</td>
-            <td style="text-align:right;color:#d97706;font-weight:700;">P1</td>
-          </tr>
-          <tr>
-            <td>AML Check Delay</td>
-            <td><span style="font-family:monospace;font-size:10px;background:#f1f5f9;padding:1px 3px;border-radius:2px;">KYC_AML_DONE</span> → no bank step in 12h</td>
-            <td>Stage 5→6</td>
-            <td>Push (₹0)</td>
-            <td style="text-align:right;color:#d97706;font-weight:700;">P1</td>
-          </tr>
-          <tr>
-            <td>KYC Email Re-Verify</td>
-            <td>No <span style="font-family:monospace;font-size:10px;background:#f1f5f9;padding:1px 3px;border-radius:2px;">EMAIL_VERIFY_OTP_SUCCESS</span> within 24h</td>
-            <td>Stage 2</td>
-            <td>Email (₹0.2)</td>
-            <td style="text-align:right;color:#64748b;">P2</td>
-          </tr>
-          <tr>
-            <td>Mobile OTP Dropout</td>
-            <td>No <span style="font-family:monospace;font-size:10px;background:#f1f5f9;padding:1px 3px;border-radius:2px;">VERIFY_OTP_SUCCESS</span> after app open</td>
-            <td>Stage 1</td>
-            <td>Push (₹0)</td>
-            <td style="text-align:right;color:#64748b;">P2</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="s13r" onclick="s13p(this,'Registration Complete — Highest-Intent Window Wasted','PIN setup done = user is registered. But no Welcome or Start-KYC message is sent. The 2-hour post-signup window is the highest-intent moment in the funnel. Currently wasted.','#f87171','#fff1f2','#7f1d1d')">
+        <span class="s13-dot" style="background:#f87171;border:2px solid #fca5a5;"></span>
+        <span class="s13-name">PIN Setup Complete</span>
+        <span class="s13-badge" style="background:#fee2e2;color:#dc2626;">No Journey</span>
+      </div>
+
+      <div class="s13r" onclick="s13p(this,'Welcome KYC Push — Paused + Wrong Event','A Start-KYC push journey was built but is currently PAUSED. It also targets the wrong trigger event, so even if unpaused it would miss the majority of newly registered users. Needs a full rebuild.','#fbbf24','#fffbeb','#78350f')">
+        <span class="s13-dot" style="background:#fbbf24;border:2px solid #fde68a;"></span>
+        <span class="s13-name">Welcome — Start KYC</span>
+        <span class="s13-badge" style="background:#fef9c3;color:#b45309;">Paused</span>
+      </div>
+
+      <!-- KYC -->
+      <div class="s13-sec">KYC</div>
+
+      <div class="s13r" onclick="s13p(this,'Risk Profiling — The Biggest Activation Gap','Registered users who have not started KYC risk profiling receive zero nudge to return. This gap between signup and KYC is the largest single drop-off in the funnel — entirely unaddressed.','#f87171','#fff1f2','#7f1d1d')">
+        <span class="s13-dot" style="background:#f87171;border:2px solid #fca5a5;"></span>
+        <span class="s13-name">Risk Profiling</span>
+        <span class="s13-badge" style="background:#fee2e2;color:#dc2626;">No Journey</span>
+      </div>
+
+      <div class="s13r" onclick="s13p(this,'DigiLocker / PAN — #1 KYC Dropout, Zero Re-engagement','Mid-DigiLocker dropouts are the highest-volume KYC dropout stage. Users who start but do not complete PAN or Aadhaar verification receive zero re-engagement nudge at any point.','#f87171','#fff1f2','#7f1d1d')">
+        <span class="s13-dot" style="background:#f87171;border:2px solid #fca5a5;"></span>
+        <span class="s13-name">DigiLocker / PAN Verify</span>
+        <span class="s13-badge" style="background:#fee2e2;color:#dc2626;">No Journey</span>
+      </div>
+
+      <div class="s13r" onclick="s13p(this,'Bank Verification — Journey Exists, 99%+ Miss Rate','Journey fires on KYC_BANK_VERIFIED — a legacy event firing ~3 times/month since the Jan 2026 bank redesign. Real completions fire KYC_BANK_VERIFIED_PD or _REVERSE_PD. Result: 8,955 sends, 3 click-through conversions.','#fbbf24','#fffbeb','#78350f')">
+        <span class="s13-dot" style="background:#fbbf24;border:2px solid #fde68a;"></span>
+        <span class="s13-name">Bank Verification</span>
+        <span class="s13-badge" style="background:#fef9c3;color:#b45309;">Broken</span>
+      </div>
+
+      <div class="s13r" onclick="s13p(this,'Selfie / Liveness — Live Journey, Zero Conversions','Journey is active but recorded 0 click-through conversions in 30 days. The trigger event or re-entry timing is misconfigured — users are not being reached at their actual dropout moment.','#fbbf24','#fffbeb','#78350f')">
+        <span class="s13-dot" style="background:#fbbf24;border:2px solid #fde68a;"></span>
+        <span class="s13-name">Selfie / Liveness</span>
+        <span class="s13-badge" style="background:#fef9c3;color:#b45309;">Broken</span>
+      </div>
+
+      <div class="s13r" onclick="s13p(this,'Wet Signature — New Stage, No Coverage Since Launch','Added as a new step in the Mar 2026 KYC redesign. No journey has been built for users stuck before completing wet signature. This step has had zero re-engagement for 3 months.','#f87171','#fff1f2','#7f1d1d')">
+        <span class="s13-dot" style="background:#f87171;border:2px solid #fca5a5;"></span>
+        <span class="s13-name">Wet Signature</span>
+        <span class="s13-badge" style="background:#fee2e2;color:#dc2626;">No Journey</span>
+      </div>
+
+      <div class="s13r" onclick="s13p(this,'eSign — Last Mile Gap Before Completion','The final signature step before KYC completes. No journey exists for users who finish wet signature but have not yet eSigned. A critical last-mile gap with no recovery mechanism.','#f87171','#fff1f2','#7f1d1d')">
+        <span class="s13-dot" style="background:#f87171;border:2px solid #fca5a5;"></span>
+        <span class="s13-name">eSign</span>
+        <span class="s13-badge" style="background:#fee2e2;color:#dc2626;">No Journey</span>
+      </div>
+
+      <div class="s13r" onclick="s13p(this,'KYC Complete — The One Working Journey','Post-KYC completion journey is active and correctly configured. This is the only working re-engagement touchpoint across the entire Signup and KYC funnel.','#22c55e','#f0fdf4','#14532d')">
+        <span class="s13-dot" style="background:#4ade80;border:2px solid #bbf7d0;"></span>
+        <span class="s13-name">KYC Complete</span>
+        <span class="s13-badge" style="background:#dcfce7;color:#15803d;">Active</span>
+      </div>
+
+      <script>
+      function s13p(el, title, body, borderColor, bg, textColor) {
+        document.querySelectorAll('#s13 .s13r').forEach(function(r){ r.classList.remove('on'); });
+        el.classList.add('on');
+        var dp = document.getElementById('s13-dp');
+        document.getElementById('s13-dp-t').textContent = title;
+        document.getElementById('s13-dp-b').textContent = body;
+        dp.style.borderLeftColor = borderColor;
+        dp.style.background = bg;
+        dp.style.color = textColor;
+        dp.style.display = 'block';
+        document.getElementById('s13-hint').style.display = 'none';
+      }
+      </script>
     </div>
   </div>
 
