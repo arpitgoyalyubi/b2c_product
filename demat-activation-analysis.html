@@ -240,7 +240,9 @@ tbody tr:hover td { background:var(--surface2); }
     <div class="hero-stat"><span class="val">4 weeks</span><span class="lbl">Data window (May 4–31)</span></div>
     <div class="hero-stat"><span class="val">1,686</span><span class="lbl">Demat initiations</span></div>
     <div class="hero-stat"><span class="val">16,601</span><span class="lbl">Signups analysed</span></div>
-    <div class="hero-stat"><span class="val">₹46L/mo</span><span class="lbl">Max GTV at stake</span></div>
+    <div class="hero-stat"><span class="val">₹46L/mo</span><span class="lbl">Theoretical ceiling (38 trades)</span></div>
+    <div class="hero-stat"><span class="val">₹17–20L/mo</span><span class="lbl">Realistic notification GTV</span></div>
+    <div class="hero-stat"><span class="val">₹3–4L/mo</span><span class="lbl">Feature real addressable GTV</span></div>
     <div class="hero-stat"><span class="val">Don't build</span><span class="lbl">Final verdict</span></div>
   </div>
 </div>
@@ -436,9 +438,13 @@ tbody tr:hover td { background:var(--surface2); }
           <td class="cell-num">−4.2pp</td><td class="cell-num">2</td><td class="cell-num">₹2.4L</td>
           <td class="cell-warn">Mostly asleep</td></tr>
         <tr style="background:#fef9f0;font-weight:700">
-          <td>TOTAL</td><td class="cell-num">382</td><td class="cell-num">—</td>
+          <td>TOTAL (ceiling)</td><td class="cell-num">382</td><td class="cell-num">—</td>
           <td class="cell-num">—</td><td class="cell-num">38</td><td class="cell-num">₹46L</td>
-          <td class="cell-warn">Ceiling estimate</td></tr>
+          <td class="cell-warn">If 100% gap = friction</td></tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#065f46;font-weight:700">REALISTIC (notification)</td><td class="cell-num" style="color:#065f46">—</td><td class="cell-num" style="color:#065f46">~17–19%</td>
+          <td class="cell-num" style="color:#065f46">~4pp</td><td class="cell-num" style="color:#065f46">~14–17</td><td class="cell-num cell-good">₹17–20L</td>
+          <td class="cell-good">4pp friction gap (vs 11pp total)</td></tr>
       </tbody>
     </table>
   </div>
@@ -446,9 +452,11 @@ tbody tr:hover td { background:var(--surface2); }
   <div class="insight rose">
     <span class="icon">⚠️</span>
     <strong>₹46L/month is the absolute ceiling — not the expected value.</strong>
-    It assumes the entire conversion gap is friction. The behavioral analysis (Section 4)
-    shows a large portion of the Sunday/Saturday gap is <em>not</em> friction. The feature's
-    real addressable GTV is significantly lower.
+    It assumes the entire 11pp conversion gap is friction. The behavioral analysis (Section 4)
+    shows only ~4pp of that gap is recoverable (the delta between experienced investors and new users
+    on weekends). That gives a realistic notification GTV of <strong>₹17–20L/month</strong>.
+    The feature's real addressable cohort is ~5 in-session blocked users/month = <strong>₹3–4L/month</strong>.
+    The ₹46L figure is useful only as an upper bound when deciding whether to invest further.
   </div>
 
   <div class="wrong-turn">
@@ -482,7 +490,8 @@ tbody tr:hover td { background:var(--surface2); }
         <tr><td>Engineering effort</td><td class="cell-good">~1 day</td><td class="cell-bad">2–3 weeks</td></tr>
         <tr><td>Regulatory risk</td><td class="cell-good">None</td><td class="cell-bad">Unverified SEBI circulars</td></tr>
         <tr><td>Ops overhead</td><td class="cell-good">None</td><td class="cell-bad">Trade reversal for 1.2% failures</td></tr>
-        <tr><td>Max GTV upside</td><td class="cell-good">Same ₹46L/month</td><td>Same ₹46L/month</td></tr>
+        <tr><td>Realistic GTV</td><td class="cell-good">₹17–20L/mo <span style="font-size:.7rem;color:#64748b">(4pp friction gap recoverable)</span></td><td class="cell-warn">₹3–4L/mo <span style="font-size:.7rem;color:#64748b">(~5 in-session blocked users)</span></td></tr>
+        <tr><td style="color:#94a3b8;font-size:.78rem">Theoretical ceiling</td><td style="color:#94a3b8;font-size:.78rem">₹46L/mo (if 100% gap is friction)</td><td style="color:#94a3b8;font-size:.78rem">₹46L/mo (same ceiling)</td></tr>
         <tr><td>Tests the real hypothesis</td><td class="cell-good">✓ Directly measures intent</td><td class="cell-bad">Only measures capability</td></tr>
         <tr><td>A/B testable</td><td class="cell-good">✓ Easy</td><td class="cell-bad">Harder to run in parallel</td></tr>
       </tbody>
