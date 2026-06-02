@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-02T07:09:26Z",
+  "generated_at": "2026-06-02T14:30:46Z",
   "period": {
     "after_start": "20260420",
     "after_end": "20260601",
@@ -53,7 +53,7 @@
     }
   },
   "before_after": {
-    "signin_before": 38319,
+    "signin_before": 38325,
     "signin_after": 102200,
     "otp_before": 20976,
     "otp_after": 49468,
@@ -65,6 +65,42 @@
     "signin_per_day_after": 2377,
     "signup_per_day_before": 352,
     "signup_per_day_after": 541
+  },
+  "may24_fix": {
+    "pre_window": "20260420\u201320260523",
+    "post_window": "20260524\u201320260601",
+    "pre_days": 34,
+    "post_days": 9,
+    "iOS": {
+      "pre": {
+        "clicks": 8000,
+        "os_failed": 6014,
+        "success_rate": 24.8,
+        "os_fail_rate": 75.2
+      },
+      "post": {
+        "clicks": 2356,
+        "os_failed": 1318,
+        "success_rate": 44.1,
+        "os_fail_rate": 55.9
+      },
+      "fail_rate_delta_pp": -19.3,
+      "improved": true
+    },
+    "Android": {
+      "pre": {
+        "clicks": 17449,
+        "os_failed": 2562,
+        "success_rate": 85.3,
+        "os_fail_rate": 14.7
+      },
+      "post": {
+        "clicks": 8102,
+        "os_failed": 1166,
+        "success_rate": 85.6,
+        "os_fail_rate": 14.4
+      }
+    }
   },
   "daily": {
     "dates": [

@@ -16,11 +16,12 @@ BASE    = "https://amplitude.com/api/2"
 _token  = base64.b64encode(f"{API_KEY}:{SECRET}".encode()).decode()
 HEADERS = {"Authorization": f"Basic {_token}", "Accept": "application/json"}
 
-LAUNCH_DATE  = "20260420"
-BEFORE_START = "20260324"
-BEFORE_END   = "20260419"
-BEFORE_DAYS  = 27
-BUG_FIX_DATE = "20260428"   # iOS biometrics bug fixed
+LAUNCH_DATE   = "20260420"
+BEFORE_START  = "20260324"
+BEFORE_END    = "20260419"
+BEFORE_DAYS   = 27
+BUG_FIX_DATE  = "20260428"   # iOS biometrics bug fixed (original)
+MAY24_FIX_DATE = "20260524"  # iOS cold-start fix deployed May 24
 
 
 def _after_end():
@@ -165,6 +166,55 @@ def main():
     def fail_rate(fails, clicks):
         return [round(f/c*100, 1) if c else None for f, c in zip(fails, clicks)]
 
+    # ── 6a. May 24 fix: pre vs post ──────────────────────────────────
+    print("[6a] May 24 fix comparison (pre: Apr20–May23, post: May24–yesterday)...")
+    may24_pre_end = "20260523"
+    may24_post_start = MAY24_FIX_DATE  # 20260524
+
+    def _plat_fix_window(event, start, wend):
+        d = dict(daily_by_platform(event, start, wend))
+        d.pop("dates", None)
+        return {p: int(sum(v)) for p, v in d.items()}
+
+    pre_click  = _plat_fix_window("BIOMETRIC_LOGIN_CLICKED",            LAUNCH_DATE, may24_pre_end)
+    pre_osfail = _plat_fix_window("BIOMETRIC_VERIFY_FAILED",            LAUNCH_DATE, may24_pre_end)
+    post_click  = _plat_fix_window("BIOMETRIC_LOGIN_CLICKED",            may24_post_start, end)
+    post_osfail = _plat_fix_window("BIOMETRIC_VERIFY_FAILED",            may24_post_start, end)
+
+    def _fix_plat(click_d, fail_d, plat):
+        cl = _get(click_d, plat); fs = _get(fail_d, plat)
+        return {
+            "clicks":        cl,
+            "os_failed":     fs,
+            "success_rate":  round((cl - fs) / cl * 100, 1) if cl else 0,
+            "os_fail_rate":  round(fs / cl * 100, 1) if cl else 0,
+        }
+
+    days_pre  = (date(2026, 5, 23) - date(2026, 4, 20)).days + 1   # 34 days
+    post_end_d = date.today() - timedelta(days=1)
+    days_post = (post_end_d - date(2026, 5, 24)).days + 1
+
+    may24_fix = {
+        "pre_window":  f"{LAUNCH_DATE}–{may24_pre_end}",
+        "post_window": f"{may24_post_start}–{end}",
+        "pre_days":    days_pre,
+        "post_days":   days_post,
+        "iOS": {
+            "pre":  _fix_plat(pre_click,  pre_osfail,  "iOS"),
+            "post": _fix_plat(post_click, post_osfail, "iOS"),
+        },
+        "Android": {
+            "pre":  _fix_plat(pre_click,  pre_osfail,  "Android"),
+            "post": _fix_plat(post_click, post_osfail, "Android"),
+        },
+    }
+    ios_delta = round(may24_fix["iOS"]["post"]["os_fail_rate"] - may24_fix["iOS"]["pre"]["os_fail_rate"], 1)
+    may24_fix["iOS"]["fail_rate_delta_pp"] = ios_delta
+    may24_fix["iOS"]["improved"] = ios_delta < -2
+    print(f"    iOS pre-fix fail rate:  {may24_fix['iOS']['pre']['os_fail_rate']}%")
+    print(f"    iOS post-fix fail rate: {may24_fix['iOS']['post']['os_fail_rate']}%  (Δ {ios_delta:+.1f}pp)")
+    print(f"    Android pre:  {may24_fix['Android']['pre']['os_fail_rate']}%  post: {may24_fix['Android']['post']['os_fail_rate']}%")
+
     # ── 6. Before vs after ───────────────────────────────────────────
     print("[6] Before vs after...")
     signin_before = total("SIGNIN_PAGE_VIEW",         BEFORE_START, BEFORE_END)
@@ -219,6 +269,7 @@ def main():
             "signup_per_day_before": round(signup_before / BEFORE_DAYS),
             "signup_per_day_after":  round(signup_after  / adays),
         },
+        "may24_fix": may24_fix,
         "daily": {
             "dates":              list(dates),
             "enrolled":           d_enrolled,
