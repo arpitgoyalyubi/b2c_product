@@ -2021,7 +2021,7 @@ insights('ins-s5', [
     const dd = document.getElementById(ddId);
     if (!dd) return;
     const isOpen = rowEl.classList.toggle('open');
-    dd.style.display = isOpen ? '' : 'none';
+    dd.style.display = isOpen ? 'table-row' : 'none';
   };
 
   const totalThisWk = SP.top_issues.reduce((s, r) => s + r.this_wk, 0) || 1;
