@@ -24,7 +24,8 @@
       margin: 32px 0 14px; padding-left: 12px;
       border-left: 4px solid #3b82f6;
     }
-    .section-title.green { border-left-color: #10b981; }
+    .section-title.green  { border-left-color: #10b981; }
+    .section-title.orange { border-left-color: #f97316; }
 
     /* ── Summary cards ── */
     .cards { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 24px; }
@@ -50,6 +51,21 @@
     .breakdown-label { font-size: 12px; color: #6b7280; font-weight: 600; }
     .breakdown-count { font-size: 24px; font-weight: 700; color: #dc2626; margin: 2px 0; }
     .breakdown-pct   { font-size: 11px; color: #9ca3af; }
+
+    /* ── Agency cards ── */
+    .agency-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; margin-bottom: 24px; }
+    .agency-card {
+      background: white; border-radius: 12px; padding: 16px 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06); border-top: 3px solid #f97316;
+    }
+    .agency-card.low-fail { border-top-color: #10b981; }
+    .agency-card.mid-fail { border-top-color: #eab308; }
+    .agency-card .agency-name { font-size: 13px; font-weight: 700; color: #1a202c; margin-bottom: 8px; }
+    .agency-card .agency-stat { font-size: 11px; color: #6b7280; margin-top: 3px; }
+    .agency-card .agency-rate { font-size: 22px; font-weight: 700; margin-top: 4px; }
+    .agency-card .agency-rate.bad  { color: #dc2626; }
+    .agency-card .agency-rate.warn { color: #d97706; }
+    .agency-card .agency-rate.ok   { color: #059669; }
 
     /* ── Chart grid ── */
     .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 28px; }
@@ -103,7 +119,7 @@
 
 <div class="page-header">
   <h1>KRA &amp; AML Check Report</h1>
-  <div class="subtitle">Day-wise analysis · Last 30 days · Generated May 29, 2026</div>
+  <div class="subtitle">Day-wise analysis · Last 30 days · Generated June 03, 2026</div>
 </div>
 
 <div class="container">
@@ -118,32 +134,32 @@
   <div class="cards">
     <div class="card highlight">
       <div class="label">Total KRA Checks</div>
-      <div class="value">3,369</div>
+      <div class="value">3,556</div>
       <div class="sub">30-day total</div>
     </div>
     <div class="card success">
       <div class="label">KRA Validated</div>
-      <div class="value">2,681</div>
-      <div class="sub">79.6% success rate</div>
+      <div class="value">2,802</div>
+      <div class="sub">78.8% success rate</div>
     </div>
     <div class="card danger">
       <div class="label">KRA Failed</div>
-      <div class="value">688</div>
-      <div class="sub">20.4% failure rate</div>
+      <div class="value">754</div>
+      <div class="sub">21.2% failure rate</div>
     </div>
   </div>
 
   <div class="breakdown-row">
     
         <div class="breakdown-card">
-          <div class="breakdown-label">KRA Not Found</div>
-          <div class="breakdown-count">351</div>
-          <div class="breakdown-pct">51.0% of failures</div>
+          <div class="breakdown-label">KRA Rejected</div>
+          <div class="breakdown-count">390</div>
+          <div class="breakdown-pct">51.7% of failures</div>
         </div>
         <div class="breakdown-card">
-          <div class="breakdown-label">KRA Rejected</div>
-          <div class="breakdown-count">347</div>
-          <div class="breakdown-pct">50.4% of failures</div>
+          <div class="breakdown-label">KRA Not Found</div>
+          <div class="breakdown-count">374</div>
+          <div class="breakdown-pct">49.6% of failures</div>
         </div>
         <div class="breakdown-card">
           <div class="breakdown-label">KRA Hold</div>
@@ -176,58 +192,18 @@
           <th>Success</th>
           <th>Failed</th>
           <th>Success%</th>
-          <th>KRA Not Found</th><th>KRA Rejected</th><th>KRA Hold</th>
+          <th>KRA Rejected</th><th>KRA Not Found</th><th>KRA Hold</th>
         </tr>
       </thead>
       <tbody>
         
-            <tr>
-              <td class="date-col">2026-04-29</td>
-              <td>19</td>
-              <td class="success-col">12</td>
-              <td class="fail-col">7</td>
-              <td><span class="pct-badge bad">63.2%</span></td>
-              <td>4</td><td>3</td><td>0</td>
-            </tr>
-            <tr>
-              <td class="date-col">2026-04-30</td>
-              <td>92</td>
-              <td class="success-col">73</td>
-              <td class="fail-col">19</td>
-              <td><span class="pct-badge warn">79.3%</span></td>
-              <td>13</td><td>7</td><td>0</td>
-            </tr>
-            <tr>
-              <td class="date-col">2026-05-01</td>
-              <td>124</td>
-              <td class="success-col">103</td>
-              <td class="fail-col">21</td>
-              <td><span class="pct-badge warn">83.1%</span></td>
-              <td>13</td><td>8</td><td>0</td>
-            </tr>
-            <tr>
-              <td class="date-col">2026-05-02</td>
-              <td>97</td>
-              <td class="success-col">85</td>
-              <td class="fail-col">12</td>
-              <td><span class="pct-badge good">87.6%</span></td>
-              <td>6</td><td>6</td><td>0</td>
-            </tr>
-            <tr>
-              <td class="date-col">2026-05-03</td>
-              <td>105</td>
-              <td class="success-col">92</td>
-              <td class="fail-col">13</td>
-              <td><span class="pct-badge good">87.6%</span></td>
-              <td>9</td><td>5</td><td>0</td>
-            </tr>
             <tr>
               <td class="date-col">2026-05-04</td>
               <td>83</td>
               <td class="success-col">66</td>
               <td class="fail-col">17</td>
               <td><span class="pct-badge warn">79.5%</span></td>
-              <td>10</td><td>7</td><td>0</td>
+              <td>7</td><td>10</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-05</td>
@@ -235,7 +211,7 @@
               <td class="success-col">74</td>
               <td class="fail-col">34</td>
               <td><span class="pct-badge bad">68.5%</span></td>
-              <td>13</td><td>21</td><td>0</td>
+              <td>21</td><td>13</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-06</td>
@@ -251,7 +227,7 @@
               <td class="success-col">88</td>
               <td class="fail-col">30</td>
               <td><span class="pct-badge bad">74.6%</span></td>
-              <td>18</td><td>12</td><td>0</td>
+              <td>12</td><td>18</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-08</td>
@@ -259,7 +235,7 @@
               <td class="success-col">82</td>
               <td class="fail-col">18</td>
               <td><span class="pct-badge warn">82.0%</span></td>
-              <td>8</td><td>10</td><td>0</td>
+              <td>10</td><td>8</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-09</td>
@@ -267,7 +243,7 @@
               <td class="success-col">85</td>
               <td class="fail-col">25</td>
               <td><span class="pct-badge warn">77.3%</span></td>
-              <td>12</td><td>14</td><td>0</td>
+              <td>14</td><td>12</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-10</td>
@@ -275,7 +251,7 @@
               <td class="success-col">81</td>
               <td class="fail-col">14</td>
               <td><span class="pct-badge good">85.3%</span></td>
-              <td>10</td><td>4</td><td>0</td>
+              <td>4</td><td>10</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-11</td>
@@ -283,7 +259,7 @@
               <td class="success-col">79</td>
               <td class="fail-col">15</td>
               <td><span class="pct-badge warn">84.0%</span></td>
-              <td>12</td><td>3</td><td>0</td>
+              <td>3</td><td>12</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-12</td>
@@ -291,7 +267,7 @@
               <td class="success-col">76</td>
               <td class="fail-col">23</td>
               <td><span class="pct-badge warn">76.8%</span></td>
-              <td>14</td><td>10</td><td>0</td>
+              <td>10</td><td>14</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-13</td>
@@ -299,7 +275,7 @@
               <td class="success-col">70</td>
               <td class="fail-col">44</td>
               <td><span class="pct-badge bad">61.4%</span></td>
-              <td>5</td><td>39</td><td>0</td>
+              <td>39</td><td>5</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-14</td>
@@ -307,7 +283,7 @@
               <td class="success-col">96</td>
               <td class="fail-col">17</td>
               <td><span class="pct-badge warn">85.0%</span></td>
-              <td>7</td><td>10</td><td>0</td>
+              <td>10</td><td>7</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-15</td>
@@ -315,7 +291,7 @@
               <td class="success-col">94</td>
               <td class="fail-col">17</td>
               <td><span class="pct-badge warn">84.7%</span></td>
-              <td>7</td><td>10</td><td>0</td>
+              <td>10</td><td>7</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-16</td>
@@ -323,7 +299,7 @@
               <td class="success-col">119</td>
               <td class="fail-col">27</td>
               <td><span class="pct-badge warn">81.5%</span></td>
-              <td>16</td><td>12</td><td>0</td>
+              <td>12</td><td>16</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-17</td>
@@ -331,7 +307,7 @@
               <td class="success-col">122</td>
               <td class="fail-col">30</td>
               <td><span class="pct-badge warn">80.3%</span></td>
-              <td>18</td><td>13</td><td>0</td>
+              <td>13</td><td>18</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-18</td>
@@ -339,7 +315,7 @@
               <td class="success-col">121</td>
               <td class="fail-col">28</td>
               <td><span class="pct-badge warn">81.2%</span></td>
-              <td>16</td><td>12</td><td>1</td>
+              <td>12</td><td>16</td><td>1</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-19</td>
@@ -347,7 +323,7 @@
               <td class="success-col">117</td>
               <td class="fail-col">30</td>
               <td><span class="pct-badge warn">79.6%</span></td>
-              <td>20</td><td>10</td><td>0</td>
+              <td>10</td><td>20</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-20</td>
@@ -355,7 +331,7 @@
               <td class="success-col">79</td>
               <td class="fail-col">40</td>
               <td><span class="pct-badge bad">66.4%</span></td>
-              <td>10</td><td>31</td><td>0</td>
+              <td>31</td><td>10</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-21</td>
@@ -363,7 +339,7 @@
               <td class="success-col">107</td>
               <td class="fail-col">23</td>
               <td><span class="pct-badge warn">82.3%</span></td>
-              <td>12</td><td>11</td><td>0</td>
+              <td>11</td><td>12</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-22</td>
@@ -371,7 +347,7 @@
               <td class="success-col">83</td>
               <td class="fail-col">22</td>
               <td><span class="pct-badge warn">79.0%</span></td>
-              <td>14</td><td>8</td><td>0</td>
+              <td>8</td><td>14</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-23</td>
@@ -379,7 +355,7 @@
               <td class="success-col">109</td>
               <td class="fail-col">26</td>
               <td><span class="pct-badge warn">80.7%</span></td>
-              <td>14</td><td>13</td><td>0</td>
+              <td>13</td><td>14</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-24</td>
@@ -387,7 +363,7 @@
               <td class="success-col">117</td>
               <td class="fail-col">31</td>
               <td><span class="pct-badge warn">79.1%</span></td>
-              <td>18</td><td>13</td><td>0</td>
+              <td>13</td><td>18</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-25</td>
@@ -395,7 +371,7 @@
               <td class="success-col">101</td>
               <td class="fail-col">25</td>
               <td><span class="pct-badge warn">80.2%</span></td>
-              <td>18</td><td>8</td><td>0</td>
+              <td>8</td><td>18</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-26</td>
@@ -403,7 +379,7 @@
               <td class="success-col">81</td>
               <td class="fail-col">12</td>
               <td><span class="pct-badge good">87.1%</span></td>
-              <td>5</td><td>7</td><td>1</td>
+              <td>7</td><td>5</td><td>1</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-27</td>
@@ -411,7 +387,7 @@
               <td class="success-col">60</td>
               <td class="fail-col">18</td>
               <td><span class="pct-badge warn">76.9%</span></td>
-              <td>8</td><td>10</td><td>0</td>
+              <td>10</td><td>8</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-28</td>
@@ -419,27 +395,120 @@
               <td class="success-col">84</td>
               <td class="fail-col">26</td>
               <td><span class="pct-badge warn">76.4%</span></td>
-              <td>7</td><td>19</td><td>0</td>
+              <td>19</td><td>7</td><td>0</td>
             </tr>
             <tr>
               <td class="date-col">2026-05-29</td>
-              <td>42</td>
-              <td class="success-col">37</td>
-              <td class="fail-col">5</td>
-              <td><span class="pct-badge good">88.1%</span></td>
-              <td>4</td><td>1</td><td>0</td>
+              <td>102</td>
+              <td class="success-col">92</td>
+              <td class="fail-col">10</td>
+              <td><span class="pct-badge good">90.2%</span></td>
+              <td>4</td><td>6</td><td>0</td>
+            </tr>
+            <tr>
+              <td class="date-col">2026-05-30</td>
+              <td>114</td>
+              <td class="success-col">89</td>
+              <td class="fail-col">25</td>
+              <td><span class="pct-badge warn">78.1%</span></td>
+              <td>14</td><td>11</td><td>0</td>
+            </tr>
+            <tr>
+              <td class="date-col">2026-05-31</td>
+              <td>113</td>
+              <td class="success-col">89</td>
+              <td class="fail-col">24</td>
+              <td><span class="pct-badge warn">78.8%</span></td>
+              <td>11</td><td>13</td><td>0</td>
+            </tr>
+            <tr>
+              <td class="date-col">2026-06-01</td>
+              <td>146</td>
+              <td class="success-col">115</td>
+              <td class="fail-col">31</td>
+              <td><span class="pct-badge warn">78.8%</span></td>
+              <td>13</td><td>19</td><td>0</td>
+            </tr>
+            <tr>
+              <td class="date-col">2026-06-02</td>
+              <td>125</td>
+              <td class="success-col">92</td>
+              <td class="fail-col">33</td>
+              <td><span class="pct-badge bad">73.6%</span></td>
+              <td>14</td><td>19</td><td>0</td>
+            </tr>
+            <tr>
+              <td class="date-col">2026-06-03</td>
+              <td>66</td>
+              <td class="success-col">46</td>
+              <td class="fail-col">20</td>
+              <td><span class="pct-badge bad">69.7%</span></td>
+              <td>17</td><td>4</td><td>0</td>
             </tr>
       </tbody>
       <tfoot>
         <tr>
           <td class="date-col">TOTAL</td>
-          <td><strong>3,369</strong></td>
-          <td><strong style="color:#059669">2,681</strong></td>
-          <td><strong style="color:#dc2626">688</strong></td>
-          <td><strong>79.6%</strong></td>
-          <td><strong>351</strong></td><td><strong>347</strong></td><td><strong>2</strong></td>
+          <td><strong>3,556</strong></td>
+          <td><strong style="color:#059669">2,802</strong></td>
+          <td><strong style="color:#dc2626">754</strong></td>
+          <td><strong>78.8%</strong></td>
+          <td><strong>390</strong></td><td><strong>374</strong></td><td><strong>2</strong></td>
         </tr>
       </tfoot>
+    </table>
+  </div>
+
+
+  <!-- ═══════════════ KRA FAILURE BY AGENCY ═══════════════ -->
+  <div class="section-title orange">KRA Failure by Agency</div>
+
+  <p class="note">
+    Grouped by <code>kra_vendor</code> event property · "Failure" = kra_status ≠ "KRA Validated" · KRA agencies: CVL, CAMS, NDML, KARVY, NSE, DOTEX
+  </p>
+
+  <div class="agency-grid">
+    
+        <div class="agency-card ">
+          <div class="agency-name">(none)</div>
+          <div class="agency-rate bad">21.3%</div>
+          <div class="agency-stat">Failure rate</div>
+          <div class="agency-stat">758 failed &nbsp;·&nbsp; 3,556 total</div>
+        </div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h3>Failure Count by Agency (30-day total)</h3>
+      <canvas id="agencyFailCountChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Failure Rate by Agency (%)</h3>
+      <canvas id="agencyFailRateChart"></canvas>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="date-col">KRA Agency</th>
+          <th>Total Checks</th>
+          <th>KRA Validated</th>
+          <th>Failures</th>
+          <th>Failure Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+            <tr>
+              <td class="date-col">(none)</td>
+              <td>3,556</td>
+              <td class="success-col">2,798</td>
+              <td class="fail-col">758</td>
+              <td><span class="pct-badge bad">21.3%</span></td>
+            </tr>
+      </tbody>
     </table>
   </div>
 
@@ -454,18 +523,18 @@
   <div class="cards">
     <div class="card highlight">
       <div class="label">Total AML Checks</div>
-      <div class="value">5,895</div>
+      <div class="value">5,331</div>
       <div class="sub">30-day total</div>
     </div>
     <div class="card success">
       <div class="label">AML Verified</div>
-      <div class="value">5,853</div>
-      <div class="sub">99.3% pass rate</div>
+      <div class="value">5,297</div>
+      <div class="sub">99.4% pass rate</div>
     </div>
     <div class="card danger">
       <div class="label">AML Failed</div>
-      <div class="value">42</div>
-      <div class="sub">0.71% failure rate</div>
+      <div class="value">34</div>
+      <div class="sub">0.64% failure rate</div>
     </div>
   </div>
 
@@ -493,41 +562,6 @@
       </thead>
       <tbody>
         
-            <tr>
-              <td class="date-col">2026-04-29</td>
-              <td>263</td>
-              <td class="success-col">263</td>
-              <td class="fail-col">0</td>
-              <td><span class="pct-badge good">100.0%</span></td>
-            </tr>
-            <tr>
-              <td class="date-col">2026-04-30</td>
-              <td>270</td>
-              <td class="success-col">269</td>
-              <td class="fail-col">1</td>
-              <td><span class="pct-badge good">99.6%</span></td>
-            </tr>
-            <tr>
-              <td class="date-col">2026-05-01</td>
-              <td>244</td>
-              <td class="success-col">241</td>
-              <td class="fail-col">3</td>
-              <td><span class="pct-badge good">98.8%</span></td>
-            </tr>
-            <tr>
-              <td class="date-col">2026-05-02</td>
-              <td>213</td>
-              <td class="success-col">210</td>
-              <td class="fail-col">3</td>
-              <td><span class="pct-badge good">98.6%</span></td>
-            </tr>
-            <tr>
-              <td class="date-col">2026-05-03</td>
-              <td>209</td>
-              <td class="success-col">207</td>
-              <td class="fail-col">2</td>
-              <td><span class="pct-badge good">99.0%</span></td>
-            </tr>
             <tr>
               <td class="date-col">2026-05-04</td>
               <td>227</td>
@@ -705,37 +739,72 @@
             </tr>
             <tr>
               <td class="date-col">2026-05-29</td>
-              <td>42</td>
-              <td class="success-col">42</td>
+              <td>105</td>
+              <td class="success-col">105</td>
               <td class="fail-col">0</td>
               <td><span class="pct-badge good">100.0%</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">2026-05-30</td>
+              <td>114</td>
+              <td class="success-col">114</td>
+              <td class="fail-col">0</td>
+              <td><span class="pct-badge good">100.0%</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">2026-05-31</td>
+              <td>114</td>
+              <td class="success-col">114</td>
+              <td class="fail-col">0</td>
+              <td><span class="pct-badge good">100.0%</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">2026-06-01</td>
+              <td>149</td>
+              <td class="success-col">149</td>
+              <td class="fail-col">0</td>
+              <td><span class="pct-badge good">100.0%</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">2026-06-02</td>
+              <td>129</td>
+              <td class="success-col">129</td>
+              <td class="fail-col">0</td>
+              <td><span class="pct-badge good">100.0%</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">2026-06-03</td>
+              <td>66</td>
+              <td class="success-col">65</td>
+              <td class="fail-col">1</td>
+              <td><span class="pct-badge good">98.5%</span></td>
             </tr>
       </tbody>
       <tfoot>
         <tr>
           <td class="date-col">TOTAL</td>
-          <td><strong>5,895</strong></td>
-          <td><strong style="color:#059669">5,853</strong></td>
-          <td><strong style="color:#dc2626">42</strong></td>
-          <td><strong>99.3%</strong></td>
+          <td><strong>5,331</strong></td>
+          <td><strong style="color:#059669">5,297</strong></td>
+          <td><strong style="color:#dc2626">34</strong></td>
+          <td><strong>99.4%</strong></td>
         </tr>
       </tfoot>
     </table>
   </div>
 
-  <div class="generated">Auto-generated by kra_aml_report.py · May 29, 2026</div>
+  <div class="generated">Auto-generated by kra_aml_report.py · June 03, 2026</div>
 </div>
 
 <script>
-const KRA_DATES   = ['04-29', '04-30', '05-01', '05-02', '05-03', '05-04', '05-05', '05-06', '05-07', '05-08', '05-09', '05-10', '05-11', '05-12', '05-13', '05-14', '05-15', '05-16', '05-17', '05-18', '05-19', '05-20', '05-21', '05-22', '05-23', '05-24', '05-25', '05-26', '05-27', '05-28', '05-29'];
-const KRA_SUCCESS = [12, 73, 103, 85, 92, 66, 74, 88, 88, 82, 85, 81, 79, 76, 70, 96, 94, 119, 122, 121, 117, 79, 107, 83, 109, 117, 101, 81, 60, 84, 37];
-const KRA_FAIL    = [7, 19, 21, 12, 13, 17, 34, 19, 30, 18, 25, 14, 15, 23, 44, 17, 17, 27, 30, 28, 30, 40, 23, 22, 26, 31, 25, 12, 18, 26, 5];
-const KRA_PCT     = [63.2, 79.3, 83.1, 87.6, 87.6, 79.5, 68.5, 82.2, 74.6, 82.0, 77.3, 85.3, 84.0, 76.8, 61.4, 85.0, 84.7, 81.5, 80.3, 81.2, 79.6, 66.4, 82.3, 79.0, 80.7, 79.1, 80.2, 87.1, 76.9, 76.4, 88.1];
+const KRA_DATES   = ['05-04', '05-05', '05-06', '05-07', '05-08', '05-09', '05-10', '05-11', '05-12', '05-13', '05-14', '05-15', '05-16', '05-17', '05-18', '05-19', '05-20', '05-21', '05-22', '05-23', '05-24', '05-25', '05-26', '05-27', '05-28', '05-29', '05-30', '05-31', '06-01', '06-02', '06-03'];
+const KRA_SUCCESS = [66, 74, 88, 88, 82, 85, 81, 79, 76, 70, 96, 94, 119, 122, 121, 117, 79, 107, 83, 109, 117, 101, 81, 60, 84, 92, 89, 89, 115, 92, 46];
+const KRA_FAIL    = [17, 34, 19, 30, 18, 25, 14, 15, 23, 44, 17, 17, 27, 30, 28, 30, 40, 23, 22, 26, 31, 25, 12, 18, 26, 10, 25, 24, 31, 33, 20];
+const KRA_PCT     = [79.5, 68.5, 82.2, 74.6, 82.0, 77.3, 85.3, 84.0, 76.8, 61.4, 85.0, 84.7, 81.5, 80.3, 81.2, 79.6, 66.4, 82.3, 79.0, 80.7, 79.1, 80.2, 87.1, 76.9, 76.4, 90.2, 78.1, 78.8, 78.8, 73.6, 69.7];
 
-const AML_DATES    = ['04-29', '04-30', '05-01', '05-02', '05-03', '05-04', '05-05', '05-06', '05-07', '05-08', '05-09', '05-10', '05-11', '05-12', '05-13', '05-14', '05-15', '05-16', '05-17', '05-18', '05-19', '05-20', '05-21', '05-22', '05-23', '05-24', '05-25', '05-26', '05-27', '05-28', '05-29'];
-const AML_VERIFIED = [263, 269, 241, 210, 207, 226, 83, 240, 201, 276, 248, 182, 230, 304, 105, 257, 253, 285, 260, 289, 142, 113, 126, 102, 131, 142, 127, 108, 82, 109, 42];
-const AML_FAILED   = [0, 1, 3, 3, 2, 1, 1, 2, 1, 1, 1, 1, 2, 0, 1, 4, 2, 3, 5, 2, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0];
-const AML_PCT      = [100.0, 99.6, 98.8, 98.6, 99.0, 99.6, 98.8, 99.2, 99.5, 99.6, 99.6, 99.5, 99.1, 100.0, 99.1, 98.5, 99.2, 99.0, 98.1, 99.3, 100.0, 99.1, 99.2, 99.0, 99.2, 99.3, 100.0, 100.0, 100.0, 99.1, 100.0];
+const AML_DATES    = ['05-04', '05-05', '05-06', '05-07', '05-08', '05-09', '05-10', '05-11', '05-12', '05-13', '05-14', '05-15', '05-16', '05-17', '05-18', '05-19', '05-20', '05-21', '05-22', '05-23', '05-24', '05-25', '05-26', '05-27', '05-28', '05-29', '05-30', '05-31', '06-01', '06-02', '06-03'];
+const AML_VERIFIED = [226, 83, 240, 201, 276, 248, 182, 230, 304, 105, 257, 253, 285, 260, 289, 142, 113, 126, 102, 131, 142, 127, 108, 82, 109, 105, 114, 114, 149, 129, 65];
+const AML_FAILED   = [1, 1, 2, 1, 1, 1, 1, 2, 0, 1, 4, 2, 3, 5, 2, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1];
+const AML_PCT      = [99.6, 98.8, 99.2, 99.5, 99.6, 99.6, 99.5, 99.1, 100.0, 99.1, 98.5, 99.2, 99.0, 98.1, 99.3, 100.0, 99.1, 99.2, 99.0, 99.2, 99.3, 100.0, 100.0, 100.0, 99.1, 100.0, 100.0, 100.0, 100.0, 100.0, 98.5];
 
 const GRID = { color: '#f3f4f6' };
 const FONT = { size: 11, family: "-apple-system, sans-serif" };
@@ -795,18 +864,18 @@ new Chart(document.getElementById('kraFailChart'), {
     labels: KRA_DATES,
     datasets: [
           {
-            label: 'KRA Not Found',
-            data: [4, 13, 13, 6, 9, 10, 13, 10, 18, 8, 12, 10, 12, 14, 5, 7, 7, 16, 18, 16, 20, 10, 12, 14, 14, 18, 18, 5, 8, 7, 4],
+            label: 'KRA Rejected',
+            data: [7, 21, 10, 12, 10, 14, 4, 3, 10, 39, 10, 10, 12, 13, 12, 10, 31, 11, 8, 13, 13, 8, 7, 10, 19, 4, 14, 11, 13, 14, 17],
             backgroundColor: '#ef4444',
           },
           {
-            label: 'KRA Rejected',
-            data: [3, 7, 8, 6, 5, 7, 21, 10, 12, 10, 14, 4, 3, 10, 39, 10, 10, 12, 13, 12, 10, 31, 11, 8, 13, 13, 8, 7, 10, 19, 1],
+            label: 'KRA Not Found',
+            data: [10, 13, 10, 18, 8, 12, 10, 12, 14, 5, 7, 7, 16, 18, 16, 20, 10, 12, 14, 14, 18, 18, 5, 8, 7, 6, 11, 13, 19, 19, 4],
             backgroundColor: '#f97316',
           },
           {
             label: 'KRA Hold',
-            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
             backgroundColor: '#eab308',
           },
     ],
@@ -817,6 +886,54 @@ new Chart(document.getElementById('kraFailChart'), {
     scales: {
       x: { stacked: true, grid: GRID, ticks: { font: FONT, maxTicksLimit: 10 } },
       y: { stacked: true, grid: GRID, ticks: { font: FONT } },
+    },
+  },
+});
+
+// ── Agency failure count bar ─────────────────────────────────────────────────
+new Chart(document.getElementById('agencyFailCountChart'), {
+  type: 'bar',
+  data: {
+    labels: ['(none)'],
+    datasets: [{
+      label: 'Failures',
+      data: [758],
+      backgroundColor: ['#ef4444'],
+    }],
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.parsed.x + ' failures' } },
+    },
+    scales: {
+      x: { grid: GRID, ticks: { font: FONT } },
+      y: { grid: GRID, ticks: { font: FONT } },
+    },
+  },
+});
+
+// ── Agency failure rate bar ───────────────────────────────────────────────────
+new Chart(document.getElementById('agencyFailRateChart'), {
+  type: 'bar',
+  data: {
+    labels: ['(none)'],
+    datasets: [{
+      label: 'Failure Rate %',
+      data: [21.3],
+      backgroundColor: ['#ef4444'],
+    }],
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.parsed.x + '%' } },
+    },
+    scales: {
+      x: { grid: GRID, ticks: { font: FONT, callback: v => v + '%' }, max: 100 },
+      y: { grid: GRID, ticks: { font: FONT } },
     },
   },
 });
