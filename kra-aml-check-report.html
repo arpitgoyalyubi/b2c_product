@@ -464,40 +464,40 @@
   <div class="section-title orange">KRA Failure by Agency &amp; Status</div>
 
   <p class="note">
-    Source: <code>HOME_KRA_STATUS</code> event (mobile V1, fires on KRA poll) · Properties: <code>kraVendor</code> (agency name) + <code>kraStatus</code> (raw agency status text) · "Failure" = kraStatus ≠ "KYC Validated"
+    Agency data: <code>kyc_kra_check_completed.kra_provider</code> · "Failure" = kra_status ≠ "KRA Validated" · KRA status text: <code>HOME_KRA_STATUS.kraStatus</code> (raw agency response text)
   </p>
 
   <div class="agency-grid">
     
         <div class="agency-card ">
-          <div class="agency-name">CVL</div>
-          <div class="agency-rate bad">100.0%</div>
-          <div class="agency-stat">Failure rate</div>
-          <div class="agency-stat">8,079 failed &nbsp;·&nbsp; 8,079 total</div>
-        </div>
-        <div class="agency-card ">
-          <div class="agency-name">NDML</div>
-          <div class="agency-rate bad">100.0%</div>
-          <div class="agency-stat">Failure rate</div>
-          <div class="agency-stat">1,980 failed &nbsp;·&nbsp; 1,980 total</div>
-        </div>
-        <div class="agency-card ">
-          <div class="agency-name">CAMS</div>
-          <div class="agency-rate bad">100.0%</div>
-          <div class="agency-stat">Failure rate</div>
-          <div class="agency-stat">1,394 failed &nbsp;·&nbsp; 1,394 total</div>
-        </div>
-        <div class="agency-card ">
-          <div class="agency-name">KARVY</div>
-          <div class="agency-rate bad">100.0%</div>
-          <div class="agency-stat">Failure rate</div>
-          <div class="agency-stat">552 failed &nbsp;·&nbsp; 552 total</div>
-        </div>
-        <div class="agency-card ">
           <div class="agency-name">(none)</div>
           <div class="agency-rate bad">100.0%</div>
           <div class="agency-stat">Failure rate</div>
-          <div class="agency-stat">152 failed &nbsp;·&nbsp; 152 total</div>
+          <div class="agency-stat">433 failed &nbsp;·&nbsp; 433 total</div>
+        </div>
+        <div class="agency-card low-fail">
+          <div class="agency-name">CVL</div>
+          <div class="agency-rate ok">9.0%</div>
+          <div class="agency-stat">Failure rate</div>
+          <div class="agency-stat">208 failed &nbsp;·&nbsp; 2,301 total</div>
+        </div>
+        <div class="agency-card mid-fail">
+          <div class="agency-name">NDML</div>
+          <div class="agency-rate warn">16.3%</div>
+          <div class="agency-stat">Failure rate</div>
+          <div class="agency-stat">59 failed &nbsp;·&nbsp; 362 total</div>
+        </div>
+        <div class="agency-card mid-fail">
+          <div class="agency-name">CAMS</div>
+          <div class="agency-rate warn">13.7%</div>
+          <div class="agency-stat">Failure rate</div>
+          <div class="agency-stat">54 failed &nbsp;·&nbsp; 394 total</div>
+        </div>
+        <div class="agency-card mid-fail">
+          <div class="agency-name">KARVY</div>
+          <div class="agency-rate warn">11.8%</div>
+          <div class="agency-stat">Failure rate</div>
+          <div class="agency-stat">9 failed &nbsp;·&nbsp; 76 total</div>
         </div>
   </div>
 
@@ -516,7 +516,7 @@
     <table>
       <thead>
         <tr>
-          <th class="date-col">KRA Agency (kraVendor)</th>
+          <th class="date-col">KRA Agency (kra_provider)</th>
           <th>Total Checks</th>
           <th>KYC Validated</th>
           <th>Failures</th>
@@ -526,39 +526,39 @@
       <tbody>
         
             <tr>
-              <td class="date-col">CVL</td>
-              <td>8,079</td>
+              <td class="date-col">(none)</td>
+              <td>433</td>
               <td class="success-col">0</td>
-              <td class="fail-col">8,079</td>
+              <td class="fail-col">433</td>
               <td><span class="pct-badge bad">100.0%</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">CVL</td>
+              <td>2,301</td>
+              <td class="success-col">2,093</td>
+              <td class="fail-col">208</td>
+              <td><span class="pct-badge good">9.0%</span></td>
             </tr>
             <tr>
               <td class="date-col">NDML</td>
-              <td>1,980</td>
-              <td class="success-col">0</td>
-              <td class="fail-col">1,980</td>
-              <td><span class="pct-badge bad">100.0%</span></td>
+              <td>362</td>
+              <td class="success-col">303</td>
+              <td class="fail-col">59</td>
+              <td><span class="pct-badge warn">16.3%</span></td>
             </tr>
             <tr>
               <td class="date-col">CAMS</td>
-              <td>1,394</td>
-              <td class="success-col">0</td>
-              <td class="fail-col">1,394</td>
-              <td><span class="pct-badge bad">100.0%</span></td>
+              <td>394</td>
+              <td class="success-col">340</td>
+              <td class="fail-col">54</td>
+              <td><span class="pct-badge warn">13.7%</span></td>
             </tr>
             <tr>
               <td class="date-col">KARVY</td>
-              <td>552</td>
-              <td class="success-col">0</td>
-              <td class="fail-col">552</td>
-              <td><span class="pct-badge bad">100.0%</span></td>
-            </tr>
-            <tr>
-              <td class="date-col">(none)</td>
-              <td>152</td>
-              <td class="success-col">0</td>
-              <td class="fail-col">152</td>
-              <td><span class="pct-badge bad">100.0%</span></td>
+              <td>76</td>
+              <td class="success-col">67</td>
+              <td class="fail-col">9</td>
+              <td><span class="pct-badge warn">11.8%</span></td>
             </tr>
       </tbody>
     </table>
@@ -1070,10 +1070,10 @@ new Chart(document.getElementById('kraFailChart'), {
 new Chart(document.getElementById('agencyFailCountChart'), {
   type: 'bar',
   data: {
-    labels: ['CVL', 'NDML', 'CAMS', 'KARVY', '(none)'],
+    labels: ['(none)', 'CVL', 'NDML', 'CAMS', 'KARVY'],
     datasets: [{
       label: 'Failures',
-      data: [8079, 1980, 1394, 552, 152],
+      data: [433, 208, 59, 54, 9],
       backgroundColor: ['#ef4444', '#f97316', '#eab308', '#8b5cf6', '#06b6d4'],
     }],
   },
@@ -1094,10 +1094,10 @@ new Chart(document.getElementById('agencyFailCountChart'), {
 new Chart(document.getElementById('agencyFailRateChart'), {
   type: 'bar',
   data: {
-    labels: ['CVL', 'NDML', 'CAMS', 'KARVY', '(none)'],
+    labels: ['(none)', 'CVL', 'NDML', 'CAMS', 'KARVY'],
     datasets: [{
       label: 'Failure Rate %',
-      data: [100.0, 100.0, 100.0, 100.0, 100.0],
+      data: [100.0, 9.0, 16.3, 13.7, 11.8],
       backgroundColor: ['#ef4444', '#f97316', '#eab308', '#8b5cf6', '#06b6d4'],
     }],
   },
