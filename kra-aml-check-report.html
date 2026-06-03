@@ -461,19 +461,43 @@
 
 
   <!-- ═══════════════ KRA FAILURE BY AGENCY ═══════════════ -->
-  <div class="section-title orange">KRA Failure by Agency</div>
+  <div class="section-title orange">KRA Failure by Agency &amp; Status</div>
 
   <p class="note">
-    Grouped by <code>kra_vendor</code> event property · "Failure" = kra_status ≠ "KRA Validated" · KRA agencies: CVL, CAMS, NDML, KARVY, NSE, DOTEX
+    Source: <code>HOME_KRA_STATUS</code> event (mobile V1, fires on KRA poll) · Properties: <code>kraVendor</code> (agency name) + <code>kraStatus</code> (raw agency status text) · "Failure" = kraStatus ≠ "KYC Validated"
   </p>
 
   <div class="agency-grid">
     
         <div class="agency-card ">
-          <div class="agency-name">(none)</div>
-          <div class="agency-rate bad">21.3%</div>
+          <div class="agency-name">CVL</div>
+          <div class="agency-rate bad">100.0%</div>
           <div class="agency-stat">Failure rate</div>
-          <div class="agency-stat">758 failed &nbsp;·&nbsp; 3,556 total</div>
+          <div class="agency-stat">8,079 failed &nbsp;·&nbsp; 8,079 total</div>
+        </div>
+        <div class="agency-card ">
+          <div class="agency-name">NDML</div>
+          <div class="agency-rate bad">100.0%</div>
+          <div class="agency-stat">Failure rate</div>
+          <div class="agency-stat">1,980 failed &nbsp;·&nbsp; 1,980 total</div>
+        </div>
+        <div class="agency-card ">
+          <div class="agency-name">CAMS</div>
+          <div class="agency-rate bad">100.0%</div>
+          <div class="agency-stat">Failure rate</div>
+          <div class="agency-stat">1,394 failed &nbsp;·&nbsp; 1,394 total</div>
+        </div>
+        <div class="agency-card ">
+          <div class="agency-name">KARVY</div>
+          <div class="agency-rate bad">100.0%</div>
+          <div class="agency-stat">Failure rate</div>
+          <div class="agency-stat">552 failed &nbsp;·&nbsp; 552 total</div>
+        </div>
+        <div class="agency-card ">
+          <div class="agency-name">(none)</div>
+          <div class="agency-rate bad">100.0%</div>
+          <div class="agency-stat">Failure rate</div>
+          <div class="agency-stat">152 failed &nbsp;·&nbsp; 152 total</div>
         </div>
   </div>
 
@@ -492,9 +516,9 @@
     <table>
       <thead>
         <tr>
-          <th class="date-col">KRA Agency</th>
+          <th class="date-col">KRA Agency (kraVendor)</th>
           <th>Total Checks</th>
-          <th>KRA Validated</th>
+          <th>KYC Validated</th>
           <th>Failures</th>
           <th>Failure Rate</th>
         </tr>
@@ -502,11 +526,163 @@
       <tbody>
         
             <tr>
+              <td class="date-col">CVL</td>
+              <td>8,079</td>
+              <td class="success-col">0</td>
+              <td class="fail-col">8,079</td>
+              <td><span class="pct-badge bad">100.0%</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">NDML</td>
+              <td>1,980</td>
+              <td class="success-col">0</td>
+              <td class="fail-col">1,980</td>
+              <td><span class="pct-badge bad">100.0%</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">CAMS</td>
+              <td>1,394</td>
+              <td class="success-col">0</td>
+              <td class="fail-col">1,394</td>
+              <td><span class="pct-badge bad">100.0%</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">KARVY</td>
+              <td>552</td>
+              <td class="success-col">0</td>
+              <td class="fail-col">552</td>
+              <td><span class="pct-badge bad">100.0%</span></td>
+            </tr>
+            <tr>
               <td class="date-col">(none)</td>
-              <td>3,556</td>
-              <td class="success-col">2,798</td>
-              <td class="fail-col">758</td>
-              <td><span class="pct-badge bad">21.3%</span></td>
+              <td>152</td>
+              <td class="success-col">0</td>
+              <td class="fail-col">152</td>
+              <td><span class="pct-badge bad">100.0%</span></td>
+            </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-title orange" style="margin-top:28px">KRA Status Text Breakdown (kraStatus)</div>
+
+  <p class="note">
+    Raw KRA agency status text from <code>HOME_KRA_STATUS.kraStatus</code> · Includes all values returned by KRA agencies (CVL, CAMS, NDML, KARVY, NSE) over the last 30 days
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="date-col">KRA Status Text (kraStatus)</th>
+          <th>Count (30-day)</th>
+          <th>% of Total</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+            <tr>
+              <td class="date-col">KYC Validated at CVL</td>
+              <td class="fail-col">7,882</td>
+              <td>64.8%</td>
+              <td><span class="pct-badge bad">Failure</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">KYC Validated at NDML</td>
+              <td class="fail-col">1,942</td>
+              <td>16.0%</td>
+              <td><span class="pct-badge bad">Failure</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">KYC Validated at CAMS</td>
+              <td class="fail-col">1,367</td>
+              <td>11.2%</td>
+              <td><span class="pct-badge bad">Failure</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">KYC Validated at KARVY</td>
+              <td class="fail-col">551</td>
+              <td>4.5%</td>
+              <td><span class="pct-badge bad">Failure</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">KYC Registd at CVL</td>
+              <td class="fail-col">195</td>
+              <td>1.6%</td>
+              <td><span class="pct-badge bad">Failure</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">KYC details have been successfully verified. Customer can start investing.</td>
+              <td class="fail-col">137</td>
+              <td>1.1%</td>
+              <td><span class="pct-badge bad">Failure</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">KYC Registd at NDML</td>
+              <td class="fail-col">38</td>
+              <td>0.3%</td>
+              <td><span class="pct-badge bad">Failure</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">KYC Registd at CAMS</td>
+              <td class="fail-col">26</td>
+              <td>0.2%</td>
+              <td><span class="pct-badge bad">Failure</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">API Error</td>
+              <td class="fail-col">10</td>
+              <td>0.1%</td>
+              <td><span class="pct-badge bad">Failure</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">Not Available</td>
+              <td class="fail-col">5</td>
+              <td>0.0%</td>
+              <td><span class="pct-badge bad">Failure</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">Not Available [Validation Pending with CVL KRA]</td>
+              <td class="fail-col">3</td>
+              <td>0.0%</td>
+              <td><span class="pct-badge bad">Failure</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">KYC Registd at KARVY</td>
+              <td class="fail-col">1</td>
+              <td>0.0%</td>
+              <td><span class="pct-badge bad">Failure</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">Not Available [Validation Pending with CAMS, CVL, KARVY, KFIN KRA]</td>
+              <td class="fail-col">1</td>
+              <td>0.0%</td>
+              <td><span class="pct-badge bad">Failure</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">Not Available [Validation Pending with CAMS, CVL, KFIN KRA]</td>
+              <td class="fail-col">1</td>
+              <td>0.0%</td>
+              <td><span class="pct-badge bad">Failure</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">Not Available [Validation Pending with CVL, KFIN KRA]</td>
+              <td class="fail-col">1</td>
+              <td>0.0%</td>
+              <td><span class="pct-badge bad">Failure</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">Underprocess at CVL</td>
+              <td class="fail-col">1</td>
+              <td>0.0%</td>
+              <td><span class="pct-badge bad">Failure</span></td>
+            </tr>
+            <tr>
+              <td class="date-col">KYC Validated</td>
+              <td class="success-col">0</td>
+              <td>0.0%</td>
+              <td><span class="pct-badge good">Success</span></td>
             </tr>
       </tbody>
     </table>
@@ -894,11 +1070,11 @@ new Chart(document.getElementById('kraFailChart'), {
 new Chart(document.getElementById('agencyFailCountChart'), {
   type: 'bar',
   data: {
-    labels: ['(none)'],
+    labels: ['CVL', 'NDML', 'CAMS', 'KARVY', '(none)'],
     datasets: [{
       label: 'Failures',
-      data: [758],
-      backgroundColor: ['#ef4444'],
+      data: [8079, 1980, 1394, 552, 152],
+      backgroundColor: ['#ef4444', '#f97316', '#eab308', '#8b5cf6', '#06b6d4'],
     }],
   },
   options: {
@@ -918,11 +1094,11 @@ new Chart(document.getElementById('agencyFailCountChart'), {
 new Chart(document.getElementById('agencyFailRateChart'), {
   type: 'bar',
   data: {
-    labels: ['(none)'],
+    labels: ['CVL', 'NDML', 'CAMS', 'KARVY', '(none)'],
     datasets: [{
       label: 'Failure Rate %',
-      data: [21.3],
-      backgroundColor: ['#ef4444'],
+      data: [100.0, 100.0, 100.0, 100.0, 100.0],
+      backgroundColor: ['#ef4444', '#f97316', '#eab308', '#8b5cf6', '#06b6d4'],
     }],
   },
   options: {
