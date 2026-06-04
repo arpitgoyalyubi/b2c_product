@@ -52,10 +52,15 @@
     tr:hover td { background: #f8fafc; }
     tr:hover td.sticky-col { background: #f0f4f8; }
 
-    td.good { background: #dcfce7 !important; color: #166534; font-weight: 600; }
-    td.warn { background: #fef3c7 !important; color: #92400e; font-weight: 600; }
-    td.bad  { background: #fee2e2 !important; color: #991b1b; font-weight: 500; }
-    td.qs   { font-weight: 700; color: #0f3460; }
+    td.good    { background: #dcfce7 !important; color: #166534; font-weight: 600; }
+    td.warn    { background: #fef3c7 !important; color: #92400e; font-weight: 600; }
+    td.bad     { background: #fee2e2 !important; color: #991b1b; font-weight: 500; }
+    td.suspect { background: #f1f5f9 !important; color: #94a3b8; font-style: italic; font-size: 11px; }
+    td.qs      { font-weight: 700; color: #0f3460; }
+    tr.bot-traffic td { opacity: 0.55; }
+    tr.bot-traffic td.sticky-col { opacity: 1; color: #94a3b8; }
+    tr.bot-traffic td.sticky-col::after { content: " ⚠ bot?"; color: #f59e0b;
+                                            font-size: 10px; font-weight: 600; }
 
     th.agg-header  { background: #0f3460; }
     th.week-header { background: #2d5986; }
@@ -75,6 +80,17 @@
     .ck { display: flex; align-items: center; gap: 6px; font-size: 12px; }
     .ck-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink:0; }
 
+    .extra-row { display: none; }
+
+    .show-more-bar { display: flex; align-items: center; gap: 12px; margin-top: 8px;
+                       padding: 6px 0; }
+    .show-more-btn { background: #e2e8f0; border: none; border-radius: 6px; cursor: pointer;
+                       padding: 6px 16px; font-size: 12px; font-weight: 600; color: #0f3460;
+                       transition: background 0.15s; }
+    .show-more-btn:hover { background: #cbd5e0; }
+    .show-more-btn.expanded { background: #0f3460; color: white; }
+    .row-count { font-size: 11px; color: #94a3b8; }
+
     .empty { padding: 24px; color: #888; font-style: italic; text-align: center; }
     .footer { text-align: center; color: #888; font-size: 11px; padding: 24px; margin-top: 8px; }
   </style>
@@ -83,7 +99,7 @@
   <div class="header">
     <div>
       <h1>AppsFlyer Cohort Quality Report</h1>
-      <div class="sub">8 weeks (Apr 06, 2026 – May 31, 2026) · Mon–Sun windows · Generated Jun 04, 2026 19:15 IST</div>
+      <div class="sub">8 weeks (Apr 06, 2026 – May 31, 2026) · Mon–Sun windows · Generated Jun 04, 2026 19:23 IST</div>
     </div>
     <div></div>
   </div>
@@ -95,7 +111,10 @@
       <div class="ck"><div class="ck-dot" style="background:#fef3c7;border:1px solid #fcd34d"></div>Moderate</div>
       <div class="ck"><div class="ck-dot" style="background:#fee2e2;border:1px solid #fca5a5"></div>Low</div>
       <span style="color:#888;font-size:11px">
-        I→S ≥30% good / ≥15% mod · S→KS ≥50%/≥25% · KS→KD ≥40%/≥20% · KD→FT ≥30%/≥15%
+        I→S ≥30% good / ≥15% mod · S→KS ≥50%/≥25% · KS→KD ≥40%/≥20% · KD→FT ≥30%/≥15% ·
+        <strong>—</strong> = fewer than 20 users in denominator (suppressed) ·
+        <strong>⚠</strong> = attribution noise (>100%) ·
+        <strong style="color:#f59e0b">⚠ bot?</strong> = I→S &lt;1% on 100+ installs (likely fraud/bot traffic)
       </span>
     </div>
 
@@ -115,9 +134,9 @@
 <div class="insight-section" style="background:#dcfce7;border-left:3px solid #15803d">
 <div class="insight-title" style="color:#15803d">🚀 Top Sources To Double Down On</div>
 <ul class="insight-bullets">
-<li>tunnelads_int: I→S 0.1%, KD→FT — (quality 2660)</li>
-<li>liquefteapsg_int: I→S 0.2%, KD→FT — (quality 1626)</li>
 <li>employee_referral: I→S 81.6%, KD→FT 7.6% (quality 91)</li>
+<li>Meta (Facebook): I→S 63.3%, KD→FT 2.6% (quality 44)</li>
+<li>sokendev_int: I→S 42.6%, KD→FT 0.0% (quality 41)</li>
 </ul></div>
 <div class="insight-section" style="background:#fef3c7;border-left:3px solid #b45309">
 <div class="insight-title" style="color:#b45309">⚡ Actions To Improve User Quality</div>
@@ -126,7 +145,7 @@
 <li>aliliupvt_int: I→S only 0.0% — tighten audience targeting or pause</li>
 <li>dubaicrea8u_int: I→S only 0.0% — tighten audience targeting or pause</li>
 </ul></div>
-</div><div class="table-wrap"><table>
+</div><div class="table-wrap" id="wrap-tbl-media_source"><table id="tbl-media_source">
 <thead>
 <tr class='header-top'>
 <th rowspan='2' class='sticky-col'>Dimension</th>
@@ -161,7 +180,7 @@
 <th>Inst</th><th>Sign</th><th>I→S%</th><th>KYC✓</th><th>KD→FT%</th>
 </tr>
 </thead><tbody>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='Google Ads'>Google Ads</td>
 <td>63,555</td>
 <td>16,339</td>
@@ -214,7 +233,7 @@
 <td>217</td>
 <td class='bad'>2.8%</td>
 </tr>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='Organic'>Organic</td>
 <td>12,773</td>
 <td>1,438</td>
@@ -267,7 +286,7 @@
 <td>21</td>
 <td class='good'>47.6%</td>
 </tr>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='Meta (Facebook)'>Meta (Facebook)</td>
 <td>7,067</td>
 <td>4,475</td>
@@ -320,18 +339,18 @@
 <td>80</td>
 <td class='bad'>0.0%</td>
 </tr>
-<tr>
+<tr class='bot-traffic'>
 <td class='sticky-col dim-label' title='mobzone_int'>mobzone_int</td>
 <td>4,335</td>
 <td>12</td>
 <td class='bad'>0.3%</td>
 <td>5</td>
-<td class='warn'>41.7%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='warn'>20.0%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>18.6</td>
+<td class=''>—</td>
+<td class='qs'>0.1</td>
 <td>2,206</td>
 <td>8</td>
 <td class='bad'>0.4%</td>
@@ -341,7 +360,7 @@
 <td>4</td>
 <td class='bad'>0.2%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -373,18 +392,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic'>
 <td class='sticky-col dim-label' title='tunnelads_int'>tunnelads_int</td>
 <td>4,081</td>
 <td>3</td>
 <td class='bad'>0.1%</td>
 <td>266</td>
-<td class='good'>8866.7%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class='bad'>0.0%</td>
 <td>0</td>
 <td class=''>—</td>
-<td class='qs'>2660.0</td>
+<td class='qs'>0.0</td>
 <td>1,079</td>
 <td>3</td>
 <td class='bad'>0.3%</td>
@@ -426,18 +445,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic'>
 <td class='sticky-col dim-label' title='oddsendsc32_int'>oddsendsc32_int</td>
 <td>4,045</td>
 <td>17</td>
 <td class='bad'>0.4%</td>
 <td>10</td>
-<td class='good'>58.8%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>10.0%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>20.7</td>
+<td class=''>—</td>
+<td class='qs'>0.1</td>
 <td>59</td>
 <td>4</td>
 <td class='bad'>6.8%</td>
@@ -447,7 +466,7 @@
 <td>10</td>
 <td class='bad'>0.4%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>1,268</td>
 <td>3</td>
 <td class='bad'>0.2%</td>
@@ -479,7 +498,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='appnext_int'>appnext_int</td>
 <td>3,770</td>
 <td>451</td>
@@ -489,18 +508,18 @@
 <td>7</td>
 <td class='bad'>5.1%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>13.0</td>
 <td>1,570</td>
 <td>334</td>
 <td class='warn'>21.3%</td>
 <td>6</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>2,200</td>
 <td>117</td>
 <td class='bad'>5.3%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -532,7 +551,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='afnumberone_int'>afnumberone_int</td>
 <td>2,553</td>
 <td>395</td>
@@ -548,12 +567,12 @@
 <td>135</td>
 <td class='bad'>7.8%</td>
 <td>10</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>494</td>
 <td>137</td>
 <td class='warn'>27.7%</td>
 <td>16</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>336</td>
 <td>123</td>
 <td class='good'>36.6%</td>
@@ -585,18 +604,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic'>
 <td class='sticky-col dim-label' title='liquefteapsg_int'>liquefteapsg_int</td>
 <td>2,506</td>
 <td>5</td>
 <td class='bad'>0.2%</td>
 <td>271</td>
-<td class='good'>5420.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class='bad'>0.0%</td>
 <td>0</td>
 <td class=''>—</td>
-<td class='qs'>1626.0</td>
+<td class='qs'>0.0</td>
 <td>740</td>
 <td>5</td>
 <td class='bad'>0.7%</td>
@@ -638,13 +657,13 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic'>
 <td class='sticky-col dim-label' title='batman8z_int'>batman8z_int</td>
 <td>2,098</td>
 <td>1</td>
 <td class='bad'>0.0%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -691,7 +710,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='aliliupvt_int'>aliliupvt_int</td>
 <td>1,774</td>
 <td>0</td>
@@ -744,18 +763,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='arbeenllcgx_int'>arbeenllcgx_int</td>
 <td>1,729</td>
 <td>7</td>
 <td class='bad'>0.4%</td>
 <td>5</td>
-<td class='good'>71.4%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='warn'>20.0%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>27.5</td>
+<td class=''>—</td>
+<td class='qs'>0.1</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -770,7 +789,7 @@
 <td>4</td>
 <td class='bad'>0.3%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -797,13 +816,13 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='ccwads4o_int'>ccwads4o_int</td>
 <td>1,477</td>
 <td>4</td>
 <td class='bad'>0.3%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -850,7 +869,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='Jio_HM'>Jio_HM</td>
 <td>1,435</td>
 <td>762</td>
@@ -876,22 +895,22 @@
 <td>13</td>
 <td class='good'>61.9%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>80</td>
 <td>44</td>
 <td class='good'>55.0%</td>
 <td>4</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>21</td>
 <td>14</td>
 <td class='good'>66.7%</td>
 <td>4</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>43</td>
 <td>30</td>
 <td class='good'>69.8%</td>
 <td>5</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -903,7 +922,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='sokendev_int'>sokendev_int</td>
 <td>1,335</td>
 <td>569</td>
@@ -919,7 +938,7 @@
 <td>113</td>
 <td class='good'>37.5%</td>
 <td>18</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>464</td>
 <td>186</td>
 <td class='good'>40.1%</td>
@@ -956,7 +975,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='onetraffijs_int'>onetraffijs_int</td>
 <td>1,295</td>
 <td>545</td>
@@ -972,7 +991,7 @@
 <td>80</td>
 <td class='good'>37.6%</td>
 <td>13</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>711</td>
 <td>319</td>
 <td class='good'>44.9%</td>
@@ -1009,28 +1028,28 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='lumolinkaav_int'>lumolinkaav_int</td>
 <td>1,214</td>
 <td>15</td>
 <td class='bad'>1.2%</td>
 <td>14</td>
-<td class='good'>93.3%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='warn'>21.4%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>34.6</td>
+<td class=''>—</td>
+<td class='qs'>0.2</td>
 <td>385</td>
 <td>8</td>
 <td class='bad'>2.1%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>381</td>
 <td>7</td>
 <td class='bad'>1.8%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>348</td>
 <td>0</td>
 <td class='bad'>0.0%</td>
@@ -1062,7 +1081,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='dubaicrea8u_int'>dubaicrea8u_int</td>
 <td>854</td>
 <td>0</td>
@@ -1115,7 +1134,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='foxmobiwy_int'>foxmobiwy_int</td>
 <td>819</td>
 <td>295</td>
@@ -1131,12 +1150,12 @@
 <td>12</td>
 <td class='warn'>27.9%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>230</td>
 <td>83</td>
 <td class='good'>36.1%</td>
 <td>6</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>374</td>
 <td>125</td>
 <td class='good'>33.4%</td>
@@ -1146,7 +1165,7 @@
 <td>75</td>
 <td class='good'>43.6%</td>
 <td>11</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -1168,7 +1187,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='morganconlm_int'>morganconlm_int</td>
 <td>809</td>
 <td>0</td>
@@ -1221,13 +1240,13 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='riversads_int'>riversads_int</td>
 <td>795</td>
 <td>1</td>
 <td class='bad'>0.1%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -1274,7 +1293,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='Zomato_CPI'>Zomato_CPI</td>
 <td>738</td>
 <td>431</td>
@@ -1293,41 +1312,41 @@
 <td class=''>—</td>
 <td>3</td>
 <td>2</td>
-<td class='good'>66.7%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>158</td>
 <td>90</td>
 <td class='good'>57.0%</td>
 <td>5</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>165</td>
 <td>105</td>
 <td class='good'>63.6%</td>
 <td>10</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>138</td>
 <td>69</td>
 <td class='good'>50.0%</td>
 <td>10</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>172</td>
 <td>104</td>
 <td class='good'>60.5%</td>
 <td>9</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>102</td>
 <td>61</td>
 <td class='good'>59.8%</td>
 <td>5</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='globalnetqg_int'>globalnetqg_int</td>
 <td>732</td>
 <td>0</td>
@@ -1380,18 +1399,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='mobilemin36l_int'>mobilemin36l_int</td>
 <td>650</td>
 <td>5</td>
 <td class='bad'>0.8%</td>
 <td>6</td>
-<td class='good'>120.0%</td>
+<td class=''>—</td>
 <td>2</td>
-<td class='warn'>33.3%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>46.1</td>
+<td class=''>—</td>
+<td class='qs'>0.2</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -1401,7 +1420,7 @@
 <td>5</td>
 <td class='bad'>9.1%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>595</td>
 <td>0</td>
 <td class='bad'>0.0%</td>
@@ -1433,7 +1452,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='adseledgent_int'>adseledgent_int</td>
 <td>580</td>
 <td>0</td>
@@ -1486,13 +1505,13 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='s2ssoftsys_int'>s2ssoftsys_int</td>
 <td>408</td>
 <td>2</td>
 <td class='bad'>0.5%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -1539,7 +1558,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='spasiuexykti_int'>spasiuexykti_int</td>
 <td>362</td>
 <td>0</td>
@@ -1592,7 +1611,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='adgdfslsgbc_int'>adgdfslsgbc_int</td>
 <td>357</td>
 <td>28</td>
@@ -1602,13 +1621,13 @@
 <td>4</td>
 <td class='bad'>16.0%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>33.1</td>
 <td>357</td>
 <td>28</td>
 <td class='bad'>7.8%</td>
 <td>4</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -1645,7 +1664,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='Zepto'>Zepto</td>
 <td>349</td>
 <td>216</td>
@@ -1655,23 +1674,23 @@
 <td>17</td>
 <td class='bad'>12.9%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>34.6</td>
 <td>122</td>
 <td>69</td>
 <td class='good'>56.6%</td>
 <td>8</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>160</td>
 <td>98</td>
 <td class='good'>61.3%</td>
 <td>6</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>67</td>
 <td>49</td>
 <td class='good'>73.1%</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -1698,7 +1717,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='sandboxads_int'>sandboxads_int</td>
 <td>281</td>
 <td>77</td>
@@ -1708,18 +1727,18 @@
 <td>10</td>
 <td class='bad'>13.9%</td>
 <td>4</td>
-<td class='good'>40.0%</td>
-<td class='qs'>45.7</td>
+<td class=''>—</td>
+<td class='qs'>37.7</td>
 <td>134</td>
 <td>39</td>
 <td class='warn'>29.1%</td>
 <td>7</td>
-<td class='good'>57.1%</td>
+<td class=''>—</td>
 <td>147</td>
 <td>38</td>
 <td class='warn'>25.9%</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -1751,13 +1770,13 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='employee_referral'>employee_referral</td>
 <td>136</td>
 <td>111</td>
 <td class='good'>81.6%</td>
 <td>241</td>
-<td class='good'>217.1%</td>
+<td class='suspect'>⚠ 217%</td>
 <td>66</td>
 <td class='warn'>27.4%</td>
 <td>5</td>
@@ -1772,7 +1791,7 @@
 <td>30</td>
 <td class='good'>69.8%</td>
 <td>8</td>
-<td class='good'>37.5%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -1804,18 +1823,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='charitabl5o_int'>charitabl5o_int</td>
 <td>87</td>
 <td>5</td>
 <td class='bad'>5.7%</td>
 <td>1</td>
-<td class='bad'>20.0%</td>
-<td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
-<td class='qs'>7.1</td>
+<td>0</td>
+<td class=''>—</td>
+<td class='qs'>1.1</td>
 <td>62</td>
 <td>5</td>
 <td class='bad'>8.1%</td>
@@ -1828,7 +1847,7 @@
 <td class=''>—</td>
 <td>2</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -1857,7 +1876,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='Jio_17042026'>Jio_17042026</td>
 <td>77</td>
 <td>43</td>
@@ -1867,13 +1886,13 @@
 <td>4</td>
 <td class='bad'>11.8%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>38.4</td>
 <td>77</td>
 <td>43</td>
 <td class='good'>55.8%</td>
 <td>4</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -1910,28 +1929,28 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='partneron_int'>partneron_int</td>
 <td>37</td>
 <td>7</td>
 <td class='warn'>18.9%</td>
 <td>3</td>
-<td class='warn'>42.9%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='warn'>33.3%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>26.6</td>
+<td class=''>—</td>
+<td class='qs'>3.8</td>
 <td>19</td>
 <td>1</td>
-<td class='bad'>5.3%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>18</td>
 <td>6</td>
-<td class='good'>33.3%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -1963,7 +1982,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='Influencer_Collab'>Influencer_Collab</td>
 <td>32</td>
 <td>20</td>
@@ -1971,30 +1990,30 @@
 <td>19</td>
 <td class='good'>95.0%</td>
 <td>3</td>
-<td class='bad'>15.8%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>45.7</td>
+<td class=''>—</td>
+<td class='qs'>41.0</td>
 <td>5</td>
 <td>2</td>
-<td class='good'>40.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>2</td>
 <td>2</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>7</td>
 <td>4</td>
-<td class='good'>57.1%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>18</td>
 <td>12</td>
-<td class='good'>66.7%</td>
+<td class=''>—</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -2016,124 +2035,124 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='mobile_app_share'>mobile_app_share</td>
 <td>14</td>
 <td>12</td>
-<td class='good'>85.7%</td>
+<td class=''>—</td>
 <td>23</td>
-<td class='good'>191.7%</td>
+<td class=''>—</td>
 <td>8</td>
 <td class='warn'>34.8%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>85.1</td>
+<td class=''>—</td>
+<td class='qs'>10.4</td>
 <td>3</td>
 <td>3</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>2</td>
 <td>1</td>
-<td class='good'>50.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>1</td>
 <td>1</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>1</td>
 <td>1</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>5</td>
 <td>5</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>1</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>1</td>
 <td>1</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='Apple Search Ads'>Apple Search Ads</td>
 <td>13</td>
 <td>4</td>
-<td class='good'>30.8%</td>
-<td>2</td>
-<td class='good'>50.0%</td>
-<td>1</td>
-<td class='good'>50.0%</td>
-<td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>36.2</td>
-<td>0</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td class=''>—</td>
-<td>1</td>
-<td>0</td>
-<td class='bad'>0.0%</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
 <td class=''>—</td>
 <td>2</td>
+<td class=''>—</td>
+<td>1</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
+<td class='qs'>0.0</td>
+<td>0</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>1</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>2</td>
+<td>0</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>10</td>
 <td>4</td>
-<td class='good'>40.0%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-media_source'>
 <td class='sticky-col dim-label' title='nexfigoadh7_int'>nexfigoadh7_int</td>
 <td>12</td>
 <td>1</td>
-<td class='bad'>8.3%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='good'>300.0%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='warn'>33.3%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>101.6</td>
+<td class=''>—</td>
+<td class='qs'>0.0</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -2141,12 +2160,12 @@
 <td class=''>—</td>
 <td>7</td>
 <td>1</td>
-<td class='bad'>14.3%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>5</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -2175,7 +2194,8 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-</tbody></table></div></div>
+</tbody></table></div>
+<div class="show-more-bar"><button class="show-more-btn" onclick="toggleRows('tbl-media_source', 38)" id="btn-tbl-media_source">Show all 38 rows (28 more)</button><span class="row-count">Showing top 10 of 38</span></div></div>
 <div class="panel " id="panel-channel"><div class="insight-card">
 <div class="insight-section" style="background:#e0f2fe;border-left:3px solid #0369a1">
 <div class="insight-title" style="color:#0369a1">📊 What Changed This Week</div>
@@ -2192,7 +2212,7 @@
 <ul class="insight-bullets">
 <li>Unknown: KD→FT only 3.5% — add retargeting for KYC-done users</li>
 </ul></div>
-</div><div class="table-wrap"><table>
+</div><div class="table-wrap" id="wrap-tbl-channel"><table id="tbl-channel">
 <thead>
 <tr class='header-top'>
 <th rowspan='2' class='sticky-col'>Dimension</th>
@@ -2227,7 +2247,7 @@
 <th>Inst</th><th>Sign</th><th>I→S%</th><th>KYC✓</th><th>KD→FT%</th>
 </tr>
 </thead><tbody>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='Unknown'>Unknown</td>
 <td>125,193</td>
 <td>26,300</td>
@@ -2292,9 +2312,9 @@
 <div class="insight-section" style="background:#dcfce7;border-left:3px solid #15803d">
 <div class="insight-title" style="color:#15803d">🚀 Top Sources To Double Down On</div>
 <ul class="insight-bullets">
-<li>tunnelads_int / ASPERO_AOS_SANDBOX: I→S 0.2%, KD→FT — (quality 2660)</li>
-<li>liquefteapsg_int / ASPERO_AOS_SANDBOX: I→S 0.2%, KD→FT — (quality 1626)</li>
 <li>employee_referral / yubi_employee_referral_as: I→S 82.2%, KD→FT 3.0% (quality 90)</li>
+<li>Meta (Facebook) / None: I→S 57.8%, KD→FT — (quality 55)</li>
+<li>Google Ads / ADS_IND_APP_AOS_BankVerified_tcp: I→S 73.5%, KD→FT 0.0% (quality 51)</li>
 </ul></div>
 <div class="insight-section" style="background:#fef3c7;border-left:3px solid #b45309">
 <div class="insight-title" style="color:#b45309">⚡ Actions To Improve User Quality</div>
@@ -2303,7 +2323,7 @@
 <li>batman8z_int / ASPERO_AOS_SANDBOX: I→S only 0.0% — tighten audience targeting or pause</li>
 <li>aliliupvt_int / ASPERO_SANDBOX: I→S only 0.0% — tighten audience targeting or pause</li>
 </ul></div>
-</div><div class="table-wrap"><table>
+</div><div class="table-wrap" id="wrap-tbl-campaign"><table id="tbl-campaign">
 <thead>
 <tr class='header-top'>
 <th rowspan='2' class='sticky-col'>Dimension</th>
@@ -2338,7 +2358,7 @@
 <th>Inst</th><th>Sign</th><th>I→S%</th><th>KYC✓</th><th>KD→FT%</th>
 </tr>
 </thead><tbody>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='Google Ads / ADS_IND_APP_AOS_PaymentSuccess_tcpa_22ndSept25'>Google Ads / ADS_IND_APP_AOS_PaymentSuccess_tcpa_22ndSept25</td>
 <td>46,799</td>
 <td>9,208</td>
@@ -2391,7 +2411,7 @@
 <td>100</td>
 <td class='bad'>6.0%</td>
 </tr>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='Organic / None'>Organic / None</td>
 <td>12,773</td>
 <td>1,438</td>
@@ -2444,7 +2464,7 @@
 <td>21</td>
 <td class='good'>47.6%</td>
 </tr>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='Google Ads / ADS_IND_APP_AOS_PaymentSuccess_Firebase_24042026'>Google Ads / ADS_IND_APP_AOS_PaymentSuccess_Firebase_24042026</td>
 <td>6,864</td>
 <td>1,348</td>
@@ -2460,7 +2480,7 @@
 <td>267</td>
 <td class='warn'>17.0%</td>
 <td>19</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>2,327</td>
 <td>270</td>
 <td class='bad'>11.6%</td>
@@ -2470,12 +2490,12 @@
 <td>199</td>
 <td class='warn'>16.9%</td>
 <td>8</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>943</td>
 <td>216</td>
 <td class='warn'>22.9%</td>
 <td>16</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>590</td>
 <td>256</td>
 <td class='good'>43.4%</td>
@@ -2485,7 +2505,7 @@
 <td>140</td>
 <td class='good'>54.7%</td>
 <td>14</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -2497,7 +2517,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='Meta (Facebook) / HM_App_AAA_HM_Purchase_07022026'>Meta (Facebook) / HM_App_AAA_HM_Purchase_07022026</td>
 <td>5,498</td>
 <td>3,611</td>
@@ -2550,13 +2570,13 @@
 <td>54</td>
 <td class='bad'>0.0%</td>
 </tr>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='Google Ads / ADS_IND_APP_AOS_BankVerified_tcpa_4dec25'>Google Ads / ADS_IND_APP_AOS_BankVerified_tcpa_4dec25</td>
 <td>5,457</td>
 <td>4,012</td>
 <td class='good'>73.5%</td>
 <td>4,060</td>
-<td class='good'>101.2%</td>
+<td class='suspect'>⚠ 101%</td>
 <td>852</td>
 <td class='warn'>21.0%</td>
 <td>0</td>
@@ -2566,7 +2586,7 @@
 <td>35</td>
 <td class='good'>68.6%</td>
 <td>10</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>745</td>
 <td>548</td>
 <td class='good'>73.6%</td>
@@ -2603,18 +2623,18 @@
 <td>113</td>
 <td class='bad'>0.0%</td>
 </tr>
-<tr>
+<tr class='bot-traffic'>
 <td class='sticky-col dim-label' title='mobzone_int / Aspero_LG_May2026'>mobzone_int / Aspero_LG_May2026</td>
 <td>4,335</td>
 <td>12</td>
 <td class='bad'>0.3%</td>
 <td>5</td>
-<td class='warn'>41.7%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='warn'>20.0%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>18.6</td>
+<td class=''>—</td>
+<td class='qs'>0.1</td>
 <td>2,206</td>
 <td>8</td>
 <td class='bad'>0.4%</td>
@@ -2624,7 +2644,7 @@
 <td>4</td>
 <td class='bad'>0.2%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -2656,18 +2676,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic'>
 <td class='sticky-col dim-label' title='oddsendsc32_int / ASPERO_IOS_SANDBOX'>oddsendsc32_int / ASPERO_IOS_SANDBOX</td>
 <td>4,045</td>
 <td>17</td>
 <td class='bad'>0.4%</td>
 <td>10</td>
-<td class='good'>58.8%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>10.0%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>20.7</td>
+<td class=''>—</td>
+<td class='qs'>0.1</td>
 <td>59</td>
 <td>4</td>
 <td class='bad'>6.8%</td>
@@ -2677,7 +2697,7 @@
 <td>10</td>
 <td class='bad'>0.4%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>1,268</td>
 <td>3</td>
 <td class='bad'>0.2%</td>
@@ -2709,7 +2729,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='appnext_int / Aspero_ADS_Appnext'>appnext_int / Aspero_ADS_Appnext</td>
 <td>3,770</td>
 <td>451</td>
@@ -2719,18 +2739,18 @@
 <td>7</td>
 <td class='bad'>5.1%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>13.0</td>
 <td>1,570</td>
 <td>334</td>
 <td class='warn'>21.3%</td>
 <td>6</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>2,200</td>
 <td>117</td>
 <td class='bad'>5.3%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -2762,7 +2782,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='Google Ads / ADS_IND_APP_AOS_PaymentSuccess_NewUser_14052026'>Google Ads / ADS_IND_APP_AOS_PaymentSuccess_NewUser_14052026</td>
 <td>3,740</td>
 <td>1,659</td>
@@ -2815,7 +2835,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic'>
 <td class='sticky-col dim-label' title='tunnelads_int / ASPERO_IOS_SANDBOX'>tunnelads_int / ASPERO_IOS_SANDBOX</td>
 <td>2,562</td>
 <td>0</td>
@@ -2868,7 +2888,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='afnumberone_int / ASPERO_SANDBOX'>afnumberone_int / ASPERO_SANDBOX</td>
 <td>2,553</td>
 <td>395</td>
@@ -2884,12 +2904,12 @@
 <td>135</td>
 <td class='bad'>7.8%</td>
 <td>10</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>494</td>
 <td>137</td>
 <td class='warn'>27.7%</td>
 <td>16</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>336</td>
 <td>123</td>
 <td class='good'>36.6%</td>
@@ -2921,18 +2941,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='liquefteapsg_int / ASPERO_AOS_SANDBOX'>liquefteapsg_int / ASPERO_AOS_SANDBOX</td>
 <td>2,506</td>
 <td>5</td>
 <td class='bad'>0.2%</td>
 <td>271</td>
-<td class='good'>5420.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class='bad'>0.0%</td>
 <td>0</td>
 <td class=''>—</td>
-<td class='qs'>1626.0</td>
+<td class='qs'>0.0</td>
 <td>740</td>
 <td>5</td>
 <td class='bad'>0.7%</td>
@@ -2974,13 +2994,13 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='batman8z_int / ASPERO_AOS_SANDBOX'>batman8z_int / ASPERO_AOS_SANDBOX</td>
 <td>2,098</td>
 <td>1</td>
 <td class='bad'>0.0%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -3027,7 +3047,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='aliliupvt_int / ASPERO_SANDBOX'>aliliupvt_int / ASPERO_SANDBOX</td>
 <td>1,774</td>
 <td>0</td>
@@ -3080,18 +3100,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='arbeenllcgx_int / ASPERO_IOS_SANDBOX'>arbeenllcgx_int / ASPERO_IOS_SANDBOX</td>
 <td>1,729</td>
 <td>7</td>
 <td class='bad'>0.4%</td>
 <td>5</td>
-<td class='good'>71.4%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='warn'>20.0%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>27.5</td>
+<td class=''>—</td>
+<td class='qs'>0.1</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -3106,7 +3126,7 @@
 <td>4</td>
 <td class='bad'>0.3%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -3133,18 +3153,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='tunnelads_int / ASPERO_AOS_SANDBOX'>tunnelads_int / ASPERO_AOS_SANDBOX</td>
 <td>1,519</td>
 <td>3</td>
 <td class='bad'>0.2%</td>
 <td>266</td>
-<td class='good'>8866.7%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class='bad'>0.0%</td>
 <td>0</td>
 <td class=''>—</td>
-<td class='qs'>2660.1</td>
+<td class='qs'>0.0</td>
 <td>404</td>
 <td>3</td>
 <td class='bad'>0.7%</td>
@@ -3186,13 +3206,13 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='ccwads4o_int / Aspero_LG_May2026'>ccwads4o_int / Aspero_LG_May2026</td>
 <td>1,477</td>
 <td>4</td>
 <td class='bad'>0.3%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -3239,7 +3259,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='onetraffijs_int / ASPERO_AOS_SANDBOX'>onetraffijs_int / ASPERO_AOS_SANDBOX</td>
 <td>1,295</td>
 <td>545</td>
@@ -3255,7 +3275,7 @@
 <td>80</td>
 <td class='good'>37.6%</td>
 <td>13</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>711</td>
 <td>319</td>
 <td class='good'>44.9%</td>
@@ -3292,28 +3312,28 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='lumolinkaav_int / ASPERO_SANDBOX'>lumolinkaav_int / ASPERO_SANDBOX</td>
 <td>1,214</td>
 <td>15</td>
 <td class='bad'>1.2%</td>
 <td>14</td>
-<td class='good'>93.3%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='warn'>21.4%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>34.6</td>
+<td class=''>—</td>
+<td class='qs'>0.2</td>
 <td>385</td>
 <td>8</td>
 <td class='bad'>2.1%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>381</td>
 <td>7</td>
 <td class='bad'>1.8%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>348</td>
 <td>0</td>
 <td class='bad'>0.0%</td>
@@ -3345,7 +3365,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='sokendev_int / ASPERO_SANDBOX'>sokendev_int / ASPERO_SANDBOX</td>
 <td>1,031</td>
 <td>411</td>
@@ -3361,7 +3381,7 @@
 <td>113</td>
 <td class='good'>37.5%</td>
 <td>18</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>464</td>
 <td>186</td>
 <td class='good'>40.1%</td>
@@ -3398,7 +3418,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='dubaicrea8u_int / ASPERO_AOS_SANDBOX'>dubaicrea8u_int / ASPERO_AOS_SANDBOX</td>
 <td>854</td>
 <td>0</td>
@@ -3451,7 +3471,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='foxmobiwy_int / ASPERO_SANDBOX'>foxmobiwy_int / ASPERO_SANDBOX</td>
 <td>819</td>
 <td>295</td>
@@ -3467,12 +3487,12 @@
 <td>12</td>
 <td class='warn'>27.9%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>230</td>
 <td>83</td>
 <td class='good'>36.1%</td>
 <td>6</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>374</td>
 <td>125</td>
 <td class='good'>33.4%</td>
@@ -3482,7 +3502,7 @@
 <td>75</td>
 <td class='good'>43.6%</td>
 <td>11</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -3504,7 +3524,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='morganconlm_int / LG_Aspero_May26'>morganconlm_int / LG_Aspero_May26</td>
 <td>809</td>
 <td>0</td>
@@ -3557,13 +3577,13 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='riversads_int / ASPERO_PL_Riversads_AOS'>riversads_int / ASPERO_PL_Riversads_AOS</td>
 <td>795</td>
 <td>1</td>
 <td class='bad'>0.1%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -3610,7 +3630,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Jio_HM / Jio_CoinStack_17042026'>Jio_HM / Jio_CoinStack_17042026</td>
 <td>756</td>
 <td>406</td>
@@ -3626,7 +3646,7 @@
 <td>96</td>
 <td class='good'>50.8%</td>
 <td>10</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>486</td>
 <td>264</td>
 <td class='good'>54.3%</td>
@@ -3634,22 +3654,22 @@
 <td class='bad'>0.0%</td>
 <td>13</td>
 <td>9</td>
-<td class='good'>69.2%</td>
+<td class=''>—</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>42</td>
 <td>21</td>
 <td class='good'>50.0%</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>10</td>
 <td>6</td>
-<td class='good'>60.0%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>16</td>
 <td>10</td>
-<td class='good'>62.5%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -3663,7 +3683,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='globalnetqg_int / ASPERO_IOS_SANDBOX'>globalnetqg_int / ASPERO_IOS_SANDBOX</td>
 <td>732</td>
 <td>0</td>
@@ -3716,7 +3736,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Meta (Facebook) / HM_App_AAA_HM_Final_Purchase_24032026'>Meta (Facebook) / HM_App_AAA_HM_Final_Purchase_24032026</td>
 <td>718</td>
 <td>356</td>
@@ -3732,44 +3752,44 @@
 <td>12</td>
 <td class='good'>60.0%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>76</td>
 <td>40</td>
 <td class='good'>52.6%</td>
 <td>8</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>75</td>
 <td>36</td>
 <td class='good'>48.0%</td>
 <td>8</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>71</td>
 <td>23</td>
 <td class='good'>32.4%</td>
 <td>4</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>100</td>
 <td>43</td>
 <td class='good'>43.0%</td>
 <td>11</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>111</td>
 <td>58</td>
 <td class='good'>52.3%</td>
 <td>13</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>105</td>
 <td>58</td>
 <td class='good'>55.2%</td>
 <td>15</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>160</td>
 <td>86</td>
 <td class='good'>53.8%</td>
 <td>16</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Jio_HM / Jio_WomenPhone_17042026'>Jio_HM / Jio_WomenPhone_17042026</td>
 <td>679</td>
 <td>356</td>
@@ -3785,7 +3805,7 @@
 <td>102</td>
 <td class='good'>48.6%</td>
 <td>13</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>385</td>
 <td>199</td>
 <td class='good'>51.7%</td>
@@ -3793,24 +3813,24 @@
 <td class='bad'>0.0%</td>
 <td>8</td>
 <td>4</td>
-<td class='good'>50.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>38</td>
 <td>23</td>
 <td class='good'>60.5%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>11</td>
 <td>8</td>
-<td class='good'>72.7%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>27</td>
 <td>20</td>
 <td class='good'>74.1%</td>
 <td>5</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -3822,7 +3842,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Zomato_CPI / Zomato_14Apr'>Zomato_CPI / Zomato_14Apr</td>
 <td>673</td>
 <td>393</td>
@@ -3848,45 +3868,45 @@
 <td>61</td>
 <td class='good'>55.5%</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>151</td>
 <td>98</td>
 <td class='good'>64.9%</td>
 <td>10</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>138</td>
 <td>69</td>
 <td class='good'>50.0%</td>
 <td>10</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>172</td>
 <td>104</td>
 <td class='good'>60.5%</td>
 <td>9</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>102</td>
 <td>61</td>
 <td class='good'>59.8%</td>
 <td>5</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='mobilemin36l_int / ASPERO_AOS_SANDBOX'>mobilemin36l_int / ASPERO_AOS_SANDBOX</td>
 <td>650</td>
 <td>5</td>
 <td class='bad'>0.8%</td>
 <td>6</td>
-<td class='good'>120.0%</td>
+<td class=''>—</td>
 <td>2</td>
-<td class='warn'>33.3%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>46.1</td>
+<td class=''>—</td>
+<td class='qs'>0.2</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -3896,7 +3916,7 @@
 <td>5</td>
 <td class='bad'>9.1%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>595</td>
 <td>0</td>
 <td class='bad'>0.0%</td>
@@ -3928,7 +3948,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='adseledgent_int / ASPERO_SANDBOX'>adseledgent_int / ASPERO_SANDBOX</td>
 <td>580</td>
 <td>0</td>
@@ -3981,7 +4001,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Google Ads / HM_iOS_Install_18032026'>Google Ads / HM_iOS_Install_18032026</td>
 <td>524</td>
 <td>60</td>
@@ -3991,7 +4011,7 @@
 <td>5</td>
 <td class='warn'>21.7%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>20.3</td>
 <td>41</td>
 <td>5</td>
@@ -4022,7 +4042,7 @@
 <td>9</td>
 <td class='bad'>12.2%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>108</td>
 <td>13</td>
 <td class='bad'>12.0%</td>
@@ -4032,15 +4052,15 @@
 <td>18</td>
 <td class='bad'>14.6%</td>
 <td>4</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='s2ssoftsys_int / ASPERO_PL_s2ssoftsys_AOS'>s2ssoftsys_int / ASPERO_PL_s2ssoftsys_AOS</td>
 <td>408</td>
 <td>2</td>
 <td class='bad'>0.5%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -4087,7 +4107,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='spasiuexykti_int / ASPERO_IOS_SANDBOX'>spasiuexykti_int / ASPERO_IOS_SANDBOX</td>
 <td>362</td>
 <td>0</td>
@@ -4140,7 +4160,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Meta (Facebook) / HM_App_AAA_HM_Final_Install_iOS14_25032026'>Meta (Facebook) / HM_App_AAA_HM_Final_Install_iOS14_25032026</td>
 <td>357</td>
 <td>214</td>
@@ -4156,27 +4176,27 @@
 <td>19</td>
 <td class='good'>63.3%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>44</td>
 <td>27</td>
 <td class='good'>61.4%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>50</td>
 <td>32</td>
 <td class='good'>64.0%</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>67</td>
 <td>47</td>
 <td class='good'>70.1%</td>
 <td>8</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>39</td>
 <td>21</td>
 <td class='good'>53.8%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>31</td>
 <td>11</td>
 <td class='good'>35.5%</td>
@@ -4186,14 +4206,14 @@
 <td>27</td>
 <td class='good'>58.7%</td>
 <td>6</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>50</td>
 <td>30</td>
 <td class='good'>60.0%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='adgdfslsgbc_int / LG_Aspero_May2026'>adgdfslsgbc_int / LG_Aspero_May2026</td>
 <td>357</td>
 <td>28</td>
@@ -4203,13 +4223,13 @@
 <td>4</td>
 <td class='bad'>16.0%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>33.1</td>
 <td>357</td>
 <td>28</td>
 <td class='bad'>7.8%</td>
 <td>4</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -4246,7 +4266,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='sokendev_int / ASPERO'>sokendev_int / ASPERO</td>
 <td>304</td>
 <td>158</td>
@@ -4272,7 +4292,7 @@
 <td>21</td>
 <td class='good'>45.7%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>258</td>
 <td>137</td>
 <td class='good'>53.1%</td>
@@ -4299,7 +4319,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='sandboxads_int / Aspero_ADS_Sandbox_sandboxads_int'>sandboxads_int / Aspero_ADS_Sandbox_sandboxads_int</td>
 <td>281</td>
 <td>77</td>
@@ -4309,18 +4329,18 @@
 <td>10</td>
 <td class='bad'>13.9%</td>
 <td>4</td>
-<td class='good'>40.0%</td>
-<td class='qs'>45.7</td>
+<td class=''>—</td>
+<td class='qs'>37.7</td>
 <td>134</td>
 <td>39</td>
 <td class='warn'>29.1%</td>
 <td>7</td>
-<td class='good'>57.1%</td>
+<td class=''>—</td>
 <td>147</td>
 <td>38</td>
 <td class='warn'>25.9%</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -4352,7 +4372,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Zepto / Zepto_Scratchcard'>Zepto / Zepto_Scratchcard</td>
 <td>204</td>
 <td>121</td>
@@ -4362,23 +4382,23 @@
 <td>5</td>
 <td class='bad'>6.4%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>33.1</td>
 <td>68</td>
 <td>33</td>
 <td class='good'>48.5%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>98</td>
 <td>59</td>
 <td class='good'>60.2%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>38</td>
 <td>29</td>
 <td class='good'>76.3%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -4405,7 +4425,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Meta (Facebook) / HM_App_AAA_HM_Final_Purchase_iOS14_24032026'>Meta (Facebook) / HM_App_AAA_HM_Final_Purchase_iOS14_24032026</td>
 <td>184</td>
 <td>130</td>
@@ -4426,39 +4446,39 @@
 <td>15</td>
 <td class='good'>75.0%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>31</td>
 <td>22</td>
 <td class='good'>71.0%</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>3</td>
 <td>2</td>
-<td class='good'>66.7%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>34</td>
 <td>23</td>
 <td class='good'>67.6%</td>
 <td>7</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>30</td>
 <td>23</td>
 <td class='good'>76.7%</td>
 <td>6</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>35</td>
 <td>25</td>
 <td class='good'>71.4%</td>
 <td>9</td>
-<td class='good'>33.3%</td>
+<td class=''>—</td>
 <td>31</td>
 <td>20</td>
 <td class='good'>64.5%</td>
 <td>5</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Meta (Facebook) / HM_App_AAA_HM_First_Trade_25052026'>Meta (Facebook) / HM_App_AAA_HM_First_Trade_25052026</td>
 <td>154</td>
 <td>94</td>
@@ -4468,13 +4488,13 @@
 <td>12</td>
 <td class='bad'>14.3%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>43.3</td>
 <td>154</td>
 <td>94</td>
 <td class='good'>61.0%</td>
 <td>12</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -4511,7 +4531,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Zepto / Zepto_Banner'>Zepto / Zepto_Banner</td>
 <td>145</td>
 <td>95</td>
@@ -4521,23 +4541,23 @@
 <td>12</td>
 <td class='warn'>22.2%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>36.8</td>
 <td>54</td>
 <td>36</td>
 <td class='good'>66.7%</td>
 <td>6</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>62</td>
 <td>39</td>
 <td class='good'>62.9%</td>
 <td>4</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>29</td>
 <td>20</td>
 <td class='good'>69.0%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -4564,13 +4584,13 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='employee_referral / yubi_employee_referral_aspero'>employee_referral / yubi_employee_referral_aspero</td>
 <td>135</td>
 <td>111</td>
 <td class='good'>82.2%</td>
 <td>241</td>
-<td class='good'>217.1%</td>
+<td class='suspect'>⚠ 217%</td>
 <td>66</td>
 <td class='warn'>27.4%</td>
 <td>2</td>
@@ -4585,7 +4605,7 @@
 <td>30</td>
 <td class='good'>71.4%</td>
 <td>8</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -4617,33 +4637,33 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Google Ads / HM_APP_AOS_PaymentSuccess_tRoAS_15042026'>Google Ads / HM_APP_AOS_PaymentSuccess_tRoAS_15042026</td>
 <td>119</td>
 <td>51</td>
 <td class='good'>42.9%</td>
 <td>55</td>
-<td class='good'>107.8%</td>
+<td class='suspect'>⚠ 108%</td>
 <td>16</td>
 <td class='warn'>29.1%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>49.6</td>
 <td>6</td>
 <td>2</td>
-<td class='good'>33.3%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>76</td>
 <td>35</td>
 <td class='good'>46.1%</td>
 <td>10</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>37</td>
 <td>14</td>
 <td class='good'>37.8%</td>
 <td>5</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -4670,60 +4690,60 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Meta (Facebook) / None'>Meta (Facebook) / None</td>
 <td>90</td>
 <td>52</td>
 <td class='good'>57.8%</td>
 <td>60</td>
-<td class='good'>115.4%</td>
+<td class='suspect'>⚠ 115%</td>
 <td>17</td>
 <td class='warn'>28.3%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>54.7</td>
 <td>11</td>
 <td>8</td>
-<td class='good'>72.7%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>12</td>
 <td>7</td>
-<td class='good'>58.3%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>11</td>
 <td>6</td>
-<td class='good'>54.5%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>12</td>
 <td>7</td>
-<td class='good'>58.3%</td>
+<td class=''>—</td>
 <td>4</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>16</td>
 <td>8</td>
-<td class='good'>50.0%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>11</td>
 <td>6</td>
-<td class='good'>54.5%</td>
+<td class=''>—</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>7</td>
 <td>5</td>
-<td class='good'>71.4%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>10</td>
 <td>5</td>
-<td class='good'>50.0%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Jio_17042026 / Watering_Plant'>Jio_17042026 / Watering_Plant</td>
 <td>77</td>
 <td>43</td>
@@ -4733,13 +4753,13 @@
 <td>4</td>
 <td class='bad'>11.8%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>38.4</td>
 <td>77</td>
 <td>43</td>
 <td class='good'>55.8%</td>
 <td>4</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -4776,18 +4796,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='charitabl5o_int / Aspero_LG_May2026'>charitabl5o_int / Aspero_LG_May2026</td>
 <td>56</td>
 <td>5</td>
 <td class='bad'>8.9%</td>
 <td>1</td>
-<td class='bad'>20.0%</td>
-<td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
-<td class='qs'>7.8</td>
+<td>0</td>
+<td class=''>—</td>
+<td class='qs'>1.8</td>
 <td>48</td>
 <td>5</td>
 <td class='bad'>10.4%</td>
@@ -4795,7 +4815,7 @@
 <td class=''>—</td>
 <td>8</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -4829,28 +4849,28 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Meta (Facebook) / HM_App_RM_Install_KYC_06052026'>Meta (Facebook) / HM_App_RM_Install_KYC_06052026</td>
 <td>50</td>
 <td>10</td>
 <td class='warn'>20.0%</td>
 <td>14</td>
-<td class='good'>140.0%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='warn'>21.4%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>52.4</td>
+<td class=''>—</td>
+<td class='qs'>4.0</td>
 <td>4</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>24</td>
 <td>6</td>
 <td class='warn'>25.0%</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>22</td>
 <td>4</td>
 <td class='warn'>18.2%</td>
@@ -4882,7 +4902,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Zomato_CPI / Zomato_STW'>Zomato_CPI / Zomato_STW</td>
 <td>46</td>
 <td>30</td>
@@ -4892,7 +4912,7 @@
 <td>2</td>
 <td class='bad'>8.0%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>40.4</td>
 <td>0</td>
 <td>0</td>
@@ -4901,14 +4921,14 @@
 <td class=''>—</td>
 <td>2</td>
 <td>1</td>
-<td class='good'>50.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>44</td>
 <td>29</td>
 <td class='good'>65.9%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -4935,28 +4955,28 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='partneron_int / ASPERO_AOS_SANDBOX'>partneron_int / ASPERO_AOS_SANDBOX</td>
 <td>37</td>
 <td>7</td>
 <td class='warn'>18.9%</td>
 <td>3</td>
-<td class='warn'>42.9%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='warn'>33.3%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>26.6</td>
+<td class=''>—</td>
+<td class='qs'>3.8</td>
 <td>19</td>
 <td>1</td>
-<td class='bad'>5.3%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>18</td>
 <td>6</td>
-<td class='good'>33.3%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -4988,18 +5008,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Google Ads / Aspero_UACe_Install-KYC_Bonds_05052026'>Google Ads / Aspero_UACe_Install-KYC_Bonds_05052026</td>
 <td>35</td>
 <td>1</td>
 <td class='bad'>2.9%</td>
 <td>3</td>
-<td class='good'>300.0%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='warn'>33.3%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>100.6</td>
+<td class=''>—</td>
+<td class='qs'>0.6</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -5012,14 +5032,14 @@
 <td class=''>—</td>
 <td>9</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>26</td>
 <td>1</td>
 <td class='bad'>3.8%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -5041,7 +5061,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Influencer_Collab / RojaKiran_IG'>Influencer_Collab / RojaKiran_IG</td>
 <td>32</td>
 <td>20</td>
@@ -5049,30 +5069,30 @@
 <td>19</td>
 <td class='good'>95.0%</td>
 <td>3</td>
-<td class='bad'>15.8%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>45.7</td>
+<td class=''>—</td>
+<td class='qs'>41.0</td>
 <td>5</td>
 <td>2</td>
-<td class='good'>40.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>2</td>
 <td>2</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>7</td>
 <td>4</td>
-<td class='good'>57.1%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>18</td>
 <td>12</td>
-<td class='good'>66.7%</td>
+<td class=''>—</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -5094,7 +5114,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='charitabl5o_int / ASPERO_AOS_SANDBOX'>charitabl5o_int / ASPERO_AOS_SANDBOX</td>
 <td>28</td>
 <td>0</td>
@@ -5108,17 +5128,17 @@
 <td class='qs'>0.0</td>
 <td>14</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>13</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>1</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -5147,18 +5167,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Zomato_CPI / Zomato_Mobile'>Zomato_CPI / Zomato_Mobile</td>
 <td>19</td>
 <td>8</td>
-<td class='good'>42.1%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='warn'>37.5%</td>
-<td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
-<td class='qs'>19.7</td>
+<td>0</td>
+<td class=''>—</td>
+<td class='qs'>0.0</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -5166,17 +5186,17 @@
 <td class=''>—</td>
 <td>1</td>
 <td>1</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>4</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>14</td>
 <td>7</td>
-<td class='good'>50.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -5200,18 +5220,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Google Ads / Aspero_UACe_KYC-Purchase_Bonds_09012026'>Google Ads / Aspero_UACe_KYC-Purchase_Bonds_09012026</td>
 <td>17</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>1</td>
 <td class=''>—</td>
 <td>1</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>30.0</td>
+<td class=''>—</td>
+<td class='qs'>0.0</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -5219,158 +5239,158 @@
 <td class=''>—</td>
 <td>5</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>2</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>5</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td>0</td>
-<td class=''>—</td>
-<td>2</td>
-<td>0</td>
-<td class='bad'>0.0%</td>
-<td>1</td>
-<td class='bad'>0.0%</td>
-<td>1</td>
-<td>0</td>
-<td class='bad'>0.0%</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td>0</td>
 <td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>2</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
+<td>1</td>
+<td class=''>—</td>
+<td>1</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>2</td>
+<td>0</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='mobile_app_share / None'>mobile_app_share / None</td>
 <td>14</td>
 <td>12</td>
-<td class='good'>85.7%</td>
+<td class=''>—</td>
 <td>23</td>
-<td class='good'>191.7%</td>
+<td class=''>—</td>
 <td>8</td>
 <td class='warn'>34.8%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>85.1</td>
+<td class=''>—</td>
+<td class='qs'>10.4</td>
 <td>3</td>
 <td>3</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>2</td>
 <td>1</td>
-<td class='good'>50.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>1</td>
 <td>1</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>1</td>
 <td>1</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>5</td>
 <td>5</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>1</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>1</td>
 <td>1</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Apple Search Ads / 2143575296'>Apple Search Ads / 2143575296</td>
 <td>13</td>
 <td>4</td>
-<td class='good'>30.8%</td>
-<td>2</td>
-<td class='good'>50.0%</td>
-<td>1</td>
-<td class='good'>50.0%</td>
-<td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>36.2</td>
-<td>0</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td class=''>—</td>
-<td>1</td>
-<td>0</td>
-<td class='bad'>0.0%</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
 <td class=''>—</td>
 <td>2</td>
+<td class=''>—</td>
+<td>1</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
+<td class='qs'>0.0</td>
+<td>0</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>1</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>2</td>
+<td>0</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>10</td>
 <td>4</td>
-<td class='good'>40.0%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='nexfigoadh7_int / ASPERO_SANDBOX'>nexfigoadh7_int / ASPERO_SANDBOX</td>
 <td>12</td>
 <td>1</td>
-<td class='bad'>8.3%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='good'>300.0%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='warn'>33.3%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>101.6</td>
+<td class=''>—</td>
+<td class='qs'>0.0</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -5378,12 +5398,12 @@
 <td class=''>—</td>
 <td>7</td>
 <td>1</td>
-<td class='bad'>14.3%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>5</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -5412,26 +5432,26 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Meta (Facebook) / HM_iOS_AAA_HM_PaymentSuccessful_22052026'>Meta (Facebook) / HM_iOS_AAA_HM_PaymentSuccessful_22052026</td>
 <td>11</td>
 <td>8</td>
-<td class='good'>72.7%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
-<td class='qs'>14.5</td>
+<td class='qs'>0.0</td>
 <td>2</td>
 <td>1</td>
-<td class='good'>50.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>9</td>
 <td>7</td>
-<td class='good'>77.8%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -5465,11 +5485,11 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-campaign'>
 <td class='sticky-col dim-label' title='Meta (Facebook) / HM_App_RM_KYC_Order_06052026'>Meta (Facebook) / HM_App_RM_KYC_Order_06052026</td>
 <td>5</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -5484,12 +5504,12 @@
 <td class=''>—</td>
 <td>4</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>1</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -5518,7 +5538,8 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-</tbody></table></div></div>
+</tbody></table></div>
+<div class="show-more-bar"><button class="show-more-btn" onclick="toggleRows('tbl-campaign', 60)" id="btn-tbl-campaign">Show all 60 rows (50 more)</button><span class="row-count">Showing top 10 of 60</span></div></div>
 <div class="panel " id="panel-adset"><div class="insight-card">
 <div class="insight-section" style="background:#e0f2fe;border-left:3px solid #0369a1">
 <div class="insight-title" style="color:#0369a1">📊 What Changed This Week</div>
@@ -5530,9 +5551,9 @@
 <div class="insight-section" style="background:#dcfce7;border-left:3px solid #15803d">
 <div class="insight-title" style="color:#15803d">🚀 Top Sources To Double Down On</div>
 <ul class="insight-bullets">
-<li>tunnelads_int / ASPERO_AOS_SANDBOX / Unknown: I→S 0.2%, KD→FT — (quality 2660)</li>
-<li>liquefteapsg_int / ASPERO_AOS_SANDBOX / Unkno: I→S 0.2%, KD→FT — (quality 1626)</li>
 <li>employee_referral / yubi_employee_referral_as: I→S 82.2%, KD→FT 3.0% (quality 90)</li>
+<li>Meta (Facebook) / None / Unknown: I→S 57.8%, KD→FT — (quality 55)</li>
+<li>Google Ads / ADS_IND_APP_AOS_BankVerified_tcp: I→S 73.5%, KD→FT 0.0% (quality 51)</li>
 </ul></div>
 <div class="insight-section" style="background:#fef3c7;border-left:3px solid #b45309">
 <div class="insight-title" style="color:#b45309">⚡ Actions To Improve User Quality</div>
@@ -5541,7 +5562,7 @@
 <li>batman8z_int / ASPERO_AOS_SANDBOX / Unkn: I→S only 0.0% — tighten audience targeting or pause</li>
 <li>aliliupvt_int / ASPERO_SANDBOX / Unknown: I→S only 0.0% — tighten audience targeting or pause</li>
 </ul></div>
-</div><div class="table-wrap"><table>
+</div><div class="table-wrap" id="wrap-tbl-adset"><table id="tbl-adset">
 <thead>
 <tr class='header-top'>
 <th rowspan='2' class='sticky-col'>Dimension</th>
@@ -5576,7 +5597,7 @@
 <th>Inst</th><th>Sign</th><th>I→S%</th><th>KYC✓</th><th>KD→FT%</th>
 </tr>
 </thead><tbody>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='Google Ads / ADS_IND_APP_AOS_PaymentSuccess_tcpa_22ndSept25 / Unknown'>Google Ads / ADS_IND_APP_AOS_PaymentSuccess_tcpa_22ndSept25 / Unknown</td>
 <td>46,799</td>
 <td>9,208</td>
@@ -5629,7 +5650,7 @@
 <td>100</td>
 <td class='bad'>6.0%</td>
 </tr>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='Organic / None / Unknown'>Organic / None / Unknown</td>
 <td>12,773</td>
 <td>1,438</td>
@@ -5682,7 +5703,7 @@
 <td>21</td>
 <td class='good'>47.6%</td>
 </tr>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='Google Ads / ADS_IND_APP_AOS_PaymentSuccess_Firebase_24042026 / Unknown'>Google Ads / ADS_IND_APP_AOS_PaymentSuccess_Firebase_24042026 / Unknown</td>
 <td>6,864</td>
 <td>1,348</td>
@@ -5698,7 +5719,7 @@
 <td>267</td>
 <td class='warn'>17.0%</td>
 <td>19</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>2,327</td>
 <td>270</td>
 <td class='bad'>11.6%</td>
@@ -5708,12 +5729,12 @@
 <td>199</td>
 <td class='warn'>16.9%</td>
 <td>8</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>943</td>
 <td>216</td>
 <td class='warn'>22.9%</td>
 <td>16</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>590</td>
 <td>256</td>
 <td class='good'>43.4%</td>
@@ -5723,7 +5744,7 @@
 <td>140</td>
 <td class='good'>54.7%</td>
 <td>14</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -5735,7 +5756,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='Meta (Facebook) / HM_App_AAA_HM_Purchase_07022026 / Unknown'>Meta (Facebook) / HM_App_AAA_HM_Purchase_07022026 / Unknown</td>
 <td>5,498</td>
 <td>3,611</td>
@@ -5788,13 +5809,13 @@
 <td>54</td>
 <td class='bad'>0.0%</td>
 </tr>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='Google Ads / ADS_IND_APP_AOS_BankVerified_tcpa_4dec25 / Unknown'>Google Ads / ADS_IND_APP_AOS_BankVerified_tcpa_4dec25 / Unknown</td>
 <td>5,457</td>
 <td>4,012</td>
 <td class='good'>73.5%</td>
 <td>4,060</td>
-<td class='good'>101.2%</td>
+<td class='suspect'>⚠ 101%</td>
 <td>852</td>
 <td class='warn'>21.0%</td>
 <td>0</td>
@@ -5804,7 +5825,7 @@
 <td>35</td>
 <td class='good'>68.6%</td>
 <td>10</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>745</td>
 <td>548</td>
 <td class='good'>73.6%</td>
@@ -5841,18 +5862,18 @@
 <td>113</td>
 <td class='bad'>0.0%</td>
 </tr>
-<tr>
+<tr class='bot-traffic'>
 <td class='sticky-col dim-label' title='mobzone_int / Aspero_LG_May2026 / Unknown'>mobzone_int / Aspero_LG_May2026 / Unknown</td>
 <td>4,335</td>
 <td>12</td>
 <td class='bad'>0.3%</td>
 <td>5</td>
-<td class='warn'>41.7%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='warn'>20.0%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>18.6</td>
+<td class=''>—</td>
+<td class='qs'>0.1</td>
 <td>2,206</td>
 <td>8</td>
 <td class='bad'>0.4%</td>
@@ -5862,7 +5883,7 @@
 <td>4</td>
 <td class='bad'>0.2%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -5894,18 +5915,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic'>
 <td class='sticky-col dim-label' title='oddsendsc32_int / ASPERO_IOS_SANDBOX / Unknown'>oddsendsc32_int / ASPERO_IOS_SANDBOX / Unknown</td>
 <td>4,045</td>
 <td>17</td>
 <td class='bad'>0.4%</td>
 <td>10</td>
-<td class='good'>58.8%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>10.0%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>20.7</td>
+<td class=''>—</td>
+<td class='qs'>0.1</td>
 <td>59</td>
 <td>4</td>
 <td class='bad'>6.8%</td>
@@ -5915,7 +5936,7 @@
 <td>10</td>
 <td class='bad'>0.4%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>1,268</td>
 <td>3</td>
 <td class='bad'>0.2%</td>
@@ -5947,7 +5968,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='appnext_int / Aspero_ADS_Appnext / Unknown'>appnext_int / Aspero_ADS_Appnext / Unknown</td>
 <td>3,770</td>
 <td>451</td>
@@ -5957,18 +5978,18 @@
 <td>7</td>
 <td class='bad'>5.1%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>13.0</td>
 <td>1,570</td>
 <td>334</td>
 <td class='warn'>21.3%</td>
 <td>6</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>2,200</td>
 <td>117</td>
 <td class='bad'>5.3%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -6000,7 +6021,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class=''>
 <td class='sticky-col dim-label' title='Google Ads / ADS_IND_APP_AOS_PaymentSuccess_NewUser_14052026 / Unknown'>Google Ads / ADS_IND_APP_AOS_PaymentSuccess_NewUser_14052026 / Unknown</td>
 <td>3,740</td>
 <td>1,659</td>
@@ -6053,7 +6074,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic'>
 <td class='sticky-col dim-label' title='tunnelads_int / ASPERO_IOS_SANDBOX / Unknown'>tunnelads_int / ASPERO_IOS_SANDBOX / Unknown</td>
 <td>2,562</td>
 <td>0</td>
@@ -6106,7 +6127,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='afnumberone_int / ASPERO_SANDBOX / Unknown'>afnumberone_int / ASPERO_SANDBOX / Unknown</td>
 <td>2,553</td>
 <td>395</td>
@@ -6122,12 +6143,12 @@
 <td>135</td>
 <td class='bad'>7.8%</td>
 <td>10</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>494</td>
 <td>137</td>
 <td class='warn'>27.7%</td>
 <td>16</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>336</td>
 <td>123</td>
 <td class='good'>36.6%</td>
@@ -6159,18 +6180,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='liquefteapsg_int / ASPERO_AOS_SANDBOX / Unknown'>liquefteapsg_int / ASPERO_AOS_SANDBOX / Unknown</td>
 <td>2,506</td>
 <td>5</td>
 <td class='bad'>0.2%</td>
 <td>271</td>
-<td class='good'>5420.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class='bad'>0.0%</td>
 <td>0</td>
 <td class=''>—</td>
-<td class='qs'>1626.0</td>
+<td class='qs'>0.0</td>
 <td>740</td>
 <td>5</td>
 <td class='bad'>0.7%</td>
@@ -6212,13 +6233,13 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='batman8z_int / ASPERO_AOS_SANDBOX / Unknown'>batman8z_int / ASPERO_AOS_SANDBOX / Unknown</td>
 <td>2,098</td>
 <td>1</td>
 <td class='bad'>0.0%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -6265,7 +6286,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='aliliupvt_int / ASPERO_SANDBOX / Unknown'>aliliupvt_int / ASPERO_SANDBOX / Unknown</td>
 <td>1,774</td>
 <td>0</td>
@@ -6318,18 +6339,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='arbeenllcgx_int / ASPERO_IOS_SANDBOX / Unknown'>arbeenllcgx_int / ASPERO_IOS_SANDBOX / Unknown</td>
 <td>1,729</td>
 <td>7</td>
 <td class='bad'>0.4%</td>
 <td>5</td>
-<td class='good'>71.4%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='warn'>20.0%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>27.5</td>
+<td class=''>—</td>
+<td class='qs'>0.1</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -6344,7 +6365,7 @@
 <td>4</td>
 <td class='bad'>0.3%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -6371,18 +6392,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='tunnelads_int / ASPERO_AOS_SANDBOX / Unknown'>tunnelads_int / ASPERO_AOS_SANDBOX / Unknown</td>
 <td>1,519</td>
 <td>3</td>
 <td class='bad'>0.2%</td>
 <td>266</td>
-<td class='good'>8866.7%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class='bad'>0.0%</td>
 <td>0</td>
 <td class=''>—</td>
-<td class='qs'>2660.1</td>
+<td class='qs'>0.0</td>
 <td>404</td>
 <td>3</td>
 <td class='bad'>0.7%</td>
@@ -6424,13 +6445,13 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='ccwads4o_int / Aspero_LG_May2026 / Unknown'>ccwads4o_int / Aspero_LG_May2026 / Unknown</td>
 <td>1,477</td>
 <td>4</td>
 <td class='bad'>0.3%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -6477,7 +6498,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='onetraffijs_int / ASPERO_AOS_SANDBOX / Unknown'>onetraffijs_int / ASPERO_AOS_SANDBOX / Unknown</td>
 <td>1,295</td>
 <td>545</td>
@@ -6493,7 +6514,7 @@
 <td>80</td>
 <td class='good'>37.6%</td>
 <td>13</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>711</td>
 <td>319</td>
 <td class='good'>44.9%</td>
@@ -6530,28 +6551,28 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='lumolinkaav_int / ASPERO_SANDBOX / Unknown'>lumolinkaav_int / ASPERO_SANDBOX / Unknown</td>
 <td>1,214</td>
 <td>15</td>
 <td class='bad'>1.2%</td>
 <td>14</td>
-<td class='good'>93.3%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='warn'>21.4%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>34.6</td>
+<td class=''>—</td>
+<td class='qs'>0.2</td>
 <td>385</td>
 <td>8</td>
 <td class='bad'>2.1%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>381</td>
 <td>7</td>
 <td class='bad'>1.8%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>348</td>
 <td>0</td>
 <td class='bad'>0.0%</td>
@@ -6583,7 +6604,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='sokendev_int / ASPERO_SANDBOX / Unknown'>sokendev_int / ASPERO_SANDBOX / Unknown</td>
 <td>1,031</td>
 <td>411</td>
@@ -6599,7 +6620,7 @@
 <td>113</td>
 <td class='good'>37.5%</td>
 <td>18</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>464</td>
 <td>186</td>
 <td class='good'>40.1%</td>
@@ -6636,7 +6657,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='dubaicrea8u_int / ASPERO_AOS_SANDBOX / Unknown'>dubaicrea8u_int / ASPERO_AOS_SANDBOX / Unknown</td>
 <td>854</td>
 <td>0</td>
@@ -6689,7 +6710,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='foxmobiwy_int / ASPERO_SANDBOX / Unknown'>foxmobiwy_int / ASPERO_SANDBOX / Unknown</td>
 <td>819</td>
 <td>295</td>
@@ -6705,12 +6726,12 @@
 <td>12</td>
 <td class='warn'>27.9%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>230</td>
 <td>83</td>
 <td class='good'>36.1%</td>
 <td>6</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>374</td>
 <td>125</td>
 <td class='good'>33.4%</td>
@@ -6720,7 +6741,7 @@
 <td>75</td>
 <td class='good'>43.6%</td>
 <td>11</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -6742,7 +6763,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='morganconlm_int / LG_Aspero_May26 / Unknown'>morganconlm_int / LG_Aspero_May26 / Unknown</td>
 <td>809</td>
 <td>0</td>
@@ -6795,13 +6816,13 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='riversads_int / ASPERO_PL_Riversads_AOS / Unknown'>riversads_int / ASPERO_PL_Riversads_AOS / Unknown</td>
 <td>795</td>
 <td>1</td>
 <td class='bad'>0.1%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -6848,7 +6869,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Jio_HM / Jio_CoinStack_17042026 / Unknown'>Jio_HM / Jio_CoinStack_17042026 / Unknown</td>
 <td>756</td>
 <td>406</td>
@@ -6864,7 +6885,7 @@
 <td>96</td>
 <td class='good'>50.8%</td>
 <td>10</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>486</td>
 <td>264</td>
 <td class='good'>54.3%</td>
@@ -6872,22 +6893,22 @@
 <td class='bad'>0.0%</td>
 <td>13</td>
 <td>9</td>
-<td class='good'>69.2%</td>
+<td class=''>—</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>42</td>
 <td>21</td>
 <td class='good'>50.0%</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>10</td>
 <td>6</td>
-<td class='good'>60.0%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>16</td>
 <td>10</td>
-<td class='good'>62.5%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -6901,7 +6922,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='globalnetqg_int / ASPERO_IOS_SANDBOX / Unknown'>globalnetqg_int / ASPERO_IOS_SANDBOX / Unknown</td>
 <td>732</td>
 <td>0</td>
@@ -6954,7 +6975,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Meta (Facebook) / HM_App_AAA_HM_Final_Purchase_24032026 / Unknown'>Meta (Facebook) / HM_App_AAA_HM_Final_Purchase_24032026 / Unknown</td>
 <td>718</td>
 <td>356</td>
@@ -6970,44 +6991,44 @@
 <td>12</td>
 <td class='good'>60.0%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>76</td>
 <td>40</td>
 <td class='good'>52.6%</td>
 <td>8</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>75</td>
 <td>36</td>
 <td class='good'>48.0%</td>
 <td>8</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>71</td>
 <td>23</td>
 <td class='good'>32.4%</td>
 <td>4</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>100</td>
 <td>43</td>
 <td class='good'>43.0%</td>
 <td>11</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>111</td>
 <td>58</td>
 <td class='good'>52.3%</td>
 <td>13</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>105</td>
 <td>58</td>
 <td class='good'>55.2%</td>
 <td>15</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>160</td>
 <td>86</td>
 <td class='good'>53.8%</td>
 <td>16</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Jio_HM / Jio_WomenPhone_17042026 / Unknown'>Jio_HM / Jio_WomenPhone_17042026 / Unknown</td>
 <td>679</td>
 <td>356</td>
@@ -7023,7 +7044,7 @@
 <td>102</td>
 <td class='good'>48.6%</td>
 <td>13</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>385</td>
 <td>199</td>
 <td class='good'>51.7%</td>
@@ -7031,24 +7052,24 @@
 <td class='bad'>0.0%</td>
 <td>8</td>
 <td>4</td>
-<td class='good'>50.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>38</td>
 <td>23</td>
 <td class='good'>60.5%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>11</td>
 <td>8</td>
-<td class='good'>72.7%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>27</td>
 <td>20</td>
 <td class='good'>74.1%</td>
 <td>5</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -7060,7 +7081,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Zomato_CPI / Zomato_14Apr / Unknown'>Zomato_CPI / Zomato_14Apr / Unknown</td>
 <td>673</td>
 <td>393</td>
@@ -7086,45 +7107,45 @@
 <td>61</td>
 <td class='good'>55.5%</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>151</td>
 <td>98</td>
 <td class='good'>64.9%</td>
 <td>10</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>138</td>
 <td>69</td>
 <td class='good'>50.0%</td>
 <td>10</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>172</td>
 <td>104</td>
 <td class='good'>60.5%</td>
 <td>9</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>102</td>
 <td>61</td>
 <td class='good'>59.8%</td>
 <td>5</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='mobilemin36l_int / ASPERO_AOS_SANDBOX / Unknown'>mobilemin36l_int / ASPERO_AOS_SANDBOX / Unknown</td>
 <td>650</td>
 <td>5</td>
 <td class='bad'>0.8%</td>
 <td>6</td>
-<td class='good'>120.0%</td>
+<td class=''>—</td>
 <td>2</td>
-<td class='warn'>33.3%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>46.1</td>
+<td class=''>—</td>
+<td class='qs'>0.2</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -7134,7 +7155,7 @@
 <td>5</td>
 <td class='bad'>9.1%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>595</td>
 <td>0</td>
 <td class='bad'>0.0%</td>
@@ -7166,7 +7187,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='adseledgent_int / ASPERO_SANDBOX / Unknown'>adseledgent_int / ASPERO_SANDBOX / Unknown</td>
 <td>580</td>
 <td>0</td>
@@ -7219,7 +7240,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Google Ads / HM_iOS_Install_18032026 / Unknown'>Google Ads / HM_iOS_Install_18032026 / Unknown</td>
 <td>524</td>
 <td>60</td>
@@ -7229,7 +7250,7 @@
 <td>5</td>
 <td class='warn'>21.7%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>20.3</td>
 <td>41</td>
 <td>5</td>
@@ -7260,7 +7281,7 @@
 <td>9</td>
 <td class='bad'>12.2%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>108</td>
 <td>13</td>
 <td class='bad'>12.0%</td>
@@ -7270,15 +7291,15 @@
 <td>18</td>
 <td class='bad'>14.6%</td>
 <td>4</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='s2ssoftsys_int / ASPERO_PL_s2ssoftsys_AOS / Unknown'>s2ssoftsys_int / ASPERO_PL_s2ssoftsys_AOS / Unknown</td>
 <td>408</td>
 <td>2</td>
 <td class='bad'>0.5%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -7325,7 +7346,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='spasiuexykti_int / ASPERO_IOS_SANDBOX / Unknown'>spasiuexykti_int / ASPERO_IOS_SANDBOX / Unknown</td>
 <td>362</td>
 <td>0</td>
@@ -7378,7 +7399,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Meta (Facebook) / HM_App_AAA_HM_Final_Install_iOS14_25032026 / Unknown'>Meta (Facebook) / HM_App_AAA_HM_Final_Install_iOS14_25032026 / Unknown</td>
 <td>357</td>
 <td>214</td>
@@ -7394,27 +7415,27 @@
 <td>19</td>
 <td class='good'>63.3%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>44</td>
 <td>27</td>
 <td class='good'>61.4%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>50</td>
 <td>32</td>
 <td class='good'>64.0%</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>67</td>
 <td>47</td>
 <td class='good'>70.1%</td>
 <td>8</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>39</td>
 <td>21</td>
 <td class='good'>53.8%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>31</td>
 <td>11</td>
 <td class='good'>35.5%</td>
@@ -7424,14 +7445,14 @@
 <td>27</td>
 <td class='good'>58.7%</td>
 <td>6</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>50</td>
 <td>30</td>
 <td class='good'>60.0%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='adgdfslsgbc_int / LG_Aspero_May2026 / Unknown'>adgdfslsgbc_int / LG_Aspero_May2026 / Unknown</td>
 <td>357</td>
 <td>28</td>
@@ -7441,13 +7462,13 @@
 <td>4</td>
 <td class='bad'>16.0%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>33.1</td>
 <td>357</td>
 <td>28</td>
 <td class='bad'>7.8%</td>
 <td>4</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -7484,7 +7505,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='sokendev_int / ASPERO / Unknown'>sokendev_int / ASPERO / Unknown</td>
 <td>304</td>
 <td>158</td>
@@ -7510,7 +7531,7 @@
 <td>21</td>
 <td class='good'>45.7%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>258</td>
 <td>137</td>
 <td class='good'>53.1%</td>
@@ -7537,7 +7558,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='sandboxads_int / Aspero_ADS_Sandbox_sandboxads_int / Unknown'>sandboxads_int / Aspero_ADS_Sandbox_sandboxads_int / Unknown</td>
 <td>281</td>
 <td>77</td>
@@ -7547,18 +7568,18 @@
 <td>10</td>
 <td class='bad'>13.9%</td>
 <td>4</td>
-<td class='good'>40.0%</td>
-<td class='qs'>45.7</td>
+<td class=''>—</td>
+<td class='qs'>37.7</td>
 <td>134</td>
 <td>39</td>
 <td class='warn'>29.1%</td>
 <td>7</td>
-<td class='good'>57.1%</td>
+<td class=''>—</td>
 <td>147</td>
 <td>38</td>
 <td class='warn'>25.9%</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -7590,7 +7611,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Zepto / Zepto_Scratchcard / Unknown'>Zepto / Zepto_Scratchcard / Unknown</td>
 <td>204</td>
 <td>121</td>
@@ -7600,23 +7621,23 @@
 <td>5</td>
 <td class='bad'>6.4%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>33.1</td>
 <td>68</td>
 <td>33</td>
 <td class='good'>48.5%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>98</td>
 <td>59</td>
 <td class='good'>60.2%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>38</td>
 <td>29</td>
 <td class='good'>76.3%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -7643,7 +7664,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Meta (Facebook) / HM_App_AAA_HM_Final_Purchase_iOS14_24032026 / Unknown'>Meta (Facebook) / HM_App_AAA_HM_Final_Purchase_iOS14_24032026 / Unknown</td>
 <td>184</td>
 <td>130</td>
@@ -7664,39 +7685,39 @@
 <td>15</td>
 <td class='good'>75.0%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>31</td>
 <td>22</td>
 <td class='good'>71.0%</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>3</td>
 <td>2</td>
-<td class='good'>66.7%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>34</td>
 <td>23</td>
 <td class='good'>67.6%</td>
 <td>7</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>30</td>
 <td>23</td>
 <td class='good'>76.7%</td>
 <td>6</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>35</td>
 <td>25</td>
 <td class='good'>71.4%</td>
 <td>9</td>
-<td class='good'>33.3%</td>
+<td class=''>—</td>
 <td>31</td>
 <td>20</td>
 <td class='good'>64.5%</td>
 <td>5</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Meta (Facebook) / HM_App_AAA_HM_First_Trade_25052026 / Unknown'>Meta (Facebook) / HM_App_AAA_HM_First_Trade_25052026 / Unknown</td>
 <td>154</td>
 <td>94</td>
@@ -7706,13 +7727,13 @@
 <td>12</td>
 <td class='bad'>14.3%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>43.3</td>
 <td>154</td>
 <td>94</td>
 <td class='good'>61.0%</td>
 <td>12</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -7749,7 +7770,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Zepto / Zepto_Banner / Unknown'>Zepto / Zepto_Banner / Unknown</td>
 <td>145</td>
 <td>95</td>
@@ -7759,23 +7780,23 @@
 <td>12</td>
 <td class='warn'>22.2%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>36.8</td>
 <td>54</td>
 <td>36</td>
 <td class='good'>66.7%</td>
 <td>6</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>62</td>
 <td>39</td>
 <td class='good'>62.9%</td>
 <td>4</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>29</td>
 <td>20</td>
 <td class='good'>69.0%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -7802,13 +7823,13 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='employee_referral / yubi_employee_referral_aspero / Unknown'>employee_referral / yubi_employee_referral_aspero / Unknown</td>
 <td>135</td>
 <td>111</td>
 <td class='good'>82.2%</td>
 <td>241</td>
-<td class='good'>217.1%</td>
+<td class='suspect'>⚠ 217%</td>
 <td>66</td>
 <td class='warn'>27.4%</td>
 <td>2</td>
@@ -7823,7 +7844,7 @@
 <td>30</td>
 <td class='good'>71.4%</td>
 <td>8</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -7855,33 +7876,33 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Google Ads / HM_APP_AOS_PaymentSuccess_tRoAS_15042026 / Unknown'>Google Ads / HM_APP_AOS_PaymentSuccess_tRoAS_15042026 / Unknown</td>
 <td>119</td>
 <td>51</td>
 <td class='good'>42.9%</td>
 <td>55</td>
-<td class='good'>107.8%</td>
+<td class='suspect'>⚠ 108%</td>
 <td>16</td>
 <td class='warn'>29.1%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>49.6</td>
 <td>6</td>
 <td>2</td>
-<td class='good'>33.3%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>76</td>
 <td>35</td>
 <td class='good'>46.1%</td>
 <td>10</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>37</td>
 <td>14</td>
 <td class='good'>37.8%</td>
 <td>5</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -7908,60 +7929,60 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Meta (Facebook) / None / Unknown'>Meta (Facebook) / None / Unknown</td>
 <td>90</td>
 <td>52</td>
 <td class='good'>57.8%</td>
 <td>60</td>
-<td class='good'>115.4%</td>
+<td class='suspect'>⚠ 115%</td>
 <td>17</td>
 <td class='warn'>28.3%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>54.7</td>
 <td>11</td>
 <td>8</td>
-<td class='good'>72.7%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>12</td>
 <td>7</td>
-<td class='good'>58.3%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>11</td>
 <td>6</td>
-<td class='good'>54.5%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>12</td>
 <td>7</td>
-<td class='good'>58.3%</td>
+<td class=''>—</td>
 <td>4</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>16</td>
 <td>8</td>
-<td class='good'>50.0%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>11</td>
 <td>6</td>
-<td class='good'>54.5%</td>
+<td class=''>—</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>7</td>
 <td>5</td>
-<td class='good'>71.4%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>10</td>
 <td>5</td>
-<td class='good'>50.0%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Jio_17042026 / Watering_Plant / Unknown'>Jio_17042026 / Watering_Plant / Unknown</td>
 <td>77</td>
 <td>43</td>
@@ -7971,13 +7992,13 @@
 <td>4</td>
 <td class='bad'>11.8%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>38.4</td>
 <td>77</td>
 <td>43</td>
 <td class='good'>55.8%</td>
 <td>4</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -8014,18 +8035,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='charitabl5o_int / Aspero_LG_May2026 / Unknown'>charitabl5o_int / Aspero_LG_May2026 / Unknown</td>
 <td>56</td>
 <td>5</td>
 <td class='bad'>8.9%</td>
 <td>1</td>
-<td class='bad'>20.0%</td>
-<td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
-<td class='qs'>7.8</td>
+<td>0</td>
+<td class=''>—</td>
+<td class='qs'>1.8</td>
 <td>48</td>
 <td>5</td>
 <td class='bad'>10.4%</td>
@@ -8033,7 +8054,7 @@
 <td class=''>—</td>
 <td>8</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -8067,28 +8088,28 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Meta (Facebook) / HM_App_RM_Install_KYC_06052026 / Unknown'>Meta (Facebook) / HM_App_RM_Install_KYC_06052026 / Unknown</td>
 <td>50</td>
 <td>10</td>
 <td class='warn'>20.0%</td>
 <td>14</td>
-<td class='good'>140.0%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='warn'>21.4%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>52.4</td>
+<td class=''>—</td>
+<td class='qs'>4.0</td>
 <td>4</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>24</td>
 <td>6</td>
 <td class='warn'>25.0%</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>22</td>
 <td>4</td>
 <td class='warn'>18.2%</td>
@@ -8120,7 +8141,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Zomato_CPI / Zomato_STW / Unknown'>Zomato_CPI / Zomato_STW / Unknown</td>
 <td>46</td>
 <td>30</td>
@@ -8130,7 +8151,7 @@
 <td>2</td>
 <td class='bad'>8.0%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td class='qs'>40.4</td>
 <td>0</td>
 <td>0</td>
@@ -8139,14 +8160,14 @@
 <td class=''>—</td>
 <td>2</td>
 <td>1</td>
-<td class='good'>50.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>44</td>
 <td>29</td>
 <td class='good'>65.9%</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -8173,28 +8194,28 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='partneron_int / ASPERO_AOS_SANDBOX / Unknown'>partneron_int / ASPERO_AOS_SANDBOX / Unknown</td>
 <td>37</td>
 <td>7</td>
 <td class='warn'>18.9%</td>
 <td>3</td>
-<td class='warn'>42.9%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='warn'>33.3%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>26.6</td>
+<td class=''>—</td>
+<td class='qs'>3.8</td>
 <td>19</td>
 <td>1</td>
-<td class='bad'>5.3%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>18</td>
 <td>6</td>
-<td class='good'>33.3%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -8226,18 +8247,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Google Ads / Aspero_UACe_Install-KYC_Bonds_05052026 / Unknown'>Google Ads / Aspero_UACe_Install-KYC_Bonds_05052026 / Unknown</td>
 <td>35</td>
 <td>1</td>
 <td class='bad'>2.9%</td>
 <td>3</td>
-<td class='good'>300.0%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='warn'>33.3%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>100.6</td>
+<td class=''>—</td>
+<td class='qs'>0.6</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -8250,14 +8271,14 @@
 <td class=''>—</td>
 <td>9</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>26</td>
 <td>1</td>
 <td class='bad'>3.8%</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -8279,7 +8300,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Influencer_Collab / RojaKiran_IG / Unknown'>Influencer_Collab / RojaKiran_IG / Unknown</td>
 <td>32</td>
 <td>20</td>
@@ -8287,30 +8308,30 @@
 <td>19</td>
 <td class='good'>95.0%</td>
 <td>3</td>
-<td class='bad'>15.8%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>45.7</td>
+<td class=''>—</td>
+<td class='qs'>41.0</td>
 <td>5</td>
 <td>2</td>
-<td class='good'>40.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>2</td>
 <td>2</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>7</td>
 <td>4</td>
-<td class='good'>57.1%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>18</td>
 <td>12</td>
-<td class='good'>66.7%</td>
+<td class=''>—</td>
 <td>2</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -8332,7 +8353,7 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='charitabl5o_int / ASPERO_AOS_SANDBOX / Unknown'>charitabl5o_int / ASPERO_AOS_SANDBOX / Unknown</td>
 <td>28</td>
 <td>0</td>
@@ -8346,17 +8367,17 @@
 <td class='qs'>0.0</td>
 <td>14</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>13</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>1</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -8385,18 +8406,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Zomato_CPI / Zomato_Mobile / Unknown'>Zomato_CPI / Zomato_Mobile / Unknown</td>
 <td>19</td>
 <td>8</td>
-<td class='good'>42.1%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='warn'>37.5%</td>
-<td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
-<td class='qs'>19.7</td>
+<td>0</td>
+<td class=''>—</td>
+<td class='qs'>0.0</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -8404,17 +8425,17 @@
 <td class=''>—</td>
 <td>1</td>
 <td>1</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>4</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>14</td>
 <td>7</td>
-<td class='good'>50.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -8438,18 +8459,18 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Google Ads / Aspero_UACe_KYC-Purchase_Bonds_09012026 / Unknown'>Google Ads / Aspero_UACe_KYC-Purchase_Bonds_09012026 / Unknown</td>
 <td>17</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>1</td>
 <td class=''>—</td>
 <td>1</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>30.0</td>
+<td class=''>—</td>
+<td class='qs'>0.0</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -8457,158 +8478,158 @@
 <td class=''>—</td>
 <td>5</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>2</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>5</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td>0</td>
-<td class=''>—</td>
-<td>2</td>
-<td>0</td>
-<td class='bad'>0.0%</td>
-<td>1</td>
-<td class='bad'>0.0%</td>
-<td>1</td>
-<td>0</td>
-<td class='bad'>0.0%</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td>0</td>
 <td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>2</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
+<td>1</td>
+<td class=''>—</td>
+<td>1</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>2</td>
+<td>0</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='mobile_app_share / None / Unknown'>mobile_app_share / None / Unknown</td>
 <td>14</td>
 <td>12</td>
-<td class='good'>85.7%</td>
+<td class=''>—</td>
 <td>23</td>
-<td class='good'>191.7%</td>
+<td class=''>—</td>
 <td>8</td>
 <td class='warn'>34.8%</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>85.1</td>
+<td class=''>—</td>
+<td class='qs'>10.4</td>
 <td>3</td>
 <td>3</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>2</td>
 <td>1</td>
-<td class='good'>50.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>1</td>
 <td>1</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>1</td>
 <td>1</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>5</td>
 <td>5</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>1</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>1</td>
 <td>1</td>
-<td class='good'>100.0%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Apple Search Ads / 2143575296 / Unknown'>Apple Search Ads / 2143575296 / Unknown</td>
 <td>13</td>
 <td>4</td>
-<td class='good'>30.8%</td>
-<td>2</td>
-<td class='good'>50.0%</td>
-<td>1</td>
-<td class='good'>50.0%</td>
-<td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>36.2</td>
-<td>0</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td class=''>—</td>
-<td>1</td>
-<td>0</td>
-<td class='bad'>0.0%</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
-<td>0</td>
-<td class=''>—</td>
-<td>0</td>
 <td class=''>—</td>
 <td>2</td>
+<td class=''>—</td>
+<td>1</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
+<td class='qs'>0.0</td>
+<td>0</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>1</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td>0</td>
+<td class=''>—</td>
+<td>0</td>
+<td class=''>—</td>
+<td>2</td>
+<td>0</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>10</td>
 <td>4</td>
-<td class='good'>40.0%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='nexfigoadh7_int / ASPERO_SANDBOX / Unknown'>nexfigoadh7_int / ASPERO_SANDBOX / Unknown</td>
 <td>12</td>
 <td>1</td>
-<td class='bad'>8.3%</td>
+<td class=''>—</td>
 <td>3</td>
-<td class='good'>300.0%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='warn'>33.3%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
-<td class='qs'>101.6</td>
+<td class=''>—</td>
+<td class='qs'>0.0</td>
 <td>0</td>
 <td>0</td>
 <td class=''>—</td>
@@ -8616,12 +8637,12 @@
 <td class=''>—</td>
 <td>7</td>
 <td>1</td>
-<td class='bad'>14.3%</td>
+<td class=''>—</td>
 <td>1</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>5</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -8650,26 +8671,26 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Meta (Facebook) / HM_iOS_AAA_HM_PaymentSuccessful_22052026 / Unknown'>Meta (Facebook) / HM_iOS_AAA_HM_PaymentSuccessful_22052026 / Unknown</td>
 <td>11</td>
 <td>8</td>
-<td class='good'>72.7%</td>
+<td class=''>—</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
-<td class='qs'>14.5</td>
+<td class='qs'>0.0</td>
 <td>2</td>
 <td>1</td>
-<td class='good'>50.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>9</td>
 <td>7</td>
-<td class='good'>77.8%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -8703,11 +8724,11 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-<tr>
+<tr class='extra-row extra-tbl-adset'>
 <td class='sticky-col dim-label' title='Meta (Facebook) / HM_App_RM_KYC_Order_06052026 / Unknown'>Meta (Facebook) / HM_App_RM_KYC_Order_06052026 / Unknown</td>
 <td>5</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -8722,12 +8743,12 @@
 <td class=''>—</td>
 <td>4</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>1</td>
 <td>0</td>
-<td class='bad'>0.0%</td>
+<td class=''>—</td>
 <td>0</td>
 <td class=''>—</td>
 <td>0</td>
@@ -8756,7 +8777,8 @@
 <td>0</td>
 <td class=''>—</td>
 </tr>
-</tbody></table></div></div>
+</tbody></table></div>
+<div class="show-more-bar"><button class="show-more-btn" onclick="toggleRows('tbl-adset', 60)" id="btn-tbl-adset">Show all 60 rows (50 more)</button><span class="row-count">Showing top 10 of 60</span></div></div>
 
     
     <div class="legend">
@@ -8788,6 +8810,25 @@
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.getElementById('tab-' + id).classList.add('active');
       document.getElementById('panel-' + id).classList.add('active');
+    }
+
+    function toggleRows(tableId, total) {
+      const btn       = document.getElementById('btn-' + tableId);
+      const extraRows = document.querySelectorAll('.extra-' + tableId);
+      const counter   = btn.closest('.show-more-bar').querySelector('.row-count');
+      const isExpanded = btn.classList.contains('expanded');
+
+      if (isExpanded) {
+        extraRows.forEach(r => r.style.display = 'none');
+        btn.textContent = 'Show all ' + total + ' rows (' + (total - 10) + ' more)';
+        btn.classList.remove('expanded');
+        counter.textContent = 'Showing top 10 of ' + total;
+      } else {
+        extraRows.forEach(r => r.style.display = '');
+        btn.textContent = 'Show top 10 only';
+        btn.classList.add('expanded');
+        counter.textContent = 'Showing all ' + total + ' rows';
+      }
     }
   </script>
 </body>
