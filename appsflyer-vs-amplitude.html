@@ -80,8 +80,9 @@ tr:hover td { background: #f8fafc; }
 <div class="tabs">
 <button class="tab active" onclick="switchTab('installs')" id="tab-installs">Installs</button>
 <button class="tab " onclick="switchTab('signups')" id="tab-signups">Signups</button>
-<button class="tab " onclick="switchTab('kyc_done')" id="tab-kyc_done">KYC Done</button>
+<button class="tab " onclick="switchTab('kyc_done')" id="tab-kyc_done">KYC Done (Demat Verified)</button>
 <button class="tab " onclick="switchTab('first_trade')" id="tab-first_trade">First Trade</button>
+<button class="tab " onclick="switchTab('repeat_trade')" id="tab-repeat_trade">Repeat Trade</button>
 
 </div>
 
@@ -90,8 +91,8 @@ tr:hover td { background: #f8fafc; }
   
 <div class="info-box">
   <strong>How to read this table</strong>
-  <b>AF</b> = AppsFlyer partners_by_date_report (Unique users column) &nbsp;|&nbsp;
-  <b>Ampl</b> = Amplitude event "[AppsFlyer] Install" (unique users) grouped by <code>gp:[AppsFlyer] media source</code><br>
+  <b>AF</b> = AppsFlyer partners_by_date_report · column: <code>(see AF CSV)</code> &nbsp;|&nbsp;
+  <b>Ampl</b> = Amplitude <code>[AppsFlyer] Install</code> grouped by <code>gp:[AppsFlyer] media source</code><br>
   <b>Gap%</b> = (Ampl – AF) / AF × 100. <span class="chip chip-ok">±15%</span> = normal
   <span class="chip chip-warn">±15–40%</span> = investigate
   <span class="chip chip-bad">&gt;40%</span> = data issue
@@ -1330,8 +1331,8 @@ tr:hover td { background: #f8fafc; }
   
 <div class="info-box">
   <strong>How to read this table</strong>
-  <b>AF</b> = AppsFlyer partners_by_date_report (Unique users column) &nbsp;|&nbsp;
-  <b>Ampl</b> = Amplitude event "SETUP_SECURE_PIN_SUCCESS" (unique users) grouped by <code>gp:[AppsFlyer] media source</code><br>
+  <b>AF</b> = AppsFlyer partners_by_date_report · column: <code>setup_secure_pin_success</code> &nbsp;|&nbsp;
+  <b>Ampl</b> = Amplitude <code>SETUP_SECURE_PIN_SUCCESS</code> grouped by <code>gp:[AppsFlyer] media source</code><br>
   <b>Gap%</b> = (Ampl – AF) / AF × 100. <span class="chip chip-ok">±15%</span> = normal
   <span class="chip chip-warn">±15–40%</span> = investigate
   <span class="chip chip-bad">&gt;40%</span> = data issue
@@ -1341,7 +1342,7 @@ tr:hover td { background: #f8fafc; }
 <div class="summary-cards">
   <div class="card card-gap-ok">
     <div class="card-label">8-Week AF Total</div>
-    <div class="card-val">26,300</div>
+    <div class="card-val">26,301</div>
     <div class="card-sub">Signups (AppsFlyer)</div>
   </div>
   <div class="card card-gap-ok">
@@ -2126,9 +2127,9 @@ tr:hover td { background: #f8fafc; }
 </tr>
 <tr class="week-header">
   <td colspan="2"><b>May 25–May 31</b></td>
-  <td><b>3,543</b></td>
+  <td><b>3,544</b></td>
   <td><b>3,746</b></td>
-  <td><b>+203</b></td>
+  <td><b>+202</b></td>
   <td><span class="chip chip-ok">+5.7%</span></td>
   <td></td>
 </tr>
@@ -2234,10 +2235,10 @@ tr:hover td { background: #f8fafc; }
 <tr>
   <td></td>
   <td>appnext_int</td>
-  <td>334</td>
+  <td>335</td>
   <td>312</td>
-  <td>-22</td>
-  <td><span class="chip chip-ok">-6.6%</span></td>
+  <td>-23</td>
+  <td><span class="chip chip-ok">-6.9%</span></td>
   <td style="font-size:11.5px;color:#64748b">✅ Within normal range</td>
 </tr>
 <tr>
@@ -2395,12 +2396,12 @@ tr:hover td { background: #f8fafc; }
 </tr></tbody></table>
 </div>
 <div class="tab-content " id="content-kyc_done">
-  <div class="section-title">AppsFlyer vs Amplitude — KYC Done</div>
+  <div class="section-title">AppsFlyer vs Amplitude — KYC Done (Demat Verified)</div>
   
 <div class="info-box">
   <strong>How to read this table</strong>
-  <b>AF</b> = AppsFlyer partners_by_date_report (Unique users column) &nbsp;|&nbsp;
-  <b>Ampl</b> = Amplitude event "KYC_READY_FOR_TRADE" (unique users) grouped by <code>gp:[AppsFlyer] media source</code><br>
+  <b>AF</b> = AppsFlyer partners_by_date_report · column: <code>kyc_demat_verified</code> &nbsp;<em style='font-size:11px;color:#64748b'>(kyc_demat_verified)</em> &nbsp;|&nbsp;
+  <b>Ampl</b> = Amplitude <code>KYC_DEMAT_VERIFIED</code> grouped by <code>gp:[AppsFlyer] media source</code><br>
   <b>Gap%</b> = (Ampl – AF) / AF × 100. <span class="chip chip-ok">±15%</span> = normal
   <span class="chip chip-warn">±15–40%</span> = investigate
   <span class="chip chip-bad">&gt;40%</span> = data issue
@@ -2410,23 +2411,23 @@ tr:hover td { background: #f8fafc; }
 <div class="summary-cards">
   <div class="card card-gap-bad">
     <div class="card-label">8-Week AF Total</div>
-    <div class="card-val">6</div>
-    <div class="card-sub">KYC Done (AppsFlyer)</div>
+    <div class="card-val">1</div>
+    <div class="card-sub">KYC Done (Demat Verified) (AppsFlyer)</div>
   </div>
   <div class="card card-gap-bad">
     <div class="card-label">8-Week Amplitude Total</div>
-    <div class="card-val">3,171</div>
-    <div class="card-sub">KYC Done (Amplitude)</div>
+    <div class="card-val">2,773</div>
+    <div class="card-sub">KYC Done (Demat Verified) (Amplitude)</div>
   </div>
   <div class="card card-gap-bad">
     <div class="card-label">Overall Gap</div>
-    <div class="card-val gap-bad">+52750.0%</div>
+    <div class="card-val gap-bad">+277200.0%</div>
     <div class="card-sub">Ampl vs AF (8 weeks)</div>
   </div>
   <div class="card">
     <div class="card-label">AF Event Column</div>
-    <div class="card-val" style="font-size:13px;margin-top:8px">kyc_ready_for_trade</div>
-    <div class="card-sub">Amplitude: KYC_READY_FOR_TRADE</div>
+    <div class="card-val" style="font-size:13px;margin-top:8px">kyc_demat_verified</div>
+    <div class="card-sub">Amplitude: KYC_DEMAT_VERIFIED</div>
   </div>
 </div>
 
@@ -2446,20 +2447,20 @@ tr:hover td { background: #f8fafc; }
 
 <tr class="week-header">
   <td colspan="2"><b>Apr 06–Apr 12</b></td>
-  <td><b>2</b></td>
-  <td><b>424</b></td>
-  <td><b>+422</b></td>
-  <td><span class="chip chip-bad">+21100.0%</span></td>
+  <td><b><span style="color:#ccc">0</span></b></td>
+  <td><b>222</b></td>
+  <td><b>+222</b></td>
+  <td><span class="chip chip-zero">—</span></td>
   <td></td>
 </tr>
 <tr>
   <td></td>
   <td>Google Ads</td>
-  <td>1</td>
-  <td>178</td>
-  <td>+177</td>
-  <td><span class="chip chip-bad">+17700.0%</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude >> AF — AF missing S2S postback events</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>129</td>
+  <td>+129</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
 <tr>
   <td></td>
@@ -2473,44 +2474,44 @@ tr:hover td { background: #f8fafc; }
 <tr>
   <td></td>
   <td>Organic</td>
-  <td>1</td>
-  <td>15</td>
-  <td>+14</td>
-  <td><span class="chip chip-bad">+1400.0%</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude >> AF — AF missing S2S postback events</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>9</td>
+  <td>+9</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
 <tr>
   <td></td>
   <td>(none)</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>230</td>
-  <td>+230</td>
+  <td>83</td>
+  <td>+83</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
 <tr class="week-header">
   <td colspan="2"><b>Apr 13–Apr 19</b></td>
-  <td><b>1</b></td>
-  <td><b>385</b></td>
-  <td><b>+384</b></td>
-  <td><span class="chip chip-bad">+38400.0%</span></td>
+  <td><b><span style="color:#ccc">0</span></b></td>
+  <td><b>307</b></td>
+  <td><b>+307</b></td>
+  <td><span class="chip chip-zero">—</span></td>
   <td></td>
 </tr>
 <tr>
   <td></td>
   <td>Google Ads</td>
-  <td>1</td>
-  <td>186</td>
-  <td>+185</td>
-  <td><span class="chip chip-bad">+18500.0%</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude >> AF — AF missing S2S postback events</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>167</td>
+  <td>+167</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
 <tr>
   <td></td>
   <td>Organic</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>16</td>
-  <td>+16</td>
+  <td>12</td>
+  <td>+12</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -2518,8 +2519,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>(none)</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>182</td>
-  <td>+182</td>
+  <td>127</td>
+  <td>+127</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -2535,18 +2536,18 @@ tr:hover td { background: #f8fafc; }
 <tr class="week-header">
   <td colspan="2"><b>Apr 20–Apr 26</b></td>
   <td><b>1</b></td>
-  <td><b>253</b></td>
-  <td><b>+252</b></td>
-  <td><span class="chip chip-bad">+25200.0%</span></td>
+  <td><b>238</b></td>
+  <td><b>+237</b></td>
+  <td><span class="chip chip-bad">+23700.0%</span></td>
   <td></td>
 </tr>
 <tr>
   <td></td>
   <td>Google Ads</td>
   <td>1</td>
-  <td>117</td>
-  <td>+116</td>
-  <td><span class="chip chip-bad">+11600.0%</span></td>
+  <td>109</td>
+  <td>+108</td>
+  <td><span class="chip chip-bad">+10800.0%</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude >> AF — AF missing S2S postback events</td>
 </tr>
 <tr>
@@ -2562,8 +2563,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>(none)</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>127</td>
-  <td>+127</td>
+  <td>120</td>
+  <td>+120</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -2588,8 +2589,8 @@ tr:hover td { background: #f8fafc; }
 <tr class="week-header">
   <td colspan="2"><b>Apr 27–May 03</b></td>
   <td><b><span style="color:#ccc">0</span></b></td>
-  <td><b>350</b></td>
-  <td><b>+350</b></td>
+  <td><b>337</b></td>
+  <td><b>+337</b></td>
   <td><span class="chip chip-zero">—</span></td>
   <td></td>
 </tr>
@@ -2597,8 +2598,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>Google Ads</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>109</td>
-  <td>+109</td>
+  <td>107</td>
+  <td>+107</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -2615,8 +2616,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>(none)</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>228</td>
-  <td>+228</td>
+  <td>217</td>
+  <td>+217</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -2641,8 +2642,8 @@ tr:hover td { background: #f8fafc; }
 <tr class="week-header">
   <td colspan="2"><b>May 04–May 10</b></td>
   <td><b><span style="color:#ccc">0</span></b></td>
-  <td><b>387</b></td>
-  <td><b>+387</b></td>
+  <td><b>368</b></td>
+  <td><b>+368</b></td>
   <td><span class="chip chip-zero">—</span></td>
   <td></td>
 </tr>
@@ -2650,8 +2651,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>Google Ads</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>210</td>
-  <td>+210</td>
+  <td>198</td>
+  <td>+198</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -2668,8 +2669,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>(none)</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>145</td>
-  <td>+145</td>
+  <td>138</td>
+  <td>+138</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -2720,27 +2721,27 @@ tr:hover td { background: #f8fafc; }
 </tr>
 <tr class="week-header">
   <td colspan="2"><b>May 11–May 17</b></td>
-  <td><b>1</b></td>
-  <td><b>433</b></td>
-  <td><b>+432</b></td>
-  <td><span class="chip chip-bad">+43200.0%</span></td>
+  <td><b><span style="color:#ccc">0</span></b></td>
+  <td><b>415</b></td>
+  <td><b>+415</b></td>
+  <td><span class="chip chip-zero">—</span></td>
   <td></td>
 </tr>
 <tr>
   <td></td>
   <td>Google Ads</td>
-  <td>1</td>
-  <td>217</td>
-  <td>+216</td>
-  <td><span class="chip chip-bad">+21600.0%</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude >> AF — AF missing S2S postback events</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>208</td>
+  <td>+208</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
 <tr>
   <td></td>
   <td>Organic</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>22</td>
-  <td>+22</td>
+  <td>21</td>
+  <td>+21</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -2748,8 +2749,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>(none)</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>130</td>
-  <td>+130</td>
+  <td>124</td>
+  <td>+124</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -2784,8 +2785,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>foxmobiwy_int</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>19</td>
-  <td>+19</td>
+  <td>18</td>
+  <td>+18</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -2802,16 +2803,16 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>sokendev_int</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>24</td>
-  <td>+24</td>
+  <td>23</td>
+  <td>+23</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
 <tr class="week-header">
   <td colspan="2"><b>May 18–May 24</b></td>
   <td><b><span style="color:#ccc">0</span></b></td>
-  <td><b>506</b></td>
-  <td><b>+506</b></td>
+  <td><b>472</b></td>
+  <td><b>+472</b></td>
   <td><span class="chip chip-zero">—</span></td>
   <td></td>
 </tr>
@@ -2819,8 +2820,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>Google Ads</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>246</td>
-  <td>+246</td>
+  <td>227</td>
+  <td>+227</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -2837,8 +2838,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>(none)</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>154</td>
-  <td>+154</td>
+  <td>143</td>
+  <td>+143</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -2873,8 +2874,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>afnumberone_int</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>14</td>
-  <td>+14</td>
+  <td>13</td>
+  <td>+13</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -2945,8 +2946,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>onetraffijs_int</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>28</td>
-  <td>+28</td>
+  <td>26</td>
+  <td>+26</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -2963,25 +2964,25 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>sokendev_int</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>18</td>
-  <td>+18</td>
+  <td>17</td>
+  <td>+17</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
 <tr class="week-header">
   <td colspan="2"><b>May 25–May 31</b></td>
-  <td><b>1</b></td>
-  <td><b>433</b></td>
-  <td><b>+432</b></td>
-  <td><span class="chip chip-bad">+43200.0%</span></td>
+  <td><b><span style="color:#ccc">0</span></b></td>
+  <td><b>414</b></td>
+  <td><b>+414</b></td>
+  <td><span class="chip chip-zero">—</span></td>
   <td></td>
 </tr>
 <tr>
   <td></td>
   <td>Google Ads</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>185</td>
-  <td>+185</td>
+  <td>180</td>
+  <td>+180</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -2989,8 +2990,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>Organic</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>23</td>
-  <td>+23</td>
+  <td>21</td>
+  <td>+21</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -2998,8 +2999,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>(none)</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>128</td>
-  <td>+128</td>
+  <td>119</td>
+  <td>+119</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -3069,11 +3070,11 @@ tr:hover td { background: #f8fafc; }
 <tr>
   <td></td>
   <td>employee_referral</td>
-  <td>1</td>
-  <td>31</td>
-  <td>+30</td>
-  <td><span class="chip chip-bad">+3000.0%</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude >> AF — AF missing S2S postback events</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>29</td>
+  <td>+29</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
 <tr>
   <td></td>
@@ -3106,8 +3107,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>onetraffijs_int</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>14</td>
-  <td>+14</td>
+  <td>13</td>
+  <td>+13</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -3135,8 +3136,8 @@ tr:hover td { background: #f8fafc; }
   
 <div class="info-box">
   <strong>How to read this table</strong>
-  <b>AF</b> = AppsFlyer partners_by_date_report (Unique users column) &nbsp;|&nbsp;
-  <b>Ampl</b> = Amplitude event "PAYMENT_SUCCESSFUL" (unique users) grouped by <code>gp:[AppsFlyer] media source</code><br>
+  <b>AF</b> = AppsFlyer partners_by_date_report · column: <code>first_trade_completed</code> &nbsp;|&nbsp;
+  <b>Ampl</b> = Amplitude <code>PAYMENT_SUCCESSFUL</code> &nbsp;<span class="chip chip-warn" style="font-size:11px">event prop: first_trade = true</span> grouped by <code>gp:[AppsFlyer] media source</code><br>
   <b>Gap%</b> = (Ampl – AF) / AF × 100. <span class="chip chip-ok">±15%</span> = normal
   <span class="chip chip-warn">±15–40%</span> = investigate
   <span class="chip chip-bad">&gt;40%</span> = data issue
@@ -3151,12 +3152,12 @@ tr:hover td { background: #f8fafc; }
   </div>
   <div class="card card-gap-bad">
     <div class="card-label">8-Week Amplitude Total</div>
-    <div class="card-val">1,644</div>
+    <div class="card-val">422</div>
     <div class="card-sub">First Trade (Amplitude)</div>
   </div>
   <div class="card card-gap-bad">
     <div class="card-label">Overall Gap</div>
-    <div class="card-val gap-bad">+14845.5%</div>
+    <div class="card-val gap-bad">+3736.4%</div>
     <div class="card-sub">Ampl vs AF (8 weeks)</div>
   </div>
   <div class="card">
@@ -3183,175 +3184,49 @@ tr:hover td { background: #f8fafc; }
 <tr class="week-header">
   <td colspan="2"><b>Apr 06–Apr 12</b></td>
   <td><b><span style="color:#ccc">0</span></b></td>
-  <td><b>103</b></td>
-  <td><b>+103</b></td>
+  <td><b><span style="color:#ccc">0</span></b></td>
+  <td><b>—</b></td>
   <td><span class="chip chip-zero">—</span></td>
   <td></td>
-</tr>
-<tr>
-  <td></td>
-  <td>Google Ads</td>
-  <td><span style="color:#ccc">0</span></td>
-  <td>15</td>
-  <td>+15</td>
-  <td><span class="chip chip-zero">—</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
-</tr>
-<tr>
-  <td></td>
-  <td>Organic</td>
-  <td><span style="color:#ccc">0</span></td>
-  <td>6</td>
-  <td>+6</td>
-  <td><span class="chip chip-zero">—</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
-</tr>
-<tr>
-  <td></td>
-  <td>(none)</td>
-  <td><span style="color:#ccc">0</span></td>
-  <td>82</td>
-  <td>+82</td>
-  <td><span class="chip chip-zero">—</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
 <tr class="week-header">
   <td colspan="2"><b>Apr 13–Apr 19</b></td>
   <td><b><span style="color:#ccc">0</span></b></td>
-  <td><b>152</b></td>
-  <td><b>+152</b></td>
+  <td><b><span style="color:#ccc">0</span></b></td>
+  <td><b>—</b></td>
   <td><span class="chip chip-zero">—</span></td>
   <td></td>
-</tr>
-<tr>
-  <td></td>
-  <td>Google Ads</td>
-  <td><span style="color:#ccc">0</span></td>
-  <td>34</td>
-  <td>+34</td>
-  <td><span class="chip chip-zero">—</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
-</tr>
-<tr>
-  <td></td>
-  <td>Organic</td>
-  <td><span style="color:#ccc">0</span></td>
-  <td>17</td>
-  <td>+17</td>
-  <td><span class="chip chip-zero">—</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
-</tr>
-<tr>
-  <td></td>
-  <td>(none)</td>
-  <td><span style="color:#ccc">0</span></td>
-  <td>100</td>
-  <td>+100</td>
-  <td><span class="chip chip-zero">—</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
-</tr>
-<tr>
-  <td></td>
-  <td>mobile_app_share</td>
-  <td><span style="color:#ccc">0</span></td>
-  <td>1</td>
-  <td>+1</td>
-  <td><span class="chip chip-zero">—</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
 <tr class="week-header">
   <td colspan="2"><b>Apr 20–Apr 26</b></td>
   <td><b><span style="color:#ccc">0</span></b></td>
-  <td><b>199</b></td>
-  <td><b>+199</b></td>
+  <td><b><span style="color:#ccc">0</span></b></td>
+  <td><b>—</b></td>
   <td><span class="chip chip-zero">—</span></td>
   <td></td>
-</tr>
-<tr>
-  <td></td>
-  <td>Google Ads</td>
-  <td><span style="color:#ccc">0</span></td>
-  <td>45</td>
-  <td>+45</td>
-  <td><span class="chip chip-zero">—</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
-</tr>
-<tr>
-  <td></td>
-  <td>Organic</td>
-  <td><span style="color:#ccc">0</span></td>
-  <td>11</td>
-  <td>+11</td>
-  <td><span class="chip chip-zero">—</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
-</tr>
-<tr>
-  <td></td>
-  <td>(none)</td>
-  <td><span style="color:#ccc">0</span></td>
-  <td>143</td>
-  <td>+143</td>
-  <td><span class="chip chip-zero">—</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
 <tr class="week-header">
   <td colspan="2"><b>Apr 27–May 03</b></td>
   <td><b><span style="color:#ccc">0</span></b></td>
-  <td><b>190</b></td>
-  <td><b>+190</b></td>
+  <td><b><span style="color:#ccc">0</span></b></td>
+  <td><b>—</b></td>
   <td><span class="chip chip-zero">—</span></td>
   <td></td>
-</tr>
-<tr>
-  <td></td>
-  <td>Google Ads</td>
-  <td><span style="color:#ccc">0</span></td>
-  <td>34</td>
-  <td>+34</td>
-  <td><span class="chip chip-zero">—</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
-</tr>
-<tr>
-  <td></td>
-  <td>Organic</td>
-  <td><span style="color:#ccc">0</span></td>
-  <td>12</td>
-  <td>+12</td>
-  <td><span class="chip chip-zero">—</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
-</tr>
-<tr>
-  <td></td>
-  <td>(none)</td>
-  <td><span style="color:#ccc">0</span></td>
-  <td>142</td>
-  <td>+142</td>
-  <td><span class="chip chip-zero">—</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
-</tr>
-<tr>
-  <td></td>
-  <td>mobile_app_share</td>
-  <td><span style="color:#ccc">0</span></td>
-  <td>2</td>
-  <td>+2</td>
-  <td><span class="chip chip-zero">—</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
 <tr class="week-header">
   <td colspan="2"><b>May 04–May 10</b></td>
   <td><b>1</b></td>
-  <td><b>185</b></td>
-  <td><b>+184</b></td>
-  <td><span class="chip chip-bad">+18400.0%</span></td>
+  <td><b>75</b></td>
+  <td><b>+74</b></td>
+  <td><span class="chip chip-bad">+7400.0%</span></td>
   <td></td>
 </tr>
 <tr>
   <td></td>
   <td>Google Ads</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>54</td>
-  <td>+54</td>
+  <td>32</td>
+  <td>+32</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -3359,17 +3234,17 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>Organic</td>
   <td>1</td>
-  <td>14</td>
-  <td>+13</td>
-  <td><span class="chip chip-bad">+1300.0%</span></td>
+  <td>6</td>
+  <td>+5</td>
+  <td><span class="chip chip-bad">+500.0%</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude >> AF — AF missing S2S postback events</td>
 </tr>
 <tr>
   <td></td>
   <td>(none)</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>113</td>
-  <td>+113</td>
+  <td>34</td>
+  <td>+34</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -3386,8 +3261,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>Jio_HM</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>2</td>
-  <td>+2</td>
+  <td>1</td>
+  <td>+1</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -3403,17 +3278,17 @@ tr:hover td { background: #f8fafc; }
 <tr class="week-header">
   <td colspan="2"><b>May 11–May 17</b></td>
   <td><b>1</b></td>
-  <td><b>254</b></td>
-  <td><b>+253</b></td>
-  <td><span class="chip chip-bad">+25300.0%</span></td>
+  <td><b>105</b></td>
+  <td><b>+104</b></td>
+  <td><span class="chip chip-bad">+10400.0%</span></td>
   <td></td>
 </tr>
 <tr>
   <td></td>
   <td>Google Ads</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>81</td>
-  <td>+81</td>
+  <td>42</td>
+  <td>+42</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -3421,17 +3296,17 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>Organic</td>
   <td>1</td>
-  <td>21</td>
-  <td>+20</td>
-  <td><span class="chip chip-bad">+2000.0%</span></td>
+  <td>9</td>
+  <td>+8</td>
+  <td><span class="chip chip-bad">+800.0%</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude >> AF — AF missing S2S postback events</td>
 </tr>
 <tr>
   <td></td>
   <td>(none)</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>142</td>
-  <td>+142</td>
+  <td>49</td>
+  <td>+49</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -3439,8 +3314,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>Jio_HM</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>5</td>
-  <td>+5</td>
+  <td>1</td>
+  <td>+1</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -3457,8 +3332,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>foxmobiwy_int</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>2</td>
-  <td>+2</td>
+  <td>1</td>
+  <td>+1</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -3474,18 +3349,18 @@ tr:hover td { background: #f8fafc; }
 <tr class="week-header">
   <td colspan="2"><b>May 18–May 24</b></td>
   <td><b>5</b></td>
-  <td><b>226</b></td>
-  <td><b>+221</b></td>
-  <td><span class="chip chip-bad">+4420.0%</span></td>
+  <td><b>92</b></td>
+  <td><b>+87</b></td>
+  <td><span class="chip chip-bad">+1740.0%</span></td>
   <td></td>
 </tr>
 <tr>
   <td></td>
   <td>Google Ads</td>
   <td>4</td>
-  <td>87</td>
-  <td>+83</td>
-  <td><span class="chip chip-bad">+2075.0%</span></td>
+  <td>41</td>
+  <td>+37</td>
+  <td><span class="chip chip-bad">+925.0%</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude >> AF — AF missing S2S postback events</td>
 </tr>
 <tr>
@@ -3501,24 +3376,6 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>Organic</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>12</td>
-  <td>+12</td>
-  <td><span class="chip chip-zero">—</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
-</tr>
-<tr>
-  <td></td>
-  <td>(none)</td>
-  <td><span style="color:#ccc">0</span></td>
-  <td>108</td>
-  <td>+108</td>
-  <td><span class="chip chip-zero">—</span></td>
-  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
-</tr>
-<tr>
-  <td></td>
-  <td>Jio_HM</td>
-  <td><span style="color:#ccc">0</span></td>
   <td>4</td>
   <td>+4</td>
   <td><span class="chip chip-zero">—</span></td>
@@ -3526,10 +3383,19 @@ tr:hover td { background: #f8fafc; }
 </tr>
 <tr>
   <td></td>
-  <td>Zepto</td>
+  <td>(none)</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>1</td>
-  <td>+1</td>
+  <td>33</td>
+  <td>+33</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
+</tr>
+<tr>
+  <td></td>
+  <td>Jio_HM</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>3</td>
+  <td>+3</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -3582,8 +3448,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>onetraffijs_int</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>4</td>
-  <td>+4</td>
+  <td>3</td>
+  <td>+3</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -3591,25 +3457,25 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>sokendev_int</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>5</td>
-  <td>+5</td>
+  <td>3</td>
+  <td>+3</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
 <tr class="week-header">
   <td colspan="2"><b>May 25–May 31</b></td>
   <td><b>4</b></td>
-  <td><b>335</b></td>
-  <td><b>+331</b></td>
-  <td><span class="chip chip-bad">+8275.0%</span></td>
+  <td><b>150</b></td>
+  <td><b>+146</b></td>
+  <td><span class="chip chip-bad">+3650.0%</span></td>
   <td></td>
 </tr>
 <tr>
   <td></td>
   <td>Google Ads</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>104</td>
-  <td>+104</td>
+  <td>49</td>
+  <td>+49</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -3617,17 +3483,17 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>Organic</td>
   <td>2</td>
-  <td>23</td>
-  <td>+21</td>
-  <td><span class="chip chip-bad">+1050.0%</span></td>
+  <td>11</td>
+  <td>+9</td>
+  <td><span class="chip chip-bad">+450.0%</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude >> AF — AF missing S2S postback events</td>
 </tr>
 <tr>
   <td></td>
   <td>(none)</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>163</td>
-  <td>+163</td>
+  <td>47</td>
+  <td>+47</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -3689,8 +3555,8 @@ tr:hover td { background: #f8fafc; }
   <td></td>
   <td>onetraffijs_int</td>
   <td><span style="color:#ccc">0</span></td>
-  <td>6</td>
-  <td>+6</td>
+  <td>4</td>
+  <td>+4</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
 </tr>
@@ -3711,6 +3577,436 @@ tr:hover td { background: #f8fafc; }
   <td>+4</td>
   <td><span class="chip chip-zero">—</span></td>
   <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
+</tr></tbody></table>
+</div>
+<div class="tab-content " id="content-repeat_trade">
+  <div class="section-title">AppsFlyer vs Amplitude — Repeat Trade</div>
+  
+<div class="info-box">
+  <strong>How to read this table</strong>
+  <b>AF</b> = AppsFlyer partners_by_date_report · column: <code>payment_successful</code> &nbsp;<em style='font-size:11px;color:#64748b'>(AF: payment_successful = all trades; no first/repeat split in aggregate API)</em> &nbsp;|&nbsp;
+  <b>Ampl</b> = Amplitude <code>PAYMENT_SUCCESSFUL</code> &nbsp;<span class="chip chip-warn" style="font-size:11px">event prop: first_trade = false</span> grouped by <code>gp:[AppsFlyer] media source</code><br>
+  <b>Gap%</b> = (Ampl – AF) / AF × 100. <span class="chip chip-ok">±15%</span> = normal
+  <span class="chip chip-warn">±15–40%</span> = investigate
+  <span class="chip chip-bad">&gt;40%</span> = data issue
+  <span class="chip chip-zero">Ampl 0 / AF missing</span> = likely broken
+</div>
+
+<div class="summary-cards">
+  <div class="card card-gap-bad">
+    <div class="card-label">8-Week AF Total</div>
+    <div class="card-val">41</div>
+    <div class="card-sub">Repeat Trade (AppsFlyer)</div>
+  </div>
+  <div class="card card-gap-bad">
+    <div class="card-label">8-Week Amplitude Total</div>
+    <div class="card-val">597</div>
+    <div class="card-sub">Repeat Trade (Amplitude)</div>
+  </div>
+  <div class="card card-gap-bad">
+    <div class="card-label">Overall Gap</div>
+    <div class="card-val gap-bad">+1356.1%</div>
+    <div class="card-sub">Ampl vs AF (8 weeks)</div>
+  </div>
+  <div class="card">
+    <div class="card-label">AF Event Column</div>
+    <div class="card-val" style="font-size:13px;margin-top:8px">payment_successful</div>
+    <div class="card-sub">Amplitude: PAYMENT_SUCCESSFUL</div>
+  </div>
+</div>
+
+<table>
+<thead>
+<tr>
+  <th>Week</th>
+  <th>Media Source</th>
+  <th>AF Count</th>
+  <th>Amplitude Count</th>
+  <th>Δ (Ampl − AF)</th>
+  <th>Gap %</th>
+  <th>Diagnosis</th>
+</tr>
+</thead>
+<tbody>
+
+<tr class="week-header">
+  <td colspan="2"><b>Apr 06–Apr 12</b></td>
+  <td><b>6</b></td>
+  <td><b><span style="color:#ccc">0</span></b></td>
+  <td><b>-6</b></td>
+  <td><span class="chip chip-bad">Ampl 0</span></td>
+  <td></td>
+</tr>
+<tr>
+  <td></td>
+  <td>Google Ads</td>
+  <td>2</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>-2</td>
+  <td><span class="chip chip-bad">Ampl 0</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude receiving 0 — S2S postback issue or attribution gap</td>
+</tr>
+<tr>
+  <td></td>
+  <td>Organic</td>
+  <td>4</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>-4</td>
+  <td><span class="chip chip-bad">Ampl 0</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude receiving 0 — S2S postback issue or attribution gap</td>
+</tr>
+<tr class="week-header">
+  <td colspan="2"><b>Apr 13–Apr 19</b></td>
+  <td><b>9</b></td>
+  <td><b><span style="color:#ccc">0</span></b></td>
+  <td><b>-9</b></td>
+  <td><span class="chip chip-bad">Ampl 0</span></td>
+  <td></td>
+</tr>
+<tr>
+  <td></td>
+  <td>Google Ads</td>
+  <td>3</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>-3</td>
+  <td><span class="chip chip-bad">Ampl 0</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude receiving 0 — S2S postback issue or attribution gap</td>
+</tr>
+<tr>
+  <td></td>
+  <td>Meta (Facebook)</td>
+  <td>2</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>-2</td>
+  <td><span class="chip chip-bad">Ampl 0</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude receiving 0 — S2S postback issue or attribution gap</td>
+</tr>
+<tr>
+  <td></td>
+  <td>Organic</td>
+  <td>4</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>-4</td>
+  <td><span class="chip chip-bad">Ampl 0</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude receiving 0 — S2S postback issue or attribution gap</td>
+</tr>
+<tr class="week-header">
+  <td colspan="2"><b>Apr 20–Apr 26</b></td>
+  <td><b>2</b></td>
+  <td><b><span style="color:#ccc">0</span></b></td>
+  <td><b>-2</b></td>
+  <td><span class="chip chip-bad">Ampl 0</span></td>
+  <td></td>
+</tr>
+<tr>
+  <td></td>
+  <td>Google Ads</td>
+  <td>1</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>-1</td>
+  <td><span class="chip chip-bad">Ampl 0</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude receiving 0 — S2S postback issue or attribution gap</td>
+</tr>
+<tr>
+  <td></td>
+  <td>Organic</td>
+  <td>1</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>-1</td>
+  <td><span class="chip chip-bad">Ampl 0</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude receiving 0 — S2S postback issue or attribution gap</td>
+</tr>
+<tr class="week-header">
+  <td colspan="2"><b>Apr 27–May 03</b></td>
+  <td><b>4</b></td>
+  <td><b><span style="color:#ccc">0</span></b></td>
+  <td><b>-4</b></td>
+  <td><span class="chip chip-bad">Ampl 0</span></td>
+  <td></td>
+</tr>
+<tr>
+  <td></td>
+  <td>Google Ads</td>
+  <td>2</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>-2</td>
+  <td><span class="chip chip-bad">Ampl 0</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude receiving 0 — S2S postback issue or attribution gap</td>
+</tr>
+<tr>
+  <td></td>
+  <td>Organic</td>
+  <td>2</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>-2</td>
+  <td><span class="chip chip-bad">Ampl 0</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude receiving 0 — S2S postback issue or attribution gap</td>
+</tr>
+<tr class="week-header">
+  <td colspan="2"><b>May 04–May 10</b></td>
+  <td><b>4</b></td>
+  <td><b>91</b></td>
+  <td><b>+87</b></td>
+  <td><span class="chip chip-bad">+2175.0%</span></td>
+  <td></td>
+</tr>
+<tr>
+  <td></td>
+  <td>Google Ads</td>
+  <td>1</td>
+  <td>20</td>
+  <td>+19</td>
+  <td><span class="chip chip-bad">+1900.0%</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude >> AF — AF missing S2S postback events</td>
+</tr>
+<tr>
+  <td></td>
+  <td>Meta (Facebook)</td>
+  <td>1</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>-1</td>
+  <td><span class="chip chip-bad">Ampl 0</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude receiving 0 — S2S postback issue or attribution gap</td>
+</tr>
+<tr>
+  <td></td>
+  <td>Organic</td>
+  <td>2</td>
+  <td>6</td>
+  <td>+4</td>
+  <td><span class="chip chip-bad">+200.0%</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude >> AF — AF missing S2S postback events</td>
+</tr>
+<tr>
+  <td></td>
+  <td>(none)</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>63</td>
+  <td>+63</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
+</tr>
+<tr>
+  <td></td>
+  <td>Jio_HM</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>2</td>
+  <td>+2</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
+</tr>
+<tr class="week-header">
+  <td colspan="2"><b>May 11–May 17</b></td>
+  <td><b>2</b></td>
+  <td><b>161</b></td>
+  <td><b>+159</b></td>
+  <td><span class="chip chip-bad">+7950.0%</span></td>
+  <td></td>
+</tr>
+<tr>
+  <td></td>
+  <td>Google Ads</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>43</td>
+  <td>+43</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
+</tr>
+<tr>
+  <td></td>
+  <td>Meta (Facebook)</td>
+  <td>1</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>-1</td>
+  <td><span class="chip chip-bad">Ampl 0</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude receiving 0 — S2S postback issue or attribution gap</td>
+</tr>
+<tr>
+  <td></td>
+  <td>Organic</td>
+  <td>1</td>
+  <td>13</td>
+  <td>+12</td>
+  <td><span class="chip chip-bad">+1200.0%</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude >> AF — AF missing S2S postback events</td>
+</tr>
+<tr>
+  <td></td>
+  <td>(none)</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>99</td>
+  <td>+99</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
+</tr>
+<tr>
+  <td></td>
+  <td>Jio_HM</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>4</td>
+  <td>+4</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
+</tr>
+<tr>
+  <td></td>
+  <td>foxmobiwy_int</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>2</td>
+  <td>+2</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
+</tr>
+<tr class="week-header">
+  <td colspan="2"><b>May 18–May 24</b></td>
+  <td><b>10</b></td>
+  <td><b>145</b></td>
+  <td><b>+135</b></td>
+  <td><span class="chip chip-bad">+1350.0%</span></td>
+  <td></td>
+</tr>
+<tr>
+  <td></td>
+  <td>Google Ads</td>
+  <td>6</td>
+  <td>48</td>
+  <td>+42</td>
+  <td><span class="chip chip-bad">+700.0%</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude >> AF — AF missing S2S postback events</td>
+</tr>
+<tr>
+  <td></td>
+  <td>Meta (Facebook)</td>
+  <td>2</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>-2</td>
+  <td><span class="chip chip-bad">Ampl 0</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude receiving 0 — S2S postback issue or attribution gap</td>
+</tr>
+<tr>
+  <td></td>
+  <td>Organic</td>
+  <td>1</td>
+  <td>8</td>
+  <td>+7</td>
+  <td><span class="chip chip-bad">+700.0%</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude >> AF — AF missing S2S postback events</td>
+</tr>
+<tr>
+  <td></td>
+  <td>(none)</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>82</td>
+  <td>+82</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
+</tr>
+<tr>
+  <td></td>
+  <td>Jio_HM</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>1</td>
+  <td>+1</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
+</tr>
+<tr>
+  <td></td>
+  <td>Zepto</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>1</td>
+  <td>+1</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
+</tr>
+<tr>
+  <td></td>
+  <td>employee_referral</td>
+  <td>1</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>-1</td>
+  <td><span class="chip chip-bad">Ampl 0</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude receiving 0 — S2S postback issue or attribution gap</td>
+</tr>
+<tr>
+  <td></td>
+  <td>onetraffijs_int</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>2</td>
+  <td>+2</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
+</tr>
+<tr>
+  <td></td>
+  <td>sokendev_int</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>3</td>
+  <td>+3</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
+</tr>
+<tr class="week-header">
+  <td colspan="2"><b>May 25–May 31</b></td>
+  <td><b>4</b></td>
+  <td><b>200</b></td>
+  <td><b>+196</b></td>
+  <td><span class="chip chip-bad">+4900.0%</span></td>
+  <td></td>
+</tr>
+<tr>
+  <td></td>
+  <td>Google Ads</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>62</td>
+  <td>+62</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
+</tr>
+<tr>
+  <td></td>
+  <td>Organic</td>
+  <td>2</td>
+  <td>12</td>
+  <td>+10</td>
+  <td><span class="chip chip-bad">+500.0%</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude >> AF — AF missing S2S postback events</td>
+</tr>
+<tr>
+  <td></td>
+  <td>(none)</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>122</td>
+  <td>+122</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
+</tr>
+<tr>
+  <td></td>
+  <td>employee_referral</td>
+  <td>1</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>-1</td>
+  <td><span class="chip chip-bad">Ampl 0</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ Amplitude receiving 0 — S2S postback issue or attribution gap</td>
+</tr>
+<tr>
+  <td></td>
+  <td>onetraffijs_int</td>
+  <td><span style="color:#ccc">0</span></td>
+  <td>3</td>
+  <td>+3</td>
+  <td><span class="chip chip-zero">—</span></td>
+  <td style="font-size:11.5px;color:#64748b">⚠️ AF not receiving this event for this source</td>
+</tr>
+<tr>
+  <td></td>
+  <td>sandboxads_int</td>
+  <td>1</td>
+  <td>1</td>
+  <td>—</td>
+  <td><span class="chip chip-ok">0.0%</span></td>
+  <td style="font-size:11.5px;color:#64748b">✅ Within normal range</td>
 </tr></tbody></table>
 </div>
 <div style="padding:16px 32px">
