@@ -870,27 +870,47 @@ function sdoToggle(g){
       <div class="slide-sub">CVL upload &#8212; live Jun 3, 2026</div>
       <div class="hero-num" style="font-size:2.9rem;">50</div>
       <div class="hero-lbl">users unblocked from KRA gate</div>
-      <div class="hero-badge flat" style="background:rgba(255,255,255,.18);font-size:.82rem;margin-bottom:3px;">&#8377;2.4L GTV recovered</div>
+      <div class="hero-badge flat" style="background:rgba(255,255,255,.18);font-size:.82rem;margin-bottom:3px;">demat rate 62.4% &#8594; 82.1% (+19.7pp)</div>
       <div class="stat-list" style="margin-top:18px;">
         <div class="stat-item">
           <span class="si-lbl">Before (avg/week)</span>
           <span class="si-val" style="color:#fca5a5;">~144 blocked (22.2% of signups)</span>
         </div>
         <div class="stat-item">
-          <span class="si-lbl">Upload success rate</span>
-          <span class="si-val" style="color:#86efac;">72.5% (11 instant + 39 via webhook)</span>
+          <span class="si-lbl">After — blocked rate</span>
+          <span class="si-val" style="color:#86efac;">0% &#8212; every user gets CVL path</span>
         </div>
         <div class="stat-item">
-          <span class="si-lbl">Pending / failed</span>
-          <span class="si-val" style="color:#fde68a;">15 pending &#183; 5 failed</span>
+          <span class="si-lbl">Demat completion lift</span>
+          <span class="si-val" style="color:#86efac;">62.4% &#8594; 82.1% <span style="color:#bbf7d0;">(+19.7pp)</span></span>
         </div>
         <div class="stat-item">
-          <span class="si-lbl">Investor quality</span>
-          <span class="si-val" style="color:#86efac;">NV 25.0% vs VL 34.7% first-trade</span>
+          <span class="si-lbl">Days since launch</span>
+          <span class="si-val" style="color:#d9f99d;">6d live &mdash; trade conv matures at 2&#8211;3 wks</span>
         </div>
       </div>
     </div>
     <div class="right-panel" style="padding:16px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:14px;">
+
+      <!-- Weekly blocked trend: before vs after -->
+      <div>
+        <div style="font-size:.68rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">
+          Weekly Blocked Users — Eliminated
+          <span style="font-weight:400;color:#9ca3af;font-size:.63rem;text-transform:none;">May&#8211;Jun vs post-launch</span>
+        </div>
+        <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 15px;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;"><div style="width:62px;font-size:.58rem;color:#9ca3af;text-align:right;flex-shrink:0;">May 11&#8211;17</div><div style="flex:1;background:#fee2e2;border-radius:3px;height:16px;"><div style="height:16px;background:#ef4444;border-radius:3px;width:86%;min-width:3px;"></div></div><div style="width:80px;font-size:.58rem;color:#374151;font-weight:600;">173 blocked <span style="color:#9ca3af;">(22.0%)</span></div></div>
+<div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;"><div style="width:62px;font-size:.58rem;color:#9ca3af;text-align:right;flex-shrink:0;">May 18&#8211;24</div><div style="flex:1;background:#fee2e2;border-radius:3px;height:16px;"><div style="height:16px;background:#ef4444;border-radius:3px;width:100%;min-width:3px;"></div></div><div style="width:80px;font-size:.58rem;color:#374151;font-weight:600;">200 blocked <span style="color:#9ca3af;">(22.4%)</span></div></div>
+<div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;"><div style="width:62px;font-size:.58rem;color:#9ca3af;text-align:right;flex-shrink:0;">May 25&#8211;31</div><div style="flex:1;background:#fee2e2;border-radius:3px;height:16px;"><div style="height:16px;background:#ef4444;border-radius:3px;width:70%;min-width:3px;"></div></div><div style="width:80px;font-size:.58rem;color:#374151;font-weight:600;">140 blocked <span style="color:#9ca3af;">(19.9%)</span></div></div>
+<div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;"><div style="width:62px;font-size:.58rem;color:#9ca3af;text-align:right;flex-shrink:0;">Jun 1&#8211;2</div><div style="flex:1;background:#fee2e2;border-radius:3px;height:16px;"><div style="height:16px;background:#ef4444;border-radius:3px;width:32%;min-width:3px;"></div></div><div style="width:80px;font-size:.58rem;color:#374151;font-weight:600;">64 blocked <span style="color:#9ca3af;">(24.4%)</span></div></div>
+<div style="display:flex;align-items:center;gap:6px;margin-bottom:0;"><div style="width:62px;font-size:.58rem;color:#16a34a;font-weight:700;text-align:right;flex-shrink:0;">Jun 3+ ✓</div><div style="flex:1;background:#dcfce7;border-radius:3px;height:16px;"><div style="height:16px;background:#16a34a;border-radius:3px;width:3px;"></div></div><div style="width:80px;font-size:.58rem;color:#16a34a;font-weight:700;">0 blocked</div></div>
+
+          <div style="font-size:.58rem;color:#6b7280;margin-top:7px;line-height:1.4;">
+            &#8593; avg <b>144 blocked/week</b> before launch &mdash;
+            every user now gets the CVL path instead of a hard block.
+          </div>
+        </div>
+      </div>
 
       <!-- Before vs After -->
       <div>
@@ -977,26 +997,6 @@ function sdoToggle(g){
         </div>
         <div style="font-size:.62rem;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:6px 9px;color:#92400e;line-height:1.5;">
           Non-validated: <b>25.0%</b> first-trade conv vs Validated: <b>34.7%</b> &#8212; gap to watch.
-        </div>
-      </div>
-
-      <!-- Weekly blocked trend: before vs after -->
-      <div>
-        <div style="font-size:.68rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">
-          Weekly Blocked Users — Eliminated
-          <span style="font-weight:400;color:#9ca3af;font-size:.63rem;text-transform:none;">May&#8211;Jun vs post-launch</span>
-        </div>
-        <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 15px;">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;"><div style="width:62px;font-size:.58rem;color:#9ca3af;text-align:right;flex-shrink:0;">May 11&#8211;17</div><div style="flex:1;background:#fee2e2;border-radius:3px;height:16px;"><div style="height:16px;background:#ef4444;border-radius:3px;width:86%;min-width:3px;"></div></div><div style="width:80px;font-size:.58rem;color:#374151;font-weight:600;">173 blocked <span style="color:#9ca3af;">(22.0%)</span></div></div>
-<div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;"><div style="width:62px;font-size:.58rem;color:#9ca3af;text-align:right;flex-shrink:0;">May 18&#8211;24</div><div style="flex:1;background:#fee2e2;border-radius:3px;height:16px;"><div style="height:16px;background:#ef4444;border-radius:3px;width:100%;min-width:3px;"></div></div><div style="width:80px;font-size:.58rem;color:#374151;font-weight:600;">200 blocked <span style="color:#9ca3af;">(22.4%)</span></div></div>
-<div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;"><div style="width:62px;font-size:.58rem;color:#9ca3af;text-align:right;flex-shrink:0;">May 25&#8211;31</div><div style="flex:1;background:#fee2e2;border-radius:3px;height:16px;"><div style="height:16px;background:#ef4444;border-radius:3px;width:70%;min-width:3px;"></div></div><div style="width:80px;font-size:.58rem;color:#374151;font-weight:600;">140 blocked <span style="color:#9ca3af;">(19.9%)</span></div></div>
-<div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;"><div style="width:62px;font-size:.58rem;color:#9ca3af;text-align:right;flex-shrink:0;">Jun 1&#8211;2</div><div style="flex:1;background:#fee2e2;border-radius:3px;height:16px;"><div style="height:16px;background:#ef4444;border-radius:3px;width:32%;min-width:3px;"></div></div><div style="width:80px;font-size:.58rem;color:#374151;font-weight:600;">64 blocked <span style="color:#9ca3af;">(24.4%)</span></div></div>
-<div style="display:flex;align-items:center;gap:6px;margin-bottom:0;"><div style="width:62px;font-size:.58rem;color:#16a34a;font-weight:700;text-align:right;flex-shrink:0;">Jun 3+ ✓</div><div style="flex:1;background:#dcfce7;border-radius:3px;height:16px;"><div style="height:16px;background:#16a34a;border-radius:3px;width:3px;"></div></div><div style="width:80px;font-size:.58rem;color:#16a34a;font-weight:700;">0 blocked</div></div>
-
-          <div style="font-size:.58rem;color:#6b7280;margin-top:7px;line-height:1.4;">
-            &#8593; avg <b>144 blocked/week</b> before launch &mdash;
-            every user now gets the CVL path instead of a hard block.
-          </div>
         </div>
       </div>
 
@@ -1125,7 +1125,7 @@ function sdoToggle(g){
               <tr style="border-bottom:1px solid #f1f5f9;">
                 <td style="padding:6px 10px;font-weight:700;color:#374151;">CVL</td>
                 <td style="padding:6px 8px;text-align:center;color:#dc2626;font-weight:600;">up to 24hr</td>
-                <td style="padding:6px 8px;text-align:center;color:#6b7280;">~65%</td>
+                <td style="padding:6px 8px;text-align:center;color:#6b7280;">~60%</td>
                 <td style="padding:6px 8px;text-align:center;"><span style="background:#dcfce7;color:#166534;font-weight:700;font-size:.58rem;padding:1px 6px;border-radius:3px;">Active</span></td>
               </tr>
               <tr style="border-bottom:1px solid #f1f5f9;">
