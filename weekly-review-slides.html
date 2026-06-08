@@ -1079,15 +1079,12 @@ function sdoToggle(g){
         </div>
       </div>
 
-      <!-- Webhook delay stats (no histogram) -->
+      <!-- Webhook delay stats -->
       <div>
-        <div style="font-size:.68rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">
-          Webhook Delay &nbsp;<span style="font-weight:400;color:#9ca3af;font-size:.63rem;text-transform:none;">Upload Triggered &#8594; KRA Validated</span>
+        <div style="font-size:.68rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">
+          CVL Webhook Delay &nbsp;<span style="font-weight:400;color:#9ca3af;font-size:.63rem;text-transform:none;">time from upload to KRA validated</span>
         </div>
-        <div style="font-size:.61rem;color:#94a3b8;margin-bottom:6px;">
-          10s = mobile polling window &nbsp;&#8212;&nbsp; users validating after this see &#8220;Explore Bonds&#8221; (kra_notify state)
-        </div>
-        <div style="font-size:.61rem;color:#64748b;margin-bottom:6px;">p50: <b>16.2hr</b> &nbsp;&#183;&nbsp; p75: <b>33.0hr</b> &nbsp;&#183;&nbsp; p90: <b>33.0hr</b>&nbsp;&nbsp;|&nbsp;&nbsp;0% resolve within 10s (in-app)</div><div style="font-size:.61rem;background:#fff7ed;border:1px solid #fed7aa;border-radius:6px;padding:5px 8px;color:#9a3412;line-height:1.5;">&#9888; <b>100% of webhook-path users</b> wait &gt;10s &#8212; app shows &#8220;Explore Bonds&#8221; (kra_notify). KYC continues in background but <b>no follow-up notification</b> is sent on validation. &#8594; Add push on KRA_V2_VALIDATED_VIA_WEBHOOK.</div>
+        <div style="display:flex;gap:8px;margin-bottom:8px;"><div style="flex:1;background:#fef2f2;border:1.5px solid #fecaca;border-radius:8px;padding:8px 10px;text-align:center;"><div style="font-size:.55rem;font-weight:700;color:#dc2626;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;">p50 median</div><div style="font-size:1.25rem;font-weight:800;color:#dc2626;line-height:1;">16.2hr</div></div><div style="flex:1;background:#fef2f2;border:1.5px solid #fecaca;border-radius:8px;padding:8px 10px;text-align:center;"><div style="font-size:.55rem;font-weight:700;color:#dc2626;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;">p75</div><div style="font-size:1.25rem;font-weight:800;color:#dc2626;line-height:1;">33.0hr</div></div><div style="flex:1;background:#fef2f2;border:1.5px solid #fecaca;border-radius:8px;padding:8px 10px;text-align:center;"><div style="font-size:.55rem;font-weight:700;color:#dc2626;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;">p90</div><div style="font-size:1.25rem;font-weight:800;color:#dc2626;line-height:1;">33.0hr</div></div></div><div style="display:flex;gap:7px;"><div style="flex:1;font-size:.59rem;background:#fff7ed;border:1px solid #fed7aa;border-radius:6px;padding:7px 9px;color:#9a3412;line-height:1.6;"><b>What happens today</b><br>User submits KYC &rarr; app shows &ldquo;Explore Bonds&rdquo; screen. CVL validates <b>16.2hr later</b>. <b>No push is sent.</b> User has already left.</div><div style="flex:1;font-size:.59rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:7px 9px;color:#166534;line-height:1.6;"><b>Why send a notification</b><br>User just finished KYC &mdash; <b>peak purchase intent</b>. A single &ldquo;KRA verified, invest now&rdquo; push brings them back at exactly the right moment. 1 event &rarr; 1 eng task.</div></div>
       </div>
 
       <!-- Fix: Multi-KRA Agency Routing -->
