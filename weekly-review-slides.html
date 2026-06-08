@@ -1025,8 +1025,8 @@ function sdoToggle(g){
           <span class="si-val" style="color:#fde68a;">17 awaiting CVL webhook</span>
         </div>
         <div class="stat-item">
-          <span class="si-lbl">CVL median delay</span>
-          <span class="si-val" style="color:#fca5a5;">16.2hr p50 &mdash; add CAMS/NDML to fix</span>
+          <span class="si-lbl">Failed (API error)</span>
+          <span class="si-val" style="color:#fca5a5;">5 users (7.0%)</span>
         </div>
       </div>
     </div>
@@ -1077,6 +1077,17 @@ function sdoToggle(g){
             <span style="background:#dcfce7;color:#166534;font-weight:700;font-size:.6rem;padding:1px 5px;border-radius:3px;margin-left:4px;">70.4%</span>
           </div>
         </div>
+      </div>
+
+      <!-- Webhook delay stats (no histogram) -->
+      <div>
+        <div style="font-size:.68rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">
+          Webhook Delay &nbsp;<span style="font-weight:400;color:#9ca3af;font-size:.63rem;text-transform:none;">Upload Triggered &#8594; KRA Validated</span>
+        </div>
+        <div style="font-size:.61rem;color:#94a3b8;margin-bottom:6px;">
+          10s = mobile polling window &nbsp;&#8212;&nbsp; users validating after this see &#8220;Explore Bonds&#8221; (kra_notify state)
+        </div>
+        <div style="font-size:.61rem;color:#64748b;margin-bottom:6px;">p50: <b>16.2hr</b> &nbsp;&#183;&nbsp; p75: <b>33.0hr</b> &nbsp;&#183;&nbsp; p90: <b>33.0hr</b>&nbsp;&nbsp;|&nbsp;&nbsp;0% resolve within 10s (in-app)</div><div style="font-size:.61rem;background:#fff7ed;border:1px solid #fed7aa;border-radius:6px;padding:5px 8px;color:#9a3412;line-height:1.5;">&#9888; <b>100% of webhook-path users</b> wait &gt;10s &#8212; app shows &#8220;Explore Bonds&#8221; (kra_notify). KYC continues in background but <b>no follow-up notification</b> is sent on validation. &#8594; Add push on KRA_V2_VALIDATED_VIA_WEBHOOK.</div>
       </div>
 
       <!-- Fix: Multi-KRA Agency Routing -->
