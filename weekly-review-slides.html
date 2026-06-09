@@ -1546,11 +1546,12 @@ function line(label, data, color, yAxisID) {
 // ── Cover: summary tiles ──────────────────────────────────────────────────────
 (function() {
   const items = [
-    { lbl: 'Signups',     val: num(D.kpi_signups.this),       wow: D.kpi_signups.delta,         suf: '' },
-    { lbl: 'KYC Start%', val: pct(D.kpi_kyc_start_pct.this), wow: D.kpi_kyc_start_pct.delta,   suf: 'pp' },
-    { lbl: 'Investors',  val: num(D.kpi_investors.this),      wow: D.kpi_investors.delta,       suf: '' },
-    { lbl: 'WAU',        val: num(D.kpi_wau.this),            wow: D.kpi_wau.delta,             suf: '' },
-    { lbl: 'GTV',        val: cr(D.kpi_gtv.this),             wow: null,                        suf: '' },
+    { lbl: 'Signups',     val: num(D.kpi_signups.this),            wow: D.kpi_signups.delta,           suf: '' },
+    { lbl: 'KYC Start%', val: pct(D.kpi_kyc_start_pct.this),     wow: D.kpi_kyc_start_pct.delta,     suf: 'pp' },
+    { lbl: 'KYC Done%',  val: pct(D.kpi_kyc_start_to_done.this), wow: D.kpi_kyc_start_to_done.delta, suf: 'pp' },
+    { lbl: 'Investors',  val: num(D.kpi_investors.this),          wow: D.kpi_investors.delta,         suf: '' },
+    { lbl: 'WAU',        val: num(D.kpi_wau.this),                wow: D.kpi_wau.delta,               suf: '' },
+    { lbl: 'GTV',        val: cr(D.kpi_gtv.this),                 wow: null,                          suf: '' },
   ];
   document.getElementById('cover-metrics').innerHTML = items.map(it => {
     let ww = '';
