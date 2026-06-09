@@ -515,22 +515,31 @@ function sdoToggle(g){
   </div>
   <script>
   (function() {
-    var LABELS       = ["20 Apr", "27 Apr", "4 May", "11 May", "18 May", "25 May", "1 Jun"];
-    var STARTERS     = [873, 1079, 1224, 1252, 1651, 1180, 1192];
-    var DONE         = [248, 320, 358, 359, 377, 371, 399];
-    var START_RATES  = [30.1, 34.1, 32.6, 32.7, 31.6, 31.5, 28.1];
-    var DONE_RATES   = [28.4, 29.7, 29.2, 28.7, 22.8, 31.4, 33.5];
-    var BOT_WARNINGS = ["1 Jun: Poland = 10.0% of signups"];
+    var LABELS             = ["20 Apr", "27 Apr", "4 May", "11 May", "18 May", "25 May", "1 Jun"];
+    var STARTERS           = [873, 1079, 1224, 1252, 1651, 1180, 1192];
+    var DONE               = [248, 320, 358, 359, 377, 371, 399];
+    var START_RATES        = [30.1, 34.1, 32.6, 32.7, 31.6, 31.5, 28.1];
+    var START_RATES_CLEAN  = [30.1, 34.1, 32.6, 32.7, 31.6, 31.5, 31.2];
+    var HAS_BOT_DATA       = true;
+    var DONE_RATES         = [28.4, 29.7, 29.2, 28.7, 22.8, 31.4, 33.5];
+    var BOT_WARNINGS       = ["1 Jun: Poland = 10.0% of signups"];
     var VIOLET = '#8b5cf6', GREEN = '#10b981', AMBER = '#f59e0b', ROSE = '#f43f5e', ORANGE = '#f97316';
 
     function init() {
+      var datasets = [
+        { type:'bar',  label:'KYC Starters (cohort)',  data: STARTERS,    backgroundColor: VIOLET+'bb', borderColor: VIOLET,    borderWidth:1, borderRadius:3 },
+        { type:'bar',  label:'Demat Done (cohort)',    data: DONE,         backgroundColor: GREEN+'bb',  borderColor: GREEN,     borderWidth:1, borderRadius:3 },
+        { type:'line', label:'Start Rate%',            data: START_RATES,  borderColor: AMBER, backgroundColor:'transparent', yAxisID:'y2', pointRadius:3, pointHoverRadius:5, tension:.35 },
+        { type:'line', label:'Start→Done%',       data: DONE_RATES,   borderColor: ROSE,  backgroundColor:'transparent', yAxisID:'y2', pointRadius:3, pointHoverRadius:5, tension:.35 },
+      ];
+      if (HAS_BOT_DATA) {
+        datasets.push({ type:'line', label:'Start Rate% (excl. bots)', data: START_RATES_CLEAN,
+          borderColor: ORANGE, backgroundColor:'transparent', yAxisID:'y2',
+          pointRadius:3, pointHoverRadius:5, tension:.35,
+          borderDash:[5,3], borderWidth:1.5 });
+      }
       new Chart(document.getElementById('chart-kyc-cohort'), {
-        data: { labels: LABELS, datasets: [
-          { type:'bar',  label:'KYC Starters (cohort)',  data: STARTERS,    backgroundColor: VIOLET+'bb', borderColor: VIOLET,    borderWidth:1, borderRadius:3 },
-          { type:'bar',  label:'Demat Done (cohort)',    data: DONE,         backgroundColor: GREEN+'bb',  borderColor: GREEN,     borderWidth:1, borderRadius:3 },
-          { type:'line', label:'Start Rate%',            data: START_RATES,  borderColor: AMBER, backgroundColor:'transparent', yAxisID:'y2', pointRadius:3, pointHoverRadius:5, tension:.35 },
-          { type:'line', label:'Start→Done%',       data: DONE_RATES,   borderColor: ROSE,  backgroundColor:'transparent', yAxisID:'y2', pointRadius:3, pointHoverRadius:5, tension:.35 },
-        ]},
+        data: { labels: LABELS, datasets: datasets },
         options: {
           responsive:true, maintainAspectRatio:false,
           plugins:{
