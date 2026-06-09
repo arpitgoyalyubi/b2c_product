@@ -59,8 +59,14 @@
     td.qs      { font-weight: 700; color: #0f3460; }
     tr.bot-traffic td { opacity: 0.55; }
     tr.bot-traffic td.sticky-col { opacity: 1; color: #94a3b8; }
-    tr.bot-traffic td.sticky-col::after { content: " ⚠ bot?"; color: #f59e0b;
-                                            font-size: 10px; font-weight: 600; }
+    tr.affiliate-row td.sticky-col { background: #f0fdf4 !important; }
+    tr.affiliate-row:hover td.sticky-col { background: #dcfce7 !important; }
+    .affiliate-badge { display:inline-block; background:rgba(34,197,94,0.2); color:#15803d;
+                         font-size:9px; padding:1px 6px; border-radius:8px; font-weight:700;
+                         margin-left:4px; vertical-align:middle; }
+    .bot-badge { display:inline-block; background:rgba(239,68,68,0.12); color:#b91c1c;
+                   font-size:9px; padding:1px 6px; border-radius:8px; font-weight:700;
+                   margin-left:4px; vertical-align:middle; }
 
     th.agg-header  { background: #0f3460; }
     th.week-header { background: #2d5986; }
@@ -109,7 +115,7 @@
   <div class="header">
     <div>
       <h1>AppsFlyer Cohort Quality Report</h1>
-      <div class="sub">8 weeks (Apr 13, 2026 – Jun 07, 2026) · Mon–Sun windows · Generated Jun 09, 2026 14:36 IST</div>
+      <div class="sub">8 weeks (Apr 13, 2026 – Jun 07, 2026) · Mon–Sun windows · Generated Jun 09, 2026 15:04 IST</div>
     </div>
     <div></div>
   </div>
@@ -124,9 +130,10 @@
         I→S ≥30% good / ≥15% mod · S→KS ≥50%/≥25% · KS→KD ≥40%/≥20% · KD→FT ≥30%/≥15% ·
         <strong>—</strong> = fewer than 20 users in denominator (suppressed) ·
         <strong>⚠</strong> = attribution noise (>100%) ·
-        <strong style="color:#f59e0b">⚠ bot?</strong> = I→S &lt;1% on 100+ installs (likely fraud/bot traffic) ·
         <strong>⏱ maturing</strong> = cohort &lt;14 days old; KD→FT% will be 0 because users who just installed
-        haven't had time to complete KYC + make their first trade yet (typical time-to-trade: 1–3 weeks)
+        haven't had time to complete KYC + make their first trade yet (typical time-to-trade: 1–3 weeks) ·
+        <span class="affiliate-badge">Affiliate</span> = confirmed CPS affiliate partner ·
+        <span class="bot-badge">Bot</span> = unverified _int source (suspected bot/fraud traffic)
       </span>
     </div>
 
@@ -383,8 +390,8 @@
 <td data-v="107">107</td>
 <td class='bad' data-v="5.6">5.6%</td>
 </tr>
-<tr class=''>
-<td class='sticky-col dim-label' title='appnext_int'>appnext_int</td>
+<tr class='bot-traffic'>
+<td class='sticky-col dim-label' title='appnext_int'>appnext_int <span class="bot-badge">Bot</span></td>
 <td data-v="6687">6,687</td>
 <td data-v="869">869</td>
 <td class='bad' data-v="13.0">13.0%</td>
@@ -437,7 +444,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic'>
-<td class='sticky-col dim-label' title='mobzone_int'>mobzone_int</td>
+<td class='sticky-col dim-label' title='mobzone_int'>mobzone_int <span class="bot-badge">Bot</span></td>
 <td data-v="5761">5,761</td>
 <td data-v="23">23</td>
 <td class='bad' data-v="0.4">0.4%</td>
@@ -490,7 +497,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic'>
-<td class='sticky-col dim-label' title='tunnelads_int'>tunnelads_int</td>
+<td class='sticky-col dim-label' title='tunnelads_int'>tunnelads_int <span class="bot-badge">Bot</span></td>
 <td data-v="4083">4,083</td>
 <td data-v="3">3</td>
 <td class='bad' data-v="0.1">0.1%</td>
@@ -543,7 +550,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic'>
-<td class='sticky-col dim-label' title='oddsendsc32_int'>oddsendsc32_int</td>
+<td class='sticky-col dim-label' title='oddsendsc32_int'>oddsendsc32_int <span class="bot-badge">Bot</span></td>
 <td data-v="4045">4,045</td>
 <td data-v="17">17</td>
 <td class='bad' data-v="0.4">0.4%</td>
@@ -595,8 +602,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class=''>
-<td class='sticky-col dim-label' title='afnumberone_int'>afnumberone_int</td>
+<tr class='affiliate-row'>
+<td class='sticky-col dim-label' title='afnumberone_int'>afnumberone_int <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="3379">3,379</td>
 <td data-v="724">724</td>
 <td class='warn' data-v="21.4">21.4%</td>
@@ -649,7 +656,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic'>
-<td class='sticky-col dim-label' title='liquefteapsg_int'>liquefteapsg_int</td>
+<td class='sticky-col dim-label' title='liquefteapsg_int'>liquefteapsg_int <span class="bot-badge">Bot</span></td>
 <td data-v="2507">2,507</td>
 <td data-v="5">5</td>
 <td class='bad' data-v="0.2">0.2%</td>
@@ -702,7 +709,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic'>
-<td class='sticky-col dim-label' title='morganconlm_int'>morganconlm_int</td>
+<td class='sticky-col dim-label' title='morganconlm_int'>morganconlm_int <span class="bot-badge">Bot</span></td>
 <td data-v="2274">2,274</td>
 <td data-v="2">2</td>
 <td class='bad' data-v="0.1">0.1%</td>
@@ -755,7 +762,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='batman8z_int'>batman8z_int</td>
+<td class='sticky-col dim-label' title='batman8z_int'>batman8z_int <span class="bot-badge">Bot</span></td>
 <td data-v="2100">2,100</td>
 <td data-v="1">1</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -808,7 +815,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='ccwads4o_int'>ccwads4o_int</td>
+<td class='sticky-col dim-label' title='ccwads4o_int'>ccwads4o_int <span class="bot-badge">Bot</span></td>
 <td data-v="1878">1,878</td>
 <td data-v="4">4</td>
 <td class='bad' data-v="0.2">0.2%</td>
@@ -861,7 +868,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='aliliupvt_int'>aliliupvt_int</td>
+<td class='sticky-col dim-label' title='aliliupvt_int'>aliliupvt_int <span class="bot-badge">Bot</span></td>
 <td data-v="1774">1,774</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -914,7 +921,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='arbeenllcgx_int'>arbeenllcgx_int</td>
+<td class='sticky-col dim-label' title='arbeenllcgx_int'>arbeenllcgx_int <span class="bot-badge">Bot</span></td>
 <td data-v="1729">1,729</td>
 <td data-v="7">7</td>
 <td class='bad' data-v="0.4">0.4%</td>
@@ -967,7 +974,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='riversads_int'>riversads_int</td>
+<td class='sticky-col dim-label' title='riversads_int'>riversads_int <span class="bot-badge">Bot</span></td>
 <td data-v="1653">1,653</td>
 <td data-v="6">6</td>
 <td class='bad' data-v="0.4">0.4%</td>
@@ -1019,8 +1026,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='lumolinkaav_int'>lumolinkaav_int</td>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
+<td class='sticky-col dim-label' title='lumolinkaav_int'>lumolinkaav_int <span class="bot-badge">Bot</span></td>
 <td data-v="1593">1,593</td>
 <td data-v="20">20</td>
 <td class='bad' data-v="1.3">1.3%</td>
@@ -1072,8 +1079,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='sokendev_int'>sokendev_int</td>
+<tr class='affiliate-row extra-row extra-tbl-media_source'>
+<td class='sticky-col dim-label' title='sokendev_int'>sokendev_int <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="1590">1,590</td>
 <td data-v="667">667</td>
 <td class='good' data-v="41.9">41.9%</td>
@@ -1178,8 +1185,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='onetraffijs_int'>onetraffijs_int</td>
+<tr class='affiliate-row extra-row extra-tbl-media_source'>
+<td class='sticky-col dim-label' title='onetraffijs_int'>onetraffijs_int <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="1295">1,295</td>
 <td data-v="545">545</td>
 <td class='good' data-v="42.1">42.1%</td>
@@ -1232,7 +1239,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='dubaicrea8u_int'>dubaicrea8u_int</td>
+<td class='sticky-col dim-label' title='dubaicrea8u_int'>dubaicrea8u_int <span class="bot-badge">Bot</span></td>
 <td data-v="854">854</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -1285,7 +1292,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='s2ssoftsys_int'>s2ssoftsys_int</td>
+<td class='sticky-col dim-label' title='s2ssoftsys_int'>s2ssoftsys_int <span class="bot-badge">Bot</span></td>
 <td data-v="850">850</td>
 <td data-v="6">6</td>
 <td class='bad' data-v="0.7">0.7%</td>
@@ -1337,8 +1344,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='foxmobiwy_int'>foxmobiwy_int</td>
+<tr class='affiliate-row extra-row extra-tbl-media_source'>
+<td class='sticky-col dim-label' title='foxmobiwy_int'>foxmobiwy_int <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="819">819</td>
 <td data-v="295">295</td>
 <td class='good' data-v="36.0">36.0%</td>
@@ -1444,7 +1451,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='globalnetqg_int'>globalnetqg_int</td>
+<td class='sticky-col dim-label' title='globalnetqg_int'>globalnetqg_int <span class="bot-badge">Bot</span></td>
 <td data-v="732">732</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -1496,8 +1503,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='bot-traffic extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='mobilemin36l_int'>mobilemin36l_int</td>
+<tr class='affiliate-row extra-row extra-tbl-media_source'>
+<td class='sticky-col dim-label' title='mobilemin36l_int'>mobilemin36l_int <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="650">650</td>
 <td data-v="5">5</td>
 <td class='bad' data-v="0.8">0.8%</td>
@@ -1550,7 +1557,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='nfmobi_int'>nfmobi_int</td>
+<td class='sticky-col dim-label' title='nfmobi_int'>nfmobi_int <span class="bot-badge">Bot</span></td>
 <td data-v="628">628</td>
 <td data-v="2">2</td>
 <td class='bad' data-v="0.3">0.3%</td>
@@ -1603,7 +1610,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='adseledgent_int'>adseledgent_int</td>
+<td class='sticky-col dim-label' title='adseledgent_int'>adseledgent_int <span class="bot-badge">Bot</span></td>
 <td data-v="580">580</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -1655,8 +1662,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='adgdfslsgbc_int'>adgdfslsgbc_int</td>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
+<td class='sticky-col dim-label' title='adgdfslsgbc_int'>adgdfslsgbc_int <span class="bot-badge">Bot</span></td>
 <td data-v="530">530</td>
 <td data-v="35">35</td>
 <td class='bad' data-v="6.6">6.6%</td>
@@ -1709,7 +1716,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='bigporrs_int'>bigporrs_int</td>
+<td class='sticky-col dim-label' title='bigporrs_int'>bigporrs_int <span class="bot-badge">Bot</span></td>
 <td data-v="511">511</td>
 <td data-v="1">1</td>
 <td class='bad' data-v="0.2">0.2%</td>
@@ -1762,7 +1769,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='spasiuexykti_int'>spasiuexykti_int</td>
+<td class='sticky-col dim-label' title='spasiuexykti_int'>spasiuexykti_int <span class="bot-badge">Bot</span></td>
 <td data-v="362">362</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -1867,8 +1874,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='sandboxads_int'>sandboxads_int</td>
+<tr class='affiliate-row extra-row extra-tbl-media_source'>
+<td class='sticky-col dim-label' title='sandboxads_int'>sandboxads_int <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="346">346</td>
 <td data-v="101">101</td>
 <td class='warn' data-v="29.2">29.2%</td>
@@ -1921,7 +1928,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='leukmobitq9_int'>leukmobitq9_int</td>
+<td class='sticky-col dim-label' title='leukmobitq9_int'>leukmobitq9_int <span class="bot-badge">Bot</span></td>
 <td data-v="336">336</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -2027,7 +2034,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='recoverunc3_int'>recoverunc3_int</td>
+<td class='sticky-col dim-label' title='recoverunc3_int'>recoverunc3_int <span class="bot-badge">Bot</span></td>
 <td data-v="269">269</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -2080,7 +2087,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='appleadbiup_int'>appleadbiup_int</td>
+<td class='sticky-col dim-label' title='appleadbiup_int'>appleadbiup_int <span class="bot-badge">Bot</span></td>
 <td data-v="265">265</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -2132,8 +2139,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='hqsxxwylt4ih_int'>hqsxxwylt4ih_int</td>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
+<td class='sticky-col dim-label' title='hqsxxwylt4ih_int'>hqsxxwylt4ih_int <span class="bot-badge">Bot</span></td>
 <td data-v="260">260</td>
 <td data-v="219">219</td>
 <td class='good' data-v="84.2">84.2%</td>
@@ -2185,8 +2192,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='nexaadcrapp_int'>nexaadcrapp_int</td>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
+<td class='sticky-col dim-label' title='nexaadcrapp_int'>nexaadcrapp_int <span class="bot-badge">Bot</span></td>
 <td data-v="256">256</td>
 <td data-v="213">213</td>
 <td class='good' data-v="83.2">83.2%</td>
@@ -2238,8 +2245,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='charitabl5o_int'>charitabl5o_int</td>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
+<td class='sticky-col dim-label' title='charitabl5o_int'>charitabl5o_int <span class="bot-badge">Bot</span></td>
 <td data-v="117">117</td>
 <td data-v="9">9</td>
 <td class='bad' data-v="7.7">7.7%</td>
@@ -2397,8 +2404,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='vfine_int'>vfine_int</td>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
+<td class='sticky-col dim-label' title='vfine_int'>vfine_int <span class="bot-badge">Bot</span></td>
 <td data-v="43">43</td>
 <td data-v="9">9</td>
 <td class='warn' data-v="20.9">20.9%</td>
@@ -2450,8 +2457,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='partneron_int'>partneron_int</td>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
+<td class='sticky-col dim-label' title='partneron_int'>partneron_int <span class="bot-badge">Bot</span></td>
 <td data-v="41">41</td>
 <td data-v="7">7</td>
 <td class='warn' data-v="17.1">17.1%</td>
@@ -2556,8 +2563,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='attrimob_int'>attrimob_int</td>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
+<td class='sticky-col dim-label' title='attrimob_int'>attrimob_int <span class="bot-badge">Bot</span></td>
 <td data-v="20">20</td>
 <td data-v="9">9</td>
 <td class='good' data-v="45.0">45.0%</td>
@@ -2662,8 +2669,8 @@
 <td data-v="1">1</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-media_source'>
-<td class='sticky-col dim-label' title='nexfigoadh7_int'>nexfigoadh7_int</td>
+<tr class='bot-traffic extra-row extra-tbl-media_source'>
+<td class='sticky-col dim-label' title='nexfigoadh7_int'>nexfigoadh7_int <span class="bot-badge">Bot</span></td>
 <td data-v="12">12</td>
 <td data-v="1">1</td>
 <td class='' data-v="-999">—</td>
@@ -3155,8 +3162,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class=''>
-<td class='sticky-col dim-label' title='appnext_int / Aspero_ADS_Appnext'>appnext_int / Aspero_ADS_Appnext</td>
+<tr class='bot-traffic'>
+<td class='sticky-col dim-label' title='appnext_int / Aspero_ADS_Appnext'>appnext_int / Aspero_ADS_Appnext <span class="bot-badge">Bot</span></td>
 <td data-v="6687">6,687</td>
 <td data-v="869">869</td>
 <td class='bad' data-v="13.0">13.0%</td>
@@ -3209,7 +3216,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic'>
-<td class='sticky-col dim-label' title='mobzone_int / Aspero_LG_May2026'>mobzone_int / Aspero_LG_May2026</td>
+<td class='sticky-col dim-label' title='mobzone_int / Aspero_LG_May2026'>mobzone_int / Aspero_LG_May2026 <span class="bot-badge">Bot</span></td>
 <td data-v="5761">5,761</td>
 <td data-v="23">23</td>
 <td class='bad' data-v="0.4">0.4%</td>
@@ -3421,7 +3428,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic'>
-<td class='sticky-col dim-label' title='oddsendsc32_int / ASPERO_IOS_SANDBOX'>oddsendsc32_int / ASPERO_IOS_SANDBOX</td>
+<td class='sticky-col dim-label' title='oddsendsc32_int / ASPERO_IOS_SANDBOX'>oddsendsc32_int / ASPERO_IOS_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="4045">4,045</td>
 <td data-v="17">17</td>
 <td class='bad' data-v="0.4">0.4%</td>
@@ -3473,8 +3480,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class=''>
-<td class='sticky-col dim-label' title='afnumberone_int / ASPERO_SANDBOX'>afnumberone_int / ASPERO_SANDBOX</td>
+<tr class='affiliate-row'>
+<td class='sticky-col dim-label' title='afnumberone_int / ASPERO_SANDBOX'>afnumberone_int / ASPERO_SANDBOX <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="3379">3,379</td>
 <td data-v="724">724</td>
 <td class='warn' data-v="21.4">21.4%</td>
@@ -3527,7 +3534,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='tunnelads_int / ASPERO_IOS_SANDBOX'>tunnelads_int / ASPERO_IOS_SANDBOX</td>
+<td class='sticky-col dim-label' title='tunnelads_int / ASPERO_IOS_SANDBOX'>tunnelads_int / ASPERO_IOS_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="2562">2,562</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -3580,7 +3587,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='liquefteapsg_int / ASPERO_AOS_SANDBOX'>liquefteapsg_int / ASPERO_AOS_SANDBOX</td>
+<td class='sticky-col dim-label' title='liquefteapsg_int / ASPERO_AOS_SANDBOX'>liquefteapsg_int / ASPERO_AOS_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="2507">2,507</td>
 <td data-v="5">5</td>
 <td class='bad' data-v="0.2">0.2%</td>
@@ -3633,7 +3640,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='morganconlm_int / LG_Aspero_May26'>morganconlm_int / LG_Aspero_May26</td>
+<td class='sticky-col dim-label' title='morganconlm_int / LG_Aspero_May26'>morganconlm_int / LG_Aspero_May26 <span class="bot-badge">Bot</span></td>
 <td data-v="2274">2,274</td>
 <td data-v="2">2</td>
 <td class='bad' data-v="0.1">0.1%</td>
@@ -3686,7 +3693,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='batman8z_int / ASPERO_AOS_SANDBOX'>batman8z_int / ASPERO_AOS_SANDBOX</td>
+<td class='sticky-col dim-label' title='batman8z_int / ASPERO_AOS_SANDBOX'>batman8z_int / ASPERO_AOS_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="2100">2,100</td>
 <td data-v="1">1</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -3739,7 +3746,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='ccwads4o_int / Aspero_LG_May2026'>ccwads4o_int / Aspero_LG_May2026</td>
+<td class='sticky-col dim-label' title='ccwads4o_int / Aspero_LG_May2026'>ccwads4o_int / Aspero_LG_May2026 <span class="bot-badge">Bot</span></td>
 <td data-v="1878">1,878</td>
 <td data-v="4">4</td>
 <td class='bad' data-v="0.2">0.2%</td>
@@ -3792,7 +3799,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='aliliupvt_int / ASPERO_SANDBOX'>aliliupvt_int / ASPERO_SANDBOX</td>
+<td class='sticky-col dim-label' title='aliliupvt_int / ASPERO_SANDBOX'>aliliupvt_int / ASPERO_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="1774">1,774</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -3845,7 +3852,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='arbeenllcgx_int / ASPERO_IOS_SANDBOX'>arbeenllcgx_int / ASPERO_IOS_SANDBOX</td>
+<td class='sticky-col dim-label' title='arbeenllcgx_int / ASPERO_IOS_SANDBOX'>arbeenllcgx_int / ASPERO_IOS_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="1729">1,729</td>
 <td data-v="7">7</td>
 <td class='bad' data-v="0.4">0.4%</td>
@@ -3898,7 +3905,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='riversads_int / ASPERO_PL_Riversads_AOS'>riversads_int / ASPERO_PL_Riversads_AOS</td>
+<td class='sticky-col dim-label' title='riversads_int / ASPERO_PL_Riversads_AOS'>riversads_int / ASPERO_PL_Riversads_AOS <span class="bot-badge">Bot</span></td>
 <td data-v="1653">1,653</td>
 <td data-v="6">6</td>
 <td class='bad' data-v="0.4">0.4%</td>
@@ -3950,8 +3957,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='lumolinkaav_int / ASPERO_SANDBOX'>lumolinkaav_int / ASPERO_SANDBOX</td>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
+<td class='sticky-col dim-label' title='lumolinkaav_int / ASPERO_SANDBOX'>lumolinkaav_int / ASPERO_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="1593">1,593</td>
 <td data-v="20">20</td>
 <td class='bad' data-v="1.3">1.3%</td>
@@ -4004,7 +4011,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='tunnelads_int / ASPERO_AOS_SANDBOX'>tunnelads_int / ASPERO_AOS_SANDBOX</td>
+<td class='sticky-col dim-label' title='tunnelads_int / ASPERO_AOS_SANDBOX'>tunnelads_int / ASPERO_AOS_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="1521">1,521</td>
 <td data-v="3">3</td>
 <td class='bad' data-v="0.2">0.2%</td>
@@ -4056,8 +4063,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='onetraffijs_int / ASPERO_AOS_SANDBOX'>onetraffijs_int / ASPERO_AOS_SANDBOX</td>
+<tr class='affiliate-row extra-row extra-tbl-campaign'>
+<td class='sticky-col dim-label' title='onetraffijs_int / ASPERO_AOS_SANDBOX'>onetraffijs_int / ASPERO_AOS_SANDBOX <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="1295">1,295</td>
 <td data-v="545">545</td>
 <td class='good' data-v="42.1">42.1%</td>
@@ -4109,8 +4116,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='sokendev_int / ASPERO_SANDBOX'>sokendev_int / ASPERO_SANDBOX</td>
+<tr class='affiliate-row extra-row extra-tbl-campaign'>
+<td class='sticky-col dim-label' title='sokendev_int / ASPERO_SANDBOX'>sokendev_int / ASPERO_SANDBOX <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="1286">1,286</td>
 <td data-v="509">509</td>
 <td class='good' data-v="39.6">39.6%</td>
@@ -4163,7 +4170,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='dubaicrea8u_int / ASPERO_AOS_SANDBOX'>dubaicrea8u_int / ASPERO_AOS_SANDBOX</td>
+<td class='sticky-col dim-label' title='dubaicrea8u_int / ASPERO_AOS_SANDBOX'>dubaicrea8u_int / ASPERO_AOS_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="854">854</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -4216,7 +4223,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='s2ssoftsys_int / ASPERO_PL_s2ssoftsys_AOS'>s2ssoftsys_int / ASPERO_PL_s2ssoftsys_AOS</td>
+<td class='sticky-col dim-label' title='s2ssoftsys_int / ASPERO_PL_s2ssoftsys_AOS'>s2ssoftsys_int / ASPERO_PL_s2ssoftsys_AOS <span class="bot-badge">Bot</span></td>
 <td data-v="850">850</td>
 <td data-v="6">6</td>
 <td class='bad' data-v="0.7">0.7%</td>
@@ -4268,8 +4275,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='foxmobiwy_int / ASPERO_SANDBOX'>foxmobiwy_int / ASPERO_SANDBOX</td>
+<tr class='affiliate-row extra-row extra-tbl-campaign'>
+<td class='sticky-col dim-label' title='foxmobiwy_int / ASPERO_SANDBOX'>foxmobiwy_int / ASPERO_SANDBOX <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="819">819</td>
 <td data-v="295">295</td>
 <td class='good' data-v="36.0">36.0%</td>
@@ -4375,7 +4382,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='globalnetqg_int / ASPERO_IOS_SANDBOX'>globalnetqg_int / ASPERO_IOS_SANDBOX</td>
+<td class='sticky-col dim-label' title='globalnetqg_int / ASPERO_IOS_SANDBOX'>globalnetqg_int / ASPERO_IOS_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="732">732</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -4533,8 +4540,8 @@
 <td data-v="5">5</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='mobilemin36l_int / ASPERO_AOS_SANDBOX'>mobilemin36l_int / ASPERO_AOS_SANDBOX</td>
+<tr class='affiliate-row extra-row extra-tbl-campaign'>
+<td class='sticky-col dim-label' title='mobilemin36l_int / ASPERO_AOS_SANDBOX'>mobilemin36l_int / ASPERO_AOS_SANDBOX <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="650">650</td>
 <td data-v="5">5</td>
 <td class='bad' data-v="0.8">0.8%</td>
@@ -4587,7 +4594,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='nfmobi_int / ASPERO_AOS_SANDBOX'>nfmobi_int / ASPERO_AOS_SANDBOX</td>
+<td class='sticky-col dim-label' title='nfmobi_int / ASPERO_AOS_SANDBOX'>nfmobi_int / ASPERO_AOS_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="628">628</td>
 <td data-v="2">2</td>
 <td class='bad' data-v="0.3">0.3%</td>
@@ -4640,7 +4647,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='adseledgent_int / ASPERO_SANDBOX'>adseledgent_int / ASPERO_SANDBOX</td>
+<td class='sticky-col dim-label' title='adseledgent_int / ASPERO_SANDBOX'>adseledgent_int / ASPERO_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="580">580</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -4745,8 +4752,8 @@
 <td data-v="15">15</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='adgdfslsgbc_int / LG_Aspero_May2026'>adgdfslsgbc_int / LG_Aspero_May2026</td>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
+<td class='sticky-col dim-label' title='adgdfslsgbc_int / LG_Aspero_May2026'>adgdfslsgbc_int / LG_Aspero_May2026 <span class="bot-badge">Bot</span></td>
 <td data-v="530">530</td>
 <td data-v="35">35</td>
 <td class='bad' data-v="6.6">6.6%</td>
@@ -4852,7 +4859,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='spasiuexykti_int / ASPERO_IOS_SANDBOX'>spasiuexykti_int / ASPERO_IOS_SANDBOX</td>
+<td class='sticky-col dim-label' title='spasiuexykti_int / ASPERO_IOS_SANDBOX'>spasiuexykti_int / ASPERO_IOS_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="362">362</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -4957,8 +4964,8 @@
 <td data-v="6">6</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='sandboxads_int / Aspero_ADS_Sandbox_sandboxads_int'>sandboxads_int / Aspero_ADS_Sandbox_sandboxads_int</td>
+<tr class='affiliate-row extra-row extra-tbl-campaign'>
+<td class='sticky-col dim-label' title='sandboxads_int / Aspero_ADS_Sandbox_sandboxads_int'>sandboxads_int / Aspero_ADS_Sandbox_sandboxads_int <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="346">346</td>
 <td data-v="101">101</td>
 <td class='warn' data-v="29.2">29.2%</td>
@@ -5011,7 +5018,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='leukmobitq9_int / ASPERO_AOS_SANDBOX'>leukmobitq9_int / ASPERO_AOS_SANDBOX</td>
+<td class='sticky-col dim-label' title='leukmobitq9_int / ASPERO_AOS_SANDBOX'>leukmobitq9_int / ASPERO_AOS_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="336">336</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -5116,8 +5123,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='sokendev_int / ASPERO'>sokendev_int / ASPERO</td>
+<tr class='affiliate-row extra-row extra-tbl-campaign'>
+<td class='sticky-col dim-label' title='sokendev_int / ASPERO'>sokendev_int / ASPERO <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="304">304</td>
 <td data-v="158">158</td>
 <td class='good' data-v="52.0">52.0%</td>
@@ -5170,7 +5177,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='recoverunc3_int / ASPERO_IOS_SANDBOX'>recoverunc3_int / ASPERO_IOS_SANDBOX</td>
+<td class='sticky-col dim-label' title='recoverunc3_int / ASPERO_IOS_SANDBOX'>recoverunc3_int / ASPERO_IOS_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="269">269</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -5223,7 +5230,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='appleadbiup_int / ASPERO_IOS_SANDBOX'>appleadbiup_int / ASPERO_IOS_SANDBOX</td>
+<td class='sticky-col dim-label' title='appleadbiup_int / ASPERO_IOS_SANDBOX'>appleadbiup_int / ASPERO_IOS_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="265">265</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -5276,7 +5283,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='bigporrs_int / ASPERO_AOS_SANDBOX'>bigporrs_int / ASPERO_AOS_SANDBOX</td>
+<td class='sticky-col dim-label' title='bigporrs_int / ASPERO_AOS_SANDBOX'>bigporrs_int / ASPERO_AOS_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="263">263</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -5328,8 +5335,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='hqsxxwylt4ih_int / ASPERO_PL_hqsxxwylt_AOS'>hqsxxwylt4ih_int / ASPERO_PL_hqsxxwylt_AOS</td>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
+<td class='sticky-col dim-label' title='hqsxxwylt4ih_int / ASPERO_PL_hqsxxwylt_AOS'>hqsxxwylt4ih_int / ASPERO_PL_hqsxxwylt_AOS <span class="bot-badge">Bot</span></td>
 <td data-v="260">260</td>
 <td data-v="219">219</td>
 <td class='good' data-v="84.2">84.2%</td>
@@ -5434,8 +5441,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='nexaadcrapp_int / ASPERO_PL_nexaadcraft_AOS'>nexaadcrapp_int / ASPERO_PL_nexaadcraft_AOS</td>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
+<td class='sticky-col dim-label' title='nexaadcrapp_int / ASPERO_PL_nexaadcraft_AOS'>nexaadcrapp_int / ASPERO_PL_nexaadcraft_AOS <span class="bot-badge">Bot</span></td>
 <td data-v="256">256</td>
 <td data-v="213">213</td>
 <td class='good' data-v="83.2">83.2%</td>
@@ -5488,7 +5495,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='bigporrs_int / ASPERO_IOS_SANDBOX'>bigporrs_int / ASPERO_IOS_SANDBOX</td>
+<td class='sticky-col dim-label' title='bigporrs_int / ASPERO_IOS_SANDBOX'>bigporrs_int / ASPERO_IOS_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="248">248</td>
 <td data-v="1">1</td>
 <td class='bad' data-v="0.4">0.4%</td>
@@ -5805,8 +5812,8 @@
 <td data-v="1">1</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='charitabl5o_int / Aspero_LG_May2026'>charitabl5o_int / Aspero_LG_May2026</td>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
+<td class='sticky-col dim-label' title='charitabl5o_int / Aspero_LG_May2026'>charitabl5o_int / Aspero_LG_May2026 <span class="bot-badge">Bot</span></td>
 <td data-v="86">86</td>
 <td data-v="9">9</td>
 <td class='bad' data-v="10.5">10.5%</td>
@@ -6070,8 +6077,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='vfine_int / ASPERO_AOS_SANDBOX'>vfine_int / ASPERO_AOS_SANDBOX</td>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
+<td class='sticky-col dim-label' title='vfine_int / ASPERO_AOS_SANDBOX'>vfine_int / ASPERO_AOS_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="43">43</td>
 <td data-v="9">9</td>
 <td class='warn' data-v="20.9">20.9%</td>
@@ -6123,8 +6130,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='partneron_int / ASPERO_AOS_SANDBOX'>partneron_int / ASPERO_AOS_SANDBOX</td>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
+<td class='sticky-col dim-label' title='partneron_int / ASPERO_AOS_SANDBOX'>partneron_int / ASPERO_AOS_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="41">41</td>
 <td data-v="7">7</td>
 <td class='warn' data-v="17.1">17.1%</td>
@@ -6282,8 +6289,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='charitabl5o_int / ASPERO_AOS_SANDBOX'>charitabl5o_int / ASPERO_AOS_SANDBOX</td>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
+<td class='sticky-col dim-label' title='charitabl5o_int / ASPERO_AOS_SANDBOX'>charitabl5o_int / ASPERO_AOS_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="28">28</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -6335,8 +6342,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='attrimob_int / ASPERO_VENTES_AOS'>attrimob_int / ASPERO_VENTES_AOS</td>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
+<td class='sticky-col dim-label' title='attrimob_int / ASPERO_VENTES_AOS'>attrimob_int / ASPERO_VENTES_AOS <span class="bot-badge">Bot</span></td>
 <td data-v="20">20</td>
 <td data-v="9">9</td>
 <td class='good' data-v="45.0">45.0%</td>
@@ -6547,8 +6554,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-campaign'>
-<td class='sticky-col dim-label' title='nexfigoadh7_int / ASPERO_SANDBOX'>nexfigoadh7_int / ASPERO_SANDBOX</td>
+<tr class='bot-traffic extra-row extra-tbl-campaign'>
+<td class='sticky-col dim-label' title='nexfigoadh7_int / ASPERO_SANDBOX'>nexfigoadh7_int / ASPERO_SANDBOX <span class="bot-badge">Bot</span></td>
 <td data-v="12">12</td>
 <td data-v="1">1</td>
 <td class='' data-v="-999">—</td>
@@ -7062,8 +7069,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class=''>
-<td class='sticky-col dim-label' title='appnext_int / Aspero_ADS_Appnext / Unknown'>appnext_int / Aspero_ADS_Appnext / Unknown</td>
+<tr class='bot-traffic'>
+<td class='sticky-col dim-label' title='appnext_int / Aspero_ADS_Appnext / Unknown'>appnext_int / Aspero_ADS_Appnext / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="6687">6,687</td>
 <td data-v="869">869</td>
 <td class='bad' data-v="13.0">13.0%</td>
@@ -7116,7 +7123,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic'>
-<td class='sticky-col dim-label' title='mobzone_int / Aspero_LG_May2026 / Unknown'>mobzone_int / Aspero_LG_May2026 / Unknown</td>
+<td class='sticky-col dim-label' title='mobzone_int / Aspero_LG_May2026 / Unknown'>mobzone_int / Aspero_LG_May2026 / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="5761">5,761</td>
 <td data-v="23">23</td>
 <td class='bad' data-v="0.4">0.4%</td>
@@ -7328,7 +7335,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic'>
-<td class='sticky-col dim-label' title='oddsendsc32_int / ASPERO_IOS_SANDBOX / Unknown'>oddsendsc32_int / ASPERO_IOS_SANDBOX / Unknown</td>
+<td class='sticky-col dim-label' title='oddsendsc32_int / ASPERO_IOS_SANDBOX / Unknown'>oddsendsc32_int / ASPERO_IOS_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="4045">4,045</td>
 <td data-v="17">17</td>
 <td class='bad' data-v="0.4">0.4%</td>
@@ -7380,8 +7387,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class=''>
-<td class='sticky-col dim-label' title='afnumberone_int / ASPERO_SANDBOX / Unknown'>afnumberone_int / ASPERO_SANDBOX / Unknown</td>
+<tr class='affiliate-row'>
+<td class='sticky-col dim-label' title='afnumberone_int / ASPERO_SANDBOX / Unknown'>afnumberone_int / ASPERO_SANDBOX / Unknown <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="3379">3,379</td>
 <td data-v="724">724</td>
 <td class='warn' data-v="21.4">21.4%</td>
@@ -7434,7 +7441,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='tunnelads_int / ASPERO_IOS_SANDBOX / Unknown'>tunnelads_int / ASPERO_IOS_SANDBOX / Unknown</td>
+<td class='sticky-col dim-label' title='tunnelads_int / ASPERO_IOS_SANDBOX / Unknown'>tunnelads_int / ASPERO_IOS_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="2562">2,562</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -7487,7 +7494,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='liquefteapsg_int / ASPERO_AOS_SANDBOX / Unknown'>liquefteapsg_int / ASPERO_AOS_SANDBOX / Unknown</td>
+<td class='sticky-col dim-label' title='liquefteapsg_int / ASPERO_AOS_SANDBOX / Unknown'>liquefteapsg_int / ASPERO_AOS_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="2507">2,507</td>
 <td data-v="5">5</td>
 <td class='bad' data-v="0.2">0.2%</td>
@@ -7540,7 +7547,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='morganconlm_int / LG_Aspero_May26 / Unknown'>morganconlm_int / LG_Aspero_May26 / Unknown</td>
+<td class='sticky-col dim-label' title='morganconlm_int / LG_Aspero_May26 / Unknown'>morganconlm_int / LG_Aspero_May26 / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="2274">2,274</td>
 <td data-v="2">2</td>
 <td class='bad' data-v="0.1">0.1%</td>
@@ -7593,7 +7600,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='batman8z_int / ASPERO_AOS_SANDBOX / Unknown'>batman8z_int / ASPERO_AOS_SANDBOX / Unknown</td>
+<td class='sticky-col dim-label' title='batman8z_int / ASPERO_AOS_SANDBOX / Unknown'>batman8z_int / ASPERO_AOS_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="2100">2,100</td>
 <td data-v="1">1</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -7646,7 +7653,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='ccwads4o_int / Aspero_LG_May2026 / Unknown'>ccwads4o_int / Aspero_LG_May2026 / Unknown</td>
+<td class='sticky-col dim-label' title='ccwads4o_int / Aspero_LG_May2026 / Unknown'>ccwads4o_int / Aspero_LG_May2026 / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="1878">1,878</td>
 <td data-v="4">4</td>
 <td class='bad' data-v="0.2">0.2%</td>
@@ -7699,7 +7706,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='aliliupvt_int / ASPERO_SANDBOX / Unknown'>aliliupvt_int / ASPERO_SANDBOX / Unknown</td>
+<td class='sticky-col dim-label' title='aliliupvt_int / ASPERO_SANDBOX / Unknown'>aliliupvt_int / ASPERO_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="1774">1,774</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -7752,7 +7759,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='arbeenllcgx_int / ASPERO_IOS_SANDBOX / Unknown'>arbeenllcgx_int / ASPERO_IOS_SANDBOX / Unknown</td>
+<td class='sticky-col dim-label' title='arbeenllcgx_int / ASPERO_IOS_SANDBOX / Unknown'>arbeenllcgx_int / ASPERO_IOS_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="1729">1,729</td>
 <td data-v="7">7</td>
 <td class='bad' data-v="0.4">0.4%</td>
@@ -7805,7 +7812,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='riversads_int / ASPERO_PL_Riversads_AOS / Unknown'>riversads_int / ASPERO_PL_Riversads_AOS / Unknown</td>
+<td class='sticky-col dim-label' title='riversads_int / ASPERO_PL_Riversads_AOS / Unknown'>riversads_int / ASPERO_PL_Riversads_AOS / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="1653">1,653</td>
 <td data-v="6">6</td>
 <td class='bad' data-v="0.4">0.4%</td>
@@ -7857,8 +7864,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='lumolinkaav_int / ASPERO_SANDBOX / Unknown'>lumolinkaav_int / ASPERO_SANDBOX / Unknown</td>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
+<td class='sticky-col dim-label' title='lumolinkaav_int / ASPERO_SANDBOX / Unknown'>lumolinkaav_int / ASPERO_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="1593">1,593</td>
 <td data-v="20">20</td>
 <td class='bad' data-v="1.3">1.3%</td>
@@ -7911,7 +7918,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='tunnelads_int / ASPERO_AOS_SANDBOX / Unknown'>tunnelads_int / ASPERO_AOS_SANDBOX / Unknown</td>
+<td class='sticky-col dim-label' title='tunnelads_int / ASPERO_AOS_SANDBOX / Unknown'>tunnelads_int / ASPERO_AOS_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="1521">1,521</td>
 <td data-v="3">3</td>
 <td class='bad' data-v="0.2">0.2%</td>
@@ -7963,8 +7970,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='onetraffijs_int / ASPERO_AOS_SANDBOX / Unknown'>onetraffijs_int / ASPERO_AOS_SANDBOX / Unknown</td>
+<tr class='affiliate-row extra-row extra-tbl-adset'>
+<td class='sticky-col dim-label' title='onetraffijs_int / ASPERO_AOS_SANDBOX / Unknown'>onetraffijs_int / ASPERO_AOS_SANDBOX / Unknown <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="1295">1,295</td>
 <td data-v="545">545</td>
 <td class='good' data-v="42.1">42.1%</td>
@@ -8016,8 +8023,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='sokendev_int / ASPERO_SANDBOX / Unknown'>sokendev_int / ASPERO_SANDBOX / Unknown</td>
+<tr class='affiliate-row extra-row extra-tbl-adset'>
+<td class='sticky-col dim-label' title='sokendev_int / ASPERO_SANDBOX / Unknown'>sokendev_int / ASPERO_SANDBOX / Unknown <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="1286">1,286</td>
 <td data-v="509">509</td>
 <td class='good' data-v="39.6">39.6%</td>
@@ -8070,7 +8077,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='dubaicrea8u_int / ASPERO_AOS_SANDBOX / Unknown'>dubaicrea8u_int / ASPERO_AOS_SANDBOX / Unknown</td>
+<td class='sticky-col dim-label' title='dubaicrea8u_int / ASPERO_AOS_SANDBOX / Unknown'>dubaicrea8u_int / ASPERO_AOS_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="854">854</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -8123,7 +8130,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='s2ssoftsys_int / ASPERO_PL_s2ssoftsys_AOS / Unknown'>s2ssoftsys_int / ASPERO_PL_s2ssoftsys_AOS / Unknown</td>
+<td class='sticky-col dim-label' title='s2ssoftsys_int / ASPERO_PL_s2ssoftsys_AOS / Unknown'>s2ssoftsys_int / ASPERO_PL_s2ssoftsys_AOS / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="850">850</td>
 <td data-v="6">6</td>
 <td class='bad' data-v="0.7">0.7%</td>
@@ -8175,8 +8182,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='foxmobiwy_int / ASPERO_SANDBOX / Unknown'>foxmobiwy_int / ASPERO_SANDBOX / Unknown</td>
+<tr class='affiliate-row extra-row extra-tbl-adset'>
+<td class='sticky-col dim-label' title='foxmobiwy_int / ASPERO_SANDBOX / Unknown'>foxmobiwy_int / ASPERO_SANDBOX / Unknown <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="819">819</td>
 <td data-v="295">295</td>
 <td class='good' data-v="36.0">36.0%</td>
@@ -8282,7 +8289,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='globalnetqg_int / ASPERO_IOS_SANDBOX / Unknown'>globalnetqg_int / ASPERO_IOS_SANDBOX / Unknown</td>
+<td class='sticky-col dim-label' title='globalnetqg_int / ASPERO_IOS_SANDBOX / Unknown'>globalnetqg_int / ASPERO_IOS_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="732">732</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -8440,8 +8447,8 @@
 <td data-v="5">5</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='mobilemin36l_int / ASPERO_AOS_SANDBOX / Unknown'>mobilemin36l_int / ASPERO_AOS_SANDBOX / Unknown</td>
+<tr class='affiliate-row extra-row extra-tbl-adset'>
+<td class='sticky-col dim-label' title='mobilemin36l_int / ASPERO_AOS_SANDBOX / Unknown'>mobilemin36l_int / ASPERO_AOS_SANDBOX / Unknown <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="650">650</td>
 <td data-v="5">5</td>
 <td class='bad' data-v="0.8">0.8%</td>
@@ -8494,7 +8501,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='nfmobi_int / ASPERO_AOS_SANDBOX / Unknown'>nfmobi_int / ASPERO_AOS_SANDBOX / Unknown</td>
+<td class='sticky-col dim-label' title='nfmobi_int / ASPERO_AOS_SANDBOX / Unknown'>nfmobi_int / ASPERO_AOS_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="628">628</td>
 <td data-v="2">2</td>
 <td class='bad' data-v="0.3">0.3%</td>
@@ -8547,7 +8554,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='adseledgent_int / ASPERO_SANDBOX / Unknown'>adseledgent_int / ASPERO_SANDBOX / Unknown</td>
+<td class='sticky-col dim-label' title='adseledgent_int / ASPERO_SANDBOX / Unknown'>adseledgent_int / ASPERO_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="580">580</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -8652,8 +8659,8 @@
 <td data-v="15">15</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='adgdfslsgbc_int / LG_Aspero_May2026 / Unknown'>adgdfslsgbc_int / LG_Aspero_May2026 / Unknown</td>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
+<td class='sticky-col dim-label' title='adgdfslsgbc_int / LG_Aspero_May2026 / Unknown'>adgdfslsgbc_int / LG_Aspero_May2026 / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="530">530</td>
 <td data-v="35">35</td>
 <td class='bad' data-v="6.6">6.6%</td>
@@ -8759,7 +8766,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='spasiuexykti_int / ASPERO_IOS_SANDBOX / Unknown'>spasiuexykti_int / ASPERO_IOS_SANDBOX / Unknown</td>
+<td class='sticky-col dim-label' title='spasiuexykti_int / ASPERO_IOS_SANDBOX / Unknown'>spasiuexykti_int / ASPERO_IOS_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="362">362</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -8864,8 +8871,8 @@
 <td data-v="6">6</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='sandboxads_int / Aspero_ADS_Sandbox_sandboxads_int / Unknown'>sandboxads_int / Aspero_ADS_Sandbox_sandboxads_int / Unknown</td>
+<tr class='affiliate-row extra-row extra-tbl-adset'>
+<td class='sticky-col dim-label' title='sandboxads_int / Aspero_ADS_Sandbox_sandboxads_int / Unknown'>sandboxads_int / Aspero_ADS_Sandbox_sandboxads_int / Unknown <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="346">346</td>
 <td data-v="101">101</td>
 <td class='warn' data-v="29.2">29.2%</td>
@@ -8918,7 +8925,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='leukmobitq9_int / ASPERO_AOS_SANDBOX / Unknown'>leukmobitq9_int / ASPERO_AOS_SANDBOX / Unknown</td>
+<td class='sticky-col dim-label' title='leukmobitq9_int / ASPERO_AOS_SANDBOX / Unknown'>leukmobitq9_int / ASPERO_AOS_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="336">336</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -9023,8 +9030,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='sokendev_int / ASPERO / Unknown'>sokendev_int / ASPERO / Unknown</td>
+<tr class='affiliate-row extra-row extra-tbl-adset'>
+<td class='sticky-col dim-label' title='sokendev_int / ASPERO / Unknown'>sokendev_int / ASPERO / Unknown <span class="affiliate-badge">Affiliate</span></td>
 <td data-v="304">304</td>
 <td data-v="158">158</td>
 <td class='good' data-v="52.0">52.0%</td>
@@ -9077,7 +9084,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='recoverunc3_int / ASPERO_IOS_SANDBOX / Unknown'>recoverunc3_int / ASPERO_IOS_SANDBOX / Unknown</td>
+<td class='sticky-col dim-label' title='recoverunc3_int / ASPERO_IOS_SANDBOX / Unknown'>recoverunc3_int / ASPERO_IOS_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="269">269</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -9130,7 +9137,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='appleadbiup_int / ASPERO_IOS_SANDBOX / Unknown'>appleadbiup_int / ASPERO_IOS_SANDBOX / Unknown</td>
+<td class='sticky-col dim-label' title='appleadbiup_int / ASPERO_IOS_SANDBOX / Unknown'>appleadbiup_int / ASPERO_IOS_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="265">265</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -9183,7 +9190,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='bigporrs_int / ASPERO_AOS_SANDBOX / Unknown'>bigporrs_int / ASPERO_AOS_SANDBOX / Unknown</td>
+<td class='sticky-col dim-label' title='bigporrs_int / ASPERO_AOS_SANDBOX / Unknown'>bigporrs_int / ASPERO_AOS_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="263">263</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -9235,8 +9242,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='hqsxxwylt4ih_int / ASPERO_PL_hqsxxwylt_AOS / Unknown'>hqsxxwylt4ih_int / ASPERO_PL_hqsxxwylt_AOS / Unknown</td>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
+<td class='sticky-col dim-label' title='hqsxxwylt4ih_int / ASPERO_PL_hqsxxwylt_AOS / Unknown'>hqsxxwylt4ih_int / ASPERO_PL_hqsxxwylt_AOS / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="260">260</td>
 <td data-v="219">219</td>
 <td class='good' data-v="84.2">84.2%</td>
@@ -9341,8 +9348,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='nexaadcrapp_int / ASPERO_PL_nexaadcraft_AOS / Unknown'>nexaadcrapp_int / ASPERO_PL_nexaadcraft_AOS / Unknown</td>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
+<td class='sticky-col dim-label' title='nexaadcrapp_int / ASPERO_PL_nexaadcraft_AOS / Unknown'>nexaadcrapp_int / ASPERO_PL_nexaadcraft_AOS / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="256">256</td>
 <td data-v="213">213</td>
 <td class='good' data-v="83.2">83.2%</td>
@@ -9395,7 +9402,7 @@
 <td class='' data-v="-999">—</td>
 </tr>
 <tr class='bot-traffic extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='bigporrs_int / ASPERO_IOS_SANDBOX / Unknown'>bigporrs_int / ASPERO_IOS_SANDBOX / Unknown</td>
+<td class='sticky-col dim-label' title='bigporrs_int / ASPERO_IOS_SANDBOX / Unknown'>bigporrs_int / ASPERO_IOS_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="248">248</td>
 <td data-v="1">1</td>
 <td class='bad' data-v="0.4">0.4%</td>
@@ -9712,8 +9719,8 @@
 <td data-v="1">1</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='charitabl5o_int / Aspero_LG_May2026 / Unknown'>charitabl5o_int / Aspero_LG_May2026 / Unknown</td>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
+<td class='sticky-col dim-label' title='charitabl5o_int / Aspero_LG_May2026 / Unknown'>charitabl5o_int / Aspero_LG_May2026 / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="86">86</td>
 <td data-v="9">9</td>
 <td class='bad' data-v="10.5">10.5%</td>
@@ -9977,8 +9984,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='vfine_int / ASPERO_AOS_SANDBOX / Unknown'>vfine_int / ASPERO_AOS_SANDBOX / Unknown</td>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
+<td class='sticky-col dim-label' title='vfine_int / ASPERO_AOS_SANDBOX / Unknown'>vfine_int / ASPERO_AOS_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="43">43</td>
 <td data-v="9">9</td>
 <td class='warn' data-v="20.9">20.9%</td>
@@ -10030,8 +10037,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='partneron_int / ASPERO_AOS_SANDBOX / Unknown'>partneron_int / ASPERO_AOS_SANDBOX / Unknown</td>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
+<td class='sticky-col dim-label' title='partneron_int / ASPERO_AOS_SANDBOX / Unknown'>partneron_int / ASPERO_AOS_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="41">41</td>
 <td data-v="7">7</td>
 <td class='warn' data-v="17.1">17.1%</td>
@@ -10189,8 +10196,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='charitabl5o_int / ASPERO_AOS_SANDBOX / Unknown'>charitabl5o_int / ASPERO_AOS_SANDBOX / Unknown</td>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
+<td class='sticky-col dim-label' title='charitabl5o_int / ASPERO_AOS_SANDBOX / Unknown'>charitabl5o_int / ASPERO_AOS_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="28">28</td>
 <td data-v="0">0</td>
 <td class='bad' data-v="0.0">0.0%</td>
@@ -10242,8 +10249,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='attrimob_int / ASPERO_VENTES_AOS / Unknown'>attrimob_int / ASPERO_VENTES_AOS / Unknown</td>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
+<td class='sticky-col dim-label' title='attrimob_int / ASPERO_VENTES_AOS / Unknown'>attrimob_int / ASPERO_VENTES_AOS / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="20">20</td>
 <td data-v="9">9</td>
 <td class='good' data-v="45.0">45.0%</td>
@@ -10454,8 +10461,8 @@
 <td data-v="0">0</td>
 <td class='' data-v="-999">—</td>
 </tr>
-<tr class='extra-row extra-tbl-adset'>
-<td class='sticky-col dim-label' title='nexfigoadh7_int / ASPERO_SANDBOX / Unknown'>nexfigoadh7_int / ASPERO_SANDBOX / Unknown</td>
+<tr class='bot-traffic extra-row extra-tbl-adset'>
+<td class='sticky-col dim-label' title='nexfigoadh7_int / ASPERO_SANDBOX / Unknown'>nexfigoadh7_int / ASPERO_SANDBOX / Unknown <span class="bot-badge">Bot</span></td>
 <td data-v="12">12</td>
 <td data-v="1">1</td>
 <td class='' data-v="-999">—</td>
@@ -10772,7 +10779,7 @@
         btn.classList.remove('expanded');
         if (counter) counter.textContent = 'Showing top ' + DEFAULT_ROWS + ' of ' + total;
       } else {
-        rows.forEach(r => r.style.display = '');
+        rows.forEach(r => { r.style.display = 'table-row'; });
         btn.textContent = 'Show top ' + DEFAULT_ROWS + ' only';
         btn.classList.add('expanded');
         if (counter) counter.textContent = 'Showing all ' + total + ' rows';
@@ -10804,9 +10811,9 @@
         row.classList.remove('extra-row', 'extra-' + tableId);
         if (i >= DEFAULT_ROWS) {
           row.classList.add('extra-row', 'extra-' + tableId);
-          row.style.display = isExpanded ? '' : 'none';
+          row.style.display = isExpanded ? 'table-row' : 'none';
         } else {
-          row.style.display = '';
+          row.style.display = 'table-row';
         }
         tbody.appendChild(row);
       });
