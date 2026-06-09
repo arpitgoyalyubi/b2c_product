@@ -479,26 +479,6 @@ function sdoToggle(g){
 </div>
 
 
-  <!-- Slide 2: KYC — Violet -->
-  <div class="slide two-col" id="s2">
-    <div class="left-panel" style="background:linear-gradient(160deg,#5b21b6,#8b5cf6);">
-      <div class="slide-num">Slide 02</div>
-      <div class="slide-ttl">KYC Start → Completion</div>
-      <div class="slide-sub">% of signups through full KYC</div>
-      <div class="hero-num" id="h2-val">—</div>
-      <div class="hero-lbl">KYC start rate (last week)</div>
-      <div class="hero-badge flat" id="h2-delta">—</div>
-      <div class="stat-list">
-        <div class="stat-item"><span class="si-lbl">Start Rate Prior Wk</span><span class="si-val" id="s2-last">—</span></div>
-        <div class="stat-item"><span class="si-lbl">Start→Done Rate</span><span class="si-val" id="s2-done">—</span></div>
-        <div class="stat-item"><span class="si-lbl">7-Wk Avg Start</span><span class="si-val" id="s2-avg">—</span></div>
-      </div>
-    </div>
-    <div class="right-panel">
-      <div class="chart-area"><canvas id="chart-kyc"></canvas></div>
-      <div class="insight-row" id="ins-s2"></div>
-    </div>
-  </div>
 
 <!-- KRA V2 Impact Slide -->
   <div class="slide two-col" id="s-kra-v2-impact">
@@ -964,6 +944,157 @@ function sdoToggle(g){
         ins.innerHTML =
           '<div class="ins-chip" style="border-color:'+VIOLET+';color:'+VIOLET+';">Cohort start rate: '+this_s+'% &middot; prior wk: '+prev_s+'%</div>' +
           '<div class="ins-chip" style="border-color:'+ROSE+';color:'+ROSE+';">Cohort start→done: '+this_d+'% &middot; prior wk: '+prev_d+'% ⚠ most recent week still maturing</div>';
+      }
+    }
+    if (document.readyState === 'complete') { init(); }
+    else { window.addEventListener('load', init); }
+  })();
+  </script>
+
+  <!-- KYC Waterfall Slide -->
+  <div class="slide two-col" id="s-kyc-wf">
+    <div class="left-panel" style="background:linear-gradient(160deg,#5b21b6,#8b5cf6);">
+      <div class="slide-num">Slide 02b</div>
+      <div class="slide-ttl">KYC Completion Timing</div>
+      <div class="slide-sub">When KYC starters complete KYC · by start week</div>
+      <div class="hero-num">33.0%</div>
+      <div class="hero-lbl">Same-week done% (last cohort)</div>
+      <div class="hero-badge up">▲ 8.8pp WoW</div>
+      <div class="stat-list">
+        <div class="stat-item">
+          <span class="si-lbl">Prior cohort same-wk%</span>
+          <span class="si-val">24.2%</span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl">Oldest cohort to-date%</span>
+          <span class="si-val">28.0%</span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl">Oldest cohort pending%</span>
+          <span class="si-val">72.0%</span>
+        </div>
+      </div>
+    </div>
+    <div class="right-panel" style="padding:16px 20px 10px;">
+      <div style="margin-bottom:10px;">
+        <div style="font-size:.78rem;font-weight:700;color:#1e293b;">KYC Start &#8594; Done &#8212; Cohort Waterfall</div>
+        <div style="font-size:.62rem;color:#64748b;margin-top:3px;line-height:1.4;">% of each start week&#39;s KYC starters who completed KYC &nbsp;&#183;&nbsp; W0 = same week &nbsp;&#183;&nbsp; +W1/+W2/+W3 = cumulative over following weeks</div>
+      </div>
+      <div id="kyc-wf-table" class="wf-table"></div>
+      <div class="insight-row" id="ins-kyc-wf"></div>
+    </div>
+  </div>
+  <script>
+  (function() {
+    var LABELS       = ["20 Apr", "27 Apr", "4 May", "11 May", "18 May", "25 May", "1 Jun"];
+    var SIZES        = [954, 1167, 1337, 1455, 1852, 1382, 1463];
+    var CURVES       = [[23.3, 23.3, 23.3, 23.3, 28.0], [26.3, 26.3, 26.3, 26.3, 30.0], [23.0, 23.0, 23.0, 23.0, 28.5], [25.0, 25.0, 25.0, 28.9, 28.9], [15.7, 15.7, 15.7, 23.9, null], [24.2, 24.2, 31.3, null, null], [33.0, 33.0, null, null, null]];
+    var PARTIALS     = [[false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, true], [false, false, false, true, false], [false, false, true, false, false], [false, true, false, false, false]];
+    var PARTIAL_DAYS = 1;
+
+    // Violet palette: W0 darkest → W4 lightest
+    var SEG_COLORS         = ['#4c1d95', '#6d28d9', '#8b5cf6', '#a78bfa', '#c4b5fd'];
+    var SEG_COLORS_PARTIAL = ['#4c1d9566', '#6d28d966', '#8b5cf666', '#a78bfa66', '#c4b5fd66'];
+    var VIOLET = '#8b5cf6';
+
+    function init() {
+      var table = document.getElementById('kyc-wf-table');
+      if (!table) return;
+
+      var allVals  = CURVES.reduce(function(a, pts) {
+        return a.concat((pts || []).filter(function(v) { return v !== null; }));
+      }, []);
+      var scaleMax   = allVals.length ? Math.ceil(Math.max.apply(null, allVals) * 1.12 / 5) * 5 : 50;
+      var hasPartial = PARTIALS.some(function(row) { return (row || []).some(function(v) { return v; }); });
+
+      // Header
+      var hdr = document.createElement('div');
+      hdr.className = 'wf-hdr';
+      hdr.innerHTML = ['KYC Week', 'Starters', '', 'W0 (7d)', '+W1 (14d)', '+W2 (21d)', '+W3 (28d)', '+W4 (35d)']
+        .map(function(t) { return '<div class="wf-hc">' + t + '</div>'; }).join('');
+      table.appendChild(hdr);
+
+      // Rows — newest cohort first
+      var reversed = CURVES.slice().reverse();
+      reversed.forEach(function(pts, ri) {
+        var i          = CURVES.length - 1 - ri;
+        var vals       = pts || [];
+        var partialRow = PARTIALS[i] || [];
+        var starterCnt = SIZES[i];
+
+        var row = document.createElement('div');
+        row.className = 'wf-row';
+
+        var lblDiv = document.createElement('div');
+        lblDiv.className = 'wf-lbl';
+        lblDiv.textContent = LABELS[i] || ('Cohort ' + (i + 1));
+        row.appendChild(lblDiv);
+
+        var rttDiv = document.createElement('div');
+        rttDiv.className = 'wf-rtt';
+        rttDiv.textContent = starterCnt != null ? (+starterCnt).toLocaleString() : '—';
+        row.appendChild(rttDiv);
+
+        var track = document.createElement('div');
+        track.className = 'wf-track';
+        var prev = 0;
+        for (var e = 0; e < 5; e++) {
+          var cur = vals[e] != null ? vals[e] : null;
+          if (cur === null) break;
+          var inc = Math.max(0, cur - prev);
+          var seg = document.createElement('div');
+          seg.className = 'wf-seg';
+          seg.style.width      = (inc / scaleMax * 100).toFixed(1) + '%';
+          seg.style.background = partialRow[e] ? SEG_COLORS_PARTIAL[e] : SEG_COLORS[e];
+          if (e > 0) seg.style.borderLeft = '1px solid rgba(255,255,255,.4)';
+          if (partialRow[e]) seg.style.backgroundImage =
+            'repeating-linear-gradient(45deg,transparent,transparent 3px,rgba(255,255,255,.15) 3px,rgba(255,255,255,.15) 6px)';
+          track.appendChild(seg);
+          prev = cur;
+        }
+        row.appendChild(track);
+
+        for (var e2 = 0; e2 < 5; e2++) {
+          var v         = vals[e2] != null ? vals[e2] : null;
+          var isPartial = partialRow[e2] === true;
+          var div       = document.createElement('div');
+          div.className = 'wf-v ' + (v !== null ? 'ok' : 'na');
+          if (v !== null) {
+            div.textContent = v.toFixed(1) + '%' + (isPartial ? '*' : '');
+            div.style.color = SEG_COLORS[e2];
+            if (isPartial) div.style.opacity = '0.7';
+          } else {
+            div.textContent = '—';
+          }
+          row.appendChild(div);
+        }
+        table.appendChild(row);
+      });
+
+      if (hasPartial && PARTIAL_DAYS > 0) {
+        var note = document.createElement('div');
+        note.style.cssText = 'margin-top:8px;font-size:.58rem;color:#94a3b8;line-height:1.4;padding:0 2px;';
+        note.textContent = '* Partial week — Day ' + PARTIAL_DAYS + ' of 7 complete as of yesterday. '
+          + 'Number will grow as the week progresses and is not comparable to final values in other rows.';
+        table.appendChild(note);
+      }
+
+      // Insights — share of completions that happen same-week
+      var mature  = CURVES.slice(0, 4);
+      var avgSW   = mature.reduce(function(s, pts) { return s + (((pts || [])[0]) || 0); }, 0) / Math.max(mature.length, 1);
+      var avgFull = mature.reduce(function(s, pts) {
+        var last = (pts || []).slice().reverse().find(function(v) { return v !== null; }) || 0;
+        return s + last;
+      }, 0) / Math.max(mature.length, 1);
+      var swShare = avgFull > 0 ? Math.round(avgSW / avgFull * 100) : 0;
+
+      var ins = document.getElementById('ins-kyc-wf');
+      if (ins) {
+        ins.innerHTML =
+          '<div class="ins-chip" style="border-color:' + VIOLET + ';color:' + VIOLET + ';">' +
+          '~' + swShare + '% of KYC completions happen within the same week as KYC start</div>' +
+          '<div class="ins-chip" style="border-color:#94a3b8;color:#94a3b8;">' +
+          'Shorter lines = recent cohorts with less elapsed time &#8212; will mature rightward in future weeks</div>';
       }
     }
     if (document.readyState === 'complete') { init(); }
@@ -1578,21 +1709,7 @@ insights('ins-s1', [
   { color: AMBER, txt: `Conv% last wk: ${pct(D.kpi_signup_conv.this)} vs ${pct(D.kpi_signup_conv.last)} prior wk` },
 ]);
 
-// ── Slide 2: KYC ──────────────────────────────────────────────────────────────
-setHero('h2-val', 'h2-delta', pct(D.kpi_kyc_start_pct.this), +D.kpi_kyc_start_pct.delta.toFixed(1), 'pp');
-setEl('s2-last', pct(D.kpi_kyc_start_pct.last));
-setEl('s2-done', pct(D.kpi_kyc_start_to_done.this));   // start→done rate
-setEl('s2-avg',  pct(D.kpi_kyc_start_pct.avg));
-mkChart('chart-kyc', [
-  bar('KYC Starters',  D.kyc_starters, VIOLET),
-  bar('Demat Verified', D.kyc_done,    GREEN),
-  line('Start Rate%',   D.kyc_start_pct,        AMBER, 'y2'),
-  line('Start→Done%',  D.kyc_start_to_done_pct, ROSE,  'y2'),
-], Y2_PCT);
-insights('ins-s2', [
-  { color: VIOLET, txt: `Start rate: ${pct(D.kpi_kyc_start_pct.this)} · prior wk: ${pct(D.kpi_kyc_start_pct.last)}` },
-  { color: ROSE,   txt: `Start→Done: ${pct(D.kpi_kyc_start_to_done.this)} · prior wk: ${pct(D.kpi_kyc_start_to_done.last)}` },
-]);
+
 
 // ── Slide 3: RTT → First Trade ────────────────────────────────────────────────
 // Hero = investors (absolute business outcome). WoW on investor count.
