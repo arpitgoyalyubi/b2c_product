@@ -1622,7 +1622,7 @@ var s1Datasets = [
   line('OTP→PIN Conv%', D.signup_conv, AMBER, 'y2'),
 ];
 if (D.has_bot_data_s1) {
-  s1Datasets.push(Object.assign(line('Signups (excl. bots)', D.signups_clean, ORANGE), { borderDash: [5,3], borderWidth: 1.5 }));
+  s1Datasets.push(Object.assign(line('Signups (excl. bots)', D.signups_clean, BLUE), { borderDash: [5,3], borderWidth: 1.5 }));
   setEl('s1-bot-val', num(D.signups_clean[D.signups_clean.length - 1]));
   var _s1br = document.getElementById('s1-bot-row');
   if (_s1br) _s1br.style.display = '';
