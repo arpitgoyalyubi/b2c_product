@@ -1693,6 +1693,206 @@ function sdoToggle(g){
   </div>
 
 
+  <!-- Slide Attribution: Payer Attribution — Teal -->
+  <div class="slide two-col" id="s-attribution">
+    <div class="left-panel" style="background:linear-gradient(160deg,#042f2e,#0d9488);">
+      <div class="slide-num">Slide 06b</div>
+      <div class="slide-ttl">Payer Attribution</div>
+      <div class="slide-sub">Last 30 days · India · ₹16.33 Cr GTV</div>
+      <div class="hero-num">40%</div>
+      <div class="hero-lbl">GTV attribution unknown (mobile only)</div>
+      <div class="hero-badge flat" style="background:rgba(255,255,255,.13);color:#fff;">₹4.54 Cr in dark channels → fixable</div>
+      <div class="stat-list" style="margin-top:18px;">
+        <div class="stat-item"><span class="si-lbl">Google UAC</span><span class="si-val">₹4.62 Cr · ~258 users</span></div>
+        <div class="stat-item"><span class="si-lbl">Web Organic ATV</span><span class="si-val">₹5.64 L (4× avg)</span></div>
+        <div class="stat-item"><span class="si-lbl">⚠ EMPTY bug (Branch)</span><span class="si-val">₹1.15 Cr · fixable</span></div>
+        <div class="stat-item"><span class="si-lbl">Total payers (India)</span><span class="si-val">~885 · 1,616 orders</span></div>
+      </div>
+    </div>
+    <div class="right-panel" style="padding:12px 14px 10px;overflow-y:auto;display:flex;flex-direction:column;gap:0;">
+
+      <style>
+        #s-attribution .attr-tabs { display:flex; gap:6px; margin-bottom:10px; }
+        #s-attribution .attr-tab {
+          padding:4px 12px; border-radius:20px; border:1.5px solid #e2e8f0;
+          font-size:.68rem; font-weight:600; cursor:pointer; color:#64748b;
+          background:#f8fafc; transition:all .15s;
+        }
+        #s-attribution .attr-tab.active { background:#0d9488; color:#fff; border-color:#0d9488; }
+        #s-attribution .attr-legend { display:flex; flex-direction:column; gap:5px; margin-top:4px; }
+        #s-attribution .attr-leg-row {
+          display:flex; align-items:center; gap:8px;
+          padding:5px 8px; border-radius:6px; background:#f8fafc;
+        }
+        #s-attribution .attr-leg-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+        #s-attribution .attr-leg-label { font-size:.67rem; color:#374151; flex:1; }
+        #s-attribution .attr-leg-gtv { font-size:.72rem; font-weight:700; color:#111827; }
+        #s-attribution .attr-leg-pct { font-size:.62rem; color:#6b7280; min-width:32px; text-align:right; }
+        #s-attribution .attr-leg-bar-wrap { flex:1; height:5px; background:#e5e7eb; border-radius:3px; max-width:80px; }
+        #s-attribution .attr-leg-bar { height:5px; border-radius:3px; }
+        #s-attribution .attr-tbl { width:100%; border-collapse:collapse; font-size:.62rem; }
+        #s-attribution .attr-tbl th {
+          text-align:left; padding:3px 6px; color:#6b7280; font-weight:600;
+          border-bottom:1.5px solid #e2e8f0; font-size:.6rem; text-transform:uppercase; letter-spacing:.04em;
+        }
+        #s-attribution .attr-tbl td { padding:3px 6px; border-bottom:1px solid #f1f5f9; color:#374151; }
+        #s-attribution .attr-tbl tr:last-child td { border-bottom:none; }
+        #s-attribution .attr-cat-pill {
+          display:inline-block; padding:1px 6px; border-radius:10px;
+          font-size:.55rem; font-weight:600; letter-spacing:.02em;
+        }
+        #s-attribution .pill-paid   { background:#dbeafe; color:#1d4ed8; }
+        #s-attribution .pill-org    { background:#d1fae5; color:#065f46; }
+        #s-attribution .pill-web    { background:#e0f2fe; color:#0369a1; }
+        #s-attribution .pill-bug    { background:#fef3c7; color:#92400e; }
+        #s-attribution .pill-unk    { background:#f1f5f9; color:#475569; }
+        #s-attribution .attr-action {
+          display:flex; align-items:flex-start; gap:8px; padding:5px 8px;
+          border-radius:6px; font-size:.64rem; color:#374151; border-left:3px solid;
+        }
+        #s-attribution .attr-action .act-tag {
+          font-size:.55rem; font-weight:700; padding:2px 6px; border-radius:10px; white-space:nowrap; flex-shrink:0;
+        }
+      </style>
+
+      <!-- Tabs -->
+      <div class="attr-tabs">
+        <button class="attr-tab active" id="attr-tab-mix"  onclick="attrShowTab('mix')">Attribution Mix</button>
+        <button class="attr-tab"        id="attr-tab-tbl"  onclick="attrShowTab('tbl')">All Channels</button>
+        <button class="attr-tab"        id="attr-tab-acts" onclick="attrShowTab('acts')">Action Items</button>
+      </div>
+
+      <!-- View: Attribution Mix (donut + legend) -->
+      <div id="attr-view-mix" style="display:flex;flex-direction:column;flex:1;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:120px;height:120px;flex-shrink:0;">
+            <canvas id="chart-attr-donut" style="width:120px;height:120px;"></canvas>
+          </div>
+          <div class="attr-legend" style="flex:1;">
+            <div class="attr-leg-row">
+              <div class="attr-leg-dot" style="background:#3b82f6;"></div>
+              <div class="attr-leg-label">Paid Performance</div>
+              <div style="width:80px;"><div class="attr-leg-bar-wrap"><div class="attr-leg-bar" style="background:#3b82f6;width:35%;"></div></div></div>
+              <div class="attr-leg-gtv">₹5.74 Cr</div>
+              <div class="attr-leg-pct">35%</div>
+            </div>
+            <div class="attr-leg-row">
+              <div class="attr-leg-dot" style="background:#10b981;"></div>
+              <div class="attr-leg-label">Organic + Engagement</div>
+              <div style="width:80px;"><div class="attr-leg-bar-wrap"><div class="attr-leg-bar" style="background:#10b981;width:30%;"></div></div></div>
+              <div class="attr-leg-gtv">₹4.90 Cr</div>
+              <div class="attr-leg-pct">30%</div>
+            </div>
+            <div class="attr-leg-row" style="background:#fef9f0;">
+              <div class="attr-leg-dot" style="background:#f59e0b;"></div>
+              <div class="attr-leg-label">⚠ Tracking bug (Branch)</div>
+              <div style="width:80px;"><div class="attr-leg-bar-wrap"><div class="attr-leg-bar" style="background:#f59e0b;width:7%;"></div></div></div>
+              <div class="attr-leg-gtv">₹1.15 Cr</div>
+              <div class="attr-leg-pct">7%</div>
+            </div>
+            <div class="attr-leg-row" style="background:#f8f8fa;">
+              <div class="attr-leg-dot" style="background:#94a3b8;"></div>
+              <div class="attr-leg-label">❓ Unknown mobile (AF sync)</div>
+              <div style="width:80px;"><div class="attr-leg-bar-wrap"><div class="attr-leg-bar" style="background:#94a3b8;width:28%;"></div></div></div>
+              <div class="attr-leg-gtv">₹4.54 Cr</div>
+              <div class="attr-leg-pct">28%</div>
+            </div>
+          </div>
+        </div>
+        <!-- Key callouts -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;">
+          <div style="background:#f0fdf4;border-radius:8px;padding:8px 10px;">
+            <div style="font-size:.6rem;color:#065f46;font-weight:600;text-transform:uppercase;letter-spacing:.04em;">Web Organic</div>
+            <div style="font-size:1rem;font-weight:700;color:#064e3b;">₹5.64 L</div>
+            <div style="font-size:.6rem;color:#6b7280;">ATV · 4× overall avg · ~50 users</div>
+          </div>
+          <div style="background:#eff6ff;border-radius:8px;padding:8px 10px;">
+            <div style="font-size:.6rem;color:#1d4ed8;font-weight:600;text-transform:uppercase;letter-spacing:.04em;">Google UAC</div>
+            <div style="font-size:1rem;font-weight:700;color:#1e3a8a;">₹4.62 Cr</div>
+            <div style="font-size:.6rem;color:#6b7280;">Largest known channel · ~258 users</div>
+          </div>
+          <div style="background:#fef9f0;border-radius:8px;padding:8px 10px;">
+            <div style="font-size:.6rem;color:#92400e;font-weight:600;text-transform:uppercase;letter-spacing:.04em;">Branch Bug</div>
+            <div style="font-size:1rem;font-weight:700;color:#78350f;">₹1.15 Cr</div>
+            <div style="font-size:.6rem;color:#6b7280;">UTM = EMPTY · all 4 params broken</div>
+          </div>
+          <div style="background:#f8f9fa;border-radius:8px;padding:8px 10px;">
+            <div style="font-size:.6rem;color:#475569;font-weight:600;text-transform:uppercase;letter-spacing:.04em;">Affiliates</div>
+            <div style="font-size:1rem;font-weight:700;color:#1e293b;">1.8×</div>
+            <div style="font-size:.6rem;color:#6b7280;">Ord/user · highest repeat rate</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- View: All Channels table -->
+      <div id="attr-view-tbl" style="display:none;overflow-y:auto;flex:1;">
+        <table class="attr-tbl">
+          <thead>
+            <tr>
+              <th>Channel</th>
+              <th style="text-align:right;">Users</th>
+              <th style="text-align:right;">GTV</th>
+              <th style="text-align:right;">ATV</th>
+              <th style="text-align:right;">Ord/U</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="5" style="padding:4px 6px;font-size:.58rem;font-weight:700;color:#6b7280;background:#f8fafc;text-transform:uppercase;letter-spacing:.05em;">Paid Mobile — AppsFlyer attributed</td></tr>
+            <tr><td>Google UAC <span class="attr-cat-pill pill-paid">Paid</span></td><td style="text-align:right;">~258</td><td style="text-align:right;font-weight:600;">₹4.62 Cr</td><td style="text-align:right;">₹1.41 L</td><td style="text-align:right;">1.5</td></tr>
+            <tr><td>Affiliate networks <span class="attr-cat-pill pill-paid">Paid</span></td><td style="text-align:right;">~39</td><td style="text-align:right;">₹0.66 Cr</td><td style="text-align:right;">₹1.31 L</td><td style="text-align:right;font-weight:600;">1.8</td></tr>
+            <tr><td>Brand partnerships <span class="attr-cat-pill pill-paid">Paid</span></td><td style="text-align:right;">~17</td><td style="text-align:right;">₹0.08 Cr</td><td style="text-align:right;">₹0.38 L</td><td style="text-align:right;">1.3</td></tr>
+            <tr><td>Employee referral <span class="attr-cat-pill pill-org">Referral</span></td><td style="text-align:right;">~68</td><td style="text-align:right;">₹0.11 Cr</td><td style="text-align:right;">₹0.13 L</td><td style="text-align:right;">1.0</td></tr>
+            <tr><td>Mobile app share / viral <span class="attr-cat-pill pill-org">Viral</span></td><td style="text-align:right;">~3</td><td style="text-align:right;">₹0.02 Cr</td><td style="text-align:right;">₹0.56 L</td><td style="text-align:right;">0.5</td></tr>
+            <tr><td colspan="5" style="padding:4px 6px;font-size:.58rem;font-weight:700;color:#6b7280;background:#f8fafc;text-transform:uppercase;letter-spacing:.05em;">Organic — AppsFlyer attributed</td></tr>
+            <tr><td>Organic installs (AppsFlyer) <span class="attr-cat-pill pill-org">Organic</span></td><td style="text-align:right;">~57</td><td style="text-align:right;">₹1.08 Cr</td><td style="text-align:right;">₹1.49 L</td><td style="text-align:right;">1.3</td></tr>
+            <tr><td colspan="5" style="padding:4px 6px;font-size:.58rem;font-weight:700;color:#6b7280;background:#f8fafc;text-transform:uppercase;letter-spacing:.05em;">Paid Web / Cross-device — UTM set</td></tr>
+            <tr><td>Google Ads web / cross-device <span class="attr-cat-pill pill-web">Web</span></td><td style="text-align:right;">~11</td><td style="text-align:right;">₹0.19 Cr</td><td style="text-align:right;">₹1.33 L</td><td style="text-align:right;font-weight:600;">3.6</td></tr>
+            <tr><td>Apple / ASA (Search UTM) <span class="attr-cat-pill pill-web">Web</span></td><td style="text-align:right;">~11</td><td style="text-align:right;">₹0.19 Cr</td><td style="text-align:right;">₹1.33 L</td><td style="text-align:right;">0.9</td></tr>
+            <tr><td>WhatsApp campaign <span class="attr-cat-pill pill-web">Web</span></td><td style="text-align:right;">~2</td><td style="text-align:right;">₹0.03 Cr</td><td style="text-align:right;">₹1.51 L</td><td style="text-align:right;">1.0</td></tr>
+            <tr><td>Email campaign <span class="attr-cat-pill pill-web">Web</span></td><td style="text-align:right;">~2</td><td style="text-align:right;">₹0.09 Cr</td><td style="text-align:right;font-weight:600;">₹4.31 L</td><td style="text-align:right;font-weight:600;">5.5</td></tr>
+            <tr><td>Other UTM <span class="attr-cat-pill pill-web">Web</span></td><td style="text-align:right;">~3</td><td style="text-align:right;">₹0.02 Cr</td><td style="text-align:right;">₹0.53 L</td><td style="text-align:right;">0.5</td></tr>
+            <tr><td colspan="5" style="padding:4px 6px;font-size:.58rem;font-weight:700;color:#6b7280;background:#f8fafc;text-transform:uppercase;letter-spacing:.05em;">Organic + Direct — Confirmed not paid</td></tr>
+            <tr><td>Organic / Direct — Web <span class="attr-cat-pill pill-org">Organic</span></td><td style="text-align:right;">~50</td><td style="text-align:right;font-weight:600;">₹3.55 Cr</td><td style="text-align:right;font-weight:600;color:#059669;">₹5.64 L</td><td style="text-align:right;">1.3</td></tr>
+            <tr><td colspan="5" style="padding:4px 6px;font-size:.58rem;font-weight:700;color:#6b7280;background:#fefce8;text-transform:uppercase;letter-spacing:.05em;">⚠ Tracking Bug</td></tr>
+            <tr><td>EMPTY bug (Branch link) <span class="attr-cat-pill pill-bug">Bug</span></td><td style="text-align:right;">~33</td><td style="text-align:right;">₹1.15 Cr</td><td style="text-align:right;">₹2.75 L</td><td style="text-align:right;">1.0</td></tr>
+            <tr><td colspan="5" style="padding:4px 6px;font-size:.58rem;font-weight:700;color:#6b7280;background:#f1f5f9;text-transform:uppercase;letter-spacing:.05em;">❓ Attribution Unknown — Mobile only</td></tr>
+            <tr><td>Unknown — Android (AF sync failed) <span class="attr-cat-pill pill-unk">Unknown</span></td><td style="text-align:right;">~267</td><td style="text-align:right;">₹3.13 Cr</td><td style="text-align:right;">₹0.92 L</td><td style="text-align:right;">1.3</td></tr>
+            <tr><td>Unknown — iOS (AF sync / ATT) <span class="attr-cat-pill pill-unk">Unknown</span></td><td style="text-align:right;">~87</td><td style="text-align:right;">₹1.41 Cr</td><td style="text-align:right;">₹1.28 L</td><td style="text-align:right;">1.4</td></tr>
+            <tr style="font-weight:700;background:#f8fafc;">
+              <td>TOTAL</td><td style="text-align:right;">~885</td><td style="text-align:right;">₹16.33 Cr</td><td style="text-align:right;">₹1.45 L</td><td style="text-align:right;">1.4</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- View: Action Items -->
+      <div id="attr-view-acts" style="display:none;flex-direction:column;gap:7px;flex:1;">
+        <div class="attr-action" style="border-color:#ef4444;background:#fef2f2;">
+          <span class="act-tag" style="background:#fee2e2;color:#b91c1c;">P0 · Engineering</span>
+          <span><b>Fix AppsFlyer → Amplitude attribution sync.</b> ~50% of mobile installs never get AF user properties set in Amplitude. Fixing this recovers attribution for the <b>449 unknown mobile payers (₹4.54 Cr)</b> — single largest data gap.</span>
+        </div>
+        <div class="attr-action" style="border-color:#f59e0b;background:#fffbeb;">
+          <span class="act-tag" style="background:#fef3c7;color:#b45309;">P0 · Marketing</span>
+          <span><b>Fix broken Branch link UTM template.</b> All 4 UTM params arrive as literal "EMPTY" — Branch variable substitution not configured. Affects <b>42 payers (₹1.15 Cr)</b> across Android/iOS/Web.</span>
+        </div>
+        <div class="attr-action" style="border-color:#3b82f6;background:#eff6ff;">
+          <span class="act-tag" style="background:#dbeafe;color:#1d4ed8;">P1 · Engineering</span>
+          <span><b>Add <code>platform</code> event property to every Amplitude event.</b> Already a user property — needs to be on events too. Enables platform-level funnel splits across all existing charts.</span>
+        </div>
+        <div class="attr-action" style="border-color:#10b981;background:#f0fdf4;">
+          <span class="act-tag" style="background:#d1fae5;color:#065f46;">P1 · Engineering</span>
+          <span><b>Implement <code>initial_referrer_domain</code> (setOnce) on web.</b> Splits <b>~50 web organic/direct payers (₹3.55 Cr, ₹5.64 L ATV)</b> into organic search vs direct. These are your highest-ATV users.</span>
+        </div>
+        <div class="attr-action" style="border-color:#8b5cf6;background:#f5f3ff;">
+          <span class="act-tag" style="background:#ede9fe;color:#6d28d9;">P2 · Analytics</span>
+          <span><b>Mark QA / test accounts as "Test Users" in Amplitude settings.</b> Fixes ~240-user discrepancy between API and dashboard counts.</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
   <!-- Slide 7: GTV by Issuer — Indigo -->
   <div class="slide two-col" id="s7">
     <div class="left-panel" style="background:linear-gradient(160deg,#312e81,#6366f1);">
@@ -2437,6 +2637,51 @@ insights('ins-s5', [
     return { color: INDIGO, txt: `${x.name}: ₹${x.gtv_this}cr this wk vs ₹${x.gtv_last}cr prior (${sgn}${x.wow_pp}pp share WoW)` };
   });
   insights('ins-s6', ins);
+})();
+
+// ── Slide 6b: Payer Attribution ────────────────────────────────────────────────
+window.attrShowTab = function(tab) {
+  var displays = { mix: 'flex', tbl: 'block', acts: 'flex' };
+  ['mix','tbl','acts'].forEach(function(t) {
+    var view = document.getElementById('attr-view-' + t);
+    var btn  = document.getElementById('attr-tab-' + t);
+    if (view) view.style.display = (t === tab) ? (displays[t] || 'block') : 'none';
+    if (btn)  btn.classList.toggle('active', t === tab);
+  });
+};
+
+(function() {
+  var canvas = document.getElementById('chart-attr-donut');
+  if (!canvas || !window.Chart) return;
+  new Chart(canvas, {
+    type: 'doughnut',
+    data: {
+      labels: ['Paid Performance', 'Organic + Engagement', 'Tracking Bug', 'Unknown Mobile'],
+      datasets: [{
+        data: [5.74, 4.90, 1.15, 4.54],
+        backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#94a3b8'],
+        borderWidth: 2,
+        borderColor: '#ffffff',
+        hoverOffset: 5,
+      }]
+    },
+    options: {
+      responsive: false,
+      cutout: '68%',
+      animation: { duration: 600 },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              var pct = Math.round(ctx.parsed / 16.33 * 100);
+              return ' \u20b9' + ctx.parsed.toFixed(2) + ' Cr (' + pct + '%)';
+            }
+          }
+        }
+      }
+    }
+  });
 })();
 
 // ── Slide 8: SEO Visibility — Bond Detail + Marketing Site/Blog ───────────────
