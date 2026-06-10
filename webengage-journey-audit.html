@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WebEngage Journey Audit — Aspero | June 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --red:    #EF4444; --red-light: #FEF2F2; --red-border: #FECACA;
+    --amber:  #F59E0B; --amber-light: #FFFBEB; --amber-border: #FDE68A;
+    --green:  #10B981; --green-light: #F0FDF4; --green-border: #A7F3D0;
+    --blue:   #3B82F6; --blue-light: #EFF6FF; --blue-border: #BFDBFE;
+    --indigo: #6366F1;
+    --gray-50: #F9FAFB; --gray-100: #F3F4F6; --gray-200: #E5E7EB;
+    --gray-400: #9CA3AF; --gray-600: #4B5563; --gray-800: #1F2937; --gray-900: #111827;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--gray-50); color: var(--gray-800); font-size: 14px; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: #fff; border-bottom: 1px solid var(--gray-200);
+    padding: 0 24px; display: flex; align-items: center; gap: 0; height: 52px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  }
+  nav .logo { font-weight: 700; font-size: 15px; color: var(--gray-900); margin-right: 32px; white-space: nowrap; }
+  nav .logo span { color: var(--indigo); }
+  nav a { font-size: 13px; color: var(--gray-600); text-decoration: none; padding: 0 12px; height: 52px; display: flex; align-items: center; border-bottom: 2px solid transparent; white-space: nowrap; }
+  nav a:hover { color: var(--indigo); }
+  nav a.active { color: var(--indigo); border-bottom-color: var(--indigo); font-weight: 600; }
+  .nav-right { margin-left: auto; font-size: 12px; color: var(--gray-400); white-space: nowrap; }
+
+  /* ── LAYOUT ── */
+  .page { max-width: 1200px; margin: 0 auto; padding: 32px 24px 80px; }
+  h1 { font-size: 24px; font-weight: 700; color: var(--gray-900); }
+  h2 { font-size: 18px; font-weight: 700; color: var(--gray-900); margin-bottom: 16px; }
+  h3 { font-size: 15px; font-weight: 700; color: var(--gray-900); }
+  p  { color: var(--gray-600); line-height: 1.6; }
+
+  .subtitle { font-size: 14px; color: var(--gray-400); margin-top: 4px; }
+  .section { margin-bottom: 48px; scroll-margin-top: 68px; }
+
+  /* ── HERO STRIP ── */
+  .hero { background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4338CA 100%); border-radius: 16px; padding: 32px 36px; color: #fff; margin-bottom: 40px; }
+  .hero h1 { color: #fff; font-size: 26px; }
+  .hero .sub { color: rgba(255,255,255,.65); font-size: 14px; margin-top: 6px; }
+  .hero-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 28px; }
+  .hero-tile { background: rgba(255,255,255,.1); border-radius: 10px; padding: 16px 20px; }
+  .hero-tile .val { font-size: 28px; font-weight: 700; color: #fff; }
+  .hero-tile .lbl { font-size: 12px; color: rgba(255,255,255,.6); margin-top: 4px; }
+  .hero-tile .badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; margin-top: 6px; display: inline-block; }
+  .badge-red    { background: rgba(239,68,68,.25);   color: #FCA5A5; }
+  .badge-amber  { background: rgba(245,158,11,.25);  color: #FCD34D; }
+  .badge-green  { background: rgba(16,185,129,.25);  color: #6EE7B7; }
+
+  /* ── KPI GRID ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; margin-bottom: 32px; }
+  .kpi { background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; padding: 16px 18px; }
+  .kpi .val { font-size: 22px; font-weight: 700; color: var(--gray-900); }
+  .kpi .lbl { font-size: 12px; color: var(--gray-400); margin-top: 3px; }
+
+  /* ── JOURNEY CARDS ── */
+  .journey-grid { display: flex; flex-direction: column; gap: 24px; }
+  .jcard { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; }
+  .jcard-header { padding: 18px 22px 16px; border-bottom: 1px solid var(--gray-100); display: flex; align-items: flex-start; gap: 14px; cursor: pointer; user-select: none; }
+  .jcard-header:hover { background: var(--gray-50); }
+  .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+  .dot-red    { background: var(--red); box-shadow: 0 0 0 3px var(--red-light); }
+  .dot-amber  { background: var(--amber); box-shadow: 0 0 0 3px var(--amber-light); }
+  .dot-green  { background: var(--green); box-shadow: 0 0 0 3px var(--green-light); }
+  .jcard-title { flex: 1; }
+  .jcard-title h3 { font-size: 15px; }
+  .jcard-title .meta { font-size: 12px; color: var(--gray-400); margin-top: 3px; }
+  .jcard-metrics { display: flex; gap: 24px; align-items: center; flex-shrink: 0; }
+  .metric-pill { text-align: right; }
+  .metric-pill .mval { font-size: 17px; font-weight: 700; color: var(--gray-900); }
+  .metric-pill .mlbl { font-size: 11px; color: var(--gray-400); }
+  .cvr-bad  .mval { color: var(--red); }
+  .cvr-warn .mval { color: var(--amber); }
+  .cvr-good .mval { color: var(--green); }
+  .chevron { color: var(--gray-400); font-size: 18px; margin-left: 8px; transition: transform .2s; }
+  .jcard.open .chevron { transform: rotate(180deg); }
+
+  .jcard-body { display: none; padding: 22px; border-top: 1px solid var(--gray-100); }
+  .jcard.open .jcard-body { display: block; }
+
+  /* ── BODY GRID ── */
+  .body-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .body-col h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--gray-400); margin-bottom: 10px; }
+
+  /* ── FLOW BAR ── */
+  .flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; margin-bottom: 18px; }
+  .flow-node { background: var(--blue-light); border: 1px solid var(--blue-border); border-radius: 6px; padding: 5px 10px; font-size: 12px; font-weight: 600; color: var(--blue); white-space: nowrap; }
+  .flow-node.wrong { background: var(--red-light); border-color: var(--red-border); color: var(--red); }
+  .flow-node.ok    { background: var(--green-light); border-color: var(--green-border); color: var(--green); }
+  .flow-arrow { font-size: 14px; color: var(--gray-400); padding: 0 6px; }
+
+  /* ── CHANNEL TABLE ── */
+  .ch-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .ch-table th { text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--gray-400); padding: 0 10px 8px; border-bottom: 2px solid var(--gray-100); }
+  .ch-table td { padding: 8px 10px; border-bottom: 1px solid var(--gray-100); }
+  .ch-table tr:last-child td { border-bottom: none; }
+  .ch-icon { font-size: 16px; margin-right: 5px; }
+
+  /* ── BAR ── */
+  .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .bar-label { font-size: 12px; color: var(--gray-600); width: 130px; flex-shrink: 0; }
+  .bar-track { flex: 1; background: var(--gray-100); border-radius: 4px; height: 8px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; }
+  .bar-val { font-size: 12px; font-weight: 600; color: var(--gray-700); width: 45px; text-align: right; }
+
+  /* ── VERDICT CHIPS ── */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .chip { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+  .chip-red    { background: var(--red-light);   color: var(--red);   border: 1px solid var(--red-border); }
+  .chip-amber  { background: var(--amber-light);  color: #92400E;      border: 1px solid var(--amber-border); }
+  .chip-green  { background: var(--green-light);  color: #065F46;      border: 1px solid var(--green-border); }
+  .chip-blue   { background: var(--blue-light);   color: #1D4ED8;      border: 1px solid var(--blue-border); }
+
+  /* ── FIX ITEMS ── */
+  .fix-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .fix-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 8px; background: var(--gray-50); border: 1px solid var(--gray-200); }
+  .fix-pri { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 10px; flex-shrink: 0; margin-top: 1px; }
+  .p0 { background: var(--red-light); color: var(--red); border: 1px solid var(--red-border); }
+  .p1 { background: var(--amber-light); color: #92400E; border: 1px solid var(--amber-border); }
+  .p2 { background: var(--blue-light); color: #1D4ED8; border: 1px solid var(--blue-border); }
+  .fix-text { font-size: 13px; color: var(--gray-700); line-height: 1.5; }
+  .fix-text code { background: var(--gray-100); padding: 1px 5px; border-radius: 4px; font-family: 'SF Mono', monospace; font-size: 11px; color: var(--indigo); }
+
+  /* ── EVENT TAG ── */
+  .ev { display: inline-flex; align-items: center; gap: 5px; }
+  .ev code { background: var(--gray-100); padding: 2px 7px; border-radius: 5px; font-family: 'SF Mono', monospace; font-size: 11px; color: var(--indigo); }
+  .ev .arrow { color: var(--gray-400); font-size: 13px; }
+
+  /* ── COMPARE TABLE ── */
+  .cmp { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+  .cmp th { background: var(--gray-50); padding: 8px 12px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--gray-400); border: 1px solid var(--gray-200); }
+  .cmp td { padding: 9px 12px; border: 1px solid var(--gray-200); vertical-align: top; line-height: 1.5; }
+  .cmp tr.changed td:nth-child(3) { background: #FFF7ED; }
+  .cmp tr.broken  td:nth-child(2) { background: var(--red-light); }
+
+  /* ── SYSTEM ISSUES ── */
+  .issue-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; padding: 20px 22px; margin-bottom: 16px; }
+  .issue-card h3 { margin-bottom: 10px; }
+  .issue-card p  { font-size: 13px; margin-bottom: 12px; }
+
+  /* ── MISSING JOURNEYS ── */
+  .missing-row { display: grid; grid-template-columns: 1.5fr 1fr 1fr 2fr; gap: 12px; padding: 12px 14px; border-radius: 8px; border: 1px solid var(--gray-200); background: #fff; margin-bottom: 8px; align-items: center; font-size: 13px; }
+  .missing-row.head { background: var(--gray-50); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--gray-400); }
+
+  /* ── PRIORITY TABLE ── */
+  .pri-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .pri-table th { background: var(--gray-50); padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--gray-400); border-bottom: 2px solid var(--gray-200); }
+  .pri-table td { padding: 11px 14px; border-bottom: 1px solid var(--gray-100); vertical-align: top; line-height: 1.5; }
+  .pri-table tr:last-child td { border-bottom: none; }
+  .pri-table tr:hover td { background: var(--gray-50); }
+
+  .tag { font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+  .tag-journey { background: #EDE9FE; color: #5B21B6; }
+  .tag-event   { background: #E0F2FE; color: #0369A1; }
+  .tag-channel { background: #FCE7F3; color: #9D174D; }
+  .tag-new     { background: var(--green-light); color: #065F46; }
+
+  footer { text-align: center; padding: 24px; color: var(--gray-400); font-size: 12px; }
+
+  @media (max-width: 768px) {
+    .hero-grid { grid-template-columns: 1fr 1fr; }
+    .body-grid  { grid-template-columns: 1fr; }
+    .jcard-metrics { display: none; }
+    nav a { display: none; }
+    .missing-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Aspero <span>PMM</span></div>
+  <a href="#overview" class="active">Overview</a>
+  <a href="#journeys">Journeys</a>
+  <a href="#missing">Missing</a>
+  <a href="#system">System Issues</a>
+  <a href="#priorities">Fix List</a>
+  <div class="nav-right">30d: May 11 – Jun 10 2026 &nbsp;·&nbsp; 10 journeys live</div>
+</nav>
+
+<div class="page">
+
+  <!-- ── HERO ── -->
+  <div class="hero">
+    <h1>WebEngage Journey Audit</h1>
+    <div class="sub">Full-funnel coverage review · Signup → KYC → First Investment · June 10, 2026</div>
+    <div class="hero-grid">
+      <div class="hero-tile">
+        <div class="val">2 of 8</div>
+        <div class="lbl">KYC journeys critically broken</div>
+        <div class="badge badge-red">🔴 Wrong trigger events</div>
+      </div>
+      <div class="hero-tile">
+        <div class="val">11,360</div>
+        <div class="lbl">Wasted sends/month (Selfie)</div>
+        <div class="badge badge-red">0 conversions in 30d</div>
+      </div>
+      <div class="hero-tile">
+        <div class="val">~2,100</div>
+        <div class="lbl">Trade-ready users missed/month</div>
+        <div class="badge badge-amber">RTT trigger unreliable</div>
+      </div>
+      <div class="hero-tile">
+        <div class="val">70%</div>
+        <div class="lbl">Signups never start KYC</div>
+        <div class="badge badge-amber">No dedicated journey</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OVERVIEW KPIs ── -->
+  <div class="section" id="overview">
+    <h2>30-Day Send Performance — All Journeys</h2>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="val">240,197</div><div class="lbl">Total sends (30d)</div></div>
+      <div class="kpi"><div class="val">2,843</div><div class="lbl">Total conversions</div></div>
+      <div class="kpi"><div class="val">1.2%</div><div class="lbl">Blended CVR</div></div>
+      <div class="kpi"><div class="val">11,360</div><div class="lbl">Wasted sends (Selfie)</div></div>
+      <div class="kpi"><div class="val">91–96%</div><div class="lbl">WA fail rate (KYC journeys)</div></div>
+      <div class="kpi"><div class="val">18.3%</div><div class="lbl">Best CVR (Profile Details)</div></div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:20px 22px;">
+      <h3 style="margin-bottom:16px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-400)">CVR by Journey — 30 days</h3>
+      <canvas id="cvrChart" height="80"></canvas>
+    </div>
+  </div>
+
+  <!-- ── JOURNEYS ── -->
+  <div class="section" id="journeys">
+    <h2>Journey-by-Journey Analysis</h2>
+    <div class="journey-grid">
+
+      <!-- ─ 1. ADDRESS VERIFIED ─ -->
+      <div class="jcard open" id="j-address">
+        <div class="jcard-header" onclick="toggle('j-address')">
+          <div class="status-dot dot-amber"></div>
+          <div class="jcard-title">
+            <h3>ADDRESS VERIFIED (NEW) — Signup to KYC Start</h3>
+            <div class="meta">Trigger: SETUP_SECURE_PIN_SUCCESS · Conversion: KYC_ADDRESS_VERIFIED</div>
+          </div>
+          <div class="jcard-metrics">
+            <div class="metric-pill"><div class="mval">161,801</div><div class="mlbl">30d sent</div></div>
+            <div class="metric-pill"><div class="mval">2,138</div><div class="mlbl">conversions</div></div>
+            <div class="metric-pill cvr-warn"><div class="mval">1.3%</div><div class="mlbl">CVR</div></div>
+          </div>
+          <div class="chevron">▾</div>
+        </div>
+        <div class="jcard-body">
+          <div class="chips">
+            <span class="chip chip-green">✓ Correct trigger (PIN success)</span>
+            <span class="chip chip-red">✗ Wrong conversion event</span>
+            <span class="chip chip-red">✗ No entry filter</span>
+            <span class="chip chip-red">✗ No exit on conversion</span>
+            <span class="chip chip-amber">⚠ Content misaligned to user's next step</span>
+          </div>
+          <div class="body-grid">
+            <div class="body-col">
+              <h4>Current flow</h4>
+              <div class="flow">
+                <div class="flow-node ok">SETUP_SECURE_PIN_SUCCESS</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">5 min wait</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">D1 Push</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">6h wait</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">D2 Push</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">D5 Push</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">D3 WA</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">D7 Push</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">End</div>
+              </div>
+              <h4 style="margin-top:16px">30d channel breakdown</h4>
+              <div style="margin-top:8px">
+                <div class="bar-row"><div class="bar-label">D1 Push (35K)</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--blue)"></div></div><div class="bar-val">4.6%</div></div>
+                <div class="bar-row"><div class="bar-label">D2 Push (32K)</div><div class="bar-track"><div class="bar-fill" style="width:13%;background:var(--blue)"></div></div><div class="bar-val">0.6%</div></div>
+                <div class="bar-row"><div class="bar-label">D5 Push (32K)</div><div class="bar-track"><div class="bar-fill" style="width:13%;background:var(--blue)"></div></div><div class="bar-val">0.6%</div></div>
+                <div class="bar-row"><div class="bar-label">D7 Push (31K)</div><div class="bar-track"><div class="bar-fill" style="width:9%;background:var(--blue)"></div></div><div class="bar-val">0.4%</div></div>
+                <div class="bar-row"><div class="bar-label">D3 WA (32K)</div><div class="bar-track"><div class="bar-fill" style="width:2%;background:var(--amber)"></div></div><div class="bar-val">0.1%</div></div>
+              </div>
+              <p style="font-size:12px;color:var(--gray-400);margin-top:8px">WA: 91% fail rate. D1 push fail: 59%.</p>
+            </div>
+            <div class="body-col">
+              <h4>What this journey should do</h4>
+              <p style="font-size:13px;margin-bottom:14px">This is the <strong>only journey targeting new signups</strong>. Its real job is driving the 70% of users who never start KYC into risk profiling (Stage 4). Instead it measures address completion (Stage 5) and sends address-specific content to someone who hasn't seen the KYC screen yet.</p>
+              <table class="cmp">
+                <tr><th>Field</th><th>Current</th><th>Should Be</th></tr>
+                <tr class="changed"><td>Conversion event</td><td><code style="color:var(--red)">KYC_ADDRESS_VERIFIED</code></td><td><code style="color:var(--green)">KYC_RISKDETAILS_SUBMIT</code></td></tr>
+                <tr class="changed"><td>Entry filter</td><td>None</td><td>NOT done <code>KYC_RISKDETAILS_SUBMIT</code></td></tr>
+                <tr class="changed"><td>Exit condition</td><td>None</td><td>On <code>KYC_RISKDETAILS_SUBMIT</code></td></tr>
+                <tr class="changed"><td>Message content</td><td>"Verify address / Aadhaar"</td><td>"Start KYC — takes 10 min"</td></tr>
+                <tr><td>Trigger</td><td><code>SETUP_SECURE_PIN_SUCCESS</code> ✓</td><td>No change</td></tr>
+                <tr><td>Sequence</td><td>D1→D2→D5→D7 ✓</td><td>No change</td></tr>
+              </table>
+            </div>
+          </div>
+          <h4 style="margin-bottom:10px">Fixes</h4>
+          <ul class="fix-list">
+            <li class="fix-item"><span class="fix-pri p0">P0</span><span class="fix-text">Change conversion event from <code>KYC_ADDRESS_VERIFIED</code> to <code>KYC_RISKDETAILS_SUBMIT</code> — currently measuring the wrong success milestone</span></li>
+            <li class="fix-item"><span class="fix-pri p0">P0</span><span class="fix-text">Update message copy: remove address/Aadhaar references. Replace with "Complete your KYC to start investing. Takes 10 minutes."</span></li>
+            <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Add entry filter: NOT done <code>KYC_RISKDETAILS_SUBMIT</code> — exclude users who already started KYC</span></li>
+            <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Add exit-on-conversion: when user fires <code>KYC_RISKDETAILS_SUBMIT</code>, exit journey immediately</span></li>
+            <li class="fix-item"><span class="fix-pri p2">P2</span><span class="fix-text">WA D3: 91% fail rate. Gate WhatsApp send on WA opt-in flag or remove entirely</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ─ 2. PAN ─ -->
+      <div class="jcard" id="j-pan">
+        <div class="jcard-header" onclick="toggle('j-pan')">
+          <div class="status-dot dot-amber"></div>
+          <div class="jcard-title">
+            <h3>PAN(NEW)</h3>
+            <div class="meta">Trigger: KYC_ADDRESS_VERIFIED · Conversion: KYC_PAN_VERIFIED</div>
+          </div>
+          <div class="jcard-metrics">
+            <div class="metric-pill"><div class="mval">31,910</div><div class="mlbl">30d sent</div></div>
+            <div class="metric-pill"><div class="mval">51</div><div class="mlbl">conversions</div></div>
+            <div class="metric-pill cvr-bad"><div class="mval">0.2%</div><div class="mlbl">CVR</div></div>
+          </div>
+          <div class="chevron">▾</div>
+        </div>
+        <div class="jcard-body">
+          <div class="chips">
+            <span class="chip chip-red">✗ No entry filter — fires for already-PAN'd users</span>
+            <span class="chip chip-red">✗ No exit on KYC_PAN_VERIFIED</span>
+            <span class="chip chip-amber">⚠ Push + WA within 10 min — too aggressive</span>
+          </div>
+          <div class="body-grid">
+            <div class="body-col">
+              <h4>30d channel breakdown</h4>
+              <div style="margin-top:8px">
+                <div class="bar-row"><div class="bar-label">D1 Push (6.5K)</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--blue)"></div></div><div class="bar-val">0.4%</div></div>
+                <div class="bar-row"><div class="bar-label">D2 Push (6.4K)</div><div class="bar-track"><div class="bar-fill" style="width:25%;background:var(--blue)"></div></div><div class="bar-val">0.1%</div></div>
+                <div class="bar-row"><div class="bar-label">D5 Push (6.3K)</div><div class="bar-track"><div class="bar-fill" style="width:25%;background:var(--blue)"></div></div><div class="bar-val">0.1%</div></div>
+                <div class="bar-row"><div class="bar-label">D7 Push (6.3K)</div><div class="bar-track"><div class="bar-fill" style="width:25%;background:var(--blue)"></div></div><div class="bar-val">0.1%</div></div>
+                <div class="bar-row"><div class="bar-label">D1 WA (6.5K)</div><div class="bar-track"><div class="bar-fill" style="width:25%;background:var(--amber)"></div></div><div class="bar-val">0.1%</div></div>
+              </div>
+              <p style="font-size:12px;color:var(--gray-400);margin-top:8px">WA: 89% fail rate. D1 push fail: 29%.</p>
+            </div>
+            <div class="body-col">
+              <h4>Root cause of 0.2% CVR</h4>
+              <p style="font-size:13px;margin-bottom:12px">PAN and Address are both verified via Digilocker in the same session. Users entering this journey on <code>KYC_ADDRESS_VERIFIED</code> have very likely already completed PAN simultaneously. Without an entry filter, most of the 18.7K journey entries are for users who already converted — making CVR structurally near-zero.</p>
+              <table class="cmp">
+                <tr><th>Field</th><th>Current</th><th>Should Be</th></tr>
+                <tr class="changed"><td>Entry filter</td><td>None ❌</td><td>NOT done <code>KYC_PAN_VERIFIED</code></td></tr>
+                <tr class="changed"><td>Exit condition</td><td>None ❌</td><td>On <code>KYC_PAN_VERIFIED</code></td></tr>
+                <tr class="changed"><td>D1 WA timing</td><td>10 min after D1 push ❌</td><td>6 hours after D1 push</td></tr>
+              </table>
+            </div>
+          </div>
+          <ul class="fix-list">
+            <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Add entry filter: NOT done <code>KYC_PAN_VERIFIED</code> — prevents already-verified users entering</span></li>
+            <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Add exit on <code>KYC_PAN_VERIFIED</code> — stops converted users receiving D2–D7</span></li>
+            <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Increase push → WA gap from 10 minutes to 6 hours — two notifications in 10 min is aggressive</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ─ 3. BANK ─ -->
+      <div class="jcard" id="j-bank">
+        <div class="jcard-header" onclick="toggle('j-bank')">
+          <div class="status-dot dot-amber"></div>
+          <div class="jcard-title">
+            <h3>BANK(NEW)</h3>
+            <div class="meta">Trigger: KYC_ADDRESS_VERIFIED + KYC_PAN_VERIFIED filter · Conversion: KYC_BANK_VERIFIED</div>
+          </div>
+          <div class="jcard-metrics">
+            <div class="metric-pill"><div class="mval">18,418</div><div class="mlbl">30d sent</div></div>
+            <div class="metric-pill"><div class="mval">9</div><div class="mlbl">conversions</div></div>
+            <div class="metric-pill cvr-bad"><div class="mval">0.05%</div><div class="mlbl">CVR</div></div>
+          </div>
+          <div class="chevron">▾</div>
+        </div>
+        <div class="jcard-body">
+          <div class="chips">
+            <span class="chip chip-green">✓ Has entry filter (KYC_PAN_VERIFIED) — best designed KYC journey</span>
+            <span class="chip chip-amber">⚠ Wrong conversion event (single bank event vs OR of 3)</span>
+            <span class="chip chip-amber">⚠ Only 3 touchpoints vs PAN's 5</span>
+            <span class="chip chip-red">✗ No exit on bank completion</span>
+          </div>
+          <div class="body-grid">
+            <div class="body-col">
+              <h4>30d channel breakdown</h4>
+              <div style="margin-top:8px">
+                <div class="bar-row"><div class="bar-label">D1 Push (6.2K)</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--blue)"></div></div><div class="bar-val">0.03%</div></div>
+                <div class="bar-row"><div class="bar-label">D2 Push (6.1K)</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--blue)"></div></div><div class="bar-val">0.08%</div></div>
+                <div class="bar-row"><div class="bar-label">D1 WA (6.1K)</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--amber)"></div></div><div class="bar-val">0.03%</div></div>
+              </div>
+              <p style="font-size:12px;color:var(--gray-400);margin-top:8px">WA: 92% fail rate. Near-zero CVR across all channels.</p>
+            </div>
+            <div class="body-col">
+              <h4>Conversion event is incomplete</h4>
+              <p style="font-size:13px;margin-bottom:12px">Bank verification fires 3 different events depending on the path taken. The journey only listens to one. Users verifying via Penny Drop or UPI show as non-converted even when they completed bank successfully.</p>
+              <table class="cmp">
+                <tr><th>Bank path</th><th>Event fired</th><th>Tracked?</th></tr>
+                <tr><td>Penny Drop (primary)</td><td><code>KYC_BANK_VERIFIED_PD</code></td><td style="color:var(--red)">❌ No</td></tr>
+                <tr><td>UPI / Reverse PD</td><td><code>KYC_BANK_VERIFIED_REVERSE_PD</code></td><td style="color:var(--red)">❌ No</td></tr>
+                <tr><td>Manual entry</td><td><code>KYC_BANK_VERIFIED</code></td><td style="color:var(--green)">✓ Yes</td></tr>
+              </table>
+            </div>
+          </div>
+          <ul class="fix-list">
+            <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Fix conversion event: use <code>KYC_BANK_VERIFIED_PD</code> OR <code>KYC_BANK_VERIFIED_REVERSE_PD</code> OR <code>KYC_BANK_VERIFIED</code></span></li>
+            <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Add exit on bank completion (all 3 events) — stops post-conversion sends</span></li>
+            <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Extend sequence: add D5 push + D7 push to match PAN journey depth. Bank is an equally hard step.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ─ 4. SELFIE ─ CRITICAL ─ -->
+      <div class="jcard open" id="j-selfie">
+        <div class="jcard-header" onclick="toggle('j-selfie')" style="background:var(--red-light)">
+          <div class="status-dot dot-red"></div>
+          <div class="jcard-title">
+            <h3>🔴 SELFIE CAPTURE (NEW) — FULLY BROKEN</h3>
+            <div class="meta">Trigger: KYC_DEMAT_VERIFIED · Conversion: KYC_LIVENESS_VERIFIED — impossible sequence</div>
+          </div>
+          <div class="jcard-metrics">
+            <div class="metric-pill"><div class="mval">11,360</div><div class="mlbl">30d sent</div></div>
+            <div class="metric-pill"><div class="mval">0</div><div class="mlbl">conversions</div></div>
+            <div class="metric-pill cvr-bad"><div class="mval">0.0%</div><div class="mlbl">CVR</div></div>
+          </div>
+          <div class="chevron">▾</div>
+        </div>
+        <div class="jcard-body">
+          <div style="background:var(--red-light);border:1px solid var(--red-border);border-radius:8px;padding:14px 16px;margin-bottom:16px;">
+            <strong style="color:var(--red)">Root Cause:</strong>
+            <p style="font-size:13px;margin-top:6px;color:#7F1D1D">Liveness (selfie) is Stage 7. Demat is Stage 10. The conversion event <code>KYC_LIVENESS_VERIFIED</code> can never fire <em>after</em> the trigger event <code>KYC_DEMAT_VERIFIED</code> — every user who reaches demat has already done their selfie. This journey has sent 11,360 messages in 30 days with zero conversions, and will never convert under the current setup.</p>
+          </div>
+          <div class="body-grid">
+            <div class="body-col">
+              <h4>Funnel stage order</h4>
+              <div class="flow" style="flex-direction:column;align-items:flex-start;gap:4px">
+                <div style="display:flex;align-items:center;gap:8px"><div class="flow-node ok">S6: KYC_BANK_VERIFIED_PD</div><span style="font-size:12px;color:var(--green)">← journey should trigger HERE</span></div>
+                <div style="padding-left:10px;color:var(--gray-400);font-size:13px">↓</div>
+                <div class="flow-node" style="background:var(--green-light);border-color:var(--green-border);color:#065F46">S7: KYC_LIVENESS_VERIFIED ← target step</div>
+                <div style="padding-left:10px;color:var(--gray-400);font-size:13px">↓</div>
+                <div class="flow-node">S8: KYC_WET_SIGNATURE_VERIFIED</div>
+                <div style="padding-left:10px;color:var(--gray-400);font-size:13px">↓</div>
+                <div class="flow-node">S9: KYC_ESIGN_SUCCESS</div>
+                <div style="padding-left:10px;color:var(--gray-400);font-size:13px">↓</div>
+                <div class="flow-node wrong">S10: KYC_DEMAT_VERIFIED ← current (wrong) trigger</div>
+              </div>
+            </div>
+            <div class="body-col">
+              <h4>30d evidence</h4>
+              <div style="margin-top:8px">
+                <div class="bar-row"><div class="bar-label">Selfie Push 1 (3.9K)</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--red)"></div></div><div class="bar-val" style="color:var(--red)">0.0%</div></div>
+                <div class="bar-row"><div class="bar-label">Selfie Push 2 (3.7K)</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--red)"></div></div><div class="bar-val" style="color:var(--red)">0.0%</div></div>
+                <div class="bar-row"><div class="bar-label">Selfie WA (3.8K)</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--red)"></div></div><div class="bar-val" style="color:var(--red)">0.0%</div></div>
+              </div>
+              <p style="font-size:12px;color:var(--gray-400);margin-top:10px">Zero conversions across all 3 channels, all 30 days. Not a performance problem — the journey is structurally impossible to convert.</p>
+              <table class="cmp" style="margin-top:14px">
+                <tr><th>Field</th><th>Current</th><th>Should Be</th></tr>
+                <tr class="broken"><td>Trigger</td><td><code style="color:var(--red)">KYC_DEMAT_VERIFIED</code></td><td><code style="color:var(--green)">KYC_BANK_VERIFIED_PD</code> (+ OR variants)</td></tr>
+                <tr class="changed"><td>Exit condition</td><td>None</td><td>On <code>KYC_LIVENESS_VERIFIED</code></td></tr>
+                <tr><td>Conversion</td><td><code>KYC_LIVENESS_VERIFIED</code> ✓</td><td>No change</td></tr>
+              </table>
+            </div>
+          </div>
+          <ul class="fix-list">
+            <li class="fix-item"><span class="fix-pri p0">P0</span><span class="fix-text">Fix trigger immediately: change from <code>KYC_DEMAT_VERIFIED</code> to <code>KYC_BANK_VERIFIED_PD</code> OR <code>KYC_BANK_VERIFIED_REVERSE_PD</code> OR <code>KYC_BANK_VERIFIED</code>. This is a one-field change.</span></li>
+            <li class="fix-item"><span class="fix-pri p0">P0</span><span class="fix-text">Add exit on <code>KYC_LIVENESS_VERIFIED</code> — stops messaging users who complete selfie mid-journey</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ─ 5. DEMAT ─ CRITICAL ─ -->
+      <div class="jcard open" id="j-demat">
+        <div class="jcard-header" onclick="toggle('j-demat')" style="background:var(--red-light)">
+          <div class="status-dot dot-red"></div>
+          <div class="jcard-title">
+            <h3>🔴 DEMAT (NEW) — 99% Entry Collapse Since Jan 2026</h3>
+            <div class="meta">Trigger: KYC_BANK_VERIFIED (manual only) · Was: 18,100 entries/month → Now: 198/month</div>
+          </div>
+          <div class="jcard-metrics">
+            <div class="metric-pill"><div class="mval">198</div><div class="mlbl">30d sent</div></div>
+            <div class="metric-pill"><div class="mval">25</div><div class="mlbl">conversions</div></div>
+            <div class="metric-pill cvr-good"><div class="mval">12.6%</div><div class="mlbl">CVR when it fires</div></div>
+          </div>
+          <div class="chevron">▾</div>
+        </div>
+        <div class="jcard-body">
+          <div style="background:var(--red-light);border:1px solid var(--red-border);border-radius:8px;padding:14px 16px;margin-bottom:16px;">
+            <strong style="color:var(--red)">Root Cause:</strong>
+            <p style="font-size:13px;margin-top:6px;color:#7F1D1D">Bank flow redesigned January 20, 2026. Most users now verify via Penny Drop (<code>KYC_BANK_VERIFIED_PD</code>) or UPI (<code>KYC_BANK_VERIFIED_REVERSE_PD</code>). The journey only triggers on <code>KYC_BANK_VERIFIED</code> (manual entry) — now a minor path. Historical entries: ~18,100. Last 30 days: 198. The nudge itself works (36.8% D1 CVR) — it just isn't reaching anyone.</p>
+          </div>
+          <div class="body-grid">
+            <div class="body-col">
+              <h4>Entry volume collapse</h4>
+              <canvas id="dematChart" height="140"></canvas>
+            </div>
+            <div class="body-col">
+              <h4>30d breakdown (only 198 sends)</h4>
+              <div style="margin-top:8px">
+                <div class="bar-row"><div class="bar-label">D1 Push (68)</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--green)"></div></div><div class="bar-val" style="color:var(--green)">36.8%</div></div>
+                <div class="bar-row"><div class="bar-label">D2 Push (25)</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--blue)"></div></div><div class="bar-val">0.0%</div></div>
+                <div class="bar-row"><div class="bar-label">D5 Push (21)</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--blue)"></div></div><div class="bar-val">0.0%</div></div>
+                <div class="bar-row"><div class="bar-label">D7 Push (22)</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--blue)"></div></div><div class="bar-val">0.0%</div></div>
+                <div class="bar-row"><div class="bar-label">D1 WA (40)</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--amber)"></div></div><div class="bar-val">0.0%</div></div>
+                <div class="bar-row"><div class="bar-label">D3 WA (22)</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--amber)"></div></div><div class="bar-val">0.0%</div></div>
+              </div>
+              <p style="font-size:12px;color:var(--green);margin-top:10px;font-weight:600">D1 push CVR = 36.8% — the nudge is strong. Fix the trigger and this becomes the highest-CVR KYC journey.</p>
+            </div>
+          </div>
+          <ul class="fix-list">
+            <li class="fix-item"><span class="fix-pri p0">P0</span><span class="fix-text">Fix trigger: add <code>KYC_BANK_VERIFIED_PD</code> OR <code>KYC_BANK_VERIFIED_REVERSE_PD</code> as entry events (alongside existing <code>KYC_BANK_VERIFIED</code>). One configuration change restores ~4,000+ entries/month.</span></li>
+            <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Add exit on <code>KYC_DEMAT_VERIFIED</code></span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ─ 6. E-SIGN ─ -->
+      <div class="jcard" id="j-esign">
+        <div class="jcard-header" onclick="toggle('j-esign')">
+          <div class="status-dot dot-amber"></div>
+          <div class="jcard-title">
+            <h3>E-SIGN (NEW)</h3>
+            <div class="meta">Conversion: KYC_ESIGN_SUCCESS · Trigger event needs verification</div>
+          </div>
+          <div class="jcard-metrics">
+            <div class="metric-pill"><div class="mval">6,512</div><div class="mlbl">30d sent</div></div>
+            <div class="metric-pill"><div class="mval">351</div><div class="mlbl">conversions</div></div>
+            <div class="metric-pill cvr-warn"><div class="mval">5.4%</div><div class="mlbl">CVR</div></div>
+          </div>
+          <div class="chevron">▾</div>
+        </div>
+        <div class="jcard-body">
+          <div class="chips">
+            <span class="chip chip-green">✓ Solid CVR (5.4%)</span>
+            <span class="chip chip-amber">⚠ Trigger event needs verification — may be deprecated</span>
+            <span class="chip chip-red">✗ WA 96% fail rate</span>
+            <span class="chip chip-red">✗ No exit on KYC_ESIGN_SUCCESS</span>
+          </div>
+          <div class="body-grid">
+            <div class="body-col">
+              <h4>30d channel breakdown</h4>
+              <div style="margin-top:8px">
+                <div class="bar-row"><div class="bar-label">esign push1 (2.6K)</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--green)"></div></div><div class="bar-val" style="color:var(--green)">10.4%</div></div>
+                <div class="bar-row"><div class="bar-label">Esign Push 2 (1.9K)</div><div class="bar-track"><div class="bar-fill" style="width:29%;background:var(--blue)"></div></div><div class="bar-val">3.0%</div></div>
+                <div class="bar-row"><div class="bar-label">ESIGN WA (2.0K)</div><div class="bar-track"><div class="bar-fill" style="width:9%;background:var(--amber)"></div></div><div class="bar-val">0.9%</div></div>
+              </div>
+              <p style="font-size:12px;color:var(--gray-400);margin-top:8px">WA: 96% fail rate. Push is doing the heavy lifting.</p>
+            </div>
+            <div class="body-col">
+              <h4>Trigger event risk</h4>
+              <p style="font-size:13px;margin-bottom:10px">The journey's entry trigger should be verified. If the trigger event is deprecated/no longer fired, this journey will stop receiving entries (similar to what happened to the Demat journey). Push CVR of 10.4% means this is worth protecting.</p>
+              <ul class="fix-list">
+                <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Verify trigger event is still actively fired. If deprecated, update to the correct preceding event (e.g. <code>KYC_WET_SIGNATURE_VERIFIED</code>).</span></li>
+                <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Remove or gate WA send — 96% fail rate, 87 delivered out of 1,966 sent. Wasting quota.</span></li>
+                <li class="fix-item"><span class="fix-pri p2">P2</span><span class="fix-text">Add D5 push for high-intent users who need more time to complete eSign</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─ 7. PROFILE DETAILS ─ -->
+      <div class="jcard" id="j-profile">
+        <div class="jcard-header" onclick="toggle('j-profile')">
+          <div class="status-dot dot-green"></div>
+          <div class="jcard-title">
+            <h3>Capturing Profile Details (NEW)</h3>
+            <div class="meta">Trigger: KYC_LIVENESS_VERIFIED · Highest CVR journey (18.3%)</div>
+          </div>
+          <div class="jcard-metrics">
+            <div class="metric-pill"><div class="mval">813</div><div class="mlbl">30d sent</div></div>
+            <div class="metric-pill"><div class="mval">149</div><div class="mlbl">conversions</div></div>
+            <div class="metric-pill cvr-good"><div class="mval">18.3%</div><div class="mlbl">CVR</div></div>
+          </div>
+          <div class="chevron">▾</div>
+        </div>
+        <div class="jcard-body">
+          <div class="chips">
+            <span class="chip chip-green">✓ Highest CVR across all journeys (18.3%)</span>
+            <span class="chip chip-green">✓ Correct trigger stage (post-liveness)</span>
+            <span class="chip chip-amber">⚠ Very low volume (813 sends) — capacity being wasted</span>
+            <span class="chip chip-amber">⚠ Conversion event needs verification</span>
+            <span class="chip chip-red">✗ 67% push fail rate on D1</span>
+          </div>
+          <div class="body-grid">
+            <div class="body-col">
+              <h4>30d channel breakdown</h4>
+              <div style="margin-top:8px">
+                <div class="bar-row"><div class="bar-label">Push 1 (537)</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--green)"></div></div><div class="bar-val" style="color:var(--green)">25.9%</div></div>
+                <div class="bar-row"><div class="bar-label">Push 2 (136)</div><div class="bar-track"><div class="bar-fill" style="width:17%;background:var(--blue)"></div></div><div class="bar-val">4.4%</div></div>
+                <div class="bar-row"><div class="bar-label">WA (140)</div><div class="bar-track"><div class="bar-fill" style="width:11%;background:var(--amber)"></div></div><div class="bar-val">2.9%</div></div>
+              </div>
+              <p style="font-size:12px;color:var(--green);margin-top:8px;font-weight:600">25.9% CVR on D1 push — among the strongest nudge signals in the funnel.</p>
+            </div>
+            <div class="body-col">
+              <h4>Volume gap</h4>
+              <p style="font-size:13px;margin-bottom:10px">Journey entered: 7,900 total (historical). Last 30 days: only 813 sends. With 25.9% CVR, every incremental user entered here produces a high-probability conversion. Investigate why entry volume is low relative to the number of users completing liveness.</p>
+              <ul class="fix-list">
+                <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Verify conversion event is actively fired. If deprecated, update to correct completion event for this step.</span></li>
+                <li class="fix-item"><span class="fix-pri p2">P2</span><span class="fix-text">Investigate why only 813 sends out of ~7.9K historical entries — check if journey entry/send rate dropped recently</span></li>
+                <li class="fix-item"><span class="fix-pri p2">P2</span><span class="fix-text">Investigate 67% push fail rate — highest of any journey. Push opt-in may degrade by this stage.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─ 8. READY TO TRADE ─ -->
+      <div class="jcard" id="j-rtt">
+        <div class="jcard-header" onclick="toggle('j-rtt')">
+          <div class="status-dot dot-amber"></div>
+          <div class="jcard-title">
+            <h3>Ready to Trade 2026 — Direct GTV Journey</h3>
+            <div class="meta">Trigger: KYC_READY_FOR_TRADE (unreliable) · Exit: PAYMENT_SUCCESSFUL ✓</div>
+          </div>
+          <div class="jcard-metrics">
+            <div class="metric-pill"><div class="mval">9,870</div><div class="mlbl">30d sent</div></div>
+            <div class="metric-pill"><div class="mval">111</div><div class="mlbl">conversions</div></div>
+            <div class="metric-pill cvr-warn"><div class="mval">1.1%</div><div class="mlbl">CVR</div></div>
+          </div>
+          <div class="chevron">▾</div>
+        </div>
+        <div class="jcard-body">
+          <div class="chips">
+            <span class="chip chip-green">✓ Only journey with proper exit on conversion (PAYMENT_SUCCESSFUL)</span>
+            <span class="chip chip-green">✓ Multi-channel with channel-preference logic</span>
+            <span class="chip chip-red">✗ Unreliable trigger — missing ~2,100 users/month (48% coverage gap)</span>
+            <span class="chip chip-amber">⚠ WA 59–65% fail rate</span>
+            <span class="chip chip-amber">⚠ Email E3 zero conversions — dead step</span>
+          </div>
+          <div class="body-grid">
+            <div class="body-col">
+              <h4>Channel performance (30d)</h4>
+              <div style="margin-top:8px">
+                <div class="bar-row"><div class="bar-label">Push p1 (1.9K)</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--blue)"></div></div><div class="bar-val" style="color:var(--green)">2.7%</div></div>
+                <div class="bar-row"><div class="bar-label">Push p2 (1.3K)</div><div class="bar-track"><div class="bar-fill" style="width:44%;background:var(--blue)"></div></div><div class="bar-val">1.2%</div></div>
+                <div class="bar-row"><div class="bar-label">Push p3 (1.1K)</div><div class="bar-track"><div class="bar-fill" style="width:30%;background:var(--blue)"></div></div><div class="bar-val">0.8%</div></div>
+                <div class="bar-row"><div class="bar-label">WA1 (745)</div><div class="bar-track"><div class="bar-fill" style="width:44%;background:var(--amber)"></div></div><div class="bar-val">1.2%</div></div>
+                <div class="bar-row"><div class="bar-label">WA2 (662)</div><div class="bar-track"><div class="bar-fill" style="width:41%;background:var(--amber)"></div></div><div class="bar-val">1.1%</div></div>
+                <div class="bar-row"><div class="bar-label">Email E1 (1.3K)</div><div class="bar-track"><div class="bar-fill" style="width:26%;background:var(--indigo)"></div></div><div class="bar-val">0.7%</div></div>
+                <div class="bar-row"><div class="bar-label">Email E2 (1.1K)</div><div class="bar-track"><div class="bar-fill" style="width:15%;background:var(--indigo)"></div></div><div class="bar-val">0.4%</div></div>
+                <div class="bar-row"><div class="bar-label">Email E3 (1.0K)</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--red)"></div></div><div class="bar-val" style="color:var(--red)">0.0%</div></div>
+              </div>
+            </div>
+            <div class="body-col">
+              <h4>Coverage gap</h4>
+              <p style="font-size:13px;margin-bottom:12px">From Amplitude: ~4,100 users reach <code>KYC_DEMAT_VERIFIED</code>/month. Journey receives only 1,968 entries. <strong>~2,100 trade-ready users/month are not entered into this journey</strong> — the highest direct GTV leak across all journeys.</p>
+              <table class="cmp">
+                <tr><th>Field</th><th>Current</th><th>Should Be</th></tr>
+                <tr class="broken"><td>Trigger</td><td><code style="color:var(--red)">KYC_READY_FOR_TRADE</code> (unreliable)</td><td><code style="color:var(--green)">KYC_DEMAT_VERIFIED</code></td></tr>
+                <tr><td>Exit</td><td><code>PAYMENT_SUCCESSFUL</code> ✓</td><td>No change</td></tr>
+                <tr class="changed"><td>Email E3</td><td>0 conversions, keep</td><td>Remove — wasted sends</td></tr>
+                <tr class="changed"><td>WA sends</td><td>59–65% fail rate</td><td>Gate on WA opt-in flag</td></tr>
+              </table>
+            </div>
+          </div>
+          <ul class="fix-list">
+            <li class="fix-item"><span class="fix-pri p0">P0</span><span class="fix-text">Change trigger from <code>KYC_READY_FOR_TRADE</code> to <code>KYC_DEMAT_VERIFIED</code> — recovers ~2,100 eligible users/month. Most direct GTV lever in all journeys.</span></li>
+            <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Remove Email E3 — zero conversions in 30 days, wasting 1K sends/month</span></li>
+            <li class="fix-item"><span class="fix-pri p2">P2</span><span class="fix-text">Gate WhatsApp sends on opt-in flag — 59–65% fail rate reducing WA channel reliability metrics</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ─ 9. PAYMENT RECOVERY ─ -->
+      <div class="jcard" id="j-recovery">
+        <div class="jcard-header" onclick="toggle('j-recovery')">
+          <div class="status-dot dot-green"></div>
+          <div class="jcard-title">
+            <h3>Payment Recovery</h3>
+            <div class="meta">Trigger: PAYMENT failed path · Conversion: PAYMENT_SUCCESSFUL</div>
+          </div>
+          <div class="jcard-metrics">
+            <div class="metric-pill"><div class="mval">305</div><div class="mlbl">30d sent</div></div>
+            <div class="metric-pill"><div class="mval">10</div><div class="mlbl">conversions</div></div>
+            <div class="metric-pill cvr-warn"><div class="mval">3.3%</div><div class="mlbl">CVR</div></div>
+          </div>
+          <div class="chevron">▾</div>
+        </div>
+        <div class="jcard-body">
+          <div class="chips">
+            <span class="chip chip-green">✓ Working correctly</span>
+            <span class="chip chip-green">✓ Reasonable CVR for a recovery journey</span>
+            <span class="chip chip-blue">→ Monitor volume as investment throughput grows</span>
+          </div>
+          <p style="font-size:13px;color:var(--gray-600)">No immediate changes required. As RTT journey coverage improves and more users reach payment, this journey's volume will grow. Revisit sequence depth at that point.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── MISSING JOURNEYS ── -->
+  <div class="section" id="missing">
+    <h2>Missing Journeys — Unaddressed Funnel Gaps</h2>
+
+    <div class="missing-row head">
+      <div>Gap</div><div>Stage</div><div>Channel available</div><div>Why it matters</div>
+    </div>
+
+    <div class="missing-row" style="border-left:3px solid var(--red)">
+      <div><strong>Signup → KYC Start nudge</strong><br/><span style="font-size:12px;color:var(--gray-400)">Dedicated "start KYC" journey with correct content + event</span></div>
+      <div><span class="tag tag-event">PIN_SUCCESS → RISKDETAILS</span></div>
+      <div>Push, WhatsApp, Email</div>
+      <div>30.6% KYC start rate from Amplitude — 70% of signups never begin. ADDRESS VERIFIED journey covers this trigger but with wrong message + wrong conversion event. Needs its own journey or a proper fix to ADDRESS VERIFIED.</div>
+    </div>
+
+    <div class="missing-row" style="border-left:3px solid var(--amber)">
+      <div><strong>Stage 3 dropout recovery</strong><br/><span style="font-size:12px;color:var(--gray-400)">Email verified but PIN not set up</span></div>
+      <div><span class="tag tag-event">EMAIL_VERIFIED → PIN_SUCCESS</span></div>
+      <div>Push (app installed), Email</div>
+      <div>Users who verified email but never set a PIN are warm — they got through 2 signup steps. Push + email available. No journey targeting this gap today.</div>
+    </div>
+
+    <div class="missing-row" style="border-left:3px solid var(--amber)">
+      <div><strong>Liveness → eSign bridge</strong><br/><span style="font-size:12px;color:var(--gray-400)">After wet signature, nudge toward eSign</span></div>
+      <div><span class="tag tag-event">WET_SIG_VERIFIED → ESIGN_SUCCESS</span></div>
+      <div>Push, WhatsApp</div>
+      <div>Wet signature (S8) → eSign (S9) gap has no dedicated journey. eSign journey trigger needs verification. This stage has users with high intent (made it through 8 KYC steps) — high-value nudge opportunity.</div>
+    </div>
+
+    <div class="missing-row" style="border-left:3px solid var(--gray-200)">
+      <div><strong>Stage 1/2 dropout</strong><br/><span style="font-size:12px;color:var(--gray-400)">OTP not completed / Email not verified</span></div>
+      <div><span class="tag tag-event">SIGNIN_PAGE_VIEW / OTP_SUCCESS</span></div>
+      <div>SMS/WhatsApp (phone known)</div>
+      <div>Technically harder — WebEngage identity may not exist for S1 dropoffs. S2 dropoffs (phone verified) can be reached via push if app installed. Lower priority but worth exploring as signup volumes grow.</div>
+    </div>
+
+  </div>
+
+  <!-- ── SYSTEM ISSUES ── -->
+  <div class="section" id="system">
+    <h2>System-Level Issues</h2>
+
+    <div class="issue-card">
+      <h3>📵 WhatsApp Opt-In Problem — 89–96% Fail Rate Across KYC Journeys</h3>
+      <p style="margin-bottom:12px">WA fail rates are not journey-specific — they reflect a systemic problem with WA opt-in among KYC-stage users.</p>
+      <div style="margin-bottom:12px">
+        <div class="bar-row"><div class="bar-label" style="width:220px">Address WA D3</div><div class="bar-track"><div class="bar-fill" style="width:91%;background:var(--red)"></div></div><div class="bar-val" style="color:var(--red)">91% fail</div></div>
+        <div class="bar-row"><div class="bar-label" style="width:220px">PAN WA D1</div><div class="bar-track"><div class="bar-fill" style="width:89%;background:var(--red)"></div></div><div class="bar-val" style="color:var(--red)">89% fail</div></div>
+        <div class="bar-row"><div class="bar-label" style="width:220px">Bank WA D1</div><div class="bar-track"><div class="bar-fill" style="width:92%;background:var(--red)"></div></div><div class="bar-val" style="color:var(--red)">92% fail</div></div>
+        <div class="bar-row"><div class="bar-label" style="width:220px">eSign WA</div><div class="bar-track"><div class="bar-fill" style="width:96%;background:var(--red)"></div></div><div class="bar-val" style="color:var(--red)">96% fail</div></div>
+        <div class="bar-row"><div class="bar-label" style="width:220px">Selfie WA</div><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--red)"></div></div><div class="bar-val" style="color:var(--red)">90% fail</div></div>
+        <div class="bar-row"><div class="bar-label" style="width:220px">RTT WA1</div><div class="bar-track"><div class="bar-fill" style="width:59%;background:var(--amber)"></div></div><div class="bar-val" style="color:var(--amber)">59% fail</div></div>
+      </div>
+      <p style="font-size:13px">Currently WA sends fire for all users regardless of opt-in status. <strong>Recommendation:</strong> Either (a) gate all WA sends on <code>[WA opt-in = true]</code> user attribute, or (b) add a WA opt-in prompt during the signup/KYC flow to grow the opted-in base. Every failed WA send burns quota and risks WhatsApp blocking the account for spam patterns.</p>
+    </div>
+
+    <div class="issue-card">
+      <h3>🔔 Push Opt-In Degrades Through the Funnel</h3>
+      <p>Push fail rates increase as users progress deeper into KYC — suggesting users who drop off at later stages are also more likely to have push disabled.</p>
+      <div class="body-grid" style="margin-top:12px">
+        <div>
+          <div class="bar-row"><div class="bar-label" style="width:200px">Address D1 (signup)</div><div class="bar-track"><div class="bar-fill" style="width:59%;background:var(--amber)"></div></div><div class="bar-val" style="color:var(--amber)">59% fail</div></div>
+          <div class="bar-row"><div class="bar-label" style="width:200px">PAN D1</div><div class="bar-track"><div class="bar-fill" style="width:29%;background:var(--green)"></div></div><div class="bar-val" style="color:var(--green)">29% fail</div></div>
+          <div class="bar-row"><div class="bar-label" style="width:200px">Bank D1</div><div class="bar-track"><div class="bar-fill" style="width:31%;background:var(--green)"></div></div><div class="bar-val" style="color:var(--green)">31% fail</div></div>
+          <div class="bar-row"><div class="bar-label" style="width:200px">Profile Details push1</div><div class="bar-track"><div class="bar-fill" style="width:67%;background:var(--amber)"></div></div><div class="bar-val" style="color:var(--amber)">67% fail</div></div>
+          <div class="bar-row"><div class="bar-label" style="width:200px">Selfie push1</div><div class="bar-track"><div class="bar-fill" style="width:48%;background:var(--amber)"></div></div><div class="bar-val" style="color:var(--amber)">48% fail</div></div>
+        </div>
+        <div>
+          <p style="font-size:13px">The high fail rate at signup-stage (Address D1: 59%) is notable — this fires just 5 minutes after PIN setup. Users haven't had time to engage with the app before receiving a push. Consider delaying D1 to 2–4 hours after signup to allow the app session to close first and improve delivery.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PRIORITY FIX LIST ── -->
+  <div class="section" id="priorities">
+    <h2>Priority Fix List</h2>
+    <table class="pri-table">
+      <thead>
+        <tr><th width="60">Priority</th><th width="160">Journey</th><th>Fix</th><th width="120">Type</th><th width="130">Est. Impact</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="fix-pri p0">P0</span></td>
+          <td>Selfie Capture</td>
+          <td>Fix trigger: <code>KYC_DEMAT_VERIFIED</code> → <code>KYC_BANK_VERIFIED_PD</code> OR all 3 bank events. Add exit on <code>KYC_LIVENESS_VERIFIED</code>.</td>
+          <td><span class="tag tag-event">Event fix</span></td>
+          <td>Stop 11K wasted sends/month; restore liveness nudge</td>
+        </tr>
+        <tr>
+          <td><span class="fix-pri p0">P0</span></td>
+          <td>DEMAT</td>
+          <td>Add <code>KYC_BANK_VERIFIED_PD</code> + <code>KYC_BANK_VERIFIED_REVERSE_PD</code> as entry triggers alongside existing event.</td>
+          <td><span class="tag tag-event">Event fix</span></td>
+          <td>Restore 198 → ~4,000+ entries/month. D1 CVR 36.8% — highest potential.</td>
+        </tr>
+        <tr>
+          <td><span class="fix-pri p0">P0</span></td>
+          <td>Ready to Trade</td>
+          <td>Change trigger from <code>KYC_READY_FOR_TRADE</code> to <code>KYC_DEMAT_VERIFIED</code>.</td>
+          <td><span class="tag tag-event">Event fix</span></td>
+          <td>Recover ~2,100 missed users/month. Most direct GTV lever.</td>
+        </tr>
+        <tr>
+          <td><span class="fix-pri p0">P0</span></td>
+          <td>ADDRESS VERIFIED</td>
+          <td>Change conversion event to <code>KYC_RISKDETAILS_SUBMIT</code>. Update message copy to "Start your KYC".</td>
+          <td><span class="tag tag-journey">Content + event</span></td>
+          <td>Correctly measure + nudge the 70% KYC start gap</td>
+        </tr>
+        <tr>
+          <td><span class="fix-pri p1">P1</span></td>
+          <td>All KYC journeys</td>
+          <td>Add exit-on-completion event to every KYC journey (Address, PAN, Bank, eSign, Selfie, Demat).</td>
+          <td><span class="tag tag-journey">Journey config</span></td>
+          <td>Stop converted users receiving stale messages</td>
+        </tr>
+        <tr>
+          <td><span class="fix-pri p1">P1</span></td>
+          <td>PAN</td>
+          <td>Add entry filter: NOT done <code>KYC_PAN_VERIFIED</code>. Increase push→WA gap from 10 min to 6h.</td>
+          <td><span class="tag tag-journey">Journey config</span></td>
+          <td>Fix structural 0.2% CVR — most entrants already converted</td>
+        </tr>
+        <tr>
+          <td><span class="fix-pri p1">P1</span></td>
+          <td>BANK</td>
+          <td>Fix conversion event to OR of all 3 bank events. Add D5 + D7 push steps.</td>
+          <td><span class="tag tag-event">Event + sequence</span></td>
+          <td>Accurate measurement + more touchpoints for a hard step</td>
+        </tr>
+        <tr>
+          <td><span class="fix-pri p1">P1</span></td>
+          <td>E-Sign</td>
+          <td>Verify trigger event still fires. Remove/gate WA (96% fail rate). Add D5 push.</td>
+          <td><span class="tag tag-event">Event verify</span></td>
+          <td>Protect 10.4% D1 push CVR — highest-converting push in KYC journeys</td>
+        </tr>
+        <tr>
+          <td><span class="fix-pri p1">P1</span></td>
+          <td>ADDRESS VERIFIED</td>
+          <td>Add entry filter: NOT done <code>KYC_RISKDETAILS_SUBMIT</code>.</td>
+          <td><span class="tag tag-journey">Journey config</span></td>
+          <td>Stop already-KYC'd users receiving signup nudges</td>
+        </tr>
+        <tr>
+          <td><span class="fix-pri p2">P2</span></td>
+          <td>New journey</td>
+          <td>Create S3 dropout journey: <code>EMAIL_VERIFIED</code> → PIN not done within 1h → push + email nudge.</td>
+          <td><span class="tag tag-new">New journey</span></td>
+          <td>Warm users who got furthest in signup without completing it</td>
+        </tr>
+        <tr>
+          <td><span class="fix-pri p2">P2</span></td>
+          <td>System-wide</td>
+          <td>Gate WhatsApp sends on WA opt-in flag across all journeys. Or add WA opt-in prompt in signup flow.</td>
+          <td><span class="tag tag-channel">Channel</span></td>
+          <td>Eliminate 89–96% fail rates. Protect WA sender reputation.</td>
+        </tr>
+        <tr>
+          <td><span class="fix-pri p2">P2</span></td>
+          <td>RTT</td>
+          <td>Remove Email E3 (0 conversions in 30d). Gate WA on opt-in flag.</td>
+          <td><span class="tag tag-channel">Channel</span></td>
+          <td>Reduce noise, improve signal on highest-value journey</td>
+        </tr>
+        <tr>
+          <td><span class="fix-pri p2">P2</span></td>
+          <td>New journey</td>
+          <td>Create Wet Signature → eSign bridge journey triggered on <code>KYC_WET_SIGNATURE_VERIFIED</code>.</td>
+          <td><span class="tag tag-new">New journey</span></td>
+          <td>Plugs S8→S9 gap where eSign trigger is uncertain</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>WebEngage Journey Audit · Aspero · June 10, 2026 · Source: 30d campaign report + Amplitude funnel agent</footer>
+
+<script>
+// ── Toggle journey cards ──
+function toggle(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+
+// ── Nav active state on scroll ──
+const sections = document.querySelectorAll('.section');
+const navLinks  = document.querySelectorAll('nav a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
+  navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+});
+
+// ── CVR Bar Chart ──
+new Chart(document.getElementById('cvrChart'), {
+  type: 'bar',
+  data: {
+    labels: [
+      'Profile Details','E-Sign','Payment Recovery',
+      'Ready to Trade','Address Verified',
+      'PAN','DEMAT*','BANK','Selfie Capture'
+    ],
+    datasets: [{
+      label: '30d CVR %',
+      data: [18.3, 5.4, 3.3, 1.1, 1.3, 0.2, 12.6, 0.05, 0.0],
+      backgroundColor: [
+        '#10B981','#10B981','#10B981',
+        '#F59E0B','#F59E0B',
+        '#F59E0B','#94A3B8','#EF4444','#EF4444'
+      ],
+      borderRadius: 5,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => ` CVR: ${ctx.raw}%`,
+          afterLabel: ctx => {
+            const notes = {
+              'DEMAT*': '* Only 198 sends — broken trigger. D1 CVR = 36.8%',
+              'Selfie Capture': '0 conversions in 30 days — wrong trigger',
+              'Profile Details': 'Tiny volume (813 sends) — capacity wasted',
+            };
+            return notes[ctx.label] || '';
+          }
+        }
+      }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => v + '%' }, grid: { color: '#F3F4F6' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ── Demat volume collapse chart ──
+new Chart(document.getElementById('dematChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Sep–Oct 25','Nov 25','Dec 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26'],
+    datasets: [{
+      label: 'Monthly journey entries (est.)',
+      data: [3200, 2800, 2600, 2400, 800, 400, 250, 198],
+      backgroundColor: (ctx) => ctx.dataIndex >= 3 ? '#FCA5A5' : '#BFDBFE',
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      annotation: {},
+      tooltip: { callbacks: { label: ctx => ` ~${ctx.raw} entries` } }
+    },
+    scales: {
+      y: { beginAtZero: true, grid: { color: '#F3F4F6' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>
