@@ -876,7 +876,7 @@
       <div class="slide-ttl">KYC: Same-Week Cohort</div>
       <div class="slide-sub">Strict Mon&#8211;Sun window: signup &#8594; start &#8594; done</div>
       <div class="hero-num">31.3%</div>
-      <div style="font-size:.58rem;color:#fca5a5;font-weight:500;margin-top:1px;text-align:center;letter-spacing:.01em;">(28.1% incl. 426 bots)</div>
+      <div style="font-size:.58rem;color:#fca5a5;font-weight:500;margin-top:1px;margin-bottom:6px;text-align:center;letter-spacing:.01em;">(28.1% incl. 426 bots)</div>
       <div class="hero-lbl">cohort KYC start rate (last week)</div>
       <div class="hero-badge down">▼ 0.2pp WoW</div>
       <div class="stat-list">
@@ -3287,7 +3287,7 @@ function line(label, data, color, yAxisID) {
 var _s1clean = D.signups_clean[D.signups_clean.length - 1];
 setHero('h1-val', 'h1-delta', num(_s1clean), _s1clean - D.kpi_signups.last, '');
 (function(){
-  var _s=' style="font-size:.57rem;color:#fca5a5;font-weight:400;display:block;margin-top:1px;"';
+  var _s=' style="font-size:.57rem;color:#fca5a5;font-weight:400;display:block;margin-top:1px;margin-bottom:6px;"';
   var eh = document.getElementById('h1-val'); if(eh) eh.insertAdjacentHTML('afterend','<div'+_s+'>('+num(D.kpi_signups.this)+' incl. bots)</div>');
 })();
 setEl('s1-last', num(D.kpi_signups.last));
@@ -3344,7 +3344,7 @@ setEl('s3-avg',  num(D.kpi_investors.avg));
 setEl('s3-conv', pct(D.kpi_rtt_cohort_conv.this));
 // Poland-bot clean — Slide 03 left panel
 (function(){
-  var N=36, rttN=D.rtt[D.rtt.length-1], _s=' style="font-size:.57rem;color:#fca5a5;font-weight:400;display:block;margin-top:1px;"';
+  var N=36, rttN=D.rtt[D.rtt.length-1], _s=' style="font-size:.57rem;color:#fca5a5;font-weight:400;display:block;margin-top:1px;margin-bottom:6px;"';
   var invC = D.kpi_investors.this - N;
   var convC = +((Math.round(D.kpi_rtt_cohort_conv.this * rttN / 100) - N) / rttN * 100).toFixed(1);
   var eh = document.getElementById('h3-val'); if(eh) eh.insertAdjacentHTML('afterend','<div'+_s+'>('+num(D.kpi_investors.this)+' incl. bots)</div>');
@@ -3387,7 +3387,7 @@ const TEAL = '#14b8a6';
   setEl('s4t-prior', pct(prevSW));
   // Poland-bot clean — Slide 04 left panel
   (function(){
-    var _s=' style="font-size:.57rem;color:#fca5a5;font-weight:400;display:block;margin-top:1px;"';
+    var _s=' style="font-size:.57rem;color:#fca5a5;font-weight:400;display:block;margin-top:1px;margin-bottom:6px;"';
     var eh = document.getElementById('h4t-val'); if(eh) eh.insertAdjacentHTML('afterend','<div'+_s+'>('+pct(thisSW)+' incl. bots)</div>');
   })();
 
@@ -3586,7 +3586,7 @@ setEl('s5-avgg',   cr(D.kpi_gtv.avg));
 // setEl('s5-repeat') — stat item removed; MTD row no longer shown
 // Poland-bot clean — Slide 06 left panel
 (function(){
-  var N=36, GN=0.036, _s=' style="font-size:.57rem;color:#fca5a5;font-weight:400;display:block;margin-top:1px;"';
+  var N=36, GN=0.036, _s=' style="font-size:.57rem;color:#fca5a5;font-weight:400;display:block;margin-top:1px;margin-bottom:6px;"';
   var gtvC = +(D.kpi_gtv.this - GN).toFixed(2);
   var ordC = D.kpi_orders.this - N;
   var eh = document.getElementById('h5-val'); if(eh) eh.insertAdjacentHTML('afterend','<div'+_s+'>(₹'+D.kpi_gtv.this.toFixed(2)+'cr incl. bots)</div>');
