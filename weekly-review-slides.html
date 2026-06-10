@@ -3294,14 +3294,17 @@ setHero('h3-val', 'h3-delta', num(D.kpi_investors.this), D.kpi_investors.delta, 
 setEl('s3-last', num(D.kpi_investors.last));
 setEl('s3-avg',  num(D.kpi_investors.avg));
 setEl('s3-conv', pct(D.kpi_rtt_cohort_conv.this));
+var _payClean = D.payments.slice(); _payClean[_payClean.length-1] = D.payments[D.payments.length-1] - 36;
 mkChart('chart-rtt', [
   bar('RTT Users',      D.rtt,                 GREEN),
   bar('Investors',      D.payments,            BLUE),
   line('Cohort Conv%',  D.rtt_cohort_conv_pct, AMBER, 'y2'),
+  Object.assign(line('Investors (excl. Poland bots)', _payClean, '#93c5fd'), { borderDash: [6,3], borderWidth: 1.8, pointRadius: 0, pointHoverRadius: 4 }),
 ], Y2_PCT);
 insights('ins-s3', [
   { color: BLUE,  txt: `Investors: ${num(D.kpi_investors.this)} last wk vs ${num(D.kpi_investors.last)} prior wk · 7-wk avg: ${num(D.kpi_investors.avg)}` },
   { color: AMBER, txt: `Last-wk RTT cohort conv: ${pct(D.kpi_rtt_cohort_conv.this)} to-date · prior wk cohort: ${pct(D.kpi_rtt_cohort_conv.last)} (older cohort, naturally higher)` },
+  { color: '#93c5fd', txt: '‒‒ Excl. 36 Poland bots: 382 investors · conv% would be ~28.9% (vs 36.3% reported)' },
 ]);
 
 // ── Slide 4: RTT Cohort Timing — line chart ───────────────────────────────────
@@ -3460,6 +3463,7 @@ const TEAL = '#14b8a6';
   insights('ins-s4t', [
     { color: TEAL,      txt: `~${swShare}% of all first-trade conversions happen same-week as RTT — curves are flat after Wk 0` },
     { color: '#94a3b8', txt: `Shorter lines = recent cohorts with less elapsed time — they will mature rightward in future weeks` },
+    { color: '#fca5a5', txt: '⚠ Jun 1–7 cohort: excl. 36 Poland bots → same-week conv% ~22.2% (vs 27.8% reported). Jun 1–7 cohort curve will shift down once bots excluded.' },
   ]);
 })();
 
@@ -3484,16 +3488,20 @@ setEl('s5-orders', num(D.kpi_orders.this));
 setEl('s5-avgg',   cr(D.kpi_gtv.avg));
 setEl('s5-repeat', `₹${D.gtv_mtd_this}cr vs ₹${D.gtv_mtd_prev}cr`);
 const gtvRepeat = (D.gtv||[]).map((v,i) => +((v - (D.gtv_first[i]||0)).toFixed(2)));
+var _ordClean = D.orders.slice(); _ordClean[_ordClean.length-1] = D.orders[D.orders.length-1] - 36;
+var _gtvClean = D.gtv.slice();   _gtvClean[_gtvClean.length-1] = +(D.gtv[D.gtv.length-1] * ((_ordClean[_ordClean.length-1]) / D.orders[D.orders.length-1])).toFixed(2);
 mkChart('chart-gtv', [
   { type: 'bar', label: 'Repeat GTV (₹cr)',      data: gtvRepeat,   yAxisID: 'y2',
     backgroundColor: AMBER + 'bb', borderColor: AMBER,    borderWidth: 1, borderRadius: 3, stack: 'gtv' },
   { type: 'bar', label: 'First-time GTV (₹cr)',  data: D.gtv_first, yAxisID: 'y2',
     backgroundColor: '#10b981bb', borderColor: '#10b981', borderWidth: 1, borderRadius: 3, stack: 'gtv' },
   line('Orders', D.orders, ROSE),
+  Object.assign(line('Orders (excl. Poland bots)', _ordClean, '#fda4af'), { borderDash: [6,3], borderWidth: 1.8, pointRadius: 0, pointHoverRadius: 4 }),
 ], { y2: { position: 'right', grid: { display: false }, ticks: { font: { size: 8 } }, stacked: true } });
 insights('ins-s5', [
   { color: ROSE,  txt: `${D.mtd_month_this} MTD GTV: ₹${D.gtv_mtd_this}cr vs ₹${D.gtv_mtd_prev}cr (${D.mtd_month_prev} same day)` },
   { color: AMBER, txt: `7-wk avg GTV: ${cr(D.kpi_gtv.avg)} · orders prior wk: ${num(D.kpi_orders.last)}` },
+  { color: '#fda4af', txt: `‒‒ Excl. 36 Poland bots: 536 orders · GTV ~₹${_gtvClean[_gtvClean.length-1]}cr (est.)` },
 ]);
 
 // ── Slide 7: GTV by Issuer — WoW grouped bars ──────────────────────────────
