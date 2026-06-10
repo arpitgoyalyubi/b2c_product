@@ -3283,11 +3283,14 @@ setEl('s3-last', num(D.kpi_investors.last));
 setEl('s3-avg',  num(D.kpi_investors.avg));
 setEl('s3-conv', pct(D.kpi_rtt_cohort_conv.this));
 var _payClean = D.payments.slice(); _payClean[_payClean.length-1] = D.payments[D.payments.length-1] - 36;
+var _rttConvClean = D.rtt_cohort_conv_pct.slice();
+(function() { var _rL = D.rtt[D.rtt.length-1], _cL = D.rtt_cohort_conv_pct[D.rtt_cohort_conv_pct.length-1]; _rttConvClean[_rttConvClean.length-1] = +((Math.round(_cL * _rL / 100) - 36) / _rL * 100).toFixed(1); })();
 mkChart('chart-rtt', [
   bar('RTT Users',      D.rtt,                 GREEN),
   bar('Investors',      D.payments,            BLUE),
   line('Cohort Conv%',  D.rtt_cohort_conv_pct, AMBER, 'y2'),
   Object.assign(line('Investors (excl. Poland bots)', _payClean, '#93c5fd'), { borderDash: [6,3], borderWidth: 1.8, pointRadius: 0, pointHoverRadius: 4 }),
+  Object.assign(line('Conv% (excl. bots)', _rttConvClean, AMBER, 'y2'), { borderDash: [6,3], borderWidth: 1.8, pointRadius: 0, pointHoverRadius: 4, borderColor: AMBER + '99' }),
 ], Y2_PCT);
 insights('ins-s3', [
   { color: BLUE,  txt: `Investors: ${num(D.kpi_investors.this)} last wk vs ${num(D.kpi_investors.last)} prior wk · 7-wk avg: ${num(D.kpi_investors.avg)}` },
@@ -3427,6 +3430,37 @@ const TEAL = '#14b8a6';
       }
 
       table.appendChild(row);
+
+      // Poland bot annotation sub-row — newest cohort (Jun 1–7) only
+      if (ri === 0) {
+        const POLAND_N = 36, rttN = D.rtt[i];
+        const botRow = document.createElement('div');
+        botRow.className = 'wf-row';
+        botRow.style.cssText = 'background:rgba(239,68,68,.07);border-radius:4px;margin-top:-2px;margin-bottom:4px;';
+        const bLbl = document.createElement('div'); bLbl.className = 'wf-lbl';
+        bLbl.innerHTML = '<span style="color:#fca5a5;font-size:.58rem;font-style:italic;">\u229d excl. 36 bots</span>';
+        botRow.appendChild(bLbl);
+        const bRtt = document.createElement('div'); bRtt.className = 'wf-rtt';
+        bRtt.innerHTML = '<span style="color:#fca5a5;font-size:.58rem;">' + rttN + '</span>';
+        botRow.appendChild(bRtt);
+        const bTrack = document.createElement('div'); bTrack.className = 'wf-track';
+        bTrack.style.background = 'rgba(239,68,68,.1)';
+        botRow.appendChild(bTrack);
+        for (let e = 0; e < 5; e++) {
+          const v = vals[e];
+          const bd = document.createElement('div'); bd.className = 'wf-v';
+          if (v !== null) {
+            const raw = Math.round(v / 100 * rttN);
+            const clean = Math.max(0, raw - POLAND_N);
+            bd.textContent = (clean / rttN * 100).toFixed(1) + '%';
+            bd.style.color = '#fca5a5'; bd.style.fontSize = '.6rem';
+          } else {
+            bd.textContent = '\u2014'; bd.style.color = '#e5e7eb'; bd.style.fontSize = '.6rem';
+          }
+          botRow.appendChild(bd);
+        }
+        table.appendChild(botRow);
+      }
     });
 
     // Footnote for partial cells
