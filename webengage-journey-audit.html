@@ -195,9 +195,9 @@
     <div class="sub">Full-funnel coverage review · Signup → KYC → First Investment · June 10, 2026</div>
     <div class="hero-grid">
       <div class="hero-tile">
-        <div class="val">2 of 8</div>
+        <div class="val">3 of 8</div>
         <div class="lbl">KYC journeys critically broken</div>
-        <div class="badge badge-red">🔴 Wrong trigger events</div>
+        <div class="badge badge-red">🔴 Wrong trigger / ghost CVR</div>
       </div>
       <div class="hero-tile">
         <div class="val">11,360</div>
@@ -226,7 +226,7 @@
       <div class="kpi"><div class="val">1.2%</div><div class="lbl">Blended CVR</div></div>
       <div class="kpi"><div class="val">11,360</div><div class="lbl">Wasted sends (Selfie)</div></div>
       <div class="kpi"><div class="val">91–96%</div><div class="lbl">WA fail rate (KYC journeys)</div></div>
-      <div class="kpi"><div class="val">18.3%</div><div class="lbl">Best CVR (Profile Details)</div></div>
+      <div class="kpi" style="border-color:var(--red-border);background:var(--red-light)"><div class="val" style="color:var(--red)">18.3%</div><div class="lbl">Profile Details CVR — <strong>ghost data</strong> (deprecated event)</div></div>
     </div>
     <div style="background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:20px 22px;">
       <h3 style="margin-bottom:16px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-400)">CVR by Journey — 30 days</h3>
@@ -377,7 +377,7 @@
           <div class="status-dot dot-amber"></div>
           <div class="jcard-title">
             <h3>BANK(NEW)</h3>
-            <div class="meta">Trigger: KYC_ADDRESS_VERIFIED + KYC_PAN_VERIFIED filter · Conversion: KYC_BANK_VERIFIED</div>
+            <div class="meta">Trigger: KYC_ADDRESS_VERIFIED + KYC_PAN_VERIFIED filter · Conversion: KYC_BANK_VERIFIED (deprecated — should be KYC_BANK_VERIFIED_PD OR KYC_BANK_VERIFIED_REVERSE_PD)</div>
           </div>
           <div class="jcard-metrics">
             <div class="metric-pill"><div class="mval">18,418</div><div class="mlbl">30d sent</div></div>
@@ -389,7 +389,7 @@
         <div class="jcard-body">
           <div class="chips">
             <span class="chip chip-green">✓ Has entry filter (KYC_PAN_VERIFIED) — best designed KYC journey</span>
-            <span class="chip chip-amber">⚠ Wrong conversion event (single bank event vs OR of 3)</span>
+            <span class="chip chip-red">✗ Conversion event deprecated — KYC_BANK_VERIFIED no longer fires</span>
             <span class="chip chip-amber">⚠ Only 3 touchpoints vs PAN's 5</span>
             <span class="chip chip-red">✗ No exit on bank completion</span>
           </div>
@@ -408,15 +408,15 @@
               <p style="font-size:13px;margin-bottom:12px">Bank verification fires 3 different events depending on the path taken. The journey only listens to one. Users verifying via Penny Drop or UPI show as non-converted even when they completed bank successfully.</p>
               <table class="cmp">
                 <tr><th>Bank path</th><th>Event fired</th><th>Tracked?</th></tr>
-                <tr><td>Penny Drop (primary)</td><td><code>KYC_BANK_VERIFIED_PD</code></td><td style="color:var(--red)">❌ No</td></tr>
+                <tr><td>Penny Drop (primary, ~80% of users)</td><td><code>KYC_BANK_VERIFIED_PD</code></td><td style="color:var(--red)">❌ No</td></tr>
                 <tr><td>UPI / Reverse PD</td><td><code>KYC_BANK_VERIFIED_REVERSE_PD</code></td><td style="color:var(--red)">❌ No</td></tr>
-                <tr><td>Manual entry</td><td><code>KYC_BANK_VERIFIED</code></td><td style="color:var(--green)">✓ Yes</td></tr>
+                <tr><td>Legacy path (deprecated since Jan 2026)</td><td><code>KYC_BANK_VERIFIED</code></td><td style="color:var(--red)">⚠ No longer fires</td></tr>
               </table>
             </div>
           </div>
           <ul class="fix-list">
-            <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Fix conversion event: use <code>KYC_BANK_VERIFIED_PD</code> OR <code>KYC_BANK_VERIFIED_REVERSE_PD</code> OR <code>KYC_BANK_VERIFIED</code></span></li>
-            <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Add exit on bank completion (all 3 events) — stops post-conversion sends</span></li>
+            <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Fix conversion event: use <code>KYC_BANK_VERIFIED_PD</code> OR <code>KYC_BANK_VERIFIED_REVERSE_PD</code> (the only two active bank events — <code>KYC_BANK_VERIFIED</code> is deprecated since Jan 2026)</span></li>
+            <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Add exit on bank completion (<code>KYC_BANK_VERIFIED_PD</code> OR <code>KYC_BANK_VERIFIED_REVERSE_PD</code>) — stops post-conversion sends</span></li>
             <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Extend sequence: add D5 push + D7 push to match PAN journey depth. Bank is an equally hard step.</span></li>
           </ul>
         </div>
@@ -467,14 +467,14 @@
               <p style="font-size:12px;color:var(--gray-400);margin-top:10px">Zero conversions across all 3 channels, all 30 days. Not a performance problem — the journey is structurally impossible to convert.</p>
               <table class="cmp" style="margin-top:14px">
                 <tr><th>Field</th><th>Current</th><th>Should Be</th></tr>
-                <tr class="broken"><td>Trigger</td><td><code style="color:var(--red)">KYC_DEMAT_VERIFIED</code></td><td><code style="color:var(--green)">KYC_BANK_VERIFIED_PD</code> (+ OR variants)</td></tr>
+                <tr class="broken"><td>Trigger</td><td><code style="color:var(--red)">KYC_DEMAT_VERIFIED</code></td><td><code style="color:var(--green)">KYC_BANK_VERIFIED_PD</code> OR <code style="color:var(--green)">KYC_BANK_VERIFIED_REVERSE_PD</code></td></tr>
                 <tr class="changed"><td>Exit condition</td><td>None</td><td>On <code>KYC_LIVENESS_VERIFIED</code></td></tr>
                 <tr><td>Conversion</td><td><code>KYC_LIVENESS_VERIFIED</code> ✓</td><td>No change</td></tr>
               </table>
             </div>
           </div>
           <ul class="fix-list">
-            <li class="fix-item"><span class="fix-pri p0">P0</span><span class="fix-text">Fix trigger immediately: change from <code>KYC_DEMAT_VERIFIED</code> to <code>KYC_BANK_VERIFIED_PD</code> OR <code>KYC_BANK_VERIFIED_REVERSE_PD</code> OR <code>KYC_BANK_VERIFIED</code>. This is a one-field change.</span></li>
+            <li class="fix-item"><span class="fix-pri p0">P0</span><span class="fix-text">Fix trigger immediately: change from <code>KYC_DEMAT_VERIFIED</code> to <code>KYC_BANK_VERIFIED_PD</code> OR <code>KYC_BANK_VERIFIED_REVERSE_PD</code>. These are the only two active bank verification events. This is a one-field change.</span></li>
             <li class="fix-item"><span class="fix-pri p0">P0</span><span class="fix-text">Add exit on <code>KYC_LIVENESS_VERIFIED</code> — stops messaging users who complete selfie mid-journey</span></li>
           </ul>
         </div>
@@ -486,7 +486,7 @@
           <div class="status-dot dot-red"></div>
           <div class="jcard-title">
             <h3>🔴 DEMAT (NEW) — 99% Entry Collapse Since Jan 2026</h3>
-            <div class="meta">Trigger: KYC_BANK_VERIFIED (manual only) · Was: 18,100 entries/month → Now: 198/month</div>
+            <div class="meta">Trigger: KYC_BANK_VERIFIED (deprecated — no longer fires) · Was: 18,100 entries/month → Now: 198/month</div>
           </div>
           <div class="jcard-metrics">
             <div class="metric-pill"><div class="mval">198</div><div class="mlbl">30d sent</div></div>
@@ -498,7 +498,7 @@
         <div class="jcard-body">
           <div style="background:var(--red-light);border:1px solid var(--red-border);border-radius:8px;padding:14px 16px;margin-bottom:16px;">
             <strong style="color:var(--red)">Root Cause:</strong>
-            <p style="font-size:13px;margin-top:6px;color:#7F1D1D">Bank flow redesigned January 20, 2026. Most users now verify via Penny Drop (<code>KYC_BANK_VERIFIED_PD</code>) or UPI (<code>KYC_BANK_VERIFIED_REVERSE_PD</code>). The journey only triggers on <code>KYC_BANK_VERIFIED</code> (manual entry) — now a minor path. Historical entries: ~18,100. Last 30 days: 198. The nudge itself works (36.8% D1 CVR) — it just isn't reaching anyone.</p>
+            <p style="font-size:13px;margin-top:6px;color:#7F1D1D">Bank flow redesigned January 20, 2026. All users now verify via Penny Drop (<code>KYC_BANK_VERIFIED_PD</code>) or UPI (<code>KYC_BANK_VERIFIED_REVERSE_PD</code>). The journey only triggers on <code>KYC_BANK_VERIFIED</code> — a deprecated legacy event that no longer fires in the app. Historical entries (pre-Jan 2026): ~18,100. Last 30 days: 198 (residual from a tiny legacy path). The nudge itself works (36.8% D1 CVR) — it just isn't reaching anyone.</p>
           </div>
           <div class="body-grid">
             <div class="body-col">
@@ -519,7 +519,7 @@
             </div>
           </div>
           <ul class="fix-list">
-            <li class="fix-item"><span class="fix-pri p0">P0</span><span class="fix-text">Fix trigger: add <code>KYC_BANK_VERIFIED_PD</code> OR <code>KYC_BANK_VERIFIED_REVERSE_PD</code> as entry events (alongside existing <code>KYC_BANK_VERIFIED</code>). One configuration change restores ~4,000+ entries/month.</span></li>
+            <li class="fix-item"><span class="fix-pri p0">P0</span><span class="fix-text">Fix trigger: replace deprecated <code>KYC_BANK_VERIFIED</code> with <code>KYC_BANK_VERIFIED_PD</code> OR <code>KYC_BANK_VERIFIED_REVERSE_PD</code>. One configuration change restores ~4,000+ entries/month.</span></li>
             <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Add exit on <code>KYC_DEMAT_VERIFIED</code></span></li>
           </ul>
         </div>
@@ -531,7 +531,7 @@
           <div class="status-dot dot-amber"></div>
           <div class="jcard-title">
             <h3>E-SIGN (NEW)</h3>
-            <div class="meta">Conversion: KYC_ESIGN_SUCCESS · Trigger event needs verification</div>
+            <div class="meta">Conversion: KYC_ESIGN_SUCCESS · Trigger: KYC_ADDITIONAL_DETAIL_SUBMIT (deprecated) — verify and update to KYC_WET_SIGNATURE_VERIFIED</div>
           </div>
           <div class="jcard-metrics">
             <div class="metric-pill"><div class="mval">6,512</div><div class="mlbl">30d sent</div></div>
@@ -543,7 +543,7 @@
         <div class="jcard-body">
           <div class="chips">
             <span class="chip chip-green">✓ Solid CVR (5.4%)</span>
-            <span class="chip chip-amber">⚠ Trigger event needs verification — may be deprecated</span>
+            <span class="chip chip-red">✗ Trigger KYC_ADDITIONAL_DETAIL_SUBMIT is deprecated — update to KYC_WET_SIGNATURE_VERIFIED</span>
             <span class="chip chip-red">✗ WA 96% fail rate</span>
             <span class="chip chip-red">✗ No exit on KYC_ESIGN_SUCCESS</span>
           </div>
@@ -561,7 +561,7 @@
               <h4>Trigger event risk</h4>
               <p style="font-size:13px;margin-bottom:10px">The journey's entry trigger should be verified. If the trigger event is deprecated/no longer fired, this journey will stop receiving entries (similar to what happened to the Demat journey). Push CVR of 10.4% means this is worth protecting.</p>
               <ul class="fix-list">
-                <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Verify trigger event is still actively fired. If deprecated, update to the correct preceding event (e.g. <code>KYC_WET_SIGNATURE_VERIFIED</code>).</span></li>
+                <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Fix trigger: <code>KYC_ADDITIONAL_DETAIL_SUBMIT</code> is deprecated. Update to <code>KYC_WET_SIGNATURE_VERIFIED</code> (S8 → S9 transition). Confirm journey is still receiving entries before this change.</span></li>
                 <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Remove or gate WA send — 96% fail rate, 87 delivered out of 1,966 sent. Wasting quota.</span></li>
                 <li class="fix-item"><span class="fix-pri p2">P2</span><span class="fix-text">Add D5 push for high-intent users who need more time to complete eSign</span></li>
               </ul>
@@ -570,49 +570,64 @@
         </div>
       </div>
 
-      <!-- ─ 7. PROFILE DETAILS ─ -->
-      <div class="jcard" id="j-profile">
-        <div class="jcard-header" onclick="toggle('j-profile')">
-          <div class="status-dot dot-green"></div>
+      <!-- ─ 7. PROFILE DETAILS ─ CRITICAL ─ -->
+      <div class="jcard open" id="j-profile">
+        <div class="jcard-header" onclick="toggle('j-profile')" style="background:var(--red-light)">
+          <div class="status-dot dot-red"></div>
           <div class="jcard-title">
-            <h3>Capturing Profile Details (NEW)</h3>
-            <div class="meta">Trigger: KYC_LIVENESS_VERIFIED · Highest CVR journey (18.3%)</div>
+            <h3>🔴 Capturing Profile Details (NEW) — FULLY BROKEN</h3>
+            <div class="meta">Trigger: KYC_LIVENESS_VERIFIED (wrong stage) · Conversion: KYC_ADDITIONAL_DETAIL_SUBMIT (deprecated) · Reported 18.3% CVR is ghost data</div>
           </div>
           <div class="jcard-metrics">
             <div class="metric-pill"><div class="mval">813</div><div class="mlbl">30d sent</div></div>
-            <div class="metric-pill"><div class="mval">149</div><div class="mlbl">conversions</div></div>
-            <div class="metric-pill cvr-good"><div class="mval">18.3%</div><div class="mlbl">CVR</div></div>
+            <div class="metric-pill"><div class="mval">149*</div><div class="mlbl">reported convs</div></div>
+            <div class="metric-pill cvr-bad"><div class="mval">0%</div><div class="mlbl">real CVR</div></div>
           </div>
           <div class="chevron">▾</div>
         </div>
         <div class="jcard-body">
+          <div style="background:var(--red-light);border:1px solid var(--red-border);border-radius:8px;padding:14px 16px;margin-bottom:16px;">
+            <strong style="color:var(--red)">Two Critical Failures:</strong>
+            <ol style="font-size:13px;margin-top:8px;color:#7F1D1D;padding-left:20px;display:flex;flex-direction:column;gap:6px">
+              <li><strong>Wrong trigger stage:</strong> "Profile Details" = Risk Profiling = <code>KYC_RISKDETAILS_SUBMIT</code> — this step comes <em>immediately after signup</em> (Stage 4). The trigger <code>KYC_LIVENESS_VERIFIED</code> fires at Stage 7, after the user has already long passed this step. Users triggered here cannot go backwards.</li>
+              <li><strong>Deprecated conversion event:</strong> <code>KYC_ADDITIONAL_DETAIL_SUBMIT</code> is no longer fired in the app. The 149 "conversions" and 18.3% CVR in the 30-day report are stale ghost data — this event no longer exists. Real CVR = 0%.</li>
+            </ol>
+          </div>
           <div class="chips">
-            <span class="chip chip-green">✓ Highest CVR across all journeys (18.3%)</span>
-            <span class="chip chip-green">✓ Correct trigger stage (post-liveness)</span>
-            <span class="chip chip-amber">⚠ Very low volume (813 sends) — capacity being wasted</span>
-            <span class="chip chip-amber">⚠ Conversion event needs verification</span>
-            <span class="chip chip-red">✗ 67% push fail rate on D1</span>
+            <span class="chip chip-red">🔴 Trigger fires at Stage 7 — target step is Stage 4</span>
+            <span class="chip chip-red">🔴 Conversion event deprecated — all reported CVR is ghost data</span>
+            <span class="chip chip-red">✗ No exit condition</span>
+            <span class="chip chip-red">✗ Content misaligned — "profile details" messaging sent to Stage 7 users</span>
           </div>
           <div class="body-grid">
             <div class="body-col">
-              <h4>30d channel breakdown</h4>
-              <div style="margin-top:8px">
-                <div class="bar-row"><div class="bar-label">Push 1 (537)</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--green)"></div></div><div class="bar-val" style="color:var(--green)">25.9%</div></div>
-                <div class="bar-row"><div class="bar-label">Push 2 (136)</div><div class="bar-track"><div class="bar-fill" style="width:17%;background:var(--blue)"></div></div><div class="bar-val">4.4%</div></div>
-                <div class="bar-row"><div class="bar-label">WA (140)</div><div class="bar-track"><div class="bar-fill" style="width:11%;background:var(--amber)"></div></div><div class="bar-val">2.9%</div></div>
+              <h4>Funnel stage mismatch</h4>
+              <div class="flow" style="flex-direction:column;align-items:flex-start;gap:4px">
+                <div style="display:flex;align-items:center;gap:8px"><div class="flow-node ok">S3: SETUP_SECURE_PIN_SUCCESS</div><span style="font-size:12px;color:var(--green)">← journey should trigger HERE</span></div>
+                <div style="padding-left:10px;color:var(--gray-400);font-size:13px">↓</div>
+                <div class="flow-node" style="background:var(--green-light);border-color:var(--green-border);color:#065F46">S4: KYC_RISKDETAILS_SUBMIT ← target step (Profile/Risk Details)</div>
+                <div style="padding-left:10px;color:var(--gray-400);font-size:13px">↓ ... 3 more stages ...</div>
+                <div class="flow-node wrong">S7: KYC_LIVENESS_VERIFIED ← current (wrong) trigger</div>
               </div>
-              <p style="font-size:12px;color:var(--green);margin-top:8px;font-weight:600">25.9% CVR on D1 push — among the strongest nudge signals in the funnel.</p>
+              <p style="font-size:12px;color:var(--gray-400);margin-top:10px">Every user triggered here is already 3 stages past "Profile Details". They cannot do KYC_RISKDETAILS_SUBMIT again.</p>
             </div>
             <div class="body-col">
-              <h4>Volume gap</h4>
-              <p style="font-size:13px;margin-bottom:10px">Journey entered: 7,900 total (historical). Last 30 days: only 813 sends. With 25.9% CVR, every incremental user entered here produces a high-probability conversion. Investigate why entry volume is low relative to the number of users completing liveness.</p>
-              <ul class="fix-list">
-                <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Verify conversion event is actively fired. If deprecated, update to correct completion event for this step.</span></li>
-                <li class="fix-item"><span class="fix-pri p2">P2</span><span class="fix-text">Investigate why only 813 sends out of ~7.9K historical entries — check if journey entry/send rate dropped recently</span></li>
-                <li class="fix-item"><span class="fix-pri p2">P2</span><span class="fix-text">Investigate 67% push fail rate — highest of any journey. Push opt-in may degrade by this stage.</span></li>
-              </ul>
+              <h4>How to fix</h4>
+              <table class="cmp">
+                <tr><th>Field</th><th>Current</th><th>Should Be</th></tr>
+                <tr class="broken"><td>Trigger</td><td><code style="color:var(--red)">KYC_LIVENESS_VERIFIED</code> (S7)</td><td><code style="color:var(--green)">SETUP_SECURE_PIN_SUCCESS</code> (S3)</td></tr>
+                <tr class="broken"><td>Conversion event</td><td><code style="color:var(--red)">KYC_ADDITIONAL_DETAIL_SUBMIT</code> (deprecated)</td><td><code style="color:var(--green)">KYC_RISKDETAILS_SUBMIT</code></td></tr>
+                <tr class="changed"><td>Exit condition</td><td>None</td><td>On <code>KYC_RISKDETAILS_SUBMIT</code></td></tr>
+                <tr class="changed"><td>Content</td><td>"Complete profile details"</td><td>"Start your KYC — takes 10 min" (same as ADDRESS VERIFIED fix)</td></tr>
+              </table>
+              <p style="font-size:12px;color:var(--amber);margin-top:10px;font-weight:600">⚠ Note: Once fixed, this journey becomes a duplicate of ADDRESS VERIFIED. Consider merging into one "KYC Start" journey with correct trigger + conversion event.</p>
             </div>
           </div>
+          <ul class="fix-list" style="margin-top:16px">
+            <li class="fix-item"><span class="fix-pri p0">P0</span><span class="fix-text">Fix trigger: change from <code>KYC_LIVENESS_VERIFIED</code> to <code>SETUP_SECURE_PIN_SUCCESS</code>. Profile Details / Risk Profiling is Stage 4 — right after signup.</span></li>
+            <li class="fix-item"><span class="fix-pri p0">P0</span><span class="fix-text">Fix conversion event: change from <code>KYC_ADDITIONAL_DETAIL_SUBMIT</code> (deprecated, no longer fired) to <code>KYC_RISKDETAILS_SUBMIT</code>. The 149 reported conversions are ghost data.</span></li>
+            <li class="fix-item"><span class="fix-pri p1">P1</span><span class="fix-text">Consider merging with ADDRESS VERIFIED journey — after both fixes, both journeys have the same trigger, same conversion event, and same goal. One well-configured "KYC Start" journey is cleaner.</span></li>
+          </ul>
         </div>
       </div>
 
@@ -737,6 +752,27 @@
       <div>Technically harder — WebEngage identity may not exist for S1 dropoffs. S2 dropoffs (phone verified) can be reached via push if app installed. Lower priority but worth exploring as signup volumes grow.</div>
     </div>
 
+    <div class="missing-row" style="border-left:3px solid var(--red)">
+      <div><strong>KRA Check Failed / Pending</strong><br/><span style="font-size:12px;color:var(--gray-400)">KRA status not received via webhook or KRA check returned failure</span></div>
+      <div><span class="tag tag-event">Post KYC_DEMAT_VERIFIED</span></div>
+      <div>Push, Email</div>
+      <div>Users who complete full KYC can be blocked from trading if KRA (KYC Registration Agency) check fails or webhook is delayed. No journey exists to communicate status, set expectations, or guide re-submission. These users are lost silently — they completed 10+ steps and are stuck at the last gate. High frustration, high-value recovery opportunity.</div>
+    </div>
+
+    <div class="missing-row" style="border-left:3px solid var(--red)">
+      <div><strong>Repeat Investment / Re-engagement</strong><br/><span style="font-size:12px;color:var(--gray-400)">Post first investment — no journeys for existing investors</span></div>
+      <div><span class="tag tag-event">Post PAYMENT_SUCCESSFUL</span></div>
+      <div>Push, Email, WhatsApp</div>
+      <div>Zero journeys exist for users who have already invested. No maturity nudge (bond maturing soon → reinvest), no portfolio milestone comms, no new bond alerts, no dormancy re-engagement. The entire CRM journey coverage ends at first investment. This is the highest-LTV user segment and it has no retention infrastructure at all.</div>
+    </div>
+
+    <div class="missing-row" style="border-left:3px solid var(--amber)">
+      <div><strong>Biometrics Setup</strong><br/><span style="font-size:12px;color:var(--gray-400)">Post-PIN setup — prompt to enable fingerprint/face login</span></div>
+      <div><span class="tag tag-event">Post SETUP_SECURE_PIN_SUCCESS</span></div>
+      <div>In-app / Push</div>
+      <div>Users who set a PIN but don't enable biometrics have higher session friction. A nudge at D1–D3 post-signup to enable biometric login can improve session-start rates and reduce re-authentication drop. No journey exists for this today.</div>
+    </div>
+
   </div>
 
   <!-- ── SYSTEM ISSUES ── -->
@@ -786,14 +822,14 @@
         <tr>
           <td><span class="fix-pri p0">P0</span></td>
           <td>Selfie Capture</td>
-          <td>Fix trigger: <code>KYC_DEMAT_VERIFIED</code> → <code>KYC_BANK_VERIFIED_PD</code> OR all 3 bank events. Add exit on <code>KYC_LIVENESS_VERIFIED</code>.</td>
+          <td>Fix trigger: <code>KYC_DEMAT_VERIFIED</code> → <code>KYC_BANK_VERIFIED_PD</code> OR <code>KYC_BANK_VERIFIED_REVERSE_PD</code>. Add exit on <code>KYC_LIVENESS_VERIFIED</code>.</td>
           <td><span class="tag tag-event">Event fix</span></td>
           <td>Stop 11K wasted sends/month; restore liveness nudge</td>
         </tr>
         <tr>
           <td><span class="fix-pri p0">P0</span></td>
           <td>DEMAT</td>
-          <td>Add <code>KYC_BANK_VERIFIED_PD</code> + <code>KYC_BANK_VERIFIED_REVERSE_PD</code> as entry triggers alongside existing event.</td>
+          <td>Replace deprecated <code>KYC_BANK_VERIFIED</code> trigger with <code>KYC_BANK_VERIFIED_PD</code> OR <code>KYC_BANK_VERIFIED_REVERSE_PD</code>.</td>
           <td><span class="tag tag-event">Event fix</span></td>
           <td>Restore 198 → ~4,000+ entries/month. D1 CVR 36.8% — highest potential.</td>
         </tr>
@@ -812,6 +848,13 @@
           <td>Correctly measure + nudge the 70% KYC start gap</td>
         </tr>
         <tr>
+          <td><span class="fix-pri p0">P0</span></td>
+          <td>Profile Details</td>
+          <td>Fix trigger: <code>KYC_LIVENESS_VERIFIED</code> → <code>SETUP_SECURE_PIN_SUCCESS</code>. Fix conversion event: <code>KYC_ADDITIONAL_DETAIL_SUBMIT</code> (deprecated) → <code>KYC_RISKDETAILS_SUBMIT</code>. The reported 18.3% CVR is ghost data — real CVR = 0%.</td>
+          <td><span class="tag tag-event">Event fix (both)</span></td>
+          <td>Stop ghost CVR reporting; restore a functioning signup-to-KYC nudge</td>
+        </tr>
+        <tr>
           <td><span class="fix-pri p1">P1</span></td>
           <td>All KYC journeys</td>
           <td>Add exit-on-completion event to every KYC journey (Address, PAN, Bank, eSign, Selfie, Demat).</td>
@@ -828,14 +871,14 @@
         <tr>
           <td><span class="fix-pri p1">P1</span></td>
           <td>BANK</td>
-          <td>Fix conversion event to OR of all 3 bank events. Add D5 + D7 push steps.</td>
+          <td>Fix conversion event: <code>KYC_BANK_VERIFIED</code> (deprecated) → <code>KYC_BANK_VERIFIED_PD</code> OR <code>KYC_BANK_VERIFIED_REVERSE_PD</code>. Add D5 + D7 push steps.</td>
           <td><span class="tag tag-event">Event + sequence</span></td>
           <td>Accurate measurement + more touchpoints for a hard step</td>
         </tr>
         <tr>
           <td><span class="fix-pri p1">P1</span></td>
           <td>E-Sign</td>
-          <td>Verify trigger event still fires. Remove/gate WA (96% fail rate). Add D5 push.</td>
+          <td>Fix trigger: <code>KYC_ADDITIONAL_DETAIL_SUBMIT</code> (deprecated) → <code>KYC_WET_SIGNATURE_VERIFIED</code>. Remove/gate WA (96% fail rate). Add D5 push.</td>
           <td><span class="tag tag-event">Event verify</span></td>
           <td>Protect 10.4% D1 push CVR — highest-converting push in KYC journeys</td>
         </tr>
@@ -845,6 +888,20 @@
           <td>Add entry filter: NOT done <code>KYC_RISKDETAILS_SUBMIT</code>.</td>
           <td><span class="tag tag-journey">Journey config</span></td>
           <td>Stop already-KYC'd users receiving signup nudges</td>
+        </tr>
+        <tr>
+          <td><span class="fix-pri p1">P1</span></td>
+          <td>New journey</td>
+          <td>Create KRA Check Failure journey: trigger on KRA failure/pending webhook → push + email with status + next steps. Gate on KYC complete + trade-blocked state.</td>
+          <td><span class="tag tag-new">New journey</span></td>
+          <td>Silent loss of users who completed all 10 KYC steps but are blocked at KRA gate</td>
+        </tr>
+        <tr>
+          <td><span class="fix-pri p1">P1</span></td>
+          <td>New journey</td>
+          <td>Create Repeat Investor re-engagement journey: post <code>PAYMENT_SUCCESSFUL</code> — maturity alert, portfolio milestone, new bond alert, dormancy nudge (no invest in 60d).</td>
+          <td><span class="tag tag-new">New journey</span></td>
+          <td>Zero CRM coverage for existing investors — the highest-LTV segment</td>
         </tr>
         <tr>
           <td><span class="fix-pri p2">P2</span></td>
@@ -903,17 +960,17 @@ new Chart(document.getElementById('cvrChart'), {
   type: 'bar',
   data: {
     labels: [
-      'Profile Details','E-Sign','Payment Recovery',
-      'Ready to Trade','Address Verified',
-      'PAN','DEMAT*','BANK','Selfie Capture'
+      'E-Sign','Payment Recovery','Ready to Trade',
+      'Address Verified','DEMAT†','PAN','BANK',
+      'Selfie Capture','Profile Details‡'
     ],
     datasets: [{
       label: '30d CVR %',
-      data: [18.3, 5.4, 3.3, 1.1, 1.3, 0.2, 12.6, 0.05, 0.0],
+      data: [5.4, 3.3, 1.1, 1.3, 12.6, 0.2, 0.05, 0.0, 0.0],
       backgroundColor: [
-        '#10B981','#10B981','#10B981',
-        '#F59E0B','#F59E0B',
-        '#F59E0B','#94A3B8','#EF4444','#EF4444'
+        '#10B981','#10B981','#F59E0B',
+        '#F59E0B','#94A3B8','#F59E0B','#EF4444',
+        '#EF4444','#EF4444'
       ],
       borderRadius: 5,
     }]
@@ -927,9 +984,9 @@ new Chart(document.getElementById('cvrChart'), {
           label: ctx => ` CVR: ${ctx.raw}%`,
           afterLabel: ctx => {
             const notes = {
-              'DEMAT*': '* Only 198 sends — broken trigger. D1 CVR = 36.8%',
-              'Selfie Capture': '0 conversions in 30 days — wrong trigger',
-              'Profile Details': 'Tiny volume (813 sends) — capacity wasted',
+              'DEMAT†': '† Only 198 sends — deprecated trigger event. D1 CVR = 36.8% when it fires.',
+              'Selfie Capture': '🔴 0 conversions — trigger fires AFTER liveness already done.',
+              'Profile Details‡': '🔴 Ghost CVR — conversion event deprecated. Real CVR = 0%. Wrong trigger stage.',
             };
             return notes[ctx.label] || '';
           }
