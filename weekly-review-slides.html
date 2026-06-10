@@ -1337,88 +1337,98 @@ function sdoToggle(g){
           </div>
         </div>
 
-        <!-- Before vs After -->
-        <div>
-          <div style="font-size:.68rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px;">Before vs After</div>
-          <div style="display:flex;gap:10px;">
+        <!-- ── 4-KPI impact strip ─────────────────────────────────────────── -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;">
 
-            <div style="flex:1;background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:13px 14px;">
-              <div style="font-size:.6rem;font-weight:700;color:#dc2626;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">&#10007; Before &#160;&#160;avg May 11&#8211;Jun 2</div>
-              <div style="font-size:1.55rem;font-weight:800;color:#dc2626;line-height:1.1;margin-bottom:2px;">~144<span style="font-size:.72rem;font-weight:400;color:#9ca3af;"> users/week</span></div>
-              <div style="font-size:.62rem;color:#6b7280;margin-bottom:7px;">hard-blocked at KRA gate</div>
-              <div style="height:1px;background:#fecaca;margin-bottom:6px;"></div>
-              <div style="font-size:.68rem;color:#374151;margin-bottom:2px;"><b style="color:#dc2626;">22.2%</b> of PAN-verified blocked</div>
-              <div style="font-size:.68rem;color:#374151;">PAN &#8594; Demat: <b>55.1%</b></div>
-            </div>
-
-            <div style="flex:1;background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:13px 14px;">
-              <div style="font-size:.6rem;font-weight:700;color:#16a34a;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">&#10003; After &#160;&#160;Jun 3&#8211;10 Jun</div>
-              <div style="font-size:1.55rem;font-weight:800;color:#16a34a;line-height:1.1;margin-bottom:2px;">57<span style="font-size:.72rem;font-weight:400;color:#9ca3af;"> unblocked</span></div>
-              <div style="font-size:.62rem;color:#6b7280;margin-bottom:7px;">KRA validated via CVL</div>
-              <div style="height:1px;background:#86efac;margin-bottom:6px;"></div>
-              <div style="font-size:.68rem;color:#374151;margin-bottom:2px;"><b style="color:#16a34a;">0%</b> hard-blocked (CVL path for all)</div>
-              <div style="font-size:.68rem;color:#374151;margin-bottom:2px;">PAN &#8594; Demat: <b style="color:#16a34a;">61.8%</b> <span style="color:#16a34a;font-weight:700;">(+6.7pp)</span></div>
-              <div style="font-size:.68rem;color:#374151;">GTV recovered: <b style="color:#16a34a;">&#8377;3.8L</b></div>
-            </div>
-
+          <div style="background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:11px 10px;text-align:center;">
+            <div style="font-size:.52rem;font-weight:700;color:#dc2626;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">Blocked / wk before</div>
+            <div style="font-size:1.9rem;font-weight:800;color:#dc2626;line-height:1;">~144</div>
+            <div style="font-size:.58rem;color:#9ca3af;margin-top:3px;">22.2% of PAN users</div>
           </div>
+
+          <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:11px 10px;text-align:center;">
+            <div style="font-size:.52rem;font-weight:700;color:#16a34a;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">Blocked now</div>
+            <div style="font-size:1.9rem;font-weight:800;color:#16a34a;line-height:1;">0</div>
+            <div style="font-size:.58rem;color:#9ca3af;margin-top:3px;">57 unblocked Jun 3+</div>
+          </div>
+
+          <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:11px 10px;text-align:center;">
+            <div style="font-size:.52rem;font-weight:700;color:#16a34a;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">PAN &#8594; Demat lift</div>
+            <div style="font-size:1.9rem;font-weight:800;color:#16a34a;line-height:1;">+6.7pp</div>
+            <div style="font-size:.58rem;color:#9ca3af;margin-top:3px;">55.1% &#8594; 61.8%</div>
+          </div>
+
+          <div style="background:#fdf4ff;border:1.5px solid #e9d5ff;border-radius:10px;padding:11px 10px;text-align:center;">
+            <div style="font-size:.52rem;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">GTV recovered</div>
+            <div style="font-size:1.9rem;font-weight:800;color:#7c3aed;line-height:1;">&#8377;3.8L</div>
+            <div style="font-size:.58rem;color:#9ca3af;margin-top:3px;">Jun 3&#8211;10 Jun</div>
+          </div>
+
         </div>
 
-        <!-- Are unblocked users real investors? -->
-        <div>
-          <div style="font-size:.68rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px;">
-            Are Unblocked Users Real Investors?
-            <span style="font-weight:400;color:#9ca3af;font-size:.63rem;text-transform:none;">(Jun 3&#8211;10 Jun, same window)</span>
+        <!-- ── Investor quality card ──────────────────────────────────────── -->
+        <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:13px 16px;">
+          <div style="font-size:.65rem;font-weight:700;color:#374151;margin-bottom:10px;">
+            Do unblocked users invest?
+            <span style="font-weight:400;color:#9ca3af;font-size:.62rem;">first-trade conversion, Jun 3&#8211;10 Jun</span>
           </div>
-          <div style="display:flex;gap:10px;margin-bottom:7px;">
 
-            <div style="flex:1;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:10px;padding:12px 13px;text-align:center;">
-              <div style="font-size:.58rem;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Unblocked (CVL upload)</div>
-              <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:6px;">
-                <div style="text-align:center;">
-                  <div style="font-size:1.4rem;font-weight:800;color:#1d4ed8;line-height:1.1;">75</div>
-                  <div style="font-size:.62rem;color:#6b7280;margin-top:2px;">Upload</div>
+          <div style="display:flex;align-items:stretch;gap:10px;">
+
+            <!-- Unblocked funnel -->
+            <div style="flex:1;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:8px;padding:10px 12px;">
+              <div style="font-size:.55rem;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Unblocked (CVL)</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                <div style="text-align:center;min-width:36px;">
+                  <div style="font-size:1.5rem;font-weight:800;color:#1d4ed8;line-height:1;">75</div>
+                  <div style="font-size:.57rem;color:#9ca3af;margin-top:2px;">upload</div>
                 </div>
-                <div style="text-align:center;line-height:1.2;">
-                  <div style="font-size:.62rem;color:#059669;font-weight:700;">68.0%</div>
-                  <div style="font-size:.9rem;color:#9ca3af;">&#8594;</div>
+                <div style="flex:1;text-align:center;padding:0 4px;">
+                  <div style="font-size:.6rem;color:#059669;font-weight:700;">68.0%</div>
+                  <div style="border-top:1.5px solid #93c5fd;margin-top:3px;"></div>
                 </div>
-                <div style="text-align:center;">
-                  <div style="font-size:1.4rem;font-weight:800;color:#1d4ed8;line-height:1.1;">51</div>
-                  <div style="font-size:.62rem;color:#6b7280;margin-top:2px;">Demat</div>
+                <div style="text-align:center;min-width:36px;">
+                  <div style="font-size:1.5rem;font-weight:800;color:#1d4ed8;line-height:1;">51</div>
+                  <div style="font-size:.57rem;color:#9ca3af;margin-top:2px;">demat</div>
                 </div>
-                <div style="text-align:center;line-height:1.2;">
-                  <div style="font-size:.62rem;color:#d97706;font-weight:700;">29.4%</div>
-                  <div style="font-size:.9rem;color:#9ca3af;">&#8594;</div>
+                <div style="flex:1;text-align:center;padding:0 4px;">
+                  <div style="font-size:.6rem;color:#d97706;font-weight:700;">29.4%</div>
+                  <div style="border-top:1.5px solid #93c5fd;margin-top:3px;"></div>
                 </div>
-                <div style="text-align:center;">
-                  <div style="font-size:1.4rem;font-weight:800;color:#1d4ed8;line-height:1.1;">15</div>
-                  <div style="font-size:.62rem;color:#6b7280;margin-top:2px;">Traded</div>
+                <div style="text-align:center;min-width:36px;">
+                  <div style="font-size:1.5rem;font-weight:800;color:#1d4ed8;line-height:1;">15</div>
+                  <div style="font-size:.57rem;color:#9ca3af;margin-top:2px;">traded</div>
                 </div>
               </div>
-              <div style="font-size:.65rem;font-weight:700;color:#1d4ed8;">&#8377;3.8L GTV</div>
+              <div style="font-size:.63rem;font-weight:700;color:#1d4ed8;text-align:center;">&#8377;3.8L GTV</div>
             </div>
 
-            <div style="flex:1;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 13px;text-align:center;">
-              <div style="font-size:.58rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">KRA Validated (standard)</div>
-              <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:6px;">
-                <div style="text-align:center;">
-                  <div style="font-size:1.4rem;font-weight:800;color:#374151;line-height:1.1;">571</div>
-                  <div style="font-size:.62rem;color:#6b7280;margin-top:2px;">Demat</div>
+            <div style="display:flex;align-items:center;flex-shrink:0;">
+              <div style="font-size:.7rem;font-weight:700;color:#94a3b8;">vs</div>
+            </div>
+
+            <!-- Validated baseline -->
+            <div style="flex:1;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:8px;padding:10px 12px;">
+              <div style="font-size:.55rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">KRA Validated baseline</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                <div style="text-align:center;min-width:36px;">
+                  <div style="font-size:1.5rem;font-weight:800;color:#374151;line-height:1;">571</div>
+                  <div style="font-size:.57rem;color:#9ca3af;margin-top:2px;">demat</div>
                 </div>
-                <div style="text-align:center;line-height:1.2;">
-                  <div style="font-size:.62rem;color:#d97706;font-weight:700;">34.5%</div>
-                  <div style="font-size:.9rem;color:#9ca3af;">&#8594;</div>
+                <div style="flex:1;text-align:center;padding:0 4px;">
+                  <div style="font-size:.6rem;color:#d97706;font-weight:700;">34.5%</div>
+                  <div style="border-top:1.5px solid #cbd5e1;margin-top:3px;"></div>
                 </div>
-                <div style="text-align:center;">
-                  <div style="font-size:1.4rem;font-weight:800;color:#374151;line-height:1.1;">197</div>
-                  <div style="font-size:.62rem;color:#6b7280;margin-top:2px;">Traded</div>
+                <div style="text-align:center;min-width:36px;">
+                  <div style="font-size:1.5rem;font-weight:800;color:#374151;line-height:1;">197</div>
+                  <div style="font-size:.57rem;color:#9ca3af;margin-top:2px;">traded</div>
                 </div>
               </div>
             </div>
 
           </div>
-          <div style="font-size:.62rem;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:6px 9px;color:#92400e;line-height:1.5;">
+
+          <div style="margin-top:9px;font-size:.62rem;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:7px 10px;color:#92400e;line-height:1.5;">
             Non-validated: <b>29.4%</b> first-trade conv vs Validated: <b>34.5%</b> &#8212; gap to watch.
           </div>
         </div>
