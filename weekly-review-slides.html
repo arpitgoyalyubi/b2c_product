@@ -1598,7 +1598,7 @@
       </div>
 
       <!-- ── TAB: Overview ── -->
-      <div id="geo-tab-ov" style="display:flex;flex-direction:column;gap:10px;padding:12px 14px;overflow-y:auto;flex:1;">
+      <div id="geo-tab-ov" style="display:flex;flex-direction:column;gap:9px;padding:12px 14px;overflow-y:auto;flex:1;">
 
         <!-- 3 scorecards -->
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;flex-shrink:0;">
@@ -1631,48 +1631,91 @@
           </div>
         </div>
 
-        <!-- Competitor frequency chart -->
-        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;flex-shrink:0;">
-          <div style="font-size:.6rem;font-weight:700;color:#1e293b;margin-bottom:8px;letter-spacing:.01em;">Who ChatGPT recommends instead <span style="color:#94a3b8;font-weight:400;">(across all 30 queries)</span></div>
-          <div style="display:flex;flex-direction:column;gap:5px;">
-            <!-- IndiaBonds 5x -->
-            <div style="display:flex;align-items:center;gap:8px;">
-              <div style="font-size:.58rem;color:#334155;font-weight:600;width:82px;flex-shrink:0;">IndiaBonds</div>
-              <div style="flex:1;height:18px;background:#e2e8f0;border-radius:4px;overflow:hidden;">
-                <div style="height:100%;width:100%;background:linear-gradient(90deg,#ef4444,#f97316);border-radius:4px;"></div>
+        <!-- Row 2: Branded queries list + Competitor chart -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;flex-shrink:0;">
+
+          <!-- Branded queries breakdown -->
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:9px 11px;">
+            <div style="font-size:.6rem;font-weight:700;color:#166534;margin-bottom:6px;letter-spacing:.01em;">Branded queries — all 5 cited <span style="color:#059669;">✓</span></div>
+            <div style="display:flex;flex-direction:column;gap:0;border-radius:6px;overflow:hidden;border:1px solid #bbf7d0;">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 8px;background:#fff;border-bottom:1px solid #dcfce7;">
+                <span style="font-size:.52rem;color:#374151;flex:1;">aspero bonds review india</span>
+                <span style="font-size:.5rem;color:#94a3b8;margin:0 6px;white-space:nowrap;">1,330 impr</span>
+                <span style="background:#dcfce7;color:#166534;border-radius:3px;padding:1px 5px;font-size:.48rem;font-weight:700;flex-shrink:0;">✓</span>
               </div>
-              <div style="font-size:.6rem;font-weight:800;color:#ef4444;width:22px;text-align:right;">5×</div>
-            </div>
-            <!-- Wint Wealth 4x -->
-            <div style="display:flex;align-items:center;gap:8px;">
-              <div style="font-size:.58rem;color:#334155;font-weight:600;width:82px;flex-shrink:0;">Wint Wealth</div>
-              <div style="flex:1;height:18px;background:#e2e8f0;border-radius:4px;overflow:hidden;">
-                <div style="height:100%;width:80%;background:linear-gradient(90deg,#f97316,#fbbf24);border-radius:4px;"></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 8px;background:#f0fdf4;border-bottom:1px solid #dcfce7;">
+                <span style="font-size:.52rem;color:#374151;flex:1;">is aspero sebi registered</span>
+                <span style="font-size:.5rem;color:#94a3b8;margin:0 6px;white-space:nowrap;">163 impr</span>
+                <span style="background:#dcfce7;color:#166534;border-radius:3px;padding:1px 5px;font-size:.48rem;font-weight:700;flex-shrink:0;">✓</span>
               </div>
-              <div style="font-size:.6rem;font-weight:800;color:#f97316;width:22px;text-align:right;">4×</div>
-            </div>
-            <!-- Grip Invest 2x -->
-            <div style="display:flex;align-items:center;gap:8px;">
-              <div style="font-size:.58rem;color:#334155;font-weight:600;width:82px;flex-shrink:0;">Grip Invest</div>
-              <div style="flex:1;height:18px;background:#e2e8f0;border-radius:4px;overflow:hidden;">
-                <div style="height:100%;width:40%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);border-radius:4px;"></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 8px;background:#fff;border-bottom:1px solid #dcfce7;">
+                <span style="font-size:.52rem;color:#374151;flex:1;">what is aspero bonds</span>
+                <span style="font-size:.5rem;color:#94a3b8;margin:0 6px;white-space:nowrap;">134 impr</span>
+                <span style="background:#dcfce7;color:#166534;border-radius:3px;padding:1px 5px;font-size:.48rem;font-weight:700;flex-shrink:0;">✓</span>
               </div>
-              <div style="font-size:.6rem;font-weight:800;color:#8b5cf6;width:22px;text-align:right;">2×</div>
-            </div>
-            <!-- BondsIndia 2x -->
-            <div style="display:flex;align-items:center;gap:8px;">
-              <div style="font-size:.58rem;color:#334155;font-weight:600;width:82px;flex-shrink:0;">BondsIndia</div>
-              <div style="flex:1;height:18px;background:#e2e8f0;border-radius:4px;overflow:hidden;">
-                <div style="height:100%;width:40%;background:linear-gradient(90deg,#3b82f6,#60a5fa);border-radius:4px;"></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 8px;background:#f0fdf4;border-bottom:1px solid #dcfce7;">
+                <span style="font-size:.52rem;color:#374151;flex:1;">aspero bonds safe or not</span>
+                <span style="font-size:.5rem;color:#94a3b8;margin:0 6px;white-space:nowrap;">61 impr</span>
+                <span style="background:#dcfce7;color:#166534;border-radius:3px;padding:1px 5px;font-size:.48rem;font-weight:700;flex-shrink:0;">✓</span>
               </div>
-              <div style="font-size:.6rem;font-weight:800;color:#3b82f6;width:22px;text-align:right;">2×</div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 8px;background:#fff;">
+                <span style="font-size:.52rem;color:#374151;flex:1;">aspero fixed income platform india</span>
+                <span style="font-size:.5rem;color:#94a3b8;margin:0 6px;white-space:nowrap;">151 impr</span>
+                <span style="background:#dcfce7;color:#166534;border-radius:3px;padding:1px 5px;font-size:.48rem;font-weight:700;flex-shrink:0;">✓</span>
+              </div>
             </div>
-            <!-- Aspero 0x -->
-            <div style="display:flex;align-items:center;gap:8px;">
-              <div style="font-size:.58rem;color:#059669;font-weight:700;width:82px;flex-shrink:0;">Aspero ← us</div>
-              <div style="flex:1;height:18px;background:#dcfce7;border:1px dashed #4ade80;border-radius:4px;overflow:hidden;"></div>
-              <div style="font-size:.6rem;font-weight:800;color:#dc2626;width:22px;text-align:right;">0×</div>
+          </div>
+
+          <!-- Competitor frequency chart -->
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:9px 11px;">
+            <div style="font-size:.6rem;font-weight:700;color:#1e293b;margin-bottom:6px;letter-spacing:.01em;">Who AI recommends instead <span style="color:#94a3b8;font-weight:400;">(30 queries)</span></div>
+            <div style="display:flex;flex-direction:column;gap:5px;">
+              <div style="display:flex;align-items:center;gap:7px;">
+                <div style="font-size:.56rem;color:#334155;font-weight:600;width:72px;flex-shrink:0;">IndiaBonds</div>
+                <div style="flex:1;height:15px;background:#e2e8f0;border-radius:4px;overflow:hidden;"><div style="height:100%;width:100%;background:linear-gradient(90deg,#ef4444,#f97316);border-radius:4px;"></div></div>
+                <div style="font-size:.58rem;font-weight:800;color:#ef4444;width:20px;text-align:right;">5×</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:7px;">
+                <div style="font-size:.56rem;color:#334155;font-weight:600;width:72px;flex-shrink:0;">Wint Wealth</div>
+                <div style="flex:1;height:15px;background:#e2e8f0;border-radius:4px;overflow:hidden;"><div style="height:100%;width:80%;background:linear-gradient(90deg,#f97316,#fbbf24);border-radius:4px;"></div></div>
+                <div style="font-size:.58rem;font-weight:800;color:#f97316;width:20px;text-align:right;">4×</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:7px;">
+                <div style="font-size:.56rem;color:#334155;font-weight:600;width:72px;flex-shrink:0;">Grip Invest</div>
+                <div style="flex:1;height:15px;background:#e2e8f0;border-radius:4px;overflow:hidden;"><div style="height:100%;width:40%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);border-radius:4px;"></div></div>
+                <div style="font-size:.58rem;font-weight:800;color:#8b5cf6;width:20px;text-align:right;">2×</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:7px;">
+                <div style="font-size:.56rem;color:#334155;font-weight:600;width:72px;flex-shrink:0;">BondsIndia</div>
+                <div style="flex:1;height:15px;background:#e2e8f0;border-radius:4px;overflow:hidden;"><div style="height:100%;width:40%;background:linear-gradient(90deg,#3b82f6,#60a5fa);border-radius:4px;"></div></div>
+                <div style="font-size:.58rem;font-weight:800;color:#3b82f6;width:20px;text-align:right;">2×</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:7px;">
+                <div style="font-size:.56rem;color:#059669;font-weight:700;width:72px;flex-shrink:0;">Aspero ← us</div>
+                <div style="flex:1;height:15px;background:#dcfce7;border:1px dashed #4ade80;border-radius:4px;overflow:hidden;"></div>
+                <div style="font-size:.58rem;font-weight:800;color:#dc2626;width:20px;text-align:right;">0×</div>
+              </div>
             </div>
+          </div>
+
+        </div>
+
+        <!-- Row 3: GEO opportunity callout -->
+        <div style="background:linear-gradient(135deg,#fefce8,#fff7ed);border:1px solid #fbbf24;border-radius:10px;padding:9px 12px;flex-shrink:0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:center;">
+          <div style="display:flex;flex-direction:column;gap:2px;border-right:1px solid #fde68a;padding-right:8px;">
+            <div style="font-size:.52rem;text-transform:uppercase;letter-spacing:.07em;color:#92400e;font-weight:700;">Category search vol</div>
+            <div style="font-size:1.4rem;font-weight:900;color:#b45309;line-height:1.1;">16,200</div>
+            <div style="font-size:.5rem;color:#a16207;">searches / month · 0 AI reach today</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:2px;border-right:1px solid #fde68a;padding-right:8px;">
+            <div style="font-size:.52rem;text-transform:uppercase;letter-spacing:.07em;color:#92400e;font-weight:700;">Organic /invest traffic</div>
+            <div style="font-size:1.4rem;font-weight:900;color:#b45309;line-height:1.1;">858</div>
+            <div style="font-size:.5rem;color:#a16207;">users / month · 93% new (GA4)</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <div style="font-size:.52rem;text-transform:uppercase;letter-spacing:.07em;color:#92400e;font-weight:700;">IndiaBonds edge</div>
+            <div style="font-size:1.4rem;font-weight:900;color:#b45309;line-height:1.1;">52K</div>
+            <div style="font-size:.5rem;color:#a16207;">bond traffic est. · llm.txt + issuer depth</div>
           </div>
         </div>
 
