@@ -876,6 +876,7 @@
       <div class="slide-ttl">KYC: Same-Week Cohort</div>
       <div class="slide-sub">Strict Mon&#8211;Sun window: signup &#8594; start &#8594; done</div>
       <div class="hero-num">28.1%</div>
+      <div style="font-size:.58rem;color:#fca5a5;font-weight:500;margin-top:1px;text-align:center;letter-spacing:.01em;">31.3% excl. 426 Poland bots</div>
       <div class="hero-lbl">cohort KYC start rate (last week)</div>
       <div class="hero-badge down">▼ 3.4pp WoW</div>
       <div class="stat-list">
@@ -3573,7 +3574,7 @@ insights('ins-s4', [
 ]);
 
 // ── Slide 6: Orders & GTV ─────────────────────────────────────────────────────
-setHero('h5-val', 'h5-delta', cr(D.kpi_gtv.this), null, '');
+setHero('h5-val', 'h5-delta', '₹' + (+D.kpi_gtv.this).toFixed(2) + 'cr', null, '');
 setEl('s5-orders', num(D.kpi_orders.this));
 setEl('s5-avgg',   cr(D.kpi_gtv.avg));
 // setEl('s5-repeat') — stat item removed; MTD row no longer shown
