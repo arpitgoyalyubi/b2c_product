@@ -1645,28 +1645,42 @@
           </div>
         </div>
 
-        <!-- Key callouts -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;">
-          <div style="background:#f0fdf4;border-radius:8px;padding:8px 10px;">
-            <div style="font-size:.6rem;color:#065f46;font-weight:600;text-transform:uppercase;letter-spacing:.04em;">Web Organic</div>
-            <div style="font-size:1rem;font-weight:700;color:#064e3b;">₹5.64 L</div>
-            <div style="font-size:.6rem;color:#6b7280;">ATV · 4× overall avg · ~50 users</div>
+        <!-- Channel insights -->
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:10px;">
+
+          <!-- Organic Web insight -->
+          <div style="display:flex;align-items:flex-start;gap:8px;background:#f0fdf4;border-left:3px solid #0d9488;border-radius:0 6px 6px 0;padding:7px 10px;">
+            <div style="flex-shrink:0;margin-top:1px;">
+              <div style="width:8px;height:8px;border-radius:50%;background:#0d9488;margin-top:2px;"></div>
+            </div>
+            <div style="flex:1;">
+              <div style="font-size:.65rem;font-weight:700;color:#065f46;margin-bottom:2px;">Organic / Direct Web — highest ATV at ₹5.64 L <span style="font-weight:400;color:#6b7280;">(4× overall avg · ~50 users)</span></div>
+              <div style="font-size:.6rem;color:#374151;line-height:1.5;">These are the highest-intent users on the platform. Source is currently unknown (organic search vs direct bookmark). Implementing <code style="font-size:.57rem;background:#d1fae5;padding:1px 3px;border-radius:2px;">initial_referrer_domain</code> (Action Items) splits this — SEO investment directly grows this bucket.</div>
+            </div>
           </div>
-          <div style="background:#eff6ff;border-radius:8px;padding:8px 10px;">
-            <div style="font-size:.6rem;color:#1d4ed8;font-weight:600;text-transform:uppercase;letter-spacing:.04em;">Google UAC</div>
-            <div style="font-size:1rem;font-weight:700;color:#1e3a8a;">₹4.62 Cr</div>
-            <div style="font-size:.6rem;color:#6b7280;">Largest known channel · ~258 users</div>
+
+          <!-- Organic Installs insight -->
+          <div style="display:flex;align-items:flex-start;gap:8px;background:#f0fdf4;border-left:3px solid #10b981;border-radius:0 6px 6px 0;padding:7px 10px;">
+            <div style="flex-shrink:0;margin-top:1px;">
+              <div style="width:8px;height:8px;border-radius:50%;background:#10b981;margin-top:2px;"></div>
+            </div>
+            <div style="flex:1;">
+              <div style="font-size:.65rem;font-weight:700;color:#065f46;margin-bottom:2px;">Organic Installs (AppsFlyer) — ₹1.10 Cr · ₹1.49 L ATV · ~57 users</div>
+              <div style="font-size:.6rem;color:#374151;line-height:1.5;">Direct lever via App Store Optimisation — improving store listing conversion grows this bucket with zero media spend. See Store Listing Conversion slide. <span style="color:#92400e;font-weight:600;">Marketing action items for ASO yet to be finalised.</span></div>
+            </div>
           </div>
-          <div style="background:#fef9f0;border-radius:8px;padding:8px 10px;">
-            <div style="font-size:.6rem;color:#92400e;font-weight:600;text-transform:uppercase;letter-spacing:.04em;">Branch Bug</div>
-            <div style="font-size:1rem;font-weight:700;color:#78350f;">₹1.15 Cr</div>
-            <div style="font-size:.6rem;color:#6b7280;">UTM = EMPTY · all 4 params broken</div>
+
+          <!-- Referral insight -->
+          <div style="display:flex;align-items:flex-start;gap:8px;background:#faf5ff;border-left:3px solid #8b5cf6;border-radius:0 6px 6px 0;padding:7px 10px;">
+            <div style="flex-shrink:0;margin-top:1px;">
+              <div style="width:8px;height:8px;border-radius:50%;background:#8b5cf6;margin-top:2px;"></div>
+            </div>
+            <div style="flex:1;">
+              <div style="font-size:.65rem;font-weight:700;color:#5b21b6;margin-bottom:2px;">Employee Referral — low ATV ~₹13k · ~68 users · ₹0.11 Cr</div>
+              <div style="font-size:.6rem;color:#374151;line-height:1.5;">ATV is 10× below platform average — referred users may be low-intent or early-stage. Before productising a referral programme, test conversion quality on the existing user base first to validate whether referral is a meaningful growth lever.</div>
+            </div>
           </div>
-          <div style="background:#f8f9fa;border-radius:8px;padding:8px 10px;">
-            <div style="font-size:.6rem;color:#475569;font-weight:600;text-transform:uppercase;letter-spacing:.04em;">Affiliates</div>
-            <div style="font-size:1rem;font-weight:700;color:#1e293b;">1.8×</div>
-            <div style="font-size:.6rem;color:#6b7280;">Ord/user · highest repeat in paid mobile</div>
-          </div>
+
         </div>
       </div>
 
