@@ -356,7 +356,109 @@
     <div class="cover-metrics" id="cover-metrics"></div>
   </div>
 
-  <!-- Slide 1: Signup Completion — Sky Blue -->
+  <!-- Store Listing Slide -->
+  <div class="slide two-col" id="s-store-listing">
+    <div class="left-panel" style="background:linear-gradient(160deg,#3b0764,#7c3aed);">
+      <div class="slide-num">Slide 00</div>
+      <div class="slide-ttl">Store Listing<br>Conversion</div>
+      <div class="slide-sub">Weekly cohort · visitors → installs</div>
+      <div class="hero-num" id="sl-hero">32.4%</div>
+      <div class="hero-lbl">Android listing conv% · this week</div>
+      <div class="hero-badge up" id="sl-badge">+1.5pp WoW</div>
+      <div class="stat-list" style="margin-top:18px;">
+        <div class="stat-item"><span class="si-lbl">Android views</span><span class="si-val" id="sl-a-views">12.8k</span></div>
+        <div class="stat-item"><span class="si-lbl">Android installs</span><span class="si-val" id="sl-a-inst">4.2k</span></div>
+        <div class="stat-item"><span class="si-lbl">iOS conv%</span><span class="si-val" id="sl-i-conv">21.9%</span></div>
+        <div class="stat-item"><span class="si-lbl">iOS views</span><span class="si-val" id="sl-i-views">5.2k</span></div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <style>
+        #s-store-listing .sl-tabs { display:flex; gap:6px; margin:10px 14px 0; }
+        #s-store-listing .sl-tab {
+          padding:3px 12px; border-radius:20px; border:1.5px solid #e2e8f0;
+          font-size:.64rem; font-weight:600; cursor:pointer; color:#64748b;
+          background:#f8fafc; transition:all .15s;
+        }
+        #s-store-listing .sl-tab.active { background:#7c3aed; color:#fff; border-color:#7c3aed; }
+        #s-store-listing .sl-view { padding:8px 14px 10px; display:flex; flex-direction:column; flex:1; }
+        #s-store-listing .sl-platform-row {
+          display:flex; align-items:center; gap:8px; padding:4px 0 8px; border-bottom:1px solid #f1f5f9; margin-bottom:8px;
+        }
+        #s-store-listing .sl-plat-icon { font-size:1.1rem; flex-shrink:0; }
+        #s-store-listing .sl-plat-kpi { display:flex; flex-direction:column; }
+        #s-store-listing .sl-plat-pct { font-size:1.1rem; font-weight:700; color:#111827; line-height:1.1; }
+        #s-store-listing .sl-plat-lbl { font-size:.58rem; color:#6b7280; }
+        #s-store-listing .sl-plat-badge { font-size:.58rem; font-weight:600; padding:1px 6px; border-radius:8px; margin-left:6px; }
+        #s-store-listing .sl-plat-stats { margin-left:auto; display:flex; gap:14px; }
+        #s-store-listing .sl-stat { text-align:right; }
+        #s-store-listing .sl-stat-val { font-size:.75rem; font-weight:700; color:#1e293b; }
+        #s-store-listing .sl-stat-lbl { font-size:.55rem; color:#94a3b8; }
+      </style>
+
+      <!-- Tabs -->
+      <div class="sl-tabs">
+        <button class="sl-tab active" id="sl-tab-trend" onclick="slShowTab('trend')">WoW Trend</button>
+        <button class="sl-tab"        id="sl-tab-vol"   onclick="slShowTab('vol')">Volume</button>
+      </div>
+
+      <!-- View: WoW Trend — conversion % line chart -->
+      <div id="sl-view-trend" class="sl-view">
+        <!-- Platform summary rows -->
+        <div class="sl-platform-row" id="sl-android-row">
+          <div class="sl-plat-icon">🤖</div>
+          <div class="sl-plat-kpi">
+            <span class="sl-plat-pct" id="sl-a-pct-big">32.4%</span>
+            <span class="sl-plat-lbl">Android conv%</span>
+          </div>
+          <span class="sl-plat-badge style=\"background:#d1fae5;color:#065f46;\""
+                id="sl-a-wow">+1.5pp</span>
+          <div class="sl-plat-stats">
+            <div class="sl-stat">
+              <div class="sl-stat-val" id="sl-a-views-big">12.8k</div>
+              <div class="sl-stat-lbl">views</div>
+            </div>
+            <div class="sl-stat">
+              <div class="sl-stat-val" id="sl-a-inst-big">4.2k</div>
+              <div class="sl-stat-lbl">installs</div>
+            </div>
+          </div>
+        </div>
+        <div class="sl-platform-row" id="sl-ios-row">
+          <div class="sl-plat-icon">🍎</div>
+          <div class="sl-plat-kpi">
+            <span class="sl-plat-pct" id="sl-i-pct-big">21.9%</span>
+            <span class="sl-plat-lbl">iOS conv%</span>
+          </div>
+          <span class="sl-plat-badge" id="sl-i-wow">+0.5pp</span>
+          <div class="sl-plat-stats">
+            <div class="sl-stat">
+              <div class="sl-stat-val" id="sl-i-views-big">5.2k</div>
+              <div class="sl-stat-lbl">views</div>
+            </div>
+            <div class="sl-stat">
+              <div class="sl-stat-val" id="sl-i-inst-big">1.1k</div>
+              <div class="sl-stat-lbl">installs</div>
+            </div>
+          </div>
+        </div>
+        <!-- Conversion % trend chart -->
+        <div class="chart-area" style="flex:1;min-height:0;">
+          <canvas id="chart-sl-conv"></canvas>
+        </div>
+      </div>
+
+      <!-- View: Volume — views + installs bars -->
+      <div id="sl-view-vol" class="sl-view" style="display:none;">
+        <div class="chart-area" style="flex:1;min-height:0;">
+          <canvas id="chart-sl-vol"></canvas>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<!-- Slide 1: Signup Completion — Sky Blue -->
   <div class="slide two-col" id="s1">
     <div class="left-panel" style="background:linear-gradient(160deg,#1d4ed8,#3b82f6);">
       <div class="slide-num">Slide 01</div>
@@ -2297,6 +2399,109 @@ function line(label, data, color, yAxisID) {
     }
     return `<div class="cover-metric"><div class="cm-label">${it.lbl}</div><div class="cm-val">${it.val}</div>${ww}</div>`;
   }).join('');
+})();
+
+// ── Slide 00: Store Listing
+(function() {
+  var SL_LABELS    = ["Apr 13\u201319", "Apr 20\u201326", "Apr 27\u2013May 3", "May 4\u201310", "May 11\u201317", "May 18\u201324", "May 25\u201331", "Jun 1\u20137"];
+  var SL_A_VIEWS   = [9650, 13353, 9311, 11899, 12856, 10041, 8556, 12842];
+  var SL_A_INST    = [2769, 3979, 2774, 3379, 3561, 2911, 2643, 4160];
+  var SL_A_CONV    = [28.7, 29.8, 29.8, 28.4, 27.7, 29.0, 30.9, 32.4];
+  var SL_I_VIEWS   = [3669, 3260, 4516, 4634, 3019, 3466, 3290, 5189];
+  var SL_I_INST    = [774, 710, 943, 945, 630, 748, 704, 1136];
+  var SL_I_CONV    = [21.1, 21.8, 20.9, 20.4, 20.9, 21.6, 21.4, 21.9];
+  var PURPLE       = '#7c3aed';
+  var PURPLE_LITE  = '#a78bfa';
+  var TEAL_LINE    = '#0d9488';
+  var AMBER_LINE   = '#f59e0b';
+
+  // colour the WoW badge on Android
+  var aBadge = document.getElementById('sl-a-wow');
+  if (aBadge) { aBadge.style.background = '#d1fae5'; aBadge.style.color = '#065f46'; }
+  var iBadge = document.getElementById('sl-i-wow');
+  if (iBadge) { iBadge.style.background = '#d1fae5'; iBadge.style.color = '#065f46'; }
+
+  // Tab switcher
+  window.slShowTab = function(tab) {
+    ['trend','vol'].forEach(function(t) {
+      var v = document.getElementById('sl-view-' + t);
+      var b = document.getElementById('sl-tab-' + t);
+      if (v) v.style.display = (t === tab) ? 'flex' : 'none';
+      if (b) b.classList.toggle('active', t === tab);
+    });
+  };
+
+  if (!window.Chart) return;
+  var Y2_PCT = { y2: { position: 'right', min: 0, max: 50,
+    grid: { display: false },
+    ticks: { callback: function(v) { return v + '%'; }, font: { size: 8 } }
+  } };
+
+  // ── Conversion % trend chart ────────────────────────────────────────────
+  var cConv = document.getElementById('chart-sl-conv');
+  if (cConv && (SL_A_CONV.length || SL_I_CONV.length)) {
+    var dsConv = [];
+    if (SL_A_CONV.length) dsConv.push({
+      label: 'Android conv%', data: SL_A_CONV, type: 'line',
+      borderColor: PURPLE, backgroundColor: PURPLE + '22',
+      borderWidth: 2, pointRadius: 3, fill: true, tension: 0.3,
+      yAxisID: 'y',
+    });
+    if (SL_I_CONV.length) dsConv.push({
+      label: 'iOS conv%', data: SL_I_CONV, type: 'line',
+      borderColor: TEAL_LINE, backgroundColor: TEAL_LINE + '22',
+      borderWidth: 2, pointRadius: 3, fill: false, tension: 0.3,
+      yAxisID: 'y', borderDash: [4,3],
+    });
+    new Chart(cConv, {
+      data: { labels: SL_LABELS, datasets: dsConv },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: { duration: 400 },
+        scales: {
+          x: { ticks: { font: { size: 8 }, maxRotation: 40, minRotation: 30 }, grid: { display: false } },
+          y: { min: 0, max: 50, ticks: { callback: function(v) { return v + '%'; }, font: { size: 8 } },
+               grid: { color: '#f1f5f9' } },
+        },
+        plugins: {
+          legend: { labels: { font: { size: 9 }, boxWidth: 10 } },
+          tooltip: { callbacks: { label: function(ctx) { return ' ' + ctx.parsed.y + '%'; } } },
+        },
+      },
+    });
+  }
+
+  // ── Volume chart (views + installs bars) ────────────────────────────────
+  var cVol = document.getElementById('chart-sl-vol');
+  if (cVol) {
+    var dsVol = [];
+    if (SL_A_VIEWS.length) dsVol.push({
+      label: 'Android views', data: SL_A_VIEWS, type: 'bar',
+      backgroundColor: PURPLE + '88', borderColor: PURPLE, borderWidth: 1, borderRadius: 3, stack: 'android',
+    });
+    if (SL_A_INST.length) dsVol.push({
+      label: 'Android installs', data: SL_A_INST, type: 'bar',
+      backgroundColor: '#10b981bb', borderColor: '#10b981', borderWidth: 1, borderRadius: 3, stack: 'aInst',
+    });
+    if (SL_I_VIEWS.length) dsVol.push({
+      label: 'iOS views', data: SL_I_VIEWS, type: 'bar',
+      backgroundColor: TEAL_LINE + '66', borderColor: TEAL_LINE, borderWidth: 1, borderRadius: 3, stack: 'ios',
+    });
+    if (SL_I_INST.length) dsVol.push({
+      label: 'iOS installs', data: SL_I_INST, type: 'bar',
+      backgroundColor: AMBER_LINE + 'aa', borderColor: AMBER_LINE, borderWidth: 1, borderRadius: 3, stack: 'iInst',
+    });
+    if (dsVol.length) new Chart(cVol, {
+      data: { labels: SL_LABELS, datasets: dsVol },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: { duration: 400 },
+        scales: {
+          x: { ticks: { font: { size: 8 }, maxRotation: 40, minRotation: 30 }, grid: { display: false } },
+          y: { ticks: { font: { size: 8 } }, grid: { color: '#f1f5f9' } },
+        },
+        plugins: { legend: { labels: { font: { size: 9 }, boxWidth: 10 } } },
+      },
+    });
+  }
 })();
 
 // ── Slide 1: Signups ──────────────────────────────────────────────────────────
