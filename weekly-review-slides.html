@@ -869,6 +869,121 @@
     });
   })();
   </script>
+<!-- KYC Cohort Slide -->
+  <div class="slide two-col" id="s-kyc-cohort">
+    <div class="left-panel" style="background:linear-gradient(160deg,#5b21b6,#8b5cf6);">
+      <div class="slide-num">Slide 02</div>
+      <div class="slide-ttl">KYC: Same-Week Cohort</div>
+      <div class="slide-sub">Strict Mon&#8211;Sun window: signup &#8594; start &#8594; done</div>
+      <div class="hero-num">28.1%</div>
+      <div class="hero-lbl">cohort KYC start rate (last week)</div>
+      <div class="hero-badge down">▼ 3.4pp WoW</div>
+      <div class="stat-list">
+        <div class="stat-item">
+          <span class="si-lbl">Start Rate Prior Wk</span>
+          <span class="si-val">31.5%</span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl">Start&#8594;Done Rate</span>
+          <span class="si-val">34.0% <span style="font-size:.6rem;color:#fde68a;">⚠ maturing</span></span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl">7-Wk Avg Start</span>
+          <span class="si-val">31.5%</span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl">Excl. bot countries</span>
+          <span class="si-val">31.3% <span style="font-size:.6rem;color:#fde68a;">(+426 bots · Poland)</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div class="chart-area"><canvas id="chart-kyc-cohort"></canvas></div>
+      <div class="insight-row" id="ins-kyc-cohort"></div>
+    </div>
+  </div>
+  <script>
+  (function() {
+    var LABELS             = ["20 Apr", "27 Apr", "4 May", "11 May", "18 May", "25 May", "1 Jun"];
+    var STARTERS           = [873, 1079, 1224, 1253, 1652, 1181, 1194];
+    var DONE               = [248, 320, 358, 361, 378, 372, 406];
+    var START_RATES        = [30.1, 34.1, 32.6, 32.7, 31.6, 31.5, 28.1];
+    var START_RATES_CLEAN  = [30.1, 34.1, 32.6, 32.7, 31.6, 31.5, 31.3];
+    var HAS_BOT_DATA       = true;
+    var DONE_RATES         = [28.4, 29.7, 29.2, 28.8, 22.9, 31.5, 34.0];
+    var BOT_WARNINGS       = ["1 Jun: Poland = 10.0% of signups"];
+    var VIOLET = '#8b5cf6', GREEN = '#10b981', AMBER = '#f59e0b', ROSE = '#f43f5e', ORANGE = '#f97316';
+
+    function init() {
+      var datasets = [
+        { type:'bar',  label:'KYC Starters (cohort)',  data: STARTERS,    backgroundColor: VIOLET+'bb', borderColor: VIOLET,    borderWidth:1, borderRadius:3 },
+        { type:'bar',  label:'Demat Done (cohort)',    data: DONE,         backgroundColor: GREEN+'bb',  borderColor: GREEN,     borderWidth:1, borderRadius:3 },
+        { type:'line', label:'Start Rate%',            data: START_RATES,  borderColor: AMBER, backgroundColor:'transparent', yAxisID:'y2', pointRadius:3, pointHoverRadius:5, tension:.35 },
+        { type:'line', label:'Start→Done%',       data: DONE_RATES,   borderColor: ROSE,  backgroundColor:'transparent', yAxisID:'y2', pointRadius:3, pointHoverRadius:5, tension:.35 },
+      ];
+      if (HAS_BOT_DATA) {
+        datasets.push({ type:'line', label:'Start Rate% (excl. bots)', data: START_RATES_CLEAN,
+          borderColor: ORANGE, backgroundColor:'transparent', yAxisID:'y2',
+          pointRadius:3, pointHoverRadius:5, tension:.35,
+          borderDash:[5,3], borderWidth:1.5 });
+      }
+      var _kycPlugins = [];
+      if (HAS_BOT_DATA) {
+        var _kycFlagIdx = START_RATES.map(function(v,i) { return v !== START_RATES_CLEAN[i] ? i : -1; }).filter(function(i) { return i >= 0; });
+        _kycPlugins.push({
+          id: 'botLabel_kyc',
+          afterDatasetsDraw: function(chart) {
+            var ctx = chart.ctx;
+            var meta = chart.getDatasetMeta(0);
+            _kycFlagIdx.forEach(function(wi) {
+              var bar = meta.data[wi];
+              if (!bar) return;
+              ctx.save();
+              ctx.font = 'bold 9px sans-serif';
+              ctx.fillStyle = ORANGE;
+              ctx.textAlign = 'center';
+              ctx.fillText('⚠ Bot traffic', bar.x, bar.y - 4);
+              ctx.restore();
+            });
+          },
+        });
+      }
+      new Chart(document.getElementById('chart-kyc-cohort'), {
+        data: { labels: LABELS, datasets: datasets },
+        plugins: _kycPlugins,
+        options: {
+          responsive:true, maintainAspectRatio:false,
+          plugins:{
+            legend:{ labels:{ font:{ size:9 }, boxWidth:9, padding:10 } },
+            tooltip:{ mode:'index', intersect:false },
+          },
+          scales:{
+            x:{ grid:{ display:false }, ticks:{ font:{ size:8 }, maxRotation:30, minRotation:0 } },
+            y:{ grid:{ color:'#f8fafc' }, ticks:{ font:{ size:8 } }, beginAtZero:true },
+            y2:{ position:'right', grid:{ display:false }, ticks:{ font:{ size:8 } }, suggestedMin:0 },
+          },
+        },
+      });
+      var ins = document.getElementById('ins-kyc-cohort');
+      if (ins) {
+        var this_s = START_RATES[START_RATES.length-1];
+        var prev_s = START_RATES[START_RATES.length-2] || 0;
+        var this_d = DONE_RATES[DONE_RATES.length-1];
+        var prev_d = DONE_RATES[DONE_RATES.length-2] || 0;
+        var botChips = BOT_WARNINGS.map(function(w) {
+          return '<div class="ins-chip" style="border-color:'+ORANGE+';color:'+ORANGE+';font-weight:700;">⚠ Bot spike &#8212; ' + w + '</div>';
+        }).join('');
+        ins.innerHTML =
+          '<div class="ins-chip" style="border-color:'+VIOLET+';color:'+VIOLET+';">Cohort start rate: '+this_s+'% &middot; prior wk: '+prev_s+'%</div>' +
+          '<div class="ins-chip" style="border-color:'+ROSE+';color:'+ROSE+';">Cohort start→done: '+this_d+'% &middot; prior wk: '+prev_d+'% ⚠ most recent week still maturing</div>' +
+          botChips;
+      }
+    }
+    if (document.readyState === 'complete') { init(); }
+    else { window.addEventListener('load', init); }
+  })();
+  </script>
+
 <!-- KRA V2 Impact Slide -->
   <div class="slide two-col" id="s-kra-v2-impact">
     <div class="left-panel" style="background:linear-gradient(160deg,#14532d,#16a34a);">
@@ -2637,121 +2752,6 @@ function sdoToggle(g){
 </div>
 </div>
 
-
-<!-- KYC Cohort Slide -->
-  <div class="slide two-col" id="s-kyc-cohort">
-    <div class="left-panel" style="background:linear-gradient(160deg,#5b21b6,#8b5cf6);">
-      <div class="slide-num">Slide 02</div>
-      <div class="slide-ttl">KYC: Same-Week Cohort</div>
-      <div class="slide-sub">Strict Mon&#8211;Sun window: signup &#8594; start &#8594; done</div>
-      <div class="hero-num">28.1%</div>
-      <div class="hero-lbl">cohort KYC start rate (last week)</div>
-      <div class="hero-badge down">▼ 3.4pp WoW</div>
-      <div class="stat-list">
-        <div class="stat-item">
-          <span class="si-lbl">Start Rate Prior Wk</span>
-          <span class="si-val">31.5%</span>
-        </div>
-        <div class="stat-item">
-          <span class="si-lbl">Start&#8594;Done Rate</span>
-          <span class="si-val">34.0% <span style="font-size:.6rem;color:#fde68a;">⚠ maturing</span></span>
-        </div>
-        <div class="stat-item">
-          <span class="si-lbl">7-Wk Avg Start</span>
-          <span class="si-val">31.5%</span>
-        </div>
-        <div class="stat-item">
-          <span class="si-lbl">Excl. bot countries</span>
-          <span class="si-val">31.3% <span style="font-size:.6rem;color:#fde68a;">(+426 bots · Poland)</span></span>
-        </div>
-      </div>
-    </div>
-    <div class="right-panel">
-      <div class="chart-area"><canvas id="chart-kyc-cohort"></canvas></div>
-      <div class="insight-row" id="ins-kyc-cohort"></div>
-    </div>
-  </div>
-  <script>
-  (function() {
-    var LABELS             = ["20 Apr", "27 Apr", "4 May", "11 May", "18 May", "25 May", "1 Jun"];
-    var STARTERS           = [873, 1079, 1224, 1253, 1652, 1181, 1194];
-    var DONE               = [248, 320, 358, 361, 378, 372, 406];
-    var START_RATES        = [30.1, 34.1, 32.6, 32.7, 31.6, 31.5, 28.1];
-    var START_RATES_CLEAN  = [30.1, 34.1, 32.6, 32.7, 31.6, 31.5, 31.3];
-    var HAS_BOT_DATA       = true;
-    var DONE_RATES         = [28.4, 29.7, 29.2, 28.8, 22.9, 31.5, 34.0];
-    var BOT_WARNINGS       = ["1 Jun: Poland = 10.0% of signups"];
-    var VIOLET = '#8b5cf6', GREEN = '#10b981', AMBER = '#f59e0b', ROSE = '#f43f5e', ORANGE = '#f97316';
-
-    function init() {
-      var datasets = [
-        { type:'bar',  label:'KYC Starters (cohort)',  data: STARTERS,    backgroundColor: VIOLET+'bb', borderColor: VIOLET,    borderWidth:1, borderRadius:3 },
-        { type:'bar',  label:'Demat Done (cohort)',    data: DONE,         backgroundColor: GREEN+'bb',  borderColor: GREEN,     borderWidth:1, borderRadius:3 },
-        { type:'line', label:'Start Rate%',            data: START_RATES,  borderColor: AMBER, backgroundColor:'transparent', yAxisID:'y2', pointRadius:3, pointHoverRadius:5, tension:.35 },
-        { type:'line', label:'Start→Done%',       data: DONE_RATES,   borderColor: ROSE,  backgroundColor:'transparent', yAxisID:'y2', pointRadius:3, pointHoverRadius:5, tension:.35 },
-      ];
-      if (HAS_BOT_DATA) {
-        datasets.push({ type:'line', label:'Start Rate% (excl. bots)', data: START_RATES_CLEAN,
-          borderColor: ORANGE, backgroundColor:'transparent', yAxisID:'y2',
-          pointRadius:3, pointHoverRadius:5, tension:.35,
-          borderDash:[5,3], borderWidth:1.5 });
-      }
-      var _kycPlugins = [];
-      if (HAS_BOT_DATA) {
-        var _kycFlagIdx = START_RATES.map(function(v,i) { return v !== START_RATES_CLEAN[i] ? i : -1; }).filter(function(i) { return i >= 0; });
-        _kycPlugins.push({
-          id: 'botLabel_kyc',
-          afterDatasetsDraw: function(chart) {
-            var ctx = chart.ctx;
-            var meta = chart.getDatasetMeta(0);
-            _kycFlagIdx.forEach(function(wi) {
-              var bar = meta.data[wi];
-              if (!bar) return;
-              ctx.save();
-              ctx.font = 'bold 9px sans-serif';
-              ctx.fillStyle = ORANGE;
-              ctx.textAlign = 'center';
-              ctx.fillText('⚠ Bot traffic', bar.x, bar.y - 4);
-              ctx.restore();
-            });
-          },
-        });
-      }
-      new Chart(document.getElementById('chart-kyc-cohort'), {
-        data: { labels: LABELS, datasets: datasets },
-        plugins: _kycPlugins,
-        options: {
-          responsive:true, maintainAspectRatio:false,
-          plugins:{
-            legend:{ labels:{ font:{ size:9 }, boxWidth:9, padding:10 } },
-            tooltip:{ mode:'index', intersect:false },
-          },
-          scales:{
-            x:{ grid:{ display:false }, ticks:{ font:{ size:8 }, maxRotation:30, minRotation:0 } },
-            y:{ grid:{ color:'#f8fafc' }, ticks:{ font:{ size:8 } }, beginAtZero:true },
-            y2:{ position:'right', grid:{ display:false }, ticks:{ font:{ size:8 } }, suggestedMin:0 },
-          },
-        },
-      });
-      var ins = document.getElementById('ins-kyc-cohort');
-      if (ins) {
-        var this_s = START_RATES[START_RATES.length-1];
-        var prev_s = START_RATES[START_RATES.length-2] || 0;
-        var this_d = DONE_RATES[DONE_RATES.length-1];
-        var prev_d = DONE_RATES[DONE_RATES.length-2] || 0;
-        var botChips = BOT_WARNINGS.map(function(w) {
-          return '<div class="ins-chip" style="border-color:'+ORANGE+';color:'+ORANGE+';font-weight:700;">⚠ Bot spike &#8212; ' + w + '</div>';
-        }).join('');
-        ins.innerHTML =
-          '<div class="ins-chip" style="border-color:'+VIOLET+';color:'+VIOLET+';">Cohort start rate: '+this_s+'% &middot; prior wk: '+prev_s+'%</div>' +
-          '<div class="ins-chip" style="border-color:'+ROSE+';color:'+ROSE+';">Cohort start→done: '+this_d+'% &middot; prior wk: '+prev_d+'% ⚠ most recent week still maturing</div>' +
-          botChips;
-      }
-    }
-    if (document.readyState === 'complete') { init(); }
-    else { window.addEventListener('load', init); }
-  })();
-  </script>
 
   <!-- KYC Waterfall Slide -->
   <div class="slide two-col" id="s-kyc-wf">
