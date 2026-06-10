@@ -3489,7 +3489,7 @@ setEl('s5-avgg',   cr(D.kpi_gtv.avg));
 setEl('s5-repeat', `₹${D.gtv_mtd_this}cr vs ₹${D.gtv_mtd_prev}cr`);
 const gtvRepeat = (D.gtv||[]).map((v,i) => +((v - (D.gtv_first[i]||0)).toFixed(2)));
 var _ordClean = D.orders.slice(); _ordClean[_ordClean.length-1] = D.orders[D.orders.length-1] - 36;
-var _gtvClean = D.gtv.slice();   _gtvClean[_gtvClean.length-1] = +(D.gtv[D.gtv.length-1] * ((_ordClean[_ordClean.length-1]) / D.orders[D.orders.length-1])).toFixed(2);
+var _gtvClean = D.gtv.slice();   _gtvClean[_gtvClean.length-1] = +(D.gtv[D.gtv.length-1] - 0.036).toFixed(2); // 36 Poland trades × ₹10k = ₹0.036cr exact
 mkChart('chart-gtv', [
   { type: 'bar', label: 'Repeat GTV (₹cr)',      data: gtvRepeat,   yAxisID: 'y2',
     backgroundColor: AMBER + 'bb', borderColor: AMBER,    borderWidth: 1, borderRadius: 3, stack: 'gtv' },
@@ -3501,7 +3501,7 @@ mkChart('chart-gtv', [
 insights('ins-s5', [
   { color: ROSE,  txt: `${D.mtd_month_this} MTD GTV: ₹${D.gtv_mtd_this}cr vs ₹${D.gtv_mtd_prev}cr (${D.mtd_month_prev} same day)` },
   { color: AMBER, txt: `7-wk avg GTV: ${cr(D.kpi_gtv.avg)} · orders prior wk: ${num(D.kpi_orders.last)}` },
-  { color: '#fda4af', txt: `‒‒ Excl. 36 Poland bots: 536 orders · GTV ~₹${_gtvClean[_gtvClean.length-1]}cr (est.)` },
+  { color: '#fda4af', txt: `‒‒ Excl. 36 Poland bots: 536 orders · GTV ₹${_gtvClean[_gtvClean.length-1]}cr (36 × ₹10k)` },
 ]);
 
 // ── Slide 7: GTV by Issuer — WoW grouped bars ──────────────────────────────
