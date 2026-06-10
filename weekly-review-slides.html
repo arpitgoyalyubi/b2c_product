@@ -1520,15 +1520,26 @@
         <div class="stat-item"><span class="si-lbl">Blog impressions</span><span class="si-val" id="s8-bl-clicks">—</span></div>
       </div>
     </div>
-    <div class="right-panel" style="padding:14px 16px 12px;">
-      <div class="seo-2col" id="seo-2col">
-        <div class="seo-panel">
+    <div class="right-panel" style="padding:0;display:flex;flex-direction:column;overflow:hidden;">
+      <!-- SEO Tab bar -->
+      <div style="display:flex;gap:0;border-bottom:2px solid #e2e8f0;padding:0 14px;flex-shrink:0;background:#fff;">
+        <button id="seo-btn-bd" onclick="seoTab('bd')"
+          style="border:none;background:none;padding:9px 13px;font-size:.65rem;font-weight:700;cursor:pointer;border-bottom:2px solid #0ea5e9;color:#0ea5e9;margin-bottom:-2px;letter-spacing:.02em;">Bond Detail Pages</button>
+        <button id="seo-btn-bl" onclick="seoTab('bl')"
+          style="border:none;background:none;padding:9px 13px;font-size:.65rem;font-weight:700;cursor:pointer;border-bottom:2px solid transparent;color:#94a3b8;margin-bottom:-2px;letter-spacing:.02em;">Marketing Site &amp; Blog</button>
+      </div>
+      <!-- Panel: Bond Detail -->
+      <div id="seo-panel-bd" style="flex:1;display:flex;flex-direction:column;padding:12px 14px 10px;min-height:0;">
+        <div class="seo-panel" style="flex:1;border:none;background:transparent;padding:0;">
           <div class="seo-panel-title" id="seo-t0">Bond Detail Pages</div>
           <div class="seo-panel-sub" id="seo-s0">/invest/bond/*</div>
           <div class="seo-chart-wrap"><canvas id="chart-seo-bd"></canvas></div>
           <div class="seo-insights" id="seo-ins-bd"></div>
         </div>
-        <div class="seo-panel">
+      </div>
+      <!-- Panel: Marketing Site & Blog -->
+      <div id="seo-panel-bl" style="flex:1;display:none;flex-direction:column;padding:12px 14px 10px;min-height:0;">
+        <div class="seo-panel" style="flex:1;border:none;background:transparent;padding:0;">
           <div class="seo-panel-title" id="seo-t1">Marketing Site &amp; Blog</div>
           <div class="seo-panel-sub" id="seo-s1">Both declining · aspero.in/* (non-app) + /blog/*</div>
           <div class="seo-chart-wrap"><canvas id="chart-seo-bl"></canvas></div>
@@ -3300,6 +3311,25 @@ window.attrShowTab = function(tab) {
     }
   });
   window._attrDonutChart = chart;
+})();
+
+// ── SEO tab switcher ─────────────────────────────────────────────────────────
+(function(){
+  function seoTab(t) {
+    ['bd','bl'].forEach(function(id){
+      var panel = document.getElementById('seo-panel-' + id);
+      var btn   = document.getElementById('seo-btn-' + id);
+      if (!panel || !btn) return;
+      var active = (id === t);
+      panel.style.display  = active ? 'flex' : 'none';
+      btn.style.color       = active ? '#0ea5e9' : '#94a3b8';
+      btn.style.borderBottom = active ? '2px solid #0ea5e9' : '2px solid transparent';
+    });
+  }
+  window.seoTab = seoTab;
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function(){ seoTab('bd'); });
+  } else { seoTab('bd'); }
 })();
 
 // ── Slide 8: SEO Visibility — Bond Detail + Marketing Site/Blog ───────────────
