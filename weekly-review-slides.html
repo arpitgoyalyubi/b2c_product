@@ -1296,6 +1296,8 @@
       style="border:none;background:none;padding:6px 14px;font-size:.65rem;font-weight:700;cursor:pointer;border-bottom:2px solid #f59e0b;color:#f59e0b;margin-bottom:-2px;letter-spacing:.02em;">Funnel</button>
     <button id="hv-btn-load" onclick="hvTab('load')"
       style="border:none;background:none;padding:6px 14px;font-size:.65rem;font-weight:700;cursor:pointer;border-bottom:2px solid transparent;color:#94a3b8;margin-bottom:-2px;letter-spacing:.02em;">Load Times &amp; Events</button>
+    <button id="hv-btn-action" onclick="hvTab('action')"
+      style="border:none;background:none;padding:6px 14px;font-size:.65rem;font-weight:700;cursor:pointer;border-bottom:2px solid transparent;color:#94a3b8;margin-bottom:-2px;letter-spacing:.02em;">Action Items</button>
   </div>
 
 
@@ -1535,6 +1537,59 @@
 
       </div>
 
+      <div id="hv-tab-action" style="display:none;flex-direction:column;gap:10px;flex:1;min-height:0;padding-top:4px;overflow-y:auto;">
+
+        <div style="font-size:.6rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.07em;padding-bottom:5px;border-bottom:1px solid #e2e8f0;flex-shrink:0;">
+          Improvement levers &nbsp;&middot;&nbsp; owner &amp; status
+        </div>
+
+        <!-- Item 1: CTA click rate -->
+        <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px;padding:11px 13px;flex-shrink:0;">
+          <div style="display:flex;align-items:flex-start;gap:9px;">
+            <div style="width:21px;height:21px;background:#16a34a;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:800;color:#fff;margin-top:1px;">1</div>
+            <div style="flex:1;">
+              <div style="font-size:10px;font-weight:800;color:#166534;margin-bottom:3px;">Reduce PAN Screen &#8594; CTA drop &mdash; improve click rate</div>
+              <div style="font-size:8.5px;color:#166534;opacity:.8;line-height:1.6;margin-bottom:7px;">23.3% of users leave the PAN screen without clicking the DigiLocker CTA. Copy, layout, or trust-signal changes could recover several pp here.</div>
+              <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;">
+                <span style="background:#dcfce7;border:1px solid #86efac;border-radius:4px;padding:2px 7px;font-size:8px;font-weight:700;color:#166534;">UX</span>
+                <span style="background:#fef3c7;border:1px solid #fde68a;border-radius:4px;padding:2px 7px;font-size:8px;font-weight:700;color:#92400e;">&#9203; Yet to be picked up</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2: SDK load time -->
+        <div style="background:#eff6ff;border:1.5px solid #93c5fd;border-radius:8px;padding:11px 13px;flex-shrink:0;">
+          <div style="display:flex;align-items:flex-start;gap:9px;">
+            <div style="width:21px;height:21px;background:#2563eb;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:800;color:#fff;margin-top:1px;">2</div>
+            <div style="flex:1;">
+              <div style="font-size:10px;font-weight:800;color:#1e40af;margin-bottom:3px;">Reduce SDK load time &mdash; p90 8.4s &rarr; target &lt;4s</div>
+              <div style="font-size:8.5px;color:#1e40af;opacity:.8;line-height:1.6;margin-bottom:7px;">HyperVerge emits real-time workflow events (<code style="font-size:7.5px;background:#dbeafe;padding:1px 4px;border-radius:3px;">step_started</code> / <code style="font-size:7.5px;background:#dbeafe;padding:1px 4px;border-radius:3px;">step_completed</code>). Consuming these enables per-device-tier p-tile breakdowns. p99 = 32.9s correlates directly with the 17.6% no-callback rate.</div>
+              <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;">
+                <span style="background:#dbeafe;border:1px solid #93c5fd;border-radius:4px;padding:2px 7px;font-size:8px;font-weight:700;color:#1e40af;">Engineering</span>
+                <span style="background:#fef3c7;border:1px solid #fde68a;border-radius:4px;padding:2px 7px;font-size:8px;font-weight:700;color:#92400e;">&#9203; Event instrumentation to be picked up</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 3: Backup flow -->
+        <div style="background:#fdf4ff;border:1.5px solid #d8b4fe;border-radius:8px;padding:11px 13px;flex-shrink:0;">
+          <div style="display:flex;align-items:flex-start;gap:9px;">
+            <div style="width:21px;height:21px;background:#7c3aed;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:800;color:#fff;margin-top:1px;">3</div>
+            <div style="flex:1;">
+              <div style="font-size:10px;font-weight:800;color:#6b21a8;margin-bottom:3px;">Improve backup flow &mdash; Aadhaar / PAN not fetched</div>
+              <div style="font-size:8.5px;color:#6b21a8;opacity:.8;line-height:1.6;margin-bottom:7px;">~4% of callbacks: Aadhaar not in DigiLocker vault. ~7% of callbacks: PAN not linked. Manual upload + OCR as a fallback path would recover these users instead of dropping them.</div>
+              <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;">
+                <span style="background:#f3e8ff;border:1px solid #d8b4fe;border-radius:4px;padding:2px 7px;font-size:8px;font-weight:700;color:#6b21a8;">HyperVerge</span>
+                <span style="background:#fef3c7;border:1px solid #fde68a;border-radius:4px;padding:2px 7px;font-size:8px;font-weight:700;color:#92400e;">&#9203; Manual upload + OCR solution pending confirmation</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
   <div style="flex-shrink:0;background:#fff7ed;border-left:3px solid #f59e0b;
     padding:8px 12px;border-radius:0 4px 4px 0;font-size:11px;color:#374151;line-height:1.6;">
     <b>44.4%</b> of PAN Screen users reached PAN Verified this week (Jun 1–7) <span style='color:#16a34a;font-weight:600;'>(+1.1pp WoW)</span>. Biggest leak: <b>12.8% of users</b> lost between SDK initiation and callback — app closed or SDK hung before DigiLocker loaded. SDK load time p90 = 8.4s, p99 = 32.9s (HyperVerge). <i>Bars show cumulative % from PAN Screen — each bar is % of original users who reached that step.</i>
@@ -1546,7 +1601,7 @@
   <script>
   (function(){
     function hvTab(t) {
-      ['funnel','load'].forEach(function(id){
+      ['funnel','load','action'].forEach(function(id){
         var panel = document.getElementById('hv-tab-' + id);
         var btn   = document.getElementById('hv-btn-' + id);
         if (!panel || !btn) return;
