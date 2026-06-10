@@ -1645,39 +1645,48 @@
           </div>
         </div>
 
+        <!-- Channel insights header -->
+        <div style="display:flex;align-items:center;gap:8px;margin-top:14px;margin-bottom:6px;">
+          <div style="font-size:.6rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.07em;">Channel Insights &amp; Recommendations</div>
+          <div style="flex:1;height:1px;background:#e2e8f0;"></div>
+        </div>
+
         <!-- Channel insights -->
-        <div style="display:flex;flex-direction:column;gap:5px;margin-top:10px;">
+        <div style="display:flex;flex-direction:column;gap:7px;">
 
           <!-- Organic Web insight -->
-          <div style="display:flex;align-items:flex-start;gap:8px;background:#f0fdf4;border-left:3px solid #0d9488;border-radius:0 6px 6px 0;padding:7px 10px;">
-            <div style="flex-shrink:0;margin-top:1px;">
-              <div style="width:8px;height:8px;border-radius:50%;background:#0d9488;margin-top:2px;"></div>
-            </div>
+          <div style="display:flex;align-items:flex-start;gap:9px;background:#f0fdf4;border-left:3px solid #0d9488;border-radius:0 6px 6px 0;padding:8px 11px;">
+            <div style="width:8px;height:8px;border-radius:50%;background:#0d9488;margin-top:3px;flex-shrink:0;"></div>
             <div style="flex:1;">
-              <div style="font-size:.65rem;font-weight:700;color:#065f46;margin-bottom:2px;">Organic / Direct Web — highest ATV at ₹5.64 L <span style="font-weight:400;color:#6b7280;">(4× overall avg · ~50 users)</span></div>
-              <div style="font-size:.6rem;color:#374151;line-height:1.5;">These are the highest-intent users on the platform. Source is currently unknown (organic search vs direct bookmark). Implementing <code style="font-size:.57rem;background:#d1fae5;padding:1px 3px;border-radius:2px;">initial_referrer_domain</code> (Action Items) splits this — SEO investment directly grows this bucket.</div>
+              <div style="font-size:.66rem;font-weight:700;color:#065f46;margin-bottom:3px;">Organic / Direct Web — highest ATV at ₹5.64 L <span style="font-weight:400;color:#6b7280;">(4× avg · ~50 users)</span></div>
+              <div style="font-size:.6rem;color:#374151;line-height:1.55;">Highest-intent users on the platform. Source split (organic search vs direct) is currently invisible — implementing <code style="font-size:.57rem;background:#d1fae5;padding:1px 3px;border-radius:2px;">initial_referrer_domain</code> (see Action Items) unlocks it. SEO investment directly grows this bucket.</div>
             </div>
           </div>
 
           <!-- Organic Installs insight -->
-          <div style="display:flex;align-items:flex-start;gap:8px;background:#f0fdf4;border-left:3px solid #10b981;border-radius:0 6px 6px 0;padding:7px 10px;">
-            <div style="flex-shrink:0;margin-top:1px;">
-              <div style="width:8px;height:8px;border-radius:50%;background:#10b981;margin-top:2px;"></div>
-            </div>
+          <div style="display:flex;align-items:flex-start;gap:9px;background:#f0fdf4;border-left:3px solid #10b981;border-radius:0 6px 6px 0;padding:8px 11px;">
+            <div style="width:8px;height:8px;border-radius:50%;background:#10b981;margin-top:3px;flex-shrink:0;"></div>
             <div style="flex:1;">
-              <div style="font-size:.65rem;font-weight:700;color:#065f46;margin-bottom:2px;">Organic Installs (AppsFlyer) — ₹1.10 Cr · ₹1.49 L ATV · ~57 users</div>
-              <div style="font-size:.6rem;color:#374151;line-height:1.5;">Direct lever via App Store Optimisation — improving store listing conversion grows this bucket with zero media spend. See Store Listing Conversion slide. <span style="color:#92400e;font-weight:600;">Marketing action items for ASO yet to be finalised.</span></div>
+              <div style="font-size:.66rem;font-weight:700;color:#065f46;margin-bottom:3px;">Organic Installs (AppsFlyer) — ₹1.10 Cr · ₹1.49 L ATV · ~57 users</div>
+              <div style="font-size:.6rem;color:#374151;line-height:1.55;">Zero media spend channel — grows directly with better App Store listing conversion (ASO). See Store Listing Conversion slide for funnel. <span style="color:#92400e;font-weight:600;">Marketing action items for ASO yet to be finalised.</span></div>
             </div>
           </div>
 
           <!-- Referral insight -->
-          <div style="display:flex;align-items:flex-start;gap:8px;background:#faf5ff;border-left:3px solid #8b5cf6;border-radius:0 6px 6px 0;padding:7px 10px;">
-            <div style="flex-shrink:0;margin-top:1px;">
-              <div style="width:8px;height:8px;border-radius:50%;background:#8b5cf6;margin-top:2px;"></div>
-            </div>
+          <div style="display:flex;align-items:flex-start;gap:9px;background:#faf5ff;border-left:3px solid #8b5cf6;border-radius:0 6px 6px 0;padding:8px 11px;">
+            <div style="width:8px;height:8px;border-radius:50%;background:#8b5cf6;margin-top:3px;flex-shrink:0;"></div>
             <div style="flex:1;">
-              <div style="font-size:.65rem;font-weight:700;color:#5b21b6;margin-bottom:2px;">Employee Referral — low ATV ~₹13k · ~68 users · ₹0.11 Cr</div>
-              <div style="font-size:.6rem;color:#374151;line-height:1.5;">ATV is 10× below platform average — referred users may be low-intent or early-stage. Before productising a referral programme, test conversion quality on the existing user base first to validate whether referral is a meaningful growth lever.</div>
+              <div style="font-size:.66rem;font-weight:700;color:#5b21b6;margin-bottom:3px;">Employee Referral — ATV ~₹13k · ~68 users · ₹0.11 Cr total</div>
+              <div style="font-size:.6rem;color:#374151;line-height:1.55;">ATV is 10× below platform avg — referred users may be low-intent or early-stage. Test conversion quality on existing user base before productising a referral programme to validate if it is a meaningful growth lever.</div>
+            </div>
+          </div>
+
+          <!-- Fixable dark channels insight -->
+          <div style="display:flex;align-items:flex-start;gap:9px;background:#fef2f2;border-left:3px solid #ef4444;border-radius:0 6px 6px 0;padding:8px 11px;">
+            <div style="width:8px;height:8px;border-radius:50%;background:#ef4444;margin-top:3px;flex-shrink:0;"></div>
+            <div style="flex:1;">
+              <div style="font-size:.66rem;font-weight:700;color:#b91c1c;margin-bottom:3px;">₹5.69 Cr (35% of total GTV) is attribution-dark — both gaps are engineering-fixable</div>
+              <div style="font-size:.6rem;color:#374151;line-height:1.55;">AF sync bug (₹4.54 Cr) + Branch UTM bug (₹1.15 Cr). Fixing AF sync alone restores visibility on the single largest attribution gap. With full attribution, paid channel ROI calculations and budget decisions become materially more accurate.</div>
             </div>
           </div>
 
