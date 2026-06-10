@@ -1593,6 +1593,7 @@
             <canvas id="chart-attr-donut" style="width:120px;height:120px;"></canvas>
           </div>
           <div class="attr-legend" style="flex:1;">
+            <!-- Paid -->
             <div class="attr-leg-row">
               <div class="attr-leg-dot" style="background:#3b82f6;"></div>
               <div class="attr-leg-label">Paid Performance</div>
@@ -1600,13 +1601,31 @@
               <div class="attr-leg-gtv">₹5.74 Cr</div>
               <div class="attr-leg-pct">35%</div>
             </div>
+            <!-- Organic Installs AF -->
             <div class="attr-leg-row">
               <div class="attr-leg-dot" style="background:#10b981;"></div>
-              <div class="attr-leg-label">Organic + Engagement</div>
-              <div style="width:80px;"><div class="attr-leg-bar-wrap"><div class="attr-leg-bar" style="background:#10b981;width:30%;"></div></div></div>
-              <div class="attr-leg-gtv">₹4.90 Cr</div>
-              <div class="attr-leg-pct">30%</div>
+              <div class="attr-leg-label">Organic Installs (AppsFlyer)</div>
+              <div style="width:80px;"><div class="attr-leg-bar-wrap"><div class="attr-leg-bar" style="background:#10b981;width:7%;"></div></div></div>
+              <div class="attr-leg-gtv">₹1.10 Cr</div>
+              <div class="attr-leg-pct">7%</div>
             </div>
+            <!-- Organic Direct Web -->
+            <div class="attr-leg-row">
+              <div class="attr-leg-dot" style="background:#0d9488;"></div>
+              <div class="attr-leg-label">Organic / Direct — Web</div>
+              <div style="width:80px;"><div class="attr-leg-bar-wrap"><div class="attr-leg-bar" style="background:#0d9488;width:22%;"></div></div></div>
+              <div class="attr-leg-gtv">₹3.55 Cr</div>
+              <div class="attr-leg-pct">22%</div>
+            </div>
+            <!-- Employee Referral -->
+            <div class="attr-leg-row">
+              <div class="attr-leg-dot" style="background:#8b5cf6;"></div>
+              <div class="attr-leg-label">Employee Referral</div>
+              <div style="width:80px;"><div class="attr-leg-bar-wrap"><div class="attr-leg-bar" style="background:#8b5cf6;width:1%;"></div></div></div>
+              <div class="attr-leg-gtv">₹0.11 Cr</div>
+              <div class="attr-leg-pct">1%</div>
+            </div>
+            <!-- Tracking Bug -->
             <div class="attr-leg-row" style="background:#fef9f0;">
               <div class="attr-leg-dot" style="background:#f59e0b;"></div>
               <div class="attr-leg-label">⚠ Tracking bug (Branch)</div>
@@ -1614,13 +1633,15 @@
               <div class="attr-leg-gtv">₹1.15 Cr</div>
               <div class="attr-leg-pct">7%</div>
             </div>
-            <div class="attr-leg-row" style="background:#f8f8fa;">
-              <div class="attr-leg-dot" style="background:#94a3b8;"></div>
-              <div class="attr-leg-label">❓ Unknown mobile (AF sync)</div>
-              <div style="width:80px;"><div class="attr-leg-bar-wrap"><div class="attr-leg-bar" style="background:#94a3b8;width:28%;"></div></div></div>
-              <div class="attr-leg-gtv">₹4.54 Cr</div>
-              <div class="attr-leg-pct">28%</div>
+            <!-- Unknown Mobile — prominent, bug open -->
+            <div class="attr-leg-row" style="background:#fef2f2;border:1px solid #fecaca;border-radius:6px;">
+              <div class="attr-leg-dot" style="background:#ef4444;"></div>
+              <div class="attr-leg-label" style="color:#b91c1c;font-weight:600;">Unknown mobile (AF sync bug)</div>
+              <div style="width:80px;"><div class="attr-leg-bar-wrap"><div class="attr-leg-bar" style="background:#ef4444;width:28%;"></div></div></div>
+              <div class="attr-leg-gtv" style="color:#b91c1c;">₹4.54 Cr</div>
+              <div class="attr-leg-pct" style="color:#b91c1c;">28%</div>
             </div>
+            <div style="background:#fff0f0;border-radius:4px;padding:3px 7px;margin-top:2px;font-size:.58rem;color:#b91c1c;font-weight:600;">🐛 Bug story open · 40% of mobile GTV invisible · largest fixable gap</div>
           </div>
         </div>
 
@@ -1644,7 +1665,7 @@
           <div style="background:#f8f9fa;border-radius:8px;padding:8px 10px;">
             <div style="font-size:.6rem;color:#475569;font-weight:600;text-transform:uppercase;letter-spacing:.04em;">Affiliates</div>
             <div style="font-size:1rem;font-weight:700;color:#1e293b;">1.8×</div>
-            <div style="font-size:.6rem;color:#6b7280;">Ord/user · highest repeat rate</div>
+            <div style="font-size:.6rem;color:#6b7280;">Ord/user · highest repeat in paid mobile</div>
           </div>
         </div>
       </div>
@@ -3529,10 +3550,10 @@ window.attrShowTab = function(tab) {
   var chart = new Chart(canvas, {
     type: 'doughnut',
     data: {
-      labels: ['Paid Performance', 'Organic + Engagement', 'Tracking Bug', 'Unknown Mobile'],
+      labels: ['Paid Performance', 'Organic Installs (AF)', 'Organic / Direct Web', 'Employee Referral', 'Tracking Bug', 'Unknown Mobile'],
       datasets: [{
-        data: [5.74, 4.90, 1.15, 4.54],
-        backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#94a3b8'],
+        data: [5.74, 1.10, 3.55, 0.11, 1.15, 4.54],
+        backgroundColor: ['#3b82f6', '#10b981', '#0d9488', '#8b5cf6', '#f59e0b', '#ef4444'],
         borderWidth: 2,
         borderColor: '#ffffff',
         hoverOffset: 5,
