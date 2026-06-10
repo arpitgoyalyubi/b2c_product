@@ -1448,53 +1448,61 @@ function sdoToggle(g){
         </div>
 
         <!-- Fix: Multi-KRA Agency Routing -->
-        <div>
-          <div style="font-size:.68rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px;">
-            Fix: Multi-KRA Agency Routing
-            <span style="font-weight:400;color:#9ca3af;font-size:.63rem;text-transform:none;">add CAMS + NDML credentials</span>
+        <div style="background:#fffbeb;border:2px solid #f59e0b;border-radius:12px;padding:14px 16px;">
+
+          <!-- Header row with action badge -->
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+            <span style="font-size:.72rem;font-weight:800;color:#92400e;text-transform:uppercase;letter-spacing:.05em;">Fix: Multi-KRA Agency Routing</span>
+            <span style="background:#f59e0b;color:#fff;font-size:.58rem;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.04em;white-space:nowrap;">Action Required</span>
+            <span style="font-size:.63rem;color:#b45309;margin-left:auto;white-space:nowrap;">add CAMS + NDML creds</span>
           </div>
-          <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;overflow:hidden;">
-            <table style="width:100%;border-collapse:collapse;font-size:.62rem;">
+
+          <!-- Agency table -->
+          <div style="background:#fff;border:1.5px solid #fde68a;border-radius:10px;overflow:hidden;margin-bottom:12px;">
+            <table style="width:100%;border-collapse:collapse;font-size:.72rem;">
               <thead>
-                <tr style="background:#f1f5f9;">
-                  <th style="padding:6px 10px;text-align:left;font-weight:700;color:#374151;border-bottom:1px solid #e2e8f0;">Agency</th>
-                  <th style="padding:6px 8px;text-align:center;font-weight:700;color:#374151;border-bottom:1px solid #e2e8f0;">Webhook time</th>
-                  <th style="padding:6px 8px;text-align:center;font-weight:700;color:#374151;border-bottom:1px solid #e2e8f0;">Mkt share</th>
-                  <th style="padding:6px 8px;text-align:center;font-weight:700;color:#374151;border-bottom:1px solid #e2e8f0;">Our status</th>
+                <tr style="background:#fef3c7;">
+                  <th style="padding:10px 14px;text-align:left;font-weight:700;color:#92400e;border-bottom:1px solid #fde68a;">Agency</th>
+                  <th style="padding:10px 12px;text-align:center;font-weight:700;color:#92400e;border-bottom:1px solid #fde68a;">Webhook time</th>
+                  <th style="padding:10px 12px;text-align:center;font-weight:700;color:#92400e;border-bottom:1px solid #fde68a;">Mkt share</th>
+                  <th style="padding:10px 12px;text-align:center;font-weight:700;color:#92400e;border-bottom:1px solid #fde68a;">Our status</th>
                 </tr>
               </thead>
               <tbody>
-                <tr style="border-bottom:1px solid #f1f5f9;">
-                  <td style="padding:6px 10px;font-weight:700;color:#374151;">CVL</td>
-                  <td style="padding:6px 8px;text-align:center;color:#dc2626;font-weight:600;">up to 24hr</td>
-                  <td style="padding:6px 8px;text-align:center;color:#6b7280;">~60%</td>
-                  <td style="padding:6px 8px;text-align:center;"><span style="background:#dcfce7;color:#166534;font-weight:700;font-size:.58rem;padding:1px 6px;border-radius:3px;">Active</span></td>
+                <tr style="border-bottom:1px solid #fef3c7;">
+                  <td style="padding:11px 14px;font-weight:700;color:#374151;">CVL</td>
+                  <td style="padding:11px 12px;text-align:center;color:#dc2626;font-weight:700;">up to 24hr</td>
+                  <td style="padding:11px 12px;text-align:center;color:#6b7280;">~60%</td>
+                  <td style="padding:11px 12px;text-align:center;"><span style="background:#dcfce7;color:#166534;font-weight:700;font-size:.65rem;padding:3px 9px;border-radius:20px;">Active</span></td>
                 </tr>
-                <tr style="border-bottom:1px solid #f1f5f9;">
-                  <td style="padding:6px 10px;font-weight:700;color:#374151;">CAMS</td>
-                  <td style="padding:6px 8px;text-align:center;color:#d97706;font-weight:600;">~30 min</td>
-                  <td style="padding:6px 8px;text-align:center;color:#6b7280;">~20%</td>
-                  <td style="padding:6px 8px;text-align:center;"><span style="background:#fef3c7;color:#92400e;font-weight:700;font-size:.58rem;padding:1px 6px;border-radius:3px;">Get creds</span></td>
+                <tr style="border-bottom:1px solid #fef3c7;background:#fffbeb;">
+                  <td style="padding:11px 14px;font-weight:700;color:#374151;">CAMS</td>
+                  <td style="padding:11px 12px;text-align:center;color:#d97706;font-weight:700;">~30 min</td>
+                  <td style="padding:11px 12px;text-align:center;color:#6b7280;">~20%</td>
+                  <td style="padding:11px 12px;text-align:center;"><span style="background:#f59e0b;color:#fff;font-weight:700;font-size:.65rem;padding:3px 9px;border-radius:20px;">Get creds</span></td>
                 </tr>
-                <tr>
-                  <td style="padding:6px 10px;font-weight:700;color:#374151;">NDML</td>
-                  <td style="padding:6px 8px;text-align:center;color:#16a34a;font-weight:700;">&lt;1 min</td>
-                  <td style="padding:6px 8px;text-align:center;color:#6b7280;">~15%</td>
-                  <td style="padding:6px 8px;text-align:center;"><span style="background:#fef3c7;color:#92400e;font-weight:700;font-size:.58rem;padding:1px 6px;border-radius:3px;">Get creds</span></td>
+                <tr style="background:#fffbeb;">
+                  <td style="padding:11px 14px;font-weight:700;color:#374151;">NDML</td>
+                  <td style="padding:11px 12px;text-align:center;color:#16a34a;font-weight:700;">&lt;1 min &#9889;</td>
+                  <td style="padding:11px 12px;text-align:center;color:#6b7280;">~15%</td>
+                  <td style="padding:11px 12px;text-align:center;"><span style="background:#f59e0b;color:#fff;font-weight:700;font-size:.65rem;padding:3px 9px;border-radius:20px;">Get creds</span></td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div style="display:flex;gap:7px;margin-top:7px;">
-            <div style="flex:1;font-size:.59rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:6px 8px;color:#166534;line-height:1.5;">
+
+          <!-- Callouts -->
+          <div style="display:flex;gap:10px;">
+            <div style="flex:1;font-size:.63rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:11px 13px;color:#166534;line-height:1.7;">
               &#9889; <b>Zero integration cost</b> &#8212; Digio has auto-routing built in.
               Once CAMS + NDML creds are set, routing is automatic. No engineering work beyond credential setup.
             </div>
-            <div style="flex:1;font-size:.59rem;background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:6px 8px;color:#1d4ed8;line-height:1.5;">
+            <div style="flex:1;font-size:.63rem;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:11px 13px;color:#1d4ed8;line-height:1.7;">
               &#128200; <b>Wint benchmark</b> &#8212; already live on CVL + NDML, adding CAMS.
-              "KRA not available" users get routed to CAMS/NDML directly, avoiding CVL delays entirely.
+              &ldquo;KRA not available&rdquo; users routed to CAMS/NDML directly &#8212; bypassing CVL delays entirely.
             </div>
           </div>
+
         </div>
 
       </div>
