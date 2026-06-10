@@ -1987,23 +1987,44 @@ function sdoToggle(g){
       </div>
 
       <!-- PANEL: Overview -->
-      <div id="geo-p-ov" style="flex:1;overflow:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px;">
+      <div id="geo-p-ov" style="flex:1;overflow:hidden;padding:10px 14px;display:flex;flex-direction:column;gap:8px;">
+        <!-- Scorecard row -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;flex-shrink:0;">
+          <div style="background:#f0fdf4;border:2px solid #4ade80;border-radius:10px;padding:8px 10px;text-align:center;">
+            <div style="font-size:.53rem;text-transform:uppercase;letter-spacing:.07em;color:#166534;font-weight:700;margin-bottom:2px;">Branded · 5 queries</div>
+            <div style="font-size:1.9rem;font-weight:800;color:#166534;line-height:1.1;">100%</div>
+            <div style="font-size:.53rem;color:#15803d;margin-top:2px;">mention · 100% cite · rank #1</div>
+            <div style="font-size:.52rem;margin-top:4px;background:#dcfce7;color:#166534;border-radius:4px;padding:2px 6px;font-weight:600;">✓ Brand known → AI nails it</div>
+          </div>
+          <div style="background:#fff1f2;border:2px solid #f87171;border-radius:10px;padding:8px 10px;text-align:center;">
+            <div style="font-size:.53rem;text-transform:uppercase;letter-spacing:.07em;color:#991b1b;font-weight:700;margin-bottom:2px;">Category · 15 queries</div>
+            <div style="font-size:1.9rem;font-weight:800;color:#dc2626;line-height:1.1;">0%</div>
+            <div style="font-size:.53rem;color:#b91c1c;margin-top:2px;">0/15 mentions · 0 citations</div>
+            <div style="font-size:.52rem;margin-top:4px;background:#fee2e2;color:#dc2626;border-radius:4px;padding:2px 6px;font-weight:600;">⚠ "Best bonds" → Not us</div>
+          </div>
+          <div style="background:#fff1f2;border:2px solid #f87171;border-radius:10px;padding:8px 10px;text-align:center;">
+            <div style="font-size:.53rem;text-transform:uppercase;letter-spacing:.07em;color:#991b1b;font-weight:700;margin-bottom:2px;">Entity · 10 queries</div>
+            <div style="font-size:1.9rem;font-weight:800;color:#dc2626;line-height:1.1;">0%</div>
+            <div style="font-size:.53rem;color:#b91c1c;margin-top:2px;">0/10 mentions · 0 citations</div>
+            <div style="font-size:.52rem;margin-top:4px;background:#fee2e2;color:#dc2626;border-radius:4px;padding:2px 6px;font-weight:600;">⚠ "Buy Krazybee NCD" → Not us</div>
+          </div>
+        </div>
         <!-- 2-col layout: competitor chart left, next steps right -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:1;min-height:0;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:1;min-height:0;overflow:hidden;">
 
           <!-- Left: Competitor frequency -->
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <div style="font-size:.66rem;font-weight:700;color:#1e293b;">Who ChatGPT recommends instead</div>
-            <div style="font-size:.57rem;color:#94a3b8;margin-top:-5px;">Appearances across 30 queries · Aspero 0×</div>
-            <div style="display:flex;flex-direction:column;gap:8px;flex:1;justify-content:center;">
+          <div style="display:flex;flex-direction:column;gap:6px;overflow:hidden;">
+            <div style="font-size:.66rem;font-weight:700;color:#1e293b;flex-shrink:0;">Who ChatGPT recommends instead</div>
+            <div style="font-size:.57rem;color:#94a3b8;margin-top:-3px;flex-shrink:0;">Appearances across 30 queries · Aspero 0×</div>
+            <div style="display:flex;flex-direction:column;gap:0;flex:1;justify-content:space-between;min-height:0;">
               <!-- IndiaBonds -->
               <div>
                 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;">
                   <span style="font-size:.65rem;font-weight:700;color:#dc2626;">IndiaBonds</span>
                   <span style="font-size:.7rem;font-weight:800;color:#ef4444;">5×</span>
                 </div>
-                <div style="height:16px;background:#fee2e2;border-radius:4px;overflow:hidden;">
-                  <div style="width:100%;height:100%;background:linear-gradient(90deg,#ef4444,#dc2626);border-radius:4px;"></div>
+                <div style="height:22px;background:#fee2e2;border-radius:5px;overflow:hidden;">
+                  <div style="width:100%;height:100%;background:linear-gradient(90deg,#ef4444,#dc2626);border-radius:5px;"></div>
                 </div>
               </div>
               <!-- Wint Wealth -->
@@ -2012,8 +2033,8 @@ function sdoToggle(g){
                   <span style="font-size:.65rem;font-weight:700;color:#ea580c;">Wint Wealth</span>
                   <span style="font-size:.7rem;font-weight:800;color:#f97316;">4×</span>
                 </div>
-                <div style="height:16px;background:#fff7ed;border-radius:4px;overflow:hidden;">
-                  <div style="width:80%;height:100%;background:linear-gradient(90deg,#f97316,#ea580c);border-radius:4px;"></div>
+                <div style="height:22px;background:#fff7ed;border-radius:5px;overflow:hidden;">
+                  <div style="width:80%;height:100%;background:linear-gradient(90deg,#f97316,#ea580c);border-radius:5px;"></div>
                 </div>
               </div>
               <!-- Grip Invest -->
@@ -2022,8 +2043,8 @@ function sdoToggle(g){
                   <span style="font-size:.65rem;font-weight:600;color:#92400e;">Grip Invest</span>
                   <span style="font-size:.7rem;font-weight:700;color:#ca8a04;">2×</span>
                 </div>
-                <div style="height:16px;background:#fefce8;border-radius:4px;overflow:hidden;">
-                  <div style="width:40%;height:100%;background:linear-gradient(90deg,#eab308,#ca8a04);border-radius:4px;"></div>
+                <div style="height:22px;background:#fefce8;border-radius:5px;overflow:hidden;">
+                  <div style="width:40%;height:100%;background:linear-gradient(90deg,#eab308,#ca8a04);border-radius:5px;"></div>
                 </div>
               </div>
               <!-- BondsIndia -->
@@ -2032,8 +2053,8 @@ function sdoToggle(g){
                   <span style="font-size:.65rem;font-weight:600;color:#475569;">BondsIndia</span>
                   <span style="font-size:.7rem;font-weight:700;color:#94a3b8;">2×</span>
                 </div>
-                <div style="height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;">
-                  <div style="width:40%;height:100%;background:#94a3b8;border-radius:4px;"></div>
+                <div style="height:22px;background:#f1f5f9;border-radius:5px;overflow:hidden;">
+                  <div style="width:40%;height:100%;background:#94a3b8;border-radius:5px;"></div>
                 </div>
               </div>
               <!-- Aspero divider row -->
@@ -2042,17 +2063,17 @@ function sdoToggle(g){
                   <span style="font-size:.65rem;font-weight:800;color:#059669;">Aspero ← us</span>
                   <span style="font-size:.7rem;font-weight:800;color:#dc2626;">0×</span>
                 </div>
-                <div style="height:16px;background:#f0fdf4;border-radius:4px;overflow:hidden;">
-                  <div style="width:1%;height:100%;background:#059669;border-radius:4px;"></div>
+                <div style="height:22px;background:#f0fdf4;border-radius:5px;overflow:hidden;">
+                  <div style="width:1%;height:100%;background:#059669;border-radius:5px;"></div>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Right: Next steps -->
-          <div style="display:flex;flex-direction:column;gap:6px;">
-            <div style="font-size:.66rem;font-weight:700;color:#1e293b;">Top fixes to get into AI answers</div>
-            <div style="display:flex;flex-direction:column;gap:7px;flex:1;justify-content:center;">
+          <div style="display:flex;flex-direction:column;gap:6px;overflow:hidden;">
+            <div style="font-size:.66rem;font-weight:700;color:#1e293b;flex-shrink:0;">Top fixes to get into AI answers</div>
+            <div style="display:flex;flex-direction:column;gap:0;flex:1;justify-content:space-between;min-height:0;">
               <div style="display:flex;gap:8px;align-items:flex-start;background:#f8fafc;border-radius:8px;padding:7px 8px;">
                 <span style="min-width:20px;height:20px;background:#059669;color:#fff;border-radius:50%;font-size:.58rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">1</span>
                 <div style="font-size:.6rem;line-height:1.5;"><b style="color:#1e293b;">Add llm.txt</b><br><span style="color:#64748b;">/llm.txt on aspero.in — tells AI crawlers which bond pages to prioritise</span></div>
