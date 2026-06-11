@@ -1,76 +1,76 @@
 {
-  "generated_at": "2026-06-10T06:49:03Z",
+  "generated_at": "2026-06-11T07:15:42Z",
   "period": {
     "after_start": "20260420",
-    "after_end": "20260609",
-    "after_days": 51,
+    "after_end": "20260610",
+    "after_days": 52,
     "before_start": "20260324",
     "before_end": "20260419",
     "before_days": 27,
     "bug_fix_date": "20260428"
   },
   "setup": {
-    "screen_views": 27633,
-    "enrolled": 18263,
-    "deferred": 8595,
-    "failed": 3503,
+    "screen_views": 28011,
+    "enrolled": 18503,
+    "deferred": 8709,
+    "failed": 3538,
     "enrollment_rate": 66.1
   },
   "login": {
-    "clicked": 45123,
-    "verified": 30898,
-    "os_failed": 12368,
-    "bk_failed": 689,
-    "fallback": 49,
-    "success_rate": 68.5
+    "clicked": 46223,
+    "verified": 31802,
+    "os_failed": 12526,
+    "bk_failed": 714,
+    "fallback": 51,
+    "success_rate": 68.8
   },
   "platform": {
     "iOS": {
-      "screen_views": 1923,
-      "enrolled": 1255,
-      "deferred": 549,
-      "enroll_failed": 131,
+      "screen_views": 1962,
+      "enrolled": 1281,
+      "deferred": 558,
+      "enroll_failed": 134,
       "enrollment_rate": 65.3,
-      "login_clicks": 11469,
-      "login_verified": 3790,
-      "os_failed": 7456,
+      "login_clicks": 11582,
+      "login_verified": 3886,
+      "os_failed": 7470,
       "pin_fallback": 4,
-      "login_success_rate": 33.0,
-      "os_fail_rate": 65.0
+      "login_success_rate": 33.6,
+      "os_fail_rate": 64.5
     },
     "Android": {
-      "screen_views": 25710,
-      "enrolled": 17008,
-      "deferred": 8046,
-      "enroll_failed": 3372,
-      "enrollment_rate": 66.2,
-      "login_clicks": 33654,
-      "login_verified": 27108,
-      "os_failed": 4912,
-      "pin_fallback": 45,
-      "login_success_rate": 80.5,
+      "screen_views": 26049,
+      "enrolled": 17222,
+      "deferred": 8151,
+      "enroll_failed": 3404,
+      "enrollment_rate": 66.1,
+      "login_clicks": 34641,
+      "login_verified": 27916,
+      "os_failed": 5056,
+      "pin_fallback": 47,
+      "login_success_rate": 80.6,
       "os_fail_rate": 14.6
     }
   },
   "before_after": {
-    "signin_before": 38344,
-    "signin_after": 122196,
-    "otp_before": 20977,
-    "otp_after": 58993,
+    "signin_before": 38348,
+    "signin_after": 124562,
+    "otp_before": 20978,
+    "otp_after": 59937,
     "signup_before": 9504,
-    "signup_after": 27616,
+    "signup_after": 27993,
     "otp_cr_before": 54.7,
-    "otp_cr_after": 48.3,
+    "otp_cr_after": 48.1,
     "signin_per_day_before": 1420,
-    "signin_per_day_after": 2396,
+    "signin_per_day_after": 2395,
     "signup_per_day_before": 352,
-    "signup_per_day_after": 541
+    "signup_per_day_after": 538
   },
   "may24_fix": {
     "pre_window": "20260420\u201320260523",
-    "post_window": "20260524\u201320260609",
+    "post_window": "20260524\u201320260610",
     "pre_days": 34,
-    "post_days": 17,
+    "post_days": 18,
     "iOS": {
       "pre": {
         "clicks": 8002,
@@ -79,24 +79,24 @@
         "os_fail_rate": 75.2
       },
       "post": {
-        "clicks": 3467,
-        "os_failed": 1440,
-        "success_rate": 58.5,
-        "os_fail_rate": 41.5
+        "clicks": 3580,
+        "os_failed": 1454,
+        "success_rate": 59.4,
+        "os_fail_rate": 40.6
       },
-      "fail_rate_delta_pp": -33.7,
+      "fail_rate_delta_pp": -34.6,
       "improved": true
     },
     "Android": {
       "pre": {
-        "clicks": 17456,
-        "os_failed": 2573,
+        "clicks": 17458,
+        "os_failed": 2575,
         "success_rate": 85.3,
         "os_fail_rate": 14.7
       },
       "post": {
-        "clicks": 16198,
-        "os_failed": 2339,
+        "clicks": 17183,
+        "os_failed": 2481,
         "success_rate": 85.6,
         "os_fail_rate": 14.4
       }
@@ -154,7 +154,8 @@
       "2026-06-06",
       "2026-06-07",
       "2026-06-08",
-      "2026-06-09"
+      "2026-06-09",
+      "2026-06-10"
     ],
     "enrolled": [
       1,
@@ -207,7 +208,8 @@
       321,
       237,
       237,
-      229
+      229,
+      240
     ],
     "logins": [
       9,
@@ -256,11 +258,12 @@
       1012,
       827,
       1201,
-      1122,
+      1123,
       922,
       729,
       986,
-      855
+      856,
+      902
     ],
     "otp": [
       653,
@@ -301,7 +304,7 @@
       1209,
       957,
       975,
-      1094,
+      1095,
       1049,
       1125,
       1171,
@@ -313,7 +316,8 @@
       1362,
       873,
       1327,
-      1032
+      1032,
+      943
     ],
     "signups": [
       316,
@@ -366,7 +370,8 @@
       575,
       447,
       371,
-      392
+      392,
+      377
     ],
     "ios_fail_rate": [
       null,
@@ -419,7 +424,8 @@
       8.2,
       10.8,
       11.0,
-      8.3
+      9.1,
+      11.6
     ],
     "android_fail_rate": [
       25.0,
@@ -452,27 +458,28 @@
       14.9,
       15.0,
       14.0,
-      16.0,
+      15.9,
       16.7,
-      17.1,
-      16.8,
+      17.2,
+      16.9,
       17.2,
       14.3,
       13.5,
       13.6,
       14.3,
-      15.7,
-      15.8,
+      16.1,
+      15.9,
       15.0,
       13.1,
-      13.3,
+      13.4,
       15.4,
       13.1,
-      13.7,
+      13.8,
       16.2,
-      15.1,
+      15.5,
       12.9,
-      15.3
+      15.6,
+      13.1
     ],
     "ios_os_failed": [
       0,
@@ -525,7 +532,8 @@
       11,
       11,
       14,
-      9
+      10,
+      13
     ],
     "android_os_failed": [
       3,
@@ -560,25 +568,26 @@
       102,
       128,
       133,
-      140,
-      128,
+      141,
+      129,
       126,
       127,
       144,
       114,
       129,
-      145,
-      130,
+      148,
+      131,
       131,
       142,
-      141,
+      143,
       136,
       162,
-      158,
+      159,
       160,
-      117,
+      121,
       134,
-      143
+      146,
+      128
     ],
     "ios_login_clicks": [
       0,
@@ -631,7 +640,8 @@
       134,
       102,
       127,
-      109
+      110,
+      112
     ],
     "android_login_clicks": [
       12,
@@ -664,27 +674,28 @@
       669,
       721,
       726,
-      802,
+      803,
       796,
       820,
-      763,
+      764,
       732,
       886,
       1064,
       837,
       901,
-      921,
+      922,
       822,
       876,
       1087,
-      1063,
+      1064,
       884,
       1234,
       1153,
       987,
-      776,
-      1040,
-      935
+      780,
+      1041,
+      938,
+      975
     ]
   }
 }
