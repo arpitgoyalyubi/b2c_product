@@ -911,6 +911,7 @@
     var START_RATES_CLEAN  = [30.1, 34.1, 32.6, 32.8, 31.7, 31.6, 31.5];
     var HAS_BOT_DATA       = true;
     var DONE_RATES         = [28.4, 29.7, 29.2, 28.8, 22.9, 31.7, 34.1];
+    var DONE_RATES_CLEAN   = [28.4, 29.7, 29.2, 28.8, 22.9, 31.7, 34.1];
     var BOT_WARNINGS       = ["1 Jun: Poland = 10.0% of signups"];
     var VIOLET = '#8b5cf6', GREEN = '#10b981', AMBER = '#f59e0b', ROSE = '#f43f5e', ORANGE = '#f97316';
 
@@ -924,6 +925,10 @@
       if (HAS_BOT_DATA) {
         datasets.push({ type:'line', label:'Start Rate% (excl. bots)', data: START_RATES_CLEAN,
           borderColor: ORANGE, backgroundColor:'transparent', yAxisID:'y2',
+          pointRadius:3, pointHoverRadius:5, tension:.35,
+          borderDash:[5,3], borderWidth:1.5 });
+        datasets.push({ type:'line', label:'Start→Done% (excl. bots)', data: DONE_RATES_CLEAN,
+          borderColor: ROSE, backgroundColor:'transparent', yAxisID:'y2',
           pointRadius:3, pointHoverRadius:5, tension:.35,
           borderDash:[5,3], borderWidth:1.5 });
       }
@@ -966,16 +971,17 @@
       });
       var ins = document.getElementById('ins-kyc-cohort');
       if (ins) {
-        var this_s = START_RATES[START_RATES.length-1];
-        var prev_s = START_RATES[START_RATES.length-2] || 0;
-        var this_d = DONE_RATES[DONE_RATES.length-1];
-        var prev_d = DONE_RATES[DONE_RATES.length-2] || 0;
+        var this_s = HAS_BOT_DATA ? START_RATES_CLEAN[START_RATES_CLEAN.length-1] : START_RATES[START_RATES.length-1];
+        var prev_s = HAS_BOT_DATA ? (START_RATES_CLEAN[START_RATES_CLEAN.length-2] || 0) : (START_RATES[START_RATES.length-2] || 0);
+        var this_d = HAS_BOT_DATA ? DONE_RATES_CLEAN[DONE_RATES_CLEAN.length-1] : DONE_RATES[DONE_RATES.length-1];
+        var prev_d = HAS_BOT_DATA ? (DONE_RATES_CLEAN[DONE_RATES_CLEAN.length-2] || 0) : (DONE_RATES[DONE_RATES.length-2] || 0);
         var botChips = BOT_WARNINGS.map(function(w) {
           return '<div class="ins-chip" style="border-color:'+ORANGE+';color:'+ORANGE+';font-weight:700;">⚠ Bot spike &#8212; ' + w + '</div>';
         }).join('');
+        var excl = HAS_BOT_DATA ? ' <span style="font-size:.65rem;opacity:.7;">(excl. bots)</span>' : '';
         ins.innerHTML =
-          '<div class="ins-chip" style="border-color:'+VIOLET+';color:'+VIOLET+';">Cohort start rate: '+this_s+'% &middot; prior wk: '+prev_s+'%</div>' +
-          '<div class="ins-chip" style="border-color:'+ROSE+';color:'+ROSE+';">Cohort start→done: '+this_d+'% &middot; prior wk: '+prev_d+'% ⚠ most recent week still maturing</div>' +
+          '<div class="ins-chip" style="border-color:'+VIOLET+';color:'+VIOLET+';">Cohort start rate: '+this_s+'%'+excl+' &middot; prior wk: '+prev_s+'%</div>' +
+          '<div class="ins-chip" style="border-color:'+ROSE+';color:'+ROSE+';">Cohort start→done: '+this_d+'%'+excl+' &middot; prior wk: '+prev_d+'% ⚠ most recent week still maturing</div>' +
           botChips;
       }
     }
@@ -3000,6 +3006,7 @@ function sdoToggle(g){
     var START_RATES_CLEAN  = [30.1, 34.1, 32.6, 32.8, 31.7, 31.6, 31.5];
     var HAS_BOT_DATA       = true;
     var DONE_RATES         = [28.4, 29.7, 29.2, 28.8, 22.9, 31.7, 34.1];
+    var DONE_RATES_CLEAN   = [28.4, 29.7, 29.2, 28.8, 22.9, 31.7, 34.1];
     var BOT_WARNINGS       = ["1 Jun: Poland = 10.0% of signups"];
     var VIOLET = '#8b5cf6', GREEN = '#10b981', AMBER = '#f59e0b', ROSE = '#f43f5e', ORANGE = '#f97316';
 
@@ -3013,6 +3020,10 @@ function sdoToggle(g){
       if (HAS_BOT_DATA) {
         datasets.push({ type:'line', label:'Start Rate% (excl. bots)', data: START_RATES_CLEAN,
           borderColor: ORANGE, backgroundColor:'transparent', yAxisID:'y2',
+          pointRadius:3, pointHoverRadius:5, tension:.35,
+          borderDash:[5,3], borderWidth:1.5 });
+        datasets.push({ type:'line', label:'Start→Done% (excl. bots)', data: DONE_RATES_CLEAN,
+          borderColor: ROSE, backgroundColor:'transparent', yAxisID:'y2',
           pointRadius:3, pointHoverRadius:5, tension:.35,
           borderDash:[5,3], borderWidth:1.5 });
       }
@@ -3055,16 +3066,17 @@ function sdoToggle(g){
       });
       var ins = document.getElementById('ins-kyc-cohort-end');
       if (ins) {
-        var this_s = START_RATES[START_RATES.length-1];
-        var prev_s = START_RATES[START_RATES.length-2] || 0;
-        var this_d = DONE_RATES[DONE_RATES.length-1];
-        var prev_d = DONE_RATES[DONE_RATES.length-2] || 0;
+        var this_s = HAS_BOT_DATA ? START_RATES_CLEAN[START_RATES_CLEAN.length-1] : START_RATES[START_RATES.length-1];
+        var prev_s = HAS_BOT_DATA ? (START_RATES_CLEAN[START_RATES_CLEAN.length-2] || 0) : (START_RATES[START_RATES.length-2] || 0);
+        var this_d = HAS_BOT_DATA ? DONE_RATES_CLEAN[DONE_RATES_CLEAN.length-1] : DONE_RATES[DONE_RATES.length-1];
+        var prev_d = HAS_BOT_DATA ? (DONE_RATES_CLEAN[DONE_RATES_CLEAN.length-2] || 0) : (DONE_RATES[DONE_RATES.length-2] || 0);
         var botChips = BOT_WARNINGS.map(function(w) {
           return '<div class="ins-chip" style="border-color:'+ORANGE+';color:'+ORANGE+';font-weight:700;">⚠ Bot spike &#8212; ' + w + '</div>';
         }).join('');
+        var excl = HAS_BOT_DATA ? ' <span style="font-size:.65rem;opacity:.7;">(excl. bots)</span>' : '';
         ins.innerHTML =
-          '<div class="ins-chip" style="border-color:'+VIOLET+';color:'+VIOLET+';">Cohort start rate: '+this_s+'% &middot; prior wk: '+prev_s+'%</div>' +
-          '<div class="ins-chip" style="border-color:'+ROSE+';color:'+ROSE+';">Cohort start→done: '+this_d+'% &middot; prior wk: '+prev_d+'% ⚠ most recent week still maturing</div>' +
+          '<div class="ins-chip" style="border-color:'+VIOLET+';color:'+VIOLET+';">Cohort start rate: '+this_s+'%'+excl+' &middot; prior wk: '+prev_s+'%</div>' +
+          '<div class="ins-chip" style="border-color:'+ROSE+';color:'+ROSE+';">Cohort start→done: '+this_d+'%'+excl+' &middot; prior wk: '+prev_d+'% ⚠ most recent week still maturing</div>' +
           botChips;
       }
     }
