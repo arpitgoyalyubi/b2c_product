@@ -1372,10 +1372,10 @@ function line(label, data, color, yAxisID) {
 // ── Cover: summary tiles ──────────────────────────────────────────────────────
 (function() {
   const _cS   = D.signups_clean[D.signups_clean.length - 1];
-  const _kycC = +((D.kpi_kyc_start_pct.this * D.kpi_signups.this / _cS)).toFixed(1);
+  const _kycC = D.kpi_kyc_start_pct.this;  // already clean (excl. Poland) from cohort funnel
   const items = [
     { lbl: 'Signups',    val: num(_cS),                                              wow: _cS - D.kpi_signups.last,                                suf: '' },
-    { lbl: 'KYC Start%', val: pct(_kycC),                                            wow: +(_kycC - D.kpi_kyc_start_pct.last).toFixed(1),          suf: 'pp' },
+    { lbl: 'KYC Start%', val: pct(_kycC),                                            wow: D.kpi_kyc_start_pct.delta,                               suf: 'pp' },
     { lbl: 'KYC Done%',  val: pct(D.kpi_kyc_start_to_done.this),                    wow: D.kpi_kyc_start_to_done.delta,                           suf: 'pp' },
     { lbl: 'Investors',  val: num(D.kpi_investors.this - 36),                        wow: D.kpi_investors.this - 36 - D.kpi_investors.last,         suf: '' },
     { lbl: 'WAU',        val: num(D.kpi_wau.this),                                   wow: D.kpi_wau.delta,                                          suf: '' },
