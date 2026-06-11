@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homepage v3 — Gap Report · Aspero</title>
+<style>
+:root {
+  --bg:#0d1117; --surface:#ffffff; --surface2:#f8fafc; --border:#e2e8f0;
+  --text:#1e293b; --text2:#64748b; --text3:#94a3b8;
+  --blue:#3b82f6; --blue-dim:rgba(59,130,246,.10);
+  --green:#059669; --green-dim:rgba(5,150,105,.10);
+  --rose:#e11d48; --rose-dim:rgba(225,29,72,.10);
+  --yellow:#d97706; --yellow-dim:rgba(217,119,6,.10);
+  --orange:#ea580c; --orange-dim:rgba(234,88,12,.10);
+  --violet:#7c3aed; --violet-dim:rgba(124,58,237,.10);
+  --radius:10px;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--bg); color:var(--text); min-height:100vh; }
+
+.wrap { max-width:1100px; margin:0 auto; padding:0 0 80px;
+  background:var(--surface);
+  box-shadow:0 30px 90px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.06);
+  border-radius:14px; }
+
+/* HERO */
+.hero { background:linear-gradient(135deg,#0f172a 0%,#1a2a4a 50%,#0f2027 100%);
+  padding:40px 32px 32px; border-radius:14px 14px 0 0;
+  border-bottom:1px solid rgba(255,255,255,.08); }
+.hero-badge { display:inline-flex; align-items:center; gap:6px;
+  background:rgba(124,58,237,.15); border:1px solid rgba(124,58,237,.3);
+  color:#c4b5fd; font-size:.65rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:.1em; padding:4px 10px; border-radius:20px; margin-bottom:14px; }
+.hero h1 { font-size:1.8rem; font-weight:800; color:#f0f9ff;
+  letter-spacing:-.04em; line-height:1.2; margin-bottom:8px; }
+.hero .sub { font-size:.85rem; color:#94a3b8; max-width:680px; line-height:1.6; }
+.hero-meta { display:flex; gap:24px; margin-top:24px; flex-wrap:wrap; }
+.hero-stat { display:flex; flex-direction:column; }
+.hero-stat .val { font-size:1.5rem; font-weight:800; letter-spacing:-.03em; }
+.hero-stat .lbl { font-size:.65rem; color:#64748b; text-transform:uppercase; letter-spacing:.08em; margin-top:2px; }
+.val-red { color:#fca5a5; }
+.val-orange { color:#fed7aa; }
+.val-yellow { color:#fde68a; }
+
+/* INNER */
+.wrap-inner { padding:28px; }
+.section { margin-bottom:44px; }
+.section-hdr { display:flex; align-items:center; gap:10px; margin-bottom:18px;
+  padding-bottom:10px; border-bottom:2px solid var(--border); }
+.section-num { width:28px; height:28px; border-radius:50%; display:flex;
+  align-items:center; justify-content:center; font-size:.72rem; font-weight:800; flex-shrink:0; }
+.section-hdr h2 { font-size:1rem; font-weight:700; color:var(--text); }
+.section-hdr .badge { font-size:.65rem; font-weight:700; padding:2px 8px;
+  border-radius:20px; text-transform:uppercase; letter-spacing:.06em; }
+
+/* PART HEADER */
+.part-header { padding:14px 18px; border-radius:8px; margin-bottom:20px;
+  display:flex; align-items:center; gap:12px; }
+.part-header h3 { font-size:.95rem; font-weight:700; }
+.part-header p { font-size:.8rem; margin-top:2px; opacity:.75; }
+
+/* TABLES */
+table { width:100%; border-collapse:collapse; font-size:.82rem; margin-bottom:12px; }
+th { background:var(--surface2); font-weight:700; font-size:.72rem;
+  text-transform:uppercase; letter-spacing:.06em; color:var(--text2);
+  padding:9px 12px; text-align:left; border-bottom:2px solid var(--border); }
+td { padding:9px 12px; border-bottom:1px solid var(--border); color:var(--text);
+  vertical-align:top; line-height:1.5; }
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:#f8fafc; }
+
+/* PILLS / TAGS */
+.p0 { background:#fee2e2; color:#b91c1c; font-size:.68rem; font-weight:700;
+  padding:2px 8px; border-radius:20px; display:inline-block; white-space:nowrap; }
+.p1 { background:#ffedd5; color:#c2410c; font-size:.68rem; font-weight:700;
+  padding:2px 8px; border-radius:20px; display:inline-block; white-space:nowrap; }
+.p2 { background:#fef9c3; color:#854d0e; font-size:.68rem; font-weight:700;
+  padding:2px 8px; border-radius:20px; display:inline-block; white-space:nowrap; }
+.ok { background:#dcfce7; color:#166534; font-size:.68rem; font-weight:700;
+  padding:2px 8px; border-radius:20px; display:inline-block; white-space:nowrap; }
+.decision { background:#ede9fe; color:#5b21b6; font-size:.68rem; font-weight:700;
+  padding:2px 8px; border-radius:20px; display:inline-block; white-space:nowrap; }
+
+/* CARDS */
+.card-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; margin-bottom:8px; }
+.card { border:1px solid var(--border); border-radius:10px; padding:16px 18px; background:var(--surface2); }
+.card-label { font-size:.65rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:.1em; margin-bottom:6px; }
+.card-title { font-size:.9rem; font-weight:700; margin-bottom:4px; }
+.card-body { font-size:.78rem; color:var(--text2); line-height:1.6; }
+
+/* ALERT BOXES */
+.alert { border-radius:8px; padding:14px 18px; margin-bottom:16px;
+  font-size:.82rem; line-height:1.65; }
+.alert strong { font-weight:700; }
+.alert-red { background:#fee2e2; border-left:4px solid #dc2626; color:#7f1d1d; }
+.alert-orange { background:#ffedd5; border-left:4px solid #ea580c; color:#7c2d12; }
+.alert-yellow { background:#fefce8; border-left:4px solid #ca8a04; color:#713f12; }
+.alert-blue { background:#eff6ff; border-left:4px solid #2563eb; color:#1e3a8a; }
+
+/* CODE */
+.code-block { background:#0f172a; border:1px solid #334155; border-radius:8px;
+  padding:14px 18px; font-family:'SF Mono',Monaco,monospace; font-size:.75rem;
+  color:#e2e8f0; line-height:1.7; margin:10px 0; overflow-x:auto; }
+.code-block .comment { color:#64748b; }
+.code-block .bad { color:#f87171; }
+.code-block .good { color:#86efac; }
+
+/* PRIORITY MATRIX */
+.matrix-table td:first-child { font-weight:600; font-size:.8rem; }
+.matrix-table td:nth-child(2) { color:var(--text2); font-size:.78rem; }
+
+/* WIDGET CHECKLIST */
+.widget-row { display:flex; gap:12px; align-items:flex-start;
+  padding:12px 0; border-bottom:1px solid var(--border); }
+.widget-row:last-child { border-bottom:none; }
+.widget-icon { width:32px; height:32px; border-radius:8px; display:flex;
+  align-items:center; justify-content:center; font-size:.85rem; flex-shrink:0; }
+.widget-content { flex:1; }
+.widget-name { font-size:.85rem; font-weight:700; margin-bottom:3px; }
+.widget-status { font-size:.75rem; color:var(--text2); line-height:1.5; }
+.check-list { list-style:none; margin-top:6px; }
+.check-list li { font-size:.75rem; line-height:1.6; color:var(--text2);
+  display:flex; gap:6px; align-items:flex-start; }
+.check-list li span { flex:1; }
+.tick { color:#059669; font-weight:700; }
+.cross { color:#dc2626; font-weight:700; }
+.partial { color:#d97706; font-weight:700; }
+
+.divider { height:1px; background:var(--border); margin:28px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Engineering Audit · June 2026</div>
+  <h1>Homepage v3 — Full Gap Report</h1>
+  <p class="sub">Comprehensive audit of <strong style="color:#c4b5fd">homeV3</strong> (feature/home-page-restructure-v2) against the Figma design, PRD, and engineering best practices. Covers typography, live data gaps, missing widgets, and responsiveness issues.</p>
+  <div class="hero-meta">
+    <div class="hero-stat">
+      <span class="val val-red">4</span>
+      <span class="lbl">P0 Blockers</span>
+    </div>
+    <div class="hero-stat">
+      <span class="val val-orange">7</span>
+      <span class="lbl">P1 Gaps</span>
+    </div>
+    <div class="hero-stat">
+      <span class="val val-yellow">7</span>
+      <span class="lbl">P2 Issues</span>
+    </div>
+    <div class="hero-stat">
+      <span class="val" style="color:#86efac">0</span>
+      <span class="lbl">Live API connections</span>
+    </div>
+    <div class="hero-stat">
+      <span class="val" style="color:#c4b5fd">9 / 9</span>
+      <span class="lbl">Widgets in PRD</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap-inner">
+
+<!-- PART A: FIGMA VS CODE -->
+<div class="part-header" style="background:#f5f3ff; border:1px solid #ddd6fe;">
+  <span style="font-size:1.4rem">🎨</span>
+  <div>
+    <h3 style="color:#5b21b6">Part A — Figma Design vs Code</h3>
+    <p style="color:#6d28d9">Typography, colors, sizing</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:#ede9fe;color:#5b21b6">A1</div>
+    <h2>Font Family — Everywhere</h2>
+    <span class="badge decision">Design Decision Needed</span>
+  </div>
+
+  <div class="alert alert-orange">
+    <strong>Figma uses Sequel Sans.</strong> The app uses Sofia Pro (via <code>Theme.semantic.fontFamilies.default.value</code>). Sequel Sans has zero presence in the repo — no .otf/.ttf files, no references anywhere. This is the primary reason the app looks softer and less sharp than the Figma and competitors like WintWealth (which use modern geometric sans-serifs with clean strokes). <strong>Needs a product/design decision</strong> before it can be fixed: either procure Sequel Sans and add font files to the bundle, or the designer updates Figma to accept Sofia Pro as the shipped font.
+  </div>
+
+  <table>
+    <tr><th>Location</th><th>Figma Font</th><th>App Font</th><th>Status</th></tr>
+    <tr><td>All bond content, headings, labels</td><td>Sequel Sans (wt 305–410)</td><td>Sofia Pro</td><td><span class="p2">Font mismatch</span></td></tr>
+    <tr><td>Bottom nav — active item</td><td>Sofia Pro 500 / 12px</td><td>Sofia Pro Medium / 12sp</td><td><span class="ok">✓ Match</span></td></tr>
+    <tr><td>Bottom nav — inactive item</td><td>Sofia Pro 400 / 12px</td><td>Sofia Pro Regular / 12sp</td><td><span class="ok">✓ Match</span></td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:#ede9fe;color:#5b21b6">A2</div>
+    <h2>Font Size Gaps</h2>
+    <span class="badge p2">P2</span>
+  </div>
+
+  <table>
+    <tr><th>Element</th><th>Figma</th><th>homeV3 Code</th><th>Gap</th><th>Status</th></tr>
+    <tr><td>Bond list row YTM (11.75%, 12.25%)</td><td>20px / Sequel Sans 365</td><td>20px / Sofia Pro Medium</td><td>—</td><td><span class="ok">✓ Size correct</span></td></tr>
+    <tr><td>Hero card YTM metric value</td><td>20px</td><td>18px <code>metricValue</code></td><td>2px smaller</td><td><span class="p2">Minor gap</span></td></tr>
+    <tr><td>Hero card company name</td><td>14px</td><td>15px <code>issuerName</code></td><td>1px larger</td><td><span class="ok">✓ Close</span></td></tr>
+    <tr><td>Hero mobile section title</td><td><strong>32px</strong></td><td>24px <code>mobileTitle</code></td><td>8px smaller</td><td><span class="p2">Notable gap</span></td></tr>
+    <tr><td>Section headings ("Chosen by new investors")</td><td>16px</td><td>16px</td><td>—</td><td><span class="ok">✓ Match</span></td></tr>
+    <tr><td>Trust stats value (25K+, ₹17K Cr+)</td><td>16px</td><td>24px <code>statValue</code></td><td>8px <em>bigger</em> in code</td><td><span class="p2">Oversized</span></td></tr>
+    <tr><td>Filter pills (Highest YTM, Safest)</td><td>12px</td><td>12px</td><td>—</td><td><span class="ok">✓ Match</span></td></tr>
+    <tr><td>Bond list min investment label</td><td>12px</td><td>12px</td><td>—</td><td><span class="ok">✓ Match</span></td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:#ede9fe;color:#5b21b6">A3</div>
+    <h2>Hardcoded Colors (violates CLAUDE.md theming rules)</h2>
+    <span class="badge p2">P2</span>
+  </div>
+
+  <table>
+    <tr><th>Component</th><th>Style Property</th><th>Hardcoded Value</th><th>Correct Token</th></tr>
+    <tr><td>BondRow.style.ts</td><td>ytm color</td><td><code>#234F18</code></td><td><code>lightThemeV2.semantic.colors.text.brandText.bt1</code></td></tr>
+    <tr><td>BondRow.style.ts</td><td>securedTag backgroundColor</td><td><code>#D9E0F3</code></td><td>Special bg token</td></tr>
+    <tr><td>BondRow.style.ts</td><td>securedTagText color</td><td><code>#3554A4</code></td><td><code>specialText.st3</code></td></tr>
+    <tr><td>BondRow.style.ts</td><td>ratingTag backgroundColor</td><td><code>#EEF2F6</code></td><td><code>backgroundColors.bg3</code></td></tr>
+    <tr><td>PopularBondsSection.style.ts</td><td>pillActive backgroundColor</td><td><code>#202939</code></td><td>Dark surface token</td></tr>
+    <tr><td>PopularBondsSection.style.ts</td><td>pillText color</td><td><code>#364152</code></td><td><code>text.t2</code></td></tr>
+    <tr><td>GoalsGrid.style.ts</td><td>ctaText color</td><td><code>#4B5565</code></td><td><code>text.t2</code></td></tr>
+  </table>
+
+  <div class="alert alert-yellow" style="margin-top:12px">
+    <strong>Why this matters:</strong> When the app introduces dark mode or theme variations, all hardcoded hex values will break. Token usage also makes design changes a single-source update rather than a grep-and-replace exercise.
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- PART B: ENGINEERING GAPS -->
+<div class="part-header" style="background:#fef2f2; border:1px solid #fecaca;">
+  <span style="font-size:1.4rem">⚙️</span>
+  <div>
+    <h3 style="color:#b91c1c">Part B — Engineering Gaps</h3>
+    <p style="color:#dc2626">Responsiveness, bugs, best practices</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:#fee2e2;color:#b91c1c">B1</div>
+    <h2>Font not scaling on large phones</h2>
+    <span class="badge p1">P1</span>
+  </div>
+
+  <div class="alert alert-red">
+    <strong>Confirmed by engineering.</strong> All <code>fontSize</code> values across every homeV3 style file are hardcoded absolute integers. No <code>PixelRatio.getFontScale()</code>, no <code>Dimensions</code>-based scaling, no <code>maxFontSizeMultiplier</code> on any <code>&lt;Text&gt;</code>. On a 430pt iPhone Pro Max vs a 375pt iPhone SE, the same 14px occupies proportionally less screen real estate — content reads smaller on bigger phones.
+  </div>
+
+  <div class="code-block">
+<span class="comment">// Current — every style file in homeV3 (same hardcoded pattern)</span>
+issuerName: { <span class="bad">fontSize: 14</span> },  <span class="comment">// identical on 375pt SE and 430pt Pro Max</span>
+ytm:        { <span class="bad">fontSize: 20</span> },
+title:      { <span class="bad">fontSize: 16</span> },
+
+<span class="comment">// Fix option — scale relative to a 375pt baseline</span>
+<span class="good">import { Dimensions } from 'react-native';
+const scale = Dimensions.get('window').width / 375;
+const fs = (size: number) => Math.round(size * scale);</span>
+
+<span class="comment">// Or cap system font scaling on layout-sensitive text</span>
+&lt;Text <span class="good">maxFontSizeMultiplier={1.2}</span>&gt;11.75%&lt;/Text&gt;
+  </div>
+
+  <p style="font-size:.8rem;color:var(--text2);margin-top:8px">Three approaches can be combined: (1) baseline scale utility for sizes, (2) <code>maxFontSizeMultiplier</code> to cap accessibility scaling on tightly-fitted elements, (3) <code>allowFontScaling={false}</code> only on price/number displays where layout integrity is critical.</p>
+</div>
+
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:#fee2e2;color:#b91c1c">B2</div>
+    <h2>lineHeight bugs — text clipping on Android</h2>
+    <span class="badge p1">P1 Bug</span>
+  </div>
+
+  <div class="code-block">
+<span class="comment">// TrustStatsBanner.style.ts — lineHeight LESS than fontSize = Android text clipping</span>
+statValue: {
+  fontSize: 24,
+  <span class="bad">lineHeight: 20,</span>  <span class="comment">// ❌ must always be ≥ fontSize</span>
+}
+
+<span class="comment">// BondRow.style.ts — zero leading, text appears cramped</span>
+ytm: {
+  fontSize: 20,
+  <span class="bad">lineHeight: 20,</span>  <span class="comment">// ⚠️ 0 leading — should be 24–28 for breathing room</span>
+}
+
+<span class="comment">// Fix</span>
+statValue: { fontSize: 24, <span class="good">lineHeight: 32</span> },
+ytm:       { fontSize: 20, <span class="good">lineHeight: 28</span> },
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:#fee2e2;color:#b91c1c">B3</div>
+    <h2>All data is mock — zero live API connections</h2>
+    <span class="badge p0">P0 Blocker</span>
+  </div>
+
+  <div class="alert alert-red">
+    <strong>Most critical gap.</strong> The entire HomepageContainer.tsx imports exclusively from <code>./mockData/bonds</code>, <code>./mockData/faqs</code>, <code>./mockData/goals</code>, and <code>./mockData/stats</code>. Not a single widget fetches from a live API, Strapi, or user auth state. The UI shell is built but the data layer is entirely absent.
+  </div>
+
+  <div class="code-block">
+<span class="comment">// HomepageContainer.tsx — all data hardcoded</span>
+<span class="bad">import { HIGH_YIELD_BONDS, POPULAR_BONDS } from './mockData/bonds';
+import { FAQ_ITEMS } from './mockData/faqs';
+import { GOAL_CARDS } from './mockData/goals';
+import { POPULAR_PICK_PILLS } from './mockData/stats';</span>
+
+<span class="comment">// None of these are wired up:</span>
+<span class="comment">// - Live bond inventory API</span>
+<span class="comment">// - User KYC state (4 states drive CTA + heading)</span>
+<span class="comment">// - Strapi CMS (FAQs, Why Invest cards)</span>
+<span class="comment">// - Popular bonds endpoint (GET /v1/bonds/popular)</span>
+<span class="comment">// - User portfolio (for "Invested ✓" badges)</span>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:#fee2e2;color:#b91c1c">B4</div>
+    <h2>No responsive layout guard for tablets / large screens</h2>
+    <span class="badge p2">P2</span>
+  </div>
+
+  <table>
+    <tr><th>Component</th><th>Issue</th><th>Impact</th></tr>
+    <tr><td>HomepageContainer — mobile shell</td><td>No <code>maxWidth</code> on the mobile scroll container</td><td>On large Android tablets, content stretches edge-to-edge with only 16px padding</td></tr>
+    <tr><td>GoalsGrid cell</td><td><code>flexBasis: '48%'</code>, no <code>maxWidth</code> cap</td><td>Each cell is ~400px wide on a tablet — sparse and oversized</td></tr>
+    <tr><td>CategoryFilterGrid cell</td><td>Same <code>flexBasis: '48%'</code> pattern</td><td>Same tablet overflow issue</td></tr>
+    <tr><td>BondRow card</td><td>No shadow / elevation defined</td><td>Cards look flat — Figma design has subtle card elevation</td></tr>
+  </table>
+</div>
+
+<div class="divider"></div>
+
+<!-- PART C: PRD GAPS -->
+<div class="part-header" style="background:#fff7ed; border:1px solid #fed7aa;">
+  <span style="font-size:1.4rem">📋</span>
+  <div>
+    <h3 style="color:#c2410c">Part C — PRD vs Implementation</h3>
+    <p style="color:#ea580c">Confluence PRD: Homepage 2.0 — Widget Redesign (page 2125234206)</p>
+  </div>
+</div>
+
+<!-- WIDGET STATUS TABLE -->
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:#ffedd5;color:#c2410c">C0</div>
+    <h2>Widget Implementation Status Overview</h2>
+  </div>
+
+  <div style="border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:16px;">
+    <div class="widget-row" style="padding:12px 16px; background:#f8fafc; border-bottom:2px solid var(--border);">
+      <div style="width:32px;font-size:.7rem;font-weight:800;color:var(--text2)">#</div>
+      <div style="flex:1.5;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text2)">Widget (PRD)</div>
+      <div style="flex:1.5;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text2)">homeV3 Component</div>
+      <div style="flex:1;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text2)">Status</div>
+    </div>
+    <div class="widget-row" style="padding:12px 16px;">
+      <div style="width:32px;font-size:.8rem;font-weight:700;color:var(--text2)">1</div>
+      <div style="flex:1.5"><span style="font-size:.85rem;font-weight:600">Hero Carousel</span><br><span style="font-size:.73rem;color:var(--text2)">4 slots, auto-advance, state-aware CTA</span></div>
+      <div style="flex:1.5"><code style="font-size:.75rem">HeroCard</code></div>
+      <div style="flex:1"><span class="p1">Partial — UI only, all mock</span></div>
+    </div>
+    <div class="widget-row" style="padding:12px 16px;">
+      <div style="width:32px;font-size:.8rem;font-weight:700;color:var(--text2)">2</div>
+      <div style="flex:1.5"><span style="font-size:.85rem;font-weight:600">Top Bonds</span><br><span style="font-size:.73rem;color:var(--text2)">3 filter pills, sort logic, Explore nav</span></div>
+      <div style="flex:1.5"><code style="font-size:.75rem">PopularBondsSection</code></div>
+      <div style="flex:1"><span class="p1">Partial — UI only, no logic</span></div>
+    </div>
+    <div class="widget-row" style="padding:12px 16px;">
+      <div style="width:32px;font-size:.8rem;font-weight:700;color:var(--text2)">3</div>
+      <div style="flex:1.5"><span style="font-size:.85rem;font-weight:600">Browse by Goals</span><br><span style="font-size:.73rem;color:var(--text2)">2×2 grid, dynamic values, filtered Explore</span></div>
+      <div style="flex:1.5"><code style="font-size:.75rem">GoalsGrid</code></div>
+      <div style="flex:1"><span class="p1">Partial — static values, no nav</span></div>
+    </div>
+    <div class="widget-row" style="padding:12px 16px;">
+      <div style="width:32px;font-size:.8rem;font-weight:700;color:var(--text2)">4</div>
+      <div style="flex:1.5"><span style="font-size:.85rem;font-weight:600">Find the Right Bonds</span><br><span style="font-size:.73rem;color:var(--text2)">Entry card + quiz (P1 deferred per PRD)</span></div>
+      <div style="flex:1.5"><code style="font-size:.75rem">FindRightBondsBanner</code></div>
+      <div style="flex:1"><span class="ok">Entry card only — per PRD</span></div>
+    </div>
+    <div class="widget-row" style="padding:12px 16px; background:#fef2f2;">
+      <div style="width:32px;font-size:.8rem;font-weight:700;color:var(--text2)">5</div>
+      <div style="flex:1.5"><span style="font-size:.85rem;font-weight:600">Popular on Aspero</span><br><span style="font-size:.73rem;color:var(--text2)">Real-time social proof, top 3 bonds 7d</span></div>
+      <div style="flex:1.5"><span style="color:#dc2626;font-size:.8rem">Not implemented</span></div>
+      <div style="flex:1"><span class="p0">Missing entirely</span></div>
+    </div>
+    <div class="widget-row" style="padding:12px 16px;">
+      <div style="width:32px;font-size:.8rem;font-weight:700;color:var(--text2)">6</div>
+      <div style="flex:1.5"><span style="font-size:.85rem;font-weight:600">Stats Banner</span><br><span style="font-size:.73rem;color:var(--text2)">"Steady growth, earned trust" — 4 stats</span></div>
+      <div style="flex:1.5"><code style="font-size:.75rem">TrustStatsBanner</code></div>
+      <div style="flex:1"><span class="p1">3 stats only — SEBI missing</span></div>
+    </div>
+    <div class="widget-row" style="padding:12px 16px; background:#fef2f2;">
+      <div style="width:32px;font-size:.8rem;font-weight:700;color:var(--text2)">7</div>
+      <div style="flex:1.5"><span style="font-size:.85rem;font-weight:600">Why Invest With Us</span><br><span style="font-size:.73rem;color:var(--text2)">CMS-driven numbered cards from Strapi</span></div>
+      <div style="flex:1.5"><span style="color:#dc2626;font-size:.8rem">Not implemented</span></div>
+      <div style="flex:1"><span class="p0">Missing entirely</span></div>
+    </div>
+    <div class="widget-row" style="padding:12px 16px;">
+      <div style="width:32px;font-size:.8rem;font-weight:700;color:var(--text2)">8</div>
+      <div style="flex:1.5"><span style="font-size:.85rem;font-weight:600">FAQs</span><br><span style="font-size:.73rem;color:var(--text2)">Strapi CMS, show_on_homepage filter, "View all"</span></div>
+      <div style="flex:1.5"><code style="font-size:.75rem">FaqSection</code></div>
+      <div style="flex:1"><span class="p1">Partial — mock data, no CMS</span></div>
+    </div>
+    <div class="widget-row" style="padding:12px 16px; background:#fff7ed;">
+      <div style="width:32px;font-size:.8rem;font-weight:700;color:var(--text2)">9</div>
+      <div style="flex:1.5"><span style="font-size:.85rem;font-weight:600">Need Help</span><br><span style="font-size:.73rem;color:var(--text2)">"Still have questions?" → Browse FAQs only</span></div>
+      <div style="flex:1.5"><code style="font-size:.75rem">TalkToRMCard</code></div>
+      <div style="flex:1"><span class="p1">Wrong widget — has phone CTA</span></div>
+    </div>
+  </div>
+
+  <div class="alert alert-red">
+    <strong>Section order is also wrong.</strong> homeV3 inserts 3 extra <code>BondListSection</code> components (High Yield / Highly Rated / Short Tenure) between the quiz banner and stats — these sections do not exist in the PRD at all, and they push Widget 5 "Popular on Aspero" out of position.
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:#ffedd5;color:#c2410c">C1</div>
+    <h2>Widget 5 — "Popular on Aspero" not implemented</h2>
+    <span class="badge p0">P0 Blocker</span>
+  </div>
+
+  <div class="alert alert-red">
+    This is the <strong>primary social proof widget</strong> in the PRD — real-time top 3 most-purchased bonds in the last 7 days. It requires a new backend endpoint and has no equivalent in homeV3.
+  </div>
+
+  <table>
+    <tr><th>PRD Requirement</th><th>Status</th></tr>
+    <tr><td>New endpoint: <code>GET /v1/bonds/popular?window=7d&limit=3</code></td><td><span class="p0">Backend not built</span></td></tr>
+    <tr><td>7d data primary, 14d fallback if &lt;3 bonds qualify</td><td><span class="p0">Not implemented</span></td></tr>
+    <tr><td>Hide widget entirely if &lt;3 bonds on either window</td><td><span class="p0">Not implemented</span></td></tr>
+    <tr><td>Subheading: "Most bought in the last 7 days" / "Most bought recently"</td><td><span class="p0">Not implemented</span></td></tr>
+    <tr><td>Social proof badge per card (investor count, K-formatted if ≥1,000)</td><td><span class="p0">Not implemented</span></td></tr>
+    <tr><td>"Invested ✓" badge for State 4 (already invested users)</td><td><span class="p0">Not implemented</span></td></tr>
+    <tr><td>3-row loading skeleton</td><td><span class="p0">Not implemented</span></td></tr>
+    <tr><td>"View all bonds" CTA → Explore (unfiltered)</td><td><span class="p0">Not implemented</span></td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:#ffedd5;color:#c2410c">C2</div>
+    <h2>Widget 7 — "Why Invest With Us" not implemented</h2>
+    <span class="badge p0">P0 Blocker</span>
+  </div>
+
+  <div class="alert alert-orange">
+    PRD requires a CMS-driven widget fetching from Strapi <code>homepage-why-invest-cards</code> collection. No such component exists anywhere in homeV3. This is not a deferred feature — it has no PRD deferral note.
+  </div>
+
+  <table>
+    <tr><th>PRD Requirement</th><th>Status</th></tr>
+    <tr><td>Strapi collection: <code>homepage-why-invest-cards</code> (title, body, sort_order, is_active)</td><td><span class="p0">Collection may not exist in Strapi</span></td></tr>
+    <tr><td>Vertical list of numbered cards — number derived from position, not CMS field</td><td><span class="p0">Component not built</span></td></tr>
+    <tr><td>Widget hidden entirely on Strapi error or empty list</td><td><span class="p0">Not built</span></td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:#ffedd5;color:#c2410c">C3</div>
+    <h2>Widget 9 — Wrong component (TalkToRMCard vs "Browse FAQs")</h2>
+    <span class="badge p1">P1</span>
+  </div>
+
+  <table>
+    <tr><th>Spec</th><th>PRD (Widget 9)</th><th>homeV3 (TalkToRMCard)</th></tr>
+    <tr><td>Heading</td><td>"Still have questions?"</td><td>"HOME_V3.RM_CARD.TITLE"</td></tr>
+    <tr><td>CTA</td><td>"Browse FAQs" → in-app FAQ screen</td><td>Phone call CTA with <code>phone-call-01</code> icon</td></tr>
+    <tr><td>Phone / callback</td><td><strong>Explicitly prohibited</strong> in PRD</td><td>Present</td></tr>
+  </table>
+
+  <div class="alert alert-yellow" style="margin-top:12px">
+    <strong>Note:</strong> The Figma <em>does</em> show a "Need help?" + callback card, which contradicts the PRD. This needs a product decision: ship what the PRD says (FAQ-only) or what the Figma shows (RM callback). The two documents are misaligned on this widget.
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:#ffedd5;color:#c2410c">C4</div>
+    <h2>Hero Carousel — user state logic and live data missing</h2>
+    <span class="badge p0">P0 Blocker</span>
+  </div>
+
+  <table>
+    <tr><th>PRD Requirement</th><th>Status</th></tr>
+    <tr><td>4 slots with live inventory selection rules (Slot 1=Highest YTM, Slot 2=Best YTM ≤12m, Slot 3=Lowest min investment, Slot 4=Highest rated)</td><td><span class="p0">All mock data</span></td></tr>
+    <tr><td>Widget heading changes by user KYC state ("Popular first picks" / "Bonds waiting for you" / "Start your first investment" / "Keep growing your wealth")</td><td><span class="p0">Not implemented</span></td></tr>
+    <tr><td>CTA label + destination changes by state (Start KYC / Resume KYC / Invest now / Invest again)</td><td><span class="p0">Not implemented</span></td></tr>
+    <tr><td>Auto-advance every 4 seconds</td><td><span class="p1">Not confirmed</span></td></tr>
+    <tr><td>Social proof: "[N] investors chose this bond" when N≥50, else "OBPP regulated bond"</td><td><span class="p0">Not implemented</span></td></tr>
+    <tr><td>State 4: exclude bonds already purchased by user from all 4 slots</td><td><span class="p0">Not implemented</span></td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:#ffedd5;color:#c2410c">C5</div>
+    <h2>Top Bonds (Widget 2) — filter and state logic missing</h2>
+    <span class="badge p1">P1</span>
+  </div>
+
+  <table>
+    <tr><th>PRD Requirement</th><th>Status</th></tr>
+    <tr><td>Sort by YTM descending on "Highest YTM" pill</td><td><span class="p0">No sort logic — all mock</span></td></tr>
+    <tr><td>Sort by rating desc → YTM desc on "Safety" pill; scoped to AAA–A- only</td><td><span class="p0">Not implemented</span></td></tr>
+    <tr><td>Sort by tenure ascending on "Short Tenure" pill; exclude bonds &lt;3 months remaining</td><td><span class="p0">Not implemented</span></td></tr>
+    <tr><td>"View all" CTA → Explore page pre-filtered by active pill</td><td><span class="p0">Navigation not wired</span></td></tr>
+    <tr><td>State 4: "Invested ✓" badge on already-purchased bonds</td><td><span class="p0">Not implemented</span></td></tr>
+    <tr><td>Hide pill entirely when 0 bonds qualify</td><td><span class="p0">Not implemented</span></td></tr>
+    <tr><td>Default pill on load: Highest YTM</td><td><span class="ok">Correct default in mock</span></td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:#ffedd5;color:#c2410c">C6</div>
+    <h2>Goals Grid (Widget 3) — dynamic values and navigation missing</h2>
+    <span class="badge p1">P1</span>
+  </div>
+
+  <table>
+    <tr><th>Tile</th><th>PRD Requirement</th><th>Status</th></tr>
+    <tr><td>Tile 1 — "High yields upto"</td><td>Dynamic — highest live YTM from inventory</td><td><span class="p0">Hardcoded mock value</span></td></tr>
+    <tr><td>Tile 2 — "Start with"</td><td>Static "₹1,000"</td><td><span class="ok">Correct (static)</span></td></tr>
+    <tr><td>Tile 3 — "Short tenure"</td><td>Dynamic — fallback threshold logic (12m → 15m → 18m based on available inventory)</td><td><span class="p0">Hardcoded mock value</span></td></tr>
+    <tr><td>Tile 4 — "Highly rated bonds"</td><td>Static "AAA to A-"</td><td><span class="ok">Correct (static)</span></td></tr>
+    <tr><td>All tiles</td><td>Tap → Explore with pre-applied filter per tile</td><td><span class="p0">Only navigates to ALL_CATEGORIES — no filter applied</span></td></tr>
+    <tr><td>View all bonds CTA</td><td>→ Explore, no filters</td><td><span class="p1">Wired to handleViewAllCategories — needs verification</span></td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:#ffedd5;color:#c2410c">C7</div>
+    <h2>Stats Banner (Widget 6) — SEBI stat missing</h2>
+    <span class="badge p1">P1</span>
+  </div>
+
+  <table>
+    <tr><th>Stat</th><th>PRD</th><th>mockData/stats.ts</th><th>Status</th></tr>
+    <tr><td>1</td><td>SEBI Registered broker</td><td>—</td><td><span class="p1">Missing</span></td></tr>
+    <tr><td>2</td><td>25K+ investors</td><td><code>stat-investors</code> ✓</td><td><span class="ok">Present</span></td></tr>
+    <tr><td>3</td><td>₹17K Cr+ bonds sold</td><td><code>stat-bonds</code> ✓</td><td><span class="ok">Present</span></td></tr>
+    <tr><td>4</td><td>OBPP regulated</td><td><code>stat-bppi</code> ✓</td><td><span class="ok">Present</span></td></tr>
+    <tr><td>—</td><td>Heading: "Steady growth, earned trust"</td><td>Needs verification</td><td><span class="p1">Check i18n key</span></td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:#ffedd5;color:#c2410c">C8</div>
+    <h2>FAQs (Widget 8) — no Strapi, no "View all FAQs" CTA</h2>
+    <span class="badge p1">P1</span>
+  </div>
+
+  <table>
+    <tr><th>PRD Requirement</th><th>Status</th></tr>
+    <tr><td>Fetch from Strapi <code>faqs</code> collection filtered by <code>show_on_homepage=true</code></td><td><span class="p0">Hardcoded mock array</span></td></tr>
+    <tr><td>Capped at 5 items</td><td><span class="ok">5 items in mock</span></td></tr>
+    <tr><td>Single-open accordion (expand one → collapse previous)</td><td><span class="ok">Implemented correctly</span></td></tr>
+    <tr><td>"View all FAQs" CTA → in-app FAQ screen</td><td><span class="p0">Not rendered in FaqSection</span></td></tr>
+    <tr><td>Widget hidden entirely on Strapi error or empty list</td><td><span class="p0">No error handling — mock never errors</span></td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:#ffedd5;color:#c2410c">C9</div>
+    <h2>Analytics events — none instrumented</h2>
+    <span class="badge p1">P1</span>
+  </div>
+
+  <div class="alert alert-orange">
+    The PRD defines <strong>14 analytics event contracts</strong>. Zero are fired anywhere in homeV3.
+  </div>
+
+  <table>
+    <tr><th>Event</th><th>Trigger</th><th>Status</th></tr>
+    <tr><td><code>HOMEPAGE_V3_FILTER_PILL_TAPPED</code></td><td>Filter pill tapped on bond list</td><td><span class="p0">Missing</span></td></tr>
+    <tr><td><code>HOMEPAGE_V3_POPULAR_BOND_TAPPED</code></td><td>Bond card tapped in Popular on Aspero</td><td><span class="p0">Widget missing</span></td></tr>
+    <tr><td><code>HOMEPAGE_V3_HERO_TAG_SEEN</code></td><td>Bond card with tag is visible</td><td><span class="p0">Missing</span></td></tr>
+    <tr><td><code>HOMEPAGE_V3_FAQ_EXPANDED</code></td><td>FAQ accordion row opened</td><td><span class="p0">Missing</span></td></tr>
+    <tr><td><code>HOMEPAGE_V3_FAQ_COLLAPSED</code></td><td>FAQ accordion row closed</td><td><span class="p0">Missing</span></td></tr>
+    <tr><td><code>HOMEPAGE_V3_VIEW_ALL_FAQS_TAPPED</code></td><td>"View all FAQs" tapped</td><td><span class="p0">CTA not built</span></td></tr>
+    <tr><td><code>HOMEPAGE_V3_QUIZ_STARTED / ANSWER / COMPLETED</code></td><td>Quiz interactions</td><td><span class="p0">Quiz not built yet (P1 deferred)</span></td></tr>
+    <tr><td><code>HOMEPAGE_V3_NEED_HELP_BROWSE_FAQS_TAPPED</code></td><td>"Browse FAQs" tapped in Widget 9</td><td><span class="p0">Wrong widget implemented</span></td></tr>
+  </table>
+</div>
+
+<div class="divider"></div>
+
+<!-- PRIORITY MATRIX -->
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:#0f172a;color:#f1f5f9">★</div>
+    <h2>Full Priority Matrix</h2>
+  </div>
+
+  <table class="matrix-table">
+    <tr><th>#</th><th>Gap</th><th>Category</th><th>Priority</th></tr>
+    <tr><td>B3</td><td>All data is mock — zero live API connections</td><td>Engineering</td><td><span class="p0">🔴 P0 Blocker</span></td></tr>
+    <tr><td>C1</td><td>"Popular on Aspero" widget (Widget 5) not implemented</td><td>PRD</td><td><span class="p0">🔴 P0 Blocker</span></td></tr>
+    <tr><td>C2</td><td>"Why Invest With Us" widget (Widget 7) not implemented</td><td>PRD</td><td><span class="p0">🔴 P0 Blocker</span></td></tr>
+    <tr><td>C4</td><td>Hero Carousel: no user-state logic, no live slot data</td><td>PRD</td><td><span class="p0">🔴 P0 Blocker</span></td></tr>
+    <tr><td>C3</td><td>Section order wrong + 3 extra BondListSections not in PRD</td><td>PRD</td><td><span class="p1">🟠 P1</span></td></tr>
+    <tr><td>C5</td><td>Top Bonds: no sort/filter/badge logic, no Explore navigation</td><td>PRD</td><td><span class="p1">🟠 P1</span></td></tr>
+    <tr><td>C6</td><td>Goals Grid: dynamic values missing, Explore filter navigation missing</td><td>PRD</td><td><span class="p1">🟠 P1</span></td></tr>
+    <tr><td>C7</td><td>Stats Banner: SEBI Registered broker stat missing (3 of 4)</td><td>PRD</td><td><span class="p1">🟠 P1</span></td></tr>
+    <tr><td>C8</td><td>FAQs: no Strapi CMS integration, no "View all FAQs" CTA</td><td>PRD</td><td><span class="p1">🟠 P1</span></td></tr>
+    <tr><td>C9</td><td>All 14 analytics event contracts uninstrumented</td><td>PRD</td><td><span class="p1">🟠 P1</span></td></tr>
+    <tr><td>C3b</td><td>Widget 9 wrong: TalkToRMCard has phone CTA, PRD says FAQ-only</td><td>PRD</td><td><span class="p1">🟠 P1</span></td></tr>
+    <tr><td>B1</td><td>Font sizes don't scale on larger phones (no responsive scaling)</td><td>Engineering</td><td><span class="p1">🟠 P1</span></td></tr>
+    <tr><td>B2</td><td>lineHeight &lt; fontSize in TrustStatsBanner (clips text on Android)</td><td>Engineering Bug</td><td><span class="p1">🟠 P1 Bug</span></td></tr>
+    <tr><td>A1</td><td>Sequel Sans (Figma) vs Sofia Pro (app) — font family mismatch</td><td>Design</td><td><span class="decision">🟡 Design Decision</span></td></tr>
+    <tr><td>A2</td><td>Hero mobile title 24px vs 32px; trust stats 24px vs 16px</td><td>Design</td><td><span class="p2">🟡 P2</span></td></tr>
+    <tr><td>A3</td><td>Hardcoded hex colors in BondRow, PopularBondsSection, GoalsGrid</td><td>Design</td><td><span class="p2">🟡 P2</span></td></tr>
+    <tr><td>B4</td><td>No maxWidth on mobile shell; GoalsGrid cells overflow on tablets</td><td>Engineering</td><td><span class="p2">🟡 P2</span></td></tr>
+  </table>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center; padding:28px; border-top:1px solid var(--border);
+  font-size:.75rem; color:var(--text3);">
+  Generated · June 11, 2026 · Aspero B2C Product &nbsp;·&nbsp;
+  Branch: <code>feature/home-page-restructure-v2</code> &nbsp;·&nbsp;
+  Figma: <code>dyPItZZBZzwZS7FvjA4xup</code> &nbsp;·&nbsp;
+  PRD: Confluence page 2125234206
+</div>
+
+</div>
+</div>
+</body>
+</html>
