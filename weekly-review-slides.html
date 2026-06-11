@@ -3492,7 +3492,8 @@ var _rttDatasets = [
   bar('Investors',     D.payments,            BLUE),
   line('Cohort Conv%', D.rtt_cohort_conv_pct, AMBER, 'y2'),
 ];
-if (D.has_bot_data_rtt && D.payments_clean) {
+if (D.has_bot_data_rtt && D.rtt_clean) {
+  _rttDatasets.push(Object.assign(line('RTT Users (excl. bots)', D.rtt_clean, GREEN), { borderDash: [6,3], borderWidth: 1.8, pointRadius: 0, pointHoverRadius: 4, borderColor: GREEN + '99' }));
   _rttDatasets.push(Object.assign(line('Investors (excl. bots)', D.payments_clean, '#93c5fd'), { borderDash: [6,3], borderWidth: 1.8, pointRadius: 0, pointHoverRadius: 4 }));
   _rttDatasets.push(Object.assign(line('Conv% (excl. bots)', D.rtt_cohort_conv_pct_clean, AMBER, 'y2'), { borderDash: [6,3], borderWidth: 1.8, pointRadius: 0, pointHoverRadius: 4, borderColor: AMBER + '99' }));
 }
