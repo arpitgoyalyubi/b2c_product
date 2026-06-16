@@ -2715,7 +2715,8 @@ insights('ins-s3', _s3Insights);
 // ── Slide 4: RTT Cohort Timing — line chart ───────────────────────────────────
 const TEAL = '#14b8a6';
 (function() {
-  const curve   = D.rtt_curve_pct;  // curve[cohort][elapsed_week] or null
+  // Use clean (excl. bots) curve when available — populated by patch_rtt_slide.py
+  const curve   = (D.rtt_curve_pct_clean && D.has_bot_data_rtt_curve) ? D.rtt_curve_pct_clean : D.rtt_curve_pct;
   const xLabels = ['Wk 0\n(same week)', 'Wk 1', 'Wk 2', 'Wk 3', 'Wk 4'];
 
   // Teal gradient — darkest = oldest cohort (most data), lightest = newest
@@ -2790,7 +2791,7 @@ const TEAL = '#14b8a6';
       const i          = curve.length - 1 - ri;
       const vals       = pts || [];
       const partialRow = partials[i] || [];
-      const rttCount   = (D.rtt || [])[i];
+      const rttCount   = ((D.has_bot_data_rtt && D.rtt_clean) ? D.rtt_clean : D.rtt || [])[i];
 
       const row = document.createElement('div');
       row.className = 'wf-row';
@@ -2865,10 +2866,14 @@ const TEAL = '#14b8a6';
   }, 0) / mature.length;
   const swShare = avgFull > 0 ? Math.round(avgSW / avgFull * 100) : 0;
 
-  insights('ins-s4t', [
+  const s4Insights = [
     { color: TEAL,      txt: `~${swShare}% of all first-trade conversions happen same-week as RTT — curves are flat after Wk 0` },
     { color: '#94a3b8', txt: `Shorter lines = recent cohorts with less elapsed time — they will mature rightward in future weeks` },
-  ]);
+  ];
+  if (D.has_bot_data_rtt_curve) {
+    s4Insights.push({ color: '#fca5a5', txt: `Data excl. Poland bots · raw values in D.rtt_curve_pct if needed` });
+  }
+  insights('ins-s4t', s4Insights);
 })();
 
 // ── Slide 5: WAU ──────────────────────────────────────────────────────────────
