@@ -31,8 +31,10 @@
 <div class="card">
   <div class="hdr">
     <h1>Signup Cohort Funnel &nbsp;·&nbsp; 8 Weeks &nbsp;·&nbsp; Excl. Poland Bots</h1>
-    <p>Of users who <b>signed up</b> each week (Mon–Sun), % who reached each stage within
-    <b>7 days (W0)</b>, <b>14 days (W1)</b>, or <b>ever (Matured)</b> of their own signup date.
+    <p>Of users who <b>signed up</b> each week (Mon–Sun), % who completed each stage within
+    <b>7 days</b>, <b>14 days</b>, or <b>ever (Matured)</b> of their own individual signup date (rolling window, not calendar week boundary).
+    &nbsp;<b>KYC Started</b> = submitted Risk Profiling form (<code>KYC_RISKDETAILS_SUBMIT</code>), not just viewed the screen.
+    &nbsp;<b>RTT</b> = Demat account verified (<code>KYC_DEMAT_VERIFIED</code>).
     &nbsp;<b>Click any week row</b> to expand daily breakdown (7-day window per signup day).
     Green rows = quality improvement cohort (May 25+).</p>
   </div>
@@ -48,9 +50,9 @@
         <th colspan="3" class="grp grp-inv">First Trade</th>
       </tr>
       <tr>
-        <th>W0 (7d)</th><th>W1 (14d)</th><th>Matured</th>
-        <th>W0 (7d)</th><th>W1 (14d)</th><th>Matured</th>
-        <th>W0 (7d)</th><th>W1 (14d)</th><th>Matured</th>
+        <thtitle='Within 7 days of signup date'>≤7d</th><thtitle='Within 14 days of signup date'>≤14d</th><th>Matured</th>
+        <thtitle='Within 7 days of signup date'>≤7d</th><thtitle='Within 14 days of signup date'>≤14d</th><th>Matured</th>
+        <thtitle='Within 7 days of signup date'>≤7d</th><thtitle='Within 14 days of signup date'>≤14d</th><th>Matured</th>
       </tr>
     </thead>
     <tbody>
