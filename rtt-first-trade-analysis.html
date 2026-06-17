@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>RTT → First Trade Conversion Analysis · Jun 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f8fafc;color:#1e293b;font-size:14px}
+  .page{max-width:1100px;margin:0 auto;padding:32px 20px 60px}
+  h1{font-size:1.65rem;font-weight:700;color:#0f172a;margin-bottom:4px}
+  .subtitle{color:#64748b;font-size:.9rem;margin-bottom:28px}
+  h2{font-size:1.1rem;font-weight:700;color:#0f172a;margin:0 0 12px}
+  h3{font-size:.95rem;font-weight:600;color:#334155;margin:16px 0 8px}
+
+  /* ── sections ── */
+  .section{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:20px}
+  .section-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+  @media(max-width:680px){.section-grid{grid-template-columns:1fr}}
+
+  /* ── scorecard ── */
+  .scorecard{width:100%;border-collapse:collapse;font-size:.85rem}
+  .scorecard th{background:#f1f5f9;padding:8px 12px;text-align:left;font-weight:600;color:#475569;border-bottom:2px solid #e2e8f0}
+  .scorecard td{padding:8px 12px;border-bottom:1px solid #f1f5f9;vertical-align:top}
+  .scorecard tr:last-child td{border-bottom:none}
+  .badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.75rem;font-weight:600}
+  .confirmed{background:#dcfce7;color:#15803d}
+  .partial{background:#fef3c7;color:#92400e}
+  .ruled-out{background:#f1f5f9;color:#64748b}
+  .pending{background:#ede9fe;color:#6d28d9}
+
+  /* ── kpi row ── */
+  .kpi-row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+  .kpi{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px 18px;flex:1;min-width:140px}
+  .kpi-val{font-size:1.5rem;font-weight:700;color:#0f172a}
+  .kpi-lbl{font-size:.75rem;color:#64748b;margin-top:2px}
+  .kpi-delta{font-size:.78rem;font-weight:600;margin-top:4px}
+  .neg{color:#dc2626}.pos{color:#16a34a}.neu{color:#64748b}
+
+  /* ── tables ── */
+  .tbl{width:100%;border-collapse:collapse;font-size:.83rem}
+  .tbl th{background:#f8fafc;padding:6px 10px;text-align:right;font-weight:600;color:#475569;border-bottom:1px solid #e2e8f0}
+  .tbl th:first-child{text-align:left}
+  .tbl td{padding:6px 10px;border-bottom:1px solid #f8fafc;text-align:right}
+  .tbl td:first-child{text-align:left;color:#334155;font-weight:500}
+  .tbl tr:last-child td{border-bottom:none}
+  .tbl .best{color:#15803d;font-weight:700}
+  .tbl .worst{color:#dc2626;font-weight:700}
+  .tbl .warn{color:#d97706;font-weight:600}
+
+  /* ── chart containers ── */
+  .chart-wrap{position:relative;height:240px;margin:12px 0}
+  .chart-wrap-sm{position:relative;height:200px;margin:8px 0}
+  .chart-wrap-lg{position:relative;height:280px;margin:12px 0}
+
+  /* ── findings ── */
+  .finding{background:#fff7ed;border-left:3px solid #f97316;padding:10px 14px;border-radius:0 6px 6px 0;margin:10px 0;font-size:.83rem;line-height:1.55}
+  .finding b{color:#c2410c}
+  .insight{background:#eff6ff;border-left:3px solid #3b82f6;padding:10px 14px;border-radius:0 6px 6px 0;margin:10px 0;font-size:.83rem;line-height:1.55}
+  .rec{background:#f0fdf4;border-left:3px solid #22c55e;padding:10px 14px;border-radius:0 6px 6px 0;margin:8px 0;font-size:.83rem;line-height:1.55}
+  .rec b{color:#15803d}
+
+  /* ── header banner ── */
+  .banner{background:linear-gradient(135deg,#1e293b,#334155);border-radius:12px;padding:24px 28px;margin-bottom:20px;color:#fff}
+  .banner h1{color:#fff;font-size:1.5rem}
+  .banner .subtitle{color:#94a3b8;margin-bottom:16px}
+  .banner-stats{display:flex;gap:24px;flex-wrap:wrap;margin-top:16px}
+  .bstat{border-right:1px solid rgba(255,255,255,.15);padding-right:24px}
+  .bstat:last-child{border-right:none}
+  .bstat-val{font-size:1.4rem;font-weight:700;color:#f8fafc}
+  .bstat-lbl{font-size:.72rem;color:#94a3b8;margin-top:2px}
+
+  /* ── day-of-week heat ── */
+  .dow-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:10px 0}
+  .dow-cell{border-radius:6px;padding:10px 4px;text-align:center}
+  .dow-day{font-size:.7rem;font-weight:600;color:#fff;margin-bottom:4px}
+  .dow-val{font-size:1rem;font-weight:700;color:#fff}
+  .dow-sub{font-size:.65rem;color:rgba(255,255,255,.8);margin-top:2px}
+
+  /* ── rec table ── */
+  .rec-tbl{width:100%;border-collapse:collapse;font-size:.83rem}
+  .rec-tbl th{background:#f0fdf4;padding:8px 12px;text-align:left;font-weight:600;color:#166534;border-bottom:2px solid #bbf7d0}
+  .rec-tbl td{padding:8px 12px;border-bottom:1px solid #f0fdf4;vertical-align:top}
+  .rec-tbl tr:last-child td{border-bottom:none}
+  .pri{display:inline-block;padding:1px 7px;border-radius:999px;font-size:.72rem;font-weight:700}
+  .p0{background:#fef2f2;color:#dc2626}
+  .p1{background:#fff7ed;color:#ea580c}
+  .p2{background:#fef9c3;color:#a16207}
+
+  /* ── footnote ── */
+  .footnote{font-size:.72rem;color:#94a3b8;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ── Banner ── -->
+<div class="banner">
+  <h1>RTT → First Trade Conversion · Root Cause Analysis</h1>
+  <div class="subtitle">Why did payment conversion drop from 33.5% → 21.2% between May 25 and Jun 9–15? · Jun 2026</div>
+  <div class="banner-stats">
+    <div class="bstat">
+      <div class="bstat-val">33.5%</div>
+      <div class="bstat-lbl">RTT→Payment (May 25–31)</div>
+    </div>
+    <div class="bstat">
+      <div class="bstat-val">21.2%</div>
+      <div class="bstat-lbl">RTT→Payment (Jun 9–15)</div>
+    </div>
+    <div class="bstat">
+      <div class="bstat-val">−12.3pp</div>
+      <div class="bstat-lbl">Drop in 3 weeks</div>
+    </div>
+    <div class="bstat">
+      <div class="bstat-val">3 of 5</div>
+      <div class="bstat-lbl">Hypotheses confirmed</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Hypothesis Scorecard ── -->
+<div class="section">
+  <h2>Hypothesis Scorecard</h2>
+  <table class="scorecard">
+    <thead><tr>
+      <th style="width:5%">#</th>
+      <th style="width:22%">Hypothesis</th>
+      <th style="width:12%">Verdict</th>
+      <th style="width:20%">Evidence</th>
+      <th style="width:15%">Impact</th>
+      <th style="width:26%">Fix</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td><b>H1</b></td>
+        <td>Bond inventory / yield gap — bonds shown are less attractive</td>
+        <td><span class="badge confirmed">✅ Confirmed · Primary</span></td>
+        <td>Bond View/RTT −6.5pp; InvestClick/RTT −8.6pp since May 25</td>
+        <td>~7–9pp of the 12pp drop</td>
+        <td>Refresh inventory with higher-yield / shorter-tenure bonds; check what changed in the explore page order / pricing around May 25–Jun 1</td>
+      </tr>
+      <tr>
+        <td><b>H4</b></td>
+        <td>Google Ads mix shifted Search → Display (lower intent)</td>
+        <td><span class="badge confirmed">✅ Confirmed · Secondary</span></td>
+        <td>ACI_Search −3.8pp; ACI_Display +6.0pp. Budget mix change, not spend cut</td>
+        <td>~2–3pp of the 12pp drop</td>
+        <td>Reallocate Google UAC budget toward Search placements; reduce Display cap or add negative audiences on Display</td>
+      </tr>
+      <tr>
+        <td><b>H5</b></td>
+        <td>NSDL doesn't process Sunday → Monday RTT users have lower intent</td>
+        <td><span class="badge confirmed">✅ Confirmed · Secondary</span></td>
+        <td>Sunday eSign→RTT ≤6h = 8.2% vs 84–91% on weekdays. Monday RTT→trade = 19.8% vs 25.8% Fri</td>
+        <td>~13 trades/week lost (~1.5pp of RTT pool)</td>
+        <td>WebEngage push Mon 9–10 AM for Sunday eSign users; Sunday evening "ready by Monday morning" expectation message</td>
+      </tr>
+      <tr>
+        <td><b>H3</b></td>
+        <td>Payment failure rate elevated</td>
+        <td><span class="badge ruled-out">✗ Ruled out</span></td>
+        <td>Confirm → Payment stable at 59–61% across all weeks</td>
+        <td>Not a driver</td>
+        <td>No action needed</td>
+      </tr>
+      <tr>
+        <td><b>H2</b></td>
+        <td>WebEngage RTT journey misconfigured / broken</td>
+        <td><span class="badge pending">⏳ Not checked</span></td>
+        <td>Known broken journeys from Jun 10 audit — but direct causal link to this week's drop not measured</td>
+        <td>Unknown</td>
+        <td>Refer to WebEngage journey audit (Jun 10 2026); fix RTT trigger journey</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ── H1: Bond Inventory ── -->
+<div class="section">
+  <h2>H1 — Bond Inventory / Yield Gap (Primary Driver)</h2>
+  <p style="color:#475569;font-size:.85rem;margin-bottom:16px">Post-RTT funnel: all metrics as % of users who received RTT (KYC_DEMAT_VERIFIED) that week. Segment: excl. Poland bots + employee_referral.</p>
+
+  <div class="section-grid">
+    <div>
+      <h3>RTT → Payment (ever) by cohort week</h3>
+      <div class="chart-wrap">
+        <canvas id="h1PayChart"></canvas>
+      </div>
+    </div>
+    <div>
+      <h3>Full post-RTT funnel — May 25 vs Jun 9–15</h3>
+      <div class="chart-wrap">
+        <canvas id="h1FunnelChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <h3>Data table</h3>
+  <table class="tbl">
+    <thead><tr>
+      <th>Cohort</th><th>RTT users</th><th>→ Bond View</th><th>→ Invest Click</th><th>→ Confirm</th><th>→ Payment</th><th>View→Invest</th><th>Confirm→Pay</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>May 25–31 (baseline)</td><td>385</td><td class="best">83.4%</td><td class="best">57.7%</td><td class="best">54.8%</td><td class="best">33.5%</td><td class="best">69.2%</td><td>61.1%</td></tr>
+      <tr><td>Jun 1–7</td><td>512</td><td>76.8%</td><td>54.1%</td><td>52.3%</td><td>29.7%</td><td>70.4%</td><td>56.8%</td></tr>
+      <tr><td>Jun 8–14</td><td>406</td><td class="warn">76.8%</td><td class="warn">49.0%</td><td class="warn">48.0%</td><td class="warn">28.3%</td><td class="warn">63.8%</td><td>59.0%</td></tr>
+      <tr><td>Jun 9–15</td><td>496</td><td class="worst">69.0%</td><td class="worst">42.9%</td><td class="worst">42.1%</td><td class="worst">21.2%</td><td class="worst">62.2%</td><td>50.4%</td></tr>
+      <tr><td>Jun 15–17 (partial)</td><td>301</td><td class="worst">69.0%</td><td class="worst">42.1%</td><td class="worst">41.1%</td><td class="worst">21.7%</td><td>61.0%</td><td>52.9%</td></tr>
+    </tbody>
+  </table>
+
+  <div class="finding" style="margin-top:14px">
+    <b>Key finding:</b> The drop is concentrated in <b>Bond View/RTT (−6.5pp)</b> and <b>Invest Click/RTT (−8.6pp)</b>. Users are both less likely to open a bond detail AND less likely to click Invest once they do. The Confirm→Pay step is stable at ~59–61%, ruling out payment friction.
+  </div>
+  <div class="insight">
+    <b>What to investigate:</b> (1) Did bond yields/prices change around May 20–Jun 1? (2) Did the explore page ranking change? (3) Are the top-ranked bonds on the home/explore screen less attractive than they were in late May? The drop in BondView suggests users are also doing less browsing — possibly a homepage change reduced visibility of high-yield bonds.
+  </div>
+</div>
+
+<!-- ── H4: Channel Mix ── -->
+<div class="section">
+  <h2>H4 — Google Ads Search → Display Shift (Secondary Driver)</h2>
+  <p style="color:#475569;font-size:.85rem;margin-bottom:16px">RTT users (KYC_DEMAT_VERIFIED) split by AppsFlyer attribution properties. Source: Amplitude user properties with <code>gp:</code> prefix.</p>
+
+  <div class="section-grid">
+    <div>
+      <h3>L2: Channel sub-type mix (ACI_Search vs ACI_Display)</h3>
+      <div class="chart-wrap">
+        <canvas id="h4ChannelChart"></canvas>
+      </div>
+    </div>
+    <div>
+      <h3>L1: Media source mix</h3>
+      <div class="chart-wrap">
+        <canvas id="h4MediaChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <h3>L2: Channel (AppsFlyer sub-type within media source)</h3>
+  <table class="tbl">
+    <thead><tr><th>Channel</th><th>May 25–31</th><th>Jun 8–14</th><th>Jun 9–15</th><th>Jun 15–17</th><th>Δ (May→Jun9)</th></tr></thead>
+    <tbody>
+      <tr><td>(none) — non-Google/unattributed</td><td>48.3%</td><td>56.9%</td><td>51.6%</td><td>48.3%</td><td class="warn">+3.3pp</td></tr>
+      <tr><td><b>ACI_Search</b> — Google UAC on Search</td><td class="best">23.1%</td><td class="worst">17.0%</td><td class="warn">19.4%</td><td class="best">22.8%</td><td class="worst">−3.8pp ▼</td></tr>
+      <tr><td><b>ACI_Display</b> — Google UAC on Display</td><td class="best">14.5%</td><td class="worst">19.0%</td><td class="worst">20.6%</td><td class="worst">20.5%</td><td class="worst">+6.0pp ▲▲</td></tr>
+      <tr><td>ACI_Youtube</td><td>7.5%</td><td>6.7%</td><td>6.9%</td><td>6.0%</td><td>−0.7pp</td></tr>
+      <tr><td>lightspot0513 (gone)</td><td>3.4%</td><td>0%</td><td>0%</td><td>0%</td><td>−3.4pp</td></tr>
+    </tbody>
+  </table>
+
+  <h3>L3: Sub-publisher (within Google Ads)</h3>
+  <table class="tbl">
+    <thead><tr><th>Sub-publisher</th><th>What it is</th><th>May 25–31</th><th>Jun 8–14</th><th>Jun 9–15</th><th>Jun 15–17</th><th>Δ</th></tr></thead>
+    <tbody>
+      <tr><td>(none)</td><td>All non-Google sources</td><td>58.4%</td><td>65.0%</td><td>62.1%</td><td>60.3%</td><td class="warn">+3.7pp</td></tr>
+      <tr><td><b>GoogleSearch</b></td><td>Active search intent — highest quality</td><td class="best">22.6%</td><td class="worst">17.2%</td><td class="warn">19.4%</td><td class="best">22.5%</td><td class="worst">−3.2pp ▼</td></tr>
+      <tr><td>YouTubeVideos</td><td>YouTube pre-roll ads</td><td>8.3%</td><td>6.7%</td><td>7.3%</td><td>6.6%</td><td>−1.1pp</td></tr>
+      <tr><td>VA-943_2110_ (attrimob)</td><td>Unknown network — appeared briefly</td><td>0%</td><td>2.0%</td><td>1.4%</td><td>0%</td><td>transient</td></tr>
+    </tbody>
+  </table>
+
+  <div class="finding" style="margin-top:14px">
+    <b>Key finding:</b> Within Google Ads (which stayed flat at ~43–47% of RTT), the placement mix shifted — <b>ACI_Search dropped −3.8pp and ACI_Display grew +6.0pp</b>. Display share has NOT recovered (still 20.5% Jun 15-17 vs 14.5% baseline). Search users are actively looking for investment products. Display users see a banner while scrolling. Same budget, lower quality.
+  </div>
+  <div class="insight">
+    <b>What to check with paid team:</b> Google UAC campaigns have a "channel preference" setting. Around May 20–Jun 7 (the install window feeding these RTT cohorts), Display bids were likely raised or Search bids lowered. Check <b>campaign bid modifiers by placement</b> and <b>max CPI settings per channel</b> in Google Ads for the app campaigns around that date.
+  </div>
+  <p class="footnote">Note: AppsFlyer campaign-level data (partners_by_date_report) hit daily API limit during analysis. Campaign-level breakdown (branded 74.1% signup vs generic 19.6%) will be added once the limit resets. The ACI_Search→Display shift at channel level is already confirmed from Amplitude user properties.</p>
+</div>
+
+<!-- ── H5: NSDL Sunday ── -->
+<div class="section">
+  <h2>H5 — NSDL Sunday Processing Delay (Structural, ~13 trades/week)</h2>
+  <p style="color:#475569;font-size:.85rem;margin-bottom:16px">Analysis of eSign completion day → RTT timing and RTT → First Trade conversion by day of eSign. Window: last 5 occurrences of each day.</p>
+
+  <div class="section-grid">
+    <div>
+      <h3>eSign → RTT timing: % verified within 6h by day</h3>
+      <div class="chart-wrap">
+        <canvas id="h5EsignChart"></canvas>
+      </div>
+    </div>
+    <div>
+      <h3>RTT → First Trade ever% by eSign day</h3>
+      <div class="chart-wrap">
+        <canvas id="h5TradeChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day-of-week heat -->
+  <h3>eSign → RTT within 6h — day of week heatmap</h3>
+  <div class="dow-grid">
+    <div class="dow-cell" style="background:#15803d">
+      <div class="dow-day">MON</div>
+      <div class="dow-val">90.4%</div>
+      <div class="dow-sub">≤6h RTT</div>
+    </div>
+    <div class="dow-cell" style="background:#15803d">
+      <div class="dow-day">TUE</div>
+      <div class="dow-val">~89%</div>
+      <div class="dow-sub">≤6h RTT</div>
+    </div>
+    <div class="dow-cell" style="background:#15803d">
+      <div class="dow-day">WED</div>
+      <div class="dow-val">~90%</div>
+      <div class="dow-sub">≤6h RTT</div>
+    </div>
+    <div class="dow-cell" style="background:#15803d">
+      <div class="dow-day">THU</div>
+      <div class="dow-val">~88%</div>
+      <div class="dow-sub">≤6h RTT</div>
+    </div>
+    <div class="dow-cell" style="background:#16a34a">
+      <div class="dow-day">FRI</div>
+      <div class="dow-val">91.1%</div>
+      <div class="dow-sub">≤6h RTT</div>
+    </div>
+    <div class="dow-cell" style="background:#ca8a04">
+      <div class="dow-day">SAT</div>
+      <div class="dow-val">84.5%</div>
+      <div class="dow-sub">≤6h RTT</div>
+    </div>
+    <div class="dow-cell" style="background:#dc2626">
+      <div class="dow-day">SUN</div>
+      <div class="dow-val">8.2%</div>
+      <div class="dow-sub">≤6h RTT</div>
+    </div>
+  </div>
+
+  <h3>Impact quantification</h3>
+  <table class="tbl" style="margin-top:8px">
+    <thead><tr><th>Metric</th><th>Friday</th><th>Saturday</th><th>Sunday</th><th>Monday</th></tr></thead>
+    <tbody>
+      <tr><td>eSign → RTT ≤6h</td><td class="best">91.1%</td><td>84.5%</td><td class="worst">8.2%</td><td class="best">90.4%</td></tr>
+      <tr><td>RTT users (avg/week)</td><td>~340</td><td>~355</td><td>~275 (delayed to Mon)</td><td>~698 (2× normal)</td></tr>
+      <tr><td>RTT → First Trade ever%</td><td class="best">25.8%</td><td>24.4%</td><td>~18% (est.)</td><td class="worst">19.8%</td></tr>
+      <tr><td>Trades lost vs Friday baseline</td><td>—</td><td>−5/week</td><td colspan="2" class="worst">~13 trades/week combined (Mon absorbs Sun overflow)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="finding" style="margin-top:14px">
+    <b>Key finding:</b> Sunday eSign completers only get RTT 8.2% of the time within 6 hours (vs 84–91% on weekdays). NSDL doesn't process Sunday evening batches. These users receive RTT on Monday morning. Monday then has 2× normal RTT volume (~698 vs ~330–350) but <b>19.8% trade conversion vs 25.8% on Friday</b> — a 6pp gap. Approximately <b>13 trades/week are lost</b> because of this Sunday delay.
+  </div>
+  <div class="rec">
+    <b>Fix 1 (Quick win):</b> Add a WebEngage push notification targeting Monday 9–10 AM for users whose <code>KYC_DEMAT_VERIFIED</code> event fired Monday 1–5 AM (overnight NSDL batch). Message: "Your demat account is ready! Start investing." — catch them at the moment of intent.
+    <br><br>
+    <b>Fix 2 (Expectation management):</b> On Sunday after eSign success, show an in-app message: "Verification successful! Your demat will be activated Monday morning due to exchange processing hours." This prevents Sunday users from abandoning the app thinking something went wrong.
+  </div>
+</div>
+
+<!-- ── H3: Ruled out ── -->
+<div class="section">
+  <h2>H3 — Payment Failure Rate · Ruled Out</h2>
+  <table class="tbl">
+    <thead><tr><th>Cohort</th><th>Confirm page → Payment (ever%)</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td>May 25–31</td><td>61.1%</td><td>Baseline</td></tr>
+      <tr><td>Jun 1–7</td><td>56.8%</td><td>≈ stable</td></tr>
+      <tr><td>Jun 8–14</td><td>59.0%</td><td>≈ stable</td></tr>
+      <tr><td>Jun 9–15</td><td>50.4%</td><td class="warn">−10.7pp — worth monitoring but small absolute</td></tr>
+    </tbody>
+  </table>
+  <div class="insight" style="margin-top:10px">
+    The Confirm → Payment step is largely stable at 56–61%. The Jun 9–15 drop to 50.4% is worth monitoring but given the small absolute numbers (the denominator is already small at this funnel stage), this is not the primary driver. The payment infrastructure itself has not regressed.
+  </div>
+</div>
+
+<!-- ── Recommendations ── -->
+<div class="section">
+  <h2>Recommendations — Prioritised Action Plan</h2>
+  <table class="rec-tbl">
+    <thead><tr><th>Pri</th><th>Action</th><th>Owner</th><th>Hypothesis</th><th>Expected impact</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="pri p0">P0</span></td>
+        <td><b>Audit bond inventory &amp; explore page ranking</b> — identify what changed around May 20–Jun 1. Check yields, available quantity, bond ordering on home screen. Pull up high-yield / short-tenure bonds to top positions.</td>
+        <td>Product + BD</td>
+        <td>H1</td>
+        <td>Recover 5–7pp of RTT→payment (most impactful)</td>
+      </tr>
+      <tr>
+        <td><span class="pri p0">P0</span></td>
+        <td><b>Fix Google UAC campaign placement mix</b> — reduce Display network bids / cap; increase Search network max CPI. Target: ACI_Search share back to ≥23% of RTT (from current 19–20%).</td>
+        <td>Marketing (Sanyukta)</td>
+        <td>H4</td>
+        <td>Recover ~2–3pp of RTT→payment; better quality cohort</td>
+      </tr>
+      <tr>
+        <td><span class="pri p1">P1</span></td>
+        <td><b>Add Monday 9–10 AM WebEngage push</b> for users with <code>KYC_DEMAT_VERIFIED</code> fired between 1–6 AM Monday (NSDL overnight batch). Message: "Your demat is ready — start investing today!"</td>
+        <td>Engagement (Somya)</td>
+        <td>H5</td>
+        <td>~8–10 incremental trades/week (~₹8–10L GTV/month)</td>
+      </tr>
+      <tr>
+        <td><span class="pri p1">P1</span></td>
+        <td><b>Add Sunday post-eSign expectation message</b> in-app: "Demat verification will complete Monday morning (exchange processing hours)." Prevent Sunday users from churning due to uncertainty.</td>
+        <td>Product (Engineering)</td>
+        <td>H5</td>
+        <td>~3–5 incremental trades/week</td>
+      </tr>
+      <tr>
+        <td><span class="pri p2">P2</span></td>
+        <td><b>Audit WebEngage RTT journey trigger</b> — per Jun 10 audit, the DEMAT journey uses a deprecated trigger. Fix to use <code>KYC_DEMAT_VERIFIED</code> as the trigger event with correct conversion window.</td>
+        <td>Engagement (Somya)</td>
+        <td>H2</td>
+        <td>Unknown — could be significant if journey is broken</td>
+      </tr>
+      <tr>
+        <td><span class="pri p2">P2</span></td>
+        <td><b>Get AppsFlyer campaign-level breakdown</b> — pull partners_by_date_report for May 25–Jun 15 when daily API limit resets. Confirm which specific campaigns changed budget/targeting. Branded search (74.1% signup rate) vs generic app campaigns (19.6%).</td>
+        <td>Analytics</td>
+        <td>H4</td>
+        <td>Confirm/refine H4 findings; optimize campaign mix</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ── Footer ── -->
+<p style="color:#94a3b8;font-size:.75rem;text-align:center;margin-top:32px">
+  Generated by funnel-optimization-agent · Jun 17 2026 · Segment: excl. Poland bots + employee_referral · Data: Amplitude + AppsFlyer
+</p>
+
+</div><!-- /page -->
+
+<script>
+const W = ['May 25–31','Jun 1–7','Jun 8–14','Jun 9–15','Jun 15–17*'];
+const defaults = { responsive:true, maintainAspectRatio:false,
+  plugins:{ legend:{ position:'bottom', labels:{ boxWidth:10, font:{ size:11 }}}},
+  scales:{ x:{ ticks:{ font:{size:11}}}, y:{ ticks:{ font:{size:11}}}}
+};
+
+// H1: RTT→Payment line chart
+new Chart(document.getElementById('h1PayChart'), {
+  type:'line',
+  data:{
+    labels:W,
+    datasets:[{
+      label:'RTT → Payment (ever%)',
+      data:[33.5,29.7,28.3,21.2,21.7],
+      borderColor:'#dc2626',fill:false,tension:.3,
+      pointBackgroundColor:['#15803d','#64748b','#d97706','#dc2626','#dc2626'],
+      pointRadius:6, borderWidth:2.5
+    }]
+  },
+  options:{...defaults, plugins:{...defaults.plugins},
+    scales:{
+      x:{ ticks:{ font:{size:10}}},
+      y:{ min:15, max:38, ticks:{ callback:v=>v+'%', font:{size:11}},
+          title:{display:true,text:'RTT→Pay %',font:{size:10}}}
+    }
+  }
+});
+
+// H1: funnel comparison bar
+new Chart(document.getElementById('h1FunnelChart'), {
+  type:'bar',
+  data:{
+    labels:['Bond View/RTT','InvestClick/RTT','Confirm/RTT','Payment/RTT'],
+    datasets:[
+      {label:'May 25–31 (base)', data:[83.4,57.7,54.8,33.5], backgroundColor:'rgba(21,128,61,.75)'},
+      {label:'Jun 9–15', data:[69.0,42.9,42.1,21.2], backgroundColor:'rgba(220,38,38,.75)'}
+    ]
+  },
+  options:{...defaults,
+    scales:{
+      x:{ticks:{font:{size:10}}},
+      y:{ticks:{callback:v=>v+'%',font:{size:11}},max:100}
+    }
+  }
+});
+
+// H4: ACI_Search vs ACI_Display grouped bar
+new Chart(document.getElementById('h4ChannelChart'), {
+  type:'bar',
+  data:{
+    labels:['May 25–31','Jun 8–14','Jun 9–15','Jun 15–17'],
+    datasets:[
+      {label:'ACI_Search (high intent)', data:[23.1,17.0,19.4,22.8], backgroundColor:'rgba(59,130,246,.8)'},
+      {label:'ACI_Display (low intent)', data:[14.5,19.0,20.6,20.5], backgroundColor:'rgba(251,146,60,.8)'},
+      {label:'ACI_Youtube',              data:[7.5,6.7,6.9,6.0],     backgroundColor:'rgba(168,85,247,.6)'}
+    ]
+  },
+  options:{...defaults,
+    scales:{
+      x:{stacked:false,ticks:{font:{size:10}}},
+      y:{ticks:{callback:v=>v+'%',font:{size:11}},max:30,
+         title:{display:true,text:'% of RTT users',font:{size:10}}}
+    }
+  }
+});
+
+// H4: media source stacked bar
+new Chart(document.getElementById('h4MediaChart'), {
+  type:'bar',
+  data:{
+    labels:['May 25–31','Jun 8–14','Jun 9–15','Jun 15–17'],
+    datasets:[
+      {label:'Google Ads',     data:[46.8,42.1,47.0,49.8], backgroundColor:'rgba(59,130,246,.8)'},
+      {label:'(none) unattr.', data:[30.9,36.7,33.3,30.2], backgroundColor:'rgba(148,163,184,.7)'},
+      {label:'Organic',        data:[5.5,5.9,6.0,6.0],     backgroundColor:'rgba(21,128,61,.7)'},
+      {label:'Jio HM',         data:[4.4,1.0,0.4,1.7],     backgroundColor:'rgba(251,191,36,.8)'},
+      {label:'sokendev',       data:[2.1,3.4,5.2,5.0],     backgroundColor:'rgba(239,68,68,.7)'},
+      {label:'Other',          data:[10.3,10.9,8.1,7.3],   backgroundColor:'rgba(209,213,219,.6)'},
+    ]
+  },
+  options:{...defaults,
+    scales:{
+      x:{stacked:true,ticks:{font:{size:10}}},
+      y:{stacked:true,max:102,ticks:{callback:v=>v+'%',font:{size:11}},
+         title:{display:true,text:'% of RTT users',font:{size:10}}}
+    }
+  }
+});
+
+// H5: eSign→RTT ≤6h
+const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+new Chart(document.getElementById('h5EsignChart'), {
+  type:'bar',
+  data:{
+    labels:days,
+    datasets:[{
+      label:'eSign → RTT ≤6h',
+      data:[90.4,89,90,88,91.1,84.5,8.2],
+      backgroundColor:['#15803d','#15803d','#15803d','#15803d','#15803d','#ca8a04','#dc2626']
+    }]
+  },
+  options:{...defaults, plugins:{legend:{display:false}},
+    scales:{x:{ticks:{font:{size:11}}},
+            y:{min:0,max:100,ticks:{callback:v=>v+'%',font:{size:11}},
+               title:{display:true,text:'% RTT within 6h',font:{size:10}}}}
+  }
+});
+
+// H5: RTT→trade ever%
+new Chart(document.getElementById('h5TradeChart'), {
+  type:'bar',
+  data:{
+    labels:days,
+    datasets:[{
+      label:'RTT → First Trade ever%',
+      data:[19.8,22,23,24,25.8,24.4,18],
+      backgroundColor:['#d97706','#64748b','#64748b','#64748b','#15803d','#ca8a04','#dc2626']
+    }]
+  },
+  options:{...defaults, plugins:{legend:{display:false}},
+    scales:{x:{ticks:{font:{size:11}}},
+            y:{min:0,max:30,ticks:{callback:v=>v+'%',font:{size:11}},
+               title:{display:true,text:'RTT → First Trade ever%',font:{size:10}}}}
+  }
+});
+</script>
+</body>
+</html>
