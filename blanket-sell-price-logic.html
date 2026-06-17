@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blanket Sell — Sell Price Logic · Aspero</title>
+<style>
+  :root {
+    --blue:      #2563EB;
+    --blue-mid:  #1E3A8A;
+    --blue-lt:   #EFF6FF;
+    --green:     #16A34A;
+    --green-lt:  #F0FDF4;
+    --amber:     #D97706;
+    --amber-lt:  #FFFBEB;
+    --red:       #DC2626;
+    --red-lt:    #FEF2F2;
+    --purple:    #7C3AED;
+    --purple-lt: #F5F3FF;
+    --gray:      #64748B;
+    --gray-lt:   #F8FAFC;
+    --border:    #E2E8F0;
+    --text:      #0F172A;
+    --text2:     #475569;
+    --text3:     #94A3B8;
+    --bg:        #F1F5F9;
+    --teal:      #0D9488;
+    --teal-lt:   #F0FDFA;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 55%, #2563EB 100%);
+    color: white;
+    padding: 52px 32px 64px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 10px;
+  }
+  .header p {
+    font-size: 15px;
+    opacity: 0.75;
+    max-width: 560px;
+    margin: 0 auto 20px;
+  }
+  .header-meta {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    font-size: 12px;
+    opacity: 0.6;
+    margin-top: 8px;
+  }
+
+  /* Layout */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* Section */
+  .section { margin-bottom: 48px; }
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--blue-lt);
+  }
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 10px;
+    margin-top: 24px;
+  }
+  p { color: var(--text2); font-size: 14px; margin-bottom: 12px; }
+
+  /* Cards */
+  .card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .card-blue  { border-left: 4px solid var(--blue);   background: var(--blue-lt); }
+  .card-green { border-left: 4px solid var(--green);  background: var(--green-lt); }
+  .card-amber { border-left: 4px solid var(--amber);  background: var(--amber-lt); }
+  .card-red   { border-left: 4px solid var(--red);    background: var(--red-lt); }
+  .card-purple{ border-left: 4px solid var(--purple); background: var(--purple-lt); }
+  .card-teal  { border-left: 4px solid var(--teal);   background: var(--teal-lt); }
+
+  /* Formula box */
+  .formula {
+    background: #0F172A;
+    color: #E2E8F0;
+    border-radius: 10px;
+    padding: 20px 24px;
+    font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    margin: 16px 0;
+    overflow-x: auto;
+  }
+  .formula .comment { color: #64748B; }
+  .formula .key     { color: #7DD3FC; }
+  .formula .val     { color: #86EFAC; }
+  .formula .op      { color: #FCA5A5; }
+  .formula .result  { color: #FDE68A; font-weight: 600; }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin: 16px 0;
+  }
+  th {
+    background: #F8FAFC;
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--gray);
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text2);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { font-weight: 500; color: var(--text); }
+  .num { font-family: 'SF Mono', monospace; font-size: 12px; }
+  .highlight-row td { background: #F0FDF4; font-weight: 600; }
+  .highlight-row td:first-child { color: var(--green); }
+
+  /* Step list */
+  .steps { counter-reset: step; list-style: none; margin: 16px 0; }
+  .steps li {
+    counter-increment: step;
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+  .steps li::before {
+    content: counter(step);
+    min-width: 28px;
+    height: 28px;
+    background: var(--blue);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-body h4 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .step-body p  { margin-bottom: 4px; }
+
+  /* Scenario tabs */
+  .scenarios { display: flex; flex-direction: column; gap: 20px; }
+  .scenario-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .scenario-header {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .scenario-header.s1 { background: #EFF6FF; }
+  .scenario-header.s2 { background: #F0FDF4; }
+  .scenario-header.s3 { background: #FDF4FF; }
+  .scenario-day {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--blue);
+    min-width: 56px;
+  }
+  .scenario-header.s2 .scenario-day { color: var(--green); }
+  .scenario-header.s3 .scenario-day { color: var(--purple); }
+  .scenario-title { font-size: 15px; font-weight: 600; color: var(--text); }
+  .scenario-sub   { font-size: 12px; color: var(--text3); margin-top: 2px; }
+  .scenario-price {
+    margin-left: auto;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--blue);
+  }
+  .scenario-header.s2 .scenario-price { color: var(--green); }
+  .scenario-header.s3 .scenario-price { color: var(--purple); }
+  .scenario-body { padding: 20px; }
+
+  /* Calc rows */
+  .calc-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border);
+    font-size: 13px;
+  }
+  .calc-row:last-child { border-bottom: none; }
+  .calc-label { flex: 1; color: var(--text2); }
+  .calc-detail { color: var(--text3); font-size: 12px; font-family: monospace; flex: 2; }
+  .calc-amount { font-weight: 700; font-family: monospace; min-width: 60px; text-align: right; }
+  .calc-row.total {
+    background: #F8FAFC;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-top: 8px;
+    border-bottom: none;
+  }
+  .calc-row.total .calc-label { font-weight: 700; color: var(--text); }
+  .calc-row.total .calc-amount { font-size: 16px; color: var(--blue); }
+
+  /* Timeline */
+  .timeline {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 16px 0;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .timeline-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+  }
+  .timeline-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--gray);
+    margin-bottom: 6px;
+    flex-shrink: 0;
+  }
+  .timeline-dot.active { background: var(--blue); width: 16px; height: 16px; }
+  .timeline-dot.sell   { background: var(--red);  width: 16px; height: 16px; }
+  .timeline-line {
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    min-width: 30px;
+    margin-bottom: 26px;
+  }
+  .timeline-label { font-size: 10px; text-align: center; color: var(--text3); max-width: 70px; }
+  .timeline-label strong { display: block; font-size: 11px; color: var(--text2); margin-bottom: 2px; }
+
+  /* Badge */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 6px;
+  }
+  .badge-blue   { background: var(--blue-lt);   color: var(--blue); }
+  .badge-green  { background: var(--green-lt);  color: var(--green); }
+  .badge-amber  { background: var(--amber-lt);  color: var(--amber); }
+  .badge-red    { background: var(--red-lt);    color: var(--red); }
+
+  /* Summary table highlight */
+  .summary-table td.best { background: #F0FDF4; color: var(--green); font-weight: 700; }
+  .summary-table td.worst { background: var(--red-lt); color: var(--red); font-weight: 700; }
+
+  /* Callout */
+  .callout {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--amber-lt);
+    border: 1px solid #FDE68A;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 16px 0;
+    font-size: 13px;
+    color: var(--text2);
+  }
+  .callout-icon { font-size: 18px; flex-shrink: 0; }
+  .callout-blue {
+    background: var(--blue-lt);
+    border-color: #BFDBFE;
+  }
+  .callout-green {
+    background: var(--green-lt);
+    border-color: #BBF7D0;
+  }
+  .callout-red {
+    background: var(--red-lt);
+    border-color: #FECACA;
+  }
+
+  /* TOC */
+  .toc {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 36px;
+  }
+  .toc h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray); margin-bottom: 12px; margin-top: 0; }
+  .toc ol { padding-left: 20px; }
+  .toc li { font-size: 13px; padding: 3px 0; }
+  .toc a { color: var(--blue); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  /* Grid */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  /* Annuity explainer */
+  .annuity-box {
+    background: #0F172A;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 12px 0;
+  }
+  .annuity-box .line {
+    font-family: monospace;
+    font-size: 13px;
+    line-height: 2;
+    color: #E2E8F0;
+  }
+  .annuity-box .dim   { color: #475569; }
+  .annuity-box .hi    { color: #7DD3FC; }
+  .annuity-box .ans   { color: #86EFAC; font-weight: 700; }
+  .annuity-box .sep   { color: #475569; border-top: 1px solid #1E293B; margin: 4px 0; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-badge">Engineering Reference</div>
+  <h1>Blanket Sell — Sell Price Logic</h1>
+  <p>Complete formula walkthrough with worked examples, edge cases, and record date handling. Intended for backend engineers implementing the sell price engine.</p>
+  <div class="header-meta">
+    <span>PRD: Blanket Sell — UX Edition</span>
+    <span>·</span>
+    <span>PM: Arpit Goyal</span>
+    <span>·</span>
+    <span>Last updated: Jun 2026</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TOC -->
+  <div class="toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#bond-setup">Bond Setup (Example Bond Used Throughout)</a></li>
+      <li><a href="#formula">Core Sell Price Formula</a></li>
+      <li><a href="#formula-deep">Formula Deep Dive — PV of Coupons vs PV of Principal</a></li>
+      <li><a href="#scenarios">Worked Scenarios — Day 30, Day 90, Day 365</a></li>
+      <li><a href="#summary">Summary Comparison</a></li>
+      <li><a href="#record-date">Record Date Edge Case</a></li>
+      <li><a href="#post-record">Post-Record Date Purchase</a></li>
+      <li><a href="#config">Configuration Parameters</a></li>
+    </ol>
+  </div>
+
+  <!-- 1. Bond setup -->
+  <div class="section" id="bond-setup">
+    <div class="section-title">Section 1</div>
+    <h2>Bond Setup</h2>
+    <p>All examples on this page use the same bond. Real bonds will vary — swap in the actual values from bond master.</p>
+
+    <table>
+      <tr><th>Parameter</th><th>Value</th><th>Source</th></tr>
+      <tr><td>Face value</td><td class="num">₹1,000 per unit</td><td>Bond master</td></tr>
+      <tr><td>Coupon rate</td><td class="num">12% per year</td><td>Bond master</td></tr>
+      <tr><td>Coupon frequency</td><td class="num">Monthly</td><td>Bond master</td></tr>
+      <tr><td>Monthly coupon amount</td><td class="num">₹1,000 × 12% ÷ 12 = <strong>₹10/month</strong></td><td>Computed</td></tr>
+      <tr><td>Tenure</td><td class="num">3 years (36 monthly coupons)</td><td>Bond master</td></tr>
+      <tr><td>Repayment type</td><td>Bullet (full principal at maturity)</td><td>Bond master</td></tr>
+      <tr><td>Aspero spread</td><td class="num">200 bps (configured in Seller Portal)</td><td>Config</td></tr>
+      <tr class="highlight-row"><td>Discount rate</td><td class="num">12% + 2% = <strong>14%/year → 1.167%/month</strong></td><td>Computed</td></tr>
+      <tr><td>Min. hold period</td><td class="num">30 days from settlement date</td><td>Config</td></tr>
+    </table>
+
+    <div class="callout callout-blue">
+      <span class="callout-icon">💡</span>
+      <div><strong>Monthly discount rate:</strong> The formula uses a monthly rate since coupons are monthly. <code>r = 14% ÷ 12 = 1.1667%</code>. Always match the discount rate period to the coupon period.</div>
+    </div>
+  </div>
+
+  <!-- 2. Formula -->
+  <div class="section" id="formula">
+    <div class="section-title">Section 2</div>
+    <h2>Core Sell Price Formula</h2>
+    <p>When a user initiates a sell, the backend computes the price in 5 steps. No manual input from treasury or ops.</p>
+
+    <ol class="steps">
+      <li>
+        <div class="step-body">
+          <h4>Identify remaining cashflows</h4>
+          <p>Fetch the bond's full coupon schedule from bond master. Filter to all coupons <em>after</em> the sell date, plus the principal repayment at maturity.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <h4>Compute Aspero's discount rate</h4>
+          <p><code>aspero_rate = bond_coupon_rate + aspero_spread_bps</code></p>
+          <p>e.g. 12% + 2% = <strong>14%/year</strong>. Convert to per-period rate: <strong>14% ÷ 12 = 1.1667%/month</strong></p>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <h4>Discount each cashflow to present value</h4>
+          <p><code>PV = cashflow_amount ÷ (1 + monthly_rate) ^ months_to_payment</code></p>
+          <p>Sum all PVs. Use the annuity formula for equal recurring coupons (see Section 3).</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <h4>Add accrued interest</h4>
+          <p><code>AI = face_value × coupon_rate × (days_since_last_coupon ÷ 365)</code></p>
+          <p>Compensates the user for coupon earned but not yet paid. Zero if selling exactly on a coupon date.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <h4>Sell price</h4>
+          <p><code>Sell Price = Sum of PVs + Accrued Interest</code></p>
+          <p>This is the per-unit price shown to the user on the sell initiation screen before confirmation.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="formula">
+<span class="comment">// Core sell price formula</span>
+<span class="key">sell_price_per_unit</span> <span class="op">=</span> pv_of_coupons <span class="op">+</span> pv_of_principal <span class="op">+</span> accrued_interest
+
+<span class="comment">// PV of recurring monthly coupons — annuity formula</span>
+<span class="key">pv_of_coupons</span> <span class="op">=</span> C <span class="op">×</span> [1 <span class="op">-</span> (1 <span class="op">+</span> r)<sup class="op">-n</sup>] <span class="op">/</span> r
+
+<span class="comment">// PV of lump-sum principal at maturity</span>
+<span class="key">pv_of_principal</span> <span class="op">=</span> face_value <span class="op">/</span> (1 <span class="op">+</span> r)<sup class="op">n</sup>
+
+<span class="comment">// Accrued interest since last coupon date</span>
+<span class="key">accrued_interest</span> <span class="op">=</span> face_value <span class="op">×</span> coupon_rate <span class="op">×</span> (days_since_last_coupon <span class="op">/</span> 365)
+
+<span class="comment">// Where:</span>
+<span class="comment">//   C = monthly coupon amount (face_value × annual_rate ÷ 12)</span>
+<span class="comment">//   r = monthly discount rate (aspero_rate ÷ 12)</span>
+<span class="comment">//   n = number of remaining monthly coupons from sell date</span>
+    </div>
+
+    <div class="callout callout-blue">
+      <span class="callout-icon">📌</span>
+      <div><strong>Floor guardrail:</strong> If the computed sell price drops below <code>min_sell_price_floor_pct × face_value</code> (default 85%), cap the sell price at the floor. This prevents extreme cases with very high spreads or unusual market conditions.</div>
+    </div>
+  </div>
+
+  <!-- 3. Formula deep dive -->
+  <div class="section" id="formula-deep">
+    <div class="section-title">Section 3</div>
+    <h2>Formula Deep Dive — Why Two Separate PVs?</h2>
+    <p>The bond produces two structurally different cashflows. They need separate discounting treatment.</p>
+
+    <div class="grid-2">
+      <div class="card card-blue">
+        <h3 style="margin-top:0">PV of Coupons</h3>
+        <p><strong>What it is:</strong> 35 identical ₹10 payments, each at a different future month.</p>
+        <p><strong>Why annuity formula:</strong> Discounting each individually would need 35 calculations. The annuity formula collapses them into one — same result, one step.</p>
+        <div class="annuity-box">
+          <div class="line"><span class="hi">C</span> × [1 − (1+<span class="hi">r</span>)<sup>−n</sup>] / <span class="hi">r</span></div>
+          <div class="line dim">= 10 × [1 − (1.01167)<sup>−35</sup>] / 0.01167</div>
+          <div class="line dim">= 10 × [1 − 0.666] / 0.01167</div>
+          <div class="line dim">= 10 × 28.6</div>
+          <div class="line ans">= ₹286</div>
+        </div>
+      </div>
+      <div class="card card-purple">
+        <h3 style="margin-top:0">PV of Principal</h3>
+        <p><strong>What it is:</strong> A single ₹1,000 payment at month 35 (maturity). The annuity formula doesn't handle it — it only handles recurring equal payments.</p>
+        <p><strong>Simple single-payment PV:</strong></p>
+        <div class="annuity-box">
+          <div class="line"><span class="hi">face_value</span> / (1+<span class="hi">r</span>)<sup>n</sup></div>
+          <div class="line dim">= 1000 / (1.01167)<sup>35</sup></div>
+          <div class="line dim">= 1000 / 1.501</div>
+          <div class="line ans">= ₹666</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Intuition: Why Does PV of Principal Change So Much?</h3>
+    <p>The principal is the same ₹1,000 regardless of when the user sells. But how far away it is changes drastically:</p>
+    <table>
+      <tr><th>Sell at</th><th>Months to principal</th><th>PV of ₹1,000</th><th>Difference vs face</th></tr>
+      <tr><td>Day 30</td><td class="num">35 months</td><td class="num">₹666</td><td class="num" style="color:var(--red)">−₹334</td></tr>
+      <tr><td>Day 90</td><td class="num">33 months</td><td class="num">₹682</td><td class="num" style="color:var(--red)">−₹318</td></tr>
+      <tr><td>Day 365</td><td class="num">24 months</td><td class="num">₹757</td><td class="num" style="color:var(--amber)">−₹243</td></tr>
+      <tr class="highlight-row"><td>Maturity</td><td class="num">0 months</td><td class="num">₹1,000</td><td class="num">₹0</td></tr>
+    </table>
+    <p>This "pull to par" — principal converging toward ₹1,000 as maturity approaches — is the dominant driver of sell price increasing over time.</p>
+  </div>
+
+  <!-- 4. Scenarios -->
+  <div class="section" id="scenarios">
+    <div class="section-title">Section 4</div>
+    <h2>Worked Scenarios</h2>
+    <p>Three sell points for the same bond. Bond purchased on Day 0 (settlement Day 1). Coupons paid on Day 30, 60, 90... Monthly.</p>
+
+    <div class="scenarios">
+
+      <!-- Scenario 1 -->
+      <div class="scenario-card">
+        <div class="scenario-header s1">
+          <div>
+            <div class="scenario-day">Day 30</div>
+          </div>
+          <div>
+            <div class="scenario-title">Minimum Eligible Sell <span class="badge badge-amber">Earliest possible</span></div>
+            <div class="scenario-sub">Selling exactly on 1st coupon date · 1 coupon received (₹10) · 35 months remaining</div>
+          </div>
+          <div class="scenario-price">₹952</div>
+        </div>
+        <div class="scenario-body">
+          <div style="margin-bottom:16px">
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot active"></div>
+                <div class="timeline-label"><strong>Day 0</strong>Purchase &amp; settlement</div>
+              </div>
+              <div class="timeline-line"></div>
+              <div class="timeline-item">
+                <div class="timeline-dot sell"></div>
+                <div class="timeline-label"><strong>Day 30</strong>Coupon 1 paid + User SELLS</div>
+              </div>
+              <div class="timeline-line"></div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-label"><strong>Day 60</strong>Coupon 2</div>
+              </div>
+              <div class="timeline-line"></div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-label"><strong>Day 1080</strong>Maturity + principal</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="calc-row">
+            <span class="calc-label">Monthly coupon (C)</span>
+            <span class="calc-detail">₹1,000 × 12% ÷ 12</span>
+            <span class="calc-amount">₹10</span>
+          </div>
+          <div class="calc-row">
+            <span class="calc-label">Monthly discount rate (r)</span>
+            <span class="calc-detail">14% ÷ 12</span>
+            <span class="calc-amount">1.167%</span>
+          </div>
+          <div class="calc-row">
+            <span class="calc-label">Remaining coupons (n)</span>
+            <span class="calc-detail">Coupons 2–36 (coupon 1 just paid)</span>
+            <span class="calc-amount">35</span>
+          </div>
+          <div class="calc-row">
+            <span class="calc-label">PV of coupons</span>
+            <span class="calc-detail">10 × [1 − (1.01167)⁻³⁵] / 0.01167</span>
+            <span class="calc-amount">₹286</span>
+          </div>
+          <div class="calc-row">
+            <span class="calc-label">PV of principal</span>
+            <span class="calc-detail">1000 / (1.01167)³⁵</span>
+            <span class="calc-amount">₹666</span>
+          </div>
+          <div class="calc-row">
+            <span class="calc-label">Accrued interest</span>
+            <span class="calc-detail">Selling on coupon date → 0 days accrued</span>
+            <span class="calc-amount">₹0</span>
+          </div>
+          <div class="calc-row total">
+            <span class="calc-label">Sell price per unit</span>
+            <span class="calc-detail">₹286 + ₹666 + ₹0</span>
+            <span class="calc-amount" style="color:var(--blue)">₹952</span>
+          </div>
+
+          <div class="callout" style="margin-top:16px">
+            <span class="callout-icon">⚠️</span>
+            <div>The sell price (₹952) is below face value (₹1,000) because Aspero discounts at <strong>14%</strong> while the bond only pays <strong>12%</strong>. The 200 bps spread is Aspero's buyback margin. With 35 months remaining, the ₹1,000 principal sits far in the future and is heavily discounted (PV = ₹666).</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scenario 2 -->
+      <div class="scenario-card">
+        <div class="scenario-header s2">
+          <div>
+            <div class="scenario-day" style="color:var(--green)">Day 90</div>
+          </div>
+          <div>
+            <div class="scenario-title">3-Month Hold <span class="badge badge-green">+₹3 vs Day 30</span></div>
+            <div class="scenario-sub">Selling on 3rd coupon date · 3 coupons received (₹30) · 33 months remaining</div>
+          </div>
+          <div class="scenario-price" style="color:var(--green)">₹955</div>
+        </div>
+        <div class="scenario-body">
+          <div style="margin-bottom:16px">
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot active"></div>
+                <div class="timeline-label"><strong>Day 0</strong>Purchase</div>
+              </div>
+              <div class="timeline-line"></div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-label"><strong>Day 30</strong>Coupon 1</div>
+              </div>
+              <div class="timeline-line"></div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-label"><strong>Day 60</strong>Coupon 2</div>
+              </div>
+              <div class="timeline-line"></div>
+              <div class="timeline-item">
+                <div class="timeline-dot sell"></div>
+                <div class="timeline-label"><strong>Day 90</strong>Coupon 3 + User SELLS</div>
+              </div>
+              <div class="timeline-line"></div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-label"><strong>Day 1080</strong>Maturity</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="calc-row">
+            <span class="calc-label">Remaining coupons (n)</span>
+            <span class="calc-detail">Coupons 4–36</span>
+            <span class="calc-amount">33</span>
+          </div>
+          <div class="calc-row">
+            <span class="calc-label">PV of coupons</span>
+            <span class="calc-detail">10 × [1 − (1.01167)⁻³³] / 0.01167</span>
+            <span class="calc-amount">₹273</span>
+          </div>
+          <div class="calc-row">
+            <span class="calc-label">PV of principal</span>
+            <span class="calc-detail">1000 / (1.01167)³³ = 1000 / 1.466</span>
+            <span class="calc-amount">₹682</span>
+          </div>
+          <div class="calc-row">
+            <span class="calc-label">Accrued interest</span>
+            <span class="calc-detail">Selling on coupon date → 0 days accrued</span>
+            <span class="calc-amount">₹0</span>
+          </div>
+          <div class="calc-row total">
+            <span class="calc-label">Sell price per unit</span>
+            <span class="calc-detail">₹273 + ₹682 + ₹0</span>
+            <span class="calc-amount" style="color:var(--green)">₹955</span>
+          </div>
+
+          <div class="callout callout-green" style="margin-top:16px">
+            <span class="callout-icon">📈</span>
+            <div>Sell price rose from ₹952 → ₹955. Two fewer months of discounting means the principal PV increased ₹666 → ₹682. The bond is slowly "pulling to par" as maturity approaches.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scenario 3 -->
+      <div class="scenario-card">
+        <div class="scenario-header s3">
+          <div>
+            <div class="scenario-day" style="color:var(--purple)">Day 365</div>
+          </div>
+          <div>
+            <div class="scenario-title">~1-Year Hold <span class="badge badge-blue">+₹15 vs Day 30</span></div>
+            <div class="scenario-sub">12 coupons received (₹120) · 24 months remaining · selling 5 days after 12th coupon</div>
+          </div>
+          <div class="scenario-price" style="color:var(--purple)">₹967</div>
+        </div>
+        <div class="scenario-body">
+          <div style="margin-bottom:16px">
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot active"></div>
+                <div class="timeline-label"><strong>Day 0</strong>Purchase</div>
+              </div>
+              <div class="timeline-line"></div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-label"><strong>Day 30–330</strong>Coupons 1–11</div>
+              </div>
+              <div class="timeline-line"></div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-label"><strong>Day 360</strong>Coupon 12 paid</div>
+              </div>
+              <div class="timeline-line"></div>
+              <div class="timeline-item">
+                <div class="timeline-dot sell"></div>
+                <div class="timeline-label"><strong>Day 365</strong>User SELLS (5 days after coupon)</div>
+              </div>
+              <div class="timeline-line"></div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-label"><strong>Day 1080</strong>Maturity</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="calc-row">
+            <span class="calc-label">Remaining coupons (n)</span>
+            <span class="calc-detail">Coupons 13–36</span>
+            <span class="calc-amount">24</span>
+          </div>
+          <div class="calc-row">
+            <span class="calc-label">PV of coupons</span>
+            <span class="calc-detail">10 × [1 − (1.01167)⁻²⁴] / 0.01167</span>
+            <span class="calc-amount">₹208</span>
+          </div>
+          <div class="calc-row">
+            <span class="calc-label">PV of principal</span>
+            <span class="calc-detail">1000 / (1.01167)²⁴ = 1000 / 1.321</span>
+            <span class="calc-amount">₹757</span>
+          </div>
+          <div class="calc-row">
+            <span class="calc-label">Accrued interest</span>
+            <span class="calc-detail">₹1,000 × 12% × (5 ÷ 365) = 5 days since coupon 12</span>
+            <span class="calc-amount">₹2</span>
+          </div>
+          <div class="calc-row total">
+            <span class="calc-label">Sell price per unit</span>
+            <span class="calc-detail">₹208 + ₹757 + ₹2</span>
+            <span class="calc-amount" style="color:var(--purple)">₹967</span>
+          </div>
+
+          <div class="callout" style="background:var(--purple-lt); border-color:#DDD6FE; margin-top:16px">
+            <span class="callout-icon">⏱️</span>
+            <div>Accrued interest (₹2) kicks in here because the user is selling <strong>5 days after</strong> the last coupon, not on the coupon date. The sell price engine must always check <code>days_since_last_coupon</code> and add AI accordingly. The longer between coupon and sell date, the higher the AI component.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 5. Summary -->
+  <div class="section" id="summary">
+    <div class="section-title">Section 5</div>
+    <h2>Summary Comparison</h2>
+
+    <table class="summary-table">
+      <tr>
+        <th>Metric</th>
+        <th>Day 30</th>
+        <th>Day 90</th>
+        <th>Day 365</th>
+        <th>Maturity (Day 1080)</th>
+      </tr>
+      <tr>
+        <td>Months remaining</td>
+        <td class="num">35</td>
+        <td class="num">33</td>
+        <td class="num">24</td>
+        <td class="num">0</td>
+      </tr>
+      <tr>
+        <td>PV of coupons</td>
+        <td class="num">₹286</td>
+        <td class="num">₹273</td>
+        <td class="num">₹208</td>
+        <td class="num">₹0</td>
+      </tr>
+      <tr>
+        <td>PV of principal</td>
+        <td class="num worst">₹666</td>
+        <td class="num">₹682</td>
+        <td class="num">₹757</td>
+        <td class="num best">₹1,000</td>
+      </tr>
+      <tr>
+        <td>Accrued interest</td>
+        <td class="num">₹0</td>
+        <td class="num">₹0</td>
+        <td class="num">₹2</td>
+        <td class="num">₹0</td>
+      </tr>
+      <tr class="highlight-row">
+        <td>Sell price per unit</td>
+        <td class="num worst">₹952</td>
+        <td class="num">₹955</td>
+        <td class="num">₹967</td>
+        <td class="num best">₹1,000</td>
+      </tr>
+      <tr>
+        <td>Coupons received</td>
+        <td class="num">₹10</td>
+        <td class="num">₹30</td>
+        <td class="num">₹120</td>
+        <td class="num">₹360</td>
+      </tr>
+      <tr>
+        <td>Total cash out (sell + coupons)</td>
+        <td class="num">₹962</td>
+        <td class="num">₹985</td>
+        <td class="num">₹1,087</td>
+        <td class="num best">₹1,360</td>
+      </tr>
+    </table>
+
+    <div class="callout callout-blue">
+      <span class="callout-icon">📐</span>
+      <div><strong>Why does sell price go up over time?</strong> Two forces: (1) <strong>Pull to par</strong> — ₹1,000 principal gets closer, its PV rises toward ₹1,000. (2) <strong>Fewer discounted cashflows</strong> — each passing month is one less future coupon being discounted at Aspero's penalising 14% rate. Both push the sell price toward ₹1,000 as maturity approaches.</div>
+    </div>
+  </div>
+
+  <!-- 6. Record date -->
+  <div class="section" id="record-date">
+    <div class="section-title">Section 6</div>
+    <h2>Record Date Edge Case</h2>
+    <p>The record date determines who receives a coupon. Since Aspero settles on T+1, the sell date relative to the record date changes who gets the upcoming coupon — and must change the sell price accordingly.</p>
+
+    <h3>How It Works</h3>
+    <table>
+      <tr><th>Term</th><th>Definition</th></tr>
+      <tr><td>Record date</td><td>Bondholder registered on this date receives the next coupon</td></tr>
+      <tr><td>Ex-coupon date</td><td>Record date minus 1 trading day (given T+1 settlement)</td></tr>
+      <tr><td>Cum-coupon</td><td>Selling before ex-date → buyer (Aspero) gets next coupon → seller gets AI in sell price</td></tr>
+      <tr><td>Ex-coupon</td><td>Selling on/after ex-date → seller stays on record → seller gets coupon directly → AI must NOT be added to sell price for that period</td></tr>
+    </table>
+
+    <h3>Concrete Example</h3>
+    <div class="formula">
+<span class="comment">// Coupon 3 timeline</span>
+<span class="key">Record date</span>  = Day 89  <span class="comment">// must be registered by here</span>
+<span class="key">Coupon paid</span>  = Day 90  <span class="comment">// ₹10 sent to whoever was on record Day 89</span>
+
+<span class="comment">// Case A — Sell on Day 87 (before ex-date)</span>
+<span class="comment">// Settlement = Day 88. Aspero on record Day 89 → Aspero gets Coupon 3</span>
+<span class="key">days_since_last_coupon</span> = 87 - 60 = <span class="val">27 days</span>
+<span class="key">accrued_interest</span>       = 1000 × 12% × (27/365) = <span class="result">₹8.9</span>  <span class="comment">← paid to user</span>
+
+<span class="comment">// Case B — Sell on Day 89 (on ex-date)</span>
+<span class="comment">// Settlement = Day 90. User still on record Day 89 → User gets Coupon 3 directly</span>
+<span class="key">accrued_interest</span>       = <span class="result">₹0</span>  <span class="comment">← user gets coupon separately, AI must NOT double count</span>
+<span class="comment">// Also: exclude Coupon 3 from remaining cashflows in PV calculation</span>
+    </div>
+
+    <div class="callout callout-red">
+      <span class="callout-icon">🚨</span>
+      <div><strong>Engineering note:</strong> The sell price engine must check: <code>if sell_settlement_date &gt;= record_date_for_next_coupon</code> → exclude the next coupon from PV cashflows AND set AI = 0. Failing to handle this results in the user being paid twice for the same coupon period.</div>
+    </div>
+
+    <h3>Two Cases Side by Side</h3>
+    <table>
+      <tr><th></th><th>Sell Day 87 (cum-coupon)</th><th>Sell Day 89 (ex-coupon)</th></tr>
+      <tr><td>Settlement date</td><td class="num">Day 88</td><td class="num">Day 90</td></tr>
+      <tr><td>Who gets Coupon 3?</td><td>Aspero (registered Day 89)</td><td>User (already on record Day 89)</td></tr>
+      <tr><td>Include Coupon 3 in PV?</td><td class="num" style="color:var(--green)">Yes</td><td class="num" style="color:var(--red)">No</td></tr>
+      <tr><td>Accrued interest (27 days)</td><td class="num" style="color:var(--green)">₹8.9 (paid to user)</td><td class="num" style="color:var(--red)">₹0 (coupon covers it)</td></tr>
+      <tr><td>Remaining coupons in PV</td><td class="num">34 (including Coupon 3)</td><td class="num">33 (excluding Coupon 3)</td></tr>
+    </table>
+  </div>
+
+  <!-- 7. Post-record purchase -->
+  <div class="section" id="post-record">
+    <div class="section-title">Section 7</div>
+    <h2>Post-Record Date Purchase</h2>
+    <p>If a user buys a bond after the record date for an upcoming coupon, they don't receive that coupon — and Aspero sells the bond to them at a lower "ex-coupon" price. After the 30-day hold, here's how the sell price changes.</p>
+
+    <h3>Example Timeline</h3>
+    <div class="formula">
+<span class="key">Day 29</span>  Record date for Coupon 1
+<span class="key">Day 30</span>  Coupon 1 paid to previous holder
+<span class="key">Day 30</span>  <span class="val">User buys bond (post record date)</span>  <span class="comment">← misses Coupon 1</span>
+<span class="key">Day 31</span>  Settlement (T+1)
+<span class="key">Day 59</span>  Record date for Coupon 2
+<span class="key">Day 60</span>  Coupon 2 paid to user <span class="comment">← user IS on record (bought Day 30 &lt; record Day 59)</span>
+<span class="key">Day 60</span>  <span class="val">User sells (30 days after purchase)</span>
+    </div>
+
+    <h3>Sell Price at Day 60</h3>
+    <table>
+      <tr><th>Component</th><th>Normal buy (Day 0 → sell Day 30)</th><th>Post-record buy (Day 30 → sell Day 60)</th></tr>
+      <tr><td>Remaining coupons</td><td class="num">35</td><td class="num">34</td></tr>
+      <tr><td>PV of coupons</td><td class="num">₹286</td><td class="num">₹280</td></tr>
+      <tr><td>PV of principal</td><td class="num">₹666</td><td class="num">₹674</td></tr>
+      <tr><td>Accrued interest</td><td class="num">₹0</td><td class="num">₹0</td></tr>
+      <tr class="highlight-row"><td>Sell price</td><td class="num">₹952</td><td class="num">₹954</td></tr>
+    </table>
+
+    <p>Sell price is nearly identical — only 1 fewer remaining coupon. The sell price formula itself does not change; only the cashflow inputs do.</p>
+
+    <h3>Where the Real Difference Is — Purchase Price</h3>
+    <table>
+      <tr><th></th><th>Normal Buy</th><th>Post-Record Buy</th></tr>
+      <tr><td>Purchase price</td><td class="num">₹1,000</td><td class="num">~₹990 (ex-coupon)</td></tr>
+      <tr><td>Coupons received during hold</td><td class="num">₹10 (Coupon 1)</td><td class="num">₹10 (Coupon 2)</td></tr>
+      <tr><td>Sell price</td><td class="num">₹952</td><td class="num">₹954</td></tr>
+      <tr class="highlight-row"><td>Net P&amp;L for user</td><td class="num" style="color:var(--red)">−₹38</td><td class="num" style="color:var(--amber)">−₹26</td></tr>
+    </table>
+
+    <div class="callout callout-blue">
+      <span class="callout-icon">💡</span>
+      <div>Post-record buyers actually have a slightly better net P&amp;L because they paid a lower ex-coupon price. The sell price logic itself is unchanged — the only difference is the input (one fewer remaining coupon).</div>
+    </div>
+  </div>
+
+  <!-- 8. Config -->
+  <div class="section" id="config">
+    <div class="section-title">Section 8</div>
+    <h2>Configuration Parameters (Phase 1 — Global Spread)</h2>
+    <p>All parameters are set via the Seller Portal. No app release required to change pricing.</p>
+
+    <table>
+      <tr><th>Parameter</th><th>Default</th><th>Effect on sell price</th></tr>
+      <tr>
+        <td><code>aspero_spread_bps</code></td>
+        <td>TBD (finance to align)</td>
+        <td>Higher spread → lower sell price (more Aspero margin). Lower spread → higher sell price (less margin). Applied to all ISINs globally.</td>
+      </tr>
+      <tr>
+        <td><code>day_count_convention</code></td>
+        <td>Actual / 365</td>
+        <td>Used in accrued interest formula. Standard for Indian corporate bonds.</td>
+      </tr>
+      <tr>
+        <td><code>min_sell_price_floor_pct</code></td>
+        <td>85% of face value</td>
+        <td>Hard floor. If computed sell price &lt; 85% of face, cap at ₹850 (for ₹1,000 face). Risk guardrail — prevents extreme pricing in edge cases.</td>
+      </tr>
+      <tr>
+        <td><code>min_hold_days</code></td>
+        <td>30 days</td>
+        <td>Sell CTA is disabled until this many days have elapsed since settlement date.</td>
+      </tr>
+    </table>
+
+    <div class="callout callout-green">
+      <span class="callout-icon">✅</span>
+      <div><strong>All formula inputs are already in bond master at onboarding:</strong> <code>face_value</code>, <code>coupon_rate</code>, <code>coupon_frequency</code>, <code>maturity_date</code>, full cashflow schedule. No new data collection needed. The sell price engine reads these at sell initiation time.</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
