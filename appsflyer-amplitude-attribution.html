@@ -427,6 +427,12 @@ JS:                   █ React Native loads
       <p>This path is <strong>entirely device-side</strong>. It does not depend on S2S, does not need the Amplitude device ID for server matching, and does not depend on timing relative to AppsFlyer's postback queue.</p>
     </div>
 
+    <div class="callout amber">
+      <strong>Guard required: check Amplitude device ID before calling <code>identify()</code></strong><br>
+      Even though the current init order in <code>useAppLaunchConfig.ts</code> guarantees AppsFlyer only starts after <code>AmplitudeService.getAmplitudeIds()</code> resolves, the callback itself has no built-in knowledge of this ordering. If the init flow is ever refactored, or if Amplitude SDK fails to assign a device ID, calling <code>identify()</code> on an uninitialised SDK could attach attribution to the wrong user or produce a no-op write that overwrites a future correct identity.<br><br>
+      <strong>Rule:</strong> call <code>getDeviceId()</code> at the top of the callback. If it returns <code>undefined</code>, return early — the attribution data is already being sent via S2S fallback and should not be double-written via a potentially uninitialised SDK.
+    </div>
+
     <h4>Why this is reliable</h4>
     <div class="flow">
       <div class="flow-step">
@@ -454,13 +460,21 @@ JS:                   █ React Native loads
     <h4>Code change — <code>src/manager/analytics/appsFlyer/AppsFlyerService.ts</code></h4>
     <pre><span class="comment">// Inside requestATTAndInitAppsFlyer(), after appsFlyer.initSdk()</span>
 
-<span class="comment">// Add this import at the top of the file:</span>
-<span class="keyword">import</span> { Identify, identify } <span class="keyword">from</span> <span class="string">'@amplitude/analytics-react-native'</span>;
+<span class="comment">// Update existing import at the top of the file (getDeviceId already imported — add Identify, identify):</span>
+<span class="keyword">import</span> { getDeviceId, getSessionId, Identify, identify } <span class="keyword">from</span> <span class="string">'@amplitude/analytics-react-native'</span>;
 
 <span class="comment">// After initSdk success callback, add:</span>
 appsFlyer.<span class="fn">onInstallConversionData</span>((res) => {
   <span class="keyword">try</span> {
     <span class="keyword">const</span> d = res?.data ?? {};
+
+    <span class="comment">// ✅ Guard: only write to Amplitude if SDK has assigned a device ID.</span>
+    <span class="comment">// AppsFlyer SDK initialises only after getAmplitudeIds() resolves (Phase 2</span>
+    <span class="comment">// in useAppLaunchConfig), so this will be defined in normal flow.</span>
+    <span class="comment">// Guard protects against future init order changes or SDK init failures.</span>
+    <span class="keyword">const</span> deviceId = <span class="fn">getDeviceId</span>();
+    <span class="keyword">if</span> (!deviceId) <span class="keyword">return</span>;
+
     <span class="keyword">const</span> identifyObj = <span class="keyword">new</span> <span class="fn">Identify</span>();
 
     <span class="comment">// Core attribution properties</span>
@@ -520,18 +534,20 @@ appsFlyer.<span class="fn">onInstallConversionData</span>((res) => {
     <pre><span class="comment">// Inside the onInstallConversionData handler (same callback as Fix 1)</span>
 appsFlyer.<span class="fn">onInstallConversionData</span>((res) => {
   <span class="keyword">try</span> {
-    <span class="comment">// Fix 1: set attribution properties on Amplitude (see above)</span>
-    <span class="comment">// ...</span>
-
-    <span class="comment">// Fix 2: re-set Amplitude IDs on AF to ensure S2S is linked</span>
+    <span class="comment">// ✅ Guard (Fix 1 already adds this — deviceId is confirmed defined here)</span>
     <span class="keyword">const</span> deviceId = <span class="fn">getDeviceId</span>();
+    <span class="keyword">if</span> (!deviceId) <span class="keyword">return</span>;
+
+    <span class="comment">// Fix 1: set attribution properties on Amplitude</span>
+    <span class="comment">// ... (see Fix 1 above)</span>
+
+    <span class="comment">// Fix 2 Option B: re-confirm Amplitude IDs on AF for S2S linkage.</span>
+    <span class="comment">// deviceId is already checked above — safe to pass directly.</span>
     <span class="keyword">const</span> sessionId = <span class="fn">getSessionId</span>();
-    <span class="keyword">if</span> (deviceId) {
-      appsFlyer.<span class="fn">setAdditionalData</span>({
-        AmplitudeDeviceId: deviceId,
-        ...(sessionId !== undefined && { AmplitudeSessionId: sessionId }),
-      }, () => {});
-    }
+    appsFlyer.<span class="fn">setAdditionalData</span>({
+      AmplitudeDeviceId: deviceId,
+      ...(sessionId !== <span class="keyword">undefined</span> && { AmplitudeSessionId: sessionId }),
+    }, () => {});
   } <span class="keyword">catch</span> (_) {}
 });</pre>
 
