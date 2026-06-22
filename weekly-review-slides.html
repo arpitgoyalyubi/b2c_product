@@ -1195,29 +1195,29 @@ function sdoToggle(g){
     <div class="left-panel" style="background:linear-gradient(160deg,#5b21b6,#8b5cf6);">
       <div class="slide-num">Slide 02b</div>
       <div class="slide-ttl">KYC Completion Timing</div>
-      <div class="slide-sub">When KYC starters complete KYC · by start week</div>
-      <div class="hero-num">29.7%</div>
-      <div class="hero-lbl">Same-week done% (last cohort)</div>
-      <div class="hero-badge up">▲ 3.4pp WoW</div>
+      <div class="slide-sub">% of signup cohort completing KYC · days from signup</div>
+      <div class="hero-num">9.4%</div>
+      <div class="hero-lbl">Signup→KYC done within 7d (last cohort)</div>
+      <div class="hero-badge up">▲ 0.6pp WoW</div>
       <div class="stat-list">
         <div class="stat-item">
-          <span class="si-lbl">Prior cohort same-wk%</span>
-          <span class="si-val">26.3%</span>
+          <span class="si-lbl">Prior cohort 7d done%</span>
+          <span class="si-val">8.8%</span>
         </div>
         <div class="stat-item">
           <span class="si-lbl">Oldest cohort to-date%</span>
-          <span class="si-val">28.5%</span>
+          <span class="si-val">9.7%</span>
         </div>
         <div class="stat-item">
           <span class="si-lbl">Oldest cohort pending%</span>
-          <span class="si-val">71.5%</span>
+          <span class="si-val">90.3%</span>
         </div>
       </div>
     </div>
     <div class="right-panel" style="padding:16px 20px 10px;">
       <div style="margin-bottom:10px;">
-        <div style="font-size:.78rem;font-weight:700;color:#1e293b;">KYC Start &#8594; Done &#8212; Cohort Waterfall</div>
-        <div style="font-size:.62rem;color:#64748b;margin-top:3px;line-height:1.4;">% of each start week&#39;s KYC starters who completed KYC &nbsp;&#183;&nbsp; W0 = same week &nbsp;&#183;&nbsp; +W1/+W2/+W3 = cumulative over following weeks</div>
+        <div style="font-size:.78rem;font-weight:700;color:#1e293b;">Signup &#8594; KYC Done &#8212; Cohort Waterfall</div>
+        <div style="font-size:.62rem;color:#64748b;margin-top:3px;line-height:1.4;">% of each signup week&#39;s cohort who completed KYC &nbsp;&#183;&nbsp; W0 = within 7d of signup &nbsp;&#183;&nbsp; +W1/+W2/+W3 = cumulative</div>
       </div>
       <div id="kyc-wf-table" class="wf-table"></div>
       <div class="insight-row" id="ins-kyc-wf"></div>
@@ -1226,8 +1226,8 @@ function sdoToggle(g){
   <script>
   (function() {
     var LABELS       = ["4 May", "11 May", "18 May", "25 May", "1 Jun", "8 Jun", "15 Jun", "22 Jun"];
-    var SIZES        = [1337, 1455, 1852, 1382, 1463, 1405, 1701, 233];
-    var CURVES       = [[23.0, 23.0, 23.0, 23.0, 28.5], [25.0, 25.0, 25.0, 29.0, 29.0], [15.7, 15.7, 15.7, 24.4, 24.4], [24.2, 24.2, 24.2, 32.7, 32.7], [27.3, 27.3, 36.2, 36.2, null], [26.3, 33.0, 33.0, null, null], [29.7, 29.7, null, null, null], [25.8, null, null, null, null]];
+    var SIZES        = [3749, 3827, 5226, 3746, 4242, 3464, 4470, 509];
+    var CURVES       = [[6.9, 6.9, 6.9, 9.7, 9.7], [7.2, 7.2, 7.2, 7.2, 9.5], [5.5, 5.5, 5.5, 7.5, 7.5], [9.2, 9.6, 9.6, 10.3, 10.3], [8.6, 8.6, 12.3, 12.3, null], [8.8, 11.3, 11.3, null, null], [9.4, 9.4, null, null, null], [9.4, null, null, null, null]];
     var PARTIALS     = [[false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, true], [false, false, false, true, false], [false, false, true, false, false], [false, true, false, false, false], [true, false, false, false, false]];
     var PARTIAL_DAYS = 1;
 
@@ -1249,7 +1249,7 @@ function sdoToggle(g){
       // Header
       var hdr = document.createElement('div');
       hdr.className = 'wf-hdr';
-      hdr.innerHTML = ['KYC Week', 'Starters', '', 'W0 (7d)', '+W1 (14d)', '+W2 (21d)', '+W3 (28d)', '+W4 (35d)']
+      hdr.innerHTML = ['Signup Week', 'Signups', '', 'W0 (7d)', '+W1 (14d)', '+W2 (21d)', '+W3 (28d)', '+W4 (35d)']
         .map(function(t) { return '<div class="wf-hc">' + t + '</div>'; }).join('');
       table.appendChild(hdr);
 
@@ -1331,7 +1331,7 @@ function sdoToggle(g){
       if (ins) {
         ins.innerHTML =
           '<div class="ins-chip" style="border-color:' + VIOLET + ';color:' + VIOLET + ';">' +
-          '~' + swShare + '% of KYC completions happen within the same week as KYC start</div>' +
+          '~' + swShare + '% of KYC completions happen within 7 days of signup</div>' +
           '<div class="ins-chip" style="border-color:#94a3b8;color:#94a3b8;">' +
           'Shorter lines = recent cohorts with less elapsed time &#8212; will mature rightward in future weeks</div>';
       }
