@@ -1,0 +1,4096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Channel Attribution Report — Aspero</title>
+  <style>
+:root{
+  --bg:#f8fafc;--card:#fff;--bdr:#e3e8ef;
+  --t1:#121926;--t2:#4b5565;--t3:#697586;--t4:#9aa4b2;
+  --acc:#2563eb;--acc-l:#eff6ff;
+  --g-bg:#f0fdf4;--g-t:#166534;
+  --r-bg:#fef2f2;--r-t:#991b1b;
+  --w-bg:#fffbeb;--w-t:#92400e;
+  --rad:8px;--shdw:0 1px 3px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+     background:var(--bg);color:var(--t1);font-size:14px}
+.page{max-width:1320px;margin:0 auto;padding:28px 20px 60px}
+h1{font-size:22px;font-weight:700;margin-bottom:4px}
+.sub{color:var(--t3);font-size:13px;margin-bottom:20px}
+.method{background:var(--acc-l);border:1px solid #bfdbfe;border-radius:var(--rad);
+        padding:12px 16px;margin-bottom:20px;font-size:12.5px;color:#1e40af;line-height:1.65}
+.method strong{color:#1d4ed8}
+/* platform tabs */
+.ptabs{display:flex;gap:4px;margin-bottom:20px}
+.ptab{padding:8px 22px;border-radius:20px;border:1px solid var(--bdr);background:var(--card);
+      cursor:pointer;font-size:13px;color:var(--t2);font-weight:500;transition:all .15s}
+.ptab:hover{border-color:var(--acc);color:var(--acc)}
+.ptab.active{background:var(--acc);color:#fff;border-color:var(--acc)}
+.ppanel{display:none}.ppanel.active{display:block}
+/* week selector */
+.wselector{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.wbtn{padding:5px 13px;border-radius:6px;border:1px solid var(--bdr);background:var(--card);
+      cursor:pointer;font-size:12px;color:var(--t3);transition:all .15s}
+.wbtn:hover{border-color:#94a3b8;color:var(--t1)}
+.wbtn.active{background:#1e293b;color:#fff;border-color:#1e293b}
+.wbtn.total{font-weight:600}
+.tbadge{font-size:10px;background:#e0f2fe;color:#0369a1;padding:1px 6px;
+        border-radius:10px;font-weight:700;margin-left:4px;vertical-align:middle}
+.wpanel{display:none}.wpanel.active{display:block}
+/* table */
+.twrap{background:var(--card);border-radius:var(--rad);border:1px solid var(--bdr);
+       box-shadow:var(--shdw);overflow-x:auto;margin-bottom:0}
+table{width:100%;border-collapse:collapse}
+thead th{background:#f8fafc;font-size:11px;font-weight:600;color:var(--t3);
+         text-transform:uppercase;letter-spacing:.04em;padding:10px 12px;
+         border-bottom:1px solid var(--bdr);text-align:right;white-space:nowrap;
+         cursor:pointer;user-select:none}
+thead th:first-child{text-align:left;min-width:200px}
+thead th:hover{color:var(--t1)}
+tbody tr:hover{background:#f8fafc}
+tbody tr+tr td{border-top:1px solid #f1f5f9}
+td{padding:9px 12px;font-size:13px;text-align:right;white-space:nowrap}
+td:first-child{text-align:left;font-weight:500;color:var(--t1);
+               max-width:230px;overflow:hidden;text-overflow:ellipsis}
+.num{color:var(--t2)}
+.rate{font-weight:600;border-radius:4px;padding:2px 6px;
+      display:inline-block;min-width:50px;text-align:center}
+.rate.green{background:var(--g-bg);color:var(--g-t)}
+.rate.red{background:var(--r-bg);color:var(--r-t)}
+.rate.warn{background:var(--w-bg);color:var(--w-t)}
+.rate.neutral{color:var(--t2)}
+.rate.na{color:var(--t4);font-weight:400}
+.gtv{font-weight:700;color:#0f172a}
+.atv{color:var(--t2);font-size:12px}
+.avg-row td{background:#f1f5f9;font-weight:700;color:var(--t1);font-size:12px;
+            border-top:2px solid var(--bdr)!important}
+.note{font-size:11.5px;color:var(--t4);margin-top:10px;line-height:1.65}
+.recency{font-size:12px;color:var(--w-t);background:var(--w-bg);
+         border:1px solid #fcd34d;border-radius:6px;padding:6px 12px;
+         margin-bottom:10px;display:none}
+.recency.show{display:block}
+</style>
+</head>
+<body>
+  <div class="page">
+    <h1>Channel Attribution Report</h1>
+    <p class="sub">8 weeks · Mon–Sun · Apr 27 – May 03  →  Jun 15 – Jun 21 · Generated Jun 22, 2026 · 22:37 IST</p>
+
+    <div class="method">
+      <strong>What this report shows:</strong>
+      Per acquisition channel — how many users signed up, how many started and completed KYC,
+      and how many made their first and repeat investments. &nbsp;
+      <strong>Calendar-week view</strong> (not a signup cohort):
+      each metric counts activity within that week, attributed to the channel via the user's
+      acquisition-time property. &nbsp;
+      <strong>KYC→Trade%</strong> = First Trades ÷ KYC Done (same week, step-to-step). &nbsp;
+      <strong>First vs Repeat</strong> distinguished via <code>first_trade = true/false</code>
+      event property on <code>PAYMENT_SUCCESSFUL</code>. &nbsp;
+      <strong>ATV</strong> = GTV ÷ total traders (1st + repeat).
+    </div>
+
+    <div class="ptabs">
+      <button class="ptab active" data-p="mobile"
+              onclick="switchP('mobile')">📱 Mobile — AppsFlyer Media Source</button>
+      <button class="ptab" data-p="web"
+              onclick="switchP('web')">🌐 Web — UTM Medium</button>
+    </div>
+
+    
+  <div class="ppanel active" data-p="mobile">
+    <div class="wselector"><button class="wbtn active" data-w="0" onclick="switchW('mobile',0)">Jun 15 – Jun 21</button><button class="wbtn" data-w="1" onclick="switchW('mobile',1)">Jun 08 – Jun 14</button><button class="wbtn" data-w="2" onclick="switchW('mobile',2)">Jun 01 – Jun 07</button><button class="wbtn" data-w="3" onclick="switchW('mobile',3)">May 25 – May 31</button><button class="wbtn" data-w="4" onclick="switchW('mobile',4)">May 18 – May 24</button><button class="wbtn" data-w="5" onclick="switchW('mobile',5)">May 11 – May 17</button><button class="wbtn" data-w="6" onclick="switchW('mobile',6)">May 04 – May 10</button><button class="wbtn" data-w="7" onclick="switchW('mobile',7)">Apr 27 – May 03</button><button class="wbtn total" data-w="total" onclick="switchW('mobile','total')">8-Week Total <span class="tbadge">Σ</span></button></div>
+    
+    <div class="wpanel active" data-w="0">
+      <div class="recency show">
+        ⚠️ Most recent week — users may not have had a full 7 days to progress.
+        KYC Done% and KYC→Trade% may be understated.
+      </div>
+      
+  <div class="twrap">
+    <table id="t_mobile_0" data-sc="" data-sd="">
+      <thead>
+        <tr>
+          <th onclick="sortT('t_mobile_0',0)">Channel ↕</th>
+          <th onclick="sortT('t_mobile_0',1)">Signups ↕</th>
+          <th onclick="sortT('t_mobile_0',2)">KYC Start ↕</th>
+          <th onclick="sortT('t_mobile_0',3)">KYC Done ↕</th>
+          <th onclick="sortT('t_mobile_0',4)">KYC Start% ↕</th>
+          <th onclick="sortT('t_mobile_0',5)">KYC Done% ↕</th>
+          <th onclick="sortT('t_mobile_0',6)">KYC→Trade% ↕</th>
+          <th onclick="sortT('t_mobile_0',7)">1st Trades ↕</th>
+          <th onclick="sortT('t_mobile_0',8)">Repeat ↕</th>
+          <th onclick="sortT('t_mobile_0',9)">GTV ↕</th>
+          <th onclick="sortT('t_mobile_0',10)">ATV ↕</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="dr">
+        <td title="(none)">(none)</td>
+        <td class="num" data-v="1119">1,119</td>
+        <td class="num" data-v="528">528</td>
+        <td class="num" data-v="195">195</td>
+        <td data-v="47.2"><span class="rate neutral">47.2%</span></td>
+        <td data-v="17.4"><span class="rate neutral">17.4%</span></td>
+        <td data-v="27.2"><span class="rate green">27.2%</span></td>
+        <td class="num" data-v="53">53</td>
+        <td class="num" data-v="110">110</td>
+        <td class="gtv" data-v="18346245">₹1.83 Cr</td>
+        <td class="atv" data-v="112554">₹1.1 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Google UAC">Google UAC</td>
+        <td class="num" data-v="2018">2,018</td>
+        <td class="num" data-v="742">742</td>
+        <td class="num" data-v="290">290</td>
+        <td data-v="36.8"><span class="rate red">36.8%</span></td>
+        <td data-v="14.4"><span class="rate neutral">14.4%</span></td>
+        <td data-v="20.7"><span class="rate green">20.7%</span></td>
+        <td class="num" data-v="60">60</td>
+        <td class="num" data-v="78">78</td>
+        <td class="gtv" data-v="14170094">₹1.42 Cr</td>
+        <td class="atv" data-v="102682">₹1.0 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Organic (App)">Organic (App)</td>
+        <td class="num" data-v="152">152</td>
+        <td class="num" data-v="70">70</td>
+        <td class="num" data-v="31">31</td>
+        <td data-v="46.1"><span class="rate neutral">46.1%</span></td>
+        <td data-v="20.4"><span class="rate neutral">20.4%</span></td>
+        <td data-v="35.5"><span class="rate green">35.5%</span></td>
+        <td class="num" data-v="11">11</td>
+        <td class="num" data-v="11">11</td>
+        <td class="gtv" data-v="2601248">₹26.0 L</td>
+        <td class="atv" data-v="118239">₹1.2 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Unattributed / Web">Unattributed / Web</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="200.0"><span class="rate green">200.0%</span></td>
+        <td data-v="50.0"><span class="rate green">50.0%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="294518">₹2.9 L</td>
+        <td class="atv" data-v="294518">₹2.9 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="oppoglobal_int">oppoglobal_int</td>
+        <td class="num" data-v="291">291</td>
+        <td class="num" data-v="93">93</td>
+        <td class="num" data-v="30">30</td>
+        <td data-v="32.0"><span class="rate red">32.0%</span></td>
+        <td data-v="10.3"><span class="rate red">10.3%</span></td>
+        <td data-v="16.7"><span class="rate warn">16.7%</span></td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="2">2</td>
+        <td class="gtv" data-v="259380">₹2.6 L</td>
+        <td class="atv" data-v="37054">₹37,054</td>
+      </tr>
+      <tr class="dr">
+        <td title="sokendev_int">sokendev_int</td>
+        <td class="num" data-v="107">107</td>
+        <td class="num" data-v="34">34</td>
+        <td class="num" data-v="18">18</td>
+        <td data-v="31.8"><span class="rate red">31.8%</span></td>
+        <td data-v="16.8"><span class="rate neutral">16.8%</span></td>
+        <td data-v="11.1"><span class="rate neutral">11.1%</span></td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="2">2</td>
+        <td class="gtv" data-v="215617">₹2.2 L</td>
+        <td class="atv" data-v="53904">₹53,904</td>
+      </tr>
+      <tr class="dr">
+        <td title="afnumberone_int">afnumberone_int</td>
+        <td class="num" data-v="43">43</td>
+        <td class="num" data-v="13">13</td>
+        <td class="num" data-v="10">10</td>
+        <td data-v="30.2"><span class="rate red">30.2%</span></td>
+        <td data-v="23.3"><span class="rate neutral">23.3%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="4">4</td>
+        <td class="gtv" data-v="214730">₹2.1 L</td>
+        <td class="atv" data-v="53682">₹53,682</td>
+      </tr>
+      <tr class="dr">
+        <td title="Jio_HM">Jio_HM</td>
+        <td class="num" data-v="386">386</td>
+        <td class="num" data-v="147">147</td>
+        <td class="num" data-v="23">23</td>
+        <td data-v="38.1"><span class="rate neutral">38.1%</span></td>
+        <td data-v="6.0"><span class="rate red">6.0%</span></td>
+        <td data-v="8.7"><span class="rate neutral">8.7%</span></td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="21636">₹21,636</td>
+        <td class="atv" data-v="7212">₹7,212</td>
+      </tr>
+      <tr class="dr">
+        <td title="Jio_17042026">Jio_17042026</td>
+        <td class="num" data-v="107">107</td>
+        <td class="num" data-v="41">41</td>
+        <td class="num" data-v="7">7</td>
+        <td data-v="38.3"><span class="rate neutral">38.3%</span></td>
+        <td data-v="6.5"><span class="rate red">6.5%</span></td>
+        <td data-v="14.3"><span class="rate neutral">14.3%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="19626">₹19,626</td>
+        <td class="atv" data-v="19626">₹19,626</td>
+      </tr>
+      <tr class="dr">
+        <td title="onetraffijs_int">onetraffijs_int</td>
+        <td class="num" data-v="8">8</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="12.5"><span class="rate red">12.5%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="9791">₹9,791</td>
+        <td class="atv" data-v="9791">₹9,791</td>
+      </tr>
+      <tr class="dr">
+        <td title="foxmobiwy_int">foxmobiwy_int</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="9719">₹9,719</td>
+        <td class="atv" data-v="9719">₹9,719</td>
+      </tr>
+      <tr class="dr">
+        <td title="Social_instagram">Social_instagram</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Zomato_CPI">Zomato_CPI</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="66.7"><span class="rate green">66.7%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Influencer_Collab_Aswin">Influencer_Collab_Aswin</td>
+        <td class="num" data-v="9">9</td>
+        <td class="num" data-v="7">7</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="77.8"><span class="rate green">77.8%</span></td>
+        <td data-v="22.2"><span class="rate neutral">22.2%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="appleadbiup_int">appleadbiup_int</td>
+        <td class="num" data-v="7">7</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="42.9"><span class="rate neutral">42.9%</span></td>
+        <td data-v="14.3"><span class="rate neutral">14.3%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="mobupps_int">mobupps_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="xiaomiglobal_int">xiaomiglobal_int</td>
+        <td class="num" data-v="19">19</td>
+        <td class="num" data-v="7">7</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="36.8"><span class="rate red">36.8%</span></td>
+        <td data-v="10.5"><span class="rate red">10.5%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Angel_Investment">Angel_Investment</td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="3">3</td>
+        <td data-v="60.0"><span class="rate green">60.0%</span></td>
+        <td data-v="60.0"><span class="rate green">60.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Vivo OEM">Vivo OEM</td>
+        <td class="num" data-v="165">165</td>
+        <td class="num" data-v="19">19</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="11.5"><span class="rate red">11.5%</span></td>
+        <td data-v="1.2"><span class="rate red">1.2%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="bigporrs_int">bigporrs_int</td>
+        <td class="num" data-v="7">7</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="42.9"><span class="rate neutral">42.9%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="appnext_int">appnext_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="nfmobi_int">nfmobi_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="commondex_int">commondex_int</td>
+        <td class="num" data-v="7">7</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="42.9"><span class="rate neutral">42.9%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="attrimob_int">attrimob_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="lumolinkaav_int">lumolinkaav_int</td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="40.0"><span class="rate neutral">40.0%</span></td>
+        <td data-v="40.0"><span class="rate green">40.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Zepto">Zepto</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="aarki_int">aarki_int</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="33.3"><span class="rate red">33.3%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="recoverunc3_int">recoverunc3_int</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="50.0"><span class="rate warn">50.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="avg-row">
+        <td>Total / Blended</td>
+        <td>4,470</td>
+        <td>1,724</td>
+        <td>619</td>
+        <td>38.6%</td>
+        <td>13.8%</td>
+        <td>21.8%</td>
+        <td>135</td>
+        <td>210</td>
+        <td>₹3.62 Cr</td>
+        <td>₹1.0 L</td>
+      </tr></tbody>
+    </table>
+  </div>
+    </div>
+    <div class="wpanel" data-w="1">
+      <div class="recency">
+        ⚠️ Most recent week — users may not have had a full 7 days to progress.
+        KYC Done% and KYC→Trade% may be understated.
+      </div>
+      
+  <div class="twrap">
+    <table id="t_mobile_1" data-sc="" data-sd="">
+      <thead>
+        <tr>
+          <th onclick="sortT('t_mobile_1',0)">Channel ↕</th>
+          <th onclick="sortT('t_mobile_1',1)">Signups ↕</th>
+          <th onclick="sortT('t_mobile_1',2)">KYC Start ↕</th>
+          <th onclick="sortT('t_mobile_1',3)">KYC Done ↕</th>
+          <th onclick="sortT('t_mobile_1',4)">KYC Start% ↕</th>
+          <th onclick="sortT('t_mobile_1',5)">KYC Done% ↕</th>
+          <th onclick="sortT('t_mobile_1',6)">KYC→Trade% ↕</th>
+          <th onclick="sortT('t_mobile_1',7)">1st Trades ↕</th>
+          <th onclick="sortT('t_mobile_1',8)">Repeat ↕</th>
+          <th onclick="sortT('t_mobile_1',9)">GTV ↕</th>
+          <th onclick="sortT('t_mobile_1',10)">ATV ↕</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="dr">
+        <td title="(none)">(none)</td>
+        <td class="num" data-v="1113">1,113</td>
+        <td class="num" data-v="491">491</td>
+        <td class="num" data-v="177">177</td>
+        <td data-v="44.1"><span class="rate red">44.1%</span></td>
+        <td data-v="15.9"><span class="rate red">15.9%</span></td>
+        <td data-v="45.2"><span class="rate warn">45.2%</span></td>
+        <td class="num" data-v="80">80</td>
+        <td class="num" data-v="128">128</td>
+        <td class="gtv" data-v="19729237">₹1.97 Cr</td>
+        <td class="atv" data-v="94852">₹94,852</td>
+      </tr>
+      <tr class="dr">
+        <td title="Google UAC">Google UAC</td>
+        <td class="num" data-v="1529">1,529</td>
+        <td class="num" data-v="622">622</td>
+        <td class="num" data-v="171">171</td>
+        <td data-v="40.7"><span class="rate red">40.7%</span></td>
+        <td data-v="11.2"><span class="rate red">11.2%</span></td>
+        <td data-v="28.1"><span class="rate red">28.1%</span></td>
+        <td class="num" data-v="48">48</td>
+        <td class="num" data-v="63">63</td>
+        <td class="gtv" data-v="11059379">₹1.11 Cr</td>
+        <td class="atv" data-v="99634">₹99,634</td>
+      </tr>
+      <tr class="dr">
+        <td title="Organic (App)">Organic (App)</td>
+        <td class="num" data-v="147">147</td>
+        <td class="num" data-v="77">77</td>
+        <td class="num" data-v="24">24</td>
+        <td data-v="52.4"><span class="rate red">52.4%</span></td>
+        <td data-v="16.3"><span class="rate red">16.3%</span></td>
+        <td data-v="54.2"><span class="rate green">54.2%</span></td>
+        <td class="num" data-v="13">13</td>
+        <td class="num" data-v="10">10</td>
+        <td class="gtv" data-v="5348033">₹53.5 L</td>
+        <td class="atv" data-v="232523">₹2.3 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="sokendev_int">sokendev_int</td>
+        <td class="num" data-v="184">184</td>
+        <td class="num" data-v="67">67</td>
+        <td class="num" data-v="14">14</td>
+        <td data-v="36.4"><span class="rate red">36.4%</span></td>
+        <td data-v="7.6"><span class="rate red">7.6%</span></td>
+        <td data-v="21.4"><span class="rate red">21.4%</span></td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="2">2</td>
+        <td class="gtv" data-v="396679">₹4.0 L</td>
+        <td class="atv" data-v="79336">₹79,336</td>
+      </tr>
+      <tr class="dr">
+        <td title="sandboxads_int">sandboxads_int</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="50.0"><span class="rate red">50.0%</span></td>
+        <td data-v="50.0"><span class="rate green">50.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="294741">₹2.9 L</td>
+        <td class="atv" data-v="294741">₹2.9 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="employee_referral">employee_referral</td>
+        <td class="num" data-v="35">35</td>
+        <td class="num" data-v="49">49</td>
+        <td class="num" data-v="30">30</td>
+        <td data-v="140.0"><span class="rate green">140.0%</span></td>
+        <td data-v="85.7"><span class="rate green">85.7%</span></td>
+        <td data-v="110.0"><span class="rate green">110.0%</span></td>
+        <td class="num" data-v="33">33</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="285675">₹2.9 L</td>
+        <td class="atv" data-v="8402">₹8,402</td>
+      </tr>
+      <tr class="dr">
+        <td title="Jio_HM">Jio_HM</td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="4">4</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="80.0"><span class="rate green">80.0%</span></td>
+        <td data-v="50.0"><span class="rate green">50.0%</span></td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="4">4</td>
+        <td class="gtv" data-v="187579">₹1.9 L</td>
+        <td class="atv" data-v="31263">₹31,263</td>
+      </tr>
+      <tr class="dr">
+        <td title="onetraffijs_int">onetraffijs_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="200.0"><span class="rate green">200.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="2">2</td>
+        <td class="gtv" data-v="109738">₹1.1 L</td>
+        <td class="atv" data-v="54869">₹54,869</td>
+      </tr>
+      <tr class="dr">
+        <td title="afnumberone_int">afnumberone_int</td>
+        <td class="num" data-v="72">72</td>
+        <td class="num" data-v="36">36</td>
+        <td class="num" data-v="14">14</td>
+        <td data-v="50.0"><span class="rate red">50.0%</span></td>
+        <td data-v="19.4"><span class="rate red">19.4%</span></td>
+        <td data-v="28.6"><span class="rate red">28.6%</span></td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="78170">₹78,170</td>
+        <td class="atv" data-v="15634">₹15,634</td>
+      </tr>
+      <tr class="dr">
+        <td title="Zomato_CPI">Zomato_CPI</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="3">3</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="33.3"><span class="rate neutral">33.3%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="19581">₹19,581</td>
+        <td class="atv" data-v="19581">₹19,581</td>
+      </tr>
+      <tr class="dr">
+        <td title="mobile_app_share">mobile_app_share</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="200.0"><span class="rate green">200.0%</span></td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="12057">₹12,057</td>
+        <td class="atv" data-v="6029">₹6,029</td>
+      </tr>
+      <tr class="dr">
+        <td title="Angel_Investment">Angel_Investment</td>
+        <td class="num" data-v="12">12</td>
+        <td class="num" data-v="7">7</td>
+        <td class="num" data-v="5">5</td>
+        <td data-v="58.3"><span class="rate neutral">58.3%</span></td>
+        <td data-v="41.7"><span class="rate green">41.7%</span></td>
+        <td data-v="20.0"><span class="rate red">20.0%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="4860">₹4,860</td>
+        <td class="atv" data-v="4860">₹4,860</td>
+      </tr>
+      <tr class="dr">
+        <td title="foxmobiwy_int">foxmobiwy_int</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="3888">₹3,888</td>
+        <td class="atv" data-v="1944">₹1,944</td>
+      </tr>
+      <tr class="dr">
+        <td title="offlo_int">offlo_int</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="3">3</td>
+        <td data-v="133.3"><span class="rate green">133.3%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="66.7"><span class="rate green">66.7%</span></td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="2072">₹2,072</td>
+        <td class="atv" data-v="1036">₹1,036</td>
+      </tr>
+      <tr class="dr">
+        <td title="Social_instagram">Social_instagram</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="50.0"><span class="rate red">50.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="oddsendsc32_int">oddsendsc32_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Influencer_Collab_Aswin">Influencer_Collab_Aswin</td>
+        <td class="num" data-v="26">26</td>
+        <td class="num" data-v="17">17</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="65.4"><span class="rate warn">65.4%</span></td>
+        <td data-v="7.7"><span class="rate red">7.7%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="morganconlm_int">morganconlm_int</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="s2ssoftsys_int">s2ssoftsys_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="200.0"><span class="rate green">200.0%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="oppoglobal_int">oppoglobal_int</td>
+        <td class="num" data-v="16">16</td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="25.0"><span class="rate red">25.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Vivo OEM">Vivo OEM</td>
+        <td class="num" data-v="251">251</td>
+        <td class="num" data-v="35">35</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="13.9"><span class="rate red">13.9%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="bigporrs_int">bigporrs_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="appnext_int">appnext_int</td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="20.0"><span class="rate red">20.0%</span></td>
+        <td data-v="40.0"><span class="rate warn">40.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="nfmobi_int">nfmobi_int</td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="50.0"><span class="rate red">50.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Jio_17042026">Jio_17042026</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="50.0"><span class="rate red">50.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="attrimob_int">attrimob_int</td>
+        <td class="num" data-v="36">36</td>
+        <td class="num" data-v="17">17</td>
+        <td class="num" data-v="8">8</td>
+        <td data-v="47.2"><span class="rate red">47.2%</span></td>
+        <td data-v="22.2"><span class="rate red">22.2%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="wabermedi1ck_int">wabermedi1ck_int</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="33.3"><span class="rate red">33.3%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="lumolinkaav_int">lumolinkaav_int</td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="75.0"><span class="rate green">75.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Influencer_Collab">Influencer_Collab</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Zepto">Zepto</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="200.0"><span class="rate green">200.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="aarki_int">aarki_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="avg-row">
+        <td>Total / Blended</td>
+        <td>3,464</td>
+        <td>1,452</td>
+        <td>463</td>
+        <td>41.9%</td>
+        <td>13.4%</td>
+        <td>41.0%</td>
+        <td>190</td>
+        <td>213</td>
+        <td>₹3.75 Cr</td>
+        <td>₹93,131</td>
+      </tr></tbody>
+    </table>
+  </div>
+    </div>
+    <div class="wpanel" data-w="2">
+      <div class="recency">
+        ⚠️ Most recent week — users may not have had a full 7 days to progress.
+        KYC Done% and KYC→Trade% may be understated.
+      </div>
+      
+  <div class="twrap">
+    <table id="t_mobile_2" data-sc="" data-sd="">
+      <thead>
+        <tr>
+          <th onclick="sortT('t_mobile_2',0)">Channel ↕</th>
+          <th onclick="sortT('t_mobile_2',1)">Signups ↕</th>
+          <th onclick="sortT('t_mobile_2',2)">KYC Start ↕</th>
+          <th onclick="sortT('t_mobile_2',3)">KYC Done ↕</th>
+          <th onclick="sortT('t_mobile_2',4)">KYC Start% ↕</th>
+          <th onclick="sortT('t_mobile_2',5)">KYC Done% ↕</th>
+          <th onclick="sortT('t_mobile_2',6)">KYC→Trade% ↕</th>
+          <th onclick="sortT('t_mobile_2',7)">1st Trades ↕</th>
+          <th onclick="sortT('t_mobile_2',8)">Repeat ↕</th>
+          <th onclick="sortT('t_mobile_2',9)">GTV ↕</th>
+          <th onclick="sortT('t_mobile_2',10)">ATV ↕</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="dr">
+        <td title="(none)">(none)</td>
+        <td class="num" data-v="1294">1,294</td>
+        <td class="num" data-v="382">382</td>
+        <td class="num" data-v="232">232</td>
+        <td data-v="29.5"><span class="rate red">29.5%</span></td>
+        <td data-v="17.9"><span class="rate red">17.9%</span></td>
+        <td data-v="37.1"><span class="rate warn">37.1%</span></td>
+        <td class="num" data-v="86">86</td>
+        <td class="num" data-v="123">123</td>
+        <td class="gtv" data-v="30693896">₹3.07 Cr</td>
+        <td class="atv" data-v="146861">₹1.5 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Google UAC">Google UAC</td>
+        <td class="num" data-v="1555">1,555</td>
+        <td class="num" data-v="610">610</td>
+        <td class="num" data-v="218">218</td>
+        <td data-v="39.2"><span class="rate red">39.2%</span></td>
+        <td data-v="14.0"><span class="rate red">14.0%</span></td>
+        <td data-v="22.5"><span class="rate red">22.5%</span></td>
+        <td class="num" data-v="49">49</td>
+        <td class="num" data-v="78">78</td>
+        <td class="gtv" data-v="11089463">₹1.11 Cr</td>
+        <td class="atv" data-v="87319">₹87,319</td>
+      </tr>
+      <tr class="dr">
+        <td title="Organic (App)">Organic (App)</td>
+        <td class="num" data-v="310">310</td>
+        <td class="num" data-v="87">87</td>
+        <td class="num" data-v="42">42</td>
+        <td data-v="28.1"><span class="rate red">28.1%</span></td>
+        <td data-v="13.5"><span class="rate red">13.5%</span></td>
+        <td data-v="42.9"><span class="rate green">42.9%</span></td>
+        <td class="num" data-v="18">18</td>
+        <td class="num" data-v="15">15</td>
+        <td class="gtv" data-v="4428468">₹44.3 L</td>
+        <td class="atv" data-v="134196">₹1.3 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="onetraffijs_int">onetraffijs_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="3">3</td>
+        <td data-v="400.0"><span class="rate green">400.0%</span></td>
+        <td data-v="300.0"><span class="rate green">300.0%</span></td>
+        <td data-v="33.3"><span class="rate neutral">33.3%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="5">5</td>
+        <td class="gtv" data-v="874813">₹8.7 L</td>
+        <td class="atv" data-v="145802">₹1.5 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="employee_referral">employee_referral</td>
+        <td class="num" data-v="108">108</td>
+        <td class="num" data-v="110">110</td>
+        <td class="num" data-v="79">79</td>
+        <td data-v="101.9"><span class="rate green">101.9%</span></td>
+        <td data-v="73.1"><span class="rate green">73.1%</span></td>
+        <td data-v="70.9"><span class="rate green">70.9%</span></td>
+        <td class="num" data-v="56">56</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="410469">₹4.1 L</td>
+        <td class="atv" data-v="7330">₹7,330</td>
+      </tr>
+      <tr class="dr">
+        <td title="afnumberone_int">afnumberone_int</td>
+        <td class="num" data-v="303">303</td>
+        <td class="num" data-v="102">102</td>
+        <td class="num" data-v="21">21</td>
+        <td data-v="33.7"><span class="rate red">33.7%</span></td>
+        <td data-v="6.9"><span class="rate red">6.9%</span></td>
+        <td data-v="23.8"><span class="rate neutral">23.8%</span></td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="4">4</td>
+        <td class="gtv" data-v="389367">₹3.9 L</td>
+        <td class="atv" data-v="43263">₹43,263</td>
+      </tr>
+      <tr class="dr">
+        <td title="sandboxads_int">sandboxads_int</td>
+        <td class="num" data-v="21">21</td>
+        <td class="num" data-v="11">11</td>
+        <td class="num" data-v="6">6</td>
+        <td data-v="52.4"><span class="rate neutral">52.4%</span></td>
+        <td data-v="28.6"><span class="rate neutral">28.6%</span></td>
+        <td data-v="16.7"><span class="rate red">16.7%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="205047">₹2.1 L</td>
+        <td class="atv" data-v="102523">₹1.0 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="sokendev_int">sokendev_int</td>
+        <td class="num" data-v="106">106</td>
+        <td class="num" data-v="41">41</td>
+        <td class="num" data-v="17">17</td>
+        <td data-v="38.7"><span class="rate red">38.7%</span></td>
+        <td data-v="16.0"><span class="rate red">16.0%</span></td>
+        <td data-v="11.8"><span class="rate red">11.8%</span></td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="110618">₹1.1 L</td>
+        <td class="atv" data-v="36873">₹36,873</td>
+      </tr>
+      <tr class="dr">
+        <td title="Zepto">Zepto</td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="25.0"><span class="rate red">25.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="107413">₹1.1 L</td>
+        <td class="atv" data-v="107413">₹1.1 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Jio_HM">Jio_HM</td>
+        <td class="num" data-v="25">25</td>
+        <td class="num" data-v="17">17</td>
+        <td class="num" data-v="10">10</td>
+        <td data-v="68.0"><span class="rate green">68.0%</span></td>
+        <td data-v="40.0"><span class="rate green">40.0%</span></td>
+        <td data-v="20.0"><span class="rate red">20.0%</span></td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="68289">₹68,289</td>
+        <td class="atv" data-v="22763">₹22,763</td>
+      </tr>
+      <tr class="dr">
+        <td title="s2ssoftsys_int">s2ssoftsys_int</td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="50.0"><span class="rate green">50.0%</span></td>
+        <td data-v="50.0"><span class="rate green">50.0%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="48813">₹48,813</td>
+        <td class="atv" data-v="24407">₹24,407</td>
+      </tr>
+      <tr class="dr">
+        <td title="Unattributed / Web">Unattributed / Web</td>
+        <td class="num" data-v="8">8</td>
+        <td class="num" data-v="6">6</td>
+        <td class="num" data-v="3">3</td>
+        <td data-v="75.0"><span class="rate green">75.0%</span></td>
+        <td data-v="37.5"><span class="rate green">37.5%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="15526">₹15,526</td>
+        <td class="atv" data-v="5175">₹5,175</td>
+      </tr>
+      <tr class="dr">
+        <td title="Jio_17042026">Jio_17042026</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="33.3"><span class="rate red">33.3%</span></td>
+        <td data-v="33.3"><span class="rate warn">33.3%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="9765">₹9,765</td>
+        <td class="atv" data-v="9765">₹9,765</td>
+      </tr>
+      <tr class="dr">
+        <td title="offlo_int">offlo_int</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="3">3</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="33.3"><span class="rate neutral">33.3%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="1036">₹1,036</td>
+        <td class="atv" data-v="1036">₹1,036</td>
+      </tr>
+      <tr class="dr">
+        <td title="vfine_int">vfine_int</td>
+        <td class="num" data-v="9">9</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="22.2"><span class="rate red">22.2%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="foxmobiwy_int">foxmobiwy_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Zomato_CPI">Zomato_CPI</td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="20.0"><span class="rate red">20.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="adgdfslsgbc_int">adgdfslsgbc_int</td>
+        <td class="num" data-v="15">15</td>
+        <td class="num" data-v="8">8</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="53.3"><span class="rate warn">53.3%</span></td>
+        <td data-v="13.3"><span class="rate red">13.3%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="mobzone_int">mobzone_int</td>
+        <td class="num" data-v="11">11</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="18.2"><span class="rate red">18.2%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="morganconlm_int">morganconlm_int</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Angel_Investment">Angel_Investment</td>
+        <td class="num" data-v="32">32</td>
+        <td class="num" data-v="18">18</td>
+        <td class="num" data-v="5">5</td>
+        <td data-v="56.2"><span class="rate warn">56.2%</span></td>
+        <td data-v="15.6"><span class="rate red">15.6%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="charitabl5o_int">charitabl5o_int</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="33.3"><span class="rate red">33.3%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="bigporrs_int">bigporrs_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="appnext_int">appnext_int</td>
+        <td class="num" data-v="393">393</td>
+        <td class="num" data-v="74">74</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="18.8"><span class="rate red">18.8%</span></td>
+        <td data-v="0.3"><span class="rate red">0.3%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="nfmobi_int">nfmobi_int</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="attrimob_int">attrimob_int</td>
+        <td class="num" data-v="9">9</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="33.3"><span class="rate red">33.3%</span></td>
+        <td data-v="11.1"><span class="rate red">11.1%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="lumolinkaav_int">lumolinkaav_int</td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="20.0"><span class="rate red">20.0%</span></td>
+        <td data-v="20.0"><span class="rate neutral">20.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Influencer_Collab">Influencer_Collab</td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="20.0"><span class="rate red">20.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="riversads_int">riversads_int</td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="25.0"><span class="rate red">25.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="avg-row">
+        <td>Total / Blended</td>
+        <td>4,242</td>
+        <td>1,491</td>
+        <td>647</td>
+        <td>35.1%</td>
+        <td>15.3%</td>
+        <td>34.9%</td>
+        <td>226</td>
+        <td>230</td>
+        <td>₹4.85 Cr</td>
+        <td>₹1.1 L</td>
+      </tr></tbody>
+    </table>
+  </div>
+    </div>
+    <div class="wpanel" data-w="3">
+      <div class="recency">
+        ⚠️ Most recent week — users may not have had a full 7 days to progress.
+        KYC Done% and KYC→Trade% may be understated.
+      </div>
+      
+  <div class="twrap">
+    <table id="t_mobile_3" data-sc="" data-sd="">
+      <thead>
+        <tr>
+          <th onclick="sortT('t_mobile_3',0)">Channel ↕</th>
+          <th onclick="sortT('t_mobile_3',1)">Signups ↕</th>
+          <th onclick="sortT('t_mobile_3',2)">KYC Start ↕</th>
+          <th onclick="sortT('t_mobile_3',3)">KYC Done ↕</th>
+          <th onclick="sortT('t_mobile_3',4)">KYC Start% ↕</th>
+          <th onclick="sortT('t_mobile_3',5)">KYC Done% ↕</th>
+          <th onclick="sortT('t_mobile_3',6)">KYC→Trade% ↕</th>
+          <th onclick="sortT('t_mobile_3',7)">1st Trades ↕</th>
+          <th onclick="sortT('t_mobile_3',8)">Repeat ↕</th>
+          <th onclick="sortT('t_mobile_3',9)">GTV ↕</th>
+          <th onclick="sortT('t_mobile_3',10)">ATV ↕</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="dr">
+        <td title="(none)">(none)</td>
+        <td class="num" data-v="938">938</td>
+        <td class="num" data-v="384">384</td>
+        <td class="num" data-v="119">119</td>
+        <td data-v="40.9"><span class="rate green">40.9%</span></td>
+        <td data-v="12.7"><span class="rate neutral">12.7%</span></td>
+        <td data-v="39.5"><span class="rate neutral">39.5%</span></td>
+        <td class="num" data-v="47">47</td>
+        <td class="num" data-v="122">122</td>
+        <td class="gtv" data-v="21261394">₹2.13 Cr</td>
+        <td class="atv" data-v="125807">₹1.3 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Google UAC">Google UAC</td>
+        <td class="num" data-v="1490">1,490</td>
+        <td class="num" data-v="563">563</td>
+        <td class="num" data-v="180">180</td>
+        <td data-v="37.8"><span class="rate warn">37.8%</span></td>
+        <td data-v="12.1"><span class="rate neutral">12.1%</span></td>
+        <td data-v="27.2"><span class="rate red">27.2%</span></td>
+        <td class="num" data-v="49">49</td>
+        <td class="num" data-v="62">62</td>
+        <td class="gtv" data-v="11959018">₹1.20 Cr</td>
+        <td class="atv" data-v="107739">₹1.1 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Organic (App)">Organic (App)</td>
+        <td class="num" data-v="269">269</td>
+        <td class="num" data-v="87">87</td>
+        <td class="num" data-v="21">21</td>
+        <td data-v="32.3"><span class="rate neutral">32.3%</span></td>
+        <td data-v="7.8"><span class="rate neutral">7.8%</span></td>
+        <td data-v="52.4"><span class="rate green">52.4%</span></td>
+        <td class="num" data-v="11">11</td>
+        <td class="num" data-v="12">12</td>
+        <td class="gtv" data-v="2050133">₹20.5 L</td>
+        <td class="atv" data-v="89136">₹89,136</td>
+      </tr>
+      <tr class="dr">
+        <td title="employee_referral">employee_referral</td>
+        <td class="num" data-v="47">47</td>
+        <td class="num" data-v="56">56</td>
+        <td class="num" data-v="29">29</td>
+        <td data-v="119.1"><span class="rate green">119.1%</span></td>
+        <td data-v="61.7"><span class="rate green">61.7%</span></td>
+        <td data-v="65.5"><span class="rate green">65.5%</span></td>
+        <td class="num" data-v="19">19</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="630752">₹6.3 L</td>
+        <td class="atv" data-v="33197">₹33,197</td>
+      </tr>
+      <tr class="dr">
+        <td title="sandboxads_int">sandboxads_int</td>
+        <td class="num" data-v="35">35</td>
+        <td class="num" data-v="17">17</td>
+        <td class="num" data-v="6">6</td>
+        <td data-v="48.6"><span class="rate green">48.6%</span></td>
+        <td data-v="17.1"><span class="rate neutral">17.1%</span></td>
+        <td data-v="66.7"><span class="rate green">66.7%</span></td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="512860">₹5.1 L</td>
+        <td class="atv" data-v="102572">₹1.0 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="onetraffijs_int">onetraffijs_int</td>
+        <td class="num" data-v="78">78</td>
+        <td class="num" data-v="31">31</td>
+        <td class="num" data-v="13">13</td>
+        <td data-v="39.7"><span class="rate green">39.7%</span></td>
+        <td data-v="16.7"><span class="rate neutral">16.7%</span></td>
+        <td data-v="30.8"><span class="rate red">30.8%</span></td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="3">3</td>
+        <td class="gtv" data-v="369732">₹3.7 L</td>
+        <td class="atv" data-v="52819">₹52,819</td>
+      </tr>
+      <tr class="dr">
+        <td title="mobile_app_share">mobile_app_share</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="50.0"><span class="rate green">50.0%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="217837">₹2.2 L</td>
+        <td class="atv" data-v="217837">₹2.2 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="afnumberone_int">afnumberone_int</td>
+        <td class="num" data-v="130">130</td>
+        <td class="num" data-v="32">32</td>
+        <td class="num" data-v="4">4</td>
+        <td data-v="24.6"><span class="rate neutral">24.6%</span></td>
+        <td data-v="3.1"><span class="rate red">3.1%</span></td>
+        <td data-v="75.0"><span class="rate green">75.0%</span></td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="157216">₹1.6 L</td>
+        <td class="atv" data-v="52405">₹52,405</td>
+      </tr>
+      <tr class="dr">
+        <td title="sokendev_int">sokendev_int</td>
+        <td class="num" data-v="92">92</td>
+        <td class="num" data-v="37">37</td>
+        <td class="num" data-v="8">8</td>
+        <td data-v="40.2"><span class="rate green">40.2%</span></td>
+        <td data-v="8.7"><span class="rate neutral">8.7%</span></td>
+        <td data-v="50.0"><span class="rate green">50.0%</span></td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="126953">₹1.3 L</td>
+        <td class="atv" data-v="31738">₹31,738</td>
+      </tr>
+      <tr class="dr">
+        <td title="Zomato_CPI">Zomato_CPI</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="3">3</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="150.0"><span class="rate green">150.0%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="112037">₹1.1 L</td>
+        <td class="atv" data-v="37346">₹37,346</td>
+      </tr>
+      <tr class="dr">
+        <td title="Jio_HM">Jio_HM</td>
+        <td class="num" data-v="192">192</td>
+        <td class="num" data-v="79">79</td>
+        <td class="num" data-v="17">17</td>
+        <td data-v="41.1"><span class="rate green">41.1%</span></td>
+        <td data-v="8.9"><span class="rate neutral">8.9%</span></td>
+        <td data-v="23.5"><span class="rate red">23.5%</span></td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="39113">₹39,113</td>
+        <td class="atv" data-v="9778">₹9,778</td>
+      </tr>
+      <tr class="dr">
+        <td title="Zepto">Zepto</td>
+        <td class="num" data-v="48">48</td>
+        <td class="num" data-v="16">16</td>
+        <td class="num" data-v="3">3</td>
+        <td data-v="33.3"><span class="rate neutral">33.3%</span></td>
+        <td data-v="6.2"><span class="rate red">6.2%</span></td>
+        <td data-v="33.3"><span class="rate red">33.3%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="9739">₹9,739</td>
+        <td class="atv" data-v="9739">₹9,739</td>
+      </tr>
+      <tr class="dr">
+        <td title="oddsendsc32_int">oddsendsc32_int</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="foxmobiwy_int">foxmobiwy_int</td>
+        <td class="num" data-v="16">16</td>
+        <td class="num" data-v="8">8</td>
+        <td class="num" data-v="3">3</td>
+        <td data-v="50.0"><span class="rate green">50.0%</span></td>
+        <td data-v="18.8"><span class="rate warn">18.8%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="adgdfslsgbc_int">adgdfslsgbc_int</td>
+        <td class="num" data-v="20">20</td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="25.0"><span class="rate neutral">25.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="mobzone_int">mobzone_int</td>
+        <td class="num" data-v="8">8</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="12.5"><span class="rate red">12.5%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="s2ssoftsys_int">s2ssoftsys_int</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="batman8z_int">batman8z_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="charitabl5o_int">charitabl5o_int</td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="20.0"><span class="rate red">20.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="tunnelads_int">tunnelads_int</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="appnext_int">appnext_int</td>
+        <td class="num" data-v="312">312</td>
+        <td class="num" data-v="76">76</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="24.4"><span class="rate neutral">24.4%</span></td>
+        <td data-v="0.6"><span class="rate red">0.6%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="liquefteapsg_int">liquefteapsg_int</td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Jio_17042026">Jio_17042026</td>
+        <td class="num" data-v="38">38</td>
+        <td class="num" data-v="14">14</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="36.8"><span class="rate warn">36.8%</span></td>
+        <td data-v="5.3"><span class="rate red">5.3%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="partneron_int">partneron_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="lumolinkaav_int">lumolinkaav_int</td>
+        <td class="num" data-v="8">8</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="25.0"><span class="rate neutral">25.0%</span></td>
+        <td data-v="25.0"><span class="rate green">25.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Influencer_Collab">Influencer_Collab</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="riversads_int">riversads_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="avg-row">
+        <td>Total / Blended</td>
+        <td>3,746</td>
+        <td>1,413</td>
+        <td>413</td>
+        <td>37.7%</td>
+        <td>11.0%</td>
+        <td>36.3%</td>
+        <td>150</td>
+        <td>200</td>
+        <td>₹3.74 Cr</td>
+        <td>₹1.1 L</td>
+      </tr></tbody>
+    </table>
+  </div>
+    </div>
+    <div class="wpanel" data-w="4">
+      <div class="recency">
+        ⚠️ Most recent week — users may not have had a full 7 days to progress.
+        KYC Done% and KYC→Trade% may be understated.
+      </div>
+      
+  <div class="twrap">
+    <table id="t_mobile_4" data-sc="" data-sd="">
+      <thead>
+        <tr>
+          <th onclick="sortT('t_mobile_4',0)">Channel ↕</th>
+          <th onclick="sortT('t_mobile_4',1)">Signups ↕</th>
+          <th onclick="sortT('t_mobile_4',2)">KYC Start ↕</th>
+          <th onclick="sortT('t_mobile_4',3)">KYC Done ↕</th>
+          <th onclick="sortT('t_mobile_4',4)">KYC Start% ↕</th>
+          <th onclick="sortT('t_mobile_4',5)">KYC Done% ↕</th>
+          <th onclick="sortT('t_mobile_4',6)">KYC→Trade% ↕</th>
+          <th onclick="sortT('t_mobile_4',7)">1st Trades ↕</th>
+          <th onclick="sortT('t_mobile_4',8)">Repeat ↕</th>
+          <th onclick="sortT('t_mobile_4',9)">GTV ↕</th>
+          <th onclick="sortT('t_mobile_4',10)">ATV ↕</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="dr">
+        <td title="(none)">(none)</td>
+        <td class="num" data-v="1148">1,148</td>
+        <td class="num" data-v="433">433</td>
+        <td class="num" data-v="143">143</td>
+        <td data-v="37.7"><span class="rate neutral">37.7%</span></td>
+        <td data-v="12.5"><span class="rate neutral">12.5%</span></td>
+        <td data-v="23.1"><span class="rate warn">23.1%</span></td>
+        <td class="num" data-v="33">33</td>
+        <td class="num" data-v="82">82</td>
+        <td class="gtv" data-v="22960895">₹2.30 Cr</td>
+        <td class="atv" data-v="199660">₹2.0 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Google UAC">Google UAC</td>
+        <td class="num" data-v="2550">2,550</td>
+        <td class="num" data-v="906">906</td>
+        <td class="num" data-v="227">227</td>
+        <td data-v="35.5"><span class="rate red">35.5%</span></td>
+        <td data-v="8.9"><span class="rate red">8.9%</span></td>
+        <td data-v="18.1"><span class="rate neutral">18.1%</span></td>
+        <td class="num" data-v="41">41</td>
+        <td class="num" data-v="48">48</td>
+        <td class="gtv" data-v="10749539">₹1.07 Cr</td>
+        <td class="atv" data-v="120781">₹1.2 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="onetraffijs_int">onetraffijs_int</td>
+        <td class="num" data-v="295">295</td>
+        <td class="num" data-v="107">107</td>
+        <td class="num" data-v="26">26</td>
+        <td data-v="36.3"><span class="rate red">36.3%</span></td>
+        <td data-v="8.8"><span class="rate red">8.8%</span></td>
+        <td data-v="11.5"><span class="rate red">11.5%</span></td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="2">2</td>
+        <td class="gtv" data-v="1514065">₹15.1 L</td>
+        <td class="atv" data-v="302813">₹3.0 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="sokendev_int">sokendev_int</td>
+        <td class="num" data-v="167">167</td>
+        <td class="num" data-v="63">63</td>
+        <td class="num" data-v="17">17</td>
+        <td data-v="37.7"><span class="rate neutral">37.7%</span></td>
+        <td data-v="10.2"><span class="rate red">10.2%</span></td>
+        <td data-v="17.6"><span class="rate neutral">17.6%</span></td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="3">3</td>
+        <td class="gtv" data-v="1103312">₹11.0 L</td>
+        <td class="atv" data-v="183885">₹1.8 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Organic (App)">Organic (App)</td>
+        <td class="num" data-v="174">174</td>
+        <td class="num" data-v="62">62</td>
+        <td class="num" data-v="15">15</td>
+        <td data-v="35.6"><span class="rate red">35.6%</span></td>
+        <td data-v="8.6"><span class="rate red">8.6%</span></td>
+        <td data-v="26.7"><span class="rate warn">26.7%</span></td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="8">8</td>
+        <td class="gtv" data-v="944151">₹9.4 L</td>
+        <td class="atv" data-v="78679">₹78,679</td>
+      </tr>
+      <tr class="dr">
+        <td title="Jio_HM">Jio_HM</td>
+        <td class="num" data-v="428">428</td>
+        <td class="num" data-v="162">162</td>
+        <td class="num" data-v="13">13</td>
+        <td data-v="37.9"><span class="rate neutral">37.9%</span></td>
+        <td data-v="3.0"><span class="rate red">3.0%</span></td>
+        <td data-v="23.1"><span class="rate warn">23.1%</span></td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="141242">₹1.4 L</td>
+        <td class="atv" data-v="35310">₹35,310</td>
+      </tr>
+      <tr class="dr">
+        <td title="Zepto">Zepto</td>
+        <td class="num" data-v="65">65</td>
+        <td class="num" data-v="23">23</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="35.4"><span class="rate red">35.4%</span></td>
+        <td data-v="1.5"><span class="rate red">1.5%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="88857">₹88,857</td>
+        <td class="atv" data-v="88857">₹88,857</td>
+      </tr>
+      <tr class="dr">
+        <td title="afnumberone_int">afnumberone_int</td>
+        <td class="num" data-v="125">125</td>
+        <td class="num" data-v="41">41</td>
+        <td class="num" data-v="13">13</td>
+        <td data-v="32.8"><span class="rate red">32.8%</span></td>
+        <td data-v="10.4"><span class="rate red">10.4%</span></td>
+        <td data-v="7.7"><span class="rate red">7.7%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="48981">₹48,981</td>
+        <td class="atv" data-v="48981">₹48,981</td>
+      </tr>
+      <tr class="dr">
+        <td title="foxmobiwy_int">foxmobiwy_int</td>
+        <td class="num" data-v="82">82</td>
+        <td class="num" data-v="29">29</td>
+        <td class="num" data-v="7">7</td>
+        <td data-v="35.4"><span class="rate red">35.4%</span></td>
+        <td data-v="8.5"><span class="rate red">8.5%</span></td>
+        <td data-v="14.3"><span class="rate neutral">14.3%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="19427">₹19,427</td>
+        <td class="atv" data-v="19427">₹19,427</td>
+      </tr>
+      <tr class="dr">
+        <td title="mobilemin36l_int">mobilemin36l_int</td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="50.0"><span class="rate warn">50.0%</span></td>
+        <td data-v="25.0"><span class="rate warn">25.0%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="9796">₹9,796</td>
+        <td class="atv" data-v="9796">₹9,796</td>
+      </tr>
+      <tr class="dr">
+        <td title="Zomato_CPI">Zomato_CPI</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="250.0"><span class="rate green">250.0%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="50.0"><span class="rate green">50.0%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="9713">₹9,713</td>
+        <td class="atv" data-v="9713">₹9,713</td>
+      </tr>
+      <tr class="dr">
+        <td title="employee_referral">employee_referral</td>
+        <td class="num" data-v="20">20</td>
+        <td class="num" data-v="9">9</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="45.0"><span class="rate neutral">45.0%</span></td>
+        <td data-v="10.0"><span class="rate red">10.0%</span></td>
+        <td data-v="50.0"><span class="rate green">50.0%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="5345">₹5,345</td>
+        <td class="atv" data-v="5345">₹5,345</td>
+      </tr>
+      <tr class="dr">
+        <td title="arbeenllcgx_int">arbeenllcgx_int</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="oddsendsc32_int">oddsendsc32_int</td>
+        <td class="num" data-v="6">6</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="33.3"><span class="rate red">33.3%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="appnext_int">appnext_int</td>
+        <td class="num" data-v="101">101</td>
+        <td class="num" data-v="8">8</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="7.9"><span class="rate red">7.9%</span></td>
+        <td data-v="1.0"><span class="rate red">1.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="nexfigoadh7_int">nexfigoadh7_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="partneron_int">partneron_int</td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="20.0"><span class="rate red">20.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="lumolinkaav_int">lumolinkaav_int</td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="80.0"><span class="rate green">80.0%</span></td>
+        <td data-v="20.0"><span class="rate neutral">20.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="mobile_app_share">mobile_app_share</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="ccwads4o_int">ccwads4o_int</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="mobzone_int">mobzone_int</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="66.7"><span class="rate green">66.7%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Influencer_Collab">Influencer_Collab</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="33.3"><span class="rate red">33.3%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="sandboxads_int">sandboxads_int</td>
+        <td class="num" data-v="36">36</td>
+        <td class="num" data-v="13">13</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="36.1"><span class="rate red">36.1%</span></td>
+        <td data-v="2.8"><span class="rate red">2.8%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="avg-row">
+        <td>Total / Blended</td>
+        <td>5,226</td>
+        <td>1,874</td>
+        <td>472</td>
+        <td>35.9%</td>
+        <td>9.0%</td>
+        <td>19.5%</td>
+        <td>92</td>
+        <td>145</td>
+        <td>₹3.76 Cr</td>
+        <td>₹1.6 L</td>
+      </tr></tbody>
+    </table>
+  </div>
+    </div>
+    <div class="wpanel" data-w="5">
+      <div class="recency">
+        ⚠️ Most recent week — users may not have had a full 7 days to progress.
+        KYC Done% and KYC→Trade% may be understated.
+      </div>
+      
+  <div class="twrap">
+    <table id="t_mobile_5" data-sc="" data-sd="">
+      <thead>
+        <tr>
+          <th onclick="sortT('t_mobile_5',0)">Channel ↕</th>
+          <th onclick="sortT('t_mobile_5',1)">Signups ↕</th>
+          <th onclick="sortT('t_mobile_5',2)">KYC Start ↕</th>
+          <th onclick="sortT('t_mobile_5',3)">KYC Done ↕</th>
+          <th onclick="sortT('t_mobile_5',4)">KYC Start% ↕</th>
+          <th onclick="sortT('t_mobile_5',5)">KYC Done% ↕</th>
+          <th onclick="sortT('t_mobile_5',6)">KYC→Trade% ↕</th>
+          <th onclick="sortT('t_mobile_5',7)">1st Trades ↕</th>
+          <th onclick="sortT('t_mobile_5',8)">Repeat ↕</th>
+          <th onclick="sortT('t_mobile_5',9)">GTV ↕</th>
+          <th onclick="sortT('t_mobile_5',10)">ATV ↕</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="dr">
+        <td title="(none)">(none)</td>
+        <td class="num" data-v="1014">1,014</td>
+        <td class="num" data-v="423">423</td>
+        <td class="num" data-v="124">124</td>
+        <td data-v="41.7"><span class="rate neutral">41.7%</span></td>
+        <td data-v="12.2"><span class="rate warn">12.2%</span></td>
+        <td data-v="39.5"><span class="rate green">39.5%</span></td>
+        <td class="num" data-v="49">49</td>
+        <td class="num" data-v="99">99</td>
+        <td class="gtv" data-v="18704316">₹1.87 Cr</td>
+        <td class="atv" data-v="126381">₹1.3 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Google UAC">Google UAC</td>
+        <td class="num" data-v="2140">2,140</td>
+        <td class="num" data-v="789">789</td>
+        <td class="num" data-v="208">208</td>
+        <td data-v="36.9"><span class="rate neutral">36.9%</span></td>
+        <td data-v="9.7"><span class="rate neutral">9.7%</span></td>
+        <td data-v="20.2"><span class="rate neutral">20.2%</span></td>
+        <td class="num" data-v="42">42</td>
+        <td class="num" data-v="43">43</td>
+        <td class="gtv" data-v="7702677">₹77.0 L</td>
+        <td class="atv" data-v="90620">₹90,620</td>
+      </tr>
+      <tr class="dr">
+        <td title="Organic (App)">Organic (App)</td>
+        <td class="num" data-v="83">83</td>
+        <td class="num" data-v="51">51</td>
+        <td class="num" data-v="21">21</td>
+        <td data-v="61.4"><span class="rate green">61.4%</span></td>
+        <td data-v="25.3"><span class="rate green">25.3%</span></td>
+        <td data-v="42.9"><span class="rate green">42.9%</span></td>
+        <td class="num" data-v="9">9</td>
+        <td class="num" data-v="13">13</td>
+        <td class="gtv" data-v="3538480">₹35.4 L</td>
+        <td class="atv" data-v="160840">₹1.6 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="foxmobiwy_int">foxmobiwy_int</td>
+        <td class="num" data-v="112">112</td>
+        <td class="num" data-v="49">49</td>
+        <td class="num" data-v="18">18</td>
+        <td data-v="43.8"><span class="rate neutral">43.8%</span></td>
+        <td data-v="16.1"><span class="rate green">16.1%</span></td>
+        <td data-v="5.6"><span class="rate red">5.6%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="2">2</td>
+        <td class="gtv" data-v="698891">₹7.0 L</td>
+        <td class="atv" data-v="232964">₹2.3 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Jio_HM">Jio_HM</td>
+        <td class="num" data-v="11">11</td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="36.4"><span class="rate red">36.4%</span></td>
+        <td data-v="-1"><span class="rate neutral">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="4">4</td>
+        <td class="gtv" data-v="137311">₹1.4 L</td>
+        <td class="atv" data-v="27462">₹27,462</td>
+      </tr>
+      <tr class="dr">
+        <td title="sokendev_int">sokendev_int</td>
+        <td class="num" data-v="120">120</td>
+        <td class="num" data-v="47">47</td>
+        <td class="num" data-v="23">23</td>
+        <td data-v="39.2"><span class="rate neutral">39.2%</span></td>
+        <td data-v="19.2"><span class="rate green">19.2%</span></td>
+        <td data-v="8.7"><span class="rate red">8.7%</span></td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="109927">₹1.1 L</td>
+        <td class="atv" data-v="54963">₹54,963</td>
+      </tr>
+      <tr class="dr">
+        <td title="Zepto">Zepto</td>
+        <td class="num" data-v="29">29</td>
+        <td class="num" data-v="9">9</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="31.0"><span class="rate red">31.0%</span></td>
+        <td data-v="3.4"><span class="rate neutral">3.4%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="58733">₹58,733</td>
+        <td class="atv" data-v="58733">₹58,733</td>
+      </tr>
+      <tr class="dr">
+        <td title="arbeenllcgx_int">arbeenllcgx_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate neutral">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="oddsendsc32_int">oddsendsc32_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate neutral">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Zomato_CPI">Zomato_CPI</td>
+        <td class="num" data-v="71">71</td>
+        <td class="num" data-v="18">18</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="25.4"><span class="rate red">25.4%</span></td>
+        <td data-v="1.4"><span class="rate neutral">1.4%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="mobile_app_share">mobile_app_share</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="-1"><span class="rate neutral">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="afnumberone_int">afnumberone_int</td>
+        <td class="num" data-v="106">106</td>
+        <td class="num" data-v="39">39</td>
+        <td class="num" data-v="6">6</td>
+        <td data-v="36.8"><span class="rate neutral">36.8%</span></td>
+        <td data-v="5.7"><span class="rate neutral">5.7%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Influencer_Collab">Influencer_Collab</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="133.3"><span class="rate green">133.3%</span></td>
+        <td data-v="-1"><span class="rate neutral">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="onetraffijs_int">onetraffijs_int</td>
+        <td class="num" data-v="135">135</td>
+        <td class="num" data-v="48">48</td>
+        <td class="num" data-v="13">13</td>
+        <td data-v="35.6"><span class="rate red">35.6%</span></td>
+        <td data-v="9.6"><span class="rate neutral">9.6%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="avg-row">
+        <td>Total / Blended</td>
+        <td>3,827</td>
+        <td>1,482</td>
+        <td>415</td>
+        <td>38.7%</td>
+        <td>10.8%</td>
+        <td>25.3%</td>
+        <td>105</td>
+        <td>161</td>
+        <td>₹3.10 Cr</td>
+        <td>₹1.2 L</td>
+      </tr></tbody>
+    </table>
+  </div>
+    </div>
+    <div class="wpanel" data-w="6">
+      <div class="recency">
+        ⚠️ Most recent week — users may not have had a full 7 days to progress.
+        KYC Done% and KYC→Trade% may be understated.
+      </div>
+      
+  <div class="twrap">
+    <table id="t_mobile_6" data-sc="" data-sd="">
+      <thead>
+        <tr>
+          <th onclick="sortT('t_mobile_6',0)">Channel ↕</th>
+          <th onclick="sortT('t_mobile_6',1)">Signups ↕</th>
+          <th onclick="sortT('t_mobile_6',2)">KYC Start ↕</th>
+          <th onclick="sortT('t_mobile_6',3)">KYC Done ↕</th>
+          <th onclick="sortT('t_mobile_6',4)">KYC Start% ↕</th>
+          <th onclick="sortT('t_mobile_6',5)">KYC Done% ↕</th>
+          <th onclick="sortT('t_mobile_6',6)">KYC→Trade% ↕</th>
+          <th onclick="sortT('t_mobile_6',7)">1st Trades ↕</th>
+          <th onclick="sortT('t_mobile_6',8)">Repeat ↕</th>
+          <th onclick="sortT('t_mobile_6',9)">GTV ↕</th>
+          <th onclick="sortT('t_mobile_6',10)">ATV ↕</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="dr">
+        <td title="(none)">(none)</td>
+        <td class="num" data-v="1229">1,229</td>
+        <td class="num" data-v="492">492</td>
+        <td class="num" data-v="138">138</td>
+        <td data-v="40.0"><span class="rate warn">40.0%</span></td>
+        <td data-v="11.2"><span class="rate warn">11.2%</span></td>
+        <td data-v="24.6"><span class="rate neutral">24.6%</span></td>
+        <td class="num" data-v="34">34</td>
+        <td class="num" data-v="63">63</td>
+        <td class="gtv" data-v="12180114">₹1.22 Cr</td>
+        <td class="atv" data-v="125568">₹1.3 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Google UAC">Google UAC</td>
+        <td class="num" data-v="2090">2,090</td>
+        <td class="num" data-v="710">710</td>
+        <td class="num" data-v="198">198</td>
+        <td data-v="34.0"><span class="rate neutral">34.0%</span></td>
+        <td data-v="9.5"><span class="rate neutral">9.5%</span></td>
+        <td data-v="16.2"><span class="rate red">16.2%</span></td>
+        <td class="num" data-v="32">32</td>
+        <td class="num" data-v="20">20</td>
+        <td class="gtv" data-v="9142957">₹91.4 L</td>
+        <td class="atv" data-v="175826">₹1.8 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Organic (App)">Organic (App)</td>
+        <td class="num" data-v="109">109</td>
+        <td class="num" data-v="50">50</td>
+        <td class="num" data-v="13">13</td>
+        <td data-v="45.9"><span class="rate green">45.9%</span></td>
+        <td data-v="11.9"><span class="rate warn">11.9%</span></td>
+        <td data-v="46.2"><span class="rate green">46.2%</span></td>
+        <td class="num" data-v="6">6</td>
+        <td class="num" data-v="6">6</td>
+        <td class="gtv" data-v="6624380">₹66.2 L</td>
+        <td class="atv" data-v="552032">₹5.5 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Jio_HM">Jio_HM</td>
+        <td class="num" data-v="42">42</td>
+        <td class="num" data-v="7">7</td>
+        <td class="num" data-v="4">4</td>
+        <td data-v="16.7"><span class="rate red">16.7%</span></td>
+        <td data-v="9.5"><span class="rate neutral">9.5%</span></td>
+        <td data-v="25.0"><span class="rate neutral">25.0%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="2">2</td>
+        <td class="gtv" data-v="199501">₹2.0 L</td>
+        <td class="atv" data-v="66500">₹66,500</td>
+      </tr>
+      <tr class="dr">
+        <td title="Zomato_CPI">Zomato_CPI</td>
+        <td class="num" data-v="84">84</td>
+        <td class="num" data-v="24">24</td>
+        <td class="num" data-v="3">3</td>
+        <td data-v="28.6"><span class="rate neutral">28.6%</span></td>
+        <td data-v="3.6"><span class="rate neutral">3.6%</span></td>
+        <td data-v="33.3"><span class="rate neutral">33.3%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="1052">₹1,052</td>
+        <td class="atv" data-v="1052">₹1,052</td>
+      </tr>
+      <tr class="dr">
+        <td title="Influencer_Collab">Influencer_Collab</td>
+        <td class="num" data-v="12">12</td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="41.7"><span class="rate warn">41.7%</span></td>
+        <td data-v="8.3"><span class="rate neutral">8.3%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="1052">₹1,052</td>
+        <td class="atv" data-v="1052">₹1,052</td>
+      </tr>
+      <tr class="dr">
+        <td title="sokendev_int">sokendev_int</td>
+        <td class="num" data-v="118">118</td>
+        <td class="num" data-v="47">47</td>
+        <td class="num" data-v="8">8</td>
+        <td data-v="39.8"><span class="rate warn">39.8%</span></td>
+        <td data-v="6.8"><span class="rate neutral">6.8%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="foxmobiwy_int">foxmobiwy_int</td>
+        <td class="num" data-v="65">65</td>
+        <td class="num" data-v="20">20</td>
+        <td class="num" data-v="3">3</td>
+        <td data-v="30.8"><span class="rate neutral">30.8%</span></td>
+        <td data-v="4.6"><span class="rate neutral">4.6%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="avg-row">
+        <td>Total / Blended</td>
+        <td>3,749</td>
+        <td>1,355</td>
+        <td>368</td>
+        <td>36.1%</td>
+        <td>9.8%</td>
+        <td>20.4%</td>
+        <td>75</td>
+        <td>91</td>
+        <td>₹2.81 Cr</td>
+        <td>₹1.7 L</td>
+      </tr></tbody>
+    </table>
+  </div>
+    </div>
+    <div class="wpanel" data-w="7">
+      <div class="recency">
+        ⚠️ Most recent week — users may not have had a full 7 days to progress.
+        KYC Done% and KYC→Trade% may be understated.
+      </div>
+      
+  <div class="twrap">
+    <table id="t_mobile_7" data-sc="" data-sd="">
+      <thead>
+        <tr>
+          <th onclick="sortT('t_mobile_7',0)">Channel ↕</th>
+          <th onclick="sortT('t_mobile_7',1)">Signups ↕</th>
+          <th onclick="sortT('t_mobile_7',2)">KYC Start ↕</th>
+          <th onclick="sortT('t_mobile_7',3)">KYC Done ↕</th>
+          <th onclick="sortT('t_mobile_7',4)">KYC Start% ↕</th>
+          <th onclick="sortT('t_mobile_7',5)">KYC Done% ↕</th>
+          <th onclick="sortT('t_mobile_7',6)">KYC→Trade% ↕</th>
+          <th onclick="sortT('t_mobile_7',7)">1st Trades ↕</th>
+          <th onclick="sortT('t_mobile_7',8)">Repeat ↕</th>
+          <th onclick="sortT('t_mobile_7',9)">GTV ↕</th>
+          <th onclick="sortT('t_mobile_7',10)">ATV ↕</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="dr">
+        <td title="(none)">(none)</td>
+        <td class="num" data-v="1881">1,881</td>
+        <td class="num" data-v="752">752</td>
+        <td class="num" data-v="217">217</td>
+        <td data-v="40.0"><span class="rate neutral">40.0%</span></td>
+        <td data-v="11.5"><span class="rate red">11.5%</span></td>
+        <td data-v="-1"><span class="rate neutral">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="17458613">₹1.75 Cr</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Google UAC">Google UAC</td>
+        <td class="num" data-v="1205">1,205</td>
+        <td class="num" data-v="405">405</td>
+        <td class="num" data-v="107">107</td>
+        <td data-v="33.6"><span class="rate red">33.6%</span></td>
+        <td data-v="8.9"><span class="rate red">8.9%</span></td>
+        <td data-v="-1"><span class="rate neutral">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="1755956">₹17.6 L</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Organic (App)">Organic (App)</td>
+        <td class="num" data-v="38">38</td>
+        <td class="num" data-v="20">20</td>
+        <td class="num" data-v="10">10</td>
+        <td data-v="52.6"><span class="rate warn">52.6%</span></td>
+        <td data-v="26.3"><span class="rate neutral">26.3%</span></td>
+        <td data-v="-1"><span class="rate neutral">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="1167112">₹11.7 L</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="mobile_app_share">mobile_app_share</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="-1"><span class="rate neutral">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="300031">₹3.0 L</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Zomato_CPI">Zomato_CPI</td>
+        <td class="num" data-v="28">28</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="10.7"><span class="rate red">10.7%</span></td>
+        <td data-v="3.6"><span class="rate red">3.6%</span></td>
+        <td data-v="-1"><span class="rate neutral">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Jio_HM">Jio_HM</td>
+        <td class="num" data-v="8">8</td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="50.0"><span class="rate neutral">50.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="avg-row">
+        <td>Total / Blended</td>
+        <td>3,162</td>
+        <td>1,186</td>
+        <td>337</td>
+        <td>37.5%</td>
+        <td>10.7%</td>
+        <td>0.0%</td>
+        <td>0</td>
+        <td>0</td>
+        <td>₹2.07 Cr</td>
+        <td>—</td>
+      </tr></tbody>
+    </table>
+  </div>
+    </div>
+    <div class="wpanel" data-w="total">
+      
+  <div class="twrap">
+    <table id="t_mobile_total" data-sc="" data-sd="">
+      <thead>
+        <tr>
+          <th onclick="sortT('t_mobile_total',0)">Channel ↕</th>
+          <th onclick="sortT('t_mobile_total',1)">Signups ↕</th>
+          <th onclick="sortT('t_mobile_total',2)">KYC Start ↕</th>
+          <th onclick="sortT('t_mobile_total',3)">KYC Done ↕</th>
+          <th onclick="sortT('t_mobile_total',4)">KYC Start% ↕</th>
+          <th onclick="sortT('t_mobile_total',5)">KYC Done% ↕</th>
+          <th onclick="sortT('t_mobile_total',6)">KYC→Trade% ↕</th>
+          <th onclick="sortT('t_mobile_total',7)">1st Trades ↕</th>
+          <th onclick="sortT('t_mobile_total',8)">Repeat ↕</th>
+          <th onclick="sortT('t_mobile_total',9)">GTV ↕</th>
+          <th onclick="sortT('t_mobile_total',10)">ATV ↕</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="dr">
+        <td title="(none)">(none)</td>
+        <td class="num" data-v="9736">9,736</td>
+        <td class="num" data-v="3885">3,885</td>
+        <td class="num" data-v="1345">1,345</td>
+        <td data-v="39.9"><span class="rate neutral">39.9%</span></td>
+        <td data-v="13.8"><span class="rate neutral">13.8%</span></td>
+        <td data-v="28.4"><span class="rate warn">28.4%</span></td>
+        <td class="num" data-v="382">382</td>
+        <td class="num" data-v="727">727</td>
+        <td class="gtv" data-v="161334709">₹16.13 Cr</td>
+        <td class="atv" data-v="145478">₹1.5 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Google UAC">Google UAC</td>
+        <td class="num" data-v="14577">14,577</td>
+        <td class="num" data-v="5347">5,347</td>
+        <td class="num" data-v="1599">1,599</td>
+        <td data-v="36.7"><span class="rate neutral">36.7%</span></td>
+        <td data-v="11.0"><span class="rate neutral">11.0%</span></td>
+        <td data-v="20.1"><span class="rate neutral">20.1%</span></td>
+        <td class="num" data-v="321">321</td>
+        <td class="num" data-v="392">392</td>
+        <td class="gtv" data-v="77629083">₹7.76 Cr</td>
+        <td class="atv" data-v="108877">₹1.1 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Organic (App)">Organic (App)</td>
+        <td class="num" data-v="1282">1,282</td>
+        <td class="num" data-v="504">504</td>
+        <td class="num" data-v="177">177</td>
+        <td data-v="39.3"><span class="rate neutral">39.3%</span></td>
+        <td data-v="13.8"><span class="rate neutral">13.8%</span></td>
+        <td data-v="40.7"><span class="rate green">40.7%</span></td>
+        <td class="num" data-v="72">72</td>
+        <td class="num" data-v="75">75</td>
+        <td class="gtv" data-v="26702005">₹2.67 Cr</td>
+        <td class="atv" data-v="181646">₹1.8 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="onetraffijs_int">onetraffijs_int</td>
+        <td class="num" data-v="518">518</td>
+        <td class="num" data-v="193">193</td>
+        <td class="num" data-v="55">55</td>
+        <td data-v="37.3"><span class="rate neutral">37.3%</span></td>
+        <td data-v="10.6"><span class="rate neutral">10.6%</span></td>
+        <td data-v="14.5"><span class="rate red">14.5%</span></td>
+        <td class="num" data-v="8">8</td>
+        <td class="num" data-v="13">13</td>
+        <td class="gtv" data-v="2878138">₹28.8 L</td>
+        <td class="atv" data-v="137054">₹1.4 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="sokendev_int">sokendev_int</td>
+        <td class="num" data-v="894">894</td>
+        <td class="num" data-v="336">336</td>
+        <td class="num" data-v="105">105</td>
+        <td data-v="37.6"><span class="rate neutral">37.6%</span></td>
+        <td data-v="11.7"><span class="rate neutral">11.7%</span></td>
+        <td data-v="15.2"><span class="rate red">15.2%</span></td>
+        <td class="num" data-v="16">16</td>
+        <td class="num" data-v="8">8</td>
+        <td class="gtv" data-v="2063106">₹20.6 L</td>
+        <td class="atv" data-v="85963">₹85,963</td>
+      </tr>
+      <tr class="dr">
+        <td title="employee_referral">employee_referral</td>
+        <td class="num" data-v="210">210</td>
+        <td class="num" data-v="224">224</td>
+        <td class="num" data-v="148">148</td>
+        <td data-v="106.7"><span class="rate green">106.7%</span></td>
+        <td data-v="70.5"><span class="rate green">70.5%</span></td>
+        <td data-v="73.6"><span class="rate green">73.6%</span></td>
+        <td class="num" data-v="109">109</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="1332241">₹13.3 L</td>
+        <td class="atv" data-v="12111">₹12,111</td>
+      </tr>
+      <tr class="dr">
+        <td title="sandboxads_int">sandboxads_int</td>
+        <td class="num" data-v="94">94</td>
+        <td class="num" data-v="42">42</td>
+        <td class="num" data-v="14">14</td>
+        <td data-v="44.7"><span class="rate neutral">44.7%</span></td>
+        <td data-v="14.9"><span class="rate neutral">14.9%</span></td>
+        <td data-v="35.7"><span class="rate green">35.7%</span></td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="3">3</td>
+        <td class="gtv" data-v="1012647">₹10.1 L</td>
+        <td class="atv" data-v="126581">₹1.3 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="afnumberone_int">afnumberone_int</td>
+        <td class="num" data-v="779">779</td>
+        <td class="num" data-v="263">263</td>
+        <td class="num" data-v="68">68</td>
+        <td data-v="33.8"><span class="rate red">33.8%</span></td>
+        <td data-v="8.7"><span class="rate red">8.7%</span></td>
+        <td data-v="19.1"><span class="rate neutral">19.1%</span></td>
+        <td class="num" data-v="13">13</td>
+        <td class="num" data-v="9">9</td>
+        <td class="gtv" data-v="888465">₹8.9 L</td>
+        <td class="atv" data-v="40385">₹40,385</td>
+      </tr>
+      <tr class="dr">
+        <td title="Jio_HM">Jio_HM</td>
+        <td class="num" data-v="1097">1,097</td>
+        <td class="num" data-v="425">425</td>
+        <td class="num" data-v="71">71</td>
+        <td data-v="38.7"><span class="rate neutral">38.7%</span></td>
+        <td data-v="6.5"><span class="rate red">6.5%</span></td>
+        <td data-v="21.1"><span class="rate neutral">21.1%</span></td>
+        <td class="num" data-v="15">15</td>
+        <td class="num" data-v="13">13</td>
+        <td class="gtv" data-v="794671">₹7.9 L</td>
+        <td class="atv" data-v="28381">₹28,381</td>
+      </tr>
+      <tr class="dr">
+        <td title="foxmobiwy_int">foxmobiwy_int</td>
+        <td class="num" data-v="276">276</td>
+        <td class="num" data-v="108">108</td>
+        <td class="num" data-v="32">32</td>
+        <td data-v="39.1"><span class="rate neutral">39.1%</span></td>
+        <td data-v="11.6"><span class="rate neutral">11.6%</span></td>
+        <td data-v="9.4"><span class="rate red">9.4%</span></td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="4">4</td>
+        <td class="gtv" data-v="731925">₹7.3 L</td>
+        <td class="atv" data-v="104561">₹1.0 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="mobile_app_share">mobile_app_share</td>
+        <td class="num" data-v="7">7</td>
+        <td class="num" data-v="7">7</td>
+        <td class="num" data-v="6">6</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="85.7"><span class="rate green">85.7%</span></td>
+        <td data-v="50.0"><span class="rate green">50.0%</span></td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="529926">₹5.3 L</td>
+        <td class="atv" data-v="176642">₹1.8 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Unattributed / Web">Unattributed / Web</td>
+        <td class="num" data-v="9">9</td>
+        <td class="num" data-v="8">8</td>
+        <td class="num" data-v="5">5</td>
+        <td data-v="88.9"><span class="rate green">88.9%</span></td>
+        <td data-v="55.6"><span class="rate green">55.6%</span></td>
+        <td data-v="80.0"><span class="rate green">80.0%</span></td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="310044">₹3.1 L</td>
+        <td class="atv" data-v="77511">₹77,511</td>
+      </tr>
+      <tr class="dr">
+        <td title="Zepto">Zepto</td>
+        <td class="num" data-v="148">148</td>
+        <td class="num" data-v="50">50</td>
+        <td class="num" data-v="7">7</td>
+        <td data-v="33.8"><span class="rate red">33.8%</span></td>
+        <td data-v="4.7"><span class="rate red">4.7%</span></td>
+        <td data-v="28.6"><span class="rate warn">28.6%</span></td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="2">2</td>
+        <td class="gtv" data-v="264741">₹2.6 L</td>
+        <td class="atv" data-v="66185">₹66,185</td>
+      </tr>
+      <tr class="dr">
+        <td title="oppoglobal_int">oppoglobal_int</td>
+        <td class="num" data-v="307">307</td>
+        <td class="num" data-v="97">97</td>
+        <td class="num" data-v="30">30</td>
+        <td data-v="31.6"><span class="rate red">31.6%</span></td>
+        <td data-v="9.8"><span class="rate neutral">9.8%</span></td>
+        <td data-v="16.7"><span class="rate red">16.7%</span></td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="2">2</td>
+        <td class="gtv" data-v="259380">₹2.6 L</td>
+        <td class="atv" data-v="37054">₹37,054</td>
+      </tr>
+      <tr class="dr">
+        <td title="Zomato_CPI">Zomato_CPI</td>
+        <td class="num" data-v="198">198</td>
+        <td class="num" data-v="58">58</td>
+        <td class="num" data-v="13">13</td>
+        <td data-v="29.3"><span class="rate red">29.3%</span></td>
+        <td data-v="6.6"><span class="rate red">6.6%</span></td>
+        <td data-v="46.2"><span class="rate green">46.2%</span></td>
+        <td class="num" data-v="6">6</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="142384">₹1.4 L</td>
+        <td class="atv" data-v="23731">₹23,731</td>
+      </tr>
+      <tr class="dr">
+        <td title="s2ssoftsys_int">s2ssoftsys_int</td>
+        <td class="num" data-v="7">7</td>
+        <td class="num" data-v="6">6</td>
+        <td class="num" data-v="3">3</td>
+        <td data-v="85.7"><span class="rate green">85.7%</span></td>
+        <td data-v="42.9"><span class="rate green">42.9%</span></td>
+        <td data-v="33.3"><span class="rate warn">33.3%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="48813">₹48,813</td>
+        <td class="atv" data-v="24407">₹24,407</td>
+      </tr>
+      <tr class="dr">
+        <td title="Jio_17042026">Jio_17042026</td>
+        <td class="num" data-v="150">150</td>
+        <td class="num" data-v="57">57</td>
+        <td class="num" data-v="10">10</td>
+        <td data-v="38.0"><span class="rate neutral">38.0%</span></td>
+        <td data-v="6.7"><span class="rate red">6.7%</span></td>
+        <td data-v="20.0"><span class="rate neutral">20.0%</span></td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="29391">₹29,391</td>
+        <td class="atv" data-v="14695">₹14,695</td>
+      </tr>
+      <tr class="dr">
+        <td title="mobilemin36l_int">mobilemin36l_int</td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="75.0"><span class="rate green">75.0%</span></td>
+        <td data-v="25.0"><span class="rate green">25.0%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="9796">₹9,796</td>
+        <td class="atv" data-v="9796">₹9,796</td>
+      </tr>
+      <tr class="dr">
+        <td title="Angel_Investment">Angel_Investment</td>
+        <td class="num" data-v="49">49</td>
+        <td class="num" data-v="28">28</td>
+        <td class="num" data-v="13">13</td>
+        <td data-v="57.1"><span class="rate green">57.1%</span></td>
+        <td data-v="26.5"><span class="rate green">26.5%</span></td>
+        <td data-v="7.7"><span class="rate red">7.7%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="4860">₹4,860</td>
+        <td class="atv" data-v="4860">₹4,860</td>
+      </tr>
+      <tr class="dr">
+        <td title="offlo_int">offlo_int</td>
+        <td class="num" data-v="6">6</td>
+        <td class="num" data-v="7">7</td>
+        <td class="num" data-v="6">6</td>
+        <td data-v="116.7"><span class="rate green">116.7%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="50.0"><span class="rate green">50.0%</span></td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="3107">₹3,107</td>
+        <td class="atv" data-v="1036">₹1,036</td>
+      </tr>
+      <tr class="dr">
+        <td title="Influencer_Collab">Influencer_Collab</td>
+        <td class="num" data-v="26">26</td>
+        <td class="num" data-v="11">11</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="42.3"><span class="rate neutral">42.3%</span></td>
+        <td data-v="3.8"><span class="rate red">3.8%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="1052">₹1,052</td>
+        <td class="atv" data-v="1052">₹1,052</td>
+      </tr>
+      <tr class="dr">
+        <td title="Social_instagram">Social_instagram</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="66.7"><span class="rate green">66.7%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Influencer_Collab_Aswin">Influencer_Collab_Aswin</td>
+        <td class="num" data-v="35">35</td>
+        <td class="num" data-v="24">24</td>
+        <td class="num" data-v="4">4</td>
+        <td data-v="68.6"><span class="rate green">68.6%</span></td>
+        <td data-v="11.4"><span class="rate neutral">11.4%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="appleadbiup_int">appleadbiup_int</td>
+        <td class="num" data-v="7">7</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="42.9"><span class="rate neutral">42.9%</span></td>
+        <td data-v="14.3"><span class="rate neutral">14.3%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="mobupps_int">mobupps_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="xiaomiglobal_int">xiaomiglobal_int</td>
+        <td class="num" data-v="19">19</td>
+        <td class="num" data-v="7">7</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="36.8"><span class="rate neutral">36.8%</span></td>
+        <td data-v="10.5"><span class="rate neutral">10.5%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Vivo OEM">Vivo OEM</td>
+        <td class="num" data-v="416">416</td>
+        <td class="num" data-v="54">54</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="13.0"><span class="rate red">13.0%</span></td>
+        <td data-v="0.5"><span class="rate red">0.5%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="bigporrs_int">bigporrs_int</td>
+        <td class="num" data-v="9">9</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="33.3"><span class="rate red">33.3%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="appnext_int">appnext_int</td>
+        <td class="num" data-v="812">812</td>
+        <td class="num" data-v="160">160</td>
+        <td class="num" data-v="6">6</td>
+        <td data-v="19.7"><span class="rate red">19.7%</span></td>
+        <td data-v="0.7"><span class="rate red">0.7%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="nfmobi_int">nfmobi_int</td>
+        <td class="num" data-v="7">7</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="28.6"><span class="rate red">28.6%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="commondex_int">commondex_int</td>
+        <td class="num" data-v="7">7</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="42.9"><span class="rate neutral">42.9%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="attrimob_int">attrimob_int</td>
+        <td class="num" data-v="46">46</td>
+        <td class="num" data-v="21">21</td>
+        <td class="num" data-v="9">9</td>
+        <td data-v="45.7"><span class="rate neutral">45.7%</span></td>
+        <td data-v="19.6"><span class="rate neutral">19.6%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="lumolinkaav_int">lumolinkaav_int</td>
+        <td class="num" data-v="27">27</td>
+        <td class="num" data-v="12">12</td>
+        <td class="num" data-v="6">6</td>
+        <td data-v="44.4"><span class="rate neutral">44.4%</span></td>
+        <td data-v="22.2"><span class="rate warn">22.2%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="aarki_int">aarki_int</td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="25.0"><span class="rate red">25.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="recoverunc3_int">recoverunc3_int</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="50.0"><span class="rate green">50.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="oddsendsc32_int">oddsendsc32_int</td>
+        <td class="num" data-v="10">10</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="20.0"><span class="rate red">20.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="morganconlm_int">morganconlm_int</td>
+        <td class="num" data-v="4">4</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="wabermedi1ck_int">wabermedi1ck_int</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="33.3"><span class="rate red">33.3%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="vfine_int">vfine_int</td>
+        <td class="num" data-v="9">9</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="22.2"><span class="rate red">22.2%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="adgdfslsgbc_int">adgdfslsgbc_int</td>
+        <td class="num" data-v="35">35</td>
+        <td class="num" data-v="13">13</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="37.1"><span class="rate neutral">37.1%</span></td>
+        <td data-v="5.7"><span class="rate red">5.7%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="mobzone_int">mobzone_int</td>
+        <td class="num" data-v="22">22</td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="22.7"><span class="rate red">22.7%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="charitabl5o_int">charitabl5o_int</td>
+        <td class="num" data-v="8">8</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="25.0"><span class="rate red">25.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="riversads_int">riversads_int</td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="20.0"><span class="rate red">20.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="batman8z_int">batman8z_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="tunnelads_int">tunnelads_int</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="liquefteapsg_int">liquefteapsg_int</td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="partneron_int">partneron_int</td>
+        <td class="num" data-v="6">6</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="16.7"><span class="rate red">16.7%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="arbeenllcgx_int">arbeenllcgx_int</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="nexfigoadh7_int">nexfigoadh7_int</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="ccwads4o_int">ccwads4o_int</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="avg-row">
+        <td>Total / Blended</td>
+        <td>31,886</td>
+        <td>11,983</td>
+        <td>3,745</td>
+        <td>37.6%</td>
+        <td>11.7%</td>
+        <td>26.0%</td>
+        <td>973</td>
+        <td>1,250</td>
+        <td>₹27.70 Cr</td>
+        <td>₹1.2 L</td>
+      </tr></tbody>
+    </table>
+  </div>
+    </div>
+    <p class="note">
+      <b>Mobile</b>: grouped by <code>[AppsFlyer] media source</code> user property (written at install by AppsFlyer SDK). &nbsp;<b>Null / Unattributed</b>: AF ran and assigned an ID but <code>media_source</code> was never written to Amplitude — investigate AF→Amplitude connector config in AF dashboard. Could be paid or organic. At &gt;5% of GTV this is a systemic sync issue, not just Android Ad ID rotation edge cases.<br>
+      <b>KYC Start%</b> = KYC Start / Signups &nbsp;·&nbsp;
+      <b>KYC Done%</b> = KYC Done / Signups &nbsp;·&nbsp;
+      <b>KYC→Trade%</b> = First Trades / KYC Done (step-to-step, same calendar week) &nbsp;·&nbsp;
+      <b>ATV</b> = GTV / (1st + Repeat Trades) &nbsp;·&nbsp;
+      Colors: 🟢 &gt;8pp above blended avg &nbsp; 🔴 &gt;8pp below &nbsp; 🟡 3–8pp below. &nbsp;
+      Click any column header to sort.
+    </p>
+  </div>
+    
+  <div class="ppanel" data-p="web">
+    <div class="wselector"><button class="wbtn active" data-w="0" onclick="switchW('web',0)">Jun 15 – Jun 21</button><button class="wbtn" data-w="1" onclick="switchW('web',1)">Jun 08 – Jun 14</button><button class="wbtn" data-w="2" onclick="switchW('web',2)">Jun 01 – Jun 07</button><button class="wbtn" data-w="3" onclick="switchW('web',3)">May 25 – May 31</button><button class="wbtn" data-w="4" onclick="switchW('web',4)">May 18 – May 24</button><button class="wbtn" data-w="5" onclick="switchW('web',5)">May 11 – May 17</button><button class="wbtn" data-w="6" onclick="switchW('web',6)">May 04 – May 10</button><button class="wbtn" data-w="7" onclick="switchW('web',7)">Apr 27 – May 03</button><button class="wbtn total" data-w="total" onclick="switchW('web','total')">8-Week Total <span class="tbadge">Σ</span></button></div>
+    
+    <div class="wpanel active" data-w="0">
+      <div class="recency show">
+        ⚠️ Most recent week — users may not have had a full 7 days to progress.
+        KYC Done% and KYC→Trade% may be understated.
+      </div>
+      
+  <div class="twrap">
+    <table id="t_web_0" data-sc="" data-sd="">
+      <thead>
+        <tr>
+          <th onclick="sortT('t_web_0',0)">Channel ↕</th>
+          <th onclick="sortT('t_web_0',1)">Signups ↕</th>
+          <th onclick="sortT('t_web_0',2)">KYC Start ↕</th>
+          <th onclick="sortT('t_web_0',3)">KYC Done ↕</th>
+          <th onclick="sortT('t_web_0',4)">KYC Start% ↕</th>
+          <th onclick="sortT('t_web_0',5)">KYC Done% ↕</th>
+          <th onclick="sortT('t_web_0',6)">KYC→Trade% ↕</th>
+          <th onclick="sortT('t_web_0',7)">1st Trades ↕</th>
+          <th onclick="sortT('t_web_0',8)">Repeat ↕</th>
+          <th onclick="sortT('t_web_0',9)">GTV ↕</th>
+          <th onclick="sortT('t_web_0',10)">ATV ↕</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="dr">
+        <td title="(none)">(none)</td>
+        <td class="num" data-v="25">25</td>
+        <td class="num" data-v="146">146</td>
+        <td class="num" data-v="44">44</td>
+        <td data-v="584.0"><span class="rate green">584.0%</span></td>
+        <td data-v="176.0"><span class="rate green">176.0%</span></td>
+        <td data-v="27.3"><span class="rate warn">27.3%</span></td>
+        <td class="num" data-v="12">12</td>
+        <td class="num" data-v="18">18</td>
+        <td class="gtv" data-v="7943943">₹79.4 L</td>
+        <td class="atv" data-v="264798">₹2.6 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Paid Search (CPC)">Paid Search (CPC)</td>
+        <td class="num" data-v="71">71</td>
+        <td class="num" data-v="9">9</td>
+        <td class="num" data-v="5">5</td>
+        <td data-v="12.7"><span class="rate red">12.7%</span></td>
+        <td data-v="7.0"><span class="rate red">7.0%</span></td>
+        <td data-v="20.0"><span class="rate neutral">20.0%</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="234328">₹2.3 L</td>
+        <td class="atv" data-v="117164">₹1.2 L</td>
+      </tr>
+      <tr class="avg-row">
+        <td>Total / Blended</td>
+        <td>96</td>
+        <td>155</td>
+        <td>49</td>
+        <td>161.5%</td>
+        <td>51.0%</td>
+        <td>26.5%</td>
+        <td>13</td>
+        <td>19</td>
+        <td>₹81.8 L</td>
+        <td>₹2.6 L</td>
+      </tr></tbody>
+    </table>
+  </div>
+    </div>
+    <div class="wpanel" data-w="1">
+      <div class="recency">
+        ⚠️ Most recent week — users may not have had a full 7 days to progress.
+        KYC Done% and KYC→Trade% may be understated.
+      </div>
+      
+  <div class="twrap">
+    <table id="t_web_1" data-sc="" data-sd="">
+      <thead>
+        <tr>
+          <th onclick="sortT('t_web_1',0)">Channel ↕</th>
+          <th onclick="sortT('t_web_1',1)">Signups ↕</th>
+          <th onclick="sortT('t_web_1',2)">KYC Start ↕</th>
+          <th onclick="sortT('t_web_1',3)">KYC Done ↕</th>
+          <th onclick="sortT('t_web_1',4)">KYC Start% ↕</th>
+          <th onclick="sortT('t_web_1',5)">KYC Done% ↕</th>
+          <th onclick="sortT('t_web_1',6)">KYC→Trade% ↕</th>
+          <th onclick="sortT('t_web_1',7)">1st Trades ↕</th>
+          <th onclick="sortT('t_web_1',8)">Repeat ↕</th>
+          <th onclick="sortT('t_web_1',9)">GTV ↕</th>
+          <th onclick="sortT('t_web_1',10)">ATV ↕</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="dr">
+        <td title="(none)">(none)</td>
+        <td class="num" data-v="34">34</td>
+        <td class="num" data-v="89">89</td>
+        <td class="num" data-v="23">23</td>
+        <td data-v="261.8"><span class="rate green">261.8%</span></td>
+        <td data-v="67.6"><span class="rate green">67.6%</span></td>
+        <td data-v="60.9"><span class="rate red">60.9%</span></td>
+        <td class="num" data-v="14">14</td>
+        <td class="num" data-v="11">11</td>
+        <td class="gtv" data-v="2980785">₹29.8 L</td>
+        <td class="atv" data-v="119231">₹1.2 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Paid Search (CPC)">Paid Search (CPC)</td>
+        <td class="num" data-v="66">66</td>
+        <td class="num" data-v="14">14</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="21.2"><span class="rate red">21.2%</span></td>
+        <td data-v="1.5"><span class="rate red">1.5%</span></td>
+        <td data-v="300.0"><span class="rate green">300.0%</span></td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="2">2</td>
+        <td class="gtv" data-v="2475374">₹24.8 L</td>
+        <td class="atv" data-v="495075">₹5.0 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="WHATSAPP">WHATSAPP</td>
+        <td class="num" data-v="17">17</td>
+        <td class="num" data-v="16">16</td>
+        <td class="num" data-v="8">8</td>
+        <td data-v="94.1"><span class="rate red">94.1%</span></td>
+        <td data-v="47.1"><span class="rate green">47.1%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="97685">₹97,685</td>
+        <td class="atv" data-v="97685">₹97,685</td>
+      </tr>
+      <tr class="avg-row">
+        <td>Total / Blended</td>
+        <td>117</td>
+        <td>119</td>
+        <td>32</td>
+        <td>101.7%</td>
+        <td>27.4%</td>
+        <td>53.1%</td>
+        <td>17</td>
+        <td>14</td>
+        <td>₹55.5 L</td>
+        <td>₹1.8 L</td>
+      </tr></tbody>
+    </table>
+  </div>
+    </div>
+    <div class="wpanel" data-w="2">
+      <div class="recency">
+        ⚠️ Most recent week — users may not have had a full 7 days to progress.
+        KYC Done% and KYC→Trade% may be understated.
+      </div>
+      
+  <div class="twrap">
+    <table id="t_web_2" data-sc="" data-sd="">
+      <thead>
+        <tr>
+          <th onclick="sortT('t_web_2',0)">Channel ↕</th>
+          <th onclick="sortT('t_web_2',1)">Signups ↕</th>
+          <th onclick="sortT('t_web_2',2)">KYC Start ↕</th>
+          <th onclick="sortT('t_web_2',3)">KYC Done ↕</th>
+          <th onclick="sortT('t_web_2',4)">KYC Start% ↕</th>
+          <th onclick="sortT('t_web_2',5)">KYC Done% ↕</th>
+          <th onclick="sortT('t_web_2',6)">KYC→Trade% ↕</th>
+          <th onclick="sortT('t_web_2',7)">1st Trades ↕</th>
+          <th onclick="sortT('t_web_2',8)">Repeat ↕</th>
+          <th onclick="sortT('t_web_2',9)">GTV ↕</th>
+          <th onclick="sortT('t_web_2',10)">ATV ↕</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="dr">
+        <td title="(none)">(none)</td>
+        <td class="num" data-v="24">24</td>
+        <td class="num" data-v="28">28</td>
+        <td class="num" data-v="17">17</td>
+        <td data-v="116.7"><span class="rate green">116.7%</span></td>
+        <td data-v="70.8"><span class="rate green">70.8%</span></td>
+        <td data-v="47.1"><span class="rate green">47.1%</span></td>
+        <td class="num" data-v="8">8</td>
+        <td class="num" data-v="23">23</td>
+        <td class="gtv" data-v="12728722">₹1.27 Cr</td>
+        <td class="atv" data-v="410604">₹4.1 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Paid Search (CPC)">Paid Search (CPC)</td>
+        <td class="num" data-v="38">38</td>
+        <td class="num" data-v="6">6</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="15.8"><span class="rate red">15.8%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="48824">₹48,824</td>
+        <td class="atv" data-v="48824">₹48,824</td>
+      </tr>
+      <tr class="dr">
+        <td title="Search">Search</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="WHATSAPP">WHATSAPP</td>
+        <td class="num" data-v="9">9</td>
+        <td class="num" data-v="14">14</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="155.6"><span class="rate green">155.6%</span></td>
+        <td data-v="22.2"><span class="rate neutral">22.2%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="avg-row">
+        <td>Total / Blended</td>
+        <td>72</td>
+        <td>48</td>
+        <td>19</td>
+        <td>66.7%</td>
+        <td>26.4%</td>
+        <td>47.4%</td>
+        <td>9</td>
+        <td>23</td>
+        <td>₹1.28 Cr</td>
+        <td>₹4.0 L</td>
+      </tr></tbody>
+    </table>
+  </div>
+    </div>
+    <div class="wpanel" data-w="3">
+      <div class="recency">
+        ⚠️ Most recent week — users may not have had a full 7 days to progress.
+        KYC Done% and KYC→Trade% may be understated.
+      </div>
+      
+  <div class="twrap">
+    <table id="t_web_3" data-sc="" data-sd="">
+      <thead>
+        <tr>
+          <th onclick="sortT('t_web_3',0)">Channel ↕</th>
+          <th onclick="sortT('t_web_3',1)">Signups ↕</th>
+          <th onclick="sortT('t_web_3',2)">KYC Start ↕</th>
+          <th onclick="sortT('t_web_3',3)">KYC Done ↕</th>
+          <th onclick="sortT('t_web_3',4)">KYC Start% ↕</th>
+          <th onclick="sortT('t_web_3',5)">KYC Done% ↕</th>
+          <th onclick="sortT('t_web_3',6)">KYC→Trade% ↕</th>
+          <th onclick="sortT('t_web_3',7)">1st Trades ↕</th>
+          <th onclick="sortT('t_web_3',8)">Repeat ↕</th>
+          <th onclick="sortT('t_web_3',9)">GTV ↕</th>
+          <th onclick="sortT('t_web_3',10)">ATV ↕</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="dr">
+        <td title="(none)">(none)</td>
+        <td class="num" data-v="37">37</td>
+        <td class="num" data-v="43">43</td>
+        <td class="num" data-v="9">9</td>
+        <td data-v="116.2"><span class="rate green">116.2%</span></td>
+        <td data-v="24.3"><span class="rate red">24.3%</span></td>
+        <td data-v="66.7"><span class="rate green">66.7%</span></td>
+        <td class="num" data-v="6">6</td>
+        <td class="num" data-v="14">14</td>
+        <td class="gtv" data-v="6170581">₹61.7 L</td>
+        <td class="atv" data-v="308529">₹3.1 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Paid Search (CPC)">Paid Search (CPC)</td>
+        <td class="num" data-v="65">65</td>
+        <td class="num" data-v="10">10</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="15.4"><span class="rate red">15.4%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="2">2</td>
+        <td class="gtv" data-v="553745">₹5.5 L</td>
+        <td class="atv" data-v="184582">₹1.8 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="marketing">marketing</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="201031">₹2.0 L</td>
+        <td class="atv" data-v="201031">₹2.0 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="WHATSAPP">WHATSAPP</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="3">3</td>
+        <td data-v="300.0"><span class="rate green">300.0%</span></td>
+        <td data-v="300.0"><span class="rate green">300.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="avg-row">
+        <td>Total / Blended</td>
+        <td>104</td>
+        <td>56</td>
+        <td>12</td>
+        <td>53.8%</td>
+        <td>11.5%</td>
+        <td>58.3%</td>
+        <td>7</td>
+        <td>17</td>
+        <td>₹69.3 L</td>
+        <td>₹2.9 L</td>
+      </tr></tbody>
+    </table>
+  </div>
+    </div>
+    <div class="wpanel" data-w="4">
+      <div class="recency">
+        ⚠️ Most recent week — users may not have had a full 7 days to progress.
+        KYC Done% and KYC→Trade% may be understated.
+      </div>
+      
+  <div class="twrap">
+    <table id="t_web_4" data-sc="" data-sd="">
+      <thead>
+        <tr>
+          <th onclick="sortT('t_web_4',0)">Channel ↕</th>
+          <th onclick="sortT('t_web_4',1)">Signups ↕</th>
+          <th onclick="sortT('t_web_4',2)">KYC Start ↕</th>
+          <th onclick="sortT('t_web_4',3)">KYC Done ↕</th>
+          <th onclick="sortT('t_web_4',4)">KYC Start% ↕</th>
+          <th onclick="sortT('t_web_4',5)">KYC Done% ↕</th>
+          <th onclick="sortT('t_web_4',6)">KYC→Trade% ↕</th>
+          <th onclick="sortT('t_web_4',7)">1st Trades ↕</th>
+          <th onclick="sortT('t_web_4',8)">Repeat ↕</th>
+          <th onclick="sortT('t_web_4',9)">GTV ↕</th>
+          <th onclick="sortT('t_web_4',10)">ATV ↕</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="dr">
+        <td title="(none)">(none)</td>
+        <td class="num" data-v="27">27</td>
+        <td class="num" data-v="27">27</td>
+        <td class="num" data-v="6">6</td>
+        <td data-v="100.0"><span class="rate red">100.0%</span></td>
+        <td data-v="22.2"><span class="rate neutral">22.2%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="10">10</td>
+        <td class="gtv" data-v="11990940">₹1.20 Cr</td>
+        <td class="atv" data-v="1199094">₹12.0 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Paid Search (CPC)">Paid Search (CPC)</td>
+        <td class="num" data-v="55">55</td>
+        <td class="num" data-v="15">15</td>
+        <td class="num" data-v="4">4</td>
+        <td data-v="27.3"><span class="rate red">27.3%</span></td>
+        <td data-v="7.3"><span class="rate red">7.3%</span></td>
+        <td data-v="50.0"><span class="rate green">50.0%</span></td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="1000405">₹10.0 L</td>
+        <td class="atv" data-v="333468">₹3.3 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="WHATSAPP">WHATSAPP</td>
+        <td class="num" data-v="7">7</td>
+        <td class="num" data-v="14">14</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="200.0"><span class="rate green">200.0%</span></td>
+        <td data-v="28.6"><span class="rate green">28.6%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="avg-row">
+        <td>Total / Blended</td>
+        <td>89</td>
+        <td>56</td>
+        <td>12</td>
+        <td>62.9%</td>
+        <td>13.5%</td>
+        <td>16.7%</td>
+        <td>2</td>
+        <td>11</td>
+        <td>₹1.30 Cr</td>
+        <td>₹10.0 L</td>
+      </tr></tbody>
+    </table>
+  </div>
+    </div>
+    <div class="wpanel" data-w="5">
+      <div class="recency">
+        ⚠️ Most recent week — users may not have had a full 7 days to progress.
+        KYC Done% and KYC→Trade% may be understated.
+      </div>
+      
+  <div class="twrap">
+    <table id="t_web_5" data-sc="" data-sd="">
+      <thead>
+        <tr>
+          <th onclick="sortT('t_web_5',0)">Channel ↕</th>
+          <th onclick="sortT('t_web_5',1)">Signups ↕</th>
+          <th onclick="sortT('t_web_5',2)">KYC Start ↕</th>
+          <th onclick="sortT('t_web_5',3)">KYC Done ↕</th>
+          <th onclick="sortT('t_web_5',4)">KYC Start% ↕</th>
+          <th onclick="sortT('t_web_5',5)">KYC Done% ↕</th>
+          <th onclick="sortT('t_web_5',6)">KYC→Trade% ↕</th>
+          <th onclick="sortT('t_web_5',7)">1st Trades ↕</th>
+          <th onclick="sortT('t_web_5',8)">Repeat ↕</th>
+          <th onclick="sortT('t_web_5',9)">GTV ↕</th>
+          <th onclick="sortT('t_web_5',10)">ATV ↕</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="dr">
+        <td title="(none)">(none)</td>
+        <td class="num" data-v="24">24</td>
+        <td class="num" data-v="21">21</td>
+        <td class="num" data-v="12">12</td>
+        <td data-v="87.5"><span class="rate red">87.5%</span></td>
+        <td data-v="50.0"><span class="rate red">50.0%</span></td>
+        <td data-v="83.3"><span class="rate green">83.3%</span></td>
+        <td class="num" data-v="10">10</td>
+        <td class="num" data-v="11">11</td>
+        <td class="gtv" data-v="7820818">₹78.2 L</td>
+        <td class="atv" data-v="372420">₹3.7 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Paid Search (CPC)">Paid Search (CPC)</td>
+        <td class="num" data-v="48">48</td>
+        <td class="num" data-v="11">11</td>
+        <td class="num" data-v="1">1</td>
+        <td data-v="22.9"><span class="rate red">22.9%</span></td>
+        <td data-v="2.1"><span class="rate red">2.1%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="9985">₹9,985</td>
+        <td class="atv" data-v="9985">₹9,985</td>
+      </tr>
+      <tr class="dr">
+        <td title="WHATSAPP">WHATSAPP</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="5">5</td>
+        <td class="num" data-v="4">4</td>
+        <td data-v="500.0"><span class="rate green">500.0%</span></td>
+        <td data-v="400.0"><span class="rate green">400.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="avg-row">
+        <td>Total / Blended</td>
+        <td>73</td>
+        <td>37</td>
+        <td>17</td>
+        <td>50.7%</td>
+        <td>23.3%</td>
+        <td>58.8%</td>
+        <td>10</td>
+        <td>12</td>
+        <td>₹78.3 L</td>
+        <td>₹3.6 L</td>
+      </tr></tbody>
+    </table>
+  </div>
+    </div>
+    <div class="wpanel" data-w="6">
+      <div class="recency">
+        ⚠️ Most recent week — users may not have had a full 7 days to progress.
+        KYC Done% and KYC→Trade% may be understated.
+      </div>
+      
+  <div class="twrap">
+    <table id="t_web_6" data-sc="" data-sd="">
+      <thead>
+        <tr>
+          <th onclick="sortT('t_web_6',0)">Channel ↕</th>
+          <th onclick="sortT('t_web_6',1)">Signups ↕</th>
+          <th onclick="sortT('t_web_6',2)">KYC Start ↕</th>
+          <th onclick="sortT('t_web_6',3)">KYC Done ↕</th>
+          <th onclick="sortT('t_web_6',4)">KYC Start% ↕</th>
+          <th onclick="sortT('t_web_6',5)">KYC Done% ↕</th>
+          <th onclick="sortT('t_web_6',6)">KYC→Trade% ↕</th>
+          <th onclick="sortT('t_web_6',7)">1st Trades ↕</th>
+          <th onclick="sortT('t_web_6',8)">Repeat ↕</th>
+          <th onclick="sortT('t_web_6',9)">GTV ↕</th>
+          <th onclick="sortT('t_web_6',10)">ATV ↕</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="dr">
+        <td title="(none)">(none)</td>
+        <td class="num" data-v="12">12</td>
+        <td class="num" data-v="18">18</td>
+        <td class="num" data-v="8">8</td>
+        <td data-v="150.0"><span class="rate red">150.0%</span></td>
+        <td data-v="66.7"><span class="rate green">66.7%</span></td>
+        <td data-v="37.5"><span class="rate red">37.5%</span></td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="13">13</td>
+        <td class="gtv" data-v="3221836">₹32.2 L</td>
+        <td class="atv" data-v="201365">₹2.0 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Paid Search (CPC)">Paid Search (CPC)</td>
+        <td class="num" data-v="54">54</td>
+        <td class="num" data-v="16">16</td>
+        <td class="num" data-v="2">2</td>
+        <td data-v="29.6"><span class="rate red">29.6%</span></td>
+        <td data-v="3.7"><span class="rate red">3.7%</span></td>
+        <td data-v="100.0"><span class="rate green">100.0%</span></td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="2">2</td>
+        <td class="gtv" data-v="2299275">₹23.0 L</td>
+        <td class="atv" data-v="574819">₹5.7 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="marketing">marketing</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="2">2</td>
+        <td class="gtv" data-v="199778">₹2.0 L</td>
+        <td class="atv" data-v="99889">₹99,889</td>
+      </tr>
+      <tr class="dr">
+        <td title="WHATSAPP">WHATSAPP</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="3">3</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="300.0"><span class="rate green">300.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="avg-row">
+        <td>Total / Blended</td>
+        <td>67</td>
+        <td>37</td>
+        <td>10</td>
+        <td>55.2%</td>
+        <td>14.9%</td>
+        <td>50.0%</td>
+        <td>5</td>
+        <td>17</td>
+        <td>₹57.2 L</td>
+        <td>₹2.6 L</td>
+      </tr></tbody>
+    </table>
+  </div>
+    </div>
+    <div class="wpanel" data-w="7">
+      <div class="recency">
+        ⚠️ Most recent week — users may not have had a full 7 days to progress.
+        KYC Done% and KYC→Trade% may be understated.
+      </div>
+      
+  <div class="twrap">
+    <table id="t_web_7" data-sc="" data-sd="">
+      <thead>
+        <tr>
+          <th onclick="sortT('t_web_7',0)">Channel ↕</th>
+          <th onclick="sortT('t_web_7',1)">Signups ↕</th>
+          <th onclick="sortT('t_web_7',2)">KYC Start ↕</th>
+          <th onclick="sortT('t_web_7',3)">KYC Done ↕</th>
+          <th onclick="sortT('t_web_7',4)">KYC Start% ↕</th>
+          <th onclick="sortT('t_web_7',5)">KYC Done% ↕</th>
+          <th onclick="sortT('t_web_7',6)">KYC→Trade% ↕</th>
+          <th onclick="sortT('t_web_7',7)">1st Trades ↕</th>
+          <th onclick="sortT('t_web_7',8)">Repeat ↕</th>
+          <th onclick="sortT('t_web_7',9)">GTV ↕</th>
+          <th onclick="sortT('t_web_7',10)">ATV ↕</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="dr">
+        <td title="(none)">(none)</td>
+        <td class="num" data-v="15">15</td>
+        <td class="num" data-v="14">14</td>
+        <td class="num" data-v="7">7</td>
+        <td data-v="93.3"><span class="rate green">93.3%</span></td>
+        <td data-v="46.7"><span class="rate green">46.7%</span></td>
+        <td data-v="-1"><span class="rate neutral">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="3005326">₹30.1 L</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="Paid Search (CPC)">Paid Search (CPC)</td>
+        <td class="num" data-v="38">38</td>
+        <td class="num" data-v="11">11</td>
+        <td class="num" data-v="5">5</td>
+        <td data-v="28.9"><span class="rate red">28.9%</span></td>
+        <td data-v="13.2"><span class="rate red">13.2%</span></td>
+        <td data-v="-1"><span class="rate neutral">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="254254">₹2.5 L</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="EMAIL">EMAIL</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="99135">₹99,135</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="avg-row">
+        <td>Total / Blended</td>
+        <td>53</td>
+        <td>25</td>
+        <td>12</td>
+        <td>47.2%</td>
+        <td>22.6%</td>
+        <td>0.0%</td>
+        <td>0</td>
+        <td>0</td>
+        <td>₹33.6 L</td>
+        <td>—</td>
+      </tr></tbody>
+    </table>
+  </div>
+    </div>
+    <div class="wpanel" data-w="total">
+      
+  <div class="twrap">
+    <table id="t_web_total" data-sc="" data-sd="">
+      <thead>
+        <tr>
+          <th onclick="sortT('t_web_total',0)">Channel ↕</th>
+          <th onclick="sortT('t_web_total',1)">Signups ↕</th>
+          <th onclick="sortT('t_web_total',2)">KYC Start ↕</th>
+          <th onclick="sortT('t_web_total',3)">KYC Done ↕</th>
+          <th onclick="sortT('t_web_total',4)">KYC Start% ↕</th>
+          <th onclick="sortT('t_web_total',5)">KYC Done% ↕</th>
+          <th onclick="sortT('t_web_total',6)">KYC→Trade% ↕</th>
+          <th onclick="sortT('t_web_total',7)">1st Trades ↕</th>
+          <th onclick="sortT('t_web_total',8)">Repeat ↕</th>
+          <th onclick="sortT('t_web_total',9)">GTV ↕</th>
+          <th onclick="sortT('t_web_total',10)">ATV ↕</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="dr">
+        <td title="(none)">(none)</td>
+        <td class="num" data-v="198">198</td>
+        <td class="num" data-v="386">386</td>
+        <td class="num" data-v="126">126</td>
+        <td data-v="194.9"><span class="rate green">194.9%</span></td>
+        <td data-v="63.6"><span class="rate green">63.6%</span></td>
+        <td data-v="42.1"><span class="rate green">42.1%</span></td>
+        <td class="num" data-v="53">53</td>
+        <td class="num" data-v="100">100</td>
+        <td class="gtv" data-v="55862950">₹5.59 Cr</td>
+        <td class="atv" data-v="365117">₹3.7 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="Paid Search (CPC)">Paid Search (CPC)</td>
+        <td class="num" data-v="435">435</td>
+        <td class="num" data-v="92">92</td>
+        <td class="num" data-v="18">18</td>
+        <td data-v="21.1"><span class="rate red">21.1%</span></td>
+        <td data-v="4.1"><span class="rate red">4.1%</span></td>
+        <td data-v="55.6"><span class="rate green">55.6%</span></td>
+        <td class="num" data-v="10">10</td>
+        <td class="num" data-v="9">9</td>
+        <td class="gtv" data-v="6876189">₹68.8 L</td>
+        <td class="atv" data-v="361905">₹3.6 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="marketing">marketing</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="3">3</td>
+        <td class="gtv" data-v="400809">₹4.0 L</td>
+        <td class="atv" data-v="133603">₹1.3 L</td>
+      </tr>
+      <tr class="dr">
+        <td title="EMAIL">EMAIL</td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="2">2</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="99135">₹99,135</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="dr">
+        <td title="WHATSAPP">WHATSAPP</td>
+        <td class="num" data-v="36">36</td>
+        <td class="num" data-v="57">57</td>
+        <td class="num" data-v="20">20</td>
+        <td data-v="158.3"><span class="rate green">158.3%</span></td>
+        <td data-v="55.6"><span class="rate green">55.6%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="1">1</td>
+        <td class="gtv" data-v="97685">₹97,685</td>
+        <td class="atv" data-v="97685">₹97,685</td>
+      </tr>
+      <tr class="dr">
+        <td title="Search">Search</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="1">1</td>
+        <td class="num" data-v="0">0</td>
+        <td data-v="100.0"><span class="rate warn">100.0%</span></td>
+        <td data-v="-1"><span class="rate red">0.0%</span></td>
+        <td data-v="-1"><span class="rate na">—</span></td>
+        <td class="num" data-v="0">0</td>
+        <td class="num" data-v="0">0</td>
+        <td class="gtv" data-v="0">—</td>
+        <td class="atv" data-v="-1">—</td>
+      </tr>
+      <tr class="avg-row">
+        <td>Total / Blended</td>
+        <td>671</td>
+        <td>538</td>
+        <td>164</td>
+        <td>80.2%</td>
+        <td>24.4%</td>
+        <td>38.4%</td>
+        <td>63</td>
+        <td>113</td>
+        <td>₹6.33 Cr</td>
+        <td>₹3.6 L</td>
+      </tr></tbody>
+    </table>
+  </div>
+    </div>
+    <p class="note">
+      <b>Web</b>: filtered to users where <code>platform = "Web"</code> (user segment), grouped by <code>utm_medium</code> user property. &nbsp;<b>Null / Not set</b>: no UTM parameter on landing — covers organic search, direct/bookmark, HTTPS-referrer-stripped visits, and any paid campaign missing UTM tags.<br>
+      <b>KYC Start%</b> = KYC Start / Signups &nbsp;·&nbsp;
+      <b>KYC Done%</b> = KYC Done / Signups &nbsp;·&nbsp;
+      <b>KYC→Trade%</b> = First Trades / KYC Done (step-to-step, same calendar week) &nbsp;·&nbsp;
+      <b>ATV</b> = GTV / (1st + Repeat Trades) &nbsp;·&nbsp;
+      Colors: 🟢 &gt;8pp above blended avg &nbsp; 🔴 &gt;8pp below &nbsp; 🟡 3–8pp below. &nbsp;
+      Click any column header to sort.
+    </p>
+  </div>
+  </div>
+  <script>
+function switchP(p){
+  document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.ppanel').forEach(x=>x.classList.remove('active'));
+  document.querySelector('.ptab[data-p="'+p+'"]').classList.add('active');
+  document.querySelector('.ppanel[data-p="'+p+'"]').classList.add('active');
+}
+function switchW(p,w){
+  const panel=document.querySelector('.ppanel[data-p="'+p+'"]');
+  panel.querySelectorAll('.wbtn').forEach(b=>b.classList.remove('active'));
+  panel.querySelectorAll('.wpanel').forEach(x=>x.classList.remove('active'));
+  panel.querySelector('.wbtn[data-w="'+w+'"]').classList.add('active');
+  panel.querySelector('.wpanel[data-w="'+w+'"]').classList.add('active');
+}
+function sortT(id,col){
+  const t=document.getElementById(id);
+  const tb=t.querySelector('tbody');
+  const rows=Array.from(tb.querySelectorAll('tr.dr'));
+  const dir=t.dataset.sc===String(col)&&t.dataset.sd==='asc'?'desc':'asc';
+  t.dataset.sc=col; t.dataset.sd=dir;
+  rows.sort((a,b)=>{
+    const av=parseFloat(a.cells[col].dataset.v??'-999');
+    const bv=parseFloat(b.cells[col].dataset.v??'-999');
+    return dir==='asc'?av-bv:bv-av;
+  });
+  rows.forEach(r=>tb.appendChild(r));
+}
+</script>
+</body>
+</html>
