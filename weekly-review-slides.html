@@ -1227,9 +1227,9 @@ function sdoToggle(g){
   (function() {
     var LABELS       = ["4 May", "11 May", "18 May", "25 May", "1 Jun", "8 Jun", "15 Jun", "22 Jun"];
     var SIZES        = [1337, 1455, 1852, 1382, 1463, 1405, 1701, 233];
-    var CURVES       = [[23.0, 23.0, 23.0, 23.0, 28.5], [25.0, 25.0, 25.0, 29.0, 29.0], [15.7, 15.7, 15.7, 24.4, 24.4], [24.2, 24.2, 24.2, 32.7, null], [27.3, 27.3, 36.2, null, null], [26.3, 33.0, null, null, null], [29.7, null, null, null, null], [null, null, null, null, null]];
-    var PARTIALS     = [[false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false]];
-    var PARTIAL_DAYS = 0;
+    var CURVES       = [[23.0, 23.0, 23.0, 23.0, 28.5], [25.0, 25.0, 25.0, 29.0, 29.0], [15.7, 15.7, 15.7, 24.4, 24.4], [24.2, 24.2, 24.2, 32.7, 32.7], [27.3, 27.3, 36.2, 36.2, null], [26.3, 33.0, 33.0, null, null], [29.7, 29.7, null, null, null], [25.8, null, null, null, null]];
+    var PARTIALS     = [[false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, true], [false, false, false, true, false], [false, false, true, false, false], [false, true, false, false, false], [true, false, false, false, false]];
+    var PARTIAL_DAYS = 1;
 
     // Violet palette: W0 darkest → W4 lightest
     var SEG_COLORS         = ['#4c1d95', '#6d28d9', '#8b5cf6', '#a78bfa', '#c4b5fd'];
