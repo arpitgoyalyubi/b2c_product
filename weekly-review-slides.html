@@ -356,7 +356,138 @@
     <div class="cover-metrics" id="cover-metrics"></div>
   </div>
 
-  <!-- Slide 1: Signup Completion — Sky Blue -->
+  <!-- Store Listing Slide -->
+  <div class="slide two-col" id="s-store-listing">
+    <div class="left-panel" style="background:linear-gradient(160deg,#3b0764,#7c3aed);">
+      <div class="slide-num">Slide 00</div>
+      <div class="slide-ttl">Store Listing<br>Conversion</div>
+      <div class="slide-sub">Last 28 days · Play Store</div>
+      <div class="hero-num">2.94%</div>
+      <div class="hero-lbl">Listing conv% (all users)</div>
+      <div class="hero-badge up" style="font-size:.7rem;">+1.55pp vs prior period</div>
+      <div class="stat-list" style="margin-top:16px;">
+        <div class="stat-item"><span class="si-lbl">Store visitors</span><span class="si-val">1.70M</span></div>
+        <div class="stat-item"><span class="si-lbl">Acquisitions</span><span class="si-val">50.0k</span></div>
+        <div class="stat-item"><span class="si-lbl">New user conv%</span><span class="si-val">2.85%</span></div>
+        <div class="stat-item"><span class="si-lbl">Returning conv%</span><span class="si-val">10.32%</span></div>
+        <div class="stat-item"><span class="si-lbl">vs. peers (28d)</span>
+          <span class="si-val" style="color:#fca5a5;">-34.63%</span></div>
+      </div>
+    </div>
+    <div class="right-panel" style="padding:10px 14px 10px;display:flex;flex-direction:column;gap:0;">
+
+      <style>
+        #s-store-listing .sl-tabs { display:flex; gap:6px; margin-bottom:10px; }
+        #s-store-listing .sl-tab {
+          padding:3px 12px; border-radius:20px; border:1.5px solid #e2e8f0;
+          font-size:.64rem; font-weight:600; cursor:pointer; color:#64748b;
+          background:#f8fafc; transition:all .15s;
+        }
+        #s-store-listing .sl-tab.active { background:#7c3aed; color:#fff; border-color:#7c3aed; }
+        #s-store-listing .sl-view { display:flex; flex-direction:column; flex:1; min-height:0; gap:6px; }
+        #s-store-listing .sl-kpi-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+        #s-store-listing .sl-kpi-card { background:#f8fafc; border-radius:8px; padding:7px 10px; }
+        #s-store-listing .sl-kpi-badge { font-size:.55rem; font-weight:700; padding:1px 6px; border-radius:8px; }
+        #s-store-listing .sl-insight {
+          font-size:.62rem; color:#374151; padding:6px 8px;
+          border-radius:6px; border-left:3px solid;
+        }
+      </style>
+
+      <div class="sl-tabs">
+        <button class="sl-tab active" id="sl-tab-cmp" onclick="slShowTab('cmp')">Period Comparison</button>
+        <button class="sl-tab"        id="sl-tab-seg" onclick="slShowTab('seg')">New vs Returning</button>
+        <button class="sl-tab" id="sl-tab-peer" onclick="slShowTab('peer')">Peer Benchmark</button>
+      </div>
+
+      <!-- View: Period comparison -->
+      <div id="sl-view-cmp" class="sl-view">
+        <div class="sl-kpi-grid">
+          <div class="sl-kpi-card">
+            <div style="font-size:.55rem;color:#7c3aed;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;">28-day conv%</div>
+            <div style="font-size:1rem;font-weight:700;color:#1e293b;">2.94%</div>
+            <div style="font-size:.6rem;color:#6b7280;">vs 1.39% prior period</div>
+            <span class="sl-kpi-badge" style="background:#d1fae5;color:#065f46;">+1.55pp</span>
+          </div>
+          <div class="sl-kpi-card" style="background:#fff7ed;">
+            <div style="font-size:.55rem;color:#ea580c;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;">vs. Peers (28d)</div>
+            <div style="font-size:1rem;font-weight:700;color:#9a3412;">-34.6%</div>
+            <div style="font-size:.6rem;color:#6b7280;">below category benchmark</div>
+            <span class="sl-kpi-badge" style="background:#fee2e2;color:#b91c1c;">Below avg</span>
+          </div>
+          
+          <div class="sl-kpi-card" style="background:#f1f5f9;">
+            <div style="font-size:.55rem;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;">90-day conv%</div>
+            <div style="font-size:1rem;font-weight:700;color:#334155;">2.36%</div>
+            <div style="font-size:.6rem;color:#6b7280;">4.28M visitors · 100.8k installs</div>
+            <span class="sl-kpi-badge" style="background:#fee2e2;color:#b91c1c;">-2.21pp</span>
+          </div>
+        </div>
+        <div class="chart-area" style="flex:1;min-height:0;">
+          <canvas id="chart-sl-cmp"></canvas>
+        </div>
+        <div class="sl-insight" style="border-color:#10b981;background:#f0fdf4;margin-top:0;">
+          Visitors ↓25% but acquisitions
+          ↑58% vs prior period —
+          <b>traffic quality improving</b>, not just volume.
+        </div>
+      </div>
+
+      <!-- View: New vs Returning -->
+      <div id="sl-view-seg" class="sl-view" style="display:none;">
+        <div style="font-size:.64rem;color:#6b7280;margin-bottom:2px;">
+          Conv% · new vs returning · Last 28 days
+        </div>
+        <div class="chart-area" style="flex:1;min-height:0;">
+          <canvas id="chart-sl-seg"></canvas>
+        </div>
+        <div class="sl-insight" style="border-color:#7c3aed;background:#f5f3ff;margin-top:0;">
+          <b>Returning users convert 3.6× better</b> (10.32% vs 2.85%) but are only
+          1.1% of visitors.
+          Re-engagement campaigns have highest listing ROI.
+        </div>
+      </div>
+      
+      <!-- View: Peer Benchmark -->
+      <div id="sl-view-peer" class="sl-view" style="display:none;">
+        <div class="sl-kpi-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;">
+          
+          <div class="sl-kpi-card" style="background:#fef3c7;border:1.5px solid #fbbf24;">
+            <div style="font-size:.52rem;color:#92400e;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px;">Aspero</div>
+            <div style="font-size:1.05rem;font-weight:800;color:#92400e;">2.94%</div>
+            <div style="font-size:.55rem;color:#78350f;">Current conv rate</div>
+          </div>
+          <div class="sl-kpi-card">
+            <div style="font-size:.52rem;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px;">p25</div>
+            <div style="font-size:1.05rem;font-weight:800;color:#1e293b;">18.6%</div>
+            <div style="font-size:.55rem;color:#6b7280;">25th percentile</div>
+          </div>
+          <div class="sl-kpi-card" style="background:#eff6ff;border:1.5px solid #3b82f6;">
+            <div style="font-size:.52rem;color:#1d4ed8;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px;">p50 · Median</div>
+            <div style="font-size:1.05rem;font-weight:800;color:#1d4ed8;">37.57%</div>
+            <div style="font-size:.55rem;color:#1e40af;">Investment category</div>
+          </div>
+          <div class="sl-kpi-card">
+            <div style="font-size:.52rem;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px;">p75</div>
+            <div style="font-size:1.05rem;font-weight:800;color:#1e293b;">53.44%</div>
+            <div style="font-size:.55rem;color:#6b7280;">75th percentile</div>
+          </div>
+        </div>
+        <div style="font-size:.6rem;color:#6b7280;margin-bottom:0;">Conversion rate vs. Investment category peers · Play Store 28-day</div>
+        <div class="chart-area" style="flex:1;min-height:0;">
+          <canvas id="chart-sl-peer"></canvas>
+        </div>
+        <div class="sl-insight" style="border-color:#f59e0b;background:#fffbeb;margin-top:0;">
+          Gap to median: <b>+34.63pp</b> needed.
+          Reaching p25 alone (18.6%) would mean <b>6.3× more installs</b> —
+          316.8k vs 50.0k acquisitions on the same 1.70M visitors.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<!-- Slide 1: Signup Completion — Sky Blue -->
   <div class="slide two-col" id="s1">
     <div class="left-panel" style="background:linear-gradient(160deg,#1d4ed8,#3b82f6);">
       <div class="slide-num">Slide 01</div>
@@ -739,6 +870,101 @@
   })();
   </script>
 
+
+
+<!-- Channel Mix Slide -->
+<div class="slide two-col" id="s-channel-mix">
+
+  <!-- left panel -->
+  <div class="left-panel" style="background:linear-gradient(160deg,#14532d,#16a34a);">
+    <div class="slide-num">Traffic Quality</div>
+    <div class="slide-ttl">Email Page<br>Drop-off</div>
+    <div class="slide-sub">Users who left without entering email · WoW</div>
+    <div class="hero-num" style="color:#fff;font-size:2.8rem">-5.5pp</div>
+    <div class="hero-lbl">dropout rate shift</div>
+    <div class="hero-badge up"
+         style="background:rgba(255,255,255,.15);color:#fff;font-size:.82rem;padding:6px 16px">
+      ▼&nbsp; 14.4% → 8.9%
+    </div>
+    <div class="stat-list" style="margin-top:28px">
+      <div class="stat-item">
+        <span class="si-lbl">Jun 8 – Jun 14</span>
+        <span class="si-val">4,375 users</span>
+      </div>
+      <div class="stat-item">
+        <span class="si-lbl">Jun 15 – Jun 21</span>
+        <span class="si-val">5,328 users</span>
+      </div>
+      <div class="stat-item">
+        <span class="si-lbl">Extra dropouts</span>
+        <span class="si-val" style="color:#86efac">
+          -159
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- right panel -->
+  <div class="right-panel" style="padding:24px 28px;overflow-y:auto;display:flex;flex-direction:column;gap:24px">
+
+    <!-- channel table -->
+    <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+                color:#94a3b8;margin-bottom:8px">Top 4 channels by email page views</div>
+    <table style="width:100%;border-collapse:collapse">
+      <thead>
+        <tr style="border-bottom:2px solid #e2e8f0">
+          <th style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+                     color:#94a3b8;padding:4px 12px 10px;text-align:left">Channel</th>
+          <th style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+                     color:#94a3b8;padding:4px 12px 10px;text-align:right">Jun 8 – Jun 14</th>
+          <th style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+                     color:#94a3b8;padding:4px 12px 10px;text-align:right">Jun 15 – Jun 21</th>
+          <th style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+                     color:#94a3b8;padding:4px 12px 10px;text-align:right">Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr style="border-bottom:1px solid #f1f5f9">
+          <td style="padding:11px 12px;font-size:.82rem;font-weight:600;color:#1e293b">Google Ads</td>
+          <td style="padding:11px 12px;text-align:right;font-size:.82rem;color:#94a3b8">10%</td>
+          <td style="padding:11px 12px;text-align:right;font-size:.9rem;font-weight:700;color:#374151">9%</td>
+          <td style="padding:11px 12px;text-align:right;font-size:.82rem;font-weight:700;color:#64748b">▼ -1pp</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9">
+          <td style="padding:11px 12px;font-size:.82rem;font-weight:600;color:#1e293b">restricted</td>
+          <td style="padding:11px 12px;text-align:right;font-size:.82rem;color:#94a3b8">3%</td>
+          <td style="padding:11px 12px;text-align:right;font-size:.9rem;font-weight:700;color:#374151">5%</td>
+          <td style="padding:11px 12px;text-align:right;font-size:.82rem;font-weight:700;color:#64748b">▲ +2pp</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9">
+          <td style="padding:11px 12px;font-size:.82rem;font-weight:600;color:#1e293b">Jio_HM</td>
+          <td style="padding:11px 12px;text-align:right;font-size:.82rem;color:#94a3b8">20%</td>
+          <td style="padding:11px 12px;text-align:right;font-size:.9rem;font-weight:700;color:#374151">8%</td>
+          <td style="padding:11px 12px;text-align:right;font-size:.82rem;font-weight:700;color:#22c55e">▼ -12pp</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9">
+          <td style="padding:11px 12px;font-size:.82rem;font-weight:600;color:#1e293b">oppoglobal_int</td>
+          <td style="padding:11px 12px;text-align:right;font-size:.82rem;color:#94a3b8">8%</td>
+          <td style="padding:11px 12px;text-align:right;font-size:.9rem;font-weight:700;color:#374151">4%</td>
+          <td style="padding:11px 12px;text-align:right;font-size:.82rem;font-weight:700;color:#22c55e">▼ -4pp</td>
+        </tr>
+        <tr style="border-top:2px solid #e2e8f0;background:#f8fafc">
+          <td style="padding:11px 12px;font-size:.82rem;font-weight:700;color:#1e293b">Overall</td>
+          <td style="padding:11px 12px;text-align:right;font-size:.82rem;color:#94a3b8">14%</td>
+          <td style="padding:11px 12px;text-align:right;font-size:.9rem;font-weight:700;color:#f59e0b">9%</td>
+          <td style="padding:11px 12px;text-align:right;font-size:.82rem;font-weight:700;
+                     color:#22c55e">▼ -6pp</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- root cause callout -->
+    <div style="background:#fff7ed;border-left:3px solid #f97316;border-radius:6px;padding:12px 14px"><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#ea580c;margin-bottom:6px">Root cause</div><div style="font-size:.8rem;color:#1e293b;line-height:1.6"><b>Jio_HM</b> dropout rose +-12pp (20% → <b>8%</b>). It accounts for <b>9% of all dropouts this week</b> and drove <b>-25% of the net increase</b>.</div></div>
+
+  </div>
+</div>
+<!-- Channel Mix Slide End -->
 
 <!-- Signin Dropout Slide A -->
 <div class="slide" id="s-dropout-s1" style="flex-direction:column;overflow-y:auto;">
@@ -1711,7 +1937,150 @@ function sdoToggle(g){
   </div>
 
 
-  <!-- Slide 7: GTV by Issuer — Indigo -->
+<!-- Payer Attribution Slide -->
+  <div class="slide two-col" id="s-payer-attr">
+
+    <!-- left panel -->
+    <div class="left-panel" style="background:linear-gradient(160deg,#0f172a,#1e3a5f);">
+      <div class="slide-num">Slide 06b</div>
+      <div class="slide-ttl">Payer<br>Attribution</div>
+      <div class="slide-sub">GTV by acquisition channel · periodic analysis</div>
+      <div class="hero-num" style="color:#fff;font-size:2.6rem">₹16.2 Cr</div>
+      <div class="hero-lbl">total GTV analysed</div>
+      <div class="hero-badge" style="background:rgba(255,255,255,.12);color:#e2e8f0;
+           font-size:.75rem;padding:6px 14px;border-radius:20px;display:inline-block;margin-top:8px">
+        May – Jun 2026
+      </div>
+
+      <div style="margin-top:24px;display:flex;flex-direction:column;gap:6px">
+        
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+        <span style="width:10px;height:10px;border-radius:50%;background:#3b82f6;flex-shrink:0"></span>
+        <span style="font-size:.72rem;color:#e2e8f0;flex:1">Paid Performance</span>
+        <span style="font-size:.75rem;font-weight:700;color:#fff">₹5.74 Cr</span>
+        <span style="font-size:.65rem;color:#94a3b8;min-width:28px;text-align:right">35%</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+        <span style="width:10px;height:10px;border-radius:50%;background:#0d9488;flex-shrink:0"></span>
+        <span style="font-size:.72rem;color:#e2e8f0;flex:1">Organic / Direct Web</span>
+        <span style="font-size:.75rem;font-weight:700;color:#fff">₹3.55 Cr</span>
+        <span style="font-size:.65rem;color:#94a3b8;min-width:28px;text-align:right">22%</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+        <span style="width:10px;height:10px;border-radius:50%;background:#10b981;flex-shrink:0"></span>
+        <span style="font-size:.72rem;color:#e2e8f0;flex:1">Organic Installs (AppsFlyer)</span>
+        <span style="font-size:.75rem;font-weight:700;color:#fff">₹1.10 Cr</span>
+        <span style="font-size:.65rem;color:#94a3b8;min-width:28px;text-align:right">7%</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+        <span style="width:10px;height:10px;border-radius:50%;background:#f59e0b;flex-shrink:0"></span>
+        <span style="font-size:.72rem;color:#e2e8f0;flex:1">Tracking Bug — Branch</span>
+        <span style="font-size:.75rem;font-weight:700;color:#fff">₹1.15 Cr</span>
+        <span style="font-size:.65rem;color:#94a3b8;min-width:28px;text-align:right">7%</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+        <span style="width:10px;height:10px;border-radius:50%;background:#8b5cf6;flex-shrink:0"></span>
+        <span style="font-size:.72rem;color:#e2e8f0;flex:1">Employee Referral</span>
+        <span style="font-size:.75rem;font-weight:700;color:#fff">₹0.11 Cr</span>
+        <span style="font-size:.65rem;color:#94a3b8;min-width:28px;text-align:right">1%</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;background:rgba(239,68,68,.06);border-radius:4px;padding:4px 6px;">
+        <span style="width:10px;height:10px;border-radius:50%;background:#ef4444;flex-shrink:0"></span>
+        <span style="font-size:.72rem;color:#e2e8f0;flex:1">Unknown — AF Sync Bug <span style="background:#fef2f2;color:#ef4444;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:8px">🐛 Bug story open</span></span>
+        <span style="font-size:.75rem;font-weight:700;color:#fff">₹4.54 Cr</span>
+        <span style="font-size:.65rem;color:#94a3b8;min-width:28px;text-align:right">28%</span>
+      </div>
+      </div>
+
+      <div style="margin-top:20px;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);
+                  border-radius:6px;padding:8px 10px">
+        <div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+                    color:#fca5a5;margin-bottom:3px">Dark attribution</div>
+        <div style="font-size:.75rem;color:#fecaca;line-height:1.5">
+          ₹5.69 Cr (35%) = AF sync bug + Branch bug<br>
+          Both engineering-fixable
+        </div>
+      </div>
+    </div>
+
+    <!-- right panel -->
+    <div class="right-panel" style="padding:20px 24px;display:flex;flex-direction:column;gap:16px;overflow-y:auto">
+
+      <!-- donut chart -->
+      <div style="display:flex;align-items:center;gap:20px">
+        <div style="width:160px;height:160px;flex-shrink:0">
+          <canvas id="payerDonut" width="160" height="160"></canvas>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+                      color:#94a3b8;margin-bottom:10px">GTV split by channel</div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:50%;background:#3b82f6;flex-shrink:0"></span><span style="font-size:.72rem;color:#4b5563">Paid Performance</span><span style="margin-left:auto;font-size:.72rem;font-weight:600;color:#1e293b">35%</span></div><div style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:50%;background:#0d9488;flex-shrink:0"></span><span style="font-size:.72rem;color:#4b5563">Organic / Direct Web</span><span style="margin-left:auto;font-size:.72rem;font-weight:600;color:#1e293b">22%</span></div><div style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:50%;background:#10b981;flex-shrink:0"></span><span style="font-size:.72rem;color:#4b5563">Organic Installs (AppsFlyer)</span><span style="margin-left:auto;font-size:.72rem;font-weight:600;color:#1e293b">7%</span></div><div style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:50%;background:#f59e0b;flex-shrink:0"></span><span style="font-size:.72rem;color:#4b5563">Tracking Bug — Branch</span><span style="margin-left:auto;font-size:.72rem;font-weight:600;color:#1e293b">7%</span></div><div style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:50%;background:#8b5cf6;flex-shrink:0"></span><span style="font-size:.72rem;color:#4b5563">Employee Referral</span><span style="margin-left:auto;font-size:.72rem;font-weight:600;color:#1e293b">1%</span></div><div style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:50%;background:#ef4444;flex-shrink:0"></span><span style="font-size:.72rem;color:#4b5563">Unknown — AF Sync Bug</span><span style="margin-left:auto;font-size:.72rem;font-weight:600;color:#1e293b">28%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+                  color:#94a3b8;border-top:1px solid #f1f5f9;padding-top:14px">
+        Channel Insights &amp; Recommendations
+      </div>
+
+      
+    <div style="background:#f0fdfa;border:1px solid #99f6e4;
+                border-radius:6px;padding:10px 12px">
+      <div style="font-size:.72rem;font-weight:700;color:#0d9488;margin-bottom:4px">Organic / Direct Web</div>
+      <div style="font-size:.75rem;color:#374151;line-height:1.55">Highest ATV ₹5.64 L — likely high-intent search traffic landing on bond pages. <b>Action:</b> add <code>initial_referrer_domain</code> user property to split Google organic vs direct bookmark vs other.</div>
+    </div>
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;
+                border-radius:6px;padding:10px 12px">
+      <div style="font-size:.72rem;font-weight:700;color:#10b981;margin-bottom:4px">Organic Installs (AppsFlyer)</div>
+      <div style="font-size:.75rem;color:#374151;line-height:1.55">7% of GTV, moderate ATV. Primary lever: <b>ASO</b> — keyword optimisation + screenshot refresh on Play Store / App Store.</div>
+    </div>
+    <div style="background:#faf5ff;border:1px solid #e9d5ff;
+                border-radius:6px;padding:10px 12px">
+      <div style="font-size:.72rem;font-weight:700;color:#8b5cf6;margin-bottom:4px">Employee Referral</div>
+      <div style="font-size:.75rem;color:#374151;line-height:1.55">Low ATV ~₹13k (10× below avg). Data: test referral incentive on <em>existing investor</em> base before productising the referral programme.</div>
+    </div>
+    <div style="background:#fef2f2;border:1px solid #fecaca;
+                border-radius:6px;padding:10px 12px">
+      <div style="font-size:.72rem;font-weight:700;color:#ef4444;margin-bottom:4px">Fixable dark channels — 35% of GTV hidden</div>
+      <div style="font-size:.75rem;color:#374151;line-height:1.55"><b>₹5.69 Cr (35%)</b> = AF sync bug (₹4.54 Cr) + Branch tracking bug (₹1.15 Cr). Both are engineering-fixable. Resolving them unlocks precise ROI measurement for ₹1 in 3 of GTV.</div>
+    </div>
+
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    var ctx = document.getElementById('payerDonut');
+    if (!ctx) return;
+    new Chart(ctx.getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Paid Performance', 'Organic / Direct Web', 'Organic Installs (AppsFlyer)', 'Tracking Bug — Branch', 'Employee Referral', 'Unknown — AF Sync Bug'],
+        datasets: [{
+          data:            [35, 22, 7, 7, 1, 28],
+          backgroundColor: ['#3b82f6', '#0d9488', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'],
+          borderWidth:     2,
+          borderColor:     '#fff',
+          hoverOffset:     4
+        }]
+      },
+      options: {
+        responsive:  false,
+        cutout:      '62%',
+        plugins:     { legend: { display: false }, tooltip: {
+          callbacks: {
+            label: function(c) { return ' ' + c.label + ': ' + c.raw + '%'; }
+          }
+        } }
+      }
+    });
+  })();
+  </script>
+<!-- Payer Attribution Slide End -->
+
+    <!-- Slide 7: GTV by Issuer — Indigo -->
   <div class="slide two-col" id="s7">
     <div class="left-panel" style="background:linear-gradient(160deg,#312e81,#6366f1);">
       <div class="slide-num">Slide 07</div>
@@ -2220,6 +2589,190 @@ function line(label, data, color, yAxisID) {
     }
     return `<div class="cover-metric"><div class="cm-label">${it.lbl}</div><div class="cm-val">${it.val}</div>${ww}</div>`;
   }).join('');
+})();
+
+// ── Slide 00: Store Listing
+(function() {
+  var P_CUR_V  = 1702965;
+  var P_PREV_V = 2276995;
+  var P_CUR_A  = 50014;
+  var P_PREV_A = 31554;
+  var P_CUR_C  = 2.94;
+  var P_PREV_C = 1.39;
+  var P_NEW_C  = 2.85;  var P_NEW_V = 1683491;  var P_NEW_A = 48005;
+  var P_RET_C  = 10.32;  var P_RET_V = 19474;  var P_RET_A = 2009;
+  var PURPLE   = '#7c3aed';
+  var PURP_L   = '#a78bfa';
+  var GREEN    = '#10b981';
+  var AMBER    = '#f59e0b';
+  var P_LBL    = '28d';
+
+  window.slShowTab = function(tab) {
+    ['cmp','seg','peer'].forEach(function(t) {
+      var v = document.getElementById('sl-view-' + t);
+      var b = document.getElementById('sl-tab-' + t);
+      if (v) v.style.display = (t === tab) ? 'flex' : 'none';
+      if (b) b.classList.toggle('active', t === tab);
+    });
+  };
+
+  if (!window.Chart) return;
+
+  // ── Period comparison chart ──────────────────────────────────────────────
+  var cCmp = document.getElementById('chart-sl-cmp');
+  if (cCmp) {
+    new Chart(cCmp, {
+      data: {
+        labels: ['Prior period', P_LBL],
+        datasets: [
+          {
+            label: 'Visitors', type: 'bar',
+            data: [P_PREV_V, P_CUR_V],
+            backgroundColor: [PURP_L + '66', PURPLE + 'aa'],
+            borderColor: [PURP_L, PURPLE], borderWidth: 1, borderRadius: 4,
+            yAxisID: 'y',
+          },
+          {
+            label: 'Acquisitions', type: 'bar',
+            data: [P_PREV_A, P_CUR_A],
+            backgroundColor: [GREEN + '55', GREEN + 'aa'],
+            borderColor: [GREEN + '88', GREEN], borderWidth: 1, borderRadius: 4,
+            yAxisID: 'y',
+          },
+          {
+            label: 'Conv%', type: 'line',
+            data: [P_PREV_C, P_CUR_C],
+            borderColor: AMBER, backgroundColor: AMBER + '22',
+            borderWidth: 2.5, pointRadius: 5, fill: false,
+            yAxisID: 'y2', tension: 0,
+          },
+        ],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: { duration: 400 },
+        scales: {
+          x: { ticks: { font: { size: 10 } }, grid: { display: false } },
+          y: {
+            ticks: { font: { size: 8 }, callback: function(v) {
+              return v>=1e6?(v/1e6).toFixed(1)+'M':v>=1e3?(v/1e3).toFixed(0)+'k':v;
+            } },
+            grid: { color: '#f1f5f9' },
+          },
+          y2: {
+            position: 'right', min: 0, max: 6,
+            ticks: { font: { size: 8 }, callback: function(v) { return v+'%'; } },
+            grid: { display: false },
+          },
+        },
+        plugins: {
+          legend: { labels: { font: { size: 9 }, boxWidth: 10 } },
+          tooltip: { callbacks: { label: function(ctx) {
+            if (ctx.dataset.yAxisID==='y2') return ' '+ctx.parsed.y+'%';
+            var v=ctx.parsed.y;
+            return ' '+(v>=1e6?(v/1e6).toFixed(2)+'M':v>=1e3?(v/1e3).toFixed(1)+'k':v);
+          } } },
+        },
+      },
+    });
+  }
+
+  // ── Peer Benchmark chart ─────────────────────────────────────────────────
+  var cPeer = document.getElementById('chart-sl-peer');
+  if (cPeer) {
+    var PEER_LABELS = ['Aspero', 'p25 · 25th pct', 'p50 · Median', 'p75 · 75th pct'];
+    var PEER_DATA   = [2.94, 18.6, 37.57, 53.44];
+    var PEER_COLORS = ['#fbbf24','#94a3b8','#3b82f6','#93c5fd'];
+    var PEER_BORDER = ['#f59e0b','#64748b','#1d4ed8','#3b82f6'];
+    new Chart(cPeer, {
+      type: 'bar',
+      data: {
+        labels: PEER_LABELS,
+        datasets: [{
+          label: 'Conv%',
+          data: PEER_DATA,
+          backgroundColor: PEER_COLORS,
+          borderColor: PEER_BORDER,
+          borderWidth: 1.5,
+          borderRadius: 5,
+        }],
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true, maintainAspectRatio: false, animation: { duration: 400 },
+        scales: {
+          x: {
+            min: 0, max: 60,
+            ticks: { font: { size: 9 }, callback: function(v) { return v + '%'; } },
+            grid: { color: '#f1f5f9' },
+            title: { display: true, text: 'Store listing conversion rate', font: { size: 9 }, color: '#94a3b8' },
+          },
+          y: {
+            ticks: { font: { size: 10, weight: '600' }, color: ['#92400e','#475569','#1d4ed8','#475569'] },
+            grid: { display: false },
+          },
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: function(ctx) {
+            var v = ctx.parsed.x;
+            var labels = ['Your rate','25th percentile','Category median','75th percentile'];
+            return ' ' + labels[ctx.dataIndex] + ': ' + v + '%';
+          } } },
+        },
+      },
+    });
+  }
+
+  // ── New vs Returning chart ───────────────────────────────────────────────
+  var cSeg = document.getElementById('chart-sl-seg');
+  if (cSeg) {
+    new Chart(cSeg, {
+      data: {
+        labels: ['New (1.68M visitors)', 'Returning (19.5k visitors)'],
+        datasets: [
+          {
+            label: 'Acquisitions', type: 'bar',
+            data: [P_NEW_A, P_RET_A],
+            backgroundColor: [PURPLE+'aa', GREEN+'aa'],
+            borderColor: [PURPLE, GREEN], borderWidth: 1, borderRadius: 4,
+            yAxisID: 'y',
+          },
+          {
+            label: 'Conv%', type: 'line',
+            data: [P_NEW_C, P_RET_C],
+            borderColor: AMBER, backgroundColor: 'transparent',
+            borderWidth: 2.5, pointRadius: 6, pointBackgroundColor: AMBER,
+            yAxisID: 'y2',
+          },
+        ],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: { duration: 400 },
+        scales: {
+          x: { ticks: { font: { size: 9 } }, grid: { display: false } },
+          y: {
+            ticks: { font: { size: 8 }, callback: function(v) {
+              return v>=1e3?(v/1e3).toFixed(0)+'k':v;
+            } },
+            grid: { color: '#f1f5f9' },
+          },
+          y2: {
+            position: 'right', min: 0, max: 15,
+            ticks: { font: { size: 8 }, callback: function(v) { return v+'%'; } },
+            grid: { display: false },
+          },
+        },
+        plugins: {
+          legend: { labels: { font: { size: 9 }, boxWidth: 10 } },
+          tooltip: { callbacks: { label: function(ctx) {
+            if (ctx.dataset.yAxisID==='y2') return ' '+ctx.parsed.y+'%';
+            var v=ctx.parsed.y;
+            return ' '+(v>=1e3?(v/1e3).toFixed(1)+'k':v)+' installs';
+          } } },
+        },
+      },
+    });
+  }
 })();
 
 // ── Slide 1: Signups ──────────────────────────────────────────────────────────
