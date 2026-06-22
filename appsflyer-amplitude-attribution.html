@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AppsFlyer → Amplitude Attribution Gap — Engineering Report</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; color: #1e293b; line-height: 1.6; }
+
+  .hero { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: white; padding: 48px 40px 40px; }
+  .hero h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 8px; }
+  .hero p { color: #94a3b8; font-size: 0.95rem; margin-bottom: 24px; }
+  .hero-chips { display: flex; gap: 10px; flex-wrap: wrap; }
+  .chip { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 14px; font-size: 0.78rem; color: #cbd5e1; }
+  .chip.red { background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.4); color: #fca5a5; }
+  .chip.green { background: rgba(16,185,129,0.2); border-color: rgba(16,185,129,0.4); color: #6ee7b7; }
+  .chip.amber { background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.4); color: #fcd34d; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
+
+  .toc { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px 28px; margin-bottom: 40px; }
+  .toc h3 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #64748b; margin-bottom: 14px; }
+  .toc ol { padding-left: 20px; }
+  .toc li { margin-bottom: 6px; }
+  .toc a { color: #3b82f6; text-decoration: none; font-size: 0.9rem; }
+  .toc a:hover { text-decoration: underline; }
+
+  .section { margin-bottom: 48px; }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid #e2e8f0; }
+  .section-num { background: #1e293b; color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; flex-shrink: 0; }
+  .section-num.red { background: #dc2626; }
+  .section-num.green { background: #059669; }
+  .section-num.blue { background: #2563eb; }
+  .section-num.amber { background: #d97706; }
+  .section h2 { font-size: 1.2rem; font-weight: 700; color: #1e293b; }
+  .section .sub { font-size: 0.85rem; color: #64748b; margin-top: 2px; }
+
+  .card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+  .card.red-border { border-left: 4px solid #dc2626; }
+  .card.green-border { border-left: 4px solid #059669; }
+  .card.amber-border { border-left: 4px solid #d97706; }
+  .card.blue-border { border-left: 4px solid #2563eb; }
+
+  .card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+  .card p { font-size: 0.9rem; color: #475569; line-height: 1.7; }
+  .card p + p { margin-top: 8px; }
+
+  table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; border: 1px solid #e2e8f0; font-size: 0.88rem; }
+  thead { background: #f1f5f9; }
+  th { padding: 11px 16px; text-align: left; font-weight: 600; color: #475569; font-size: 0.8rem; text-transform: uppercase; letter-spacing: .04em; }
+  td { padding: 11px 16px; border-top: 1px solid #f1f5f9; color: #334155; }
+  tr:hover td { background: #f8fafc; }
+  .num { font-weight: 700; color: #1e293b; }
+  .bad { color: #dc2626; font-weight: 700; }
+  .good { color: #059669; font-weight: 700; }
+  .neutral { color: #d97706; font-weight: 600; }
+
+  .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 20px; }
+  .stat { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 18px 20px; }
+  .stat .lbl { font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 6px; }
+  .stat .val { font-size: 1.6rem; font-weight: 800; color: #1e293b; }
+  .stat .sub { font-size: 0.78rem; color: #94a3b8; margin-top: 3px; }
+  .stat.red .val { color: #dc2626; }
+  .stat.green .val { color: #059669; }
+  .stat.amber .val { color: #d97706; }
+
+  pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 24px; font-size: 0.82rem; line-height: 1.7; overflow-x: auto; margin: 16px 0; font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; }
+  code { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.82rem; color: #1e293b; }
+  .comment { color: #64748b; }
+  .keyword { color: #7dd3fc; }
+  .string { color: #86efac; }
+  .fn { color: #c084fc; }
+  .prop { color: #fbbf24; }
+
+  .flow { display: flex; flex-direction: column; gap: 0; margin: 16px 0; }
+  .flow-step { display: flex; align-items: flex-start; gap: 14px; padding: 12px 0; }
+  .flow-step + .flow-step { border-top: 1px dashed #e2e8f0; }
+  .flow-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .flow-dot.green { background: #059669; }
+  .flow-dot.red { background: #dc2626; }
+  .flow-dot.amber { background: #d97706; }
+  .flow-dot.blue { background: #3b82f6; }
+  .flow-dot.gray { background: #94a3b8; }
+  .flow-text { font-size: 0.88rem; color: #334155; }
+  .flow-text strong { color: #1e293b; }
+  .flow-text .tag { font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+  .tag-af { background: #fef3c7; color: #92400e; }
+  .tag-ampl { background: #ede9fe; color: #5b21b6; }
+  .tag-native { background: #f0fdf4; color: #166534; }
+  .tag-js { background: #eff6ff; color: #1e40af; }
+  .tag-bad { background: #fef2f2; color: #991b1b; }
+  .tag-good { background: #f0fdf4; color: #166534; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+
+  .callout { border-radius: 10px; padding: 16px 20px; margin: 16px 0; font-size: 0.88rem; line-height: 1.7; }
+  .callout.red { background: #fef2f2; border: 1px solid #fecaca; color: #7f1d1d; }
+  .callout.green { background: #f0fdf4; border: 1px solid #bbf7d0; color: #14532d; }
+  .callout.amber { background: #fffbeb; border: 1px solid #fde68a; color: #78350f; }
+  .callout.blue { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e3a8a; }
+  .callout strong { font-weight: 700; }
+
+  .badge { display: inline-block; padding: 2px 9px; border-radius: 12px; font-size: 0.72rem; font-weight: 700; margin-left: 6px; vertical-align: middle; }
+  .badge-red { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+  .badge-green { background: #f0fdf4; color: #059669; border: 1px solid #bbf7d0; }
+  .badge-amber { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+
+  .timeline { position: relative; padding-left: 24px; }
+  .timeline::before { content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: #e2e8f0; }
+  .tl-item { position: relative; margin-bottom: 20px; }
+  .tl-item::before { content: ''; position: absolute; left: -20px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: #94a3b8; border: 2px solid white; box-shadow: 0 0 0 2px #94a3b8; }
+  .tl-item.done::before { background: #059669; box-shadow: 0 0 0 2px #059669; }
+  .tl-item.bad::before { background: #dc2626; box-shadow: 0 0 0 2px #dc2626; }
+  .tl-item .tl-time { font-size: 0.72rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: .04em; }
+  .tl-item .tl-title { font-size: 0.9rem; font-weight: 600; color: #1e293b; }
+  .tl-item .tl-desc { font-size: 0.83rem; color: #64748b; margin-top: 2px; }
+
+  footer { background: #1e293b; color: #64748b; text-align: center; padding: 24px; font-size: 0.8rem; margin-top: 60px; }
+  footer a { color: #94a3b8; }
+
+  .divider { border: none; border-top: 1px solid #e2e8f0; margin: 32px 0; }
+  h4 { font-size: 0.92rem; font-weight: 700; color: #1e293b; margin-bottom: 10px; margin-top: 20px; }
+  ul.bullets { padding-left: 20px; margin: 10px 0; }
+  ul.bullets li { font-size: 0.88rem; color: #475569; margin-bottom: 5px; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>AppsFlyer → Amplitude Attribution Gap</h1>
+  <p>Engineering report — root cause analysis, data evidence, and recommended fixes</p>
+  <div class="hero-chips">
+    <span class="chip">Measured: Jun 15–21, 2026</span>
+    <span class="chip red">45% install gap</span>
+    <span class="chip red">iOS 94% failure</span>
+    <span class="chip amber">onInstallConversionData callback unhandled</span>
+    <span class="chip green">Fix: ~15 lines in AppsFlyerService.ts</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#goal">What we're trying to achieve</a></li>
+      <li><a href="#how-af-works">How AppsFlyer measures installs</a></li>
+      <li><a href="#current-impl">Current implementation</a></li>
+      <li><a href="#data">Data evidence (Jun 15–21)</a></li>
+      <li><a href="#root-cause">Root cause analysis</a></li>
+      <li><a href="#fix1">Fix 1 — In-app attribution callback</a></li>
+      <li><a href="#fix2">Fix 2 — S2S instrumentation improvement</a></li>
+      <li><a href="#recommendation">Recommendation</a></li>
+    </ol>
+  </div>
+
+  <!-- ── 1. GOAL ── -->
+  <div class="section" id="goal">
+    <div class="section-header">
+      <div class="section-num blue">1</div>
+      <div><div class="section h2">What we're trying to achieve</div></div>
+    </div>
+    <div class="card blue-border">
+      <h3>Goal</h3>
+      <p>Attach AppsFlyer attribution data — <strong>media source, campaign, channel, organic vs paid</strong> — to every user in Amplitude, so that all downstream behaviour (signup, KYC, first invest) can be segmented by acquisition channel.</p>
+      <p>Example questions this should answer: <em>"What is the KYC completion rate for users coming from Google Ads vs organic?"</em> or <em>"Which campaign produces users with the highest first-trade rate?"</em></p>
+    </div>
+    <div class="callout blue">
+      <strong>Important:</strong> The goal is attribution properties on Amplitude users — not just the <code>[AppsFlyer] Install</code> event count. Even if the install event is missing, as long as attribution user properties (<code>media_source</code>, <code>campaign</code>, <code>channel</code>) are set correctly, all downstream analysis works.
+    </div>
+  </div>
+
+  <!-- ── 2. HOW AF WORKS ── -->
+  <div class="section" id="how-af-works">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div><div class="section h2">How AppsFlyer measures installs</div></div>
+    </div>
+    <div class="card">
+      <h3>Install = first app open, not store download</h3>
+      <p>AppsFlyer counts an install when the app is <strong>opened for the first time</strong> after being downloaded. The download itself is not tracked — the first launch is the trigger.</p>
+    </div>
+
+    <h4>Sequence on first open</h4>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-dot green"></div>
+        <div class="flow-text"><strong>Native layer starts</strong> <span class="tag tag-native">Native</span><br>AppsFlyer native SDK initialises immediately — before React Native loads. Sends install signal to AF servers.</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot amber"></div>
+        <div class="flow-text"><strong>AppsFlyer servers do attribution lookup</strong> <span class="tag tag-af">AF Servers</span><br>Match this device against recent ad clicks/impressions. Resolve: media source, campaign, channel. This takes <strong>2–5 seconds</strong>.</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot blue"></div>
+        <div class="flow-text"><strong>React Native loads</strong> <span class="tag tag-js">JS Layer</span><br>500ms–3s after native start, depending on device. App.tsx mounts, analytics hooks run.</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot green"></div>
+        <div class="flow-text"><strong>Attribution callback fires on device</strong> <span class="tag tag-af">AF → Device</span><br><code>onInstallConversionDataLoaded</code> delivers <code>{ media_source, campaign, af_channel, af_status }</code> back to the app.</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot green"></div>
+        <div class="flow-text"><strong>S2S postback fires</strong> <span class="tag tag-af">AF Servers → Amplitude</span><br>Separately, AF servers also attempt to forward the install event to Amplitude's servers directly — requires Amplitude device ID to be attached to the AF user record.</div>
+      </div>
+    </div>
+
+    <div class="callout amber">
+      <strong>Key point:</strong> There are <strong>two independent paths</strong> for attribution data to reach Amplitude — the in-app callback (device-side) and the S2S postback (server-to-server). Currently only the S2S path is used, and it is partially broken.
+    </div>
+  </div>
+
+  <!-- ── 3. CURRENT IMPL ── -->
+  <div class="section" id="current-impl">
+    <div class="section-header">
+      <div class="section-num red">3</div>
+      <div><div class="section h2">Current implementation</div></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item done">
+        <div class="tl-time">Mar 19, 2026 — commit a6664de</div>
+        <div class="tl-title">Phase 1 / Phase 2 split introduced</div>
+        <div class="tl-desc">Amplitude initialised in Phase 1. AppsFlyer initialised in Phase 2 only after <code>init().promise</code> resolves and device ID is fetched. Intended to fix the race condition where AppsFlyer was initialised before Amplitude had a device ID.</div>
+      </div>
+      <div class="tl-item done">
+        <div class="tl-time">May 13, 2026 — commit 10cf8a1 (ASP-3628)</div>
+        <div class="tl-title">Retry logic + AMPLITUDE_DEVICE_ID_INIT diagnostic event added</div>
+        <div class="tl-desc">Added polling (10 retries × 200ms) in case <code>getDeviceId()</code> returns undefined right after init. Added diagnostic event to measure failure rate.</div>
+      </div>
+    </div>
+
+    <h4>Current code flow — <code>useAppLaunchConfig.ts</code></h4>
+    <pre><span class="comment">// App.tsx → useMobileApp() → useAppLaunchConfig() — runs on every app open</span>
+
+<span class="keyword">useEffect</span>(() => {
+  <span class="keyword">const</span> deferredInit = () => {
+    <span class="comment">// Phase 1: init Amplitude (+ WebEngage, Firebase, FB)</span>
+    Analytics.getInstance().<span class="fn">initialize</span>(phase1Services);
+
+    <span class="comment">// Phase 2: wait for Amplitude device ID, then init AppsFlyer</span>
+    AmplitudeService.<span class="fn">getAmplitudeIds</span>().<span class="fn">then</span>(({ deviceId, sessionId }) => {
+      appsFlyer.<span class="fn">setAdditionalData</span>({ AmplitudeDeviceId: deviceId, AmplitudeSessionId: sessionId });
+      Analytics.getInstance().<span class="fn">initialize</span>([{ type: <span class="string">'AppsFlyer'</span>, ... }]);
+    });
+  };
+
+  <span class="comment">// Deferred — runs after first render is complete</span>
+  requestIdleCallback ? <span class="fn">requestIdleCallback</span>(deferredInit) : <span class="fn">setImmediate</span>(deferredInit);
+}, []);</pre>
+
+    <h4>Inside <code>AppsFlyerService.ts</code> — the critical gap</h4>
+    <pre>appsFlyer.<span class="fn">initSdk</span>(
+  {
+    onInstallConversionDataListener: <span class="keyword">true</span>,  <span class="comment">// ← listener IS enabled</span>
+    onDeepLinkListener: <span class="keyword">true</span>,
+    timeToWaitForATTUserAuthorization: 60,
+    ...
+  },
+  () => {
+    <span class="comment">// SDK init success callback</span>
+    appsFlyer.<span class="fn">getAppsFlyerUID</span>((error, uid) => { <span class="comment">/* sets API header */</span> });
+    appsFlyer.<span class="fn">onDeepLink</span>((data) => { <span class="comment">/* handles deep links */</span> });
+
+    <span class="comment">// ❌ onInstallConversionData handler is MISSING</span>
+    <span class="comment">// Attribution data (media_source, campaign, channel) arrives</span>
+    <span class="comment">// but is never read and never written to Amplitude</span>
+  },
+);</pre>
+
+    <div class="callout red">
+      <strong>The bug:</strong> <code>onInstallConversionDataListener: true</code> tells the AppsFlyer SDK to listen for attribution data. But <code>appsFlyer.onInstallConversionData(callback)</code> — the handler that receives and acts on that data — is never registered. Attribution data arrives and is silently discarded.
+    </div>
+  </div>
+
+  <!-- ── 4. DATA ── -->
+  <div class="section" id="data">
+    <div class="section-header">
+      <div class="section-num red">4</div>
+      <div><div class="section h2">Data evidence</div><div class="sub">Jun 15–21, 2026 · queried via Amplitude Segmentation + Funnel API</div></div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat">
+        <div class="lbl">AF Dashboard Installs</div>
+        <div class="val">21,260</div>
+        <div class="sub">Source of truth</div>
+      </div>
+      <div class="stat red">
+        <div class="lbl">Amplitude Install Events</div>
+        <div class="val">11,650</div>
+        <div class="sub">55% of AF dashboard</div>
+      </div>
+      <div class="stat red">
+        <div class="lbl">Missing Installs</div>
+        <div class="val">9,610</div>
+        <div class="sub">45.2% never reach Amplitude</div>
+      </div>
+      <div class="stat green">
+        <div class="lbl">device_id_present=false</div>
+        <div class="val">0</div>
+        <div class="sub">Retry fix working perfectly</div>
+      </div>
+    </div>
+
+    <h4>Platform breakdown</h4>
+    <table>
+      <thead>
+        <tr><th>Platform</th><th>AF Dashboard (est.)</th><th>MLV New Users</th><th>Install in Amplitude</th><th>Capture Rate</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Android</strong></td>
+          <td class="num">~19,600</td>
+          <td class="num">10,022</td>
+          <td class="num">11,549</td>
+          <td class="neutral">~59%</td>
+          <td><span class="badge badge-amber">Partial</span></td>
+        </tr>
+        <tr>
+          <td><strong>iOS</strong></td>
+          <td class="num">~1,600</td>
+          <td class="num">328</td>
+          <td class="num">101</td>
+          <td class="bad">~6%</td>
+          <td><span class="badge badge-red">Broken</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 style="margin-top:20px">AMPLITUDE_DEVICE_ID_INIT diagnostic (May 13 fix)</h4>
+    <table>
+      <thead>
+        <tr><th>Metric</th><th>Count</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Total fired</td><td class="num">43,749</td><td>Fires on every app open — includes returning users</td></tr>
+        <tr><td>device_id_present = false</td><td class="good">0 (0%)</td><td>Amplitude SDK always generates a device ID ✓</td></tr>
+        <tr><td>retries_used &gt; 0</td><td class="good">0 (0%)</td><td>Device ID available immediately — no retry ever needed ✓</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout amber" style="margin-top:16px">
+      <strong>What this tells us:</strong> The retry fix from ASP-3628 is working — there is no device ID availability problem. The 45% gap exists for a completely different reason (see Root Cause below). Further retry/timing improvements will not close this gap.
+    </div>
+
+    <h4>Install funnel breakdown — where users are lost</h4>
+    <pre style="background:#f8fafc; color:#1e293b; border: 1px solid #e2e8f0;">AF Dashboard Installs          21,260   (100%) ← ground truth
+│
+├── Never fired MOBILE_LAUNCH_VIEW   3,801   (18%)  ← installed but bounced before RN loaded
+│
+└── Fired MOBILE_LAUNCH_VIEW        17,459   (82%)
+    │
+    ├── Install reached Amplitude   11,650   (55% of total) ← S2S worked
+    │     Android: 11,549
+    │     iOS:        101  ← near-zero
+    │
+    └── Install NOT in Amplitude     5,809   (27% of total)
+          These users ARE in Amplitude (they fired MOBILE_LAUNCH_VIEW)
+          but have no install event and no attribution data attached</pre>
+
+    <div class="callout red">
+      <strong>The real impact on analysis:</strong> The 5,809 users who opened the app and completed actions (signup, KYC, invest) exist in Amplitude but are attributed to <em>no channel</em>. Any channel-segmented analysis is working off an incomplete picture — up to 27% of active new users are invisible to acquisition reporting.
+    </div>
+  </div>
+
+  <!-- ── 5. ROOT CAUSE ── -->
+  <div class="section" id="root-cause">
+    <div class="section-header">
+      <div class="section-num red">5</div>
+      <div><div class="section h2">Root cause analysis</div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="card red-border">
+        <h3>Root Cause 1 — Structural timing gap</h3>
+        <p>AppsFlyer's native SDK fires the install event <strong>before React Native loads</strong>. The Amplitude device ID (needed for S2S matching) is only available after the JS layer initialises. For users who close the app before RN loads, the S2S event is sent with no Amplitude ID → dropped.</p>
+      </div>
+      <div class="card red-border">
+        <h3>Root Cause 2 — In-app callback not handled</h3>
+        <p><code>onInstallConversionDataListener: true</code> is set but <code>appsFlyer.onInstallConversionData()</code> handler is never registered. Attribution data (media source, campaign, channel) arrives in-app and is silently discarded — never written to Amplitude user properties.</p>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card amber-border">
+        <h3>Root Cause 3 — iOS has no GAID fallback</h3>
+        <p>On Android, GAID (Google Advertising ID) allows probabilistic matching between AF and Amplitude — both read it natively. iOS has no equivalent without ATT consent (most users deny). Result: iOS S2S capture is ~6% vs Android ~59%.</p>
+      </div>
+      <div class="card amber-border">
+        <h3>Root Cause 4 — requestIdleCallback adds extra delay</h3>
+        <p>Analytics init is deferred until the browser/JS engine is idle. On low-end Android devices this adds an additional 1–2 seconds before <code>setAdditionalData</code> is called, increasing the window where AF sends S2S events without an Amplitude ID.</p>
+      </div>
+    </div>
+
+    <h4>The timing race visualised</h4>
+    <pre style="background:#f8fafc; color:#1e293b; border:1px solid #e2e8f0; font-size:0.8rem;">
+Time →    0ms         500ms       1000ms      1500ms      2000ms+
+          │           │           │           │           │
+Native:   █ AF native SDK fires install to AF servers
+          │           █ AF servers resolve attribution (2-5s round trip)
+          │           │           │           │           █ S2S postback fires to Amplitude
+JS:                   █ React Native loads
+                      │           █ requestIdleCallback fires
+                      │           │  └─ Amplitude init starts
+                      │           │       └─ init().promise resolves
+                      │           │            └─ getDeviceId()
+                      │           │                └─ setAdditionalData  ◄── often AFTER S2S postback
+                      │           │                     └─ AppsFlyer RN SDK init
+                      │           │                          └─ onInstallConversionData fires
+                                                                   └─ ❌ NO HANDLER → data discarded
+    </pre>
+  </div>
+
+  <!-- ── 6. FIX 1 ── -->
+  <div class="section" id="fix1">
+    <div class="section-header">
+      <div class="section-num green">6</div>
+      <div><div class="section h2">Fix 1 — In-app attribution callback <span class="badge badge-green">Recommended</span></div><div class="sub">Solves Root Causes 2, 3, 4 · ~15 lines in AppsFlyerService.ts · Low effort · High impact</div></div>
+    </div>
+
+    <div class="card green-border">
+      <h3>How it works</h3>
+      <p>Register <code>appsFlyer.onInstallConversionData()</code> after <code>initSdk</code>. When AppsFlyer's attribution lookup completes (2–5s after first open), this fires on the device with full attribution data. At that point React Native is loaded and Amplitude is initialised — write the attribution directly to Amplitude user properties with <code>identify()</code>.</p>
+      <p>This path is <strong>entirely device-side</strong>. It does not depend on S2S, does not need the Amplitude device ID for server matching, and does not depend on timing relative to AppsFlyer's postback queue.</p>
+    </div>
+
+    <h4>Why this is reliable</h4>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-dot green"></div>
+        <div class="flow-text"><strong>No server-to-server dependency</strong> — attribution data goes device → Amplitude SDK directly, not through AF servers → Amplitude servers.</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot green"></div>
+        <div class="flow-text"><strong>No device ID matching required</strong> — the Amplitude SDK is already running on the device when the callback fires. User is already identified.</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot green"></div>
+        <div class="flow-text"><strong>Fires after RN is loaded</strong> — attribution callback resolves 2–5s after first open, by which time React Native and Amplitude SDK are always ready.</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot green"></div>
+        <div class="flow-text"><strong>Works on iOS without ATT</strong> — does not rely on IDFA. Attribution data is returned from AF servers for all users (organic = "Organic", paid = media source name).</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot green"></div>
+        <div class="flow-text"><strong>Fires only once per install</strong> — subsequent app opens do not re-fire this callback. Attribution user properties are set once and persist on the Amplitude user profile.</div>
+      </div>
+    </div>
+
+    <h4>Code change — <code>src/manager/analytics/appsFlyer/AppsFlyerService.ts</code></h4>
+    <pre><span class="comment">// Inside requestATTAndInitAppsFlyer(), after appsFlyer.initSdk()</span>
+
+<span class="comment">// Add this import at the top of the file:</span>
+<span class="keyword">import</span> { Identify, identify } <span class="keyword">from</span> <span class="string">'@amplitude/analytics-react-native'</span>;
+
+<span class="comment">// After initSdk success callback, add:</span>
+appsFlyer.<span class="fn">onInstallConversionData</span>((res) => {
+  <span class="keyword">try</span> {
+    <span class="keyword">const</span> d = res?.data ?? {};
+    <span class="keyword">const</span> identifyObj = <span class="keyword">new</span> <span class="fn">Identify</span>();
+
+    <span class="comment">// Core attribution properties</span>
+    <span class="keyword">if</span> (d.<span class="prop">media_source</span>)  identifyObj.<span class="fn">set</span>(<span class="string">'af_media_source'</span>, d.<span class="prop">media_source</span>);
+    <span class="keyword">if</span> (d.<span class="prop">campaign</span>)      identifyObj.<span class="fn">set</span>(<span class="string">'af_campaign'</span>,     d.<span class="prop">campaign</span>);
+    <span class="keyword">if</span> (d.<span class="prop">af_channel</span>)    identifyObj.<span class="fn">set</span>(<span class="string">'af_channel'</span>,      d.<span class="prop">af_channel</span>);
+    <span class="keyword">if</span> (d.<span class="prop">af_status</span>)     identifyObj.<span class="fn">set</span>(<span class="string">'af_status'</span>,       d.<span class="prop">af_status</span>);   <span class="comment">// "Organic" | "Non-organic"</span>
+    <span class="keyword">if</span> (d.<span class="prop">af_adset</span>)      identifyObj.<span class="fn">set</span>(<span class="string">'af_adset'</span>,        d.<span class="prop">af_adset</span>);
+    <span class="keyword">if</span> (d.<span class="prop">campaign_id</span>)   identifyObj.<span class="fn">set</span>(<span class="string">'af_campaign_id'</span>,  d.<span class="prop">campaign_id</span>);
+
+    <span class="fn">identify</span>(identifyObj);
+  } <span class="keyword">catch</span> (_) {
+    <span class="comment">// Silent — never block app flow</span>
+  }
+});</pre>
+
+    <h4>Attribution properties available in callback</h4>
+    <table>
+      <thead><tr><th>Property</th><th>Example value</th><th>Use case</th></tr></thead>
+      <tbody>
+        <tr><td><code>media_source</code></td><td>googleadwords_int, organic, facebook_ads</td><td>Paid vs organic split, platform breakdown</td></tr>
+        <tr><td><code>campaign</code></td><td>Brand_June_2026</td><td>Campaign-level conversion analysis</td></tr>
+        <tr><td><code>af_channel</code></td><td>Search, Display, Social</td><td>Channel-level funnel rates</td></tr>
+        <tr><td><code>af_status</code></td><td>Organic / Non-organic</td><td>Simple paid vs organic flag</td></tr>
+        <tr><td><code>af_adset</code></td><td>Adset name</td><td>Ad group performance</td></tr>
+        <tr><td><code>campaign_id</code></td><td>12345678</td><td>Programmatic campaign matching</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout green" style="margin-top:16px">
+      <strong>Expected outcome:</strong> Attribution user properties will be set for ~95%+ of users who open the app (vs ~55% today). All downstream Amplitude queries — signup rate by channel, KYC completion by media source, first-trade rate by campaign — will work accurately.
+    </div>
+  </div>
+
+  <!-- ── 7. FIX 2 ── -->
+  <div class="section" id="fix2">
+    <div class="section-header">
+      <div class="section-num blue">7</div>
+      <div><div class="section h2">Fix 2 — Improve S2S instrumentation <span class="badge badge-amber">Supplementary</span></div><div class="sub">Partially closes the install event gap · Does not replace Fix 1 · Medium effort</div></div>
+    </div>
+
+    <div class="callout amber">
+      <strong>Note:</strong> Fix 2 improves the <code>[AppsFlyer] Install</code> event count in Amplitude but does NOT solve the attribution properties gap on its own. Fix 1 should always be implemented. Fix 2 is supplementary if you also need accurate install counts in Amplitude for funnel base calculations.
+    </div>
+
+    <div class="card">
+      <h3>Why the S2S gap exists</h3>
+      <p>AppsFlyer's native SDK fires the install event before React Native loads. The S2S postback to Amplitude is sent from AF's servers — it needs the Amplitude device ID attached to the AF user record. <code>setAdditionalData({ AmplitudeDeviceId })</code> can only be called from JS, which loads after native. For users who close the app quickly, the postback fires before the device ID is set.</p>
+    </div>
+
+    <h4>Option A — Move AppsFlyer native SDK init to native layer (High effort)</h4>
+    <p style="font-size:0.88rem; color:#475569; margin-bottom:12px;">Initialize AppsFlyer at the native layer (AppDelegate.swift / MainApplication.kt) rather than from JS. This eliminates the RN load dependency entirely, but requires storing the Amplitude device ID natively (AsyncStorage is not accessible from native code on first open).</p>
+
+    <h4>Option B — Use AppsFlyer attribution callback for Amplitude device ID (Medium effort)</h4>
+    <p style="font-size:0.88rem; color:#475569; margin-bottom:12px;">Since the attribution callback fires after RN is loaded (2–5s), use it as a second opportunity to call <code>setAdditionalData</code> with the Amplitude device ID — ensuring the device ID is set before any subsequent AF events are forwarded.</p>
+
+    <pre><span class="comment">// Inside the onInstallConversionData handler (same callback as Fix 1)</span>
+appsFlyer.<span class="fn">onInstallConversionData</span>((res) => {
+  <span class="keyword">try</span> {
+    <span class="comment">// Fix 1: set attribution properties on Amplitude (see above)</span>
+    <span class="comment">// ...</span>
+
+    <span class="comment">// Fix 2: re-set Amplitude IDs on AF to ensure S2S is linked</span>
+    <span class="keyword">const</span> deviceId = <span class="fn">getDeviceId</span>();
+    <span class="keyword">const</span> sessionId = <span class="fn">getSessionId</span>();
+    <span class="keyword">if</span> (deviceId) {
+      appsFlyer.<span class="fn">setAdditionalData</span>({
+        AmplitudeDeviceId: deviceId,
+        ...(sessionId !== undefined && { AmplitudeSessionId: sessionId }),
+      }, () => {});
+    }
+  } <span class="keyword">catch</span> (_) {}
+});</pre>
+
+    <h4>Option C — Enable IDFV matching in AppsFlyer dashboard (Low effort, iOS only)</h4>
+    <p style="font-size:0.88rem; color:#475569; margin-bottom:12px;">In AppsFlyer's Amplitude integration settings, enable IDFV (Identifier for Vendor) as a matching method. IDFV is available on iOS without ATT consent for apps from the same vendor. This can partially recover iOS install capture (currently 6%) without any code change.</p>
+    <p style="font-size:0.88rem; color:#475569;"><strong>Path:</strong> AppsFlyer Dashboard → Configuration → Integrated Partners → Amplitude → Attribution → enable IDFV matching.</p>
+
+    <h4>S2S gap — what's fixable vs structural</h4>
+    <table>
+      <thead><tr><th>User type</th><th>Gap reason</th><th>Fixable?</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Installed, never opened app</td>
+          <td>App never launched — no Amplitude event possible</td>
+          <td><span class="badge badge-red">No</span></td>
+        </tr>
+        <tr>
+          <td>Opened app, closed before RN loaded</td>
+          <td>JS layer never ran — Amplitude never initialized</td>
+          <td><span class="badge badge-red">No</span></td>
+        </tr>
+        <tr>
+          <td>Opened app, stayed 5–10s, iOS without ATT</td>
+          <td>No IDFA — AF cannot match to Amplitude user for S2S</td>
+          <td><span class="badge badge-amber">Partial (IDFV)</span></td>
+        </tr>
+        <tr>
+          <td>Opened app, stayed 5–10s, Android</td>
+          <td>S2S postback fired before setAdditionalData called</td>
+          <td><span class="badge badge-green">Yes (Option B)</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── 8. RECOMMENDATION ── -->
+  <div class="section" id="recommendation">
+    <div class="section-header">
+      <div class="section-num green">8</div>
+      <div><div class="section h2">Recommendation</div></div>
+    </div>
+
+    <table>
+      <thead><tr><th>#</th><th>Action</th><th>File</th><th>Effort</th><th>Impact</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>P0</strong></td>
+          <td>Implement <code>onInstallConversionData</code> callback — write <code>media_source</code>, <code>campaign</code>, <code>channel</code>, <code>af_status</code> to Amplitude user properties via <code>identify()</code></td>
+          <td><code>AppsFlyerService.ts</code></td>
+          <td><span class="badge badge-green">~15 lines</span></td>
+          <td>Attribution coverage 55% → 95%+</td>
+        </tr>
+        <tr>
+          <td><strong>P1</strong></td>
+          <td>Re-call <code>setAdditionalData</code> inside the same callback with Amplitude device ID — improves S2S install capture for Android</td>
+          <td><code>AppsFlyerService.ts</code></td>
+          <td><span class="badge badge-green">~5 lines</span></td>
+          <td>Android install capture improvement</td>
+        </tr>
+        <tr>
+          <td><strong>P1</strong></td>
+          <td>Enable IDFV matching in AppsFlyer → Amplitude integration settings (dashboard config, no code)</td>
+          <td>AF Dashboard</td>
+          <td><span class="badge badge-green">Config only</span></td>
+          <td>Partial iOS recovery</td>
+        </tr>
+        <tr>
+          <td><strong>P2</strong></td>
+          <td>Use AF dashboard install count as the install denominator in all funnel reporting — not <code>[AppsFlyer] Install</code> events in Amplitude</td>
+          <td>Reporting / slides</td>
+          <td><span class="badge badge-green">None</span></td>
+          <td>Accurate funnel base immediately</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout green" style="margin-top:20px">
+      <strong>Bottom line:</strong> The P0 fix (in-app attribution callback) is ~15 lines in one file and solves the core problem entirely. The current S2S gap is a structural limitation — the install event count in Amplitude will always undercount because AppsFlyer's native SDK fires before React Native loads. But for the actual goal (segmenting behaviour by acquisition channel), the in-app callback is all that's needed.
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>Generated Jun 22, 2026 · Aspero / Yubi B2C · Data source: Amplitude Segmentation + Funnel API</p>
+</footer>
+
+</body>
+</html>
