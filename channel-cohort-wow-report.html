@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Channel Cohort WoW Report — Aspero</title>
+  <style>
+:root{
+  --bg:#f8fafc;--card:#fff;--bdr:#e3e8ef;
+  --t1:#121926;--t2:#4b5565;--t3:#697586;--t4:#9aa4b2;
+  --acc:#2563eb;
+  --up2-bg:#dcfce7;--up2-t:#166534;
+  --up1-bg:#f0fdf4;--up1-t:#15803d;
+  --dn2-bg:#fef2f2;--dn2-t:#991b1b;
+  --dn1-bg:#fff7f7;--dn1-t:#dc2626;
+  --flat-t:#6b7280;
+  --rad:8px;--shdw:0 1px 3px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+     background:var(--bg);color:var(--t1);font-size:14px}
+.page{max-width:1400px;margin:0 auto;padding:28px 20px 60px}
+h1{font-size:22px;font-weight:700;margin-bottom:4px}
+.sub{color:var(--t3);font-size:13px;margin-bottom:20px}
+.method{background:#eff6ff;border:1px solid #bfdbfe;border-radius:var(--rad);
+        padding:12px 16px;margin-bottom:20px;font-size:12.5px;color:#1e40af;line-height:1.65}
+.method strong{color:#1d4ed8}
+/* platform tabs */
+.ptabs{display:flex;gap:4px;margin-bottom:20px}
+.ptab{padding:8px 22px;border-radius:20px;border:1px solid var(--bdr);background:var(--card);
+      cursor:pointer;font-size:13px;color:var(--t2);font-weight:500;transition:all .15s}
+.ptab:hover{border-color:var(--acc);color:var(--acc)}
+.ptab.active{background:var(--acc);color:#fff;border-color:var(--acc)}
+.ppanel{display:none}.ppanel.active{display:block}
+/* metric selector */
+.mselector{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.mbtn{padding:5px 14px;border-radius:6px;border:1px solid var(--bdr);background:var(--card);
+      cursor:pointer;font-size:12px;color:var(--t3);transition:all .15s}
+.mbtn:hover{border-color:#94a3b8;color:var(--t1)}
+.mbtn.active{background:#1e293b;color:#fff;border-color:#1e293b}
+.mpanel{display:none}.mpanel.active{display:block}
+/* table */
+.twrap{background:var(--card);border-radius:var(--rad);border:1px solid var(--bdr);
+       box-shadow:var(--shdw);overflow-x:auto;margin-bottom:0}
+table{width:100%;border-collapse:collapse}
+thead th{background:#f8fafc;font-size:11px;font-weight:600;color:var(--t3);
+         text-transform:uppercase;letter-spacing:.04em;padding:9px 11px;
+         border-bottom:1px solid var(--bdr);text-align:center;white-space:nowrap}
+thead th.ch-col{text-align:left;min-width:170px}
+thead th.latest{background:#eff6ff;color:#1d4ed8;font-weight:700}
+tbody tr:hover{background:#f8fafc}
+tbody tr+tr td{border-top:1px solid #f1f5f9}
+td{padding:9px 11px;font-size:12.5px;text-align:center;white-space:nowrap;vertical-align:middle}
+td:first-child{text-align:left;font-weight:500;max-width:200px;overflow:hidden;text-overflow:ellipsis}
+td.latest{background:#f8fbff}
+.v{min-width:90px}
+small{display:block;font-size:10px;color:var(--t4);margin-top:1px}
+/* WoW chips */
+.wow{display:inline-block}
+.wow.up2{color:var(--up2-t);font-weight:600}
+.wow.up1{color:var(--up1-t)}
+.wow.dn2{color:var(--dn2-t);font-weight:600}
+.wow.dn1{color:var(--dn1-t)}
+.wow.flat{color:var(--flat-t)}
+.wow.na{color:var(--t4)}
+.avg-row td{background:#f1f5f9;font-weight:700;font-size:12px;
+            border-top:2px solid var(--bdr)!important}
+.note{font-size:11.5px;color:var(--t4);margin-top:10px;line-height:1.65}
+/* view-all toggle */
+.extra-ch{display:none}
+.ppanel.show-all .extra-ch{display:table-row}
+.view-all-btn{margin-top:10px;padding:6px 16px;border-radius:6px;border:1px solid var(--bdr);
+              background:var(--card);cursor:pointer;font-size:12px;color:var(--acc);
+              font-weight:500;display:inline-block;transition:all .15s}
+.view-all-btn:hover{background:#eff6ff;border-color:var(--acc)}
+</style>
+</head>
+<body>
+  <div class="page">
+    <h1>Channel Attribution — Cohort WoW</h1>
+    <p class="sub">8 weeks · Mon–Sun cohorts · Apr 27–May 03  →  Jun 15–Jun 21 · Generated Jun 22, 2026 · 23:48 IST</p>
+
+    <div class="method">
+      <strong>How cohorts work:</strong>
+      Each week's signups form a cohort. KYC and trade metrics count only users
+      from <em>that week's cohort</em> who converted within the same Mon–Sun window.
+      This means rates can never exceed 100% — no contamination from prior weeks.
+      <strong>Top 15 channels</strong> by 8-week GTV are shown. &nbsp;
+      <strong>WoW arrows</strong>: ▲▼ = % change for volumes, pp change for rates.
+      Green = meaningful improvement · Red = meaningful decline.
+    </div>
+
+    <div class="ptabs">
+      <button class="ptab active" data-p="mobile"
+              onclick="switchP('mobile')">📱 Mobile — AppsFlyer Media Source</button>
+      <button class="ptab" data-p="web"
+              onclick="switchP('web')">🌐 Web — UTM Medium</button>
+    </div>
+
+    
+  <div class="ppanel active" data-p="mobile">
+    <div class="mselector"><button class="mbtn active" data-m="0" onclick="switchM('mobile',0)">Signups</button><button class="mbtn" data-m="1" onclick="switchM('mobile',1)">KYC Done%</button><button class="mbtn" data-m="2" onclick="switchM('mobile',2)">K→Trade%</button><button class="mbtn" data-m="3" onclick="switchM('mobile',3)">1st Trades</button><button class="mbtn" data-m="4" onclick="switchM('mobile',4)">GTV</button><button class="mbtn" data-m="5" onclick="switchM('mobile',5)">ATV</button></div>
+    
+    <div class="mpanel active" data-m="0">
+      <div class="twrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="ch-col">Channel</th>
+              <th class="wh">Apr 27–May 03</th><th class="wh">May 04–May 10</th><th class="wh">May 11–May 17</th><th class="wh">May 18–May 24</th><th class="wh">May 25–May 31</th><th class="wh">Jun 01–Jun 07</th><th class="wh">Jun 08–Jun 14</th><th class="wh  latest">Jun 15–Jun 21</th>
+            </tr>
+          </thead>
+          <tbody>
+      <tr><td title="(none)">(none)</td><td class="v">1,881</td><td class="v"><span class="wow dn2">1,229<br><small>▼35%</small></span></td><td class="v"><span class="wow dn1">1,014<br><small>▼17%</small></span></td><td class="v"><span class="wow up1">1,148<br><small>▲13%</small></span></td><td class="v"><span class="wow dn1">938<br><small>▼18%</small></span></td><td class="v"><span class="wow up2">1,294<br><small>▲38%</small></span></td><td class="v"><span class="wow dn1">1,113<br><small>▼14%</small></span></td><td class="v latest"><span class="wow flat">1,119<br><small>▲1%</small></span></td></tr>
+      <tr><td title="Google UAC">Google UAC</td><td class="v">1,205</td><td class="v"><span class="wow up2">2,090<br><small>▲73%</small></span></td><td class="v"><span class="wow flat">2,140<br><small>▲2%</small></span></td><td class="v"><span class="wow up1">2,550<br><small>▲19%</small></span></td><td class="v"><span class="wow dn2">1,490<br><small>▼42%</small></span></td><td class="v"><span class="wow flat">1,555<br><small>▲4%</small></span></td><td class="v"><span class="wow flat">1,529<br><small>▼2%</small></span></td><td class="v latest"><span class="wow up2">2,018<br><small>▲32%</small></span></td></tr>
+      <tr><td title="Organic (App)">Organic (App)</td><td class="v">38</td><td class="v"><span class="wow up2">109<br><small>▲187%</small></span></td><td class="v"><span class="wow dn2">83<br><small>▼24%</small></span></td><td class="v"><span class="wow up2">174<br><small>▲110%</small></span></td><td class="v"><span class="wow up2">269<br><small>▲55%</small></span></td><td class="v"><span class="wow up1">310<br><small>▲15%</small></span></td><td class="v"><span class="wow dn2">147<br><small>▼53%</small></span></td><td class="v latest"><span class="wow flat">152<br><small>▲3%</small></span></td></tr>
+      <tr><td title="onetraffijs_int">onetraffijs_int</td><td class="v">0</td><td class="v">0</td><td class="v">135</td><td class="v"><span class="wow up2">295<br><small>▲119%</small></span></td><td class="v"><span class="wow dn2">78<br><small>▼74%</small></span></td><td class="v"><span class="wow dn2">1<br><small>▼99%</small></span></td><td class="v"><span class="wow flat">1<br><small>0%</small></span></td><td class="v latest"><span class="wow up2">8<br><small>▲700%</small></span></td></tr>
+      <tr><td title="sokendev_int">sokendev_int</td><td class="v">0</td><td class="v">118</td><td class="v"><span class="wow flat">120<br><small>▲2%</small></span></td><td class="v"><span class="wow up2">167<br><small>▲39%</small></span></td><td class="v"><span class="wow dn2">92<br><small>▼45%</small></span></td><td class="v"><span class="wow up1">106<br><small>▲15%</small></span></td><td class="v"><span class="wow up2">184<br><small>▲74%</small></span></td><td class="v latest"><span class="wow dn2">107<br><small>▼42%</small></span></td></tr>
+      <tr><td title="employee_referral">employee_referral</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">20</td><td class="v"><span class="wow up2">47<br><small>▲135%</small></span></td><td class="v"><span class="wow up2">108<br><small>▲130%</small></span></td><td class="v"><span class="wow dn2">35<br><small>▼68%</small></span></td><td class="v latest">0</td></tr>
+      <tr><td title="sandboxads_int">sandboxads_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">36</td><td class="v"><span class="wow flat">35<br><small>▼3%</small></span></td><td class="v"><span class="wow dn2">21<br><small>▼40%</small></span></td><td class="v"><span class="wow dn2">2<br><small>▼90%</small></span></td><td class="v latest">0</td></tr>
+      <tr><td title="afnumberone_int">afnumberone_int</td><td class="v">0</td><td class="v">0</td><td class="v">106</td><td class="v"><span class="wow up1">125<br><small>▲18%</small></span></td><td class="v"><span class="wow flat">130<br><small>▲4%</small></span></td><td class="v"><span class="wow up2">303<br><small>▲133%</small></span></td><td class="v"><span class="wow dn2">72<br><small>▼76%</small></span></td><td class="v latest"><span class="wow dn2">43<br><small>▼40%</small></span></td></tr>
+      <tr><td title="Jio_HM">Jio_HM</td><td class="v">8</td><td class="v"><span class="wow up2">42<br><small>▲425%</small></span></td><td class="v"><span class="wow dn2">11<br><small>▼74%</small></span></td><td class="v"><span class="wow up2">428<br><small>▲3791%</small></span></td><td class="v"><span class="wow dn2">192<br><small>▼55%</small></span></td><td class="v"><span class="wow dn2">25<br><small>▼87%</small></span></td><td class="v"><span class="wow dn2">5<br><small>▼80%</small></span></td><td class="v latest"><span class="wow up2">386<br><small>▲7620%</small></span></td></tr>
+      <tr><td title="foxmobiwy_int">foxmobiwy_int</td><td class="v">0</td><td class="v">65</td><td class="v"><span class="wow up2">112<br><small>▲72%</small></span></td><td class="v"><span class="wow dn2">82<br><small>▼27%</small></span></td><td class="v"><span class="wow dn2">16<br><small>▼80%</small></span></td><td class="v"><span class="wow dn2">1<br><small>▼94%</small></span></td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr><td title="mobile_app_share">mobile_app_share</td><td class="v">2</td><td class="v">0</td><td class="v">1</td><td class="v"><span class="wow flat">1<br><small>0%</small></span></td><td class="v"><span class="wow up2">2<br><small>▲100%</small></span></td><td class="v">0</td><td class="v">1</td><td class="v latest">0</td></tr>
+      <tr><td title="Unattributed">Unattributed</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">8</td><td class="v">0</td><td class="v latest">1</td></tr>
+      <tr><td title="Zepto">Zepto</td><td class="v">0</td><td class="v">0</td><td class="v">29</td><td class="v"><span class="wow up2">65<br><small>▲124%</small></span></td><td class="v"><span class="wow dn2">48<br><small>▼26%</small></span></td><td class="v"><span class="wow dn2">4<br><small>▼92%</small></span></td><td class="v"><span class="wow dn2">1<br><small>▼75%</small></span></td><td class="v latest"><span class="wow flat">1<br><small>0%</small></span></td></tr>
+      <tr><td title="oppoglobal_int">oppoglobal_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">16</td><td class="v latest"><span class="wow up2">291<br><small>▲1719%</small></span></td></tr>
+      <tr><td title="Zomato_CPI">Zomato_CPI</td><td class="v">28</td><td class="v"><span class="wow up2">84<br><small>▲200%</small></span></td><td class="v"><span class="wow dn1">71<br><small>▼15%</small></span></td><td class="v"><span class="wow dn2">2<br><small>▼97%</small></span></td><td class="v"><span class="wow flat">2<br><small>0%</small></span></td><td class="v"><span class="wow up2">5<br><small>▲150%</small></span></td><td class="v"><span class="wow dn2">3<br><small>▼40%</small></span></td><td class="v latest"><span class="wow flat">3<br><small>0%</small></span></td></tr>
+      <tr class="extra-ch"><td title="s2ssoftsys_int">s2ssoftsys_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">2</td><td class="v"><span class="wow up2">4<br><small>▲100%</small></span></td><td class="v"><span class="wow dn2">1<br><small>▼75%</small></span></td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="Jio_17042026">Jio_17042026</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">38</td><td class="v"><span class="wow dn2">3<br><small>▼92%</small></span></td><td class="v"><span class="wow dn2">2<br><small>▼33%</small></span></td><td class="v latest"><span class="wow up2">107<br><small>▲5250%</small></span></td></tr>
+      <tr class="extra-ch"><td title="mobilemin36l_int">mobilemin36l_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">4</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="Angel_Investment">Angel_Investment</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">32</td><td class="v"><span class="wow dn2">12<br><small>▼62%</small></span></td><td class="v latest"><span class="wow dn2">5<br><small>▼58%</small></span></td></tr>
+      <tr class="extra-ch"><td title="offlo_int">offlo_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">3</td><td class="v"><span class="wow flat">3<br><small>0%</small></span></td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="Influencer_Collab">Influencer_Collab</td><td class="v">0</td><td class="v">12</td><td class="v"><span class="wow dn2">3<br><small>▼75%</small></span></td><td class="v"><span class="wow flat">3<br><small>0%</small></span></td><td class="v"><span class="wow dn2">2<br><small>▼33%</small></span></td><td class="v"><span class="wow up2">5<br><small>▲150%</small></span></td><td class="v"><span class="wow dn2">1<br><small>▼80%</small></span></td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="appleadbiup_int">appleadbiup_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">7</td></tr>
+      <tr class="extra-ch"><td title="Social_instagram">Social_instagram</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">2</td><td class="v latest"><span class="wow dn2">1<br><small>▼50%</small></span></td></tr>
+      <tr class="extra-ch"><td title="lumolinkaav_int">lumolinkaav_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">5</td><td class="v"><span class="wow up2">8<br><small>▲60%</small></span></td><td class="v"><span class="wow dn2">5<br><small>▼38%</small></span></td><td class="v"><span class="wow dn2">4<br><small>▼20%</small></span></td><td class="v latest"><span class="wow up2">5<br><small>▲25%</small></span></td></tr>
+      <tr class="extra-ch"><td title="Vivo OEM">Vivo OEM</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">251</td><td class="v latest"><span class="wow dn2">165<br><small>▼34%</small></span></td></tr>
+      <tr class="extra-ch"><td title="nfmobi_int">nfmobi_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">2</td><td class="v"><span class="wow up2">4<br><small>▲100%</small></span></td><td class="v latest"><span class="wow dn2">1<br><small>▼75%</small></span></td></tr>
+      <tr class="extra-ch"><td title="appnext_int">appnext_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">101</td><td class="v"><span class="wow up2">312<br><small>▲209%</small></span></td><td class="v"><span class="wow up2">393<br><small>▲26%</small></span></td><td class="v"><span class="wow dn2">5<br><small>▼99%</small></span></td><td class="v latest"><span class="wow dn2">1<br><small>▼80%</small></span></td></tr>
+      <tr class="extra-ch"><td title="Influencer_Collab_Aswin">Influencer_Collab_Aswin</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">26</td><td class="v latest"><span class="wow dn2">9<br><small>▼65%</small></span></td></tr>
+      <tr class="extra-ch"><td title="commondex_int">commondex_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">7</td></tr>
+      <tr class="extra-ch"><td title="aarki_int">aarki_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">1</td><td class="v latest"><span class="wow up2">3<br><small>▲200%</small></span></td></tr>
+      <tr class="extra-ch"><td title="mobupps_int">mobupps_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">1</td></tr>
+      <tr class="extra-ch"><td title="attrimob_int">attrimob_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">9</td><td class="v"><span class="wow up2">36<br><small>▲300%</small></span></td><td class="v latest"><span class="wow dn2">1<br><small>▼97%</small></span></td></tr>
+      <tr class="extra-ch"><td title="xiaomiglobal_int">xiaomiglobal_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">19</td></tr>
+      <tr class="extra-ch"><td title="bigporrs_int">bigporrs_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">1</td><td class="v"><span class="wow flat">1<br><small>0%</small></span></td><td class="v latest"><span class="wow up2">7<br><small>▲600%</small></span></td></tr>
+      <tr class="extra-ch"><td title="recoverunc3_int">recoverunc3_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">2</td></tr>
+      <tr class="extra-ch"><td title="wabermedi1ck_int">wabermedi1ck_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">3</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="oddsendsc32_int">oddsendsc32_int</td><td class="v">0</td><td class="v">0</td><td class="v">1</td><td class="v"><span class="wow up2">6<br><small>▲500%</small></span></td><td class="v"><span class="wow dn2">2<br><small>▼67%</small></span></td><td class="v">0</td><td class="v">1</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="morganconlm_int">morganconlm_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">2</td><td class="v"><span class="wow flat">2<br><small>0%</small></span></td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="mobzone_int">mobzone_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">3</td><td class="v"><span class="wow up2">8<br><small>▲167%</small></span></td><td class="v"><span class="wow up2">11<br><small>▲38%</small></span></td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="adgdfslsgbc_int">adgdfslsgbc_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">20</td><td class="v"><span class="wow dn2">15<br><small>▼25%</small></span></td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="charitabl5o_int">charitabl5o_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">5</td><td class="v"><span class="wow dn2">3<br><small>▼40%</small></span></td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="riversads_int">riversads_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">1</td><td class="v"><span class="wow up2">4<br><small>▲300%</small></span></td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="vfine_int">vfine_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">9</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="batman8z_int">batman8z_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">1</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="liquefteapsg_int">liquefteapsg_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">5</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="partneron_int">partneron_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">5</td><td class="v"><span class="wow dn2">1<br><small>▼80%</small></span></td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="tunnelads_int">tunnelads_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">2</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="nexfigoadh7_int">nexfigoadh7_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">1</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="ccwads4o_int">ccwads4o_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">3</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="arbeenllcgx_int">arbeenllcgx_int</td><td class="v">0</td><td class="v">0</td><td class="v">1</td><td class="v"><span class="wow up2">2<br><small>▲100%</small></span></td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="0">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class='avg-row'><td>Total (all channels)</td><td class="v">3,162</td><td class="v"><span class="wow up1">3,749<br><small>▲19%</small></span></td><td class="v"><span class="wow flat">3,827<br><small>▲2%</small></span></td><td class="v"><span class="wow up2">5,226<br><small>▲37%</small></span></td><td class="v"><span class="wow dn2">3,746<br><small>▼28%</small></span></td><td class="v"><span class="wow up1">4,242<br><small>▲13%</small></span></td><td class="v"><span class="wow dn1">3,464<br><small>▼18%</small></span></td><td class="v latest"><span class="wow up2">4,470<br><small>▲29%</small></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="view-all-btn" data-total="51" onclick="toggleAll('mobile')">▾ View all 51 channels</button>
+    </div>
+    <div class="mpanel" data-m="1">
+      <div class="twrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="ch-col">Channel</th>
+              <th class="wh">Apr 27–May 03</th><th class="wh">May 04–May 10</th><th class="wh">May 11–May 17</th><th class="wh">May 18–May 24</th><th class="wh">May 25–May 31</th><th class="wh">Jun 01–Jun 07</th><th class="wh">Jun 08–Jun 14</th><th class="wh  latest">Jun 15–Jun 21</th>
+            </tr>
+          </thead>
+          <tbody>
+      <tr><td title="(none)">(none)</td><td class="v">11.1%</td><td class="v"><span class="wow flat">10.7% ▼0.4pp</span></td><td class="v"><span class="wow flat">10.7% 0.0pp</span></td><td class="v"><span class="wow flat">10.4% ▼0.3pp</span></td><td class="v"><span class="wow up1">12.6% ▲2.2pp</span></td><td class="v"><span class="wow flat">10.9% ▼1.7pp</span></td><td class="v"><span class="wow flat">12.0% ▲1.1pp</span></td><td class="v latest"><span class="wow flat">11.3% ▼0.7pp</span></td></tr>
+      <tr><td title="Google UAC">Google UAC</td><td class="v">8.5%</td><td class="v"><span class="wow flat">9.0% ▲0.5pp</span></td><td class="v"><span class="wow flat">8.5% ▼0.5pp</span></td><td class="v"><span class="wow flat">7.1% ▼1.4pp</span></td><td class="v"><span class="wow up1">9.5% ▲2.4pp</span></td><td class="v"><span class="wow flat">10.2% ▲0.7pp</span></td><td class="v"><span class="wow flat">10.1% ▼0.1pp</span></td><td class="v latest"><span class="wow flat">9.5% ▼0.6pp</span></td></tr>
+      <tr><td title="Organic (App)">Organic (App)</td><td class="v">18.4%</td><td class="v"><span class="wow dn1">11.9% ▼6.5pp</span></td><td class="v"><span class="wow up1">15.7% ▲3.8pp</span></td><td class="v"><span class="wow dn1">9.2% ▼6.5pp</span></td><td class="v"><span class="wow flat">9.7% ▲0.5pp</span></td><td class="v"><span class="wow dn1">5.5% ▼4.2pp</span></td><td class="v"><span class="wow up1">14.3% ▲8.8pp</span></td><td class="v latest"><span class="wow dn1">11.8% ▼2.5pp</span></td></tr>
+      <tr><td title="onetraffijs_int">onetraffijs_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">14.1%</td><td class="v"><span class="wow dn1">6.1% ▼8.0pp</span></td><td class="v"><span class="wow up1">12.8% ▲6.7pp</span></td><td class="v"><span class="wow dn1">0.0% ▼12.8pp</span></td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr><td title="sokendev_int">sokendev_int</td><td class="v">0.0%</td><td class="v">9.3%</td><td class="v"><span class="wow up1">13.3% ▲4.0pp</span></td><td class="v"><span class="wow dn1">7.2% ▼6.1pp</span></td><td class="v"><span class="wow up1">10.9% ▲3.7pp</span></td><td class="v"><span class="wow flat">10.4% ▼0.5pp</span></td><td class="v"><span class="wow flat">12.0% ▲1.6pp</span></td><td class="v latest"><span class="wow dn1">7.5% ▼4.5pp</span></td></tr>
+      <tr><td title="employee_referral">employee_referral</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">20.0%</td><td class="v"><span class="wow up1">78.7% ▲58.7pp</span></td><td class="v"><span class="wow dn1">59.3% ▼19.4pp</span></td><td class="v"><span class="wow up1">62.9% ▲3.6pp</span></td><td class="v latest"><span class="wow dn1">0.0% ▼62.9pp</span></td></tr>
+      <tr><td title="sandboxads_int">sandboxads_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">2.8%</td><td class="v"><span class="wow up1">22.9% ▲20.1pp</span></td><td class="v"><span class="wow dn1">9.5% ▼13.4pp</span></td><td class="v"><span class="wow dn1">0.0% ▼9.5pp</span></td><td class="v latest">0.0%</td></tr>
+      <tr><td title="afnumberone_int">afnumberone_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">6.6%</td><td class="v"><span class="wow up1">8.8% ▲2.2pp</span></td><td class="v"><span class="wow dn1">3.8% ▼5.0pp</span></td><td class="v"><span class="wow up1">7.3% ▲3.5pp</span></td><td class="v"><span class="wow up1">11.1% ▲3.8pp</span></td><td class="v latest"><span class="wow flat">11.6% ▲0.5pp</span></td></tr>
+      <tr><td title="Jio_HM">Jio_HM</td><td class="v">12.5%</td><td class="v"><span class="wow dn1">4.8% ▼7.7pp</span></td><td class="v"><span class="wow up1">18.2% ▲13.4pp</span></td><td class="v"><span class="wow dn1">4.4% ▼13.8pp</span></td><td class="v"><span class="wow up1">8.3% ▲3.9pp</span></td><td class="v"><span class="wow up1">20.0% ▲11.7pp</span></td><td class="v"><span class="wow dn1">0.0% ▼20.0pp</span></td><td class="v latest">5.7%</td></tr>
+      <tr><td title="foxmobiwy_int">foxmobiwy_int</td><td class="v">0.0%</td><td class="v">10.8%</td><td class="v"><span class="wow flat">9.8% ▼1.0pp</span></td><td class="v"><span class="wow dn1">3.7% ▼6.1pp</span></td><td class="v"><span class="wow up1">25.0% ▲21.3pp</span></td><td class="v"><span class="wow dn1">0.0% ▼25.0pp</span></td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr><td title="mobile_app_share">mobile_app_share</td><td class="v">100.0%</td><td class="v"><span class="wow dn1">0.0% ▼100.0pp</span></td><td class="v">100.0%</td><td class="v"><span class="wow dn1">0.0% ▼100.0pp</span></td><td class="v">100.0%</td><td class="v"><span class="wow dn1">0.0% ▼100.0pp</span></td><td class="v">100.0%</td><td class="v latest"><span class="wow dn1">0.0% ▼100.0pp</span></td></tr>
+      <tr><td title="Unattributed">Unattributed</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">50.0%</td><td class="v"><span class="wow dn1">0.0% ▼50.0pp</span></td><td class="v latest">100.0%</td></tr>
+      <tr><td title="Zepto">Zepto</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">3.4%</td><td class="v"><span class="wow flat">1.5% ▼1.9pp</span></td><td class="v"><span class="wow up1">8.3% ▲6.8pp</span></td><td class="v"><span class="wow dn1">0.0% ▼8.3pp</span></td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr><td title="oppoglobal_int">oppoglobal_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">8.9%</td></tr>
+      <tr><td title="Zomato_CPI">Zomato_CPI</td><td class="v">0.0%</td><td class="v">4.8%</td><td class="v"><span class="wow dn1">2.8% ▼2.0pp</span></td><td class="v"><span class="wow dn1">0.0% ▼2.8pp</span></td><td class="v">50.0%</td><td class="v"><span class="wow dn1">0.0% ▼50.0pp</span></td><td class="v">33.3%</td><td class="v latest"><span class="wow dn1">0.0% ▼33.3pp</span></td></tr>
+      <tr class="extra-ch"><td title="s2ssoftsys_int">s2ssoftsys_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">50.0%</td><td class="v"><span class="wow dn1">0.0% ▼50.0pp</span></td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="Jio_17042026">Jio_17042026</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">5.3%</td><td class="v"><span class="wow dn1">0.0% ▼5.3pp</span></td><td class="v">0.0%</td><td class="v latest">6.5%</td></tr>
+      <tr class="extra-ch"><td title="mobilemin36l_int">mobilemin36l_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">25.0%</td><td class="v"><span class="wow dn1">0.0% ▼25.0pp</span></td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="Angel_Investment">Angel_Investment</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">21.9%</td><td class="v"><span class="wow up1">25.0% ▲3.1pp</span></td><td class="v latest"><span class="wow up1">40.0% ▲15.0pp</span></td></tr>
+      <tr class="extra-ch"><td title="offlo_int">offlo_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">66.7%</td><td class="v"><span class="wow up1">100.0% ▲33.3pp</span></td><td class="v latest"><span class="wow dn1">0.0% ▼100.0pp</span></td></tr>
+      <tr class="extra-ch"><td title="Influencer_Collab">Influencer_Collab</td><td class="v">0.0%</td><td class="v">8.3%</td><td class="v"><span class="wow dn1">0.0% ▼8.3pp</span></td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="appleadbiup_int">appleadbiup_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">14.3%</td></tr>
+      <tr class="extra-ch"><td title="Social_instagram">Social_instagram</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">50.0%</td><td class="v latest"><span class="wow dn1">0.0% ▼50.0pp</span></td></tr>
+      <tr class="extra-ch"><td title="lumolinkaav_int">lumolinkaav_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">20.0%</td><td class="v"><span class="wow dn1">0.0% ▼20.0pp</span></td><td class="v">20.0%</td><td class="v"><span class="wow up1">25.0% ▲5.0pp</span></td><td class="v latest"><span class="wow dn1">20.0% ▼5.0pp</span></td></tr>
+      <tr class="extra-ch"><td title="Vivo OEM">Vivo OEM</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.4%</td><td class="v latest"><span class="wow flat">0.6% ▲0.2pp</span></td></tr>
+      <tr class="extra-ch"><td title="nfmobi_int">nfmobi_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="appnext_int">appnext_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">1.0%</td><td class="v"><span class="wow flat">1.0% 0.0pp</span></td><td class="v"><span class="wow flat">0.3% ▼0.7pp</span></td><td class="v"><span class="wow flat">0.0% ▼0.3pp</span></td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="Influencer_Collab_Aswin">Influencer_Collab_Aswin</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">7.7%</td><td class="v latest"><span class="wow dn1">0.0% ▼7.7pp</span></td></tr>
+      <tr class="extra-ch"><td title="commondex_int">commondex_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="aarki_int">aarki_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="mobupps_int">mobupps_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="attrimob_int">attrimob_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">22.2%</td><td class="v"><span class="wow dn1">19.4% ▼2.8pp</span></td><td class="v latest"><span class="wow dn1">0.0% ▼19.4pp</span></td></tr>
+      <tr class="extra-ch"><td title="xiaomiglobal_int">xiaomiglobal_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">21.1%</td></tr>
+      <tr class="extra-ch"><td title="bigporrs_int">bigporrs_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="recoverunc3_int">recoverunc3_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">50.0%</td></tr>
+      <tr class="extra-ch"><td title="wabermedi1ck_int">wabermedi1ck_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="oddsendsc32_int">oddsendsc32_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="morganconlm_int">morganconlm_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="mobzone_int">mobzone_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="adgdfslsgbc_int">adgdfslsgbc_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">13.3%</td><td class="v"><span class="wow dn1">0.0% ▼13.3pp</span></td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="charitabl5o_int">charitabl5o_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="riversads_int">riversads_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="vfine_int">vfine_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="batman8z_int">batman8z_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="liquefteapsg_int">liquefteapsg_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="partneron_int">partneron_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="tunnelads_int">tunnelads_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="nexfigoadh7_int">nexfigoadh7_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">100.0%</td><td class="v"><span class="wow dn1">0.0% ▼100.0pp</span></td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="ccwads4o_int">ccwads4o_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="arbeenllcgx_int">arbeenllcgx_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="0">0</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class='avg-row'><td>Total (all channels)</td><td class="v">25.1%</td><td class="v"><span class="wow dn1">8.7% ▼16.4pp</span></td><td class="v"><span class="wow up1">14.5% ▲5.8pp</span></td><td class="v"><span class="wow dn1">9.9% ▼4.6pp</span></td><td class="v"><span class="wow up1">13.3% ▲3.4pp</span></td><td class="v"><span class="wow flat">13.0% ▼0.3pp</span></td><td class="v"><span class="wow up1">16.1% ▲3.1pp</span></td><td class="v latest"><span class="wow dn1">11.8% ▼4.3pp</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="view-all-btn" data-total="51" onclick="toggleAll('mobile')">▾ View all 51 channels</button>
+    </div>
+    <div class="mpanel" data-m="2">
+      <div class="twrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="ch-col">Channel</th>
+              <th class="wh">Apr 27–May 03</th><th class="wh">May 04–May 10</th><th class="wh">May 11–May 17</th><th class="wh">May 18–May 24</th><th class="wh">May 25–May 31</th><th class="wh">Jun 01–Jun 07</th><th class="wh">Jun 08–Jun 14</th><th class="wh  latest">Jun 15–Jun 21</th>
+            </tr>
+          </thead>
+          <tbody>
+      <tr><td title="(none)">(none)</td><td class="v">7.2%</td><td class="v"><span class="wow up1">26.0% ▲18.8pp</span></td><td class="v"><span class="wow dn1">20.4% ▼5.6pp</span></td><td class="v"><span class="wow flat">21.0% ▲0.6pp</span></td><td class="v"><span class="wow up1">41.5% ▲20.5pp</span></td><td class="v"><span class="wow up1">45.4% ▲3.9pp</span></td><td class="v"><span class="wow dn1">38.1% ▼7.3pp</span></td><td class="v latest"><span class="wow dn1">16.5% ▼21.6pp</span></td></tr>
+      <tr><td title="Google UAC">Google UAC</td><td class="v">4.9%</td><td class="v"><span class="wow up1">19.0% ▲14.1pp</span></td><td class="v"><span class="wow dn1">15.9% ▼3.1pp</span></td><td class="v"><span class="wow up1">21.5% ▲5.6pp</span></td><td class="v"><span class="wow flat">21.3% ▼0.2pp</span></td><td class="v"><span class="wow dn1">18.2% ▼3.1pp</span></td><td class="v"><span class="wow up1">21.4% ▲3.2pp</span></td><td class="v latest"><span class="wow dn1">9.4% ▼12.0pp</span></td></tr>
+      <tr><td title="Organic (App)">Organic (App)</td><td class="v">14.3%</td><td class="v"><span class="wow up1">46.2% ▲31.9pp</span></td><td class="v"><span class="wow dn1">23.1% ▼23.1pp</span></td><td class="v"><span class="wow up1">37.5% ▲14.4pp</span></td><td class="v"><span class="wow up1">46.2% ▲8.7pp</span></td><td class="v"><span class="wow up1">52.9% ▲6.7pp</span></td><td class="v"><span class="wow dn1">23.8% ▼29.1pp</span></td><td class="v latest"><span class="wow up1">38.9% ▲15.1pp</span></td></tr>
+      <tr><td title="onetraffijs_int">onetraffijs_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">10.5%</td><td class="v"><span class="wow flat">11.1% ▲0.6pp</span></td><td class="v"><span class="wow up1">40.0% ▲28.9pp</span></td><td class="v"><span class="wow dn1">0.0% ▼40.0pp</span></td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr><td title="sokendev_int">sokendev_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">12.5%</td><td class="v"><span class="wow up1">16.7% ▲4.2pp</span></td><td class="v"><span class="wow up1">30.0% ▲13.3pp</span></td><td class="v"><span class="wow dn1">9.1% ▼20.9pp</span></td><td class="v"><span class="wow up1">18.2% ▲9.1pp</span></td><td class="v latest"><span class="wow dn1">12.5% ▼5.7pp</span></td></tr>
+      <tr><td title="employee_referral">employee_referral</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">75.0%</td><td class="v"><span class="wow up1">91.9% ▲16.9pp</span></td><td class="v"><span class="wow dn1">67.2% ▼24.7pp</span></td><td class="v"><span class="wow dn1">59.1% ▼8.1pp</span></td><td class="v latest"><span class="wow dn1">0.0% ▼59.1pp</span></td></tr>
+      <tr><td title="sandboxads_int">sandboxads_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">50.0%</td><td class="v"><span class="wow dn1">0.0% ▼50.0pp</span></td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr><td title="afnumberone_int">afnumberone_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">27.3%</td><td class="v"><span class="wow up1">40.0% ▲12.7pp</span></td><td class="v"><span class="wow dn1">9.1% ▼30.9pp</span></td><td class="v"><span class="wow up1">37.5% ▲28.4pp</span></td><td class="v latest"><span class="wow dn1">0.0% ▼37.5pp</span></td></tr>
+      <tr><td title="Jio_HM">Jio_HM</td><td class="v">100.0%</td><td class="v"><span class="wow dn1">50.0% ▼50.0pp</span></td><td class="v"><span class="wow dn1">0.0% ▼50.0pp</span></td><td class="v">36.8%</td><td class="v"><span class="wow dn1">25.0% ▼11.8pp</span></td><td class="v"><span class="wow dn1">0.0% ▼25.0pp</span></td><td class="v">0.0%</td><td class="v latest">13.6%</td></tr>
+      <tr><td title="foxmobiwy_int">foxmobiwy_int</td><td class="v">0.0%</td><td class="v">28.6%</td><td class="v"><span class="wow dn1">9.1% ▼19.5pp</span></td><td class="v"><span class="wow dn1">0.0% ▼9.1pp</span></td><td class="v">25.0%</td><td class="v"><span class="wow dn1">0.0% ▼25.0pp</span></td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr><td title="mobile_app_share">mobile_app_share</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">50.0%</td><td class="v"><span class="wow dn1">0.0% ▼50.0pp</span></td><td class="v">100.0%</td><td class="v latest"><span class="wow dn1">0.0% ▼100.0pp</span></td></tr>
+      <tr><td title="Unattributed">Unattributed</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">75.0%</td><td class="v"><span class="wow dn1">0.0% ▼75.0pp</span></td><td class="v latest">100.0%</td></tr>
+      <tr><td title="Zepto">Zepto</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">100.0%</td><td class="v"><span class="wow dn1">0.0% ▼100.0pp</span></td><td class="v">25.0%</td><td class="v"><span class="wow dn1">0.0% ▼25.0pp</span></td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr><td title="oppoglobal_int">oppoglobal_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">15.4%</td></tr>
+      <tr><td title="Zomato_CPI">Zomato_CPI</td><td class="v">0.0%</td><td class="v">50.0%</td><td class="v"><span class="wow dn1">0.0% ▼50.0pp</span></td><td class="v">0.0%</td><td class="v">100.0%</td><td class="v"><span class="wow dn1">0.0% ▼100.0pp</span></td><td class="v">100.0%</td><td class="v latest"><span class="wow dn1">0.0% ▼100.0pp</span></td></tr>
+      <tr class="extra-ch"><td title="s2ssoftsys_int">s2ssoftsys_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">50.0%</td><td class="v"><span class="wow dn1">0.0% ▼50.0pp</span></td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="Jio_17042026">Jio_17042026</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">50.0%</td><td class="v"><span class="wow dn1">0.0% ▼50.0pp</span></td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="mobilemin36l_int">mobilemin36l_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">100.0%</td><td class="v"><span class="wow dn1">0.0% ▼100.0pp</span></td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="Angel_Investment">Angel_Investment</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">14.3%</td><td class="v"><span class="wow dn1">0.0% ▼14.3pp</span></td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="offlo_int">offlo_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">66.7%</td><td class="v latest"><span class="wow dn1">0.0% ▼66.7pp</span></td></tr>
+      <tr class="extra-ch"><td title="Influencer_Collab">Influencer_Collab</td><td class="v">0.0%</td><td class="v">100.0%</td><td class="v"><span class="wow dn1">0.0% ▼100.0pp</span></td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="appleadbiup_int">appleadbiup_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="Social_instagram">Social_instagram</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="lumolinkaav_int">lumolinkaav_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="Vivo OEM">Vivo OEM</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="nfmobi_int">nfmobi_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="appnext_int">appnext_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="Influencer_Collab_Aswin">Influencer_Collab_Aswin</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="commondex_int">commondex_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="aarki_int">aarki_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="mobupps_int">mobupps_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="attrimob_int">attrimob_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="xiaomiglobal_int">xiaomiglobal_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="bigporrs_int">bigporrs_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="recoverunc3_int">recoverunc3_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="wabermedi1ck_int">wabermedi1ck_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="oddsendsc32_int">oddsendsc32_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="morganconlm_int">morganconlm_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="mobzone_int">mobzone_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="adgdfslsgbc_int">adgdfslsgbc_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="charitabl5o_int">charitabl5o_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="riversads_int">riversads_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="vfine_int">vfine_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="batman8z_int">batman8z_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="liquefteapsg_int">liquefteapsg_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="partneron_int">partneron_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="tunnelads_int">tunnelads_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="nexfigoadh7_int">nexfigoadh7_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="ccwads4o_int">ccwads4o_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="arbeenllcgx_int">arbeenllcgx_int</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class="extra-ch"><td title="0">0</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class='avg-row'><td>Total (all channels)</td><td class="v">25.3%</td><td class="v"><span class="wow up1">40.0% ▲14.7pp</span></td><td class="v"><span class="wow dn1">17.4% ▼22.6pp</span></td><td class="v"><span class="wow up1">23.1% ▲5.7pp</span></td><td class="v"><span class="wow up1">42.4% ▲19.3pp</span></td><td class="v"><span class="wow dn1">21.3% ▼21.1pp</span></td><td class="v"><span class="wow up1">31.0% ▲9.7pp</span></td><td class="v latest"><span class="wow dn1">13.8% ▼17.2pp</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="view-all-btn" data-total="51" onclick="toggleAll('mobile')">▾ View all 51 channels</button>
+    </div>
+    <div class="mpanel" data-m="3">
+      <div class="twrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="ch-col">Channel</th>
+              <th class="wh">Apr 27–May 03</th><th class="wh">May 04–May 10</th><th class="wh">May 11–May 17</th><th class="wh">May 18–May 24</th><th class="wh">May 25–May 31</th><th class="wh">Jun 01–Jun 07</th><th class="wh">Jun 08–Jun 14</th><th class="wh  latest">Jun 15–Jun 21</th>
+            </tr>
+          </thead>
+          <tbody>
+      <tr><td title="(none)">(none)</td><td class="v">15</td><td class="v"><span class="wow up2">34<br><small>▲127%</small></span></td><td class="v"><span class="wow dn2">22<br><small>▼35%</small></span></td><td class="v"><span class="wow up1">25<br><small>▲14%</small></span></td><td class="v"><span class="wow up2">49<br><small>▲96%</small></span></td><td class="v"><span class="wow up2">64<br><small>▲31%</small></span></td><td class="v"><span class="wow dn2">51<br><small>▼20%</small></span></td><td class="v latest"><span class="wow dn2">21<br><small>▼59%</small></span></td></tr>
+      <tr><td title="Google UAC">Google UAC</td><td class="v">5</td><td class="v"><span class="wow up2">36<br><small>▲620%</small></span></td><td class="v"><span class="wow dn1">29<br><small>▼19%</small></span></td><td class="v"><span class="wow up2">39<br><small>▲34%</small></span></td><td class="v"><span class="wow dn2">30<br><small>▼23%</small></span></td><td class="v"><span class="wow flat">29<br><small>▼3%</small></span></td><td class="v"><span class="wow up1">33<br><small>▲14%</small></span></td><td class="v latest"><span class="wow dn2">18<br><small>▼45%</small></span></td></tr>
+      <tr><td title="Organic (App)">Organic (App)</td><td class="v">1</td><td class="v"><span class="wow up2">6<br><small>▲500%</small></span></td><td class="v"><span class="wow dn2">3<br><small>▼50%</small></span></td><td class="v"><span class="wow up2">6<br><small>▲100%</small></span></td><td class="v"><span class="wow up2">12<br><small>▲100%</small></span></td><td class="v"><span class="wow dn2">9<br><small>▼25%</small></span></td><td class="v"><span class="wow dn2">5<br><small>▼44%</small></span></td><td class="v latest"><span class="wow up2">7<br><small>▲40%</small></span></td></tr>
+      <tr><td title="onetraffijs_int">onetraffijs_int</td><td class="v">0</td><td class="v">0</td><td class="v">2</td><td class="v"><span class="wow flat">2<br><small>0%</small></span></td><td class="v"><span class="wow up2">4<br><small>▲100%</small></span></td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr><td title="sokendev_int">sokendev_int</td><td class="v">0</td><td class="v">0</td><td class="v">2</td><td class="v"><span class="wow flat">2<br><small>0%</small></span></td><td class="v"><span class="wow up2">3<br><small>▲50%</small></span></td><td class="v"><span class="wow dn2">1<br><small>▼67%</small></span></td><td class="v"><span class="wow up2">4<br><small>▲300%</small></span></td><td class="v latest"><span class="wow dn2">1<br><small>▼75%</small></span></td></tr>
+      <tr><td title="employee_referral">employee_referral</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">3</td><td class="v"><span class="wow up2">34<br><small>▲1033%</small></span></td><td class="v"><span class="wow up2">43<br><small>▲26%</small></span></td><td class="v"><span class="wow dn2">13<br><small>▼70%</small></span></td><td class="v latest">0</td></tr>
+      <tr><td title="sandboxads_int">sandboxads_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">4</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr><td title="afnumberone_int">afnumberone_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">3</td><td class="v"><span class="wow dn2">2<br><small>▼33%</small></span></td><td class="v"><span class="wow flat">2<br><small>0%</small></span></td><td class="v"><span class="wow up2">3<br><small>▲50%</small></span></td><td class="v latest">0</td></tr>
+      <tr><td title="Jio_HM">Jio_HM</td><td class="v">1</td><td class="v"><span class="wow flat">1<br><small>0%</small></span></td><td class="v">0</td><td class="v">7</td><td class="v"><span class="wow dn2">4<br><small>▼43%</small></span></td><td class="v">0</td><td class="v">0</td><td class="v latest">3</td></tr>
+      <tr><td title="foxmobiwy_int">foxmobiwy_int</td><td class="v">0</td><td class="v">2</td><td class="v"><span class="wow dn2">1<br><small>▼50%</small></span></td><td class="v">0</td><td class="v">1</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr><td title="mobile_app_share">mobile_app_share</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">1</td><td class="v">0</td><td class="v">1</td><td class="v latest">0</td></tr>
+      <tr><td title="Unattributed">Unattributed</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">3</td><td class="v">0</td><td class="v latest">1</td></tr>
+      <tr><td title="Zepto">Zepto</td><td class="v">0</td><td class="v">0</td><td class="v">1</td><td class="v">0</td><td class="v">1</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr><td title="oppoglobal_int">oppoglobal_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">4</td></tr>
+      <tr><td title="Zomato_CPI">Zomato_CPI</td><td class="v">0</td><td class="v">2</td><td class="v">0</td><td class="v">0</td><td class="v">1</td><td class="v">0</td><td class="v">1</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="s2ssoftsys_int">s2ssoftsys_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">1</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="Jio_17042026">Jio_17042026</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">1</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="mobilemin36l_int">mobilemin36l_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">1</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="Angel_Investment">Angel_Investment</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">1</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="offlo_int">offlo_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">2</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="Influencer_Collab">Influencer_Collab</td><td class="v">0</td><td class="v">1</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="appleadbiup_int">appleadbiup_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="Social_instagram">Social_instagram</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="lumolinkaav_int">lumolinkaav_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="Vivo OEM">Vivo OEM</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="nfmobi_int">nfmobi_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="appnext_int">appnext_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="Influencer_Collab_Aswin">Influencer_Collab_Aswin</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="commondex_int">commondex_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="aarki_int">aarki_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="mobupps_int">mobupps_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="attrimob_int">attrimob_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="xiaomiglobal_int">xiaomiglobal_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="bigporrs_int">bigporrs_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="recoverunc3_int">recoverunc3_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="wabermedi1ck_int">wabermedi1ck_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="oddsendsc32_int">oddsendsc32_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="morganconlm_int">morganconlm_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="mobzone_int">mobzone_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="adgdfslsgbc_int">adgdfslsgbc_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="charitabl5o_int">charitabl5o_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="riversads_int">riversads_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="vfine_int">vfine_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="batman8z_int">batman8z_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="liquefteapsg_int">liquefteapsg_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="partneron_int">partneron_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="tunnelads_int">tunnelads_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="nexfigoadh7_int">nexfigoadh7_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="ccwads4o_int">ccwads4o_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="arbeenllcgx_int">arbeenllcgx_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="0">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class='avg-row'><td>Total (all channels)</td><td class="v">22</td><td class="v"><span class="wow up2">82<br><small>▲273%</small></span></td><td class="v"><span class="wow dn2">60<br><small>▼27%</small></span></td><td class="v"><span class="wow up2">88<br><small>▲47%</small></span></td><td class="v"><span class="wow up2">147<br><small>▲67%</small></span></td><td class="v"><span class="wow flat">153<br><small>▲4%</small></span></td><td class="v"><span class="wow dn2">113<br><small>▼26%</small></span></td><td class="v latest"><span class="wow dn2">55<br><small>▼51%</small></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="view-all-btn" data-total="51" onclick="toggleAll('mobile')">▾ View all 51 channels</button>
+    </div>
+    <div class="mpanel" data-m="4">
+      <div class="twrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="ch-col">Channel</th>
+              <th class="wh">Apr 27–May 03</th><th class="wh">May 04–May 10</th><th class="wh">May 11–May 17</th><th class="wh">May 18–May 24</th><th class="wh">May 25–May 31</th><th class="wh">Jun 01–Jun 07</th><th class="wh">Jun 08–Jun 14</th><th class="wh  latest">Jun 15–Jun 21</th>
+            </tr>
+          </thead>
+          <tbody>
+      <tr><td title="(none)">(none)</td><td class="v">₹1.75 Cr</td><td class="v"><span class="wow dn2">₹1.22 Cr<br><small>▼30%</small></span></td><td class="v"><span class="wow up2">₹1.87 Cr<br><small>▲54%</small></span></td><td class="v"><span class="wow up2">₹2.30 Cr<br><small>▲23%</small></span></td><td class="v"><span class="wow dn1">₹2.13 Cr<br><small>▼7%</small></span></td><td class="v"><span class="wow up2">₹3.07 Cr<br><small>▲44%</small></span></td><td class="v"><span class="wow dn2">₹1.97 Cr<br><small>▼36%</small></span></td><td class="v latest"><span class="wow dn1">₹1.83 Cr<br><small>▼7%</small></span></td></tr>
+      <tr><td title="Google UAC">Google UAC</td><td class="v">₹17.6 L</td><td class="v"><span class="wow up2">₹91.4 L<br><small>▲421%</small></span></td><td class="v"><span class="wow dn1">₹77.0 L<br><small>▼16%</small></span></td><td class="v"><span class="wow up2">₹1.07 Cr<br><small>▲40%</small></span></td><td class="v"><span class="wow up1">₹1.20 Cr<br><small>▲11%</small></span></td><td class="v"><span class="wow dn1">₹1.11 Cr<br><small>▼7%</small></span></td><td class="v"><span class="wow flat">₹1.11 Cr<br><small>▼0%</small></span></td><td class="v latest"><span class="wow up2">₹1.42 Cr<br><small>▲28%</small></span></td></tr>
+      <tr><td title="Organic (App)">Organic (App)</td><td class="v">₹11.7 L</td><td class="v"><span class="wow up2">₹66.2 L<br><small>▲468%</small></span></td><td class="v"><span class="wow dn2">₹35.4 L<br><small>▼47%</small></span></td><td class="v"><span class="wow dn2">₹9.4 L<br><small>▼73%</small></span></td><td class="v"><span class="wow up2">₹20.5 L<br><small>▲117%</small></span></td><td class="v"><span class="wow up2">₹44.3 L<br><small>▲116%</small></span></td><td class="v"><span class="wow up2">₹53.5 L<br><small>▲21%</small></span></td><td class="v latest"><span class="wow dn2">₹26.0 L<br><small>▼51%</small></span></td></tr>
+      <tr><td title="onetraffijs_int">onetraffijs_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">₹15.1 L</td><td class="v"><span class="wow dn2">₹3.7 L<br><small>▼76%</small></span></td><td class="v"><span class="wow up2">₹8.7 L<br><small>▲137%</small></span></td><td class="v"><span class="wow dn2">₹1.1 L<br><small>▼87%</small></span></td><td class="v latest"><span class="wow dn2">₹9,791<br><small>▼91%</small></span></td></tr>
+      <tr><td title="sokendev_int">sokendev_int</td><td class="v">—</td><td class="v">—</td><td class="v">₹1.1 L</td><td class="v"><span class="wow up2">₹11.0 L<br><small>▲904%</small></span></td><td class="v"><span class="wow dn2">₹1.3 L<br><small>▼88%</small></span></td><td class="v"><span class="wow dn1">₹1.1 L<br><small>▼13%</small></span></td><td class="v"><span class="wow up2">₹4.0 L<br><small>▲259%</small></span></td><td class="v latest"><span class="wow dn2">₹2.2 L<br><small>▼46%</small></span></td></tr>
+      <tr><td title="employee_referral">employee_referral</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">₹5,345</td><td class="v"><span class="wow up2">₹6.3 L<br><small>▲11702%</small></span></td><td class="v"><span class="wow dn2">₹4.1 L<br><small>▼35%</small></span></td><td class="v"><span class="wow dn2">₹2.9 L<br><small>▼30%</small></span></td><td class="v latest">—</td></tr>
+      <tr><td title="sandboxads_int">sandboxads_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">₹5.1 L</td><td class="v"><span class="wow dn2">₹2.1 L<br><small>▼60%</small></span></td><td class="v"><span class="wow up2">₹2.9 L<br><small>▲44%</small></span></td><td class="v latest">—</td></tr>
+      <tr><td title="afnumberone_int">afnumberone_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">₹48,981</td><td class="v"><span class="wow up2">₹1.6 L<br><small>▲221%</small></span></td><td class="v"><span class="wow up2">₹3.9 L<br><small>▲148%</small></span></td><td class="v"><span class="wow dn2">₹78,170<br><small>▼80%</small></span></td><td class="v latest"><span class="wow up2">₹2.1 L<br><small>▲175%</small></span></td></tr>
+      <tr><td title="Jio_HM">Jio_HM</td><td class="v">—</td><td class="v">₹2.0 L</td><td class="v"><span class="wow dn2">₹1.4 L<br><small>▼31%</small></span></td><td class="v"><span class="wow flat">₹1.4 L<br><small>▲3%</small></span></td><td class="v"><span class="wow dn2">₹39,113<br><small>▼72%</small></span></td><td class="v"><span class="wow up2">₹68,289<br><small>▲75%</small></span></td><td class="v"><span class="wow up2">₹1.9 L<br><small>▲175%</small></span></td><td class="v latest"><span class="wow dn2">₹21,636<br><small>▼88%</small></span></td></tr>
+      <tr><td title="foxmobiwy_int">foxmobiwy_int</td><td class="v">—</td><td class="v">—</td><td class="v">₹7.0 L</td><td class="v"><span class="wow dn2">₹19,427<br><small>▼97%</small></span></td><td class="v">—</td><td class="v">—</td><td class="v">₹3,888</td><td class="v latest"><span class="wow up2">₹9,719<br><small>▲150%</small></span></td></tr>
+      <tr><td title="mobile_app_share">mobile_app_share</td><td class="v">₹3.0 L</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">₹2.2 L</td><td class="v">—</td><td class="v">₹12,057</td><td class="v latest">—</td></tr>
+      <tr><td title="Unattributed">Unattributed</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">₹15,526</td><td class="v">—</td><td class="v latest">₹2.9 L</td></tr>
+      <tr><td title="Zepto">Zepto</td><td class="v">—</td><td class="v">—</td><td class="v">₹58,733</td><td class="v"><span class="wow up2">₹88,857<br><small>▲51%</small></span></td><td class="v"><span class="wow dn2">₹9,739<br><small>▼89%</small></span></td><td class="v"><span class="wow up2">₹1.1 L<br><small>▲1003%</small></span></td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr><td title="oppoglobal_int">oppoglobal_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">₹2.6 L</td></tr>
+      <tr><td title="Zomato_CPI">Zomato_CPI</td><td class="v">—</td><td class="v">₹1,052</td><td class="v">—</td><td class="v">₹9,713</td><td class="v"><span class="wow up2">₹1.1 L<br><small>▲1053%</small></span></td><td class="v">—</td><td class="v">₹19,581</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="s2ssoftsys_int">s2ssoftsys_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">₹48,813</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="Jio_17042026">Jio_17042026</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">₹9,765</td><td class="v">—</td><td class="v latest">₹19,626</td></tr>
+      <tr class="extra-ch"><td title="mobilemin36l_int">mobilemin36l_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">₹9,796</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="Angel_Investment">Angel_Investment</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">₹4,860</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="offlo_int">offlo_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">₹1,036</td><td class="v"><span class="wow up2">₹2,072<br><small>▲100%</small></span></td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="Influencer_Collab">Influencer_Collab</td><td class="v">—</td><td class="v">₹1,052</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="appleadbiup_int">appleadbiup_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="Social_instagram">Social_instagram</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="lumolinkaav_int">lumolinkaav_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="Vivo OEM">Vivo OEM</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="nfmobi_int">nfmobi_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="appnext_int">appnext_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="Influencer_Collab_Aswin">Influencer_Collab_Aswin</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="commondex_int">commondex_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="aarki_int">aarki_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="mobupps_int">mobupps_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="attrimob_int">attrimob_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="xiaomiglobal_int">xiaomiglobal_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="bigporrs_int">bigporrs_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="recoverunc3_int">recoverunc3_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="wabermedi1ck_int">wabermedi1ck_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="oddsendsc32_int">oddsendsc32_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="morganconlm_int">morganconlm_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="mobzone_int">mobzone_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="adgdfslsgbc_int">adgdfslsgbc_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="charitabl5o_int">charitabl5o_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="riversads_int">riversads_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="vfine_int">vfine_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="batman8z_int">batman8z_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="liquefteapsg_int">liquefteapsg_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="partneron_int">partneron_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="tunnelads_int">tunnelads_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="nexfigoadh7_int">nexfigoadh7_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="ccwads4o_int">ccwads4o_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="arbeenllcgx_int">arbeenllcgx_int</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class="extra-ch"><td title="0">0</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class='avg-row'><td>Total (all channels)</td><td class="v">₹2.07 Cr</td><td class="v"><span class="wow up2">₹2.81 Cr<br><small>▲36%</small></span></td><td class="v"><span class="wow up1">₹3.10 Cr<br><small>▲10%</small></span></td><td class="v"><span class="wow up2">₹3.76 Cr<br><small>▲21%</small></span></td><td class="v"><span class="wow flat">₹3.74 Cr<br><small>▼0%</small></span></td><td class="v"><span class="wow up2">₹4.85 Cr<br><small>▲29%</small></span></td><td class="v"><span class="wow dn2">₹3.75 Cr<br><small>▼23%</small></span></td><td class="v latest"><span class="wow flat">₹3.62 Cr<br><small>▼4%</small></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="view-all-btn" data-total="51" onclick="toggleAll('mobile')">▾ View all 51 channels</button>
+    </div>
+    <div class="mpanel" data-m="5">
+      <div class="twrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="ch-col">Channel</th>
+              <th class="wh">Apr 27–May 03</th><th class="wh">May 04–May 10</th><th class="wh">May 11–May 17</th><th class="wh">May 18–May 24</th><th class="wh">May 25–May 31</th><th class="wh">Jun 01–Jun 07</th><th class="wh">Jun 08–Jun 14</th><th class="wh  latest">Jun 15–Jun 21</th>
+            </tr>
+          </thead>
+          <tbody>
+      <tr><td title="(none)">(none)</td><td class="v">1,163,908</td><td class="v"><span class="wow dn2">125,568<br><small>▼89%</small></span></td><td class="v"><span class="wow up2">154,581<br><small>▲23%</small></span></td><td class="v"><span class="wow up2">214,588<br><small>▲39%</small></span></td><td class="v"><span class="wow dn2">124,336<br><small>▼42%</small></span></td><td class="v"><span class="wow up2">164,138<br><small>▲32%</small></span></td><td class="v"><span class="wow dn2">110,219<br><small>▼33%</small></span></td><td class="v latest"><span class="wow up2">140,048<br><small>▲27%</small></span></td></tr>
+      <tr><td title="Google UAC">Google UAC</td><td class="v">351,191</td><td class="v"><span class="wow dn2">163,267<br><small>▼54%</small></span></td><td class="v"><span class="wow dn2">106,982<br><small>▼34%</small></span></td><td class="v"><span class="wow up1">123,558<br><small>▲15%</small></span></td><td class="v"><span class="wow up1">129,989<br><small>▲5%</small></span></td><td class="v"><span class="wow dn2">103,640<br><small>▼20%</small></span></td><td class="v"><span class="wow up1">115,202<br><small>▲11%</small></span></td><td class="v latest"><span class="wow up2">147,605<br><small>▲28%</small></span></td></tr>
+      <tr><td title="Organic (App)">Organic (App)</td><td class="v">1,167,112</td><td class="v"><span class="wow dn2">552,032<br><small>▼53%</small></span></td><td class="v"><span class="wow dn2">221,155<br><small>▼60%</small></span></td><td class="v"><span class="wow dn2">67,439<br><small>▼70%</small></span></td><td class="v"><span class="wow up2">85,422<br><small>▲27%</small></span></td><td class="v"><span class="wow up2">184,519<br><small>▲116%</small></span></td><td class="v"><span class="wow up2">356,536<br><small>▲93%</small></span></td><td class="v latest"><span class="wow dn2">144,514<br><small>▼59%</small></span></td></tr>
+      <tr><td title="onetraffijs_int">onetraffijs_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">378,516</td><td class="v"><span class="wow dn2">52,819<br><small>▼86%</small></span></td><td class="v"><span class="wow up2">174,963<br><small>▲231%</small></span></td><td class="v"><span class="wow dn2">54,869<br><small>▼69%</small></span></td><td class="v latest"><span class="wow dn2">9,791<br><small>▼82%</small></span></td></tr>
+      <tr><td title="sokendev_int">sokendev_int</td><td class="v">0</td><td class="v">0</td><td class="v">54,963</td><td class="v"><span class="wow up2">220,662<br><small>▲301%</small></span></td><td class="v"><span class="wow dn2">42,318<br><small>▼81%</small></span></td><td class="v"><span class="wow up2">55,309<br><small>▲31%</small></span></td><td class="v"><span class="wow up1">66,113<br><small>▲20%</small></span></td><td class="v latest"><span class="wow up1">71,872<br><small>▲9%</small></span></td></tr>
+      <tr><td title="employee_referral">employee_referral</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">1,782</td><td class="v"><span class="wow up2">18,552<br><small>▲941%</small></span></td><td class="v"><span class="wow dn2">9,546<br><small>▼49%</small></span></td><td class="v"><span class="wow up2">20,405<br><small>▲114%</small></span></td><td class="v latest">0</td></tr>
+      <tr><td title="sandboxads_int">sandboxads_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">102,572</td><td class="v"><span class="wow up2">205,047<br><small>▲100%</small></span></td><td class="v"><span class="wow up2">294,741<br><small>▲44%</small></span></td><td class="v latest">0</td></tr>
+      <tr><td title="afnumberone_int">afnumberone_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">16,327</td><td class="v"><span class="wow up2">78,608<br><small>▲381%</small></span></td><td class="v"><span class="wow dn1">64,895<br><small>▼17%</small></span></td><td class="v"><span class="wow dn2">19,543<br><small>▼70%</small></span></td><td class="v latest"><span class="wow up2">53,682<br><small>▲175%</small></span></td></tr>
+      <tr><td title="Jio_HM">Jio_HM</td><td class="v">0</td><td class="v">66,500</td><td class="v"><span class="wow dn2">34,328<br><small>▼48%</small></span></td><td class="v"><span class="wow dn2">17,655<br><small>▼49%</small></span></td><td class="v"><span class="wow dn2">9,778<br><small>▼45%</small></span></td><td class="v"><span class="wow up2">68,289<br><small>▲598%</small></span></td><td class="v"><span class="wow dn2">46,895<br><small>▼31%</small></span></td><td class="v latest"><span class="wow dn2">5,409<br><small>▼88%</small></span></td></tr>
+      <tr><td title="foxmobiwy_int">foxmobiwy_int</td><td class="v">0</td><td class="v">0</td><td class="v">232,964</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">3,888</td><td class="v latest"><span class="wow up2">9,719<br><small>▲150%</small></span></td></tr>
+      <tr><td title="mobile_app_share">mobile_app_share</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">217,837</td><td class="v">0</td><td class="v">12,057</td><td class="v latest">0</td></tr>
+      <tr><td title="Unattributed">Unattributed</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">5,175</td><td class="v">0</td><td class="v latest">294,518</td></tr>
+      <tr><td title="Zepto">Zepto</td><td class="v">0</td><td class="v">0</td><td class="v">58,733</td><td class="v"><span class="wow up2">88,857<br><small>▲51%</small></span></td><td class="v"><span class="wow dn2">9,739<br><small>▼89%</small></span></td><td class="v"><span class="wow up2">107,413<br><small>▲1003%</small></span></td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr><td title="oppoglobal_int">oppoglobal_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">43,230</td></tr>
+      <tr><td title="Zomato_CPI">Zomato_CPI</td><td class="v">0</td><td class="v">526</td><td class="v">0</td><td class="v">0</td><td class="v">112,037</td><td class="v">0</td><td class="v">19,581</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="s2ssoftsys_int">s2ssoftsys_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">24,407</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="Jio_17042026">Jio_17042026</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="mobilemin36l_int">mobilemin36l_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">9,796</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="Angel_Investment">Angel_Investment</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="offlo_int">offlo_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">1,036</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="Influencer_Collab">Influencer_Collab</td><td class="v">0</td><td class="v">1,052</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="appleadbiup_int">appleadbiup_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="Social_instagram">Social_instagram</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="lumolinkaav_int">lumolinkaav_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="Vivo OEM">Vivo OEM</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="nfmobi_int">nfmobi_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="appnext_int">appnext_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="Influencer_Collab_Aswin">Influencer_Collab_Aswin</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="commondex_int">commondex_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="aarki_int">aarki_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="mobupps_int">mobupps_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="attrimob_int">attrimob_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="xiaomiglobal_int">xiaomiglobal_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="bigporrs_int">bigporrs_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="recoverunc3_int">recoverunc3_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="wabermedi1ck_int">wabermedi1ck_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="oddsendsc32_int">oddsendsc32_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="morganconlm_int">morganconlm_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="mobzone_int">mobzone_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="adgdfslsgbc_int">adgdfslsgbc_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="charitabl5o_int">charitabl5o_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="riversads_int">riversads_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="vfine_int">vfine_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="batman8z_int">batman8z_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="liquefteapsg_int">liquefteapsg_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="partneron_int">partneron_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="tunnelads_int">tunnelads_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="nexfigoadh7_int">nexfigoadh7_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="ccwads4o_int">ccwads4o_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="arbeenllcgx_int">arbeenllcgx_int</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class="extra-ch"><td title="0">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class='avg-row'><td>Total (all channels)</td><td class="v">2,682,211</td><td class="v"><span class="wow dn2">908,945<br><small>▼66%</small></span></td><td class="v"><span class="wow flat">863,706<br><small>▼5%</small></span></td><td class="v"><span class="wow up2">1,139,180<br><small>▲32%</small></span></td><td class="v"><span class="wow dn1">984,007<br><small>▼14%</small></span></td><td class="v"><span class="wow up1">1,167,341<br><small>▲19%</small></span></td><td class="v"><span class="wow flat">1,121,085<br><small>▼4%</small></span></td><td class="v latest"><span class="wow dn1">920,388<br><small>▼18%</small></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="view-all-btn" data-total="51" onclick="toggleAll('mobile')">▾ View all 51 channels</button>
+    </div>
+    <p class="note"><b>Cohort rates</b> (KYC Done%, KYC→Trade%): denominator = signups in that same Mon–Sun week. True cohort — rates cannot exceed 100%. &nbsp;<b>Limitation</b>: Sunday signers have &lt;24 h to convert within the week, so all rates are slightly understated vs a full 7-day window. Trend (WoW) is valid because bias is consistent. &nbsp;<b>GTV / Repeat Trades</b>: calendar-week (all transactions that week from that channel's users). &nbsp;<b>▲▼ arrows</b>: WoW % change for volumes, pp change for rates.</p>
+  </div>
+    
+  <div class="ppanel" data-p="web">
+    <div class="mselector"><button class="mbtn active" data-m="0" onclick="switchM('web',0)">Signups</button><button class="mbtn" data-m="1" onclick="switchM('web',1)">KYC Done%</button><button class="mbtn" data-m="2" onclick="switchM('web',2)">K→Trade%</button><button class="mbtn" data-m="3" onclick="switchM('web',3)">1st Trades</button><button class="mbtn" data-m="4" onclick="switchM('web',4)">GTV</button><button class="mbtn" data-m="5" onclick="switchM('web',5)">ATV</button></div>
+    
+    <div class="mpanel active" data-m="0">
+      <div class="twrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="ch-col">Channel</th>
+              <th class="wh">Apr 27–May 03</th><th class="wh">May 04–May 10</th><th class="wh">May 11–May 17</th><th class="wh">May 18–May 24</th><th class="wh">May 25–May 31</th><th class="wh">Jun 01–Jun 07</th><th class="wh">Jun 08–Jun 14</th><th class="wh  latest">Jun 15–Jun 21</th>
+            </tr>
+          </thead>
+          <tbody>
+      <tr><td title="(none)">(none)</td><td class="v">15</td><td class="v"><span class="wow dn2">12<br><small>▼20%</small></span></td><td class="v"><span class="wow up2">24<br><small>▲100%</small></span></td><td class="v"><span class="wow up1">27<br><small>▲12%</small></span></td><td class="v"><span class="wow up2">37<br><small>▲37%</small></span></td><td class="v"><span class="wow dn2">24<br><small>▼35%</small></span></td><td class="v"><span class="wow up2">34<br><small>▲42%</small></span></td><td class="v latest"><span class="wow dn2">25<br><small>▼26%</small></span></td></tr>
+      <tr><td title="Google Search Paid">Google Search Paid</td><td class="v">38</td><td class="v"><span class="wow up2">54<br><small>▲42%</small></span></td><td class="v"><span class="wow dn1">48<br><small>▼11%</small></span></td><td class="v"><span class="wow up1">55<br><small>▲15%</small></span></td><td class="v"><span class="wow up1">65<br><small>▲18%</small></span></td><td class="v"><span class="wow dn2">38<br><small>▼42%</small></span></td><td class="v"><span class="wow up2">66<br><small>▲74%</small></span></td><td class="v latest"><span class="wow up1">71<br><small>▲8%</small></span></td></tr>
+      <tr><td title="marketing">marketing</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">1</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr><td title="EMAIL">EMAIL</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr><td title="WHATSAPP">WHATSAPP</td><td class="v">0</td><td class="v">1</td><td class="v"><span class="wow flat">1<br><small>0%</small></span></td><td class="v"><span class="wow up2">7<br><small>▲600%</small></span></td><td class="v"><span class="wow dn2">1<br><small>▼86%</small></span></td><td class="v"><span class="wow up2">9<br><small>▲800%</small></span></td><td class="v"><span class="wow up2">17<br><small>▲89%</small></span></td><td class="v latest">0</td></tr>
+      <tr><td title="Search">Search</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">1</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr><td title="0">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class='avg-row'><td>Total (all channels)</td><td class="v">53</td><td class="v"><span class="wow up2">67<br><small>▲26%</small></span></td><td class="v"><span class="wow up1">73<br><small>▲9%</small></span></td><td class="v"><span class="wow up2">89<br><small>▲22%</small></span></td><td class="v"><span class="wow up1">104<br><small>▲17%</small></span></td><td class="v"><span class="wow dn2">72<br><small>▼31%</small></span></td><td class="v"><span class="wow up2">117<br><small>▲62%</small></span></td><td class="v latest"><span class="wow dn1">96<br><small>▼18%</small></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      
+    </div>
+    <div class="mpanel" data-m="1">
+      <div class="twrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="ch-col">Channel</th>
+              <th class="wh">Apr 27–May 03</th><th class="wh">May 04–May 10</th><th class="wh">May 11–May 17</th><th class="wh">May 18–May 24</th><th class="wh">May 25–May 31</th><th class="wh">Jun 01–Jun 07</th><th class="wh">Jun 08–Jun 14</th><th class="wh  latest">Jun 15–Jun 21</th>
+            </tr>
+          </thead>
+          <tbody>
+      <tr><td title="(none)">(none)</td><td class="v">53.3%</td><td class="v"><span class="wow dn1">41.7% ▼11.6pp</span></td><td class="v"><span class="wow dn1">16.7% ▼25.0pp</span></td><td class="v"><span class="wow flat">18.5% ▲1.8pp</span></td><td class="v"><span class="wow flat">18.9% ▲0.4pp</span></td><td class="v"><span class="wow up1">33.3% ▲14.4pp</span></td><td class="v"><span class="wow up1">35.3% ▲2.0pp</span></td><td class="v latest"><span class="wow dn1">12.0% ▼23.3pp</span></td></tr>
+      <tr><td title="Google Search Paid">Google Search Paid</td><td class="v">10.5%</td><td class="v"><span class="wow up1">13.0% ▲2.5pp</span></td><td class="v"><span class="wow dn1">10.4% ▼2.6pp</span></td><td class="v"><span class="wow dn1">5.5% ▼4.9pp</span></td><td class="v"><span class="wow flat">6.2% ▲0.7pp</span></td><td class="v"><span class="wow flat">5.3% ▼0.9pp</span></td><td class="v"><span class="wow flat">4.5% ▼0.8pp</span></td><td class="v latest"><span class="wow dn1">0.0% ▼4.5pp</span></td></tr>
+      <tr><td title="marketing">marketing</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr><td title="EMAIL">EMAIL</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr><td title="WHATSAPP">WHATSAPP</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">100.0%</td><td class="v"><span class="wow dn1">0.0% ▼100.0pp</span></td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">5.9%</td><td class="v latest"><span class="wow dn1">0.0% ▼5.9pp</span></td></tr>
+      <tr><td title="Search">Search</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr><td title="0">0</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class='avg-row'><td>Total (all channels)</td><td class="v">31.9%</td><td class="v"><span class="wow dn1">18.2% ▼13.7pp</span></td><td class="v"><span class="wow up1">42.4% ▲24.2pp</span></td><td class="v"><span class="wow dn1">8.0% ▼34.4pp</span></td><td class="v"><span class="wow flat">6.3% ▼1.7pp</span></td><td class="v"><span class="wow up1">9.6% ▲3.3pp</span></td><td class="v"><span class="wow up1">15.2% ▲5.6pp</span></td><td class="v latest"><span class="wow dn1">6.0% ▼9.2pp</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      
+    </div>
+    <div class="mpanel" data-m="2">
+      <div class="twrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="ch-col">Channel</th>
+              <th class="wh">Apr 27–May 03</th><th class="wh">May 04–May 10</th><th class="wh">May 11–May 17</th><th class="wh">May 18–May 24</th><th class="wh">May 25–May 31</th><th class="wh">Jun 01–Jun 07</th><th class="wh">Jun 08–Jun 14</th><th class="wh  latest">Jun 15–Jun 21</th>
+            </tr>
+          </thead>
+          <tbody>
+      <tr><td title="(none)">(none)</td><td class="v">25.0%</td><td class="v"><span class="wow up1">60.0% ▲35.0pp</span></td><td class="v"><span class="wow dn1">50.0% ▼10.0pp</span></td><td class="v"><span class="wow up1">60.0% ▲10.0pp</span></td><td class="v"><span class="wow up1">85.7% ▲25.7pp</span></td><td class="v"><span class="wow dn1">75.0% ▼10.7pp</span></td><td class="v"><span class="wow dn1">58.3% ▼16.7pp</span></td><td class="v latest"><span class="wow dn1">33.3% ▼25.0pp</span></td></tr>
+      <tr><td title="Google Search Paid">Google Search Paid</td><td class="v">0.0%</td><td class="v">42.9%</td><td class="v"><span class="wow dn1">40.0% ▼2.9pp</span></td><td class="v"><span class="wow dn1">33.3% ▼6.7pp</span></td><td class="v"><span class="wow up1">100.0% ▲66.7pp</span></td><td class="v"><span class="wow dn1">50.0% ▼50.0pp</span></td><td class="v"><span class="wow up1">100.0% ▲50.0pp</span></td><td class="v latest"><span class="wow dn1">0.0% ▼100.0pp</span></td></tr>
+      <tr><td title="marketing">marketing</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr><td title="EMAIL">EMAIL</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr><td title="WHATSAPP">WHATSAPP</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr><td title="Search">Search</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr><td title="0">0</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v">0.0%</td><td class="v latest">0.0%</td></tr>
+      <tr class='avg-row'><td>Total (all channels)</td><td class="v">12.5%</td><td class="v"><span class="wow up1">51.5% ▲39.0pp</span></td><td class="v"><span class="wow dn1">30.0% ▼21.5pp</span></td><td class="v"><span class="wow up1">46.6% ▲16.6pp</span></td><td class="v"><span class="wow up1">92.8% ▲46.2pp</span></td><td class="v"><span class="wow dn1">62.5% ▼30.3pp</span></td><td class="v"><span class="wow dn1">52.8% ▼9.7pp</span></td><td class="v latest"><span class="wow dn1">33.3% ▼19.5pp</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      
+    </div>
+    <div class="mpanel" data-m="3">
+      <div class="twrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="ch-col">Channel</th>
+              <th class="wh">Apr 27–May 03</th><th class="wh">May 04–May 10</th><th class="wh">May 11–May 17</th><th class="wh">May 18–May 24</th><th class="wh">May 25–May 31</th><th class="wh">Jun 01–Jun 07</th><th class="wh">Jun 08–Jun 14</th><th class="wh  latest">Jun 15–Jun 21</th>
+            </tr>
+          </thead>
+          <tbody>
+      <tr><td title="(none)">(none)</td><td class="v">2</td><td class="v"><span class="wow up2">3<br><small>▲50%</small></span></td><td class="v"><span class="wow dn2">2<br><small>▼33%</small></span></td><td class="v"><span class="wow up2">3<br><small>▲50%</small></span></td><td class="v"><span class="wow up2">6<br><small>▲100%</small></span></td><td class="v"><span class="wow flat">6<br><small>0%</small></span></td><td class="v"><span class="wow up1">7<br><small>▲17%</small></span></td><td class="v latest"><span class="wow dn2">1<br><small>▼86%</small></span></td></tr>
+      <tr><td title="Google Search Paid">Google Search Paid</td><td class="v">0</td><td class="v">3</td><td class="v"><span class="wow dn2">2<br><small>▼33%</small></span></td><td class="v"><span class="wow dn2">1<br><small>▼50%</small></span></td><td class="v"><span class="wow up2">4<br><small>▲300%</small></span></td><td class="v"><span class="wow dn2">1<br><small>▼75%</small></span></td><td class="v"><span class="wow up2">3<br><small>▲200%</small></span></td><td class="v latest">0</td></tr>
+      <tr><td title="marketing">marketing</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr><td title="EMAIL">EMAIL</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr><td title="WHATSAPP">WHATSAPP</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr><td title="Search">Search</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr><td title="0">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class='avg-row'><td>Total (all channels)</td><td class="v">2</td><td class="v"><span class="wow up2">6<br><small>▲200%</small></span></td><td class="v"><span class="wow dn2">4<br><small>▼33%</small></span></td><td class="v"><span class="wow flat">4<br><small>0%</small></span></td><td class="v"><span class="wow up2">10<br><small>▲150%</small></span></td><td class="v"><span class="wow dn2">7<br><small>▼30%</small></span></td><td class="v"><span class="wow up2">10<br><small>▲43%</small></span></td><td class="v latest"><span class="wow dn2">1<br><small>▼90%</small></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      
+    </div>
+    <div class="mpanel" data-m="4">
+      <div class="twrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="ch-col">Channel</th>
+              <th class="wh">Apr 27–May 03</th><th class="wh">May 04–May 10</th><th class="wh">May 11–May 17</th><th class="wh">May 18–May 24</th><th class="wh">May 25–May 31</th><th class="wh">Jun 01–Jun 07</th><th class="wh">Jun 08–Jun 14</th><th class="wh  latest">Jun 15–Jun 21</th>
+            </tr>
+          </thead>
+          <tbody>
+      <tr><td title="(none)">(none)</td><td class="v">₹30.1 L</td><td class="v"><span class="wow up1">₹32.2 L<br><small>▲7%</small></span></td><td class="v"><span class="wow up2">₹78.2 L<br><small>▲143%</small></span></td><td class="v"><span class="wow up2">₹1.20 Cr<br><small>▲53%</small></span></td><td class="v"><span class="wow dn2">₹61.7 L<br><small>▼49%</small></span></td><td class="v"><span class="wow up2">₹1.27 Cr<br><small>▲106%</small></span></td><td class="v"><span class="wow dn2">₹29.8 L<br><small>▼77%</small></span></td><td class="v latest"><span class="wow up2">₹79.4 L<br><small>▲167%</small></span></td></tr>
+      <tr><td title="Google Search Paid">Google Search Paid</td><td class="v">₹2.5 L</td><td class="v"><span class="wow up2">₹23.0 L<br><small>▲804%</small></span></td><td class="v"><span class="wow dn2">₹9,985<br><small>▼100%</small></span></td><td class="v"><span class="wow up2">₹10.0 L<br><small>▲9919%</small></span></td><td class="v"><span class="wow dn2">₹5.5 L<br><small>▼45%</small></span></td><td class="v"><span class="wow dn2">₹48,824<br><small>▼91%</small></span></td><td class="v"><span class="wow up2">₹24.8 L<br><small>▲4970%</small></span></td><td class="v latest"><span class="wow dn2">₹2.3 L<br><small>▼91%</small></span></td></tr>
+      <tr><td title="marketing">marketing</td><td class="v">—</td><td class="v">₹2.0 L</td><td class="v">—</td><td class="v">—</td><td class="v">₹2.0 L</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr><td title="EMAIL">EMAIL</td><td class="v">₹99,135</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr><td title="WHATSAPP">WHATSAPP</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">₹97,685</td><td class="v latest">—</td></tr>
+      <tr><td title="Search">Search</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr><td title="0">0</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v latest">—</td></tr>
+      <tr class='avg-row'><td>Total (all channels)</td><td class="v">₹33.6 L</td><td class="v"><span class="wow up2">₹57.2 L<br><small>▲70%</small></span></td><td class="v"><span class="wow up2">₹78.3 L<br><small>▲37%</small></span></td><td class="v"><span class="wow up2">₹1.30 Cr<br><small>▲66%</small></span></td><td class="v"><span class="wow dn2">₹69.3 L<br><small>▼47%</small></span></td><td class="v"><span class="wow up2">₹1.28 Cr<br><small>▲85%</small></span></td><td class="v"><span class="wow dn2">₹55.5 L<br><small>▼57%</small></span></td><td class="v latest"><span class="wow up2">₹81.8 L<br><small>▲47%</small></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      
+    </div>
+    <div class="mpanel" data-m="5">
+      <div class="twrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="ch-col">Channel</th>
+              <th class="wh">Apr 27–May 03</th><th class="wh">May 04–May 10</th><th class="wh">May 11–May 17</th><th class="wh">May 18–May 24</th><th class="wh">May 25–May 31</th><th class="wh">Jun 01–Jun 07</th><th class="wh">Jun 08–Jun 14</th><th class="wh  latest">Jun 15–Jun 21</th>
+            </tr>
+          </thead>
+          <tbody>
+      <tr><td title="(none)">(none)</td><td class="v">1,502,663</td><td class="v"><span class="wow dn2">201,365<br><small>▼87%</small></span></td><td class="v"><span class="wow up2">601,601<br><small>▲199%</small></span></td><td class="v"><span class="wow up2">922,380<br><small>▲53%</small></span></td><td class="v"><span class="wow dn2">308,529<br><small>▼67%</small></span></td><td class="v"><span class="wow up2">438,921<br><small>▲42%</small></span></td><td class="v"><span class="wow dn2">165,599<br><small>▼62%</small></span></td><td class="v latest"><span class="wow up2">418,102<br><small>▲152%</small></span></td></tr>
+      <tr><td title="Google Search Paid">Google Search Paid</td><td class="v">0</td><td class="v">459,855</td><td class="v"><span class="wow dn2">3,328<br><small>▼99%</small></span></td><td class="v"><span class="wow up2">500,203<br><small>▲14930%</small></span></td><td class="v"><span class="wow dn2">92,291<br><small>▼82%</small></span></td><td class="v"><span class="wow dn2">48,824<br><small>▼47%</small></span></td><td class="v"><span class="wow up2">495,075<br><small>▲914%</small></span></td><td class="v latest"><span class="wow dn2">234,328<br><small>▼53%</small></span></td></tr>
+      <tr><td title="marketing">marketing</td><td class="v">0</td><td class="v">99,889</td><td class="v">0</td><td class="v">0</td><td class="v">201,031</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr><td title="EMAIL">EMAIL</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr><td title="WHATSAPP">WHATSAPP</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">97,685</td><td class="v latest">0</td></tr>
+      <tr><td title="Search">Search</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr><td title="0">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v">0</td><td class="v latest">0</td></tr>
+      <tr class='avg-row'><td>Total (all channels)</td><td class="v">1,502,663</td><td class="v"><span class="wow dn2">761,109<br><small>▼49%</small></span></td><td class="v"><span class="wow dn2">604,929<br><small>▼21%</small></span></td><td class="v"><span class="wow up2">1,422,583<br><small>▲135%</small></span></td><td class="v"><span class="wow dn2">601,851<br><small>▼58%</small></span></td><td class="v"><span class="wow dn1">487,745<br><small>▼19%</small></span></td><td class="v"><span class="wow up2">758,359<br><small>▲55%</small></span></td><td class="v latest"><span class="wow dn1">652,430<br><small>▼14%</small></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      
+    </div>
+    <p class="note"><b>Web cohort</b> = platform=Web users (user segment). <b>Cohort rates</b> (KYC Done%, KYC→Trade%): denominator = signups in that same Mon–Sun week. True cohort — rates cannot exceed 100%. &nbsp;<b>Limitation</b>: Sunday signers have &lt;24 h to convert within the week, so all rates are slightly understated vs a full 7-day window. Trend (WoW) is valid because bias is consistent. &nbsp;<b>GTV / Repeat Trades</b>: calendar-week (all transactions that week from that channel's users). &nbsp;<b>▲▼ arrows</b>: WoW % change for volumes, pp change for rates. &nbsp;<b>Why no Google Search Organic?</b> Organic search traffic carries no UTM tags — it lands in <em>Organic+Direct (mixed)</em> alongside direct visits. <code>utm_source</code> is set on only ~7% of web sessions so can't reliably split them. <b>Google Search Paid</b> = <code>utm_medium=cpc</code>.</p>
+  </div>
+  </div>
+  <script>
+function switchP(p){
+  document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.ppanel').forEach(x=>x.classList.remove('active'));
+  document.querySelector('.ptab[data-p="'+p+'"]').classList.add('active');
+  document.querySelector('.ppanel[data-p="'+p+'"]').classList.add('active');
+}
+function switchM(p,m){
+  const panel=document.querySelector('.ppanel[data-p="'+p+'"]');
+  panel.querySelectorAll('.mbtn').forEach(b=>b.classList.remove('active'));
+  panel.querySelectorAll('.mpanel').forEach(x=>x.classList.remove('active'));
+  panel.querySelector('.mbtn[data-m="'+m+'"]').classList.add('active');
+  panel.querySelector('.mpanel[data-m="'+m+'"]').classList.add('active');
+}
+function toggleAll(p){
+  const panel=document.querySelector('.ppanel[data-p="'+p+'"]');
+  const expanded=panel.classList.toggle('show-all');
+  panel.querySelectorAll('.view-all-btn').forEach(btn=>{
+    const total=btn.getAttribute('data-total')||'?';
+    btn.textContent=expanded?'▴ Show top 15 only':'▾ View all '+total+' channels';
+  });
+}
+</script>
+</body>
+</html>
