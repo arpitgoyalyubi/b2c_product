@@ -1634,6 +1634,7 @@ function sdoToggle(g){
 
 
 
+
 <!-- Jun13 Drop Slide -->
 <div class="slide two-col" id="s-jun13-drop">
 
@@ -1947,8 +1948,8 @@ function sdoToggle(g){
               <span style="font-size:.95rem;font-weight:800;color:#1e293b">20.8%</span>
             </td>
             <td style="padding:8px;text-align:right;background:#fef9c3">
-              <span style="font-size:.95rem;font-weight:800;color:#94a3b8">8.2%*</span>
-              <div style="font-size:.62rem;color:#94a3b8;margin-top:1px">*maturity lag</div>
+              <span style="font-size:.95rem;font-weight:800;color:#16a34a">17.4%†</span>
+              <div style="font-size:.62rem;color:#16a34a;margin-top:1px">−3.4pp · stable</div>
             </td>
           </tr>
 
@@ -1969,8 +1970,8 @@ function sdoToggle(g){
               <span style="font-size:.95rem;font-weight:800;color:#1e293b">38.0%</span>
             </td>
             <td style="padding:8px;text-align:right;background:#dcfce7">
-              <span style="font-size:.95rem;font-weight:800;color:#16a34a">✅ stable</span>
-              <div style="font-size:.62rem;color:#16a34a;margin-top:1px">KYC done 7.2% flat</div>
+              <span style="font-size:.95rem;font-weight:800;color:#16a34a">39.8%†</span>
+              <div style="font-size:.62rem;color:#16a34a;margin-top:1px">✅ stable (+1.9pp)</div>
             </td>
           </tr>
 
@@ -2018,6 +2019,17 @@ function sdoToggle(g){
         </tbody>
       </table>
 
+      <!-- Compound effect explainer -->
+      <div style="background:#faf5ff;border:1px solid #d8b4fe;border-radius:6px;padding:9px 14px;font-size:.73rem">
+        <span style="font-weight:700;color:#7c3aed">Why first trade almost halved despite KYC Done→Pay dropping only 2.8pp: </span>
+        <span style="color:#1e293b">Two drops compound. </span>
+        <span style="color:#475569">
+          Pre: 100 signups → <b style="color:#1e293b">7.3</b> complete KYC → 7.3 × 27.8% = <b style="color:#16a34a">2.0 first trades</b> &nbsp;|&nbsp;
+          Post: 100 signups → <b style="color:#1e293b">4.9</b> complete KYC (−33%) → 4.9 × 25.0% = <b style="color:#dc2626">1.2 first trades</b> (−40%).
+          The KYC Done rate dropped 33% relative. Even with <i>zero</i> KYC Done→Pay degradation, first trades would still be 4.9 × 27.8% = 1.4% — a 30% drop from the KYC stage alone.
+        </span>
+      </div>
+
       <!-- Why Firebase degraded vs TCPA — structural diff callout -->
       <div style="background:#f0f9ff;border-left:3px solid #0284c7;border-radius:6px;padding:10px 14px">
         <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;
@@ -2055,8 +2067,10 @@ function sdoToggle(g){
       <!-- Maturity note -->
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:5px;
                   padding:7px 12px;font-size:.68rem;color:#94a3b8">
-        * TCPA KYC Start 8.2% post is a <b style="color:#475569">7-day maturity artifact</b> — Jun 16–19 signups had only 3–6 days of data when measured Jun 23.
-        KYC Done (7.2%) and Pay (2.2%) are stable, confirming TCPA quality is intact.
+        † TCPA Jun 13–19 combined shows 8.2% KYC Start — an <b style="color:#475569">Amplitude period-level API artifact</b>
+        (the transition-time distribution uses an absolute reference frame for the period start, compressing later-period signups).
+        Sub-period analysis confirms: Jun 13–16 mature cohort = <b style="color:#16a34a">17.4%</b> KYC Start (stable vs pre 20.8%),
+        with KYC Start→Done <b style="color:#16a34a">39.8%</b> (improving). TCPA quality is intact.
       </div>
 
     </div><!-- /tab2 -->
