@@ -739,7 +739,6 @@
   })();
   </script>
 
-
 <!-- Signin Dropout Slide A -->
 <div class="slide" id="s-dropout-s1" style="flex-direction:column;overflow-y:auto;">
 <div class="sdo-slide">
@@ -840,7 +839,6 @@ function sdoToggle(g){
 <div class="sdo-insight"><b>Biggest bottleneck: Engagement gap (saw page, no submit) = 6.3%</b> of email-verified users. Navigation gap 2.4% (WoW +1.3pp) — users who verified email but never reached PIN screen. Engagement gap 6.3% (WoW -1.6pp) — reached PIN page but didn't attempt. Submit fail 0.2% (WoW +0.0pp) — PIN API / validation errors. <b>End-to-end PIN success: <span style='color:#16a34a'>91.1% (+0.2pp WoW)</span></b>.</div>
 </div>
 </div>
-
 
 <!-- KYC Cohort Slide -->
   <div class="slide two-col" id="s-kyc-cohort">
@@ -1633,210 +1631,235 @@ function sdoToggle(g){
   </script>
 
 
+
+
 <!-- Jun13 Drop Slide -->
 <div class="slide two-col" id="s-jun13-drop">
 
-  <!-- left panel: red gradient -->
-  <div class="left-panel" style="background:linear-gradient(160deg,#7f1d1d,#dc2626);">
-    <div class="slide-num">Acquisition</div>
-    <div class="slide-ttl">First-Trade<br>Drop · Jun 13</div>
-    <div class="slide-sub">7-day cohort conv · Jun 1–12 vs Jun 13–19</div>
+  <!-- ── LEFT PANEL ───────────────────────────────────────────────────────── -->
+  <div class="left-panel" style="background:linear-gradient(160deg,#7f1d1d,#b91c1c);">
+    <div class="slide-num">Acquisition Quality</div>
+    <div class="slide-ttl">First-Trade Drop<br>Root Cause</div>
+    <div class="slide-sub">Jun 1–12 (healthy) vs Jun 13–19 (drop) · 7-day cohort</div>
 
-    <div class="hero-num" style="color:#fff;font-size:2.6rem;margin-top:20px">
-      2.9% → 1.1%
-    </div>
-    <div class="hero-lbl">signup → first-trade (7d cohort)</div>
-    <div class="hero-badge down"
-         style="background:rgba(255,255,255,.15);color:#fff;font-size:.82rem;padding:6px 16px;margin-top:12px">
-      ▼&nbsp; 1.8pp drop
+    <div style="margin-top:22px">
+      <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;
+                  letter-spacing:.07em;color:rgba(255,255,255,.6);margin-bottom:6px">
+        Overall signup → first trade
+      </div>
+      <div style="display:flex;align-items:baseline;gap:10px">
+        <span style="font-size:2.4rem;font-weight:800;color:#fff">2.9%</span>
+        <span style="font-size:1.4rem;color:rgba(255,255,255,.5)">→</span>
+        <span style="font-size:2.4rem;font-weight:800;color:#fca5a5">1.1%</span>
+      </div>
+      <div style="font-size:.8rem;color:rgba(255,255,255,.7);margin-top:4px">
+        ▼ 1.8 percentage points
+      </div>
     </div>
 
-    <div class="stat-list" style="margin-top:28px">
-      <div class="stat-item">
-        <span class="si-lbl">Signups/day</span>
-        <span class="si-val">486 → 665 (+37%)</span>
+    <div style="margin-top:26px;display:flex;flex-direction:column;gap:14px">
+
+      <!-- Good campaigns stat -->
+      <div style="background:rgba(255,255,255,.1);border-radius:8px;padding:12px 14px">
+        <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;
+                    letter-spacing:.06em;color:rgba(255,255,255,.6);margin-bottom:6px">
+          ✅ Good campaigns
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:1.1rem;font-weight:800;color:#fff">3.0% → 1.5%</div>
+            <div style="font-size:.7rem;color:rgba(255,255,255,.6);margin-top:2px">
+              first-trade conv (slight product degradation)
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:.85rem;font-weight:700;color:#fff">95% → 66%</div>
+            <div style="font-size:.65rem;color:rgba(255,255,255,.6)">share of signups</div>
+          </div>
+        </div>
       </div>
-      <div class="stat-item">
-        <span class="si-lbl">Bad campaign share</span>
-        <span class="si-val" style="color:#fca5a5">5.0% → 34.1%</span>
+
+      <!-- Bad campaigns stat -->
+      <div style="background:rgba(255,255,255,.1);border-radius:8px;padding:12px 14px">
+        <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;
+                    letter-spacing:.06em;color:rgba(255,255,255,.6);margin-bottom:6px">
+          🔴 Bad campaigns (Google Ads + Affiliates)
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:1.1rem;font-weight:800;color:#fca5a5">~0% conv</div>
+            <div style="font-size:.7rem;color:rgba(255,255,255,.6);margin-top:2px">
+              first-trade · both periods
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:.85rem;font-weight:700;color:#fca5a5">5% → 34%</div>
+            <div style="font-size:.65rem;color:rgba(255,255,255,.6)">share of signups</div>
+          </div>
+        </div>
       </div>
-      <div class="stat-item">
-        <span class="si-lbl">Bad signups/day</span>
-        <span class="si-val" style="color:#fca5a5">24 → 227</span>
-      </div>
+
     </div>
   </div>
 
-  <!-- right panel -->
-  <div class="right-panel" style="padding:20px 24px;overflow-y:auto;display:flex;flex-direction:column;gap:20px">
+  <!-- ── RIGHT PANEL ──────────────────────────────────────────────────────── -->
+  <div class="right-panel" style="padding:22px 26px;overflow-y:auto;
+       display:flex;flex-direction:column;gap:18px">
 
-    <!-- header -->
-    <div>
-      <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
-                  color:#94a3b8;margin-bottom:4px">Campaign mix · Amplitude (excl. Poland + emp. referral)</div>
-      <div style="font-size:.72rem;color:#64748b">
-        ~50% of users have AppsFlyer attribution in Amplitude · directionally accurate
-      </div>
-    </div>
-
-    <!-- campaign table -->
-    <table style="width:100%;border-collapse:collapse">
+    <!-- ── Comparison table ─────────────────────────────────────────────── -->
+    <table style="width:100%;border-collapse:collapse;font-size:.78rem">
       <thead>
         <tr style="border-bottom:2px solid #e2e8f0">
-          <th style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
-                     color:#94a3b8;padding:4px 10px 9px;text-align:left;min-width:160px">Campaign</th>
-          <th style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
-                     color:#94a3b8;padding:4px 10px 9px;text-align:right">Jun 1–12</th>
-          <th style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
-                     color:#94a3b8;padding:4px 10px 9px;text-align:right">Jun 13–19</th>
-          <th style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
-                     color:#94a3b8;padding:4px 10px 9px;text-align:right">Share</th>
-          <th style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
-                     color:#94a3b8;padding:4px 10px 9px;text-align:right">Δ Share</th>
+          <th style="text-align:left;padding:5px 10px 10px;font-size:.62rem;font-weight:700;
+                     text-transform:uppercase;letter-spacing:.05em;color:#94a3b8;min-width:160px">
+            Campaign group</th>
+          <th colspan="2" style="text-align:center;padding:5px 10px 10px;font-size:.62rem;
+                     font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+                     color:#64748b;background:#f0fdf4;border-radius:4px 4px 0 0">
+            Jun 1–12 (healthy)</th>
+          <th colspan="2" style="text-align:center;padding:5px 10px 10px;font-size:.62rem;
+                     font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+                     color:#64748b;background:#fef2f2;border-radius:4px 4px 0 0">
+            Jun 13–19 (drop)</th>
+        </tr>
+        <tr style="border-bottom:1px solid #e2e8f0;background:#f8fafc">
+          <th style="padding:4px 10px 8px;font-size:.6rem;color:#94a3b8;text-align:left"></th>
+          <th style="padding:4px 10px 8px;font-size:.6rem;color:#94a3b8;text-align:right;
+                     background:#f0fdf4">Signups (share)</th>
+          <th style="padding:4px 10px 8px;font-size:.6rem;color:#94a3b8;text-align:right;
+                     background:#f0fdf4">1st-trade conv</th>
+          <th style="padding:4px 10px 8px;font-size:.6rem;color:#94a3b8;text-align:right;
+                     background:#fef2f2">Signups (share)</th>
+          <th style="padding:4px 10px 8px;font-size:.6rem;color:#94a3b8;text-align:right;
+                     background:#fef2f2">1st-trade conv</th>
         </tr>
       </thead>
       <tbody>
-        
-        <tr style="border-bottom:1px solid #f1f5f9;">
-          <td style="padding:7px 10px;font-size:.78rem;font-weight:500;
-                     color:#1e293b;white-space:nowrap">Organic / unattributed</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#94a3b8">1,998 (34.3%)</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.8rem;font-weight:700;
-                     color:#1e293b">1,319</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#64748b">28.3%</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;font-weight:700;
-                     color:#f59e0b">▼ -6.0pp</td>
+
+        <!-- Good campaigns -->
+        <tr style="border-bottom:1px solid #f1f5f9;background:#fff">
+          <td style="padding:10px 10px;font-weight:700;color:#15803d">
+            ✅ Good campaigns
+            <div style="font-size:.68rem;font-weight:400;color:#64748b;margin-top:2px">
+              PaySuccess · Organic · Sandbox
+            </div>
+          </td>
+          <td style="padding:10px;text-align:right;background:#f0fdf4">
+            <span style="font-weight:700;color:#1e293b">5,540</span>
+            <span style="color:#64748b;font-size:.7rem"> · 95%</span>
+          </td>
+          <td style="padding:10px;text-align:right;background:#f0fdf4">
+            <span style="font-size:1rem;font-weight:800;color:#16a34a">3.0%</span>
+          </td>
+          <td style="padding:10px;text-align:right;background:#fef2f2">
+            <span style="font-weight:700;color:#1e293b">3,071</span>
+            <span style="color:#64748b;font-size:.7rem"> · 66%</span>
+          </td>
+          <td style="padding:10px;text-align:right;background:#fef2f2">
+            <span style="font-size:1rem;font-weight:800;color:#f59e0b">1.5%</span>
+            <div style="font-size:.62rem;color:#94a3b8;margin-top:1px">slight degradation</div>
+          </td>
         </tr>
-        <tr style="border-bottom:1px solid #f1f5f9;">
-          <td style="padding:7px 10px;font-size:.78rem;font-weight:500;
-                     color:#1e293b;white-space:nowrap">PaySuccess_tcpa</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#94a3b8">1,078 (18.5%)</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.8rem;font-weight:700;
-                     color:#1e293b">875</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#64748b">18.8%</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;font-weight:700;
-                     color:#94a3b8">+0.3pp</td>
+
+        <!-- Bad Google Ads -->
+        <tr style="border-bottom:1px solid #f1f5f9;background:#fff">
+          <td style="padding:10px 10px;font-weight:700;color:#dc2626">
+            🔴 Bad · Google Ads
+            <div style="font-size:.68rem;font-weight:400;color:#64748b;margin-top:2px">
+              BankVerified_tcpa · loan-seeker keywords
+            </div>
+          </td>
+          <td style="padding:10px;text-align:right;background:#f0fdf4">
+            <span style="font-weight:700;color:#1e293b">176</span>
+            <span style="color:#64748b;font-size:.7rem"> · 3%</span>
+          </td>
+          <td style="padding:10px;text-align:right;background:#f0fdf4">
+            <span style="font-size:1rem;font-weight:800;color:#94a3b8">~0%</span>
+          </td>
+          <td style="padding:10px;text-align:right;background:#fef2f2">
+            <span style="font-weight:700;color:#dc2626">636</span>
+            <span style="color:#dc2626;font-size:.7rem;font-weight:700"> · 14%</span>
+            <span style="margin-left:4px;font-size:.62rem;background:#fef2f2;color:#dc2626;
+                         font-weight:700">▲+11pp</span>
+          </td>
+          <td style="padding:10px;text-align:right;background:#fef2f2">
+            <span style="font-size:1rem;font-weight:800;color:#dc2626">0.0%</span>
+          </td>
         </tr>
-        <tr style="border-bottom:1px solid #f1f5f9;">
-          <td style="padding:7px 10px;font-size:.78rem;font-weight:500;
-                     color:#1e293b;white-space:nowrap">PaySuccess_Firebase</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#94a3b8">743 (12.7%)</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.8rem;font-weight:700;
-                     color:#1e293b">573</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#64748b">12.3%</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;font-weight:700;
-                     color:#94a3b8">-0.4pp</td>
+
+        <!-- Affiliates -->
+        <tr style="border-bottom:2px solid #e2e8f0;background:#fff">
+          <td style="padding:10px 10px;font-weight:700;color:#dc2626">
+            🔴 Affiliates
+            <div style="font-size:.68rem;font-weight:400;color:#64748b;margin-top:2px">
+              VENTES (Vivo/Oppo) · Jio · Watering Plant
+            </div>
+          </td>
+          <td style="padding:10px;text-align:right;background:#f0fdf4">
+            <span style="font-weight:700;color:#1e293b">113</span>
+            <span style="color:#64748b;font-size:.7rem"> · 2%</span>
+          </td>
+          <td style="padding:10px;text-align:right;background:#f0fdf4">
+            <span style="font-size:1rem;font-weight:800;color:#94a3b8">0.0%</span>
+          </td>
+          <td style="padding:10px;text-align:right;background:#fef2f2">
+            <span style="font-weight:700;color:#dc2626">951</span>
+            <span style="color:#dc2626;font-size:.7rem;font-weight:700"> · 20%</span>
+            <span style="margin-left:4px;font-size:.62rem;background:#fef2f2;color:#dc2626;
+                         font-weight:700">▲+18pp</span>
+          </td>
+          <td style="padding:10px;text-align:right;background:#fef2f2">
+            <span style="font-size:1rem;font-weight:800;color:#dc2626">~0%</span>
+          </td>
         </tr>
-        <tr style="border-bottom:1px solid #f1f5f9;">
-          <td style="padding:7px 10px;font-size:.78rem;font-weight:500;
-                     color:#1e293b;white-space:nowrap">ASPERO_SANDBOX</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#94a3b8">583 (10.0%)</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.8rem;font-weight:700;
-                     color:#1e293b">217</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#64748b">4.7%</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;font-weight:700;
-                     color:#f59e0b">▼ -5.3pp</td>
-        </tr><tr><td colspan="5" style="padding:5px 10px;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#94a3b8;background:#f8fafc;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0">New / scaled-up from Jun 13</td></tr>
-        <tr style="border-bottom:1px solid #f1f5f9;">
-          <td style="padding:7px 10px;font-size:.78rem;font-weight:700;
-                     color:#1e293b;white-space:nowrap">BankVerified_tcpa</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#94a3b8">176 (3.0%)</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.8rem;font-weight:700;
-                     color:#ef4444">636</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#64748b">13.7%</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;font-weight:700;
-                     color:#ef4444">▲ +10.7pp</td>
+
+        <!-- Total -->
+        <tr style="background:#f8fafc">
+          <td style="padding:10px 10px;font-weight:700;color:#1e293b">Overall</td>
+          <td style="padding:10px;text-align:right;background:#f0fdf4">
+            <span style="font-weight:700;color:#1e293b">5,829</span>
+            <span style="color:#64748b;font-size:.7rem"> · 486/day</span>
+          </td>
+          <td style="padding:10px;text-align:right;background:#f0fdf4">
+            <span style="font-size:1rem;font-weight:800;color:#16a34a">2.9%</span>
+          </td>
+          <td style="padding:10px;text-align:right;background:#fef2f2">
+            <span style="font-weight:700;color:#1e293b">4,658</span>
+            <span style="color:#64748b;font-size:.7rem"> · 665/day</span>
+          </td>
+          <td style="padding:10px;text-align:right;background:#fef2f2">
+            <span style="font-size:1rem;font-weight:800;color:#dc2626">1.1%</span>
+          </td>
         </tr>
-        <tr style="border-bottom:1px solid #f1f5f9;">
-          <td style="padding:7px 10px;font-size:.78rem;font-weight:700;
-                     color:#1e293b;white-space:nowrap">VENTES_Vivo</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#94a3b8">65 (1.1%)</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.8rem;font-weight:700;
-                     color:#ef4444">350</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#64748b">7.5%</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;font-weight:700;
-                     color:#ef4444">▲ +6.4pp</td>
-        </tr>
-        <tr style="border-bottom:1px solid #f1f5f9;">
-          <td style="padding:7px 10px;font-size:.78rem;font-weight:700;
-                     color:#1e293b;white-space:nowrap">VENTES_Oppo</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#94a3b8">14 (0.2%)</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.8rem;font-weight:700;
-                     color:#ef4444">220</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#64748b">4.7%</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;font-weight:700;
-                     color:#ef4444">▲ +4.5pp</td>
-        </tr>
-        <tr style="border-bottom:1px solid #f1f5f9;">
-          <td style="padding:7px 10px;font-size:.78rem;font-weight:700;
-                     color:#1e293b;white-space:nowrap">Jio_WomenPhone</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#94a3b8">9 (0.2%)</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.8rem;font-weight:700;
-                     color:#ef4444">163</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#64748b">3.5%</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;font-weight:700;
-                     color:#ef4444">▲ +3.3pp</td>
-        </tr>
-        <tr style="border-bottom:1px solid #f1f5f9;">
-          <td style="padding:7px 10px;font-size:.78rem;font-weight:700;
-                     color:#1e293b;white-space:nowrap">Jio_CoinStack</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#94a3b8">20 (0.3%)</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.8rem;font-weight:700;
-                     color:#ef4444">144</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#64748b">3.1%</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;font-weight:700;
-                     color:#ef4444">▲ +2.8pp</td>
-        </tr>
-        <tr style="border-bottom:1px solid #f1f5f9;">
-          <td style="padding:7px 10px;font-size:.78rem;font-weight:700;
-                     color:#1e293b;white-space:nowrap">Watering_Plant</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#94a3b8">5 (0.1%)</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.8rem;font-weight:700;
-                     color:#1e293b">74</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;color:#64748b">1.6%</td>
-          <td style="padding:7px 10px;text-align:right;font-size:.74rem;font-weight:700;
-                     color:#94a3b8">+1.5pp</td>
-        </tr>
-        <tr style="border-top:2px solid #e2e8f0;background:#fef2f2;">
-          <td style="padding:8px 10px;font-size:.78rem;font-weight:700;color:#dc2626">
-            Bad campaigns total</td>
-          <td style="padding:8px 10px;text-align:right;font-size:.74rem;color:#94a3b8">
-            289 (5.0%)</td>
-          <td style="padding:8px 10px;text-align:right;font-size:.8rem;font-weight:700;
-                     color:#dc2626">1,587</td>
-          <td style="padding:8px 10px;text-align:right;font-size:.74rem;color:#dc2626;
-                     font-weight:700">34.1%</td>
-          <td style="padding:8px 10px;text-align:right;font-size:.74rem;font-weight:700;
-                     color:#ef4444">▲ +29.1pp</td>
-        </tr>
-        <tr style="border-top:1px solid #e2e8f0;background:#f8fafc;">
-          <td style="padding:8px 10px;font-size:.78rem;font-weight:700;color:#1e293b">
-            Total signups</td>
-          <td style="padding:8px 10px;text-align:right;font-size:.74rem;color:#94a3b8">
-            5,829 (486/day)</td>
-          <td style="padding:8px 10px;text-align:right;font-size:.8rem;font-weight:700;
-                     color:#1e293b">4,658</td>
-          <td style="padding:8px 10px;text-align:right;font-size:.74rem;color:#64748b">
-            665/day</td>
-          <td style="padding:8px 10px;text-align:right;font-size:.74rem;font-weight:700;
-                     color:#f59e0b">▲ +37%</td>
-        </tr>
+
       </tbody>
     </table>
 
-    <!-- root cause callout -->
-    <div style="background:#fff7ed;border-left:3px solid #f97316;border-radius:6px;padding:12px 14px">
-      <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;
-                  letter-spacing:.07em;color:#ea580c;margin-bottom:6px">Root cause</div>
-      <div style="font-size:.8rem;color:#1e293b;line-height:1.6">
-        <b>6 campaigns turned on / scaled up simultaneously from Jun 13</b> — targeting
-        bank-verification, OEM (Vivo/Oppo), and Jio audiences with
-        <b>0% first-trade conversion</b>.
-        These went from <b>24 signups/day → 227/day</b>, growing from 5% to 34% of total volume.
-        PaySuccess campaigns and organic held flat in absolute terms — their share was
-        diluted by the low-intent volume. Fix: pause or cap the 6 bad campaigns and
-        reallocate budget to PaySuccess_tcpa / PaySuccess_Firebase.
+    <!-- ── Affiliate highlight callout ──────────────────────────────────── -->
+    <div style="background:#fff7ed;border-left:3px solid #f97316;
+                border-radius:6px;padding:12px 14px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;
+                    letter-spacing:.07em;color:#ea580c">Affiliate traffic spike</div>
+        <div style="background:#ea580c;color:#fff;font-size:.65rem;font-weight:700;
+                    padding:2px 8px;border-radius:10px">2% → 20% of all signups</div>
       </div>
+      <div style="font-size:.78rem;color:#1e293b;line-height:1.6">
+        Affiliates (VENTES Vivo/Oppo, Jio CoinStack/WomenPhone, Watering Plant) went from
+        <b>113 signups pre-Jun 13 → 951 post-Jun 13</b> — a <b>8.4× jump in 7 days</b>.
+        These are OEM-preload and affiliate networks with <b>zero investment intent</b>.
+        Combined with BankVerified_tcpa (loan seekers), bad campaigns account for
+        <b>1 in 3 signups</b> post-Jun 13 at <b>0% first-trade conversion</b>.
+      </div>
+    </div>
+
+    <!-- ── The math ─────────────────────────────────────────────────────── -->
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;
+                padding:10px 14px;font-size:.74rem;color:#64748b">
+      <span style="font-weight:700;color:#1e293b">The math: </span>
+      Pre = 95% × 3.0% + 5% × 0% = <b style="color:#16a34a">2.85%</b> &nbsp;|&nbsp;
+      Post = 66% × 1.5% + 34% × 0% = <b style="color:#dc2626">0.99%</b> &nbsp;·&nbsp;
+      <span style="color:#94a3b8">Mix shift explains ~75% of the drop; ~25% is within-campaign degradation</span>
     </div>
 
   </div>
@@ -1885,7 +1908,6 @@ function sdoToggle(g){
     </div>
   </div>
 
-
   <!-- Slide 7: GTV by Issuer — Indigo -->
   <div class="slide two-col" id="s7">
     <div class="left-panel" style="background:linear-gradient(160deg,#312e81,#6366f1);">
@@ -1906,7 +1928,6 @@ function sdoToggle(g){
       <div class="insight-row" id="ins-s6"></div>
     </div>
   </div>
-
 
   <!-- Slide 8: SEO Visibility — Sky Blue -->
   <div class="slide two-col" id="s8">
@@ -2138,7 +2159,6 @@ function sdoToggle(g){
     </div>
   </div>
 
-
   <!-- ── APPENDIX ─────────────────────────────────────────────────────────── -->
   <div class="slide two-col" id="s-appendix">
     <div class="left-panel" style="background:linear-gradient(160deg,#1e293b,#475569);">
@@ -2194,7 +2214,6 @@ function sdoToggle(g){
       <div class="bio-ins-wrap" id="bio-insights"></div>
     </div>
   </div>
-
 
   <!-- Slide 11: Calling — KYC Activation -->
   <div class="slide two-col" id="s11">
