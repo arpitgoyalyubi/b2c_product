@@ -2185,20 +2185,22 @@ function jun13ShowTab(tab) {
         <div class="stat-item"><span class="si-lbl">Blog impressions</span><span class="si-val" id="s8-bl-clicks">—</span></div>
       </div>
     </div>
-    <div class="right-panel" style="padding:14px 16px 12px;">
-      <div class="seo-2col" id="seo-2col">
-        <div class="seo-panel">
-          <div class="seo-panel-title" id="seo-t0">Bond Detail Pages</div>
-          <div class="seo-panel-sub" id="seo-s0">/invest/bond/*</div>
-          <div class="seo-chart-wrap"><canvas id="chart-seo-bd"></canvas></div>
-          <div class="seo-insights" id="seo-ins-bd"></div>
-        </div>
-        <div class="seo-panel">
-          <div class="seo-panel-title" id="seo-t1">Marketing Site &amp; Blog</div>
-          <div class="seo-panel-sub" id="seo-s1">Both declining · aspero.in/* (non-app) + /blog/*</div>
-          <div class="seo-chart-wrap"><canvas id="chart-seo-bl"></canvas></div>
-          <div class="seo-insights" id="seo-ins-bl"></div>
-        </div>
+    <div class="right-panel" style="padding:14px 16px 12px;display:flex;flex-direction:column;">
+      <div style="display:flex;gap:5px;margin-bottom:8px;flex-shrink:0;">
+        <button onclick="seoTab('bd')" id="stab-bd" style="padding:3px 10px;font-size:.65rem;border:1.5px solid #0ea5e9;background:#f0f9ff;color:#0ea5e9;border-radius:12px;cursor:pointer;font-weight:700;">Bond Detail Pages</button>
+        <button onclick="seoTab('bl')" id="stab-bl" style="padding:3px 10px;font-size:.65rem;border:1.5px solid #e2e8f0;background:#fff;color:#94a3b8;border-radius:12px;cursor:pointer;">Marketing Site &amp; Blog</button>
+      </div>
+      <div id="spanel-bd" class="seo-panel" style="flex:1;display:flex;flex-direction:column;">
+        <div class="seo-panel-title" id="seo-t0">Bond Detail Pages</div>
+        <div class="seo-panel-sub" id="seo-s0">/invest/bond/*</div>
+        <div class="seo-chart-wrap"><canvas id="chart-seo-bd"></canvas></div>
+        <div class="seo-insights" id="seo-ins-bd"></div>
+      </div>
+      <div id="spanel-bl" class="seo-panel" style="flex:1;display:none;flex-direction:column;">
+        <div class="seo-panel-title" id="seo-t1">Marketing Site &amp; Blog</div>
+        <div class="seo-panel-sub" id="seo-s1">aspero.in/* (non-app) + /blog/*</div>
+        <div class="seo-chart-wrap"><canvas id="chart-seo-bl"></canvas></div>
+        <div class="seo-insights" id="seo-ins-bl"></div>
       </div>
     </div>
   </div>
@@ -3570,6 +3572,21 @@ insights('ins-s5', [
     { color: '#94a3b8', txt: `${thisWk} unique users · ${Math.round((1 - thisWk/totalWk)*100)}% follow-up tickets excluded · click any row to see ticket descriptions` },
   ]);
 })();
+
+function seoTab(t) {
+  ['bd','bl'].forEach(function(id) {
+    var p = document.getElementById('spanel-' + id);
+    var b = document.getElementById('stab-' + id);
+    if (p) p.style.display = id === t ? 'flex' : 'none';
+    if (b) {
+      b.style.borderColor = id === t ? '#0ea5e9' : '#e2e8f0';
+      b.style.color       = id === t ? '#0ea5e9' : '#94a3b8';
+      b.style.background  = id === t ? '#f0f9ff' : '#fff';
+      b.style.fontWeight  = id === t ? '700'     : 'normal';
+    }
+  });
+  setTimeout(function() { window.dispatchEvent(new Event('resize')); }, 50);
+}
 </script>
 </body>
 </html>
