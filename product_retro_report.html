@@ -134,11 +134,26 @@
       color: rgba(255,255,255,.2);
     }
 
+    /* ── Overview sections ───────────────────────────── */
+    .overview-section {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 40px 0;
+    }
+    .ov-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 14px;
+    }
+
     /* ── Main content area ───────────────────────────── */
     .content {
       max-width: 1000px;
       margin: 0 auto;
-      padding: 0 40px 80px;
+      padding: 40px 40px 80px;
     }
 
     /* ── Release card ────────────────────────────────── */
@@ -225,7 +240,12 @@
       .card { flex-direction: column; }
       .cl { width: 100%; padding: 22px 20px; }
       .cl-ghost { font-size: 80px; }
-      .content, .hero-inner, .stats-strip { padding-left: 20px; padding-right: 20px; }
+      .content, .hero-inner, .stats-strip, .overview-section {
+        padding-left: 20px; padding-right: 20px;
+      }
+    }
+    @media (max-width: 600px) {
+      .scoreboard { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -284,7 +304,258 @@
   </div>
 </div>
 
-<!-- ── Cards ─────────────────────────────────────────────── -->
+<!-- ── Overview ──────────────────────────────────────────── -->
+
+  <!-- ── Impact by Theme ─────────────────────────────────── -->
+  <div class="overview-section">
+    <div class="ov-label">Impact by theme</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+      
+      <div style="background:linear-gradient(150deg,#064e3b 0%,#059669 100%);border-radius:14px;padding:26px 22px;position:relative;overflow:hidden;">
+        <div style="position:absolute;bottom:-20px;right:-16px;font-size:80px;font-weight:900;
+                    color:rgba(255,255,255,.06);line-height:1;pointer-events:none;">32×</div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+                    color:rgba(255,255,255,.35);margin-bottom:18px;">SEO & Discovery</div>
+        <div style="font-size:clamp(28px,3.5vw,38px);font-weight:900;letter-spacing:-1.5px;
+                    line-height:1;color:#6ee7b7;margin-bottom:6px;">32×</div>
+        <div style="font-size:11.5px;color:rgba(255,255,255,.45);margin-bottom:18px;">/invest/ impressions post-SSR</div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-top:1px solid rgba(255,255,255,.08);"><span style="font-size:11px;color:rgba(255,255,255,.45);">bond page impr. (14 mo)</span><span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.85);">40×</span></div><div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-top:1px solid rgba(255,255,255,.08);"><span style="font-size:11px;color:rgba(255,255,255,.45);">SEO releases shipped</span><span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.85);">3</span></div>
+      </div>
+      <div style="background:linear-gradient(150deg,#3b0764 0%,#7c3aed 100%);border-radius:14px;padding:26px 22px;position:relative;overflow:hidden;">
+        <div style="position:absolute;bottom:-20px;right:-16px;font-size:80px;font-weight:900;
+                    color:rgba(255,255,255,.06);line-height:1;pointer-events:none;">₹31.2L</div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+                    color:rgba(255,255,255,.35);margin-bottom:18px;">Ops & Compliance</div>
+        <div style="font-size:clamp(28px,3.5vw,38px);font-weight:900;letter-spacing:-1.5px;
+                    line-height:1;color:#c4b5fd;margin-bottom:6px;">₹31.2L</div>
+        <div style="font-size:11.5px;color:rgba(255,255,255,.45);margin-bottom:18px;">GTV recovered (KRA V2)</div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-top:1px solid rgba(255,255,255,.08);"><span style="font-size:11px;color:rgba(255,255,255,.45);">AML throughput vs manual</span><span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.85);">10×</span></div><div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-top:1px solid rgba(255,255,255,.08);"><span style="font-size:11px;color:rgba(255,255,255,.45);">ops review reduction (RPD)</span><span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.85);">3.5×</span></div>
+      </div>
+      <div style="background:linear-gradient(150deg,#1e3a8a 0%,#2563eb 100%);border-radius:14px;padding:26px 22px;position:relative;overflow:hidden;">
+        <div style="position:absolute;bottom:-20px;right:-16px;font-size:80px;font-weight:900;
+                    color:rgba(255,255,255,.06);line-height:1;pointer-events:none;">1.4%</div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+                    color:rgba(255,255,255,.35);margin-bottom:18px;">User Experience</div>
+        <div style="font-size:clamp(28px,3.5vw,38px);font-weight:900;letter-spacing:-1.5px;
+                    line-height:1;color:#93c5fd;margin-bottom:6px;">1.4%</div>
+        <div style="font-size:11.5px;color:rgba(255,255,255,.45);margin-bottom:18px;">sign-in bounce — phone hint users</div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-top:1px solid rgba(255,255,255,.08);"><span style="font-size:11px;color:rgba(255,255,255,.45);">bank auto-approval (RPD)</span><span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.85);">+12.8pp</span></div><div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-top:1px solid rgba(255,255,255,.08);"><span style="font-size:11px;color:rgba(255,255,255,.45);">phone hint acceptance rate</span><span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.85);">84%</span></div>
+      </div>
+      <div style="background:linear-gradient(150deg,#451a03 0%,#d97706 100%);border-radius:14px;padding:26px 22px;position:relative;overflow:hidden;">
+        <div style="position:absolute;bottom:-20px;right:-16px;font-size:80px;font-weight:900;
+                    color:rgba(255,255,255,.06);line-height:1;pointer-events:none;">6,200+</div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+                    color:rgba(255,255,255,.35);margin-bottom:18px;">Platform & Scale</div>
+        <div style="font-size:clamp(28px,3.5vw,38px);font-weight:900;letter-spacing:-1.5px;
+                    line-height:1;color:#fcd34d;margin-bottom:6px;">6,200+</div>
+        <div style="font-size:11.5px;color:rgba(255,255,255,.45);margin-bottom:18px;">demat accounts (15 weeks)</div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-top:1px solid rgba(255,255,255,.08);"><span style="font-size:11px;color:rgba(255,255,255,.45);">biometric users enrolled</span><span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.85);">24K</span></div><div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-top:1px solid rgba(255,255,255,.08);"><span style="font-size:11px;color:rgba(255,255,255,.45);">demat throughput vs baseline</span><span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.85);">9×</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Top Releases ───────────────────────────────────── -->
+  <div class="overview-section">
+    <div class="ov-label">Top releases by impact</div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">
+      
+      <a href="#card-10_ssr_launch" style="text-decoration:none;display:flex;align-items:center;gap:14px;
+           background:#fff;border-radius:12px;padding:16px 18px;
+           box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid #f1f5f9;
+           transition:box-shadow 0.15s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,.1)'"
+           onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,.05)'">
+        <div style="font-size:13px;font-weight:900;color:#e2e8f0;min-width:24px;text-align:center;">01</div>
+        <div style="width:3px;height:36px;border-radius:2px;background:linear-gradient(150deg,#3b0764 0%,#7c3aed 100%);flex-shrink:0;"></div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:700;color:#0f172a;white-space:nowrap;
+                      overflow:hidden;text-overflow:ellipsis;">SSR Launch</div>
+          <div style="font-size:11px;color:#94a3b8;margin-top:2px;">SEO impressions lift</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+          <span style="width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block;flex-shrink:0;"></span>
+          <div style="font-size:20px;font-weight:900;letter-spacing:-0.8px;color:#7c3aed;">32×</div>
+        </div>
+      </a>
+      <a href="#card-11_seo_structured_data" style="text-decoration:none;display:flex;align-items:center;gap:14px;
+           background:#fff;border-radius:12px;padding:16px 18px;
+           box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid #f1f5f9;
+           transition:box-shadow 0.15s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,.1)'"
+           onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,.05)'">
+        <div style="font-size:13px;font-weight:900;color:#e2e8f0;min-width:24px;text-align:center;">02</div>
+        <div style="width:3px;height:36px;border-radius:2px;background:linear-gradient(150deg,#064e3b 0%,#10b981 100%);flex-shrink:0;"></div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:700;color:#0f172a;white-space:nowrap;
+                      overflow:hidden;text-overflow:ellipsis;">SEO Structured Data</div>
+          <div style="font-size:11px;color:#94a3b8;margin-top:2px;">bond page impressions (14 mo)</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+          <span style="width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block;flex-shrink:0;"></span>
+          <div style="font-size:20px;font-weight:900;letter-spacing:-0.8px;color:#059669;">40×</div>
+        </div>
+      </a>
+      <a href="#card-12_biometric_auth" style="text-decoration:none;display:flex;align-items:center;gap:14px;
+           background:#fff;border-radius:12px;padding:16px 18px;
+           box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid #f1f5f9;
+           transition:box-shadow 0.15s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,.1)'"
+           onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,.05)'">
+        <div style="font-size:13px;font-weight:900;color:#e2e8f0;min-width:24px;text-align:center;">03</div>
+        <div style="width:3px;height:36px;border-radius:2px;background:linear-gradient(150deg,#1e3a8a 0%,#2563eb 100%);flex-shrink:0;"></div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:700;color:#0f172a;white-space:nowrap;
+                      overflow:hidden;text-overflow:ellipsis;">Biometric Authentication</div>
+          <div style="font-size:11px;color:#94a3b8;margin-top:2px;">users enrolled since Apr 2026</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+          <span style="width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block;flex-shrink:0;"></span>
+          <div style="font-size:20px;font-weight:900;letter-spacing:-0.8px;color:#2563eb;">24K</div>
+        </div>
+      </a>
+      <a href="#card-13_kra_v2" style="text-decoration:none;display:flex;align-items:center;gap:14px;
+           background:#fff;border-radius:12px;padding:16px 18px;
+           box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid #f1f5f9;
+           transition:box-shadow 0.15s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,.1)'"
+           onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,.05)'">
+        <div style="font-size:13px;font-weight:900;color:#e2e8f0;min-width:24px;text-align:center;">04</div>
+        <div style="width:3px;height:36px;border-radius:2px;background:linear-gradient(150deg,#3b0764 0%,#7c3aed 100%);flex-shrink:0;"></div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:700;color:#0f172a;white-space:nowrap;
+                      overflow:hidden;text-overflow:ellipsis;">KRA V2 — CVL Unblocking</div>
+          <div style="font-size:11px;color:#94a3b8;margin-top:2px;">GTV recovered</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+          <span style="width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block;flex-shrink:0;"></span>
+          <div style="font-size:20px;font-weight:900;letter-spacing:-0.8px;color:#7c3aed;">₹31.2L</div>
+        </div>
+      </a>
+      <a href="#card-14_aspero_demat" style="text-decoration:none;display:flex;align-items:center;gap:14px;
+           background:#fff;border-radius:12px;padding:16px 18px;
+           box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid #f1f5f9;
+           transition:box-shadow 0.15s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,.1)'"
+           onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,.05)'">
+        <div style="font-size:13px;font-weight:900;color:#e2e8f0;min-width:24px;text-align:center;">05</div>
+        <div style="width:3px;height:36px;border-radius:2px;background:linear-gradient(150deg,#3b0764 0%,#7c3aed 100%);flex-shrink:0;"></div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:700;color:#0f172a;white-space:nowrap;
+                      overflow:hidden;text-overflow:ellipsis;">Aspero In-House Demat</div>
+          <div style="font-size:11px;color:#94a3b8;margin-top:2px;">demat throughput (Mar→Jun)</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+          <span style="width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block;flex-shrink:0;"></span>
+          <div style="font-size:20px;font-weight:900;letter-spacing:-0.8px;color:#7c3aed;">9×</div>
+        </div>
+      </a>
+      <a href="#card-07_upi_rpd" style="text-decoration:none;display:flex;align-items:center;gap:14px;
+           background:#fff;border-radius:12px;padding:16px 18px;
+           box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid #f1f5f9;
+           transition:box-shadow 0.15s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,.1)'"
+           onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,.05)'">
+        <div style="font-size:13px;font-weight:900;color:#e2e8f0;min-width:24px;text-align:center;">06</div>
+        <div style="width:3px;height:36px;border-radius:2px;background:linear-gradient(150deg,#1e3a8a 0%,#2563eb 100%);flex-shrink:0;"></div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:700;color:#0f172a;white-space:nowrap;
+                      overflow:hidden;text-overflow:ellipsis;">UPI Reverse Penny Drop</div>
+          <div style="font-size:11px;color:#94a3b8;margin-top:2px;">bank auto-approval vs PD</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+          <span style="width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block;flex-shrink:0;"></span>
+          <div style="font-size:20px;font-weight:900;letter-spacing:-0.8px;color:#2563eb;">+12.8pp</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Quarter on Quarter ─────────────────────────────── -->
+  <div class="overview-section">
+    <div class="ov-label">Quarter on quarter</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      
+      <div style="background:#fff;border-radius:14px;padding:20px 18px;
+                  box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid #f1f5f9;flex:1;min-width:160px;">
+        <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+                    color:#94a3b8;margin-bottom:4px;">Q1 FY26</div>
+        <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:12px;">
+          <span style="font-size:28px;font-weight:900;letter-spacing:-1px;color:#0f172a;">1</span>
+          <span style="font-size:12px;color:#94a3b8;">releases</span>
+          <span style="font-size:12px;color:#4ade80;margin-left:4px;font-weight:600;">0 measured</span>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px;"><span style="background:#fcd34d22;color:#fcd34d;border:1px solid #fcd34d44;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;">1 Analytics</span></div>
+        <div style="height:3px;background:#f1f5f9;border-radius:2px;margin-bottom:14px;overflow:hidden;">
+          <div style="height:100%;width:0%;background:linear-gradient(90deg,#4ade80,#22c55e);border-radius:2px;"></div>
+        </div>
+        <div style="font-size:11px;color:#64748b;padding:3px 0;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#d97706;flex-shrink:0;display:inline-block;"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">AppsFlyer MMP Integration</span></div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:20px 18px;
+                  box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid #f1f5f9;flex:1;min-width:160px;">
+        <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+                    color:#94a3b8;margin-bottom:4px;">Q2 FY26</div>
+        <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:12px;">
+          <span style="font-size:28px;font-weight:900;letter-spacing:-1px;color:#0f172a;">2</span>
+          <span style="font-size:12px;color:#94a3b8;">releases</span>
+          <span style="font-size:12px;color:#4ade80;margin-left:4px;font-weight:600;">2 measured</span>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px;"><span style="background:#c4b5fd22;color:#c4b5fd;border:1px solid #c4b5fd44;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;">1 Platform</span><span style="background:#6ee7b722;color:#6ee7b7;border:1px solid #6ee7b744;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;">1 SEO</span></div>
+        <div style="height:3px;background:#f1f5f9;border-radius:2px;margin-bottom:14px;overflow:hidden;">
+          <div style="height:100%;width:100%;background:linear-gradient(90deg,#4ade80,#22c55e);border-radius:2px;"></div>
+        </div>
+        <div style="font-size:11px;color:#64748b;padding:3px 0;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#7c3aed;flex-shrink:0;display:inline-block;"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Automated AML Screening</span><span style="margin-left:auto;font-size:9px;color:#4ade80;">✓</span></div><div style="font-size:11px;color:#64748b;padding:3px 0;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#059669;flex-shrink:0;display:inline-block;"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Bond Detail URL & Sitemap Optimization</span><span style="margin-left:auto;font-size:9px;color:#4ade80;">✓</span></div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:20px 18px;
+                  box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid #f1f5f9;flex:1;min-width:160px;">
+        <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+                    color:#94a3b8;margin-bottom:4px;">Q3 FY26</div>
+        <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:12px;">
+          <span style="font-size:28px;font-weight:900;letter-spacing:-1px;color:#0f172a;">5</span>
+          <span style="font-size:12px;color:#94a3b8;">releases</span>
+          <span style="font-size:12px;color:#4ade80;margin-left:4px;font-weight:600;">5 measured</span>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px;"><span style="background:#93c5fd22;color:#93c5fd;border:1px solid #93c5fd44;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;">5 Feature</span></div>
+        <div style="height:3px;background:#f1f5f9;border-radius:2px;margin-bottom:14px;overflow:hidden;">
+          <div style="height:100%;width:100%;background:linear-gradient(90deg,#4ade80,#22c55e);border-radius:2px;"></div>
+        </div>
+        <div style="font-size:11px;color:#64748b;padding:3px 0;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#2563eb;flex-shrink:0;display:inline-block;"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">PAN-Aadhaar Unification via HyperVerge</span><span style="margin-left:auto;font-size:9px;color:#4ade80;">✓</span></div><div style="font-size:11px;color:#64748b;padding:3px 0;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#2563eb;flex-shrink:0;display:inline-block;"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Phone Number Hint on Sign-in (Android)</span><span style="margin-left:auto;font-size:9px;color:#4ade80;">✓</span></div><div style="font-size:11px;color:#64748b;padding:3px 0;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#2563eb;flex-shrink:0;display:inline-block;"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">OTP Auto-Read from SMS (Android)</span><span style="margin-left:auto;font-size:9px;color:#4ade80;">✓</span></div><div style="font-size:11px;color:#64748b;padding:3px 0;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#2563eb;flex-shrink:0;display:inline-block;"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">UPI Reverse Penny Drop — Bank Verification</span><span style="margin-left:auto;font-size:9px;color:#4ade80;">✓</span></div><div style="font-size:11px;color:#64748b;padding:3px 0;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#2563eb;flex-shrink:0;display:inline-block;"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">KYC Full Redesign</span><span style="margin-left:auto;font-size:9px;color:#4ade80;">✓</span></div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:20px 18px;
+                  box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid #f1f5f9;flex:1;min-width:160px;">
+        <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+                    color:#94a3b8;margin-bottom:4px;">Q4 FY26</div>
+        <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:12px;">
+          <span style="font-size:28px;font-weight:900;letter-spacing:-1px;color:#0f172a;">3</span>
+          <span style="font-size:12px;color:#94a3b8;">releases</span>
+          <span style="font-size:12px;color:#4ade80;margin-left:4px;font-weight:600;">3 measured</span>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px;"><span style="background:#93c5fd22;color:#93c5fd;border:1px solid #93c5fd44;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;">1 Feature</span><span style="background:#c4b5fd22;color:#c4b5fd;border:1px solid #c4b5fd44;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;">2 Platform</span></div>
+        <div style="height:3px;background:#f1f5f9;border-radius:2px;margin-bottom:14px;overflow:hidden;">
+          <div style="height:100%;width:100%;background:linear-gradient(90deg,#4ade80,#22c55e);border-radius:2px;"></div>
+        </div>
+        <div style="font-size:11px;color:#64748b;padding:3px 0;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#2563eb;flex-shrink:0;display:inline-block;"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Google SSO Email Verification</span><span style="margin-left:auto;font-size:9px;color:#4ade80;">✓</span></div><div style="font-size:11px;color:#64748b;padding:3px 0;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#7c3aed;flex-shrink:0;display:inline-block;"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">SSR (Server-Side Rendering) Launch</span><span style="margin-left:auto;font-size:9px;color:#4ade80;">✓</span></div><div style="font-size:11px;color:#64748b;padding:3px 0;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#7c3aed;flex-shrink:0;display:inline-block;"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Aspero In-House Demat Account</span><span style="margin-left:auto;font-size:9px;color:#4ade80;">✓</span></div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:20px 18px;
+                  box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid #f1f5f9;flex:1;min-width:160px;">
+        <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+                    color:#94a3b8;margin-bottom:4px;">Q1 FY27</div>
+        <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:12px;">
+          <span style="font-size:28px;font-weight:900;letter-spacing:-1px;color:#0f172a;">3</span>
+          <span style="font-size:12px;color:#94a3b8;">releases</span>
+          <span style="font-size:12px;color:#4ade80;margin-left:4px;font-weight:600;">3 measured</span>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px;"><span style="background:#93c5fd22;color:#93c5fd;border:1px solid #93c5fd44;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;">2 Feature</span><span style="background:#6ee7b722;color:#6ee7b7;border:1px solid #6ee7b744;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;">1 SEO</span></div>
+        <div style="height:3px;background:#f1f5f9;border-radius:2px;margin-bottom:14px;overflow:hidden;">
+          <div style="height:100%;width:100%;background:linear-gradient(90deg,#4ade80,#22c55e);border-radius:2px;"></div>
+        </div>
+        <div style="font-size:11px;color:#64748b;padding:3px 0;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#059669;flex-shrink:0;display:inline-block;"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">SEO Structured Data</span><span style="margin-left:auto;font-size:9px;color:#4ade80;">✓</span></div><div style="font-size:11px;color:#64748b;padding:3px 0;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#2563eb;flex-shrink:0;display:inline-block;"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Biometric Authentication</span><span style="margin-left:auto;font-size:9px;color:#4ade80;">✓</span></div><div style="font-size:11px;color:#64748b;padding:3px 0;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#2563eb;flex-shrink:0;display:inline-block;"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">KRA V2 — CVL Upload & Unblocking</span><span style="margin-left:auto;font-size:9px;color:#4ade80;">✓</span></div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- ── Detailed cards ─────────────────────────────────────── -->
+<div style="max-width:1000px;margin:0 auto;padding:8px 40px;margin-top:8px;">
+  <div style="display:flex;align-items:center;gap:16px;margin:28px 0 20px;">
+    <div style="flex:1;height:1px;background:#e2e8f0;"></div>
+    <span style="font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#cbd5e1;padding:0 4px;">Release details</span>
+    <div style="flex:1;height:1px;background:#e2e8f0;"></div>
+  </div>
+</div>
 <div class="content">
   
     <div style="display:flex;align-items:center;gap:16px;margin:44px 0 18px;">
