@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aspero B2C — FY26 Product Retro</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; background: #0F172A; color: #F1F5F9; line-height: 1.5; }
+    html { scroll-behavior: smooth; }
+    a { color: inherit; }
+    ::-webkit-scrollbar { width: 6px; background: #0F172A; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    @media print {
+      nav { display: none; }
+      .release-card { break-inside: avoid; }
+      button { display: none; }
+      .detail-panel { display: block !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sticky Nav -->
+<nav style="position:sticky;top:0;z-index:200;background:rgba(15,23,42,0.95);backdrop-filter:blur(12px);border-bottom:1px solid #1E293B;padding:0 28px;">
+  <div style="max-width:880px;margin:0 auto;display:flex;align-items:center;height:52px;gap:4px;overflow-x:auto;">
+    <span style="font-size:14px;font-weight:900;color:#F1F5F9;margin-right:16px;white-space:nowrap;flex-shrink:0;">Aspero B2C FY26</span>
+    <a href="#q1-fy26" style="font-size:12px;font-weight:600;color:#64748B;text-decoration:none;padding:6px 10px;border-radius:6px;white-space:nowrap;flex-shrink:0;" onmouseover="this.style.color='#818CF8';this.style.background='#1E293B'" onmouseout="this.style.color='#64748B';this.style.background='transparent'">Q1 FY26</a><a href="#q2-fy26" style="font-size:12px;font-weight:600;color:#64748B;text-decoration:none;padding:6px 10px;border-radius:6px;white-space:nowrap;flex-shrink:0;" onmouseover="this.style.color='#38BDF8';this.style.background='#1E293B'" onmouseout="this.style.color='#64748B';this.style.background='transparent'">Q2 FY26</a><a href="#q3-fy26" style="font-size:12px;font-weight:600;color:#64748B;text-decoration:none;padding:6px 10px;border-radius:6px;white-space:nowrap;flex-shrink:0;" onmouseover="this.style.color='#A78BFA';this.style.background='#1E293B'" onmouseout="this.style.color='#64748B';this.style.background='transparent'">Q3 FY26</a><a href="#q4-fy26" style="font-size:12px;font-weight:600;color:#64748B;text-decoration:none;padding:6px 10px;border-radius:6px;white-space:nowrap;flex-shrink:0;" onmouseover="this.style.color='#F472B6';this.style.background='#1E293B'" onmouseout="this.style.color='#64748B';this.style.background='transparent'">Q4 FY26</a><a href="#q1-fy27" style="font-size:12px;font-weight:600;color:#64748B;text-decoration:none;padding:6px 10px;border-radius:6px;white-space:nowrap;flex-shrink:0;" onmouseover="this.style.color='#34D399';this.style.background='#1E293B'" onmouseout="this.style.color='#64748B';this.style.background='transparent'">Q1 FY27</a>
+    <div style="margin-left:auto;display:flex;gap:8px;flex-shrink:0;">
+      <a href="#highlights" style="font-size:12px;font-weight:600;color:#38BDF8;text-decoration:none;padding:6px 12px;border:1px solid #1E3A5F;border-radius:6px;white-space:nowrap;">Highlights</a>
+      <button onclick="window.print()" style="font-size:12px;font-weight:600;color:#94A3B8;background:transparent;border:1px solid #334155;padding:6px 12px;border-radius:6px;cursor:pointer;white-space:nowrap;">🖨 Print</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section style="padding:72px 28px 60px;text-align:center;background:linear-gradient(160deg,#0F172A 0%,#1E293B 60%,#0F172A 100%);">
+  <div style="max-width:880px;margin:0 auto;">
+    <div style="font-size:11px;font-weight:700;letter-spacing:3px;color:#38BDF8;text-transform:uppercase;margin-bottom:16px;">Product Retrospective</div>
+    <h1 style="font-size:52px;font-weight:900;color:#F1F5F9;line-height:1.1;margin-bottom:12px;">Aspero B2C — FY26</h1>
+    <p style="font-size:18px;color:#64748B;margin-bottom:48px;">April 2025 – June 2026</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:48px;">
+      <div style="background:#1E293B;border:1px solid #334155;border-radius:14px;padding:24px 32px;min-width:140px;">
+        <div class="counter" data-target="14" style="font-size:48px;font-weight:900;color:#38BDF8;line-height:1;">14</div>
+        <div style="font-size:13px;color:#64748B;margin-top:6px;">Releases shipped</div>
+      </div>
+      <div style="background:#1E293B;border:1px solid #334155;border-radius:14px;padding:24px 32px;min-width:140px;">
+        <div class="counter" data-target="24865" style="font-size:48px;font-weight:900;color:#34D399;line-height:1;">24,865</div>
+        <div style="font-size:13px;color:#64748B;margin-top:6px;">Biometric setups</div>
+      </div>
+      <div style="background:#1E293B;border:1px solid #334155;border-radius:14px;padding:24px 32px;min-width:140px;">
+        <div class="counter" data-target="39744" style="font-size:48px;font-weight:900;color:#A78BFA;line-height:1;">39,744</div>
+        <div style="font-size:13px;color:#64748B;margin-top:6px;">Web impressions/mo</div>
+      </div>
+      <div style="background:#1E293B;border:1px solid #334155;border-radius:14px;padding:24px 32px;min-width:140px;">
+        <div style="font-size:48px;font-weight:900;color:#FB923C;line-height:1;">8.6×</div>
+        <div style="font-size:13px;color:#64748B;margin-top:6px;">Demat throughput growth</div>
+      </div>
+      <div style="background:#1E293B;border:1px solid #334155;border-radius:14px;padding:24px 32px;min-width:140px;">
+        <div style="font-size:48px;font-weight:900;color:#F472B6;line-height:1;">₹44.3L</div>
+        <div style="font-size:13px;color:#64748B;margin-top:6px;">GTV recovered (KRA V2)</div>
+      </div>
+    </div>
+    <a href="#timeline" style="display:inline-flex;align-items:center;gap:8px;background:#1E3A5F;color:#38BDF8;text-decoration:none;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:700;border:1px solid #1D4ED8;">View full timeline ↓</a>
+  </div>
+</section>
+
+<!-- Timeline -->
+<section id="timeline" style="padding:56px 28px;border-top:1px solid #1E293B;">
+  <div style="max-width:880px;margin:0 auto;">
+    <div style="margin-bottom:32px;">
+      <h2 style="font-size:24px;font-weight:900;color:#F1F5F9;margin-bottom:6px;">Release Timeline</h2>
+      <p style="font-size:14px;color:#64748B;">14 releases across 5 quarters — click any label to jump to that quarter.</p>
+    </div>
+    
+        <div style="margin-bottom:24px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
+            <a href="#q1-fy26" style="font-size:14px;font-weight:800;color:#818CF8;text-decoration:none;min-width:76px;">Q1 FY26</a>
+            <span style="font-size:12px;color:#475569;flex:1;">Apr – Jun 2025</span>
+            <span style="font-size:13px;font-weight:700;color:#818CF8">1 release</span>
+          </div>
+          <div style="height:6px;background:#1E293B;border-radius:3px;margin-bottom:8px;overflow:hidden;">
+            <div style="height:100%;width:7%;background:#818CF8;border-radius:3px;"></div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;"><span style="font-size:10px;background:#1E293B;color:#818CF8;border:1px solid #334155;padding:2px 8px;border-radius:4px;white-space:nowrap;">AppsFlyer MMP</span></div>
+        </div>
+        <div style="margin-bottom:24px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
+            <a href="#q2-fy26" style="font-size:14px;font-weight:800;color:#38BDF8;text-decoration:none;min-width:76px;">Q2 FY26</a>
+            <span style="font-size:12px;color:#475569;flex:1;">Jul – Sep 2025</span>
+            <span style="font-size:13px;font-weight:700;color:#38BDF8">2 releases</span>
+          </div>
+          <div style="height:6px;background:#1E293B;border-radius:3px;margin-bottom:8px;overflow:hidden;">
+            <div style="height:100%;width:14%;background:#38BDF8;border-radius:3px;"></div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;"><span style="font-size:10px;background:#1E293B;color:#38BDF8;border:1px solid #334155;padding:2px 8px;border-radius:4px;white-space:nowrap;">Automated AML</span><span style="font-size:10px;background:#1E293B;color:#38BDF8;border:1px solid #334155;padding:2px 8px;border-radius:4px;white-space:nowrap;">Bond URL & Sitemap</span></div>
+        </div>
+        <div style="margin-bottom:24px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
+            <a href="#q3-fy26" style="font-size:14px;font-weight:800;color:#A78BFA;text-decoration:none;min-width:76px;">Q3 FY26</a>
+            <span style="font-size:12px;color:#475569;flex:1;">Oct – Dec 2025</span>
+            <span style="font-size:13px;font-weight:700;color:#A78BFA">5 releases</span>
+          </div>
+          <div style="height:6px;background:#1E293B;border-radius:3px;margin-bottom:8px;overflow:hidden;">
+            <div style="height:100%;width:36%;background:#A78BFA;border-radius:3px;"></div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;"><span style="font-size:10px;background:#1E293B;color:#A78BFA;border:1px solid #334155;padding:2px 8px;border-radius:4px;white-space:nowrap;">HyperVerge PAN-Aadhaar</span><span style="font-size:10px;background:#1E293B;color:#A78BFA;border:1px solid #334155;padding:2px 8px;border-radius:4px;white-space:nowrap;">Phone Number Hint</span><span style="font-size:10px;background:#1E293B;color:#A78BFA;border:1px solid #334155;padding:2px 8px;border-radius:4px;white-space:nowrap;">OTP Auto-Read</span><span style="font-size:10px;background:#1E293B;color:#A78BFA;border:1px solid #334155;padding:2px 8px;border-radius:4px;white-space:nowrap;">UPI Reverse Penny Drop</span><span style="font-size:10px;background:#1E293B;color:#A78BFA;border:1px solid #334155;padding:2px 8px;border-radius:4px;white-space:nowrap;">KYC Full Redesign</span></div>
+        </div>
+        <div style="margin-bottom:24px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
+            <a href="#q4-fy26" style="font-size:14px;font-weight:800;color:#F472B6;text-decoration:none;min-width:76px;">Q4 FY26</a>
+            <span style="font-size:12px;color:#475569;flex:1;">Jan – Mar 2026</span>
+            <span style="font-size:13px;font-weight:700;color:#F472B6">3 releases</span>
+          </div>
+          <div style="height:6px;background:#1E293B;border-radius:3px;margin-bottom:8px;overflow:hidden;">
+            <div style="height:100%;width:21%;background:#F472B6;border-radius:3px;"></div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;"><span style="font-size:10px;background:#1E293B;color:#F472B6;border:1px solid #334155;padding:2px 8px;border-radius:4px;white-space:nowrap;">Google SSO</span><span style="font-size:10px;background:#1E293B;color:#F472B6;border:1px solid #334155;padding:2px 8px;border-radius:4px;white-space:nowrap;">Aspero In-House Demat</span><span style="font-size:10px;background:#1E293B;color:#F472B6;border:1px solid #334155;padding:2px 8px;border-radius:4px;white-space:nowrap;">SSR Launch</span></div>
+        </div>
+        <div style="margin-bottom:24px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
+            <a href="#q1-fy27" style="font-size:14px;font-weight:800;color:#34D399;text-decoration:none;min-width:76px;">Q1 FY27</a>
+            <span style="font-size:12px;color:#475569;flex:1;">Apr – Jun 2026</span>
+            <span style="font-size:13px;font-weight:700;color:#34D399">3 releases</span>
+          </div>
+          <div style="height:6px;background:#1E293B;border-radius:3px;margin-bottom:8px;overflow:hidden;">
+            <div style="height:100%;width:21%;background:#34D399;border-radius:3px;"></div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;"><span style="font-size:10px;background:#1E293B;color:#34D399;border:1px solid #334155;padding:2px 8px;border-radius:4px;white-space:nowrap;">SEO Structured Data</span><span style="font-size:10px;background:#1E293B;color:#34D399;border:1px solid #334155;padding:2px 8px;border-radius:4px;white-space:nowrap;">Biometric Authentication</span><span style="font-size:10px;background:#1E293B;color:#34D399;border:1px solid #334155;padding:2px 8px;border-radius:4px;white-space:nowrap;">KRA V2 — CVL Upload</span></div>
+        </div>
+  </div>
+</section>
+
+<!-- Highlights -->
+<section id="highlights" style="padding:56px 28px;background:#1E293B;border-top:1px solid #334155;border-bottom:1px solid #334155;">
+  <div style="max-width:880px;margin:0 auto;">
+    <div style="margin-bottom:28px;">
+      <h2 style="font-size:24px;font-weight:900;color:#F1F5F9;margin-bottom:6px;">Top 5 Impact Highlights</h2>
+      <p style="font-size:14px;color:#64748B;">The releases with the strongest, clearest measured business impact.</p>
+    </div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <a href="#q1-fy27" style="text-decoration:none;flex:1;min-width:160px;max-width:200px;background:#1E293B;border:1px solid #334155;border-radius:12px;padding:18px;display:block;transition:transform 0.15s,border-color 0.15s;" onmouseover="this.style.borderColor='#10B981';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#334155';this.style.transform='none'">
+          <div style="font-size:28px;margin-bottom:8px;">🤳</div>
+          <div style="font-size:20px;font-weight:900;color:#10B981;line-height:1.1;margin-bottom:4px;">24,865</div>
+          <div style="font-size:11px;color:#64748B;margin-bottom:6px;">Users with biometric enabled</div>
+          <div style="font-size:12px;font-weight:600;color:#94A3B8;">Biometric Authentication</div>
+          <div style="font-size:10px;color:#475569;margin-top:2px;">Biggest user adoption</div>
+        </a>
+        <a href="#q4-fy26" style="text-decoration:none;flex:1;min-width:160px;max-width:200px;background:#1E293B;border:1px solid #334155;border-radius:12px;padding:18px;display:block;transition:transform 0.15s,border-color 0.15s;" onmouseover="this.style.borderColor='#0EA5E9';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#334155';this.style.transform='none'">
+          <div style="font-size:28px;margin-bottom:8px;">⚡</div>
+          <div style="font-size:20px;font-weight:900;color:#0EA5E9;line-height:1.1;margin-bottom:4px;">32×</div>
+          <div style="font-size:11px;color:#64748B;margin-bottom:6px;">Web impressions growth</div>
+          <div style="font-size:12px;font-weight:600;color:#94A3B8;">SSR Launch</div>
+          <div style="font-size:10px;color:#475569;margin-top:2px;">Biggest growth unlock</div>
+        </a>
+        <a href="#q4-fy26" style="text-decoration:none;flex:1;min-width:160px;max-width:200px;background:#1E293B;border:1px solid #334155;border-radius:12px;padding:18px;display:block;transition:transform 0.15s,border-color 0.15s;" onmouseover="this.style.borderColor='#0EA5E9';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#334155';this.style.transform='none'">
+          <div style="font-size:28px;margin-bottom:8px;">🏛️</div>
+          <div style="font-size:20px;font-weight:900;color:#0EA5E9;line-height:1.1;margin-bottom:4px;">8.6×</div>
+          <div style="font-size:11px;color:#64748B;margin-bottom:6px;">Demat throughput growth</div>
+          <div style="font-size:12px;font-weight:600;color:#94A3B8;">Aspero In-House Demat</div>
+          <div style="font-size:10px;color:#475569;margin-top:2px;">Biggest throughput jump</div>
+        </a>
+        <a href="#q3-fy26" style="text-decoration:none;flex:1;min-width:160px;max-width:200px;background:#1E293B;border:1px solid #334155;border-radius:12px;padding:18px;display:block;transition:transform 0.15s,border-color 0.15s;" onmouseover="this.style.borderColor='#10B981';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#334155';this.style.transform='none'">
+          <div style="font-size:28px;margin-bottom:8px;">🏦</div>
+          <div style="font-size:20px;font-weight:900;color:#10B981;line-height:1.1;margin-bottom:4px;">92.7%</div>
+          <div style="font-size:11px;color:#64748B;margin-bottom:6px;">RPD auto-approval rate</div>
+          <div style="font-size:12px;font-weight:600;color:#94A3B8;">UPI Reverse Penny Drop</div>
+          <div style="font-size:10px;color:#475569;margin-top:2px;">Biggest ops impact</div>
+        </a>
+        <a href="#q1-fy27" style="text-decoration:none;flex:1;min-width:160px;max-width:200px;background:#1E293B;border:1px solid #334155;border-radius:12px;padding:18px;display:block;transition:transform 0.15s,border-color 0.15s;" onmouseover="this.style.borderColor='#10B981';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#334155';this.style.transform='none'">
+          <div style="font-size:28px;margin-bottom:8px;">🔓</div>
+          <div style="font-size:20px;font-weight:900;color:#10B981;line-height:1.1;margin-bottom:4px;">230</div>
+          <div style="font-size:11px;color:#64748B;margin-bottom:6px;">Hard-blocked users now unblocked</div>
+          <div style="font-size:12px;font-weight:600;color:#94A3B8;">KRA V2 — CVL Upload</div>
+          <div style="font-size:10px;color:#475569;margin-top:2px;">GTV recovered</div>
+        </a></div>
+  </div>
+</section>
+
+<!-- Quarter Deep Dives -->
+
+    <section id="q1-fy26" style="padding:56px 0 32px;">
+      <div style="max-width:880px;margin:0 auto;padding:0 28px;">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid #1E293B;">
+          <div style="width:5px;height:52px;background:#818CF8;border-radius:3px;flex-shrink:0;"></div>
+          <div>
+            <div style="font-size:28px;font-weight:900;color:#F1F5F9;">Q1 FY26</div>
+            <div style="font-size:14px;color:#64748B;margin-top:2px;">Apr – Jun 2025 &nbsp;·&nbsp; <strong style="color:#818CF8">1</strong> release</div>
+          </div>
+        </div>
+        
+    <div class="release-card" id="card-01_appsflyer_mmp" style="background:#1E293B;border:1px solid #334155;border-radius:14px;padding:24px;margin-bottom:16px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='#6366F1'" onmouseout="this.style.borderColor='#334155'">
+      <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+        <div style="font-size:36px;flex-shrink:0;line-height:1;">📊</div>
+        <div style="flex:1;min-width:240px;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+            <span style="background:#6366F1;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Analytics</span>
+            <span style="background:#374151;color:#D1D5DB;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Foundational</span>
+            <span style="font-size:11px;color:#475569;">May 30, 2025</span>
+          </div>
+          <div style="font-size:18px;font-weight:800;color:#F1F5F9;margin-bottom:4px;">AppsFlyer Mobile Measurement Partner</div>
+          <div style="font-size:13px;font-weight:600;color:#6366F1;margin-bottom:14px;">Attribution blind spot eliminated</div>
+          <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div class="counter" data-val="₹319" style="font-size:24px;font-weight:900;color:#38BDF8;line-height:1.1;">₹319</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">True CPA / registration</div>
+            </div>
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div style="font-size:24px;font-weight:900;color:#94A3B8;line-height:1.1;">Full attribution</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Unlocked (was dark)</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:#94A3B8;line-height:1.6;margin-bottom:12px;">Integrated AppsFlyer as MMP — revealed true paid CPA of ₹319/registration vs inflated estimates prior.</div>
+          <button onclick="toggleDetail('card-01_appsflyer_mmp')" style="background:transparent;border:1px solid #334155;color:#64748B;font-size:12px;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600;" onmouseover="this.style.borderColor='#94A3B8';this.style.color='#F1F5F9'" onmouseout="this.style.borderColor='#334155';this.style.color='#64748B'">Show details ↓</button>
+          <div class="detail-panel" id="detail-card-01_appsflyer_mmp" style="display:none;margin-top:14px;border-top:1px solid #1E293B;padding-top:14px;">
+            <ul style="padding-left:18px;font-size:13px;line-height:1.8;"><li style="margin-bottom:6px;color:#94A3B8;">Before: zero visibility into which channels drove installs and KYC completions.</li><li style="margin-bottom:6px;color:#94A3B8;">After: accurate per-channel CPA, ROAS, and cohort quality across web + mobile.</li><li style="margin-bottom:6px;color:#94A3B8;">Foundation for all subsequent paid campaign optimisation decisions.</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+      </div>
+    </section>
+    <section id="q2-fy26" style="padding:56px 0 32px;">
+      <div style="max-width:880px;margin:0 auto;padding:0 28px;">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid #1E293B;">
+          <div style="width:5px;height:52px;background:#38BDF8;border-radius:3px;flex-shrink:0;"></div>
+          <div>
+            <div style="font-size:28px;font-weight:900;color:#F1F5F9;">Q2 FY26</div>
+            <div style="font-size:14px;color:#64748B;margin-top:2px;">Jul – Sep 2025 &nbsp;·&nbsp; <strong style="color:#38BDF8">2</strong> releases</div>
+          </div>
+        </div>
+        
+    <div class="release-card" id="card-02_automated_aml" style="background:#1E293B;border:1px solid #334155;border-radius:14px;padding:24px;margin-bottom:16px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='#0EA5E9'" onmouseout="this.style.borderColor='#334155'">
+      <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+        <div style="font-size:36px;flex-shrink:0;line-height:1;">🛡️</div>
+        <div style="flex:1;min-width:240px;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+            <span style="background:#0EA5E9;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Platform</span>
+            <span style="background:#1D4ED8;color:#BFDBFE;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">High</span>
+            <span style="font-size:11px;color:#475569;">Aug 25, 2025</span>
+          </div>
+          <div style="font-size:18px;font-weight:800;color:#F1F5F9;margin-bottom:4px;">Automated AML Screening</div>
+          <div style="font-size:13px;font-weight:600;color:#0EA5E9;margin-bottom:14px;">Manual AML bottleneck removed permanently</div>
+          <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div class="counter" data-val="∞" style="font-size:24px;font-weight:900;color:#38BDF8;line-height:1.1;">∞</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Daily throughput (was capped at 20)</div>
+            </div>
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div style="font-size:24px;font-weight:900;color:#94A3B8;line-height:1.1;">0 queues</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Human review backlog eliminated</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:#94A3B8;line-height:1.6;margin-bottom:12px;">Replaced human-reviewed AML checks capped at ~20/day with fully automated backend screening at unlimited volume.</div>
+          <button onclick="toggleDetail('card-02_automated_aml')" style="background:transparent;border:1px solid #334155;color:#64748B;font-size:12px;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600;" onmouseover="this.style.borderColor='#94A3B8';this.style.color='#F1F5F9'" onmouseout="this.style.borderColor='#334155';this.style.color='#64748B'">Show details ↓</button>
+          <div class="detail-panel" id="detail-card-02_automated_aml" style="display:none;margin-top:14px;border-top:1px solid #1E293B;padding-top:14px;">
+            <ul style="padding-left:18px;font-size:13px;line-height:1.8;"><li style="margin-bottom:6px;color:#94A3B8;">Manual process capped KYC at ~20 completions/day regardless of demand.</li><li style="margin-bottom:6px;color:#94A3B8;">Automated screening now fires at full inbound volume — no queue, no SLA dependency on ops team.</li><li style="margin-bottom:6px;color:#94A3B8;">KYC_AML_VERIFIED event now tracks every verification in Amplitude.</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="release-card" id="card-03_bond_detail_url" style="background:#1E293B;border:1px solid #334155;border-radius:14px;padding:24px;margin-bottom:16px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='#F59E0B'" onmouseout="this.style.borderColor='#334155'">
+      <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+        <div style="font-size:36px;flex-shrink:0;line-height:1;">🔗</div>
+        <div style="flex:1;min-width:240px;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+            <span style="background:#F59E0B;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">SEO</span>
+            <span style="background:#374151;color:#D1D5DB;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Foundational</span>
+            <span style="font-size:11px;color:#475569;">Sep 19, 2025</span>
+          </div>
+          <div style="font-size:18px;font-weight:800;color:#F1F5F9;margin-bottom:4px;">Bond Detail URL & Sitemap Optimisation</div>
+          <div style="font-size:13px;font-weight:600;color:#F59E0B;margin-bottom:14px;">Clean URLs — the SEO foundation for all bond discovery</div>
+          <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div class="counter" data-val="22,097/mo" style="font-size:24px;font-weight:900;color:#38BDF8;line-height:1.1;">22,097/mo</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Bond page impressions (Jun 2026)</div>
+            </div>
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div style="font-size:24px;font-weight:900;color:#94A3B8;line-height:1.1;">549/mo</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Bond page impressions (Sep 2025)</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:#94A3B8;line-height:1.6;margin-bottom:12px;">Overhauled bond pages from query-param URLs to clean path-based structure, making every bond page a distinct indexable asset.</div>
+          <button onclick="toggleDetail('card-03_bond_detail_url')" style="background:transparent;border:1px solid #334155;color:#64748B;font-size:12px;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600;" onmouseover="this.style.borderColor='#94A3B8';this.style.color='#F1F5F9'" onmouseout="this.style.borderColor='#334155';this.style.color='#64748B'">Show details ↓</button>
+          <div class="detail-panel" id="detail-card-03_bond_detail_url" style="display:none;margin-top:14px;border-top:1px solid #1E293B;padding-top:14px;">
+            <ul style="padding-left:18px;font-size:13px;line-height:1.8;"><li style="margin-bottom:6px;color:#94A3B8;">Before: /bond_detail?bondId=251 — crawlers see one page. After: /bond/{name}/{isin}/{id} — each bond is unique.</li><li style="margin-bottom:6px;color:#94A3B8;">Domain consolidated from invest.aspero.in to www.aspero.in — no authority split.</li><li style="margin-bottom:6px;color:#94A3B8;">Combined with SSR + structured data (Mar–Apr 2026), bond impressions grew 40× over 9 months.</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+      </div>
+    </section>
+    <section id="q3-fy26" style="padding:56px 0 32px;">
+      <div style="max-width:880px;margin:0 auto;padding:0 28px;">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid #1E293B;">
+          <div style="width:5px;height:52px;background:#A78BFA;border-radius:3px;flex-shrink:0;"></div>
+          <div>
+            <div style="font-size:28px;font-weight:900;color:#F1F5F9;">Q3 FY26</div>
+            <div style="font-size:14px;color:#64748B;margin-top:2px;">Oct – Dec 2025 &nbsp;·&nbsp; <strong style="color:#A78BFA">5</strong> releases</div>
+          </div>
+        </div>
+        
+    <div class="release-card" id="card-04_pan_aadhaar_hyperverge" style="background:#1E293B;border:1px solid #334155;border-radius:14px;padding:24px;margin-bottom:16px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='#10B981'" onmouseout="this.style.borderColor='#334155'">
+      <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+        <div style="font-size:36px;flex-shrink:0;line-height:1;">🪪</div>
+        <div style="flex:1;min-width:240px;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+            <span style="background:#10B981;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Feature</span>
+            <span style="background:#065F46;color:#6EE7B7;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Very High</span>
+            <span style="font-size:11px;color:#475569;">Oct 13, 2025</span>
+          </div>
+          <div style="font-size:18px;font-weight:800;color:#F1F5F9;margin-bottom:4px;">PAN-Aadhaar Verification via HyperVerge</div>
+          <div style="font-size:13px;font-weight:600;color:#10B981;margin-bottom:14px;">Identity verification automated — KYC volume quadrupled</div>
+          <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div class="counter" data-val="4.3×" style="font-size:24px;font-weight:900;color:#38BDF8;line-height:1.1;">4.3×</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">KYC volume surge post-launch</div>
+            </div>
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div style="font-size:24px;font-weight:900;color:#94A3B8;line-height:1.1;">Automated</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Identity match (was manual + slow)</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:#94A3B8;line-height:1.6;margin-bottom:12px;">Replaced manual PAN-Aadhaar verification with HyperVerge automated matching, removing the biggest friction point at the identity stage.</div>
+          <button onclick="toggleDetail('card-04_pan_aadhaar_hyperverge')" style="background:transparent;border:1px solid #334155;color:#64748B;font-size:12px;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600;" onmouseover="this.style.borderColor='#94A3B8';this.style.color='#F1F5F9'" onmouseout="this.style.borderColor='#334155';this.style.color='#64748B'">Show details ↓</button>
+          <div class="detail-panel" id="detail-card-04_pan_aadhaar_hyperverge" style="display:none;margin-top:14px;border-top:1px solid #1E293B;padding-top:14px;">
+            <ul style="padding-left:18px;font-size:13px;line-height:1.8;"><li style="margin-bottom:6px;color:#94A3B8;">Manual matching required ops team intervention, creating SLA delays and drops.</li><li style="margin-bottom:6px;color:#94A3B8;">HyperVerge instant match — users see results in seconds.</li><li style="margin-bottom:6px;color:#94A3B8;">KYC weekly volume went from ~700 to 3,000+ in the weeks following launch.</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="release-card" id="card-05_phone_number_hint" style="background:#1E293B;border:1px solid #334155;border-radius:14px;padding:24px;margin-bottom:16px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='#10B981'" onmouseout="this.style.borderColor='#334155'">
+      <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+        <div style="font-size:36px;flex-shrink:0;line-height:1;">📱</div>
+        <div style="flex:1;min-width:240px;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+            <span style="background:#10B981;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Feature</span>
+            <span style="background:#1D4ED8;color:#BFDBFE;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">High</span>
+            <span style="font-size:11px;color:#475569;">Oct 29, 2025</span>
+          </div>
+          <div style="font-size:18px;font-weight:800;color:#F1F5F9;margin-bottom:4px;">Phone Number Hint on Sign-in (Android)</div>
+          <div style="font-size:13px;font-weight:600;color:#10B981;margin-bottom:14px;">Sign-in bounce cut from 57% to 1.4% for eligible Android users</div>
+          <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div class="counter" data-val="1.4%" style="font-size:24px;font-weight:900;color:#38BDF8;line-height:1.1;">1.4%</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Sign-in bounce — hint accepted</div>
+            </div>
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div style="font-size:24px;font-weight:900;color:#94A3B8;line-height:1.1;">57%</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Sign-in bounce — no hint (55.6pp gap)</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:#94A3B8;line-height:1.6;margin-bottom:12px;">Android native module pre-fills the user's phone number at sign-in. 84% acceptance rate. Users who accept bounce at 1.4% vs 57% without.</div>
+          <button onclick="toggleDetail('card-05_phone_number_hint')" style="background:transparent;border:1px solid #334155;color:#64748B;font-size:12px;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600;" onmouseover="this.style.borderColor='#94A3B8';this.style.color='#F1F5F9'" onmouseout="this.style.borderColor='#334155';this.style.color='#64748B'">Show details ↓</button>
+          <div class="detail-panel" id="detail-card-05_phone_number_hint" style="display:none;margin-top:14px;border-top:1px solid #1E293B;padding-top:14px;">
+            <ul style="padding-left:18px;font-size:13px;line-height:1.8;"><li style="margin-bottom:6px;color:#94A3B8;">Google Phone Number Hint API — suggests user's own number automatically.</li><li style="margin-bottom:6px;color:#94A3B8;">84% of eligible Android users accept the hint (6,073 of 7,225 shown in first 5 weeks).</li><li style="margin-bottom:6px;color:#94A3B8;">The 56.5% 'not supported' cases are users with no phone in their Google account — not old devices (app minSdk = Android 10).</li><li style="margin-bottom:6px;color:#94A3B8;">Declining the hint leads to 50.8% bounce — nearly as bad as no hint — so acceptance is everything.</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="release-card" id="card-06_otp_auto_read" style="background:#1E293B;border:1px solid #334155;border-radius:14px;padding:24px;margin-bottom:16px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='#10B981'" onmouseout="this.style.borderColor='#334155'">
+      <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+        <div style="font-size:36px;flex-shrink:0;line-height:1;">📨</div>
+        <div style="flex:1;min-width:240px;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+            <span style="background:#10B981;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Feature</span>
+            <span style="background:#1D4ED8;color:#BFDBFE;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">High</span>
+            <span style="font-size:11px;color:#475569;">Oct 29, 2025</span>
+          </div>
+          <div style="font-size:18px;font-weight:800;color:#F1F5F9;margin-bottom:4px;">OTP Auto-Read from SMS (Android)</div>
+          <div style="font-size:13px;font-weight:600;color:#10B981;margin-bottom:14px;">Zero-tap OTP entry — SMS reads, fills, and submits automatically</div>
+          <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div class="counter" data-val="94.8%" style="font-size:24px;font-weight:900;color:#38BDF8;line-height:1.1;">94.8%</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Reliability when SMS arrives</div>
+            </div>
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div style="font-size:24px;font-weight:900;color:#94A3B8;line-height:1.1;">0 taps</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">User action required when triggered</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:#94A3B8;line-height:1.6;margin-bottom:12px;">Android SMS Retriever API reads incoming OTP and auto-submits. No user action required. 94.8% success rate when triggered.</div>
+          <button onclick="toggleDetail('card-06_otp_auto_read')" style="background:transparent;border:1px solid #334155;color:#64748B;font-size:12px;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600;" onmouseover="this.style.borderColor='#94A3B8';this.style.color='#F1F5F9'" onmouseout="this.style.borderColor='#334155';this.style.color='#64748B'">Show details ↓</button>
+          <div class="detail-panel" id="detail-card-06_otp_auto_read" style="display:none;margin-top:14px;border-top:1px solid #1E293B;padding-top:14px;">
+            <ul style="padding-left:18px;font-size:13px;line-height:1.8;"><li style="margin-bottom:6px;color:#94A3B8;">SMS arrives → app reads it → OTP field filled → form submitted. Fully automatic.</li><li style="margin-bottom:6px;color:#94A3B8;">~1% overall trigger rate (Android only) — limited by SMS format requirements.</li><li style="margin-bottom:6px;color:#94A3B8;">UX polish added Mar 2026: animated 'auto-fetching OTP' indicator so user knows it's working.</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="release-card" id="card-07_upi_rpd" style="background:#1E293B;border:1px solid #334155;border-radius:14px;padding:24px;margin-bottom:16px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='#10B981'" onmouseout="this.style.borderColor='#334155'">
+      <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+        <div style="font-size:36px;flex-shrink:0;line-height:1;">🏦</div>
+        <div style="flex:1;min-width:240px;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+            <span style="background:#10B981;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Feature</span>
+            <span style="background:#065F46;color:#6EE7B7;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Very High</span>
+            <span style="font-size:11px;color:#475569;">Nov 19, 2025</span>
+          </div>
+          <div style="font-size:18px;font-weight:800;color:#F1F5F9;margin-bottom:4px;">UPI Reverse Penny Drop — Bank Verification</div>
+          <div style="font-size:13px;font-weight:600;color:#10B981;margin-bottom:14px;">92.7% bank auto-approval — ops review load cut 3.5×</div>
+          <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div class="counter" data-val="92.7%" style="font-size:24px;font-weight:900;color:#38BDF8;line-height:1.1;">92.7%</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">RPD auto-approval rate</div>
+            </div>
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div style="font-size:24px;font-weight:900;color:#94A3B8;line-height:1.1;">3.5×</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Lower ops review vs penny drop</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:#94A3B8;line-height:1.6;margin-bottom:12px;">UPI Reverse Penny Drop replaced traditional penny drop as the primary bank verification method. +12.8pp auto-approval, -10.8pp ops review rate.</div>
+          <button onclick="toggleDetail('card-07_upi_rpd')" style="background:transparent;border:1px solid #334155;color:#64748B;font-size:12px;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600;" onmouseover="this.style.borderColor='#94A3B8';this.style.color='#F1F5F9'" onmouseout="this.style.borderColor='#334155';this.style.color='#64748B'">Show details ↓</button>
+          <div class="detail-panel" id="detail-card-07_upi_rpd" style="display:none;margin-top:14px;border-top:1px solid #1E293B;padding-top:14px;">
+            <ul style="padding-left:18px;font-size:13px;line-height:1.8;"><li style="margin-bottom:6px;color:#94A3B8;">Traditional PD: 79.9% success rate, 15.1% sent to human ops queue.</li><li style="margin-bottom:6px;color:#94A3B8;">RPD: 92.7% success rate, 4.3% ops queue. 12.8pp better. 3.5× fewer ops cases.</li><li style="margin-bottom:6px;color:#94A3B8;">RPD is now 77% of all bank verifications (573/week as of Jun 2026).</li><li style="margin-bottom:6px;color:#94A3B8;">Ship: Nov 19 optional feature. Dec 22 KYC redesign hardwired RPD as the default path.</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="release-card" id="card-08_kyc_full_redesign" style="background:#1E293B;border:1px solid #334155;border-radius:14px;padding:24px;margin-bottom:16px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='#10B981'" onmouseout="this.style.borderColor='#334155'">
+      <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+        <div style="font-size:36px;flex-shrink:0;line-height:1;">🔄</div>
+        <div style="flex:1;min-width:240px;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+            <span style="background:#10B981;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Feature</span>
+            <span style="background:#374151;color:#D1D5DB;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Foundational</span>
+            <span style="font-size:11px;color:#475569;">Dec 22, 2025</span>
+          </div>
+          <div style="font-size:18px;font-weight:800;color:#F1F5F9;margin-bottom:4px;">KYC Full Redesign — v2.5.16</div>
+          <div style="font-size:13px;font-weight:600;color:#10B981;margin-bottom:14px;">Comprehensive KYC overhaul — compliance unlocked, foundation laid</div>
+          <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div class="counter" data-val="7" style="font-size:24px;font-weight:900;color:#38BDF8;line-height:1.1;">7</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Major capabilities shipped</div>
+            </div>
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div style="font-size:24px;font-weight:900;color:#94A3B8;line-height:1.1;">Foundation</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">For RPD, Aspero Demat, KRA V2</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:#94A3B8;line-height:1.6;margin-bottom:12px;">New stepper UI, wet-signature support, nominee flow, RPD default, KRA V1 integration, risk profiling revamp, liveness improvements.</div>
+          <button onclick="toggleDetail('card-08_kyc_full_redesign')" style="background:transparent;border:1px solid #334155;color:#64748B;font-size:12px;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600;" onmouseover="this.style.borderColor='#94A3B8';this.style.color='#F1F5F9'" onmouseout="this.style.borderColor='#334155';this.style.color='#64748B'">Show details ↓</button>
+          <div class="detail-panel" id="detail-card-08_kyc_full_redesign" style="display:none;margin-top:14px;border-top:1px solid #1E293B;padding-top:14px;">
+            <ul style="padding-left:18px;font-size:13px;line-height:1.8;"><li style="margin-bottom:6px;color:#94A3B8;">Wet-signature: non-DigiLocker users can now complete KYC (previously blocked).</li><li style="margin-bottom:6px;color:#94A3B8;">Nominee flow: added to KYC for the first time — regulatory completeness.</li><li style="margin-bottom:6px;color:#94A3B8;">UPI RPD hardwired as default bank verification path.</li><li style="margin-bottom:6px;color:#94A3B8;">New stepper UI: clear progress visibility, reduced per-step abandonment.</li><li style="margin-bottom:6px;color:#94A3B8;">Launched Dec 22 during marketing lull — direct volume comparison is confounded, but every subsequent KYC feature built on this foundation.</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+      </div>
+    </section>
+    <section id="q4-fy26" style="padding:56px 0 32px;">
+      <div style="max-width:880px;margin:0 auto;padding:0 28px;">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid #1E293B;">
+          <div style="width:5px;height:52px;background:#F472B6;border-radius:3px;flex-shrink:0;"></div>
+          <div>
+            <div style="font-size:28px;font-weight:900;color:#F1F5F9;">Q4 FY26</div>
+            <div style="font-size:14px;color:#64748B;margin-top:2px;">Jan – Mar 2026 &nbsp;·&nbsp; <strong style="color:#F472B6">3</strong> releases</div>
+          </div>
+        </div>
+        
+    <div class="release-card" id="card-09_google_sso" style="background:#1E293B;border:1px solid #334155;border-radius:14px;padding:24px;margin-bottom:16px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='#10B981'" onmouseout="this.style.borderColor='#334155'">
+      <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+        <div style="font-size:36px;flex-shrink:0;line-height:1;">🔐</div>
+        <div style="flex:1;min-width:240px;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+            <span style="background:#10B981;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Feature</span>
+            <span style="background:#1D4ED8;color:#BFDBFE;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">High</span>
+            <span style="font-size:11px;color:#475569;">Mar 5, 2026</span>
+          </div>
+          <div style="font-size:18px;font-weight:800;color:#F1F5F9;margin-bottom:4px;">Google SSO Email Verification</div>
+          <div style="font-size:13px;font-weight:600;color:#10B981;margin-bottom:14px;">Google SSO became the primary email verification path in 4 weeks</div>
+          <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div class="counter" data-val="6,070" style="font-size:24px;font-weight:900;color:#38BDF8;line-height:1.1;">6,070</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Email verifications via SSO post-launch</div>
+            </div>
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div style="font-size:24px;font-weight:900;color:#94A3B8;line-height:1.1;">4 weeks</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">To become dominant email path</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:#94A3B8;line-height:1.6;margin-bottom:12px;">One-tap Google Sign-In for email verification eliminated OTP-to-email friction. 2,005 SSO verifications/week at peak.</div>
+          <button onclick="toggleDetail('card-09_google_sso')" style="background:transparent;border:1px solid #334155;color:#64748B;font-size:12px;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600;" onmouseover="this.style.borderColor='#94A3B8';this.style.color='#F1F5F9'" onmouseout="this.style.borderColor='#334155';this.style.color='#64748B'">Show details ↓</button>
+          <div class="detail-panel" id="detail-card-09_google_sso" style="display:none;margin-top:14px;border-top:1px solid #1E293B;padding-top:14px;">
+            <ul style="padding-left:18px;font-size:13px;line-height:1.8;"><li style="margin-bottom:6px;color:#94A3B8;">Before: every user needed an OTP sent to email, creating deliverability risk and manual entry friction.</li><li style="margin-bottom:6px;color:#94A3B8;">After: one tap, Google-verified email — instant.</li><li style="margin-bottom:6px;color:#94A3B8;">Reached 2,005/week in 4 weeks; 6,070 total SSO verifications within first month of launch.</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="release-card" id="card-14_aspero_demat" style="background:#1E293B;border:1px solid #334155;border-radius:14px;padding:24px;margin-bottom:16px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='#0EA5E9'" onmouseout="this.style.borderColor='#334155'">
+      <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+        <div style="font-size:36px;flex-shrink:0;line-height:1;">🏛️</div>
+        <div style="flex:1;min-width:240px;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+            <span style="background:#0EA5E9;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Platform</span>
+            <span style="background:#7C3AED;color:#DDD6FE;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Critical</span>
+            <span style="font-size:11px;color:#475569;">Mar 10, 2026</span>
+          </div>
+          <div style="font-size:18px;font-weight:800;color:#F1F5F9;margin-bottom:4px;">Aspero In-House Demat Account (Own DP)</div>
+          <div style="font-size:13px;font-weight:600;color:#0EA5E9;margin-bottom:14px;">Own DP launch drove 8.6× demat throughput — 600+/week</div>
+          <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div class="counter" data-val="8.6×" style="font-size:24px;font-weight:900;color:#38BDF8;line-height:1.1;">8.6×</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Demat throughput growth</div>
+            </div>
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div style="font-size:24px;font-weight:900;color:#94A3B8;line-height:1.1;">5,936</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Demat accounts since launch</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:#94A3B8;line-height:1.6;margin-bottom:12px;">Aspero launched its own Depository Participant. Demat creation is now a native in-flow step. Stable pre: 66/week. Current: 600+/week.</div>
+          <button onclick="toggleDetail('card-14_aspero_demat')" style="background:transparent;border:1px solid #334155;color:#64748B;font-size:12px;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600;" onmouseover="this.style.borderColor='#94A3B8';this.style.color='#F1F5F9'" onmouseout="this.style.borderColor='#334155';this.style.color='#64748B'">Show details ↓</button>
+          <div class="detail-panel" id="detail-card-14_aspero_demat" style="display:none;margin-top:14px;border-top:1px solid #1E293B;padding-top:14px;">
+            <ul style="padding-left:18px;font-size:13px;line-height:1.8;"><li style="margin-bottom:6px;color:#94A3B8;">Before: demat account creation required handoff to a third-party DP — external dependency, friction, failure points.</li><li style="margin-bottom:6px;color:#94A3B8;">After: Aspero's own DP makes demat a native, seamless KYC step.</li><li style="margin-bottom:6px;color:#94A3B8;">Step-change: 66/week → 190 first full week → 600+/week by Jun 2026.</li><li style="margin-bottom:6px;color:#94A3B8;">Trajectory: Mar avg ~252/wk → Apr ~277/wk → May ~424/wk → Jun ~585/wk.</li><li style="margin-bottom:6px;color:#94A3B8;">Cumulative: 5,936 demat accounts opened post-launch.</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="release-card" id="card-10_ssr_launch" style="background:#1E293B;border:1px solid #334155;border-radius:14px;padding:24px;margin-bottom:16px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='#0EA5E9'" onmouseout="this.style.borderColor='#334155'">
+      <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+        <div style="font-size:36px;flex-shrink:0;line-height:1;">⚡</div>
+        <div style="flex:1;min-width:240px;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+            <span style="background:#0EA5E9;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Platform</span>
+            <span style="background:#7C3AED;color:#DDD6FE;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Critical</span>
+            <span style="font-size:11px;color:#475569;">Mar 25, 2026</span>
+          </div>
+          <div style="font-size:18px;font-weight:800;color:#F1F5F9;margin-bottom:4px;">Next.js SSR Launch on Kubernetes</div>
+          <div style="font-size:13px;font-weight:600;color:#0EA5E9;margin-bottom:14px;">Aspero is now visible on Google — 32× impressions in 3 months</div>
+          <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div class="counter" data-val="32×" style="font-size:24px;font-weight:900;color:#38BDF8;line-height:1.1;">32×</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Web impressions growth</div>
+            </div>
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div style="font-size:24px;font-weight:900;color:#94A3B8;line-height:1.1;">39,744/mo</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Web impressions (Jun 2026 vs 1,232 pre-SSR)</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:#94A3B8;line-height:1.6;margin-bottom:12px;">Migrated web app to Next.js SSR. Pages render server-side for the first time — Google can index all content. /invest/ impressions: 1,232 → 39,744/month.</div>
+          <button onclick="toggleDetail('card-10_ssr_launch')" style="background:transparent;border:1px solid #334155;color:#64748B;font-size:12px;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600;" onmouseover="this.style.borderColor='#94A3B8';this.style.color='#F1F5F9'" onmouseout="this.style.borderColor='#334155';this.style.color='#64748B'">Show details ↓</button>
+          <div class="detail-panel" id="detail-card-10_ssr_launch" style="display:none;margin-top:14px;border-top:1px solid #1E293B;padding-top:14px;">
+            <ul style="padding-left:18px;font-size:13px;line-height:1.8;"><li style="margin-bottom:6px;color:#94A3B8;">Before SSR: client-side SPA — Google crawled an empty shell, saw nothing.</li><li style="margin-bottom:6px;color:#94A3B8;">After SSR: every page has server-rendered HTML content indexed by Google.</li><li style="margin-bottom:6px;color:#94A3B8;">/invest/ impressions: 1,232/mo (Feb 2026) → 39,744/mo (Jun 2026) in 3 months.</li><li style="margin-bottom:6px;color:#94A3B8;">Avg position improved from 10.2 to 6.0 on /invest/ pages.</li><li style="margin-bottom:6px;color:#94A3B8;">Foundation for all structured data and bond page SEO built on top.</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+      </div>
+    </section>
+    <section id="q1-fy27" style="padding:56px 0 32px;">
+      <div style="max-width:880px;margin:0 auto;padding:0 28px;">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid #1E293B;">
+          <div style="width:5px;height:52px;background:#34D399;border-radius:3px;flex-shrink:0;"></div>
+          <div>
+            <div style="font-size:28px;font-weight:900;color:#F1F5F9;">Q1 FY27</div>
+            <div style="font-size:14px;color:#64748B;margin-top:2px;">Apr – Jun 2026 &nbsp;·&nbsp; <strong style="color:#34D399">3</strong> releases</div>
+          </div>
+        </div>
+        
+    <div class="release-card" id="card-11_seo_structured_data" style="background:#1E293B;border:1px solid #334155;border-radius:14px;padding:24px;margin-bottom:16px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='#F59E0B'" onmouseout="this.style.borderColor='#334155'">
+      <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+        <div style="font-size:36px;flex-shrink:0;line-height:1;">🔍</div>
+        <div style="flex:1;min-width:240px;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+            <span style="background:#F59E0B;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">SEO</span>
+            <span style="background:#1D4ED8;color:#BFDBFE;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">High</span>
+            <span style="font-size:11px;color:#475569;">Apr 5, 2026</span>
+          </div>
+          <div style="font-size:18px;font-weight:800;color:#F1F5F9;margin-bottom:4px;">JSON-LD Structured Data + Technical SEO</div>
+          <div style="font-size:13px;font-weight:600;color:#F59E0B;margin-bottom:14px;">Bond pages: ranking improved from 15.5 to 8.6, impressions 40×</div>
+          <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div class="counter" data-val="22,097/mo" style="font-size:24px;font-weight:900;color:#38BDF8;line-height:1.1;">22,097/mo</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Bond page impressions (Jun 2026)</div>
+            </div>
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div style="font-size:24px;font-weight:900;color:#94A3B8;line-height:1.1;">pos 8.6</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Avg bond page rank (was 15.5)</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:#94A3B8;line-height:1.6;margin-bottom:12px;">JSON-LD schema (FAQ, FinancialProduct, Organization, VideoObject), canonical redirects, partner noindex, dynamic sitemap.</div>
+          <button onclick="toggleDetail('card-11_seo_structured_data')" style="background:transparent;border:1px solid #334155;color:#64748B;font-size:12px;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600;" onmouseover="this.style.borderColor='#94A3B8';this.style.color='#F1F5F9'" onmouseout="this.style.borderColor='#334155';this.style.color='#64748B'">Show details ↓</button>
+          <div class="detail-panel" id="detail-card-11_seo_structured_data" style="display:none;margin-top:14px;border-top:1px solid #1E293B;padding-top:14px;">
+            <ul style="padding-left:18px;font-size:13px;line-height:1.8;"><li style="margin-bottom:6px;color:#94A3B8;">JSON-LD FAQ schema enabled rich snippets in SERPs — higher click-through.</li><li style="margin-bottom:6px;color:#94A3B8;">FinancialProduct schema categorises bond pages correctly for Google.</li><li style="margin-bottom:6px;color:#94A3B8;">Canonical redirects fixed 200+ legacy bond URL variants.</li><li style="margin-bottom:6px;color:#94A3B8;">Bond page impressions: 549/mo (Mar) → 22,097/mo (Jun) — 40× in one quarter.</li><li style="margin-bottom:6px;color:#94A3B8;">Average bond page rank: 15.5 → 8.6.</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="release-card" id="card-12_biometric_auth" style="background:#1E293B;border:1px solid #334155;border-radius:14px;padding:24px;margin-bottom:16px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='#10B981'" onmouseout="this.style.borderColor='#334155'">
+      <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+        <div style="font-size:36px;flex-shrink:0;line-height:1;">🤳</div>
+        <div style="flex:1;min-width:240px;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+            <span style="background:#10B981;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Feature</span>
+            <span style="background:#065F46;color:#6EE7B7;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Very High</span>
+            <span style="font-size:11px;color:#475569;">Apr 20, 2026</span>
+          </div>
+          <div style="font-size:18px;font-weight:800;color:#F1F5F9;margin-bottom:4px;">Fingerprint & Face Biometric Login</div>
+          <div style="font-size:13px;font-weight:600;color:#10B981;margin-bottom:14px;">24,865 users switched to biometric — now the primary sign-in method</div>
+          <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div class="counter" data-val="24,865" style="font-size:24px;font-weight:900;color:#38BDF8;line-height:1.1;">24,865</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Users with biometric enabled</div>
+            </div>
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div style="font-size:24px;font-weight:900;color:#94A3B8;line-height:1.1;">2,607/wk</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Biometric logins now (Jun 2026)</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:#94A3B8;line-height:1.6;margin-bottom:12px;">Fingerprint + face ID as alternative to PIN. 24,865 setups; 2,607 biometric logins/week — equal to new setup pace, indicating full adoption among enrolled users.</div>
+          <button onclick="toggleDetail('card-12_biometric_auth')" style="background:transparent;border:1px solid #334155;color:#64748B;font-size:12px;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600;" onmouseover="this.style.borderColor='#94A3B8';this.style.color='#F1F5F9'" onmouseout="this.style.borderColor='#334155';this.style.color='#64748B'">Show details ↓</button>
+          <div class="detail-panel" id="detail-card-12_biometric_auth" style="display:none;margin-top:14px;border-top:1px solid #1E293B;padding-top:14px;">
+            <ul style="padding-left:18px;font-size:13px;line-height:1.8;"><li style="margin-bottom:6px;color:#94A3B8;">Before: all returning users required PIN entry. After: one-tap biometric.</li><li style="margin-bottom:6px;color:#94A3B8;">Setup rate: 1,687/week (launch) → 3,300/week (peak) → ~2,500/week (steady state).</li><li style="margin-bottom:6px;color:#94A3B8;">Login rate: 454/week (week 1) → 2,607/week (Jun 2026) — rapid adoption as enrolled base grows.</li><li style="margin-bottom:6px;color:#94A3B8;">Weekly logins (2,607) now matching or exceeding new setups — existing users are actively using it daily.</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="release-card" id="card-13_kra_v2" style="background:#1E293B;border:1px solid #334155;border-radius:14px;padding:24px;margin-bottom:16px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='#10B981'" onmouseout="this.style.borderColor='#334155'">
+      <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+        <div style="font-size:36px;flex-shrink:0;line-height:1;">🔓</div>
+        <div style="flex:1;min-width:240px;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+            <span style="background:#10B981;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Feature</span>
+            <span style="background:#065F46;color:#6EE7B7;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.5px;">Very High</span>
+            <span style="font-size:11px;color:#475569;">Jun 3, 2026</span>
+          </div>
+          <div style="font-size:18px;font-weight:800;color:#F1F5F9;margin-bottom:4px;">KRA V2 — CVL Upload Path for Blocked Users</div>
+          <div style="font-size:13px;font-weight:600;color:#10B981;margin-bottom:14px;">230 hard-blocked users unblocked — ₹44.3L GTV recovered</div>
+          <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div class="counter" data-val="230" style="font-size:24px;font-weight:900;color:#38BDF8;line-height:1.1;">230</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">Hard-blocked users now unblocked</div>
+            </div>
+            <div style="background:#0F172A;border:1px solid #334155;border-radius:10px;padding:12px 16px;flex:1;min-width:140px;">
+              <div style="font-size:24px;font-weight:900;color:#94A3B8;line-height:1.1;">₹44.3L</div>
+              <div style="font-size:11px;color:#64748B;margin-top:3px;">GTV recovered</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:#94A3B8;line-height:1.6;margin-bottom:12px;">Added CVL document upload path for users who fail the KRA gate. 69.1% of entrants now unblocked (instant or webhook). ₹44.3L GTV recovered in 4 weeks.</div>
+          <button onclick="toggleDetail('card-13_kra_v2')" style="background:transparent;border:1px solid #334155;color:#64748B;font-size:12px;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600;" onmouseover="this.style.borderColor='#94A3B8';this.style.color='#F1F5F9'" onmouseout="this.style.borderColor='#334155';this.style.color='#64748B'">Show details ↓</button>
+          <div class="detail-panel" id="detail-card-13_kra_v2" style="display:none;margin-top:14px;border-top:1px solid #1E293B;padding-top:14px;">
+            <ul style="padding-left:18px;font-size:13px;line-height:1.8;"><li style="margin-bottom:6px;color:#94A3B8;">Before: 22.2% of PAN signups hit a hard KRA block with zero resolution path — lost forever.</li><li style="margin-bottom:6px;color:#94A3B8;">After: CVL upload → webhook validation. 3 weeks to unblock via webhook (median 14.2h).</li><li style="margin-bottom:6px;color:#94A3B8;">Instant validation rate improving: 13% (launch) → 39% (Jun 22) as CVL pipeline warms.</li><li style="margin-bottom:6px;color:#94A3B8;">333 users entered CVL path. 230 unblocked (69.1%). 25 failed (7.5%). 78 still in webhook queue.</li><li style="margin-bottom:6px;color:#94A3B8;">Trade conversion from unblocked cohort: 22.4% vs 28% baseline — gap expected to close as cohort matures.</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+      </div>
+    </section>
+
+<!-- Footer -->
+<footer style="border-top:1px solid #1E293B;padding:32px 28px;text-align:center;">
+  <p style="font-size:12px;color:#334155;">Aspero B2C Product Retrospective &nbsp;·&nbsp; Generated June 30, 2026 &nbsp;·&nbsp; Data: Amplitude + Google Search Console</p>
+</footer>
+
+<script>
+  function toggleDetail(cardId) {
+    const panel = document.getElementById('detail-' + cardId);
+    const btn = panel.previousElementSibling;
+    if (panel.style.display === 'none') {
+      panel.style.display = 'block';
+      btn.textContent = 'Hide details ↑';
+    } else {
+      panel.style.display = 'none';
+      btn.textContent = 'Show details ↓';
+    }
+  }
+
+  // Animate counters
+  function animateCounters() {
+    document.querySelectorAll('.counter[data-target]').forEach(el => {
+      const target = parseInt(el.dataset.target.replace(/,/g, ''), 10);
+      if (isNaN(target)) return;
+      const duration = 1200;
+      const start = performance.now();
+      const step = (now) => {
+        const progress = Math.min((now - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(ease * target);
+        el.textContent = current.toLocaleString('en-IN');
+        if (progress < 1) requestAnimationFrame(step);
+        else el.textContent = target.toLocaleString('en-IN');
+      };
+      requestAnimationFrame(step);
+    });
+  }
+
+  // Only animate when hero enters viewport
+  const hero = document.querySelector('section');
+  const observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      animateCounters();
+      observer.disconnect();
+    }
+  }, { threshold: 0.3 });
+  observer.observe(hero);
+
+  // Keyboard navigation between quarters
+  const quarterIds = ["q1-fy26", "q2-fy26", "q3-fy26", "q4-fy26", "q1-fy27"];
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      const current = quarterIds.findIndex(id => {
+        const el = document.getElementById(id);
+        return el && el.getBoundingClientRect().top > -100;
+      });
+      if (current >= 0 && current < quarterIds.length - 1) {
+        document.getElementById(quarterIds[current + 1]).scrollIntoView({behavior: 'smooth'});
+      }
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      const current = quarterIds.findIndex(id => {
+        const el = document.getElementById(id);
+        return el && el.getBoundingClientRect().top > -100;
+      });
+      if (current > 0) {
+        document.getElementById(quarterIds[current - 1]).scrollIntoView({behavior: 'smooth'});
+      }
+    }
+  });
+
+  // Active nav highlight
+  const navLinks = document.querySelectorAll('nav a[href^="#q"]');
+  const sectionEls = quarterIds.map(id => document.getElementById(id)).filter(Boolean);
+  window.addEventListener('scroll', () => {
+    let active = 0;
+    sectionEls.forEach((el, i) => {
+      if (el.getBoundingClientRect().top <= 80) active = i;
+    });
+    navLinks.forEach((link, i) => {
+      link.style.color = i === active ? '#818CF8' : '#64748B';
+      link.style.background = i === active ? '#1E293B' : 'transparent';
+    });
+  });
+</script>
+</body>
+</html>
