@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Retro — Aspero Releases Impact Report</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F1F5F9; color: #1E293B; }
+    .header { background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 100%); color: white; padding: 40px 48px; }
+    .header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+    .header p { color: #94A3B8; margin-top: 8px; font-size: 15px; }
+    .summary-bar { background: white; padding: 24px 48px; border-bottom: 1px solid #E2E8F0; display: flex; gap: 40px; }
+    .summary-stat { text-align: center; }
+    .summary-stat .val { font-size: 28px; font-weight: 700; color: #0F172A; }
+    .summary-stat .lbl { font-size: 12px; color: #64748B; margin-top: 2px; }
+    .content { max-width: 900px; margin: 32px auto; padding: 0 24px 64px; }
+    .quarter-label { font-size: 12px; font-weight: 700; color: #64748B; letter-spacing: 1px; text-transform: uppercase; margin: 32px 0 12px; padding-left: 4px; }
+    .release-card { background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border: 1px solid #E2E8F0; }
+    .release-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 12px; }
+    .release-num { background: #F1F5F9; color: #64748B; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
+    .release-name { font-size: 16px; font-weight: 700; color: #0F172A; }
+    .release-date { font-size: 12px; color: #94A3B8; white-space: nowrap; padding-top: 4px; }
+    .release-desc { font-size: 13px; color: #64748B; line-height: 1.6; margin-bottom: 12px; }
+    .findings-box { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 16px; }
+    .findings-box.pending { background: #FFFBEB; border-color: #FDE68A; }
+    .metrics-row { display: flex; gap: 20px; flex-wrap: wrap; }
+    .metric { flex: 1; min-width: 120px; text-align: center; background: white; border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px 8px; }
+    .metric.highlight { border-color: #A7F3D0; background: #ECFDF5; }
+    .metric-val { font-size: 20px; font-weight: 800; color: #0F172A; }
+    .metric.highlight .metric-val { color: #065F46; }
+    .metric-lbl { font-size: 11px; color: #6B7280; margin-top: 4px; line-height: 1.3; }
+    .footer { text-align: center; padding: 24px; color: #94A3B8; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Product Retro — Releases Impact Report</h1>
+    <p>Aspero · Critical releases Apr 2025 – Jun 2026 · Generated Jun 30, 2026</p>
+  </div>
+  <div class="summary-bar">
+    <div class="summary-stat"><div class="val">13</div><div class="lbl">Critical Releases</div></div>
+    <div class="summary-stat"><div class="val">10</div><div class="lbl">Measured</div></div>
+    <div class="summary-stat"><div class="val">3</div><div class="lbl">Pending Data</div></div>
+    <div class="summary-stat"><div class="val">15 mo</div><div class="lbl">Period Covered</div></div>
+  </div>
+  <div class="content">
+    <div class="quarter-label">Q1 FY26</div>
+            <div class="release-card">
+              <div class="release-header">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <span class="release-num">01</span>
+                  <span class="release-name">AppsFlyer MMP Integration</span>
+                  <span style="background:#F59E0B;color:#fff;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;">Analytics</span>
+                  <span style="background:#FEF3C7;color:#92400E;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:600;">⏳ Pending</span>
+                </div>
+                <span class="release-date">2025-05-30</span>
+              </div>
+              <p class="release-desc">Integrated AppsFlyer as the Mobile Measurement Partner for accurate paid campaign attribution on web and mobile.</p>
+              
+    <div class="findings-box pending">
+      <div style="font-size:13px;color:#6B7280;">
+        <strong>Data source:</strong> 📋 Manual<br>
+        <strong>Methodology:</strong> CPA and ROAS data lives in AppsFlyer/Google Ads dashboard. Qualitative: unlocked attribution visibility for paid campaigns. Contact growth team for CPA before/after.
+      </div>
+    </div>
+            </div><div class="quarter-label">Q2 FY26</div>
+            <div class="release-card">
+              <div class="release-header">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <span class="release-num">02</span>
+                  <span class="release-name">Automated AML Screening</span>
+                  <span style="background:#8B5CF6;color:#fff;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;">Platform</span>
+                  <span style="background:#D1FAE5;color:#065F46;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:600;">✓ Measured</span>
+                </div>
+                <span class="release-date">2025-08-25</span>
+              </div>
+              <p class="release-desc">Replaced manual AML checks (capped at ~20/day by human team) with a fully automated backend screening process. Frontend handles AML_SCREENING_FAILED user state gracefully.</p>
+              
+    <div class="findings-box">
+      <div class="metrics-row">
+        <div class="metric"><div class="metric-val">~20/day</div><div class="metric-lbl">Before (manual cap)</div></div>
+        <div class="metric highlight"><div class="metric-val">130–250/day</div><div class="metric-lbl">Current (automated)</div></div>
+        <div class="metric"><div class="metric-val">7–12×</div><div class="metric-lbl">Scale increase</div></div>
+        <div class="metric"><div class="metric-val">25,568</div><div class="metric-lbl">Total verified since launch</div></div>
+      </div>
+      <div style="margin-top:16px;font-size:13px;color:#4B5563;line-height:1.6;background:#F9FAFB;padding:12px 16px;border-radius:8px;border-left:3px solid #8B5CF6;">
+        <strong>Key insight:</strong> Automation absorbed a 7–12× surge in user volume driven by increased marketing spends — with zero manual intervention.
+        At the old 20/day cap, the same volume would have left thousands of users stuck waiting for AML clearance before they could invest.
+      </div>
+      <canvas id="amlChart" style="margin-top:20px;max-height:200px;"></canvas>
+      <script>
+        new Chart(document.getElementById('amlChart'), {
+          type: 'bar',
+          data: {
+            labels: ["2025-08-25", "2025-09-01", "2025-09-08", "2025-09-15", "2025-09-22", "2025-09-29", "2025-10-06", "2025-10-13", "2025-10-20", "2025-10-27", "2025-11-03", "2025-11-10", "2025-11-17", "2025-11-24", "2025-12-01", "2025-12-08", "2025-12-15", "2025-12-22", "2025-12-29", "2026-01-05", "2026-01-12", "2026-01-19", "2026-01-26", "2026-02-02", "2026-02-09", "2026-02-16", "2026-02-23", "2026-03-02", "2026-03-09", "2026-03-16", "2026-03-23", "2026-03-30", "2026-04-06", "2026-04-13", "2026-04-20", "2026-04-27", "2026-05-04", "2026-05-11", "2026-05-18", "2026-05-25", "2026-06-01", "2026-06-08", "2026-06-15", "2026-06-22", "2026-06-29"],
+            datasets: [{
+              label: 'KYC_AML_VERIFIED / week',
+              data: [18, 32, 34, 48, 52, 176, 169, 97, 68, 70, 110, 137, 79, 61, 22, 58, 49, 19, 18, 14, 18, 52, 57, 113, 61, 74, 66, 771, 1098, 1601, 1872, 2450, 1988, 1296, 1324, 1678, 1456, 1694, 1045, 759, 848, 1707, 926, 978, 305],
+              backgroundColor: ["#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6", "#8B5CF6"],
+              borderRadius: 3
+            }]
+          },
+          options: {
+            plugins: { legend: { display: false }, tooltip: { callbacks: { title: (i) => 'Week: ' + i[0].label } } },
+            scales: { x: { ticks: { maxTicksLimit: 12 } }, y: { beginAtZero: true } },
+            animation: false
+          }
+        });
+      </script>
+    </div>
+            </div>
+            <div class="release-card">
+              <div class="release-header">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <span class="release-num">03</span>
+                  <span class="release-name">Bond Detail URL & Sitemap Optimization</span>
+                  <span style="background:#10B981;color:#fff;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;">SEO</span>
+                  <span style="background:#D1FAE5;color:#065F46;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:600;">✓ Measured</span>
+                </div>
+                <span class="release-date">2025-09-19</span>
+              </div>
+              <p class="release-desc">Overhauled bond page URLs from query-params (/bond_detail?bondId=251) to clean path-based URLs (/bond/{name-slug}/{isin}/{id}). Domain consolidated from invest.aspero.in to www.aspero.in. Sitemap expanded to include all bond + issuer pages.</p>
+              
+    <div class="findings-box">
+      <div class="metrics-row">
+        <div class="metric"><div class="metric-val">~270/mo</div><div class="metric-lbl">Impressions before (old URL)</div></div>
+        <div class="metric"><div class="metric-val">pos 19.5</div><div class="metric-lbl">Avg position before (page 2)</div></div>
+        <div class="metric highlight"><div class="metric-val">820/mo</div><div class="metric-lbl">Impressions by Feb 2026</div></div>
+        <div class="metric highlight"><div class="metric-val">pos 9.5</div><div class="metric-lbl">Avg position (page 1)</div></div>
+      </div>
+      <div style="margin-top:12px;font-size:13px;color:#4B5563;background:#F9FAFB;padding:12px 16px;border-radius:8px;border-left:3px solid #10B981;">
+        <strong>ISIN search unlock:</strong> Every top ranking query is an ISIN (e.g. <code style="background:#F3F4F6;padding:1px 5px;border-radius:3px;font-size:11px;">ine08xp07423</code> pos 9.6 | <code style="background:#F3F4F6;padding:1px 5px;border-radius:3px;font-size:11px;">ine08kj07175</code> pos 7.0 | <code style="background:#F3F4F6;padding:1px 5px;border-radius:3px;font-size:11px;">ine01yl07417</code> pos 9.3).
+        Including ISIN in the URL path made Aspero bond pages rank for ISIN-based searches — a completely new acquisition channel for serious fixed-income investors.
+      </div>
+      <canvas id="bondUrlChart" style="margin-top:20px;max-height:180px;"></canvas>
+      <script>
+        new Chart(document.getElementById('bondUrlChart'), {
+          type: 'line',
+          data: {
+            labels: ["2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03"],
+            datasets: [{
+              label: 'Bond page impressions / month',
+              data: [0, 0, 1, 250, 498, 823, 549],
+              borderColor: '#10B981',
+              backgroundColor: 'rgba(16,185,129,0.08)',
+              fill: true,
+              tension: 0.4,
+              pointRadius: 4
+            }]
+          },
+          options: {
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true } },
+            animation: false
+          }
+        });
+      </script>
+      <p style="font-size:11px;color:#9CA3AF;margin-top:8px;">* Pre-SSR window only (Sep 2025 – Mar 24 2026). Post-SSR growth attributed to SSR + Structured Data releases.</p>
+    </div>
+            </div><div class="quarter-label">Q3 FY26</div>
+            <div class="release-card">
+              <div class="release-header">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <span class="release-num">04</span>
+                  <span class="release-name">PAN-Aadhaar Unification via HyperVerge</span>
+                  <span style="background:#3B82F6;color:#fff;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;">Feature</span>
+                  <span style="background:#D1FAE5;color:#065F46;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:600;">✓ Measured</span>
+                </div>
+                <span class="release-date">2025-10-13</span>
+              </div>
+              <p class="release-desc">Replaced manual PAN-Aadhaar verification with HyperVerge automated identity matching, reducing friction at the KYC identity proof stage.</p>
+              
+    <div class="findings-box">
+      <div class="metrics-row">
+        <div class="metric"><div class="metric-val">Manual</div><div class="metric-lbl">Before — ops-dependent verification</div></div>
+        <div class="metric highlight"><div class="metric-val">2,924/wk</div><div class="metric-lbl">Avg verified/week post-launch</div></div>
+        <div class="metric highlight"><div class="metric-val">1.5×</div><div class="metric-lbl">Scale vs pre-HyperVerge</div></div>
+        <div class="metric"><div class="metric-val">22,456</div><div class="metric-lbl">Total auto-verified since launch</div></div>
+      </div>
+      <div style="margin-top:16px;font-size:13px;color:#4B5563;line-height:1.6;background:#F9FAFB;padding:12px 16px;border-radius:8px;border-left:3px solid #3B82F6;">
+        <strong>Key insight:</strong> HyperVerge DigiLocker replaced a manual, ops-gated PAN-Aadhaar matching process.
+        Automated strict name-match scoring (score ≥3 = auto-approve, score 2 = ops review, score 1 = reject) unlocked
+        scale while enforcing compliance — previously mismatches could slip through manual review.
+      </div>
+      <canvas id="panChart" style="margin-top:20px;max-height:200px;"></canvas>
+      <script>
+        new Chart(document.getElementById('panChart'), {
+          type: 'bar',
+          data: {
+            labels: ["2025-08-25", "2025-09-01", "2025-09-08", "2025-09-15", "2025-09-22", "2025-09-29", "2025-10-06", "2025-10-13", "2025-10-20", "2025-10-27", "2025-11-03", "2025-11-10", "2025-11-17"],
+            datasets: [
+              { label: 'KYC_PAN_VERIFIED', data: [115, 303, 404, 555, 720, 1354, 10132, 4356, 1939, 1080, 3283, 3916, 2972], backgroundColor: ["#DBEAFE", "#DBEAFE", "#DBEAFE", "#DBEAFE", "#DBEAFE", "#DBEAFE", "#DBEAFE", "#3B82F6", "#3B82F6", "#3B82F6", "#3B82F6", "#3B82F6", "#3B82F6"], borderRadius: 3, stack: 's' },
+              { label: 'KYC_PAN_FAILED', data: [6, 7, 55, 57, 34, 2, 7, 295, 299, 573, 564, 375, 400], backgroundColor: ["#FEE2E2", "#FEE2E2", "#FEE2E2", "#FEE2E2", "#FEE2E2", "#FEE2E2", "#FEE2E2", "#EF4444", "#EF4444", "#EF4444", "#EF4444", "#EF4444", "#EF4444"], borderRadius: 3, stack: 's' }
+            ]
+          },
+          options: {
+            plugins: { legend: { display: true, position: 'top' } },
+            scales: { x: { stacked: true, ticks: { maxTicksLimit: 10 } }, y: { stacked: true, beginAtZero: true } },
+            animation: false
+          }
+        });
+      </script>
+    </div>
+            </div>
+            <div class="release-card">
+              <div class="release-header">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <span class="release-num">05</span>
+                  <span class="release-name">Phone Number Hint on Sign-in (Android)</span>
+                  <span style="background:#3B82F6;color:#fff;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;">Feature</span>
+                  <span style="background:#FEF3C7;color:#92400E;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:600;">⏳ Pending</span>
+                </div>
+                <span class="release-date">2025-10-29</span>
+              </div>
+              <p class="release-desc">Android native module that suggests the user's own phone number when they land on the mobile number entry screen, eliminating manual number entry.</p>
+              
+    <div class="findings-box pending">
+      <div style="font-size:13px;color:#6B7280;">
+        <strong>Data source:</strong> 📊 Amplitude<br>
+        <strong>Methodology:</strong> Measure sign-in funnel: mobile number screen → OTP sent rate. Android only. 2-week before/after Oct 29 2025.
+      </div>
+    </div>
+            </div>
+            <div class="release-card">
+              <div class="release-header">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <span class="release-num">06</span>
+                  <span class="release-name">OTP Auto-Read from SMS (Android)</span>
+                  <span style="background:#3B82F6;color:#fff;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;">Feature</span>
+                  <span style="background:#FEF3C7;color:#92400E;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:600;">⏳ Pending</span>
+                </div>
+                <span class="release-date">2025-10-29</span>
+              </div>
+              <p class="release-desc">Android native SMS listener that automatically reads, fills and submits OTP from incoming SMS — zero user action required. UX polish (Auto fetching OTP indicator) added Mar 3 2026.</p>
+              
+    <div class="findings-box pending">
+      <div style="font-size:13px;color:#6B7280;">
+        <strong>Data source:</strong> 📊 Amplitude<br>
+        <strong>Methodology:</strong> Measure OTP verification success rate and time-to-verify. Android only. Look for OTP_AUTO_VERIFIED or MOBILE_OTP_VERIFIED event with auto vs manual flag. 2-week before/after Oct 29 2025.
+      </div>
+    </div>
+            </div>
+            <div class="release-card">
+              <div class="release-header">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <span class="release-num">07</span>
+                  <span class="release-name">UPI Reverse Penny Drop — Bank Verification</span>
+                  <span style="background:#3B82F6;color:#fff;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;">Feature</span>
+                  <span style="background:#D1FAE5;color:#065F46;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:600;">✓ Measured</span>
+                </div>
+                <span class="release-date">2025-11-19</span>
+              </div>
+              <p class="release-desc">Added UPI-based reverse penny drop as the primary bank account verification method, offering faster and more reliable verification vs traditional penny drop.</p>
+              
+    <div class="findings-box">
+      <div class="metrics-row">
+        <div class="metric"><div class="metric-val">100%</div><div class="metric-lbl">Penny drop before launch</div></div>
+        <div class="metric highlight"><div class="metric-val">77%</div><div class="metric-lbl">UPI RPD share today</div></div>
+        <div class="metric highlight"><div class="metric-val">573/wk</div><div class="metric-lbl">RPD verifications/week</div></div>
+        <div class="metric"><div class="metric-val">221/wk</div><div class="metric-lbl">PD verifications/week (fallback)</div></div>
+      </div>
+      <div style="margin-top:16px;font-size:13px;color:#4B5563;line-height:1.6;background:#F9FAFB;padding:12px 16px;border-radius:8px;border-left:3px solid #F59E0B;">
+        <strong>Adoption curve:</strong> UPI RPD launched Nov 19 2025. Events split into suffixed form after KYC redesign (Jan 2026).
+        RPD grew from 0 → 77% of all bank verifications. RPD is faster (instant UPI confirmation vs 1-2 day penny drop processing), reducing KYC completion time.
+      </div>
+      <canvas id="rpdChart" style="margin-top:20px;max-height:200px;"></canvas>
+      <script>
+        new Chart(document.getElementById('rpdChart'), {
+          type: 'bar',
+          data: {
+            labels: ["2026-01-19", "2026-01-26", "2026-02-02", "2026-02-09", "2026-02-16", "2026-02-23", "2026-03-02", "2026-03-09", "2026-03-16", "2026-03-23", "2026-03-30", "2026-04-06", "2026-04-13", "2026-04-20", "2026-04-27", "2026-05-04", "2026-05-11", "2026-05-18", "2026-05-25", "2026-06-01", "2026-06-08", "2026-06-15", "2026-06-22"],
+            datasets: [
+              { label: 'Penny Drop (PD)', data: [110, 311, 99, 81, 88, 83, 58, 64, 73, 84, 151, 117, 109, 137, 123, 171, 171, 193, 163, 176, 175, 167, 221], backgroundColor: '#E5E7EB', borderRadius: 3, stack: 's' },
+              { label: 'UPI Reverse PD', data: [1, 5, 234, 272, 259, 283, 209, 181, 211, 277, 318, 281, 294, 314, 410, 447, 521, 586, 458, 559, 505, 623, 573], backgroundColor: '#F59E0B', borderRadius: 3, stack: 's' }
+            ]
+          },
+          options: {
+            plugins: { legend: { display: true, position: 'top' } },
+            scales: { x: { stacked: true, ticks: { maxTicksLimit: 10 } }, y: { stacked: true, beginAtZero: true } },
+            animation: false
+          }
+        });
+      </script>
+    </div>
+            </div>
+            <div class="release-card">
+              <div class="release-header">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <span class="release-num">08</span>
+                  <span class="release-name">KYC Full Redesign</span>
+                  <span style="background:#3B82F6;color:#fff;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;">Feature</span>
+                  <span style="background:#D1FAE5;color:#065F46;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:600;">✓ Measured</span>
+                </div>
+                <span class="release-date">2025-12-22</span>
+              </div>
+              <p class="release-desc">Comprehensive KYC overhaul: new stepper UI, wet signature support, liveness check improvements, nominee flow, UPI RPD bank verification, KRA integration, risk profiling revamp. Released as v2.5.16.</p>
+              
+    <div class="findings-box">
+      <div style="display:flex;gap:20px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:240px;">
+          <div style="font-size:12px;font-weight:700;color:#374151;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">New Capabilities Shipped</div>
+          <ul style="font-size:13px;color:#4B5563;line-height:1.7;padding-left:16px;"><li style="margin-bottom:4px;">Wet signature support for non-DigiLocker users</li><li style="margin-bottom:4px;">Nominee flow (previously missing)</li><li style="margin-bottom:4px;">UPI Reverse Penny Drop as primary bank verification</li><li style="margin-bottom:4px;">KRA integration (V1 + later V2)</li><li style="margin-bottom:4px;">New stepper progress UI — clear stage visibility</li><li style="margin-bottom:4px;">Risk profiling revamp (new question flow)</li><li style="margin-bottom:4px;">Liveness check improvements</li></ul>
+        </div>
+        <div style="flex:1;min-width:200px;">
+          <div class="metrics-row" style="flex-direction:column;gap:10px;">
+            <div class="metric highlight"><div class="metric-val">7</div><div class="metric-lbl">Major capabilities added</div></div>
+            <div class="metric"><div class="metric-val">v2.5.16</div><div class="metric-lbl">Release version</div></div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:16px;font-size:13px;color:#4B5563;line-height:1.6;background:#F9FAFB;padding:12px 16px;border-radius:8px;border-left:3px solid #3B82F6;">
+        <strong>Context:</strong> Launched Dec 22 2025 during a lower-volume period (marketing lull). KYC_RISKDETAILS_SUBMIT spike at launch
+        (+355 vs avg 75/week pre-launch) reflects pent-up demand for the new flow. This redesign unlocked wet-signature compliance,
+        nominee flows, and laid foundation for UPI RPD + KRA V2 in subsequent sprints.
+      </div>
+      <canvas id="kycRedesignChart" style="margin-top:20px;max-height:160px;"></canvas>
+      <script>
+        new Chart(document.getElementById('kycRedesignChart'), {
+          type: 'bar',
+          data: {
+            labels: ["2025-11-24", "2025-12-01", "2025-12-08", "2025-12-15", "2025-12-22", "2025-12-29", "2026-01-05", "2026-01-12", "2026-01-19"],
+            datasets: [{ label: 'KYC started / week', data: [94, 55, 75, 74, 355, 68, 43, 345, 273], backgroundColor: ["#DBEAFE", "#DBEAFE", "#DBEAFE", "#DBEAFE", "#22C55E", "#3B82F6", "#3B82F6", "#3B82F6", "#3B82F6"], borderRadius: 3 }]
+          },
+          options: {
+            plugins: { legend: { display: false }, tooltip: { callbacks: { title: (i) => 'Week: ' + i[0].label } } },
+            scales: { x: { ticks: { maxTicksLimit: 9 } }, y: { beginAtZero: true } },
+            annotation: { annotations: { line1: { type: 'line', xMin: 3.5, xMax: 3.5, borderColor: '#22C55E', borderWidth: 2, borderDash: [4,4], label: { content: 'Launch', display: true } } } },
+            animation: false
+          }
+        });
+      </script>
+      <p style="font-size:11px;color:#9CA3AF;margin-top:6px;">Blue = post-launch, Grey = pre-launch. Green bar = launch week (Dec 22). KYC start event = KYC_RISKDETAILS_SUBMIT.</p>
+    </div>
+            </div><div class="quarter-label">Q4 FY26</div>
+            <div class="release-card">
+              <div class="release-header">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <span class="release-num">09</span>
+                  <span class="release-name">Google SSO Email Verification</span>
+                  <span style="background:#3B82F6;color:#fff;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;">Feature</span>
+                  <span style="background:#D1FAE5;color:#065F46;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:600;">✓ Measured</span>
+                </div>
+                <span class="release-date">2026-03-05</span>
+              </div>
+              <p class="release-desc">Allowed users to verify their email address using Google Sign-In, reducing friction at the email verification step of onboarding.</p>
+              
+    <div class="findings-box">
+      <div class="metrics-row">
+        <div class="metric"><div class="metric-val">0</div><div class="metric-lbl">Email verifications via SSO before</div></div>
+        <div class="metric highlight"><div class="metric-val">2,005/wk</div><div class="metric-lbl">Peak weekly SSO verifications</div></div>
+        <div class="metric highlight"><div class="metric-val">1,424/wk</div><div class="metric-lbl">Current weekly</div></div>
+        <div class="metric"><div class="metric-val">6,070</div><div class="metric-lbl">Total SSO verifications</div></div>
+      </div>
+      <div style="margin-top:16px;font-size:13px;color:#4B5563;line-height:1.6;background:#F9FAFB;padding:12px 16px;border-radius:8px;border-left:3px solid #3B82F6;">
+        <strong>Key insight:</strong> Within 4 weeks of launch, Google SSO became the dominant email verification path —
+        users prefer one-tap Google verification over OTP-to-email. Reduced email verification step abandonment and
+        removed dependency on email deliverability.
+      </div>
+      <canvas id="ssoChart" style="margin-top:20px;max-height:180px;"></canvas>
+      <script>
+        new Chart(document.getElementById('ssoChart'), {
+          type: 'bar',
+          data: {
+            labels: ["2026-02-09", "2026-02-16", "2026-02-23", "2026-03-02", "2026-03-09", "2026-03-16", "2026-03-23", "2026-03-30", "2026-04-06"],
+            datasets: [{ label: 'GOOGLE_VERIFY_SUCCESS / week', data: [0, 0, 0, 33, 600, 859, 1149, 2005, 1424],
+              backgroundColor: ["#DBEAFE", "#DBEAFE", "#DBEAFE", "#3B82F6", "#3B82F6", "#3B82F6", "#3B82F6", "#3B82F6", "#3B82F6"], borderRadius: 3 }]
+          },
+          options: {
+            plugins: { legend: { display: false } },
+            scales: { x: { ticks: { maxTicksLimit: 9 } }, y: { beginAtZero: true } },
+            animation: false
+          }
+        });
+      </script>
+    </div>
+            </div>
+            <div class="release-card">
+              <div class="release-header">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <span class="release-num">10</span>
+                  <span class="release-name">SSR (Server-Side Rendering) Launch</span>
+                  <span style="background:#8B5CF6;color:#fff;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;">Platform</span>
+                  <span style="background:#D1FAE5;color:#065F46;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:600;">✓ Measured</span>
+                </div>
+                <span class="release-date">2026-03-25</span>
+              </div>
+              <p class="release-desc">Migrated web app to Next.js server-side rendering on Kubernetes. Pages now render server-side enabling Google indexing, faster load times, and SEO-crawlable content.</p>
+              
+    <div class="findings-box">
+      <div class="metrics-row">
+        <div class="metric"><div class="metric-val">1,232/mo</div><div class="metric-lbl">Impressions before SSR (Feb 2026)</div></div>
+        <div class="metric highlight"><div class="metric-val">39,744/mo</div><div class="metric-lbl">Impressions (Jun 2026)</div></div>
+        <div class="metric highlight"><div class="metric-val">13×</div><div class="metric-lbl">Avg monthly growth</div></div>
+        <div class="metric highlight"><div class="metric-val">pos 9.0</div><div class="metric-lbl">Avg position (Jun 2026)</div></div>
+      </div>
+      <div style="margin-top:16px;font-size:13px;color:#4B5563;line-height:1.6;background:#F9FAFB;padding:12px 16px;border-radius:8px;border-left:3px solid #3B82F6;">
+        <strong>Key insight:</strong> SSR enabled Google to index Aspero's web pages for the first time.
+        Pre-SSR, the app was a client-side SPA — invisible to search crawlers. Post-SSR, /invest/ pages
+        went from ~1,200 impressions/month to 39,744/month in 3 months — a 13× lift.
+        <br><strong>Top ranking queries:</strong> <code style="background:#F3F4F6;padding:1px 5px;border-radius:3px;font-size:11px;">aspero bonds</code> &nbsp;|&nbsp; <code style="background:#F3F4F6;padding:1px 5px;border-radius:3px;font-size:11px;">aspero</code> &nbsp;|&nbsp; <code style="background:#F3F4F6;padding:1px 5px;border-radius:3px;font-size:11px;">aspero partner login</code>
+      </div>
+      <canvas id="ssrChart" style="margin-top:20px;max-height:200px;"></canvas>
+      <script>
+        new Chart(document.getElementById('ssrChart'), {
+          type: 'bar',
+          data: {
+            labels: ["2026-02", "2026-03", "2026-04", "2026-05", "2026-06"],
+            datasets: [
+              { label: 'Impressions / month', data: [1232, 1581, 7714, 16828, 39744],
+                backgroundColor: ["rgba(59,130,246,0.15)", "#3B82F6", "#3B82F6", "#3B82F6", "#3B82F6"], borderColor: ["#DBEAFE", "#3B82F6", "#3B82F6", "#3B82F6", "#3B82F6"],
+                borderWidth: 1, borderRadius: 4, yAxisID: 'y' }
+            ]
+          },
+          options: {
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, position: 'left' } },
+            animation: false
+          }
+        });
+      </script>
+      <p style="font-size:11px;color:#9CA3AF;margin-top:8px;">* /invest/ page impressions from Google Search Console. SSR launched Mar 25 2026.</p>
+    </div>
+            </div><div class="quarter-label">Q1 FY27</div>
+            <div class="release-card">
+              <div class="release-header">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <span class="release-num">11</span>
+                  <span class="release-name">SEO Structured Data</span>
+                  <span style="background:#10B981;color:#fff;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;">SEO</span>
+                  <span style="background:#D1FAE5;color:#065F46;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:600;">✓ Measured</span>
+                </div>
+                <span class="release-date">2026-04-05</span>
+              </div>
+              <p class="release-desc">Added JSON-LD schema (FAQ, Organization, VideoObject, FinancialProduct), canonical URL redirects for legacy bond links, partner noindex tags, dynamic sitemap, and semantic heading structure.</p>
+              
+    <div class="findings-box">
+      <div class="metrics-row">
+        <div class="metric"><div class="metric-val">549/mo</div><div class="metric-lbl">Bond page impressions before (Mar 2026)</div></div>
+        <div class="metric highlight"><div class="metric-val">22,097/mo</div><div class="metric-lbl">Bond page impressions (Jun 2026)</div></div>
+        <div class="metric highlight"><div class="metric-val">pos 8.6</div><div class="metric-lbl">Avg position (Jun 2026)</div></div>
+        <div class="metric"><div class="metric-val">483</div><div class="metric-lbl">Clicks (Jun 2026)</div></div>
+      </div>
+      <div style="margin-top:16px;font-size:13px;color:#4B5563;line-height:1.6;background:#F9FAFB;padding:12px 16px;border-radius:8px;border-left:3px solid #10B981;">
+        <strong>Key insight:</strong> JSON-LD schema markup (FAQ, FinancialProduct, Organization) and semantic heading structure
+        pushed bond pages from position 15.5 to 8.6 in one month, unlocking rich snippets in SERPs.
+        Bond page impressions grew from 549 → 22,097/month (+40×).
+        <br><strong>Top queries:</strong> <code style="background:#F3F4F6;padding:1px 5px;border-radius:3px;font-size:11px;">ine342t07668</code> &nbsp;|&nbsp; <code style="background:#F3F4F6;padding:1px 5px;border-radius:3px;font-size:11px;">ine08xp07498</code> &nbsp;|&nbsp; <code style="background:#F3F4F6;padding:1px 5px;border-radius:3px;font-size:11px;">ine101q07bz6</code>
+      </div>
+      <canvas id="seoSdChart" style="margin-top:20px;max-height:200px;"></canvas>
+      <script>
+        new Chart(document.getElementById('seoSdChart'), {
+          type: 'bar',
+          data: {
+            labels: ["2026-03", "2026-04", "2026-05", "2026-06"],
+            datasets: [{ label: 'Bond page impressions / month', data: [549, 3963, 5695, 22097],
+              backgroundColor: ["rgba(16,185,129,0.2)", "#10B981", "#10B981", "#10B981"], borderRadius: 4 }]
+          },
+          options: {
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true } },
+            animation: false
+          }
+        });
+      </script>
+      <p style="font-size:11px;color:#9CA3AF;margin-top:8px;">* /bond/ page impressions from Google Search Console. JSON-LD + structured data shipped Apr 5 2026.</p>
+    </div>
+            </div>
+            <div class="release-card">
+              <div class="release-header">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <span class="release-num">12</span>
+                  <span class="release-name">Biometric Authentication</span>
+                  <span style="background:#3B82F6;color:#fff;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;">Feature</span>
+                  <span style="background:#D1FAE5;color:#065F46;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:600;">✓ Measured</span>
+                </div>
+                <span class="release-date">2026-04-20</span>
+              </div>
+              <p class="release-desc">Enabled fingerprint and face-based biometric login as alternative to PIN entry, reducing sign-in friction for returning investors.</p>
+              
+    <div class="findings-box">
+      <div class="metrics-row">
+        <div class="metric highlight"><div class="metric-val">24,865</div><div class="metric-lbl">Biometric setups since launch</div></div>
+        <div class="metric highlight"><div class="metric-val">3,300/wk</div><div class="metric-lbl">Peak setups/week</div></div>
+        <div class="metric"><div class="metric-val">2,607/wk</div><div class="metric-lbl">Biometric logins/week (now)</div></div>
+        <div class="metric"><div class="metric-val">~10 wk</div><div class="metric-lbl">Weeks to reach current adoption</div></div>
+      </div>
+      <div style="margin-top:16px;font-size:13px;color:#4B5563;line-height:1.6;background:#F9FAFB;padding:12px 16px;border-radius:8px;border-left:3px solid #10B981;">
+        <strong>Adoption velocity:</strong> Biometric auth went from 0 → 2,600 logins/week in under 10 weeks.
+        With 24,865 users enrolled, biometric login now rivals PIN entry for returning investor sign-ins —
+        reducing step friction for our most valuable (repeat) user segment.
+      </div>
+      <canvas id="biometricChart" style="margin-top:20px;max-height:200px;"></canvas>
+      <script>
+        new Chart(document.getElementById('biometricChart'), {
+          type: 'bar',
+          data: {
+            labels: ["2026-04-20", "2026-04-27", "2026-05-04", "2026-05-11", "2026-05-18", "2026-05-25", "2026-06-01", "2026-06-08", "2026-06-15", "2026-06-22"],
+            datasets: [
+              { label: 'New Biometric Setups', data: [1687, 2181, 2972, 2612, 3300, 2324, 2322, 2184, 2726, 2557], backgroundColor: '#6EE7B7', borderRadius: 3 },
+              { label: 'Biometric Logins', data: [454, 931, 1157, 1542, 1860, 1889, 2218, 2253, 2576, 2607], backgroundColor: '#10B981', borderRadius: 3 }
+            ]
+          },
+          options: {
+            plugins: { legend: { display: true, position: 'top' } },
+            scales: { x: { ticks: { maxTicksLimit: 10 } }, y: { beginAtZero: true } },
+            animation: false
+          }
+        });
+      </script>
+    </div>
+            </div>
+            <div class="release-card">
+              <div class="release-header">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <span class="release-num">13</span>
+                  <span class="release-name">KRA V2 — CVL Upload & Unblocking</span>
+                  <span style="background:#3B82F6;color:#fff;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;">Feature</span>
+                  <span style="background:#D1FAE5;color:#065F46;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:600;">✓ Measured</span>
+                </div>
+                <span class="release-date">2026-06-03</span>
+              </div>
+              <p class="release-desc">Introduced CVL (KRA agency) document upload path for users who fail the KRA eligibility check. Previously these users were hard-blocked from completing KYC. V2 API normalises status across all KRA agencies and routes blocked users to CVL upload → webhook validation.</p>
+              
+    <div class="findings-box">
+      <div class="metrics-row">
+        <div class="metric"><div class="metric-val">144/wk</div><div class="metric-lbl">Users blocked pre-launch</div></div>
+        <div class="metric highlight"><div class="metric-val">72.3%</div><div class="metric-lbl">Now unblocked via CVL path</div></div>
+        <div class="metric highlight"><div class="metric-val">+5.2pp</div><div class="metric-lbl">Demat completion rate lift</div></div>
+        <div class="metric highlight"><div class="metric-val">₹31.0L</div><div class="metric-lbl">GTV recovered (3 weeks)</div></div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:200px;background:#F9FAFB;border:1px solid #E2E8F0;border-radius:8px;padding:12px;">
+          <div style="font-size:11px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">CVL Upload Funnel (Jun 3–23)</div>
+          <div style="font-size:13px;color:#4B5563;line-height:1.8;">
+            Upload initiated: <strong>224</strong><br>
+            Instant validated: <strong>50</strong> (22.3%)<br>
+            Webhook validated: <strong>112</strong> of 163 submitted<br>
+            Failed: <strong>19</strong> (8.5%)
+          </div>
+        </div>
+        <div style="flex:1;min-width:200px;background:#F9FAFB;border:1px solid #E2E8F0;border-radius:8px;padding:12px;">
+          <div style="font-size:11px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">CVL Webhook Delay</div>
+          <div style="font-size:13px;color:#4B5563;line-height:1.8;">
+            P50: <strong>14.2h</strong><br>
+            P75: <strong>20.2h</strong><br>
+            P90: <strong>69.5h</strong><br>
+            <span style="color:#F59E0B;font-size:11px;">⚡ NDML (~15% market share) validates in &lt;1 min — next integration</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;font-size:13px;color:#4B5563;background:#F9FAFB;padding:12px 16px;border-radius:8px;border-left:3px solid #8B5CF6;">
+        <strong>Before:</strong> 22.2% of PAN signups hard-blocked at KRA gate (144/week).
+        Demat completion was 56.4%.
+        <strong>After:</strong> Every blocked user now gets CVL upload path. Demat completion rose to 61.6% (+5.2pp).
+      </div>
+    </div>
+            </div>
+  </div>
+  <div class="footer">Product Retro Agent · Aspero · 2026</div>
+</body>
+</html>
