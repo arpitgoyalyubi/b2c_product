@@ -772,6 +772,10 @@
         <div style="position:relative;"><canvas id="kycRedesignChart" style="max-height:190px;width:100%!important;"></canvas><p style="font-size:10.5px;color:#94a3b8;margin-top:6px;line-height:1.4;">Blue = post-launch · Green = launch week · Grey = pre-launch. KYC_RISKDETAILS_SUBMIT/week.</p></div><script>new Chart(document.getElementById("kycRedesignChart"),{type:"bar",data:{labels:["2025-11-24", "2025-12-01", "2025-12-08", "2025-12-15", "2025-12-22", "2025-12-29", "2026-01-05", "2026-01-12", "2026-01-19"],datasets:[{data:[94, 55, 75, 74, 355, 68, 43, 345, 273],backgroundColor:["rgba(59,130,246,.25)", "rgba(59,130,246,.25)", "rgba(59,130,246,.25)", "rgba(59,130,246,.25)", "#22c55e", "#3b82f6", "#3b82f6", "#3b82f6", "#3b82f6"],borderRadius:3}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:9,font:{size:10},color:"#94a3b8"}},y:{grid:{color:"#f1f5f9"},ticks:{font:{size:10},color:"#94a3b8"},beginAtZero:true}},animation:false,}});</script><div style="background:#eff6ff;border-left:3px solid #3b82f6;border-radius:0 8px 8px 0;padding:11px 14px;font-size:12.5px;color:#374151;line-height:1.6;">Launched during Dec 2025 marketing lull — direct conversion metrics are confounded. This redesign unlocked wet-signature compliance, nominee flows, and hardwired UPI RPD as the primary bank path. Laid the foundation for KRA V2 and Aspero Demat.</div>
       </div>
     </div>
+    <div id="viewAllWrap" style="text-align:center;margin:40px 0 4px;">
+      <button onclick="showAllQuarters()" style="cursor:pointer;background:#fff;border:1px solid #e2e8f0;border-radius:24px;padding:11px 26px;font-size:12.5px;font-weight:700;color:#475569;box-shadow:0 1px 3px rgba(0,0,0,.06);letter-spacing:.3px;">View all 5 quarters &nbsp;·&nbsp; earlier: Q2 FY26, Q1 FY26 &#8595;</button>
+    </div>
+    <div id="olderQuarters" style="display:none;">
     <div style="display:flex;align-items:center;gap:16px;margin:44px 0 18px;">
       <div style="width:3px;height:20px;background:linear-gradient(180deg,#7c3aed,#2563eb);border-radius:2px;flex-shrink:0;"></div>
       <span style="font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#94a3b8;">Q2 FY26</span>
@@ -850,7 +854,8 @@
           <strong>Data source:</strong> Manual&nbsp;·&nbsp;<strong>Method:</strong> CPA and ROAS data lives in AppsFlyer/Google Ads dashboard. Qualitative: unlocked attribution visibility for paid campaigns. Contact growth team for CPA before/after.
         </div>
       </div>
-    </div>
+    </div></div>
+    <script>function showAllQuarters(){document.getElementById('olderQuarters').style.display='block';document.getElementById('viewAllWrap').style.display='none';}</script>
 </div>
 
 <div class="footer">Product Retro Agent · Aspero · 2026</div>
