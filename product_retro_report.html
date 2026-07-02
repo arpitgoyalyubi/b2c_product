@@ -275,49 +275,69 @@
 
   <!-- ── Impact by Theme ─────────────────────────────────── -->
   <div class="overview-section">
-    <div class="ov-label">Impact by theme</div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+    <div class="ov-label">Impact by theme <span style="font-weight:500;text-transform:none;letter-spacing:0;color:#94a3b8;font-size:11px;">· click a theme to see its releases</span></div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
       
-      <div style="background:linear-gradient(150deg,#064e3b 0%,#059669 100%);border-radius:14px;padding:26px 22px;position:relative;overflow:hidden;">
-        <div style="position:absolute;bottom:-20px;right:-16px;font-size:80px;font-weight:900;
-                    color:rgba(255,255,255,.06);line-height:1;pointer-events:none;">32×</div>
-        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-                    color:rgba(255,255,255,.35);margin-bottom:18px;">SEO & Discovery</div>
-        <div style="font-size:clamp(28px,3.5vw,38px);font-weight:900;letter-spacing:-1.5px;
-                    line-height:1;color:#6ee7b7;margin-bottom:6px;">32×</div>
-        <div style="font-size:11.5px;color:rgba(255,255,255,.45);margin-bottom:18px;">/invest/ impressions post-SSR</div>
-        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-top:1px solid rgba(255,255,255,.08);"><span style="font-size:11px;color:rgba(255,255,255,.45);">bond page impr. (14 mo)</span><span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.85);">40×</span></div><div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-top:1px solid rgba(255,255,255,.08);"><span style="font-size:11px;color:rgba(255,255,255,.45);">SEO releases shipped</span><span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.85);">3</span></div>
+      <div style="background:linear-gradient(150deg,#064e3b 0%,#059669 100%);border-radius:14px;overflow:hidden;">
+        <div onclick="tglTheme(0)" style="cursor:pointer;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          <div style="min-width:0;">
+            <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:5px;">SEO & Discovery · 3 releases</div>
+            <div style="display:flex;align-items:baseline;gap:10px;">
+              <span style="font-size:26px;font-weight:900;letter-spacing:-1px;color:#6ee7b7;">32×</span>
+              <span style="font-size:12px;color:rgba(255,255,255,.6);">/invest impressions after server-side rendering · <strong style="color:rgba(255,255,255,.85);">SSR Launch</strong></span>
+            </div>
+          </div>
+          <span id="chev-0" style="color:rgba(255,255,255,.5);font-size:15px;transition:transform .2s;flex-shrink:0;">&#9656;</span>
+        </div>
+        <div id="theme-body-0" style="display:none;padding:0 22px 16px;">
+          <a href="#card-10_ssr_launch" style="text-decoration:none;display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid rgba(255,255,255,.12);"><span style="min-width:74px;font-size:17px;font-weight:800;letter-spacing:-0.5px;color:#6ee7b7;">32×</span><span style="flex:1;min-width:0;"><span style="display:block;font-size:13px;font-weight:700;color:#fff;">SSR Launch</span><span style="display:block;font-size:11px;color:rgba(255,255,255,.55);">/invest impressions after server-side rendering</span></span><span style="color:rgba(255,255,255,.4);font-size:13px;">&#8599;</span></a><a href="#card-11_seo_structured_data" style="text-decoration:none;display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid rgba(255,255,255,.12);"><span style="min-width:74px;font-size:17px;font-weight:800;letter-spacing:-0.5px;color:#6ee7b7;">40×</span><span style="flex:1;min-width:0;"><span style="display:block;font-size:13px;font-weight:700;color:#fff;">SEO Structured Data</span><span style="display:block;font-size:11px;color:rgba(255,255,255,.55);">bond page impressions over 14 months</span></span><span style="color:rgba(255,255,255,.4);font-size:13px;">&#8599;</span></a><a href="#card-03_bond_detail_url" style="text-decoration:none;display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid rgba(255,255,255,.12);"><span style="min-width:74px;font-size:17px;font-weight:800;letter-spacing:-0.5px;color:#6ee7b7;">clean URLs</span><span style="flex:1;min-width:0;"><span style="display:block;font-size:13px;font-weight:700;color:#fff;">Bond URL & Sitemap</span><span style="display:block;font-size:11px;color:rgba(255,255,255,.55);">path-based bond URLs + domain consolidation</span></span><span style="color:rgba(255,255,255,.4);font-size:13px;">&#8599;</span></a>
+        </div>
       </div>
-      <div style="background:linear-gradient(150deg,#3b0764 0%,#7c3aed 100%);border-radius:14px;padding:26px 22px;position:relative;overflow:hidden;">
-        <div style="position:absolute;bottom:-20px;right:-16px;font-size:80px;font-weight:900;
-                    color:rgba(255,255,255,.06);line-height:1;pointer-events:none;">₹44.3L</div>
-        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-                    color:rgba(255,255,255,.35);margin-bottom:18px;">Ops & Compliance</div>
-        <div style="font-size:clamp(28px,3.5vw,38px);font-weight:900;letter-spacing:-1.5px;
-                    line-height:1;color:#c4b5fd;margin-bottom:6px;">₹44.3L</div>
-        <div style="font-size:11.5px;color:rgba(255,255,255,.45);margin-bottom:18px;">GTV recovered (KRA V2)</div>
-        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-top:1px solid rgba(255,255,255,.08);"><span style="font-size:11px;color:rgba(255,255,255,.45);">AML throughput vs manual</span><span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.85);">10×</span></div><div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-top:1px solid rgba(255,255,255,.08);"><span style="font-size:11px;color:rgba(255,255,255,.45);">ops review reduction (RPD)</span><span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.85);">3.5×</span></div>
+      <div style="background:linear-gradient(150deg,#3b0764 0%,#7c3aed 100%);border-radius:14px;overflow:hidden;">
+        <div onclick="tglTheme(1)" style="cursor:pointer;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          <div style="min-width:0;">
+            <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:5px;">Ops & Compliance · 3 releases</div>
+            <div style="display:flex;align-items:baseline;gap:10px;">
+              <span style="font-size:26px;font-weight:900;letter-spacing:-1px;color:#c4b5fd;">₹44.3L</span>
+              <span style="font-size:12px;color:rgba(255,255,255,.6);">GTV recovered from hard-blocked users · <strong style="color:rgba(255,255,255,.85);">KRA V2 — CVL Unblocking</strong></span>
+            </div>
+          </div>
+          <span id="chev-1" style="color:rgba(255,255,255,.5);font-size:15px;transition:transform .2s;flex-shrink:0;">&#9656;</span>
+        </div>
+        <div id="theme-body-1" style="display:none;padding:0 22px 16px;">
+          <a href="#card-13_kra_v2" style="text-decoration:none;display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid rgba(255,255,255,.12);"><span style="min-width:74px;font-size:17px;font-weight:800;letter-spacing:-0.5px;color:#c4b5fd;">₹44.3L</span><span style="flex:1;min-width:0;"><span style="display:block;font-size:13px;font-weight:700;color:#fff;">KRA V2 — CVL Unblocking</span><span style="display:block;font-size:11px;color:rgba(255,255,255,.55);">GTV recovered from hard-blocked users</span></span><span style="color:rgba(255,255,255,.4);font-size:13px;">&#8599;</span></a><a href="#card-07_upi_rpd" style="text-decoration:none;display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid rgba(255,255,255,.12);"><span style="min-width:74px;font-size:17px;font-weight:800;letter-spacing:-0.5px;color:#c4b5fd;">−3.5×</span><span style="flex:1;min-width:0;"><span style="display:block;font-size:13px;font-weight:700;color:#fff;">UPI Reverse Penny Drop</span><span style="display:block;font-size:11px;color:rgba(255,255,255,.55);">ops-review load per bank verification</span></span><span style="color:rgba(255,255,255,.4);font-size:13px;">&#8599;</span></a><a href="#card-02_automated_aml" style="text-decoration:none;display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid rgba(255,255,255,.12);"><span style="min-width:74px;font-size:17px;font-weight:800;letter-spacing:-0.5px;color:#c4b5fd;">10×</span><span style="flex:1;min-width:0;"><span style="display:block;font-size:13px;font-weight:700;color:#fff;">Automated AML Screening</span><span style="display:block;font-size:11px;color:rgba(255,255,255,.55);">screening throughput vs manual (~20/day cap)</span></span><span style="color:rgba(255,255,255,.4);font-size:13px;">&#8599;</span></a>
+        </div>
       </div>
-      <div style="background:linear-gradient(150deg,#1e3a8a 0%,#2563eb 100%);border-radius:14px;padding:26px 22px;position:relative;overflow:hidden;">
-        <div style="position:absolute;bottom:-20px;right:-16px;font-size:80px;font-weight:900;
-                    color:rgba(255,255,255,.06);line-height:1;pointer-events:none;">1.4%</div>
-        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-                    color:rgba(255,255,255,.35);margin-bottom:18px;">User Experience</div>
-        <div style="font-size:clamp(28px,3.5vw,38px);font-weight:900;letter-spacing:-1.5px;
-                    line-height:1;color:#93c5fd;margin-bottom:6px;">1.4%</div>
-        <div style="font-size:11.5px;color:rgba(255,255,255,.45);margin-bottom:18px;">sign-in bounce — phone hint users</div>
-        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-top:1px solid rgba(255,255,255,.08);"><span style="font-size:11px;color:rgba(255,255,255,.45);">bank auto-approval (RPD)</span><span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.85);">+12.8pp</span></div><div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-top:1px solid rgba(255,255,255,.08);"><span style="font-size:11px;color:rgba(255,255,255,.45);">phone hint acceptance rate</span><span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.85);">84%</span></div>
+      <div style="background:linear-gradient(150deg,#1e3a8a 0%,#2563eb 100%);border-radius:14px;overflow:hidden;">
+        <div onclick="tglTheme(2)" style="cursor:pointer;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          <div style="min-width:0;">
+            <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:5px;">User Experience · 5 releases</div>
+            <div style="display:flex;align-items:baseline;gap:10px;">
+              <span style="font-size:26px;font-weight:900;letter-spacing:-1px;color:#93c5fd;">+143%</span>
+              <span style="font-size:12px;color:rgba(255,255,255,.6);">weekly relogins from signed-up users · <strong style="color:rgba(255,255,255,.85);">Biometric Authentication</strong></span>
+            </div>
+          </div>
+          <span id="chev-2" style="color:rgba(255,255,255,.5);font-size:15px;transition:transform .2s;flex-shrink:0;">&#9656;</span>
+        </div>
+        <div id="theme-body-2" style="display:none;padding:0 22px 16px;">
+          <a href="#card-12_biometric_auth" style="text-decoration:none;display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid rgba(255,255,255,.12);"><span style="min-width:74px;font-size:17px;font-weight:800;letter-spacing:-0.5px;color:#93c5fd;">+143%</span><span style="flex:1;min-width:0;"><span style="display:block;font-size:13px;font-weight:700;color:#fff;">Biometric Authentication</span><span style="display:block;font-size:11px;color:rgba(255,255,255,.55);">weekly relogins from signed-up users</span></span><span style="color:rgba(255,255,255,.4);font-size:13px;">&#8599;</span></a><a href="#card-05_phone_number_hint" style="text-decoration:none;display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid rgba(255,255,255,.12);"><span style="min-width:74px;font-size:17px;font-weight:800;letter-spacing:-0.5px;color:#93c5fd;">84%</span><span style="flex:1;min-width:0;"><span style="display:block;font-size:13px;font-weight:700;color:#fff;">Phone Number Hint</span><span style="display:block;font-size:11px;color:rgba(255,255,255,.55);">phone-hint acceptance rate (Android)</span></span><span style="color:rgba(255,255,255,.4);font-size:13px;">&#8599;</span></a><a href="#card-06_otp_auto_read" style="text-decoration:none;display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid rgba(255,255,255,.12);"><span style="min-width:74px;font-size:17px;font-weight:800;letter-spacing:-0.5px;color:#93c5fd;">0-tap</span><span style="flex:1;min-width:0;"><span style="display:block;font-size:13px;font-weight:700;color:#fff;">OTP Auto-Read</span><span style="display:block;font-size:11px;color:rgba(255,255,255,.55);">auto OTP verification (Android)</span></span><span style="color:rgba(255,255,255,.4);font-size:13px;">&#8599;</span></a><a href="#card-09_google_sso" style="text-decoration:none;display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid rgba(255,255,255,.12);"><span style="min-width:74px;font-size:17px;font-weight:800;letter-spacing:-0.5px;color:#93c5fd;">1-tap</span><span style="flex:1;min-width:0;"><span style="display:block;font-size:13px;font-weight:700;color:#fff;">Google SSO Email Verify</span><span style="display:block;font-size:11px;color:rgba(255,255,255,.55);">email verification via Google</span></span><span style="color:rgba(255,255,255,.4);font-size:13px;">&#8599;</span></a><a href="#card-04_pan_aadhaar_hyperverge" style="text-decoration:none;display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid rgba(255,255,255,.12);"><span style="min-width:74px;font-size:17px;font-weight:800;letter-spacing:-0.5px;color:#93c5fd;">auto</span><span style="flex:1;min-width:0;"><span style="display:block;font-size:13px;font-weight:700;color:#fff;">PAN-Aadhaar (HyperVerge)</span><span style="display:block;font-size:11px;color:rgba(255,255,255,.55);">automated identity match at KYC</span></span><span style="color:rgba(255,255,255,.4);font-size:13px;">&#8599;</span></a>
+        </div>
       </div>
-      <div style="background:linear-gradient(150deg,#451a03 0%,#d97706 100%);border-radius:14px;padding:26px 22px;position:relative;overflow:hidden;">
-        <div style="position:absolute;bottom:-20px;right:-16px;font-size:80px;font-weight:900;
-                    color:rgba(255,255,255,.06);line-height:1;pointer-events:none;">6,200+</div>
-        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-                    color:rgba(255,255,255,.35);margin-bottom:18px;">Platform & Scale</div>
-        <div style="font-size:clamp(28px,3.5vw,38px);font-weight:900;letter-spacing:-1.5px;
-                    line-height:1;color:#fcd34d;margin-bottom:6px;">6,200+</div>
-        <div style="font-size:11.5px;color:rgba(255,255,255,.45);margin-bottom:18px;">demat accounts (15 weeks)</div>
-        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-top:1px solid rgba(255,255,255,.08);"><span style="font-size:11px;color:rgba(255,255,255,.45);">biometric users enrolled</span><span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.85);">24K</span></div><div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-top:1px solid rgba(255,255,255,.08);"><span style="font-size:11px;color:rgba(255,255,255,.45);">demat throughput vs baseline</span><span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.85);">9×</span></div>
-      </div>
+      <div style="background:linear-gradient(150deg,#451a03 0%,#d97706 100%);border-radius:14px;overflow:hidden;">
+        <div onclick="tglTheme(3)" style="cursor:pointer;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          <div style="min-width:0;">
+            <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:5px;">Platform & Scale · 3 releases</div>
+            <div style="display:flex;align-items:baseline;gap:10px;">
+              <span style="font-size:26px;font-weight:900;letter-spacing:-1px;color:#fcd34d;">9×</span>
+              <span style="font-size:12px;color:rgba(255,255,255,.6);">demat throughput; Signup→Demat 3.8%→9.1% · <strong style="color:rgba(255,255,255,.85);">Aspero In-House Demat</strong></span>
+            </div>
+          </div>
+          <span id="chev-3" style="color:rgba(255,255,255,.5);font-size:15px;transition:transform .2s;flex-shrink:0;">&#9656;</span>
+        </div>
+        <div id="theme-body-3" style="display:none;padding:0 22px 16px;">
+          <a href="#card-14_aspero_demat" style="text-decoration:none;display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid rgba(255,255,255,.12);"><span style="min-width:74px;font-size:17px;font-weight:800;letter-spacing:-0.5px;color:#fcd34d;">9×</span><span style="flex:1;min-width:0;"><span style="display:block;font-size:13px;font-weight:700;color:#fff;">Aspero In-House Demat</span><span style="display:block;font-size:11px;color:rgba(255,255,255,.55);">demat throughput; Signup→Demat 3.8%→9.1%</span></span><span style="color:rgba(255,255,255,.4);font-size:13px;">&#8599;</span></a><a href="#card-08_kyc_full_redesign" style="text-decoration:none;display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid rgba(255,255,255,.12);"><span style="min-width:74px;font-size:17px;font-weight:800;letter-spacing:-0.5px;color:#fcd34d;">v2.5.16</span><span style="flex:1;min-width:0;"><span style="display:block;font-size:13px;font-weight:700;color:#fff;">KYC Full Redesign</span><span style="display:block;font-size:11px;color:rgba(255,255,255,.55);">new stepper, wet-sign, nominee, KRA, RPD</span></span><span style="color:rgba(255,255,255,.4);font-size:13px;">&#8599;</span></a><a href="#card-01_appsflyer_mmp" style="text-decoration:none;display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid rgba(255,255,255,.12);"><span style="min-width:74px;font-size:17px;font-weight:800;letter-spacing:-0.5px;color:#fcd34d;">MMP</span><span style="flex:1;min-width:0;"><span style="display:block;font-size:13px;font-weight:700;color:#fff;">AppsFlyer MMP</span><span style="display:block;font-size:11px;color:rgba(255,255,255,.55);">paid-campaign attribution unlocked</span></span><span style="color:rgba(255,255,255,.4);font-size:13px;">&#8599;</span></a>
+        </div>
+      </div><script>function tglTheme(i){var b=document.getElementById("theme-body-"+i),c=document.getElementById("chev-"+i);var open=b.style.display==="block";b.style.display=open?"none":"block";c.style.transform=open?"":"rotate(90deg)";}</script>
     </div>
   </div>
 
