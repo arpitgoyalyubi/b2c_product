@@ -601,7 +601,7 @@
       </div>
       <div class="cr">
         <p style="font-size:13px;color:#64748b;line-height:1.65;margin-bottom:16px;">Introduced CVL (KRA agency) document upload path for users who fail the KRA eligibility check. Previously these users were hard-blocked from completing KYC. V2 API normalises status across all KRA agencies and routes blocked users to CVL upload → webhook validation.</p>
-        <div class="sm-row"><div class="sm" style="background:#ecfdf5;border-color:#a7f3d0;"><div class="sm-v" style="color:#065f46;">22.2%→6.9%</div><div class="sm-l">KRA-gate drop-off</div></div><div class="sm" style="background:#f8fafc;border-color:#e2e8f0;"><div class="sm-v" style="color:#0f172a;">144/wk</div><div class="sm-l">Users blocked pre-launch</div></div><div class="sm" style="background:#ecfdf5;border-color:#a7f3d0;"><div class="sm-v" style="color:#065f46;">69.1%</div><div class="sm-l">Now unblocked via CVL</div></div><div class="sm" style="background:#ecfdf5;border-color:#a7f3d0;"><div class="sm-v" style="color:#065f46;">+5.2pp</div><div class="sm-l">Demat completion lift</div></div></div>
+        <div class="sm-row"><div class="sm" style="background:#ecfdf5;border-color:#a7f3d0;"><div class="sm-v" style="color:#065f46;">22.2%→6.9%</div><div class="sm-l">KRA-gate drop-off</div></div><div class="sm" style="background:#f8fafc;border-color:#e2e8f0;"><div class="sm-v" style="color:#0f172a;">144/wk</div><div class="sm-l">Users blocked pre-launch</div></div><div class="sm" style="background:#ecfdf5;border-color:#a7f3d0;"><div class="sm-v" style="color:#065f46;">69.1%</div><div class="sm-l">Now unblocked via CVL</div></div><div class="sm" style="background:#ecfdf5;border-color:#a7f3d0;"><div class="sm-v" style="color:#065f46;">&minus;15.3pp</div><div class="sm-l">Net KRA-gate drop-off reduction</div></div></div>
         
     <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;margin-bottom:12px;">
       <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#94a3b8;margin-bottom:12px;">Net KRA-gate drop-off · before vs after V2</div>
@@ -628,7 +628,7 @@
         <div style="display:flex;justify-content:space-between;border-top:1px solid #e2e8f0;margin-top:4px;padding-top:4px;"><span>Failed</span><strong style="color:#dc2626;">25 (7.5%)</strong></div>
         <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:#94a3b8;"><span>P50 webhook delay</span><span>14.2h · P90: 69.5h</span></div>
       </div>
-    </div><div style="background:#ecfdf5;border-left:3px solid #059669;border-radius:0 8px 8px 0;padding:11px 14px;font-size:12.5px;color:#374151;line-height:1.6;">Before: 22.2% of signups hard-blocked at the KRA gate (144/week) — a permanent drop-off. V2 routes every blocked user to a CVL upload path, cutting net KRA-gate drop-off to ~6.9% (&minus;15.3pp, a 69.1% reduction) — and still falling as the 23.4% pending uploads resolve. Demat completion: 56.4% → 61.6% (+5.2pp).</div>
+    </div><div style="background:#ecfdf5;border-left:3px solid #059669;border-radius:0 8px 8px 0;padding:11px 14px;font-size:12.5px;color:#374151;line-height:1.6;">Before: 22.2% of signups hard-blocked at the KRA gate (144/week) — a permanent drop-off. V2 routes every blocked user to a CVL upload path, cutting net KRA-gate drop-off to ~6.9% (&minus;15.3pp, a 69.1% reduction) — and still falling as the 23.4% pending uploads resolve. This is a throughput unblock (more users reach eSign→demat); it does not change the demat step's own completion rate.</div>
       </div>
     </div>
     <div class="card" id="card-15_isin_indexing">
@@ -923,32 +923,8 @@
         <div style="position:relative;"><canvas id="rpdChart" style="max-height:190px;width:100%!important;"></canvas><p style="font-size:10.5px;color:#94a3b8;margin-top:6px;line-height:1.4;">Amber = UPI Reverse PD · Grey = Penny Drop. Stacked weekly bank verifications.</p></div><script>new Chart(document.getElementById("rpdChart"),{type:"bar",data:{labels:["2026-01-19", "2026-01-26", "2026-02-02", "2026-02-09", "2026-02-16", "2026-02-23", "2026-03-02", "2026-03-09", "2026-03-16", "2026-03-23", "2026-03-30", "2026-04-06", "2026-04-13", "2026-04-20", "2026-04-27", "2026-05-04", "2026-05-11", "2026-05-18", "2026-05-25", "2026-06-01", "2026-06-08", "2026-06-15", "2026-06-22"],datasets:[{label:"Penny Drop",data:[110, 311, 99, 81, 88, 83, 58, 64, 73, 84, 151, 117, 109, 137, 123, 171, 171, 193, 163, 176, 175, 167, 221],backgroundColor:"#e2e8f0",borderRadius:3,stack:"s"},{label:"UPI Reverse PD",data:[1, 5, 234, 272, 259, 283, 209, 181, 211, 277, 318, 281, 294, 314, 410, 447, 521, 586, 458, 559, 505, 623, 573],backgroundColor:"#d97706",borderRadius:3,stack:"s"}]},options:{plugins:{legend:{display:true,position:"top",labels:{font:{size:11},boxWidth:10}}},scales:{x:{stacked:true,grid:{display:false},ticks:{maxTicksLimit:10,font:{size:10},color:"#94a3b8"}},y:{stacked:true,grid:{color:"#f1f5f9"},ticks:{font:{size:10},color:"#94a3b8"},beginAtZero:true}},animation:false}});</script><div style="background:#ecfdf5;border-left:3px solid #059669;border-radius:0 8px 8px 0;padding:11px 14px;font-size:12.5px;color:#374151;line-height:1.6;">Ops review queue fell from 15.1% → 4.3% — a <strong>3.5× reduction</strong> in manual work per bank verification. RPD is now 77% of all bank verifications (573/week). Two-part ship: optional Nov 19; default path from KYC redesign Dec 22.</div><div style="background:#f8fafc;border-left:3px solid #64748b;border-radius:0 8px 8px 0;padding:11px 14px;font-size:12.5px;color:#374151;line-height:1.6;">Funnel drop-off was <strong>not</strong> the lever: PAN→Bank completion held flat (~87.9% before → ~83.2% after — same fraction of users clear the step in both eras). RPD's win is verification <strong>quality &amp; ops load</strong>, not step conversion.</div>
       </div>
     </div>
-    <div class="card" id="card-08_kyc_full_redesign">
-      <div class="cl" style="background:linear-gradient(150deg,#1e3a8a 0%,#2563eb 100%);">
-        <div class="cl-ghost">08</div>
-        <div style="position:relative;z-index:1;display:flex;flex-direction:column;height:100%;justify-content:space-between;">
-          <div>
-            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:18px;">
-              <span style="background:rgba(255,255,255,0.12);color:#93c5fd;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;">Feature</span>
-              <span style="font-size:11px;color:rgba(255,255,255,.35);margin-left:auto;">2025-12-22</span>
-            </div>
-            <div style="font-size:15px;font-weight:700;color:rgba(255,255,255,.9);line-height:1.3;margin-bottom:24px;">KYC Full Redesign</div>
-          </div>
-          <div>
-            <div style="margin-bottom:14px;"><div style="font-size:11px;color:rgba(255,255,255,.6);padding:2px 0;line-height:1.5;">✓ Wet signature support for non-DigiLocker users</div><div style="font-size:11px;color:rgba(255,255,255,.6);padding:2px 0;line-height:1.5;">✓ Nominee flow (previously missing)</div><div style="font-size:11px;color:rgba(255,255,255,.6);padding:2px 0;line-height:1.5;">✓ UPI Reverse Penny Drop as primary bank verification</div><div style="font-size:11px;color:rgba(255,255,255,.6);padding:2px 0;line-height:1.5;">✓ KRA integration (V1 + later V2)</div><div style="font-size:11px;color:rgba(255,255,255,.6);padding:2px 0;line-height:1.5;">✓ New stepper progress UI — clear stage visibility</div><div style="font-size:11px;color:rgba(255,255,255,.6);padding:2px 0;line-height:1.5;">✓ Risk profiling revamp (new question flow)</div><div style="font-size:11px;color:rgba(255,255,255,.6);padding:2px 0;line-height:1.5;">✓ Liveness check improvements</div></div>
-            <div style="font-size:46px;font-weight:900;letter-spacing:-2px;line-height:1;color:#93c5fd;">7 caps</div>
-            <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:7px;line-height:1.4;">new capabilities in a single release</div>
-          </div>
-        </div>
-      </div>
-      <div class="cr">
-        <p style="font-size:13px;color:#64748b;line-height:1.65;margin-bottom:16px;">Comprehensive KYC overhaul: new stepper UI, wet signature support, liveness check improvements, nominee flow, UPI RPD bank verification, KRA integration, risk profiling revamp. Released as v2.5.16.</p>
-        <div class="sm-row"><div class="sm" style="background:#ecfdf5;border-color:#a7f3d0;"><div class="sm-v" style="color:#065f46;">7</div><div class="sm-l">Major capabilities shipped</div></div><div class="sm" style="background:#f8fafc;border-color:#e2e8f0;"><div class="sm-v" style="color:#0f172a;">v2.5.16</div><div class="sm-l">Release version</div></div><div class="sm" style="background:#f8fafc;border-color:#e2e8f0;"><div class="sm-v" style="color:#0f172a;">Dec 22</div><div class="sm-l">Ship date</div></div></div>
-        <div style="position:relative;"><canvas id="kycRedesignChart" style="max-height:190px;width:100%!important;"></canvas><p style="font-size:10.5px;color:#94a3b8;margin-top:6px;line-height:1.4;">Blue = post-launch · Green = launch week · Grey = pre-launch. KYC_RISKDETAILS_SUBMIT/week.</p></div><script>new Chart(document.getElementById("kycRedesignChart"),{type:"bar",data:{labels:["2025-11-24", "2025-12-01", "2025-12-08", "2025-12-15", "2025-12-22", "2025-12-29", "2026-01-05", "2026-01-12", "2026-01-19"],datasets:[{data:[94, 55, 75, 74, 355, 68, 43, 345, 273],backgroundColor:["rgba(59,130,246,.25)", "rgba(59,130,246,.25)", "rgba(59,130,246,.25)", "rgba(59,130,246,.25)", "#22c55e", "#3b82f6", "#3b82f6", "#3b82f6", "#3b82f6"],borderRadius:3}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:9,font:{size:10},color:"#94a3b8"}},y:{grid:{color:"#f1f5f9"},ticks:{font:{size:10},color:"#94a3b8"},beginAtZero:true}},animation:false,}});</script><div style="background:#eff6ff;border-left:3px solid #3b82f6;border-radius:0 8px 8px 0;padding:11px 14px;font-size:12.5px;color:#374151;line-height:1.6;">Launched during Dec 2025 marketing lull — direct conversion metrics are confounded. This redesign unlocked wet-signature compliance, nominee flows, and hardwired UPI RPD as the primary bank path. Laid the foundation for KRA V2 and Aspero Demat.</div>
-      </div>
-    </div>
     <div id="viewAllWrap" style="text-align:center;margin:40px 0 4px;">
-      <button onclick="showAllQuarters()" style="cursor:pointer;background:#fff;border:1px solid #e2e8f0;border-radius:24px;padding:11px 26px;font-size:12.5px;font-weight:700;color:#475569;box-shadow:0 1px 3px rgba(0,0,0,.06);letter-spacing:.3px;">View all 5 quarters &nbsp;·&nbsp; earlier: Q2 FY26, Q1 FY26 &#8595;</button>
+      <button onclick="showAllQuarters()" style="cursor:pointer;background:#fff;border:1px solid #e2e8f0;border-radius:24px;padding:11px 26px;font-size:12.5px;font-weight:700;color:#475569;box-shadow:0 1px 3px rgba(0,0,0,.06);letter-spacing:.3px;">View all releases &nbsp;·&nbsp; earlier: Q2 FY26, Q1 FY26 &#8595;</button>
     </div>
     <div id="olderQuarters" style="display:none;">
     <div style="display:flex;align-items:center;gap:16px;margin:44px 0 18px;">
@@ -980,6 +956,32 @@
         <div style="position:relative;"><canvas id="amlChart" style="max-height:190px;width:100%!important;"></canvas><p style="font-size:10.5px;color:#94a3b8;margin-top:6px;line-height:1.4;">KYC_AML_VERIFIED / week. Purple = post-automation.</p></div><script>new Chart(document.getElementById("amlChart"),{type:"bar",data:{labels:["2025-08-25", "2025-09-01", "2025-09-08", "2025-09-15", "2025-09-22", "2025-09-29", "2025-10-06", "2025-10-13", "2025-10-20", "2025-10-27", "2025-11-03", "2025-11-10", "2025-11-17", "2025-11-24", "2025-12-01", "2025-12-08", "2025-12-15", "2025-12-22", "2025-12-29", "2026-01-05", "2026-01-12", "2026-01-19", "2026-01-26", "2026-02-02", "2026-02-09", "2026-02-16", "2026-02-23", "2026-03-02", "2026-03-09", "2026-03-16", "2026-03-23", "2026-03-30", "2026-04-06", "2026-04-13", "2026-04-20", "2026-04-27", "2026-05-04", "2026-05-11", "2026-05-18", "2026-05-25", "2026-06-01", "2026-06-08", "2026-06-15", "2026-06-22", "2026-06-29"],datasets:[{data:[18, 32, 34, 48, 52, 176, 169, 97, 68, 70, 110, 137, 79, 61, 22, 58, 49, 19, 18, 14, 18, 52, 57, 113, 61, 74, 66, 771, 1098, 1601, 1872, 2450, 1988, 1296, 1324, 1678, 1456, 1694, 1045, 759, 848, 1707, 926, 978, 305],backgroundColor:["#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed", "#7c3aed"],borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:9,font:{size:10},color:"#94a3b8"}},y:{grid:{color:"#f1f5f9"},ticks:{font:{size:10},color:"#94a3b8"},beginAtZero:true}},animation:false,}});</script><div style="background:#ecfdf5;border-left:3px solid #059669;border-radius:0 8px 8px 0;padding:11px 14px;font-size:12.5px;color:#374151;line-height:1.6;">Automation absorbed a 7–12× surge in user volume with <strong>zero manual intervention</strong>. At the old 20/day cap, the same volume would have left thousands of users waiting for AML clearance.</div>
       </div>
     </div>
+    <div style="display:flex;align-items:center;gap:16px;margin:44px 0 18px;">
+      <div style="width:3px;height:20px;background:linear-gradient(180deg,#7c3aed,#2563eb);border-radius:2px;flex-shrink:0;"></div>
+      <span style="font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#94a3b8;">Other releases</span>
+      <div style="flex:1;height:1px;background:#e2e8f0;"></div>
+    </div>
+    <div class="card" id="card-01_appsflyer_mmp" style="opacity:0.8;">
+      <div class="cl" style="background:linear-gradient(150deg,#451a03 0%,#d97706 100%);opacity:0.6;">
+        <div class="cl-ghost">01</div>
+        <div style="position:relative;z-index:1;display:flex;flex-direction:column;height:100%;justify-content:space-between;">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;">
+              <span style="background:rgba(255,255,255,0.12);color:#fcd34d;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;">Analytics</span>
+              <span style="font-size:11px;color:rgba(255,255,255,.3);margin-left:auto;">2025-05-30</span>
+            </div>
+            <div style="font-size:15px;font-weight:700;color:rgba(255,255,255,.7);line-height:1.3;">AppsFlyer MMP Integration</div>
+          </div>
+          <div style="font-size:28px;font-weight:900;color:rgba(255,255,255,.25);letter-spacing:-1px;">Pending</div>
+        </div>
+      </div>
+      <div class="cr">
+        <p style="font-size:13px;color:#64748b;line-height:1.65;margin-bottom:16px;">Integrated AppsFlyer as the Mobile Measurement Partner for accurate paid campaign attribution on web and mobile.</p>
+        <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:14px 16px;font-size:13px;color:#78350f;">
+          <strong>Data source:</strong> Manual&nbsp;·&nbsp;<strong>Method:</strong> CPA and ROAS data lives in AppsFlyer/Google Ads dashboard. Qualitative: unlocked attribution visibility for paid campaigns. Contact growth team for CPA before/after.
+        </div>
+      </div>
+    </div>
     <div class="card" id="card-03_bond_detail_url">
       <div class="cl" style="background:linear-gradient(150deg,#064e3b 0%,#10b981 100%);">
         <div class="cl-ghost">03</div>
@@ -1004,30 +1006,28 @@
         <div style="position:relative;"><canvas id="bondUrlChart" style="max-height:190px;width:100%!important;"></canvas><p style="font-size:10.5px;color:#94a3b8;margin-top:6px;line-height:1.4;">/bond/ page impressions · Google Search Console · pre-SSR window only.</p></div><script>new Chart(document.getElementById("bondUrlChart"),{type:"bar",data:{labels:["2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03"],datasets:[{data:[0, 0, 1, 250, 498, 823, 549],backgroundColor:["#10b981", "#10b981", "#10b981", "#10b981", "#10b981", "#10b981", "#10b981"],borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:9,font:{size:10},color:"#94a3b8"}},y:{grid:{color:"#f1f5f9"},ticks:{font:{size:10},color:"#94a3b8"},beginAtZero:true}},animation:false,}});</script><div style="background:#ecfdf5;border-left:3px solid #059669;border-radius:0 8px 8px 0;padding:11px 14px;font-size:12.5px;color:#374151;line-height:1.6;">ISIN in the URL path made Aspero rank for ISIN searches for the first time — a completely new acquisition channel. Top queries: "ine08xp07423" pos 9.6, "ine08kj07175" pos 7.0.</div>
       </div>
     </div>
-    <div style="display:flex;align-items:center;gap:16px;margin:44px 0 18px;">
-      <div style="width:3px;height:20px;background:linear-gradient(180deg,#7c3aed,#2563eb);border-radius:2px;flex-shrink:0;"></div>
-      <span style="font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#94a3b8;">Q1 FY26</span>
-      <div style="flex:1;height:1px;background:#e2e8f0;"></div>
-    </div>
-    <div class="card" id="card-01_appsflyer_mmp" style="opacity:0.8;">
-      <div class="cl" style="background:linear-gradient(150deg,#451a03 0%,#d97706 100%);opacity:0.6;">
-        <div class="cl-ghost">01</div>
+    <div class="card" id="card-08_kyc_full_redesign">
+      <div class="cl" style="background:linear-gradient(150deg,#1e3a8a 0%,#2563eb 100%);">
+        <div class="cl-ghost">08</div>
         <div style="position:relative;z-index:1;display:flex;flex-direction:column;height:100%;justify-content:space-between;">
           <div>
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;">
-              <span style="background:rgba(255,255,255,0.12);color:#fcd34d;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;">Analytics</span>
-              <span style="font-size:11px;color:rgba(255,255,255,.3);margin-left:auto;">2025-05-30</span>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:18px;">
+              <span style="background:rgba(255,255,255,0.12);color:#93c5fd;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;">Feature</span>
+              <span style="font-size:11px;color:rgba(255,255,255,.35);margin-left:auto;">2025-12-22</span>
             </div>
-            <div style="font-size:15px;font-weight:700;color:rgba(255,255,255,.7);line-height:1.3;">AppsFlyer MMP Integration</div>
+            <div style="font-size:15px;font-weight:700;color:rgba(255,255,255,.9);line-height:1.3;margin-bottom:24px;">KYC Full Redesign</div>
           </div>
-          <div style="font-size:28px;font-weight:900;color:rgba(255,255,255,.25);letter-spacing:-1px;">Pending</div>
+          <div>
+            <div style="margin-bottom:14px;"><div style="font-size:11px;color:rgba(255,255,255,.6);padding:2px 0;line-height:1.5;">✓ Wet signature support for non-DigiLocker users</div><div style="font-size:11px;color:rgba(255,255,255,.6);padding:2px 0;line-height:1.5;">✓ Nominee flow (previously missing)</div><div style="font-size:11px;color:rgba(255,255,255,.6);padding:2px 0;line-height:1.5;">✓ UPI Reverse Penny Drop as primary bank verification</div><div style="font-size:11px;color:rgba(255,255,255,.6);padding:2px 0;line-height:1.5;">✓ KRA integration (V1 + later V2)</div><div style="font-size:11px;color:rgba(255,255,255,.6);padding:2px 0;line-height:1.5;">✓ New stepper progress UI — clear stage visibility</div><div style="font-size:11px;color:rgba(255,255,255,.6);padding:2px 0;line-height:1.5;">✓ Risk profiling revamp (new question flow)</div><div style="font-size:11px;color:rgba(255,255,255,.6);padding:2px 0;line-height:1.5;">✓ Liveness check improvements</div></div>
+            <div style="font-size:46px;font-weight:900;letter-spacing:-2px;line-height:1;color:#93c5fd;">7 caps</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:7px;line-height:1.4;">new capabilities in a single release</div>
+          </div>
         </div>
       </div>
       <div class="cr">
-        <p style="font-size:13px;color:#64748b;line-height:1.65;margin-bottom:16px;">Integrated AppsFlyer as the Mobile Measurement Partner for accurate paid campaign attribution on web and mobile.</p>
-        <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:14px 16px;font-size:13px;color:#78350f;">
-          <strong>Data source:</strong> Manual&nbsp;·&nbsp;<strong>Method:</strong> CPA and ROAS data lives in AppsFlyer/Google Ads dashboard. Qualitative: unlocked attribution visibility for paid campaigns. Contact growth team for CPA before/after.
-        </div>
+        <p style="font-size:13px;color:#64748b;line-height:1.65;margin-bottom:16px;">Comprehensive KYC overhaul: new stepper UI, wet signature support, liveness check improvements, nominee flow, UPI RPD bank verification, KRA integration, risk profiling revamp. Released as v2.5.16.</p>
+        <div class="sm-row"><div class="sm" style="background:#ecfdf5;border-color:#a7f3d0;"><div class="sm-v" style="color:#065f46;">7</div><div class="sm-l">Major capabilities shipped</div></div><div class="sm" style="background:#f8fafc;border-color:#e2e8f0;"><div class="sm-v" style="color:#0f172a;">v2.5.16</div><div class="sm-l">Release version</div></div><div class="sm" style="background:#f8fafc;border-color:#e2e8f0;"><div class="sm-v" style="color:#0f172a;">Dec 22</div><div class="sm-l">Ship date</div></div></div>
+        <div style="position:relative;"><canvas id="kycRedesignChart" style="max-height:190px;width:100%!important;"></canvas><p style="font-size:10.5px;color:#94a3b8;margin-top:6px;line-height:1.4;">Blue = post-launch · Green = launch week · Grey = pre-launch. KYC_RISKDETAILS_SUBMIT/week.</p></div><script>new Chart(document.getElementById("kycRedesignChart"),{type:"bar",data:{labels:["2025-11-24", "2025-12-01", "2025-12-08", "2025-12-15", "2025-12-22", "2025-12-29", "2026-01-05", "2026-01-12", "2026-01-19"],datasets:[{data:[94, 55, 75, 74, 355, 68, 43, 345, 273],backgroundColor:["rgba(59,130,246,.25)", "rgba(59,130,246,.25)", "rgba(59,130,246,.25)", "rgba(59,130,246,.25)", "#22c55e", "#3b82f6", "#3b82f6", "#3b82f6", "#3b82f6"],borderRadius:3}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:9,font:{size:10},color:"#94a3b8"}},y:{grid:{color:"#f1f5f9"},ticks:{font:{size:10},color:"#94a3b8"},beginAtZero:true}},animation:false,}});</script><div style="background:#eff6ff;border-left:3px solid #3b82f6;border-radius:0 8px 8px 0;padding:11px 14px;font-size:12.5px;color:#374151;line-height:1.6;">Launched during Dec 2025 marketing lull — direct conversion metrics are confounded. This redesign unlocked wet-signature compliance, nominee flows, and hardwired UPI RPD as the primary bank path. Laid the foundation for KRA V2 and Aspero Demat.</div>
       </div>
     </div></div>
     <script>function showAllQuarters(){document.getElementById('olderQuarters').style.display='block';document.getElementById('viewAllWrap').style.display='none';}</script>
