@@ -1,0 +1,228 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Persona Mix — WoW Trend · Aspero</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script><style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',-apple-system,sans-serif;background:#f1f5f9;color:#1e293b;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:0 32px}
+.muted{color:#94a3b8}
+.hero{background:linear-gradient(160deg,#0b0f1e,#0f1f45 55%,#130f28);padding:48px 0 34px;color:#fff}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:14px}
+.htitle{font-size:clamp(28px,4vw,44px);font-weight:900;letter-spacing:-1.5px;line-height:1.08}
+.htitle em{font-style:normal;background:linear-gradient(90deg,#818cf8,#c084fc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hsub{font-size:13.5px;color:rgba(255,255,255,.42);margin-top:12px;max-width:700px;line-height:1.6}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:26px}
+.kpi{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:13px;padding:16px 15px}
+.kpi .v{font-size:23px;font-weight:900;letter-spacing:-.5px;color:#fff}
+.kpi .l{font-size:10.5px;color:rgba(255,255,255,.45);margin-top:5px;line-height:1.4}
+.sect{padding:34px 0 6px}
+.sect h2{font-size:21px;font-weight:800;letter-spacing:-.5px;margin-bottom:4px}
+.sect p.s{font-size:12.5px;color:#64748b;margin-bottom:16px;line-height:1.55;max-width:760px}
+.card{background:#fff;border-radius:14px;padding:20px 22px;box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 20px rgba(0,0,0,.06)}
+.chartbox{position:relative;height:400px}
+.toggle{display:inline-flex;background:#f1f5f9;border-radius:9px;padding:3px;margin-bottom:14px;gap:2px}
+.toggle button{border:0;background:transparent;font-family:inherit;font-size:12px;font-weight:700;color:#64748b;padding:6px 14px;border-radius:7px;cursor:pointer}
+.toggle button.on{background:#fff;color:#0f172a;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.hint{font-size:11px;color:#94a3b8;margin-top:8px}
+.banner{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:13px 16px;font-size:12.5px;color:#78350f;line-height:1.55;margin-bottom:18px}
+table.tt{width:100%;border-collapse:collapse;font-size:12px}
+table.tt th,table.tt td{padding:8px 6px;text-align:center;border-bottom:1px solid #f1f5f9}
+table.tt th{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.4px}
+table.tt td.ml,table.tt th:first-child{text-align:left;font-weight:700;color:#334155;white-space:nowrap}
+table.tt tr.lc{background:#fffdf5}
+.d{font-size:10px;font-weight:700}
+.d.up{color:#059669}.d.down{color:#dc2626}.d.flat{color:#cbd5e1}
+.ideal{display:flex;flex-direction:column;gap:11px}
+.irow{display:flex;align-items:center;gap:12px;font-size:12px}
+.iname{width:180px;flex-shrink:0;font-weight:600;color:#334155}
+.itrack{flex:1;height:16px;background:#f1f5f9;border-radius:8px;position:relative}
+.ifill{height:100%;border-radius:8px}
+.imark{position:absolute;top:-3px;height:22px;width:2px;background:#0f172a}
+.ival{width:150px;flex-shrink:0;text-align:right;font-variant-numeric:tabular-nums;color:#475569}
+.xgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.xcard{background:#fff;border-radius:12px;padding:16px 18px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.xh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.xshare{font-size:13px;font-weight:800;color:#0f172a}
+.xgoal{font-size:13px;font-style:italic;color:#475569;margin-bottom:10px}
+table.xt{width:100%;border-collapse:collapse;font-size:11.5px}
+table.xt td{padding:4px 4px;border-bottom:1px solid #f5f5f5;vertical-align:top}
+table.xt td:first-child{color:#94a3b8;width:82px;font-weight:600}
+.footer{padding:28px 0 60px;color:#94a3b8;font-size:11px;line-height:1.7}
+details{margin-top:10px}summary{cursor:pointer;font-size:12.5px;font-weight:700;color:#475569}
+@media(max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}.xgrid{grid-template-columns:1fr}.iname{width:120px}.ival{width:96px}.wrap{padding:0 18px}}
+</style></head><body>
+<div class="hero"><div class="wrap">
+  <div class="eyebrow">Aspero · Personalization · Persona Mix</div>
+  <div class="htitle">Who signs up,<br><em>and how the mix is shifting.</em></div>
+  <div class="hsub">Persona composition of PAN-verified users, week over week. Personas from the full
+   signal stack — device tier (signup) · risk occupation/income (KYC) · Aadhaar age (PAN).
+   Mid-April → Jul 2026, the window where risk data is available.</div>
+  
+      <div class="kpis">
+        <div class="kpi"><div class="v">9,463</div><div class="l">PAN-verified across window</div></div>
+        <div class="kpi"><div class="v">1,031</div><div class="l">latest full week (06-22)</div></div>
+        <div class="kpi"><div class="v">19%</div><div class="l">avg P1 share · -16pp vs 35% target</div></div>
+        <div class="kpi"><div class="v">10</div><div class="l">decision-grade weeks</div></div>
+      </div>
+</div></div>
+<div class="wrap">
+  <section class="sect">
+    <div class="banner"><b>How to read:</b> Window starts <b>mid-April 2026</b>, when risk-profiling went
+      live in Amplitude — so every week is <b>full-stack (device+risk+age)</b>. Weeks marked ⚠ are the first
+      (“ramping” — risk adoption still climbing) and last (“partial” — incomplete week before cutoff); ignore
+      those two for reads. Personas: P5 age≥55 · P6 age≤25 (Aadhaar) · P1/P3/P4 by occupation/income.</div>
+    <h2>Weekly persona mix</h2>
+    <p class="s">Each bar = that week's PAN-verified users. Toggle share vs counts; click a persona in the
+      legend to hide it; hover for exact numbers.</p>
+    <div class="card">
+      <div class="toggle">
+        <button id="bPct" class="on" onclick="setMode('pct')">% share</button>
+        <button id="bCnt" onclick="setMode('cnt')">Counts</button>
+      </div>
+      <div class="chartbox"><canvas id="mixChart"></canvas></div>
+      <div class="hint">Tip: click legend items to isolate a persona. ⚠ = ramping / partial week.</div>
+    </div>
+  </section>
+
+  <section class="sect">
+    <h2>Actual vs target mix</h2>
+    <p class="s">Average share over the 10 decision-grade weeks vs the persona-quality target mix.
+      The marker is the target; the bar is actual.</p>
+    <div class="card"><div class="ideal">
+          <div class="irow">
+            <div class="iname">P1 Wealth Builder</div>
+            <div class="itrack"><div class="ifill" style="width:19.4%;background:#3b82f6"></div>
+              <div class="imark" style="left:35%" title="ideal 35%"></div></div>
+            <div class="ival">19.4% actual · 35% ideal · <span style="color:#dc2626">-15.6pp</span></div>
+          </div>
+          <div class="irow">
+            <div class="iname">P4 Business Investor</div>
+            <div class="itrack"><div class="ifill" style="width:15.3%;background:#8b5cf6"></div>
+              <div class="imark" style="left:15%" title="ideal 15%"></div></div>
+            <div class="ival">15.3% actual · 15% ideal · <span style="color:#059669">+0.3pp</span></div>
+          </div>
+          <div class="irow">
+            <div class="iname">P5 Retired / Conservative</div>
+            <div class="itrack"><div class="ifill" style="width:17.1%;background:#10b981"></div>
+              <div class="imark" style="left:15%" title="ideal 15%"></div></div>
+            <div class="ival">17.1% actual · 15% ideal · <span style="color:#059669">+2.1pp</span></div>
+          </div>
+          <div class="irow">
+            <div class="iname">P6 Young Aspirant</div>
+            <div class="itrack"><div class="ifill" style="width:27.5%;background:#f59e0b"></div>
+              <div class="imark" style="left:25%" title="ideal 25%"></div></div>
+            <div class="ival">27.5% actual · 25% ideal · <span style="color:#059669">+2.5pp</span></div>
+          </div>
+          <div class="irow">
+            <div class="iname">P3 Cautious Saver</div>
+            <div class="itrack"><div class="ifill" style="width:7.8%;background:#6b7280"></div>
+              <div class="imark" style="left:10%" title="ideal 10%"></div></div>
+            <div class="ival">7.8% actual · 10% ideal · <span style="color:#dc2626">-2.2pp</span></div>
+          </div></div></div>
+  </section>
+
+  <section class="sect">
+    <h2>Week-over-week shift (Δpp)</h2>
+    <p class="s">Share per persona with change vs the previous week. ⚠ rows are ramping/partial.</p>
+    <div class="card" style="overflow-x:auto"><table class="tt"><tr><th>Week of</th><th>P1</th><th>P3</th><th>P4</th><th>P5</th><th>P6</th><th>Unknown</th></tr><tr class="lc"><td class='ml'>04-13 ⚠</td><td>0.8%<br><span class="d flat">—</span></td><td>0.4%<br><span class="d flat">—</span></td><td>0.4%<br><span class="d flat">—</span></td><td>23.9%<br><span class="d flat">—</span></td><td>25.6%<br><span class="d flat">—</span></td><td>48.8%<br><span class="d flat">—</span></td></tr><tr><td class='ml'>04-20</td><td>13.3%<br><span class="d up">▲12.5</span></td><td>5.7%<br><span class="d up">▲5.3</span></td><td>12.7%<br><span class="d up">▲12.3</span></td><td>22.6%<br><span class="d down">▼1.3</span></td><td>27.3%<br><span class="d up">▲1.7</span></td><td>18.5%<br><span class="d down">▼30.3</span></td></tr><tr><td class='ml'>04-27</td><td>16.3%<br><span class="d up">▲3.0</span></td><td>7.9%<br><span class="d up">▲2.2</span></td><td>19.1%<br><span class="d up">▲6.4</span></td><td>14.1%<br><span class="d down">▼8.5</span></td><td>31.6%<br><span class="d up">▲4.3</span></td><td>11.1%<br><span class="d down">▼7.4</span></td></tr><tr><td class='ml'>05-04</td><td>20.3%<br><span class="d up">▲4.0</span></td><td>6.5%<br><span class="d down">▼1.4</span></td><td>16.0%<br><span class="d down">▼3.1</span></td><td>15.6%<br><span class="d up">▲1.5</span></td><td>28.6%<br><span class="d down">▼3.0</span></td><td>13.0%<br><span class="d up">▲1.9</span></td></tr><tr><td class='ml'>05-11</td><td>17.0%<br><span class="d down">▼3.3</span></td><td>6.6%<br><span class="d up">▲0.1</span></td><td>20.2%<br><span class="d up">▲4.2</span></td><td>13.5%<br><span class="d down">▼2.1</span></td><td>35.8%<br><span class="d up">▲7.2</span></td><td>7.0%<br><span class="d down">▼6.0</span></td></tr><tr><td class='ml'>05-18</td><td>20.3%<br><span class="d up">▲3.3</span></td><td>7.4%<br><span class="d up">▲0.8</span></td><td>16.2%<br><span class="d down">▼4.0</span></td><td>15.3%<br><span class="d up">▲1.8</span></td><td>28.7%<br><span class="d down">▼7.1</span></td><td>12.1%<br><span class="d up">▲5.1</span></td></tr><tr><td class='ml'>05-25</td><td>23.4%<br><span class="d up">▲3.1</span></td><td>10.5%<br><span class="d up">▲3.1</span></td><td>14.4%<br><span class="d down">▼1.8</span></td><td>17.7%<br><span class="d up">▲2.4</span></td><td>24.1%<br><span class="d down">▼4.6</span></td><td>10.0%<br><span class="d down">▼2.1</span></td></tr><tr><td class='ml'>06-01</td><td>23.7%<br><span class="d up">▲0.3</span></td><td>9.7%<br><span class="d down">▼0.8</span></td><td>14.4%<br><span class="d flat">0.0</span></td><td>14.3%<br><span class="d down">▼3.4</span></td><td>26.5%<br><span class="d up">▲2.4</span></td><td>11.5%<br><span class="d up">▲1.5</span></td></tr><tr><td class='ml'>06-08</td><td>21.8%<br><span class="d down">▼1.9</span></td><td>7.4%<br><span class="d down">▼2.3</span></td><td>14.9%<br><span class="d up">▲0.5</span></td><td>16.6%<br><span class="d up">▲2.3</span></td><td>26.2%<br><span class="d down">▼0.3</span></td><td>13.2%<br><span class="d up">▲1.7</span></td></tr><tr><td class='ml'>06-15</td><td>20.3%<br><span class="d down">▼1.5</span></td><td>8.1%<br><span class="d up">▲0.7</span></td><td>13.0%<br><span class="d down">▼1.9</span></td><td>19.1%<br><span class="d up">▲2.5</span></td><td>30.1%<br><span class="d up">▲3.9</span></td><td>9.4%<br><span class="d down">▼3.8</span></td></tr><tr><td class='ml'>06-22</td><td>17.9%<br><span class="d down">▼2.4</span></td><td>8.0%<br><span class="d down">▼0.1</span></td><td>11.9%<br><span class="d down">▼1.1</span></td><td>21.9%<br><span class="d up">▲2.8</span></td><td>16.2%<br><span class="d down">▼13.9</span></td><td>24.1%<br><span class="d up">▲14.7</span></td></tr><tr class="lc"><td class='ml'>06-29 ⚠</td><td>13.0%<br><span class="d down">▼4.9</span></td><td>6.3%<br><span class="d down">▼1.7</span></td><td>15.4%<br><span class="d up">▲3.5</span></td><td>12.8%<br><span class="d down">▼9.1</span></td><td>12.5%<br><span class="d down">▼3.7</span></td><td>40.0%<br><span class="d up">▲15.9</span></td></tr></table></div>
+  </section>
+
+  <section class="sect">
+    <h2>What each persona should experience</h2>
+    <p class="s">Merchandising per persona (from the persona product-experience playbook) — the “so what”.</p>
+    <div class="xgrid">
+          <div class="xcard" style="border-top:4px solid #3b82f6;">
+            <div class="xh"><b style="color:#3b82f6;">P1 Wealth Builder</b>
+              <span class="xshare">17.9% <span class="muted" style="font-size:10px;font-weight:500">latest wk</span></span></div>
+            <div class="xgoal">“Grow wealth faster”</div>
+            <table class="xt">
+              <tr><td>Bond rack</td><td>High-yield NCDs ≥12% YTM (yield-first)</td></tr>
+              <tr><td>Entry point</td><td>₹10K default · ₹1L upsell rail</td></tr>
+              <tr><td>Merch signal</td><td>FD-spread on cards: “FD 7% → 14.2%”</td></tr>
+              <tr><td>Key lever</td><td>Post-maturity 24h reinvestment CTA</td></tr>
+            </table>
+          </div>
+          <div class="xcard" style="border-top:4px solid #6b7280;">
+            <div class="xh"><b style="color:#6b7280;">P3 Cautious Saver</b>
+              <span class="xshare">8.0% <span class="muted" style="font-size:10px;font-weight:500">latest wk</span></span></div>
+            <div class="xgoal">“Keep capital safe”</div>
+            <table class="xt">
+              <tr><td>Bond rack</td><td>AA-rated PSU / NBFC, short tenure</td></tr>
+              <tr><td>Entry point</td><td>₹10K prominent</td></tr>
+              <tr><td>Merch signal</td><td>“Safe as FD, better returns” · WhatsApp CTA</td></tr>
+              <tr><td>Key lever</td><td>WhatsApp + post-harvest inventory timing</td></tr>
+            </table>
+          </div>
+          <div class="xcard" style="border-top:4px solid #8b5cf6;">
+            <div class="xh"><b style="color:#8b5cf6;">P4 Business Investor</b>
+              <span class="xshare">11.9% <span class="muted" style="font-size:10px;font-weight:500">latest wk</span></span></div>
+            <div class="xgoal">“Save capital gains tax”</div>
+            <table class="xt">
+              <tr><td>Bond rack</td><td>54EC NHAI/REC/PFC (5-10yr) + short-yield — two racks</td></tr>
+              <tr><td>Entry point</td><td>₹300 (54EC) + ₹1L short</td></tr>
+              <tr><td>Merch signal</td><td>54EC deadline countdown · NHAI→REC/PFC fallback</td></tr>
+              <tr><td>Key lever</td><td>CA referral channel</td></tr>
+            </table>
+          </div>
+          <div class="xcard" style="border-top:4px solid #10b981;">
+            <div class="xh"><b style="color:#10b981;">P5 Retired / Conservative</b>
+              <span class="xshare">21.9% <span class="muted" style="font-size:10px;font-weight:500">latest wk</span></span></div>
+            <div class="xgoal">“Get regular income”</div>
+            <table class="xt">
+              <tr><td>Bond rack</td><td>Quarterly-coupon, short-duration</td></tr>
+              <tr><td>Entry point</td><td>₹1,00,000</td></tr>
+              <tr><td>Merch signal</td><td>“₹X every quarter” · nominee + RM contact visible</td></tr>
+              <tr><td>Key lever</td><td>30/7/1-day pre-maturity + 24h post-payout</td></tr>
+            </table>
+          </div>
+          <div class="xcard" style="border-top:4px solid #f59e0b;">
+            <div class="xh"><b style="color:#f59e0b;">P6 Young Aspirant</b>
+              <span class="xshare">16.2% <span class="muted" style="font-size:10px;font-weight:500">latest wk</span></span></div>
+            <div class="xgoal">“Start with ₹300”</div>
+            <table class="xt">
+              <tr><td>Bond rack</td><td>Brand-name issuers, min-investment ascending</td></tr>
+              <tr><td>Entry point</td><td>₹1K / ₹10K prominent</td></tr>
+              <tr><td>Merch signal</td><td>Safety badges + “never defaulted since YYYY”</td></tr>
+              <tr><td>Key lever</td><td>Day 30-40 second-bond push (habit)</td></tr>
+            </table>
+          </div></div>
+  </section>
+
+  <details class="wrap" style="max-width:1000px;margin:20px auto 0;">
+    <summary>Why is there an “Unknown” bucket?</summary>
+    <p class="s" style="margin-top:8px">Unknown = PAN total − the five persona queries. Users land there when
+      their occupation/income matches no rule (e.g. service/professional under ₹10L, or occupation = Others/Student
+      aged 26–54), when risk or age data is missing (the Jun 22 spike is a likely age-data gap), or as a
+      measurement residual because the five queries are run independently and not yet de-duplicated. A device-tier
+      default fallback + strict priority de-dup would shrink it to a small, stable residual.</p>
+  </details>
+</div>
+<div class="footer wrap">
+  Persona WoW Trend · Aspero B2C · Generated 04 Jul 2026. Source: Amplitude project 506002, KYC_PAN_VERIFIED by week
+  (i=7), mid-April → Jul 2026. P5=age≥55, P6=age≤25 (Aadhaar); P1/P3/P4 via RISK_PROFILING_SUBMITTED
+  occupation/income segment (live ~mid-April 2026). Experience rules: persona_product_experience.md. Persona
+  buckets are measured independently by the priority stack; small boundary overlaps are a known approximation
+  not yet de-duplicated (see “Unknown”).
+</div>
+<script>
+const W=[{"w": "2026-04-13", "total": 477, "counts": {"P5": 114, "P6": 122, "P4": 2, "P1": 4, "P3": 2, "Unknown": 233}, "pcts": {"P5": 23.9, "P6": 25.6, "P4": 0.4, "P1": 0.8, "P3": 0.4, "Unknown": 48.8}, "ramping": true, "partial": false}, {"w": "2026-04-20", "total": 513, "counts": {"P5": 116, "P6": 140, "P4": 65, "P1": 68, "P3": 29, "Unknown": 95}, "pcts": {"P5": 22.6, "P6": 27.3, "P4": 12.7, "P1": 13.3, "P3": 5.7, "Unknown": 18.5}, "ramping": false, "partial": false}, {"w": "2026-04-27", "total": 624, "counts": {"P5": 88, "P6": 197, "P4": 119, "P1": 102, "P3": 49, "Unknown": 69}, "pcts": {"P5": 14.1, "P6": 31.6, "P4": 19.1, "P1": 16.3, "P3": 7.9, "Unknown": 11.1}, "ramping": false, "partial": false}, {"w": "2026-05-04", "total": 693, "counts": {"P5": 108, "P6": 198, "P4": 111, "P1": 141, "P3": 45, "Unknown": 90}, "pcts": {"P5": 15.6, "P6": 28.6, "P4": 16.0, "P1": 20.3, "P3": 6.5, "Unknown": 13.0}, "ramping": false, "partial": false}, {"w": "2026-05-11", "total": 788, "counts": {"P5": 106, "P6": 282, "P4": 159, "P1": 134, "P3": 52, "Unknown": 55}, "pcts": {"P5": 13.5, "P6": 35.8, "P4": 20.2, "P1": 17.0, "P3": 6.6, "Unknown": 7.0}, "ramping": false, "partial": false}, {"w": "2026-05-18", "total": 891, "counts": {"P5": 136, "P6": 256, "P4": 144, "P1": 181, "P3": 66, "Unknown": 108}, "pcts": {"P5": 15.3, "P6": 28.7, "P4": 16.2, "P1": 20.3, "P3": 7.4, "Unknown": 12.1}, "ramping": false, "partial": false}, {"w": "2026-05-25", "total": 702, "counts": {"P5": 124, "P6": 169, "P4": 101, "P1": 164, "P3": 74, "Unknown": 70}, "pcts": {"P5": 17.7, "P6": 24.1, "P4": 14.4, "P1": 23.4, "P3": 10.5, "Unknown": 10.0}, "ramping": false, "partial": false}, {"w": "2026-06-01", "total": 827, "counts": {"P5": 118, "P6": 219, "P4": 119, "P1": 196, "P3": 80, "Unknown": 95}, "pcts": {"P5": 14.3, "P6": 26.5, "P4": 14.4, "P1": 23.7, "P3": 9.7, "Unknown": 11.5}, "ramping": false, "partial": false}, {"w": "2026-06-08", "total": 767, "counts": {"P5": 127, "P6": 201, "P4": 114, "P1": 167, "P3": 57, "Unknown": 101}, "pcts": {"P5": 16.6, "P6": 26.2, "P4": 14.9, "P1": 21.8, "P3": 7.4, "Unknown": 13.2}, "ramping": false, "partial": false}, {"w": "2026-06-15", "total": 901, "counts": {"P5": 172, "P6": 271, "P4": 117, "P1": 183, "P3": 73, "Unknown": 85}, "pcts": {"P5": 19.1, "P6": 30.1, "P4": 13.0, "P1": 20.3, "P3": 8.1, "Unknown": 9.4}, "ramping": false, "partial": false}, {"w": "2026-06-22", "total": 1031, "counts": {"P5": 226, "P6": 167, "P4": 123, "P1": 185, "P3": 82, "Unknown": 248}, "pcts": {"P5": 21.9, "P6": 16.2, "P4": 11.9, "P1": 17.9, "P3": 8.0, "Unknown": 24.1}, "ramping": false, "partial": false}, {"w": "2026-06-29", "total": 1249, "counts": {"P5": 160, "P6": 156, "P4": 192, "P1": 162, "P3": 79, "Unknown": 500}, "pcts": {"P5": 12.8, "P6": 12.5, "P4": 15.4, "P1": 13.0, "P3": 6.3, "Unknown": 40.0}, "ramping": false, "partial": true}], C={"P1": "#3b82f6", "P4": "#8b5cf6", "P5": "#10b981", "P6": "#f59e0b", "P3": "#6b7280", "Unknown": "#d1d5db"}, N={"P1": "P1 Wealth Builder", "P4": "P4 Business Investor", "P5": "P5 Retired / Conservative", "P6": "P6 Young Aspirant", "P3": "P3 Cautious Saver", "Unknown": "Unknown"}, ORDER=["P1", "P4", "P3", "P5", "P6", "Unknown"];
+const labels=W.map(w=>w.w.slice(5)+(w.ramping?' ⚠':'')+(w.partial?' ⚠':''));
+function mkds(mode){return ORDER.map(p=>({label:N[p]||p,data:W.map(w=>mode==='pct'?(w.pcts[p]||0):(w.counts[p]||0)),backgroundColor:C[p],borderWidth:0,stack:'s',_p:p}));}
+let mode='pct';
+const chart=new Chart(document.getElementById('mixChart'),{
+  type:'bar',
+  data:{labels:labels,datasets:mkds('pct')},
+  options:{responsive:true,maintainAspectRatio:false,
+    interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'bottom',labels:{usePointStyle:true,pointStyle:'rectRounded',boxWidth:10,font:{size:11}}},
+      tooltip:{callbacks:{
+        label:(it)=>{const w=W[it.dataIndex];const p=it.dataset._p;return `${N[p]||p}: ${(w.counts[p]||0).toLocaleString()} (${(w.pcts[p]||0).toFixed(1)}%)`;},
+        footer:(items)=>{const w=W[items[0].dataIndex];return 'PAN-verified: '+w.total.toLocaleString();}}}},
+    scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10.5}}},
+      y:{stacked:true,beginAtZero:true,max:100,grid:{color:'#f1f5f9'},ticks:{callback:(v)=>v+'%',font:{size:10.5}}}}}
+});
+function setMode(m){mode=m;chart.data.datasets=mkds(m);
+  chart.options.scales.y.max=(m==='pct')?100:undefined;
+  chart.options.scales.y.ticks.callback=(v)=>(m==='pct')?v+'%':v.toLocaleString();
+  chart.update();
+  document.getElementById('bPct').classList.toggle('on',m==='pct');
+  document.getElementById('bCnt').classList.toggle('on',m==='cnt');}
+</script>
+</body></html>
