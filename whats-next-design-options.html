@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What's Next — Design Options</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#eef1f6;color:#0f172a;padding:0 0 60px;}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 24px;}
+  .head{padding:34px 0 18px;}
+  .head h1{font-size:22px;font-weight:900;letter-spacing:-.5px;}
+  .head p{font-size:13px;color:#64748b;margin-top:6px;}
+  .tabs{display:flex;gap:8px;position:sticky;top:0;background:#eef1f6;padding:14px 0;z-index:10;border-bottom:1px solid #e2e8f0;}
+  .tab{cursor:pointer;background:#fff;border:1px solid #e2e8f0;border-radius:24px;padding:10px 22px;font-size:13px;font-weight:700;color:#475569;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+  .tab.active{background:#1e1b4b;color:#fff;border-color:#1e1b4b;}
+  .tab small{display:block;font-size:10px;font-weight:600;opacity:.7;margin-top:2px;}
+  .panel{display:none;padding:26px 0;}
+  .panel.active{display:block;}
+  .note{font-size:12px;color:#64748b;margin-bottom:16px;padding:10px 14px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>“What's Next” — 3 design options</h1>
+    <p>Same content (Q2 FY27 projection + initiatives by funnel stage). Pick a direction; I'll apply it to the live report.</p>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="show(0)">Option A<small>Stage rows (current)</small></div>
+    <div class="tab" onclick="show(1)">Option B<small>Funnel swimlanes</small></div>
+    <div class="tab" onclick="show(2)">Option C<small>Light editorial</small></div>
+  </div>
+
+  <!-- ============ OPTION A : STAGE ROWS (dark, current) ============ -->
+  <div class="panel active" id="p0">
+    <div class="note"><strong>Option A — Stage rows.</strong> Dark hero; projected-funnel tiles; initiatives in accent-bordered rows, one per funnel stage. Calm, scannable, matches the retro's “Impact by funnel stage” language.</div>
+    <div style="background:linear-gradient(135deg,#0b1020 0%,#1e1b4b 60%,#3b0764 100%);border-radius:20px;padding:34px 30px;color:#fff;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:28px;flex-wrap:wrap;margin-bottom:28px;">
+        <div style="flex:1;min-width:300px;">
+          <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#a5b4fc;margin-bottom:12px;">Q2 FY27 · What's next · Projected</div>
+          <div style="font-size:32px;font-weight:900;line-height:1.1;letter-spacing:-1px;">Same signups,<br><span style="color:#a5b4fc;">2.4× more</span> first-time investors.</div>
+        </div>
+        <div style="display:flex;gap:14px;">
+          <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 16px;"><div style="font-size:26px;font-weight:900;letter-spacing:-1px;">2.5→5.9%</div><div style="font-size:10px;color:rgba(255,255,255,.5);margin-top:3px;text-transform:uppercase;letter-spacing:.5px;">signup → first trade</div></div>
+          <div style="background:rgba(110,231,183,.08);border:1px solid rgba(110,231,183,.22);border-radius:12px;padding:12px 16px;"><div style="font-size:26px;font-weight:900;letter-spacing:-1px;color:#6ee7b7;">+~₹2.5<span style="font-size:14px;"> cr/mo</span></div><div style="font-size:10px;color:rgba(255,255,255,.5);margin-top:3px;text-transform:uppercase;letter-spacing:.5px;">new first-trade GTV</div></div>
+        </div>
+      </div>
+      <div style="font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(165,180,252,.6);margin-bottom:11px;">Projected funnel · signup → first trade</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px;" id="funnelA"></div>
+      <div style="font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(165,180,252,.6);margin-bottom:2px;">Q2 initiatives · by funnel stage &nbsp;<span style="color:rgba(255,255,255,.35);font-weight:600;text-transform:none;letter-spacing:0;">★ = drives the projected targets</span></div>
+      <div id="rowsA"></div>
+    </div>
+  </div>
+
+  <!-- ============ OPTION B : SWIMLANES (dark, columns) ============ -->
+  <div class="panel" id="p1">
+    <div class="note"><strong>Option B — Funnel swimlanes.</strong> The funnel reads left→right as 4 colored lanes; each lane shows its target % and stacks the initiatives that drive it. More of a “pipeline board” feel.</div>
+    <div style="background:linear-gradient(135deg,#0b1020 0%,#1e1b4b 60%,#3b0764 100%);border-radius:20px;padding:34px 30px;color:#fff;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:28px;flex-wrap:wrap;margin-bottom:26px;">
+        <div style="flex:1;min-width:300px;">
+          <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#a5b4fc;margin-bottom:12px;">Q2 FY27 · What's next · Projected</div>
+          <div style="font-size:32px;font-weight:900;line-height:1.1;letter-spacing:-1px;">Same signups,<br><span style="color:#a5b4fc;">2.4× more</span> first-time investors.</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:26px;font-weight:900;">2.5→5.9% <span style="color:#6ee7b7;">· +~₹2.5cr/mo</span></div>
+          <div style="font-size:10.5px;color:rgba(255,255,255,.5);margin-top:4px;">signup → first trade · new first-trade GTV</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;" id="lanesB"></div>
+      <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,.08);">★ = drives the projected target. Targets are signup-anchored, best-week-made-norm; KYC Start 40% is the Homepage 2.0 step-change bet.</div>
+    </div>
+  </div>
+
+  <!-- ============ OPTION C : LIGHT EDITORIAL ============ -->
+  <div class="panel" id="p2">
+    <div class="note"><strong>Option C — Light editorial.</strong> Breaks from the dark panel: white surface, the projection as a slim stepped bar, initiatives as a clean grouped list with colored stage dots. Calmest / most “report”, less visual weight.</div>
+    <div style="background:#fff;border:1px solid #e8ecf3;border-radius:20px;padding:34px 32px;box-shadow:0 2px 10px rgba(15,23,42,.04);">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:26px;">
+        <div>
+          <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#7c3aed;margin-bottom:10px;">Q2 FY27 · What's next · Projected</div>
+          <div style="font-size:30px;font-weight:900;line-height:1.12;letter-spacing:-1px;color:#0f172a;">Same signups, <span style="color:#7c3aed;">2.4× more</span><br>first-time investors.</div>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <div style="background:#f5f3ff;border:1px solid #e9e5ff;border-radius:12px;padding:12px 16px;"><div style="font-size:24px;font-weight:900;color:#1e1b4b;">2.5→5.9%</div><div style="font-size:10px;color:#94a3b8;margin-top:3px;text-transform:uppercase;letter-spacing:.5px;">signup → first trade</div></div>
+          <div style="background:#ecfdf5;border:1px solid #d1fae5;border-radius:12px;padding:12px 16px;"><div style="font-size:24px;font-weight:900;color:#059669;">+~₹2.5<span style="font-size:13px;"> cr/mo</span></div><div style="font-size:10px;color:#94a3b8;margin-top:3px;text-transform:uppercase;letter-spacing:.5px;">new first-trade GTV</div></div>
+        </div>
+      </div>
+      <div style="font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#94a3b8;margin-bottom:11px;">Projected funnel</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:28px;" id="funnelC"></div>
+      <div style="font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#94a3b8;margin-bottom:4px;">Q2 initiatives · by funnel stage &nbsp;<span style="color:#cbd5e1;font-weight:600;text-transform:none;letter-spacing:0;">★ = drives the projected targets</span></div>
+      <div id="listC"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const STAGES=[
+  {label:"Signups",accent:"#3b82f6",target:"",items:[
+    {n:"Onboarding Revamp",d:"Lift Launch → Mobile-Verification %: cut launch-screen + no-phone-hint mobile-entry drop-off",k:false},
+    {n:"Referral",d:"Investor referrals — lower-CAC acquisition",k:false}]},
+  {label:"KYC Start",accent:"#7c3aed",target:"31.5% → 40%",items:[
+    {n:"Homepage 2.0",d:"Trust signals + a concrete reason to act on the only surface between signup and KYC start",k:true}]},
+  {label:"KYC Complete · RTT",accent:"#059669",target:"",items:[
+    {n:"KYC Revamp",d:"Robust DigiLocker-failure backup + consent-based CKYC as primary POI/POA",k:false}]},
+  {label:"RTT → First Trade",accent:"#d97706",target:"25% → 40%",items:[
+    {n:"USTB — Short-Term Bonds",d:"3–9 month tenures remove the tenure anxiety that blocks first trade",k:true},
+    {n:"Blanket Sell — “Sell Anytime”",d:"Guaranteed exit kills the liquidity fear pushing users to FD / debt MF",k:true},
+    {n:"Bond Basket",d:"Curated multi-bond baskets — one-tap diversified investing",k:false},
+    {n:"Personalization",d:"A merchandising service driven by user attributes + behaviour",k:false}]}
+];
+const FUNNEL=[["Signups","100%","from 100%"],["KYC Start","40%","from 31.5%"],["KYC Complete","37%","from 32%"],["RTT → First Trade","40%","from 25%"],["First Trade","5.9%","from 2.5%"]];
+
+// ---- Option A: funnel tiles (dark) ----
+document.getElementById('funnelA').innerHTML = FUNNEL.map((f,i)=>
+  (i>0?'<div style="align-self:center;color:rgba(255,255,255,.3);font-size:20px;flex-shrink:0;">→</div>':'')+
+  `<div style="flex:1;min-width:110px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 11px;text-align:center;">
+     <div style="font-size:9.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:10px;min-height:26px;line-height:1.25;">${f[0]}</div>
+     <div style="font-size:24px;font-weight:900;letter-spacing:-1px;color:#a5b4fc;">${f[1]}</div>
+     <div style="font-size:10.5px;color:rgba(255,255,255,.38);margin-top:3px;">${f[2]}</div></div>`).join('');
+// ---- Option A: stage rows ----
+document.getElementById('rowsA').innerHTML = STAGES.map(st=>{
+  const acc=st.accent;
+  const cards=st.items.map(it=>`
+     <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:11px;padding:12px 14px;">
+       <div style="display:flex;align-items:center;gap:8px;justify-content:space-between;margin-bottom:5px;">
+         <span style="font-size:12.5px;font-weight:800;color:#fff;line-height:1.2;">${it.n}</span>
+         ${it.k?`<span style="font-size:8px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:${acc};background:${acc}1f;border:1px solid ${acc}3d;padding:2px 6px;border-radius:10px;flex-shrink:0;">★ key bet</span>`:''}
+       </div>
+       <div style="font-size:11px;color:rgba(255,255,255,.6);line-height:1.45;">${it.d}</div></div>`).join('');
+  return `<div style="display:flex;gap:18px;align-items:flex-start;padding:16px 0;border-top:1px solid rgba(255,255,255,.08);">
+     <div style="width:140px;flex-shrink:0;border-left:3px solid ${acc};padding-left:13px;">
+       <div style="font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:${acc};line-height:1.3;">${st.label}</div>
+       ${st.target?`<div style="font-size:15px;font-weight:900;color:#fff;letter-spacing:-.5px;margin-top:4px;">${st.target}</div>`:''}</div>
+     <div style="flex:1;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;">${cards}</div></div>`;
+}).join('');
+
+// ---- Option B: swimlanes ----
+document.getElementById('lanesB').innerHTML = STAGES.map(st=>{
+  const acc=st.accent;
+  const cards=st.items.map(it=>`
+     <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-left:3px solid ${acc};border-radius:9px;padding:11px 12px;margin-top:8px;">
+       <div style="font-size:12px;font-weight:800;color:#fff;line-height:1.25;margin-bottom:4px;">${it.n} ${it.k?`<span style="color:${acc};">★</span>`:''}</div>
+       <div style="font-size:10.5px;color:rgba(255,255,255,.6);line-height:1.4;">${it.d}</div></div>`).join('');
+  return `<div style="background:rgba(255,255,255,.02);border-top:3px solid ${acc};border-radius:8px;padding:14px 12px;">
+     <div style="font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:${acc};">${st.label}</div>
+     <div style="font-size:17px;font-weight:900;color:#fff;letter-spacing:-.5px;margin-top:5px;min-height:22px;">${st.target||'&nbsp;'}</div>
+     ${cards}</div>`;
+}).join('');
+
+// ---- Option C: light funnel + list ----
+document.getElementById('funnelC').innerHTML = FUNNEL.map((f,i)=>
+  (i>0?'<div style="align-self:center;color:#cbd5e1;font-size:18px;flex-shrink:0;">→</div>':'')+
+  `<div style="flex:1;min-width:104px;background:#faf9ff;border:1px solid #eee9fb;border-radius:12px;padding:13px 10px;text-align:center;">
+     <div style="font-size:9px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:#94a3b8;margin-bottom:8px;min-height:24px;line-height:1.25;">${f[0]}</div>
+     <div style="font-size:22px;font-weight:900;letter-spacing:-1px;color:#7c3aed;">${f[1]}</div>
+     <div style="font-size:10px;color:#b6bdca;margin-top:2px;">${f[2]}</div></div>`).join('');
+document.getElementById('listC').innerHTML = STAGES.map(st=>{
+  const acc=st.accent;
+  const items=st.items.map(it=>`
+     <div style="padding:11px 0;border-top:1px solid #f1f5f9;">
+       <div style="font-size:13px;font-weight:800;color:#0f172a;">${it.n} ${it.k?`<span style="font-size:8px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:${acc};background:${acc}14;border:1px solid ${acc}30;padding:2px 6px;border-radius:10px;">★ key bet</span>`:''}</div>
+       <div style="font-size:12px;color:#64748b;margin-top:3px;line-height:1.45;">${it.d}</div></div>`).join('');
+  return `<div style="padding:14px 0;">
+     <div style="display:flex;align-items:center;gap:9px;">
+       <span style="width:9px;height:9px;border-radius:50%;background:${acc};flex-shrink:0;"></span>
+       <span style="font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#334155;">${st.label}</span>
+       ${st.target?`<span style="font-size:12px;font-weight:800;color:${acc};margin-left:auto;">${st.target}</span>`:''}</div>
+     <div style="padding-left:18px;">${items}</div></div>`;
+}).join('');
+
+function show(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',j===i));
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('active',j===i));
+}
+</script>
+</body>
+</html>
