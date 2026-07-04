@@ -56,6 +56,30 @@ table.xt td:first-child{color:#94a3b8;width:64px;font-weight:600}
       <div class="hint">P1/P2 = salaried split by device (wealth vs mass). Homemaker/Agricultural un-clubbed from the old P3.</div>
     </div>
   </section>
+  
+  <section class="sect">
+    <h2>Per-persona economics &amp; funnel <span class="muted" style="font-weight:500">· last 8 weeks</span></h2>
+    <p class="s">Value and conversion by persona. Funnel starts at PAN (where persona is known):
+      PAN→KYC-Done and KYC-Done→First-Trade. ATV = GTV ÷ orders; Orders/user = orders ÷ investors.</p>
+    <div class="card" style="overflow-x:auto"><table class="tt">
+      <tr><th>Persona</th><th>Avg ATV</th><th>Total GTV</th><th>Orders/user</th>
+        <th>PAN→KYC-Done</th><th>KYC-Done→1st Trade</th><th>Investors</th></tr>
+      <tr><td class='ml'><span style='color:#3b82f6'>●</span> P1 Wealth Builder</td><td>₹63K</td><td>₹1.23cr</td><td>1.43</td><td>63%</td><td>48%</td><td>136</td></tr><tr><td class='ml'><span style='color:#06b6d4'>●</span> P2 Mass Salaried</td><td>₹71K</td><td>₹6.60cr</td><td>1.68</td><td>64%</td><td>32%</td><td>552</td></tr><tr><td class='ml'><span style='color:#8b5cf6'>●</span> P4 Business</td><td>₹79K</td><td>₹2.46cr</td><td>2.03</td><td>60%</td><td>20%</td><td>153</td></tr><tr><td class='ml'><span style='color:#10b981'>●</span> P5 Retired 55+</td><td>₹77K</td><td>₹5.48cr</td><td>2.45</td><td>37%</td><td>58%</td><td>289</td></tr><tr><td class='ml'><span style='color:#f59e0b'>●</span> P6 Young ≤25</td><td>₹46K</td><td>₹1.11cr</td><td>1.56</td><td>62%</td><td>12%</td><td>153</td></tr><tr><td class='ml'><span style='color:#ec4899'>●</span> Homemaker</td><td>₹92K</td><td>₹2.33cr</td><td>1.86</td><td>62%</td><td>47%</td><td>136</td></tr><tr><td class='ml'><span style='color:#84cc16'>●</span> Agricultural</td><td>₹14K</td><td>₹5.84L</td><td>2.47</td><td>57%</td><td>15%</td><td>17</td></tr>
+    </table></div>
+    <div class="hint">Signup→KYC-Start isn't shown per-persona: persona is unknown at signup (age/occupation
+      unlock later), so it's not attributable pre-PAN.</div>
+  </section>
+  
+  <section class="sect">
+    <h2>How the WoW GTV shift is driven by persona</h2>
+    <p class="s">Each cell = that persona's contribution to the week's change in GTV vs the prior week
+      (green = added GTV, red = subtracted). The last column is the net weekly ΔGTV. This shows which
+      personas moved the money each week — a shift toward large-ticket personas (P5/P4/P1) lifts GTV even
+      at flat volume; a shift toward Micro-ticket P6 dilutes it.</p>
+    <div class="card" style="overflow-x:auto"><table class="tt">
+      <tr><th>Week of</th><th>P1</th><th>P2</th><th>P4</th><th>P5</th><th>P6</th><th>Homemaker</th><th>Agricultural</th><th>Net ΔGTV</th></tr><tr><td class='ml'>05-18</td><td style="color:#059669">+₹4.92L</td><td style="color:#059669">+₹42.30L</td><td style="color:#059669">+₹13.80L</td><td style="color:#059669">+₹15.34L</td><td style="color:#dc2626">−₹1.61L</td><td style="color:#dc2626">−₹44.62L</td><td style="color:#059669">+₹10K</td><td style='font-weight:800;color:#059669'>+₹30.23L</td></tr><tr><td class='ml'>05-25</td><td style="color:#dc2626">−₹5.45L</td><td style="color:#059669">+₹67K</td><td style="color:#dc2626">−₹4.73L</td><td style="color:#dc2626">−₹29.45L</td><td style="color:#dc2626">−₹6.37L</td><td style="color:#059669">+₹7.19L</td><td style="color:#dc2626">−₹2K</td><td style='font-weight:800;color:#dc2626'>−₹38.15L</td></tr><tr><td class='ml'>06-01</td><td style="color:#059669">+₹78K</td><td style="color:#059669">+₹15.32L</td><td style="color:#059669">+₹1.13L</td><td style="color:#059669">+₹51.00L</td><td style="color:#059669">+₹3.14L</td><td style="color:#dc2626">−₹66K</td><td style="color:#059669">+₹129</td><td style='font-weight:800;color:#059669'>+₹70.72L</td></tr><tr><td class='ml'>06-08</td><td style="color:#059669">+₹20.80L</td><td style="color:#dc2626">−₹27.37L</td><td style="color:#059669">+₹20.66L</td><td style="color:#dc2626">−₹27.21L</td><td style="color:#059669">+₹16.05L</td><td style="color:#059669">+₹30.82L</td><td style="color:#059669">+₹88K</td><td style='font-weight:800;color:#059669'>+₹34.64L</td></tr><tr><td class='ml'>06-15</td><td style="color:#dc2626">−₹19.10L</td><td style="color:#059669">+₹5.23L</td><td style="color:#dc2626">−₹5.98L</td><td style="color:#059669">+₹35.78L</td><td style="color:#dc2626">−₹15.91L</td><td style="color:#dc2626">−₹34.59L</td><td style="color:#059669">+₹78K</td><td style='font-weight:800;color:#dc2626'>−₹33.79L</td></tr><tr><td class='ml'>06-22</td><td style="color:#059669">+₹2.77L</td><td style="color:#059669">+₹3.59L</td><td style="color:#dc2626">−₹16.34L</td><td style="color:#059669">+₹25.44L</td><td style="color:#059669">+₹5.94L</td><td style="color:#059669">+₹20.20L</td><td style="color:#dc2626">−₹44K</td><td style='font-weight:800;color:#059669'>+₹41.17L</td></tr><tr><td class='ml'>06-29 ⚠</td><td style="color:#059669">+₹24.56L</td><td style="color:#059669">+₹15.02L</td><td style="color:#059669">+₹13.03L</td><td style="color:#dc2626">−₹41.40L</td><td style="color:#059669">+₹9.91L</td><td style="color:#059669">+₹4.70L</td><td style="color:#059669">+₹11K</td><td style='font-weight:800;color:#059669'>+₹25.93L</td></tr>
+    </table></div>
+  </section>
   <section class="sect">
     <h2>Week-over-week shift (Δpp)</h2>
     <p class="s">Share per persona with change vs previous week. ⚠ rows = ramping/partial.</p>
