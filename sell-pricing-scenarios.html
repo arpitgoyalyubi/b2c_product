@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blanket Sell — Sell Price by Scenario</title>
+<style>
+  :root{
+    --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --bg:#f8fafc; --card:#fff;
+    --accent:#2563eb; --accent-soft:#eff6ff; --green:#059669; --green-soft:#ecfdf5;
+    --red:#dc2626; --red-soft:#fef2f2; --amber:#b45309; --amber-soft:#fffbeb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+  header{background:linear-gradient(135deg,#1e293b,#0f172a);color:#fff;padding:48px 0 40px}
+  header .wrap{max-width:960px}
+  .eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:12px;font-weight:600;color:#93c5fd;margin:0 0 10px}
+  h1{margin:0 0 12px;font-size:30px;line-height:1.2;font-weight:700}
+  header p{margin:0;color:#cbd5e1;font-size:15px;max-width:680px}
+  .bond{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+  .chip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:8px;
+    padding:6px 12px;font-size:13px;color:#e2e8f0}
+  .chip b{color:#fff;font-weight:600}
+  section{padding:36px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:21px;margin:0 0 6px;font-weight:700}
+  h2 .n{color:var(--accent);font-weight:700;margin-right:8px}
+  .sub{color:var(--muted);margin:0 0 20px;font-size:14.5px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin:16px 0;
+    box-shadow:0 1px 2px rgba(15,23,42,.04)}
+  .formula{background:#0f172a;color:#e2e8f0;border-radius:12px;padding:18px 20px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:13.5px;overflow-x:auto;line-height:1.7}
+  .formula .c{color:#7dd3fc}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:18px 0}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .stat .lbl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  .stat .val{font-size:22px;font-weight:700;margin-top:4px}
+  .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:16px 0}
+  table{border-collapse:collapse;width:100%;font-size:14px;min-width:640px}
+  th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+  thead th{background:#f1f5f9;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#475569;font-weight:600}
+  tbody tr:last-child td{border-bottom:none}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  .price{font-weight:700}
+  .pos{color:var(--green)} .neg{color:var(--red)}
+  .tag{display:inline-block;font-size:11px;font-weight:600;border-radius:5px;padding:2px 7px}
+  .tag.blue{background:var(--accent-soft);color:var(--accent)}
+  .callout{border-radius:12px;padding:16px 18px;margin:16px 0;font-size:14.5px;border:1px solid}
+  .callout.amber{background:var(--amber-soft);border-color:#fde68a;color:#78350f}
+  .callout.blue{background:var(--accent-soft);border-color:#bfdbfe;color:#1e3a8a}
+  .callout.green{background:var(--green-soft);border-color:#a7f3d0;color:#065f46}
+  .callout b{font-weight:700}
+  ol.steps{counter-reset:s;list-style:none;padding:0;margin:16px 0}
+  ol.steps li{position:relative;padding:10px 0 10px 46px;border-bottom:1px dashed var(--line)}
+  ol.steps li:last-child{border-bottom:none}
+  ol.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:9px;
+    width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;
+    font-size:14px;display:flex;align-items:center;justify-content:center}
+  ol.steps b{font-weight:600}
+  .flip{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;margin:16px 0}
+  .flip .box{border:1px solid var(--line);padding:16px;background:var(--card)}
+  .flip .box:first-child{border-radius:12px 0 0 12px;border-right:none}
+  .flip .box:last-child{border-radius:0 12px 12px 0;border-left:none}
+  .flip .arrow{display:flex;align-items:center;justify-content:center;background:#0f172a;color:#fff;
+    font-weight:700;padding:0 18px;font-size:13px}
+  .flip .t{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  .flip .big{font-size:24px;font-weight:700;margin:6px 0 2px}
+  .flip .small{font-size:13px;color:var(--muted)}
+  footer{padding:30px 0 50px;color:var(--muted);font-size:13px}
+  code{background:#f1f5f9;border-radius:5px;padding:1px 6px;font-size:13px;font-family:ui-monospace,Menlo,monospace}
+  .miss{color:var(--muted);font-size:12.5px}
+  @media(max-width:620px){h1{font-size:24px}.flip{grid-template-columns:1fr}.flip .box,.flip .box:first-child,.flip .box:last-child{border-radius:12px;border:1px solid var(--line);margin-bottom:0}.flip .arrow{border-radius:12px;padding:10px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <p class="eyebrow">Blanket Sell · Pricing Model</p>
+    <h1>Sell Price per Unit — by Scenario</h1>
+    <p>How Aspero's buyback (sell) price is built for a real bond, and how it changes with sell date, the record-date rule, and the reporting &amp; settlement cutoff. Every figure below is reproduced from the <em>sell_pricing_with_irr.xlsx</em> engine and matches it to the paise.</p>
+    <div class="bond">
+      <span class="chip"><b>Akara Capital Pvt Ltd</b></span>
+      <span class="chip">ISIN <b>INE08XP07431</b></span>
+      <span class="chip">Face <b>₹10,000</b></span>
+      <span class="chip"><b>12%</b> p.a. monthly</span>
+      <span class="chip">Matures <b>11-Jun-2027</b></span>
+      <span class="chip">Rating <b>BBB</b></span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <h2><span class="n">1</span>How the sell price is built</h2>
+  <p class="sub">The sell price is the present value, on the settlement date, of every future cashflow Aspero will collect after buying the units back — discounted at the buyback rate.</p>
+  <div class="formula">
+Sell Price / unit = &nbsp;Σ [ CF<span class="c">ₜ</span> × 1 / (1 + r)^(days<span class="c">ₜ</span> / 365) ]&nbsp;&nbsp;<span class="c">— for every cashflow Aspero receives</span>
+
+r &nbsp;&nbsp;&nbsp;= buyback rate = <span class="c">Purchase YTM + spread</span> = 15.30% + 0.75% = <b>16.05%</b>
+days<span class="c">ₜ</span> = calendar days from <b>settlement date</b> to each pay date &nbsp;(Actual/365)
+CF<span class="c">ₜ</span> &nbsp;= each remaining coupon (₹92.05–₹101.92) + ₹10,000 principal at maturity
+  </div>
+  <div class="grid">
+    <div class="stat"><div class="lbl">Purchase YTM</div><div class="val">15.30%</div></div>
+    <div class="stat"><div class="lbl">Spread (band &gt;12%, ≤6mo)</div><div class="val">+0.75%</div></div>
+    <div class="stat"><div class="lbl">Buyback rate (r)</div><div class="val">16.05%</div></div>
+    <div class="stat"><div class="lbl">Purchase price / unit</div><div class="val">₹9,770.88</div></div>
+    <div class="stat"><div class="lbl">Price floor (85% face)</div><div class="val">₹8,500</div></div>
+  </div>
+  <div class="callout green"><b>The price the user sees is anchored to the settlement date — not the placement date.</b> When the user is on the screen the bond hasn't settled yet, so the quote is <b>indicative</b>: it is PV'd to the <em>projected</em> settlement date (T+1, or T+2 if placed after cutoff / on a holiday). The final executed price is struck on the actual settlement date.</div>
+</section>
+
+<section>
+  <h2><span class="n">2</span>Three rules baked into every price</h2>
+  <ol class="steps">
+    <li><b>Discount each dated cashflow individually.</b> Coupons are unequal (₹92.05–₹101.92) because of Actual/365 — the annuity shortcut doesn't apply.</li>
+    <li><b>The PV is the dirty price — do not add accrued interest again.</b> Accrued interest is already inside the discounted next coupon. Adding it on top double-counts. (Accrued is shown below as info only.)</li>
+    <li><b>Record-date filter.</b> Record date = 15 calendar days before each pay date. If <code>settlement ≥ record date</code>, the user is on-record and keeps that coupon, so it is <b>removed</b> from Aspero's PV. Miss this and the user is paid twice.</li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="n">3</span>Reporting &amp; settlement — deriving the anchor date</h2>
+  <p class="sub">Placement time relative to the 3:00 PM market cutoff decides the settlement date, which then drives the whole PV.</p>
+  <div class="tblwrap">
+    <table>
+      <thead><tr><th>Order placed</th><th>Reported to exchange</th><th>Settlement</th></tr></thead>
+      <tbody>
+        <tr><td>Working day, <b>before 3:00 PM</b></td><td>Same day (by 5 PM)</td><td><b>T+1</b> — next working day</td></tr>
+        <tr><td>Working day <b>after 3:00 PM</b>, or holiday / non-working day</td><td>Next working day</td><td>T+1 from reporting ≈ <b>T+2</b> from placement</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="miss">"T+1" means the next <em>working</em> day, so weekends and exchange holidays push settlement out further.</p>
+</section>
+
+<section>
+  <h2><span class="n">4</span>Sell price by settlement date</h2>
+  <p class="sub">Same bond, same buyback rate (16.05%), priced at six different settlement dates. As maturity nears, fewer cashflows are discounted at the high rate, so the price pulls toward par.</p>
+  <div class="tblwrap">
+    <table>
+      <thead><tr>
+        <th>#</th><th>Scenario</th><th>Settlement date</th><th class="num">Cashflows to Aspero</th>
+        <th class="num">Sell price / unit</th><th class="num">P&amp;L vs purchase*</th><th class="num">User realized YTM</th>
+      </tr></thead>
+      <tbody id="tbodyA"></tbody>
+    </table>
+  </div>
+  <p class="miss">*Price-only P&amp;L vs the ₹9,770.88 purchase price. Coupons already received during the holding period are extra cash on top. Accrued interest (info only): S1 ₹16.44 · S2 ₹101.92 · S3 ₹13.15 · S4a ₹46.03 · S4b ₹55.89 · S5 ₹101.92.</p>
+  <div class="callout blue"><b>Pull-to-par.</b> S1 (earliest) quotes ₹9,723 and S5 (near maturity) quotes ₹9,951 — the price climbs toward ₹10,000 as the discounting window shrinks. Selling at 30 days realizes only <b>6.56%</b> vs the 15.30% purchase YTM, because the user exits before the pull-to-par gain and absorbs the spread.</div>
+</section>
+
+<section>
+  <h2><span class="n">5</span>The record-date × cutoff edge case</h2>
+  <p class="sub">The 11-Sep-2026 coupon (₹101.92) has a record date of 27-Aug-2026. Because crossing the 3 PM cutoff shifts settlement by a day, two orders placed ~1 hour apart can land on opposite sides of that record date.</p>
+  <div class="flip">
+    <div class="box">
+      <div class="t">Placed 25-Aug · 2:00 PM</div>
+      <div class="big">₹9,828.13</div>
+      <div class="small">Settles 26-Aug (before record) → Aspero collects the Sep coupon → <b>11 cashflows</b></div>
+    </div>
+    <div class="arrow">1 hour<br>later<br>−₹97</div>
+    <div class="box">
+      <div class="t">Placed 25-Aug · 3:05 PM</div>
+      <div class="big">₹9,730.84</div>
+      <div class="small">Settles 27-Aug (on record) → user keeps the Sep coupon → <b>10 cashflows</b></div>
+    </div>
+  </div>
+  <div class="tblwrap">
+    <table>
+      <thead><tr>
+        <th>#</th><th>Placement</th><th>Reported</th><th>Settlement</th>
+        <th class="num">Cashflows to Aspero</th><th class="num">Sell price / unit</th>
+      </tr></thead>
+      <tbody id="tbodyB"></tbody>
+    </table>
+  </div>
+  <div class="callout amber"><b>Why the price drops when it settles later here:</b> the user keeps a ₹101.92 coupon that leaves Aspero's PV — a bigger effect than the small discount-clock gain from settling one day later. The engine must exclude any coupon whose record date the settlement has reached, or the coupon gets paid twice.</div>
+</section>
+
+<footer>
+  <div class="wrap" style="padding:0">
+    Modelling/engineering illustration of the Blanket Sell pricing logic on ISIN INE08XP07431. All figures reproduced from <em>sell_pricing_with_irr.xlsx</em> (buyback rate 16.05%, Actual/365, floor ₹8,500). Not investment advice. Prices depend on the bond's actual cashflow schedule and the user's purchase YTM.
+  </div>
+</footer>
+
+</div>
+
+<script>
+const DATA = {"rowsA": [{"id": "S1", "desc": "Earliest (30 days held)", "settle": "16-May-2026", "cf": 14, "price": 9723.31, "accrued": 16.44, "pnl": -47.57, "ytm": 6.56}, {"id": "S2", "desc": "On a coupon date", "settle": "11-Aug-2026", "cf": 11, "price": 9768.19, "accrued": 101.92, "pnl": -2.69, "ytm": 13.5}, {"id": "S3", "desc": "Mid-period", "settle": "15-Nov-2026", "cf": 8, "price": 9851.41, "accrued": 13.15, "pnl": 80.53, "ytm": 14.62}, {"id": "S4a", "desc": "Just before a record date", "settle": "25-Aug-2026", "cf": 11, "price": 9824.12, "accrued": 46.03, "pnl": 53.24, "ytm": 13.77}, {"id": "S4b", "desc": "Just after a record date", "settle": "28-Aug-2026", "cf": 10, "price": 9734.81, "accrued": 55.89, "pnl": -36.07, "ytm": 13.82}, {"id": "S5", "desc": "Near maturity (pull-to-par)", "settle": "11-Apr-2027", "cf": 3, "price": 9951.15, "accrued": 101.92, "pnl": 180.27, "ytm": 15.18}], "rowsB": [{"id": "P1", "desc": "Placed 25-Aug, 2:00 PM (before 3 PM cutoff)", "placed": "25-Aug", "report": "25-Aug", "settle": "26-Aug-2026 (Wed)", "cf": 11, "price": 9828.13}, {"id": "P2", "desc": "Placed 25-Aug, 3:05 PM (after cutoff)", "placed": "25-Aug", "report": "26-Aug", "settle": "27-Aug-2026 (Thu)", "cf": 10, "price": 9730.84}, {"id": "P3", "desc": "Placed Fri 28-Aug (before cutoff, weekend after)", "placed": "28-Aug", "report": "28-Aug", "settle": "31-Aug-2026 (Mon)", "cf": 10, "price": 9746.73}]};
+function money(x){return '₹'+x.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});}
+const tbA=document.getElementById('tbodyA');
+DATA.rowsA.forEach(r=>{
+  const pnlCls = r.pnl>=0?'pos':'neg';
+  const pnlTxt = (r.pnl>=0?'+':'')+money(r.pnl).replace('₹','₹');
+  tbA.insertAdjacentHTML('beforeend',
+    `<tr><td><span class="tag blue">${r.id}</span></td><td>${r.desc}</td><td>${r.settle}</td>
+     <td class="num">${r.cf}</td><td class="num price">${money(r.price)}</td>
+     <td class="num ${pnlCls}">${pnlTxt}</td><td class="num">${r.ytm.toFixed(2)}%</td></tr>`);
+});
+const tbB=document.getElementById('tbodyB');
+DATA.rowsB.forEach(r=>{
+  tbB.insertAdjacentHTML('beforeend',
+    `<tr><td><span class="tag blue">${r.id}</span></td><td>${r.desc}</td><td>${r.report}</td>
+     <td>${r.settle}</td><td class="num">${r.cf}</td><td class="num price">${money(r.price)}</td></tr>`);
+});
+</script>
+</body>
+</html>
