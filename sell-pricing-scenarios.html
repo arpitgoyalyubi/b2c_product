@@ -171,7 +171,7 @@
   <div class="formula">PV of one payment = Amount ÷ (1 + r)^(days ÷ 365)&nbsp;&nbsp;<span class="c">— r = 16.05%, days = settlement → pay date, Actual/365</span>
 
 Sell Price / unit = Σ PV&nbsp;&nbsp;<span class="c">over every payment Aspero receives (settlement &lt; record date)</span></div>
-  <p class="sub" style="margin-top:18px"><b>Worked example — user buys 16-Apr-2026, sells at the earliest eligible day, settling 16-May-2026:</b></p>
+  <p class="sub" style="margin-top:18px"><b>Approach A — PV of each payment.</b> Worked example — user buys 16-Apr-2026, sells at the earliest eligible day, settling 16-May-2026:</p>
   <div class="tblwrap"><table>
     <thead><tr><th>#</th><th>Pay date</th><th>Type</th><th class="num">Amount</th><th>Record date</th><th class="num">Days away</th><th class="num">Disc. factor</th><th class="num">PV / unit</th><th>Status</th></tr></thead>
     <tbody>
@@ -198,6 +198,20 @@ Sell Price / unit = Σ PV&nbsp;&nbsp;<span class="c">over every payment Aspero r
     </tbody>
   </table></div>
   <div class="callout blue"><b>Reading the table:</b> rows 1–5 are ₹0 — those coupons already passed their record date by 16-May, so <b>they are the user's own coupons</b> (e.g. the 11-May ₹98.63 was paid to the user before selling). They sit outside the sell price and are added back as coupon income in the realized-return view. The principal (#18) is ₹8,526 of the ₹9,723 total — the discounted ₹10,000.</div>
+
+  <p class="sub" style="margin-top:22px"><b>Approach B — the same price, shown as Clean + Accrued.</b> Deal sheets quote a bond as a <em>clean</em> price plus <em>accrued interest</em>. That is the identical dirty price, just split in two — you never add accrued on top of the PV (that would double-count).</p>
+  <div class="formula">Accrued = days since last coupon × (Face × coupon% ÷ 365)
+        = 5 days (11-May → 16-May) × (10,000 × 12% ÷ 365 = ₹3.29/day) = <b>₹16.44</b>
+Clean   = Dirty − Accrued = 9,723.31 − 16.44 = <b>₹9,706.87</b>
+Dirty   = Clean + Accrued = 9,706.87 + 16.44 = <b>₹9,723.31</b>&nbsp;&nbsp;<span class="c">← same number as Approach A</span></div>
+  <div class="tblwrap"><table style="min-width:0">
+    <thead><tr><th>Method</th><th class="num">Components</th><th class="num">Sell price / unit</th></tr></thead>
+    <tbody>
+      <tr><td>Approach A — Σ PV of cashflows</td><td class="num">sum of the 14 PV lines above</td><td class="num price">₹9,723.31</td></tr>
+      <tr><td>Approach B — Clean + Accrued</td><td class="num">9,706.87 + 16.44</td><td class="num price">₹9,723.31</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout green"><b>Both land on ₹9,723.31.</b> The PV of the cashflows already <em>is</em> the dirty price = the consideration; Clean + Accrued is just how a deal sheet / tax statement decomposes that same number. Charges &amp; stamp (₹0 seller-side) apply on top to give total consideration.</div>
 </section>
 
 <section>
