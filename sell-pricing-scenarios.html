@@ -35,6 +35,10 @@
   .price{font-weight:700}
   .pos{color:var(--green)} .neg{color:var(--red)}
   tr.out td{color:#94a3b8;background:#fafbfc}
+  tr.hl td{background:var(--accent-soft);font-weight:600;color:#1e3a8a}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+  .twocol h3{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:#475569;margin:0 0 8px}
+  @media(max-width:680px){.twocol{grid-template-columns:1fr}}
   tr.total td{background:#0f172a;color:#fff;font-weight:700;border-top:2px solid #0f172a}
   tr.total td .price{color:#fff}
   .tag{display:inline-block;font-size:11px;font-weight:600;border-radius:5px;padding:2px 7px}
@@ -81,14 +85,7 @@
 
 <section>
   <h2>The idea in one line</h2>
-  <p class="sub">When a user sells, Aspero buys the bond back and pays the <b>present value today</b> of every future payment it will collect — each future coupon and the principal, shrunk to what it is worth today, then added up.</p>
-  <div class="grid">
-    <div class="stat"><div class="lbl">Purchase YTM</div><div class="val">15.30%</div></div>
-    <div class="stat"><div class="lbl">Spread (band &gt;12%, ≤6mo)</div><div class="val">+0.75%</div></div>
-    <div class="stat"><div class="lbl">Buyback rate (r)</div><div class="val">16.05%</div></div>
-    <div class="stat"><div class="lbl">Purchase price / unit</div><div class="val">₹9,770.88</div></div>
-    <div class="stat"><div class="lbl">Price floor (85% face)</div><div class="val">₹8,500</div></div>
-  </div>
+  <p class="sub">When a user sells, Aspero buys the bond back and pays the <b>present value today</b> of every future payment it will collect — each future coupon and the principal, shrunk to what it is worth today, then added up. The rate used to shrink them (the buyback rate) is explained next; the specific numbers for this bond appear once that logic is set.</p>
   <div class="callout green"><b>The price is anchored to the settlement date, not the placement date.</b> On screen the quote is <b>indicative</b> — PV'd to the projected settlement date (T+1, or T+2 if placed after the 3 PM cutoff / on a holiday). The final price is struck on the actual settlement date.</div>
 </section>
 
@@ -110,6 +107,45 @@
       <tr><td>Rating</td><td>BBB</td><td>credit quality</td></tr>
     </tbody>
   </table></div>
+</section>
+
+<section>
+  <h2>How the buyback (discount) rate is set</h2>
+  <p class="sub">The sell price discounts future cashflows at a <b>buyback rate</b>. That rate is the user's own <b>purchase YTM</b> plus a small <b>spread</b> that compensates Aspero for warehousing risk. The spread is banded on the purchase YTM, the bond's residual tenure at purchase, and how long the user has held.</p>
+  <div class="formula">Buyback rate (r) = Purchase YTM + spread&nbsp;&nbsp;<span class="c">— spread from the tier tables below</span></div>
+  <div class="twocol">
+    <div>
+      <h3>If residual tenure ≤ 24 months</h3>
+      <div class="tblwrap" style="margin:0"><table style="min-width:0">
+        <thead><tr><th>Purchase YTM band</th><th class="num">Sold ≤ 6 mo</th><th class="num">Sold &gt; 6 mo</th></tr></thead>
+        <tbody>
+          <tr><td>≤ 10%</td><td class="num">+0.25%</td><td class="num">+0</td></tr>
+          <tr><td>&gt;10% &amp; ≤12%</td><td class="num">+0.50%</td><td class="num">+0</td></tr>
+          <tr class="hl"><td>&gt; 12%</td><td class="num">+0.75%</td><td class="num">+0</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div>
+      <h3>If residual tenure &gt; 24 months</h3>
+      <div class="tblwrap" style="margin:0"><table style="min-width:0">
+        <thead><tr><th>Purchase YTM band</th><th class="num">Sold ≤ 12 mo</th><th class="num">Sold &gt; 12 mo</th></tr></thead>
+        <tbody>
+          <tr><td>≤ 10%</td><td class="num">+0.25%</td><td class="num">+0</td></tr>
+          <tr><td>&gt;10% &amp; ≤12%</td><td class="num">+0.50%</td><td class="num">+0</td></tr>
+          <tr><td>&gt; 12%</td><td class="num">+0.75%</td><td class="num">+0</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+  <div class="callout blue"><b>This bond lands on the highlighted row.</b> Bought 16-Apr-2026, matures 11-Jun-2027 → residual tenure ≈ <b>14 months (≤ 24)</b>. Sold within 30 days → <b>≤ 6 months held</b>. Purchase YTM <b>15.30% (&gt; 12%)</b> → spread <b>+0.75%</b>. So <b>buyback rate = 15.30% + 0.75% = 16.05%</b>.</div>
+  <p class="sub" style="margin-top:18px"><b>This bond's numbers</b> (used in every calculation that follows):</p>
+  <div class="grid">
+    <div class="stat"><div class="lbl">Purchase YTM</div><div class="val">15.30%</div></div>
+    <div class="stat"><div class="lbl">Spread (this bond's tier)</div><div class="val">+0.75%</div></div>
+    <div class="stat"><div class="lbl">Buyback rate (r)</div><div class="val">16.05%</div></div>
+    <div class="stat"><div class="lbl">Purchase price / unit</div><div class="val">₹9,770.88</div></div>
+    <div class="stat"><div class="lbl">Price floor (85% face)</div><div class="val">₹8,500</div></div>
+  </div>
 </section>
 
 <section>
