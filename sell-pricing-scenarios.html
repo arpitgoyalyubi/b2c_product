@@ -215,6 +215,34 @@ Dirty   = Clean + Accrued = 9,706.87 + 16.44 = <b>₹9,723.31</b>&nbsp;&nbsp;<sp
 </section>
 
 <section>
+  <h2>Deal-sheet view — reuse the buy sheet for a sell</h2>
+  <p class="sub">The sell price uses the <em>same</em> deal-sheet template as the buy (NPV → Accrued → Clean → Dirty → Consideration → Total). To turn a buy sheet into a sell quote you change only <b>two inputs</b> — the YTM and the Trade/Settlement date — and every other field recomputes. This is Approach B laid out in the familiar deal-sheet form.</p>
+  <div class="formula">Change 1:  YTM        → Buyback rate = Purchase YTM + spread   (15.30% → 16.05%)
+Change 2:  Trade Date → Sell settlement date                   (16-Apr-2026 → 16-May-2026)</div>
+  <div class="tblwrap"><table style="min-width:0">
+    <thead><tr><th>Field</th><th class="num">BUY (as purchased)</th><th class="num">SELL (buyback)</th></tr></thead>
+    <tbody>
+      <tr class="hl"><td>YTM</td><td class="num">15.30%</td><td class="num">16.05%</td></tr>
+      <tr class="hl"><td>Trade / Settlement date</td><td class="num">16-Apr-2026</td><td class="num">16-May-2026</td></tr>
+      <tr><td>Cashflows counted</td><td class="num">15</td><td class="num">14</td></tr>
+      <tr><td>NPV</td><td class="num">9,770.88</td><td class="num">9,723.31</td></tr>
+      <tr><td>Accrued interest</td><td class="num">16.44</td><td class="num">16.44</td></tr>
+      <tr><td>Clean price</td><td class="num">9,754.44</td><td class="num">9,706.87</td></tr>
+      <tr><td>Dirty price</td><td class="num">9,770.88</td><td class="num">9,723.31</td></tr>
+      <tr><td>Consideration</td><td class="num">9,770.88</td><td class="num">9,723.31</td></tr>
+      <tr><td>Stamp duty</td><td class="num">0</td><td class="num">0</td></tr>
+      <tr class="total"><td>Total consideration</td><td class="num price">₹9,770.88</td><td class="num price">₹9,723.31</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout amber"><b>Changing the YTM alone is not enough.</b> If you switch YTM to 16.05% but leave the Trade date at 16-Apr, the sheet returns <b>₹9,702.71</b> — wrong. The Trade/Settlement date drives three things: which coupons still count (record-date filter — the sell drops one coupon, 15 → 14), the discount clock (days to each cashflow), and the accrued interest. You must change <b>both</b> inputs.</div>
+  <p class="sub" style="margin-top:18px"><b>Accrued-interest drill-down (the only genuinely new calc in Approach B):</b></p>
+  <div class="formula">Sell accrued = days since last coupon × (Face × coupon% ÷ 365)
+             = 5 days (11-May → 16-May) × (10,000 × 12% ÷ 365 = ₹3.29/day)  =  <b>₹16.44</b>
+Clean               = Dirty − Accrued = 9,723.31 − 16.44 = <b>₹9,706.87</b>
+Total consideration = Clean + Accrued − charges (₹0 seller-side) = <b>₹9,723.31</b></div>
+</section>
+
+<section>
   <h2>Drill-down C — the same build under different scenarios</h2>
   <p class="sub">Change the settlement date and two things move: how many payments Aspero still receives (the record-date filter) and how hard each is discounted. Note the record-date pair — one day flips a whole coupon.</p>
   <div class="tblwrap"><table style="min-width:600px">
