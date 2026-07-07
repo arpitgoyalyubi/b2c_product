@@ -271,8 +271,27 @@ Blended price/unit = 2,93,930.39 ÷ 30 units    = <b>₹9,797.68</b></div>
       <tr><td>(3) Cashflows</td><td class="num">already in the sheet (12 in scope) — not recomputed</td></tr>
     </tbody>
   </table></div>
-  <div class="formula">Implied YTM = XIRR( −9,797.68 @ 16-Jul-2026 ,  the 12 in-scope cashflows )  =  <b>15.6136%</b>
-Verify (forward): PV of the 12 cashflows @ 15.6136% = ₹9,797.68&nbsp;&nbsp;<span class="c">✓ reconciles</span></div>
+  <p class="sub" style="margin-top:14px">The worksheet builds this XIRR stream. You only add the <b>highlighted row</b> — the trade date and the blended price; the 12 cashflows below are already generated from the bond master:</p>
+  <div class="tblwrap"><table style="min-width:520px">
+    <thead><tr><th>Date</th><th class="num">Amount</th><th class="num">Days from settle</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr class="hl"><td>16-Jul-2026</td><td class="num">−9,797.68</td><td class="num">0</td><td>day-0 outflow = blended DIRTY price &nbsp;<b>← you enter this + the date</b></td></tr>
+      <tr><td>11-Aug-2026</td><td class="num">+101.92</td><td class="num">26</td><td></td></tr>
+      <tr><td>11-Sep-2026</td><td class="num">+101.92</td><td class="num">57</td><td></td></tr>
+      <tr><td>11-Oct-2026</td><td class="num">+98.63</td><td class="num">87</td><td></td></tr>
+      <tr><td>11-Nov-2026</td><td class="num">+101.92</td><td class="num">118</td><td></td></tr>
+      <tr><td>11-Dec-2026</td><td class="num">+98.63</td><td class="num">148</td><td></td></tr>
+      <tr><td>11-Jan-2027</td><td class="num">+101.92</td><td class="num">179</td><td></td></tr>
+      <tr><td>11-Feb-2027</td><td class="num">+101.92</td><td class="num">210</td><td></td></tr>
+      <tr><td>11-Mar-2027</td><td class="num">+92.05</td><td class="num">238</td><td></td></tr>
+      <tr><td>11-Apr-2027</td><td class="num">+101.92</td><td class="num">269</td><td></td></tr>
+      <tr><td>11-May-2027</td><td class="num">+98.63</td><td class="num">299</td><td></td></tr>
+      <tr><td>11-Jun-2027</td><td class="num">+10,000.00</td><td class="num">330</td><td>principal</td></tr>
+      <tr><td>11-Jun-2027</td><td class="num">+101.92</td><td class="num">330</td><td>final coupon</td></tr>
+    </tbody>
+  </table></div>
+  <div class="formula">Implied YTM = XIRR( amounts , dates )  =  <b>15.6136%</b>&nbsp;&nbsp;<span class="c">— the rate where the stream's NPV = 0</span>
+Verify (forward): PV of the 12 cashflows @ 15.6136% = ₹9,797.68&nbsp;&nbsp;<span class="c">✓ reconciles to the blended price</span></div>
   <div class="callout blue"><b>Why it's automatic:</b> the cashflow schedule is already generated from the bond master; entering the trade date auto-filters it to the in-scope set (record date after settlement); one <code>XIRR</code> cell — or Goal Seek on the YTM cell — returns the yield. You enter <b>blended price + settlement date → blended YTM</b>. No cashflows to recompute.</div>
 
   <p class="sub"><b>Watch-outs</b></p>
