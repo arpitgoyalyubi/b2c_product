@@ -203,6 +203,81 @@
   <h2><span class="num">3</span>Proposed end-to-end UX flow</h2>
   <p class="lead">Three tiers of assurance: authenticated-source (CKYC) → authenticated-source (DigiLocker) → manual upload with a compensating Video IPV.</p>
 
+  <div class="card pad" style="overflow-x:auto">
+    <svg viewBox="0 0 780 892" role="img" aria-label="CKYC-primary KYC decision flow" style="width:100%;min-width:560px;height:auto;display:block;margin:0 auto;font-family:inherit">
+      <defs>
+        <marker id="ah" markerWidth="9" markerHeight="9" refX="6.6" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 Z" fill="#64748b"/></marker>
+        <marker id="ahg" markerWidth="9" markerHeight="9" refX="6.6" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 Z" fill="#059669"/></marker>
+      </defs>
+
+      <!-- edges -->
+      <line x1="290" y1="66" x2="290" y2="92" stroke="#64748b" stroke-width="2" marker-end="url(#ah)"/>
+      <line x1="290" y1="192" x2="290" y2="210" stroke="#64748b" stroke-width="2" marker-end="url(#ah)"/>
+      <line x1="290" y1="324" x2="290" y2="348" stroke="#64748b" stroke-width="2" marker-end="url(#ah)"/>
+      <line x1="290" y1="424" x2="290" y2="446" stroke="#64748b" stroke-width="2" marker-end="url(#ah)"/>
+      <line x1="290" y1="552" x2="290" y2="576" stroke="#64748b" stroke-width="2" marker-end="url(#ah)"/>
+
+      <!-- success rail (green) -->
+      <polyline points="440,268 700,268" fill="none" stroke="#059669" stroke-width="2"/>
+      <polyline points="430,500 700,500" fill="none" stroke="#059669" stroke-width="2"/>
+      <polyline points="290,684 290,720 700,720" fill="none" stroke="#059669" stroke-width="2"/>
+      <line x1="700" y1="268" x2="700" y2="806" stroke="#059669" stroke-width="2" marker-end="url(#ahg)"/>
+      <circle cx="700" cy="268" r="3.2" fill="#059669"/>
+      <circle cx="700" cy="500" r="3.2" fill="#059669"/>
+      <circle cx="700" cy="720" r="3.2" fill="#059669"/>
+
+      <!-- Start -->
+      <rect x="205" y="26" width="170" height="40" rx="20" fill="#0f172a"/>
+      <text x="290" y="51" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">KYC Start</text>
+
+      <!-- Step A -->
+      <rect x="90" y="94" width="400" height="98" rx="12" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+      <text x="110" y="120" font-size="13" font-weight="800" fill="#065f46">STEP A · CKYC SEARCH — primary (~70–80%)</text>
+      <text x="110" y="142" font-size="11.5" fill="#334155">• Auto-fires on the mobile we already have — no manual entry</text>
+      <text x="110" y="160" font-size="11.5" fill="#334155">• Consent tap → OTP auto-read → download record + photo</text>
+      <text x="110" y="178" font-size="11.5" fill="#334155">• Live selfie → face-match against CKYC photo</text>
+
+      <!-- Decision 1 -->
+      <polygon points="290,210 440,268 290,326 140,268" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+      <text x="290" y="263" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f172a">CKYC found, current</text>
+      <text x="290" y="279" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f172a">&amp; face-match OK?</text>
+      <text x="452" y="260" font-size="11" font-weight="700" fill="#059669">YES → skip DigiLocker</text>
+      <text x="300" y="344" font-size="11" font-weight="700" fill="#64748b">NO</text>
+
+      <!-- Step B -->
+      <rect x="90" y="350" width="400" height="74" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
+      <text x="110" y="376" font-size="13" font-weight="800" fill="#3730a3">STEP B · DIGILOCKER — fallback (~20–30%)</text>
+      <text x="110" y="398" font-size="11.5" fill="#334155">• Existing Hyperverge / DigiLocker flow</text>
+      <text x="110" y="416" font-size="11.5" fill="#334155">• Fetch Aadhaar (POA) + PAN (POI)</text>
+
+      <!-- Decision 2 -->
+      <polygon points="290,446 430,500 290,554 150,500" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+      <text x="290" y="504" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f172a">DigiLocker success?</text>
+      <text x="443" y="492" font-size="11" font-weight="700" fill="#059669">YES</text>
+      <text x="300" y="572" font-size="11" font-weight="700" fill="#64748b">NO</text>
+
+      <!-- Step C -->
+      <rect x="90" y="578" width="400" height="106" rx="12" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/>
+      <text x="110" y="604" font-size="13" font-weight="800" fill="#92400e">STEP C · MANUAL UPLOAD + VIDEO IPV — safety net</text>
+      <text x="110" y="626" font-size="11.5" fill="#334155">• POA = Aadhaar only · POI = PAN only</text>
+      <text x="110" y="644" font-size="11.5" fill="#334155">• OCR → validate against Income-Tax (ITR)</text>
+      <text x="110" y="662" font-size="11.5" fill="#334155">• Video IPV replaces the selfie (this cohort only)</text>
+      <text x="452" y="712" font-size="11" font-weight="700" fill="#059669">POI / POA captured</text>
+
+      <!-- Downstream -->
+      <rect x="120" y="808" width="600" height="64" rx="12" fill="#faf5ff" stroke="#6d28d9" stroke-width="1.5"/>
+      <text x="420" y="834" text-anchor="middle" font-size="12.5" font-weight="800" fill="#5b21b6">Continue — same downstream sequence</text>
+      <text x="420" y="856" text-anchor="middle" font-size="11.5" fill="#334155">Bank · Liveness* · Nominee · Wet-signature · Aadhaar e-Sign · Demat</text>
+    </svg>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;font-size:12.5px;color:var(--muted)">
+      <span><span style="display:inline-block;width:11px;height:11px;border-radius:3px;background:#ecfdf5;border:1.5px solid #059669;vertical-align:-1px"></span> CKYC (primary)</span>
+      <span><span style="display:inline-block;width:11px;height:11px;border-radius:3px;background:#eef2ff;border:1.5px solid #4f46e5;vertical-align:-1px"></span> DigiLocker (fallback)</span>
+      <span><span style="display:inline-block;width:11px;height:11px;border-radius:3px;background:#fffbeb;border:1.5px solid #b45309;vertical-align:-1px"></span> Manual + Video IPV</span>
+      <span><span style="display:inline-block;width:14px;height:0;border-top:2px solid #059669;vertical-align:4px"></span> green = success / fast-track to next stage</span>
+    </div>
+  </div>
+
+  <h3 style="font-size:17px;margin:26px 0 4px">Step-by-step detail</h3>
   <div class="flow">
     <div class="step stepA">
       <div class="st-head"><span class="st-badge">STEP A · PRIMARY</span><h4>CKYC search</h4><span class="pill good">~70–80%</span></div>
