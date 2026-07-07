@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CKYC-Primary KYC Redesign · Aspero × Digio</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --ink:#12141c; --muted:#5b6270; --line:#e5e7eb; --card:#ffffff;
+    --brand:#6d28d9; --brand-soft:#ede9fe; --brand-ink:#5b21b6;
+    --good:#059669; --good-soft:#d1fae5; --bad:#dc2626; --bad-soft:#fee2e2;
+    --warn:#b45309; --warn-soft:#fef3c7;
+    --s-signup:#3b82f6; --s-kyc:#8b5cf6; --s-done:#10b981; --s-trade:#f59e0b;
+    --radius:14px; --shadow:0 1px 2px rgba(16,18,28,.06),0 8px 24px rgba(16,18,28,.06);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+  h1,h2,h3{line-height:1.25;letter-spacing:-.02em}
+
+  /* hero */
+  header.hero{background:radial-gradient(1200px 500px at 80% -10%,#3b1d6e 0%,#1b1030 55%,#120c22 100%);color:#fff;padding:64px 0 52px}
+  .kicker{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:#c4b5fd;background:rgba(196,181,253,.12);border:1px solid rgba(196,181,253,.28);padding:6px 12px;border-radius:999px}
+  header.hero h1{font-size:clamp(30px,5vw,46px);margin:18px 0 10px;font-weight:800}
+  header.hero p.sub{font-size:18px;color:#cfc9e6;max-width:720px;margin:0}
+  .hero-meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px}
+  .chip{font-size:13px;color:#e7e3f7;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);padding:7px 13px;border-radius:999px}
+
+  /* one-line shift */
+  .shift{margin:-28px auto 0;position:relative;z-index:2}
+  .shift .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 24px}
+  .shift .row{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center}
+  .shift .col h4{margin:0 0 6px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .shift .col p{margin:0;font-size:15px}
+  .shift .arrow{font-size:26px;color:var(--brand);font-weight:700}
+  .tag-now{color:var(--bad);font-weight:700}
+  .tag-new{color:var(--good);font-weight:700}
+  @media(max-width:680px){.shift .row{grid-template-columns:1fr;text-align:left}.shift .arrow{transform:rotate(90deg)}}
+
+  section{padding:40px 0}
+  section h2{font-size:26px;margin:0 0 6px;font-weight:800}
+  section .lead{color:var(--muted);margin:0 0 22px;font-size:15px}
+  .num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;
+    background:var(--brand-soft);color:var(--brand-ink);font-weight:800;font-size:15px;margin-right:10px;vertical-align:2px}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .pad{padding:20px 22px}
+  p{margin:0 0 14px}
+  ul{margin:0 0 14px;padding-left:20px}
+  li{margin:4px 0}
+  strong{font-weight:700}
+  .muted{color:var(--muted)}
+  a{color:var(--brand-ink)}
+
+  table{width:100%;border-collapse:collapse;font-size:14.5px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  thead th{background:#f2eefc;color:#3b2a63;text-align:left;font-weight:700;padding:11px 14px;border-bottom:1px solid var(--line)}
+  td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .tbl-scroll{overflow-x:auto}
+
+  .pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px}
+  .pill.good{background:var(--good-soft);color:var(--good)}
+  .pill.bad{background:var(--bad-soft);color:var(--bad)}
+  .pill.warn{background:var(--warn-soft);color:var(--warn)}
+  .pill.brand{background:var(--brand-soft);color:var(--brand-ink)}
+
+  .callout{border-left:4px solid var(--brand);background:#faf8ff;border-radius:0 12px 12px 0;padding:14px 18px;margin:16px 0}
+  .callout.warn{border-color:var(--warn);background:#fffdf4}
+  .callout.bad{border-color:var(--bad);background:#fff6f6}
+  .callout.good{border-color:var(--good);background:#f4fdf9}
+  .callout p:last-child{margin-bottom:0}
+
+  /* flow diagram */
+  .flow{display:flex;flex-direction:column;gap:0;margin:8px 0 4px}
+  .step{border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--shadow);padding:16px 18px;position:relative}
+  .step .st-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+  .step .st-badge{font-size:12px;font-weight:800;letter-spacing:.06em;padding:4px 10px;border-radius:8px}
+  .stepA .st-badge{background:var(--good-soft);color:var(--good)}
+  .stepB .st-badge{background:#e0e7ff;color:#3730a3}
+  .stepC .st-badge{background:var(--warn-soft);color:var(--warn)}
+  .step h4{margin:0;font-size:16px;font-weight:800}
+  .step ul{margin:6px 0 0}
+  .connector{align-self:center;width:2px;height:22px;background:linear-gradient(#c4b5fd,#8b5cf6)}
+  .branch{align-self:center;font-size:13px;color:var(--muted);padding:8px 0;text-align:center}
+  .branch b{color:var(--ink)}
+  .pct{font-weight:800;color:var(--good)}
+
+  .seq{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13.5px;margin-top:6px}
+  .seq .node{background:#f3f4f6;border:1px solid var(--line);padding:6px 11px;border-radius:8px;white-space:nowrap}
+  .seq .node.hi{background:var(--brand-soft);border-color:#ddd6fe;color:var(--brand-ink);font-weight:700}
+  .seq .sep{color:#c4b5fd;font-weight:800}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:680px){.grid2{grid-template-columns:1fr}}
+
+  .oq{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--card);margin-bottom:12px}
+  .oq .id{font-weight:800;color:var(--brand-ink);margin-right:6px}
+
+  footer{padding:40px 0 60px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:20px}
+  .toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .toc a{font-size:13px;text-decoration:none;color:var(--brand-ink);background:var(--card);border:1px solid var(--line);padding:6px 12px;border-radius:999px}
+  .toc a:hover{background:var(--brand-soft)}
+  .note{font-size:13px;color:var(--muted);font-style:italic}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="kicker">Aspero × Digio · Solutioning</span>
+    <h1>CKYC-Primary KYC Redesign</h1>
+    <p class="sub">Moving POI / POA capture from DigiLocker-primary to a CKYC-first hybrid — with DigiLocker as fallback and manual upload + Video IPV as the final safety net.</p>
+    <div class="hero-meta">
+      <span class="chip">Proof of Identity · Proof of Address</span>
+      <span class="chip">~70–80% projected DigiLocker bypass</span>
+      <span class="chip">2–3 week integration estimate</span>
+      <span class="chip">Status: Solutioning</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap shift">
+  <div class="card">
+    <div class="row">
+      <div class="col">
+        <h4>Today</h4>
+        <p><span class="tag-now">DigiLocker is primary</span> — the sole automated source for both PAN (POI) and Aadhaar address (POA). No manual POA path for individuals.</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="col">
+        <h4>Proposed</h4>
+        <p><span class="tag-new">CKYC is primary</span> — ~70–80% of KYC-validated users skip DigiLocker via a mobile-based CKYC search. DigiLocker becomes the fallback.</p>
+      </div>
+    </div>
+  </div>
+  <div class="toc">
+    <a href="#why">Why it matters</a>
+    <a href="#decisions">Decisions</a>
+    <a href="#flow">UX flow</a>
+    <a href="#nuances">Critical nuances</a>
+    <a href="#compliance">Compliance</a>
+    <a href="#compare">Current vs Proposed</a>
+    <a href="#open">Open questions</a>
+    <a href="#actions">Action items</a>
+  </div>
+</div>
+
+<!-- 1 WHY -->
+<section id="why" class="wrap">
+  <h2><span class="num">1</span>Why this change</h2>
+  <p class="lead">The current DigiLocker-primary flow is the single sharpest leak at the top of the KYC funnel, with no graceful degradation for address proof.</p>
+  <div class="card pad">
+    <p><strong>Current behaviour (verified against the <span class="muted">yubi-b2c-mobile</span> repo + live Amplitude, 8-week window ending 03 Jul 2026):</strong></p>
+    <ul>
+      <li>DigiLocker sits at <strong>step 1</strong> and fetches PAN and Aadhaar address <strong>together</strong> in one callback.</li>
+      <li>The fallback is <strong>asymmetric and broken on the POA side</strong>:
+        <ul>
+          <li><strong>PAN fetch fails</strong> → user adds PAN manually → verified <strong>directly against Income-Tax (ITR) records</strong> (name/DOB match). <span class="pill good">recoverable ~67%</span></li>
+          <li><strong>Aadhaar fetch fails / consent denied</strong> → <strong>no manual POA upload path for individuals.</strong> User can only retry DigiLocker. <span class="pill bad">recovery ~38%</span></li>
+        </ul>
+      </li>
+    </ul>
+    <p><strong>Funnel leakage at this step:</strong></p>
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Signal</th><th>Magnitude</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>Never click DigiLocker CTA</td><td><strong>~26%</strong></td><td>Of users who start KYC, ~1 in 4 never attempt DigiLocker.</td></tr>
+        <tr><td>Abandon <em>inside</em> DigiLocker</td><td><strong>~22%</strong></td><td>Of SDK launches, callback returns for only ~78% — consent confusion / UIDAI or DigiLocker outage.</td></tr>
+        <tr><td>Aadhaar fetch failure (within callback)</td><td><strong>~7%</strong></td><td>Data unavailable; only ~38% of these recover.</td></tr>
+        <tr><td>PAN fetch failure (within callback)</td><td><strong>~8%</strong></td><td>Routed to manual PAN → ITR.</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="callout bad">
+      <p><strong>Net:</strong> DigiLocker is a hard dependency that single-handedly gates the top of the KYC funnel, and address proof has no manual escape hatch. CKYC-primary removes that dependency for the majority and gives POA a graceful fallback for the first time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 DECISIONS -->
+<section id="decisions" class="wrap">
+  <h2><span class="num">2</span>Decisions aligned in the meeting</h2>
+  <div class="tbl-scroll">
+  <table>
+    <thead><tr><th>#</th><th>Decision</th><th>Rationale</th></tr></thead>
+    <tbody>
+      <tr><td><strong>D1</strong></td><td>Restrict manual uploads: <strong>Aadhaar-only for POA, PAN-only for POI</strong></td><td>Prevents document-type mismatch and account-mapping errors. System throws an error if any other document type is uploaded.</td></tr>
+      <tr><td><strong>D2</strong></td><td><strong>Reject IP-procurement</strong> under Aspero's brand for CKYC hits</td><td>Compliance requires CKYC API hits to originate from Digio's <strong>enterprise</strong> infrastructure, not a client-branded IP.</td></tr>
+      <tr><td><strong>D3</strong></td><td>Adopt the hybrid <strong>CKYC → DigiLocker → Manual + VIPV</strong> model</td><td>~70–80% bypass DigiLocker; graceful degradation for the rest.</td></tr>
+      <tr><td><strong>D4</strong></td><td><strong>Single consolidated Workflow ID</strong> driving upload + DigiLocker + VIPV</td><td>SDK returns one consolidated output (POA + POI + VIPV media). Simplifies the client-side state machine.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- 3 FLOW -->
+<section id="flow" class="wrap">
+  <h2><span class="num">3</span>Proposed end-to-end UX flow</h2>
+  <p class="lead">Three tiers of assurance: authenticated-source (CKYC) → authenticated-source (DigiLocker) → manual upload with a compensating Video IPV.</p>
+
+  <div class="flow">
+    <div class="step stepA">
+      <div class="st-head"><span class="st-badge">STEP A · PRIMARY</span><h4>CKYC search</h4><span class="pill good">~70–80%</span></div>
+      <ul>
+        <li><strong>No manual mobile entry</strong> — we already hold the user's mobile from signup, so the CKYC search auto-fires on it in the background (see O1 / O8).</li>
+        <li>User sees a single <strong>consent screen</strong> — "We found your existing KYC. Confirm to securely fetch it." The consent tap is mandatory (regulatory).</li>
+        <li>CERSAI sends an OTP to the registered mobile → <strong>auto-read</strong> where possible (Android SMS Retriever), manual entry as fallback (see O9).</li>
+        <li>Download the CKYC record: demographics + address (POA) + PAN (POI) + <strong>photo</strong>.</li>
+        <li>Capture a live selfie → <strong>face-match against the CKYC photo</strong> to bind the record to the real person.</li>
+        <li><span class="muted">Broker enhancement: for stock-broker records, Digio can pull the actual Aadhaar &amp; PAN <em>images</em> from the account-opening form stored at the CKYC end — not just the CKYC JSON.</span></li>
+      </ul>
+    </div>
+
+    <div class="connector"></div>
+    <div class="branch">✅ found · current · face match → <b>skip DigiLocker entirely</b> &nbsp;|&nbsp; ❌ not found / mobile mismatch / stale / inadequate record → fall through</div>
+    <div class="connector"></div>
+
+    <div class="step stepB">
+      <div class="st-head"><span class="st-badge">STEP B · FALLBACK</span><h4>DigiLocker</h4><span class="pill brand">~20–30%</span></div>
+      <ul>
+        <li>The <strong>existing</strong> Hyperverge / DigiLocker SDK journey, now demoted to fallback — behaviour unchanged from today.</li>
+        <li>Fetches Aadhaar (POA) + PAN (POI).</li>
+      </ul>
+    </div>
+
+    <div class="connector"></div>
+    <div class="branch">✅ success → continue &nbsp;|&nbsp; ❌ fail / consent denied / data unavailable → fall through</div>
+    <div class="connector"></div>
+
+    <div class="step stepC">
+      <div class="st-head"><span class="st-badge">STEP C · SAFETY NET</span><h4>Manual upload + Video IPV</h4></div>
+      <ul>
+        <li>POA = <strong>Aadhaar only</strong>; POI = <strong>PAN only</strong> (D1). Any other document type throws an error.</li>
+        <li>OCR extracts Name / PAN / DOB → validated against <strong>Income-Tax records</strong>.</li>
+        <li>On name/DOB mismatch → error, with a <strong>configurable cap on re-attempts</strong> before terminating the journey.</li>
+        <li>Because Aadhaar is supplied manually, a mandatory <strong>Video IPV replaces the selfie</strong> for this cohort (see §4).</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="muted" style="margin-top:18px">Downstream sequence is unchanged — only the POI/POA capture at the front changes:</p>
+  <div class="seq">
+    <span class="node">Signup / PIN</span><span class="sep">›</span>
+    <span class="node">Risk Profiling</span><span class="sep">›</span>
+    <span class="node hi">POI/POA — CKYC → DigiLocker → Manual+VIPV</span><span class="sep">›</span>
+    <span class="node">Bank</span><span class="sep">›</span>
+    <span class="node">Liveness*</span><span class="sep">›</span>
+    <span class="node">Nominee</span><span class="sep">›</span>
+    <span class="node">Wet signature</span><span class="sep">›</span>
+    <span class="node">Aadhaar e-Sign</span><span class="sep">›</span>
+    <span class="node">Demat</span>
+  </div>
+  <p class="note" style="margin-top:10px">* For the CKYC and manual-Aadhaar cohorts the "liveness" role is served by the CKYC face-match selfie / VIPV. Whether the standalone step-3 liveness selfie still runs for those cohorts is an open product decision (see O4).</p>
+</section>
+
+<!-- 4 VIPV -->
+<section id="vipv" class="wrap">
+  <h2><span class="num">4</span>Video IPV — what it is, and why</h2>
+
+  <div class="grid2">
+    <div class="card pad">
+      <h3 style="margin:0 0 10px;font-size:17px">The mechanics (self-serve, no agent)</h3>
+      <ul>
+        <li>System displays a <strong>randomly generated code / OTP</strong> on screen and starts a <strong>timer</strong>.</li>
+        <li>User <strong>records themselves reciting the code</strong> to the camera.</li>
+        <li>System captures <strong>both the full video and a still image</strong> of the customer.</li>
+        <li>Media is stored <strong>tamper-proof with a date/time stamp</strong> as proof of IPV.</li>
+      </ul>
+    </div>
+    <div class="card pad">
+      <h3 style="margin:0 0 10px;font-size:17px">Is it additional over the current liveness check?</h3>
+      <p><strong>No — it is a substitution, and only for the manual-Aadhaar cohort.</strong> VIPV <em>replaces</em> the still-selfie liveness capture for users who upload Aadhaar manually. Everyone else keeps the lighter check.</p>
+    </div>
+  </div>
+
+  <div class="tbl-scroll" style="margin-top:16px">
+  <table>
+    <thead><tr><th>Cohort</th><th>Identity / liveness check</th></tr></thead>
+    <tbody>
+      <tr><td>CKYC path <span class="pill good">~70–80%</span></td><td>Live selfie <strong>face-matched against the CKYC photo</strong></td></tr>
+      <tr><td>DigiLocker fallback</td><td>Existing <strong>still-photo liveness selfie</strong> (as today)</td></tr>
+      <tr><td>Manual Aadhaar upload</td><td><strong>VIPV replaces the selfie</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout">
+    <p><strong>Why VIPV is required for manual upload specifically:</strong> The other two paths pull the document from an <strong>authenticated source</strong> — DigiLocker is authenticated by <strong>UIDAI</strong>, CKYC is a KYC-verified record from <strong>CERSAI</strong>. The source itself vouches that the document is genuine and belongs to that identity.</p>
+    <p>A <strong>manually uploaded Aadhaar image has no such guarantee.</strong> OCR + ITR validation only proves the <em>document</em> is internally consistent — it does not prove the person holding the phone is the document's owner (a genuine Aadhaar that isn't theirs, a doctored image, or a photo-of-a-photo would all pass). A still selfie is easily spoofed with a printed photo.</p>
+    <p>VIPV is the <strong>compensating control</strong>: a random on-screen code + liveness + timer + tamper-proof time-stamped capture proves a <em>live</em> human — not a pre-recording — is present and consenting, and binds that face to the uploaded document. This is also the <strong>SEBI-expected standard</strong> for the manual/offline-OVD path (random action, liveness, geo-tag for India presence, tamper-proof storage).</p>
+    <p style="margin-bottom:0"><strong>Rule of thumb:</strong> stronger source → lighter check (selfie / face-match); no trusted source → stronger check (VIPV).</p>
+  </div>
+</section>
+
+<!-- 5 NUANCES -->
+<section id="nuances" class="wrap">
+  <h2><span class="num">5</span>Critical implementation nuances</h2>
+  <div class="tbl-scroll">
+  <table>
+    <thead><tr><th>Topic</th><th>Nuance — don't lose this</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Single Workflow ID</strong> (D4)</td><td>One workflow ID orchestrates upload + DigiLocker + VIPV; on completion the SDK returns <strong>one consolidated output</strong> = POA + POI + VIPV media. Simplifies our client state machine.</td></tr>
+      <tr><td><strong>SDK vs Redirect URL</strong></td><td>Redirect-URL is <em>faster</em> (not SDK-heavy) <strong>but</strong> loses real-time front-end event logs. Digio recommends staying on the <strong>SDK</strong> to keep DigiLocker init/failure/cancellation events, the <strong>dashboard drop-off flowchart</strong>, and the <strong>dropped-off-user list for retargeting</strong>.</td></tr>
+      <tr><td><strong>React Native SDK load time</strong></td><td>Arpit flagged high load times. Digio's ask: <strong>test the SDK in our own environment</strong> to isolate SDK vs our implementation — they don't see this with other clients.</td></tr>
+      <tr><td><strong>Journey persistence (K ID)</strong></td><td>Every request generates a <strong>K ID</strong> enabling resume-on-drop-off. If the K ID <strong>expires</strong>, the user is blocked and must start a fresh journey — UX must handle the "expired, start over" state gracefully.</td></tr>
+      <tr><td><strong>e-Sign independence</strong></td><td>Aadhaar e-Sign is <strong>independent of DigiLocker</strong> — it talks directly to UIDAI. A user with no DigiLocker account, or who fails DigiLocker, can <strong>still complete Aadhaar e-Sign.</strong></td></tr>
+      <tr><td><strong>Manual Aadhaar = KYC mode 3</strong></td><td>Switching from Aadhaar XML to manual Aadhaar document upload changes the <strong>KYC mode to "3"</strong> and the <strong>field type must be set to "Aadhaar document."</strong></td></tr>
+      <tr><td><strong>Anti-spoofing config</strong></td><td>The re-attempt cap on OCR/ITR mismatch is <strong>configurable</strong> before terminating the journey — we set the threshold.</td></tr>
+      <tr><td><strong>Infra / compliance</strong> (D2)</td><td>CKYC hits must originate from <strong>Digio's enterprise infra</strong>, not an Aspero-branded IP. Digio will share a <strong>pre-integration guide</strong> for internal review.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- 6 COMPLIANCE -->
+<section id="compliance" class="wrap">
+  <h2><span class="num">6</span>Compliance considerations</h2>
+  <div class="card pad">
+    <ul>
+      <li><strong>CKYC "last-updated date":</strong> every CKYC record carries a last-updated timestamp. We must set the <strong>staleness threshold</strong> beyond which we reject the CKYC record and fall back to DigiLocker. <span class="pill warn">Action: Arpit</span> to confirm internal compliance policy on acceptable record age.</li>
+      <li><strong>VIPV regulatory basis:</strong> SEBI permits self / app-based Video In-Person Verification with random code recital, liveness check, time-stamping, geo-tagging (physical location in India) and tamper-proof storage. Digio's VIPV must meet these — confirm geo-tagging is captured.</li>
+      <li><strong>CKYC as a valid POI/POA source:</strong> CKYC (a 14-digit KIN maintained by <strong>CERSAI</strong>) is a recognised, reusable KYC source across regulated entities in the securities market.</li>
+    </ul>
+    <p class="note" style="margin-bottom:0">References: <a href="https://taxguru.in/sebi/sebi-clarifies-online-video-app-based-kyc-process.html">SEBI clarification on online/video/app KYC</a> · <a href="https://www.asianlaws.org/blog/sebi-circular-on-use-of-technology-in-kyc/">SEBI circular on tech in KYC</a> · <a href="https://www.cersai.org.in/CERSAI/home.prg">CERSAI</a> · <a href="https://cleartax.in/s/ckyc-india">CKYC guide</a>.</p>
+  </div>
+</section>
+
+<!-- 7 COMPARE -->
+<section id="compare" class="wrap">
+  <h2><span class="num">7</span>Current vs Proposed — at a glance</h2>
+  <div class="tbl-scroll">
+  <table>
+    <thead><tr><th>Dimension</th><th>Current (as-is)</th><th>Proposed (CKYC-primary)</th></tr></thead>
+    <tbody>
+      <tr><td>Primary POI/POA source</td><td>DigiLocker (Aadhaar + PAN together)</td><td><strong>CKYC search via mobile + OTP</strong></td></tr>
+      <tr><td>DigiLocker role</td><td>Mandatory, first step, sole automated path</td><td><strong>Fallback (~20–30%)</strong></td></tr>
+      <tr><td>Users who touch DigiLocker</td><td>~100%</td><td><strong>~20–30%</strong></td></tr>
+      <tr><td>POA manual fallback (individuals)</td><td><span class="pill bad">None</span> — Aadhaar fail = hard stall (~38% recover)</td><td><strong>Manual Aadhaar upload + VIPV</strong></td></tr>
+      <tr><td>IPV method</td><td>Still-photo liveness selfie only</td><td>CKYC face-match / <strong>VIPV</strong> for manual-Aadhaar cohort</td></tr>
+      <tr><td>CKYC usage</td><td>Not a verification source (manual PAN → ITR)</td><td><strong>Primary source</strong> for both proofs</td></tr>
+      <tr><td>Mobile entry at this step</td><td>—</td><td><strong>Eliminated</strong> — auto-used from signup</td></tr>
+      <tr><td>Key funnel risk</td><td>~26% never start DigiLocker; ~22% abandon inside it</td><td>Majority skip the highest-leak step</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- 8 OPEN -->
+<section id="open" class="wrap">
+  <h2><span class="num">8</span>Open questions / risks</h2>
+  <p class="lead">Not yet resolved in the meeting — these should be closed before committing to build. The ~70–80% and the whole CKYC-primary design remain <strong>Digio's proposal, not yet validated on our data.</strong></p>
+
+  <div class="oq"><span class="id">O1</span><strong>CKYC hit-rate is an assumption.</strong> The ~70–80% is Digio's estimate. We can't validate it today — there is an instrumentation gap (no distinct CKYC-search event). Add CKYC-search success/fail/not-found events before launch to measure the real hit-rate.</div>
+  <div class="oq"><span class="id">O2</span><strong>Face-match source of truth.</strong> CKYC provides a photo; matching needs a live selfie. Confirm whether the CKYC path still requires our existing liveness selfie, and whether that double-counts with VIPV for manual users.</div>
+  <div class="oq"><span class="id">O3</span><strong>CKYC photo quality.</strong> Archive photos can be old / low-res, risking false face-match rejects on valid records. Define the fallback when face-match fails on a genuine CKYC record (retry → DigiLocker → VIPV?).</div>
+  <div class="oq"><span class="id">O4</span><strong>Liveness vs VIPV overlap.</strong> Today's step-3 liveness selfie may be redundant for CKYC/VIPV cohorts. Decide whether to keep, skip, or merge to avoid an extra friction step.</div>
+  <div class="oq"><span class="id">O5</span><strong>VIPV drop-off risk.</strong> Recording yourself reading a code is materially higher-friction than a selfie. It hits only the small manual cohort, but instrument its completion rate.</div>
+  <div class="oq"><span class="id">O6</span><strong>Mobile-number mismatch.</strong> CKYC search is keyed on the registered mobile. If the app mobile ≠ CKYC-registered mobile, search fails → fallback. Needs an "edit number / not you?" affordance. Quantify how often this happens.</div>
+  <div class="oq"><span class="id">O7</span><strong>e-mandate / eNACH</strong> is not part of this KYC flow — flagged as out of scope so it isn't conflated.</div>
+  <div class="oq"><span class="id">O8</span><strong>In-context UI during the background CKYC hit.</strong> With manual mobile entry removed, we must show the user context while we auto-query CKYC ("Checking your existing KYC…") so they aren't lost. This should be an <strong>Aspero-owned screen</strong>, not the SDK default. <em>Open:</em> confirm with Digio whether the CKYC-search window is inside their SDK (their UI) or a headless API call we wrap in our own screen — we want the latter.</div>
+  <div class="oq"><span class="id">O9</span><strong>OTP auto-read feasibility.</strong> Possible but not guaranteed — Android SMS Retriever needs the CERSAI OTP SMS to carry the app hash and land on the same SIM/device; iOS is keyboard-autofill only. <em>Open:</em> confirm the CERSAI OTP sender format with Digio; keep manual entry as fallback regardless.</div>
+</section>
+
+<!-- 9 ACTIONS -->
+<section id="actions" class="wrap">
+  <h2><span class="num">9</span>Action items &amp; timeline</h2>
+  <div class="tbl-scroll">
+  <table>
+    <thead><tr><th>Owner</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td>Sidhant (Digio)</td><td>Share the <strong>CKYC experience recording</strong> (from the Stable team).</td></tr>
+      <tr><td>Sidhant (Digio)</td><td>Provide <strong>SDK load-time / technical timing metrics.</strong></td></tr>
+      <tr><td>Sidhant (Digio)</td><td>Share the <strong>full CKYC implementation guide + pre-integration doc + call recording + transcript.</strong></td></tr>
+      <tr><td>The group</td><td><strong>Test SDK performance</strong> in the integrated React Native environment.</td></tr>
+      <tr><td><strong>Arpit</strong></td><td><strong>Verify internal compliance policy</strong> on the acceptable CKYC record last-updated date.</td></tr>
+      <tr><td>Jagath</td><td><strong>Test DigiLocker + CKYC flows in UAT</strong> to assess technical effort.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout good">
+    <p style="margin-bottom:0"><strong>Timeline:</strong> Digio estimates <strong>2–3 weeks</strong> of collaborative integration (YML / properties files + logs). Digio is the technical POC; CKYC-specific issues may route to the CKYC team directly. Full-workflow testing is possible in a <strong>UAT environment with dummy data</strong> (individual steps can't be unit-tested in the utility section).</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Method note.</strong> Current-flow facts (step order, asymmetric fallback, funnel magnitudes) are verified against the <span class="muted">yubi-b2c-mobile</span> repo and live Amplitude. CKYC / VIPV regulatory mechanics are from external research (references in §6). Proposed-flow specifics are from the Digio solutioning discussion. The ~70–80% bypass and the CKYC-primary design are Digio's proposal, not yet validated on Aspero data — §8 lists what to close before committing.</p>
+    <p>Aspero × Digio · CKYC-Primary KYC Redesign · Solutioning document</p>
+  </div>
+</footer>
+
+</body>
+</html>
