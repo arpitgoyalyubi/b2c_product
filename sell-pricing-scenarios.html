@@ -243,6 +243,49 @@ Total consideration = Clean + Accrued − charges (₹0 seller-side) = <b>₹9,7
 </section>
 
 <section>
+  <h2>Multi-lot sells — one blended price &amp; the blended (implied) YTM</h2>
+  <p class="sub">When a user holds the same ISIN across several lots (bought at different times / yields), you submit <b>one sell request → one RFQ → one price per unit</b>. The exchange sees a single fungible quantity — lots are internal (used only for the per-lot spread and FIFO capital-gains). Two questions follow: what single <em>price</em>, and what single <em>YTM</em> goes on the receipt?</p>
+  <p class="sub"><b>Live example</b> — same bond (INE08XP07431), sell settles <b>16-Jul-2026</b> (both lots past their 30-day lock). At that date, <b>12 cashflows</b> are in scope (record date after 16-Jul).</p>
+
+  <p class="sub" style="margin-top:6px"><b>Step 1 — price each lot at its OWN buyback YTM</b> (purchase YTM + spread; FIFO consumes the oldest lot first).</p>
+  <div class="tblwrap"><table style="min-width:600px">
+    <thead><tr><th>Lot</th><th>Units</th><th>Bought</th><th class="num">Purchase YTM</th><th class="num">Spread</th><th class="num">Buyback YTM</th><th class="num">Price / unit</th><th class="num">Money</th></tr></thead>
+    <tbody>
+      <tr><td>A (oldest)</td><td>20</td><td>16-Apr-2026</td><td class="num">15.30%</td><td class="num">+0.75%</td><td class="num">16.05%</td><td class="num">₹9,766.01</td><td class="num">₹1,95,320.23</td></tr>
+      <tr><td>B</td><td>10</td><td>15-Jun-2026</td><td class="num">14.00%</td><td class="num">+0.75%</td><td class="num">14.75%</td><td class="num">₹9,861.02</td><td class="num">₹98,610.16</td></tr>
+      <tr class="total"><td>Total</td><td>30</td><td></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num price">blended →</td><td class="num price">₹2,93,930.39</td></tr>
+    </tbody>
+  </table></div>
+
+  <p class="sub"><b>Step 2 — blend the PRICE (not the YTM).</b></p>
+  <div class="formula">Total proceeds     = 1,95,320.23 + 98,610.16 = ₹2,93,930.39&nbsp;&nbsp;<span class="c">(round the TOTAL)</span>
+Blended price/unit = 2,93,930.39 ÷ 30 units    = <b>₹9,797.68</b></div>
+  <div class="callout amber"><b>Blend the price, not the yield.</b> Averaging the two YTMs (units-weighted 15.617%) and pricing all 30 units at it gives ₹9,797.43 — a ₹0.25/unit gap, because price↔yield is non-linear. The money that actually changes hands is Σ(lot money), so the blended <em>price</em> is what's real.</div>
+
+  <p class="sub"><b>Step 3 — back out the blended (implied) YTM for the receipt.</b> The receipt needs one YTM. It's the rate that reprices the cashflows to the blended price. You get it from the <em>same</em> worksheet run in reverse — enter just two things:</p>
+  <div class="tblwrap"><table style="min-width:0">
+    <thead><tr><th>Input</th><th class="num">Value</th></tr></thead>
+    <tbody>
+      <tr><td>(1) Blended <b>DIRTY</b> price / unit</td><td class="num">₹9,797.68</td></tr>
+      <tr><td>(2) Settlement date (same as pricing)</td><td class="num">16-Jul-2026</td></tr>
+      <tr><td>(3) Cashflows</td><td class="num">already in the sheet (12 in scope) — not recomputed</td></tr>
+    </tbody>
+  </table></div>
+  <div class="formula">Implied YTM = XIRR( −9,797.68 @ 16-Jul-2026 ,  the 12 in-scope cashflows )  =  <b>15.6136%</b>
+Verify (forward): PV of the 12 cashflows @ 15.6136% = ₹9,797.68&nbsp;&nbsp;<span class="c">✓ reconciles</span></div>
+  <div class="callout blue"><b>Why it's automatic:</b> the cashflow schedule is already generated from the bond master; entering the trade date auto-filters it to the in-scope set (record date after settlement); one <code>XIRR</code> cell — or Goal Seek on the YTM cell — returns the yield. You enter <b>blended price + settlement date → blended YTM</b>. No cashflows to recompute.</div>
+
+  <p class="sub"><b>Watch-outs</b></p>
+  <ol class="steps">
+    <li><b>Use the DIRTY price</b> (₹9,797.68 = consideration/unit), not the clean price — the solver reprices to the full PV.</li>
+    <li><b>Settlement date must match the pricing step</b> — it drives the record-date filter (which cashflows count).</li>
+    <li><b>Never average the per-lot YTMs</b> for the headline — that doesn't reprice to the money (the ₹0.25/unit gap above).</li>
+    <li><b>Units don't matter for the YTM</b> — a yield is scale-free; per-unit and total give the same rate.</li>
+  </ol>
+  <div class="callout green"><b>What surfaces where:</b> the receipt headline shows the <b>blended price ₹9,797.68/unit</b> and <b>implied YTM 15.61%</b>; the breakdown / tax annexure lists the per-lot buyback YTMs (16.05% / 14.75%) and per-lot prices (FIFO capital-gains). The per-lot proceeds sum back to ₹2,93,930.39.</div>
+</section>
+
+<section>
   <h2>Drill-down C — the same build under different scenarios</h2>
   <p class="sub">Change the settlement date and two things move: how many payments Aspero still receives (the record-date filter) and how hard each is discounted. Note the record-date pair — one day flips a whole coupon.</p>
   <div class="tblwrap"><table style="min-width:600px">
