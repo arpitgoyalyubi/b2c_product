@@ -1,0 +1,425 @@
+
+<title>Install → Signup → First Trade · Android · Aspero</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:       #0e1017;
+  --surf:     #161b28;
+  --surf2:    #1d2336;
+  --border:   #252e44;
+  --border2:  #1d2436;
+  --text:     #cdd2e8;
+  --muted:    #5d6a8a;
+  --dim:      #3a4260;
+  --g-blue:   #3d8ef5;
+  --m-purple: #9b6dff;
+  --grn:      #22c99a;
+  --amber:    #f5a83a;
+  --red:      #e84545;
+  --teal:     #38c8f0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 14px; line-height: 1.5; font-variant-numeric: tabular-nums;
+}
+body { background: var(--bg); color: var(--text); min-height: 100vh; padding: 32px 24px 64px; }
+.page { max-width: 1260px; margin: 0 auto; }
+
+.hd { margin-bottom: 28px; }
+.hd-top { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; }
+.hd-eye { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.hd-title { font-size: 22px; font-weight: 800; color: #e8ecff; letter-spacing: -.025em; }
+.hd-badge { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  background: var(--surf2); border: 1px solid var(--border); color: var(--muted); padding: 2px 7px; border-radius: 2px; }
+.hd-sub { font-size: 12px; color: var(--muted); }
+
+.sh { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.sh-title { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.sh-line { flex: 1; height: 1px; background: var(--border2); }
+.sh-note { font-size: 11px; color: var(--dim); white-space: nowrap; }
+
+/* Funnel availability bar */
+.funnel-avail {
+  display: grid; grid-template-columns: 1fr 24px 1fr 24px 1fr 24px 1fr;
+  gap: 0; margin-bottom: 24px; align-items: center;
+}
+.fa-step { background: var(--surf); border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px; }
+.fa-arrow { text-align: center; font-size: 14px; color: var(--dim); }
+.fa-label { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 4px; }
+.fa-event { font-size: 10px; color: var(--dim); font-family: 'SF Mono', Menlo, monospace; margin-bottom: 8px; }
+.fa-stat { font-size: 11px; color: var(--muted); line-height: 1.6; }
+.fa-stat strong { color: var(--text); }
+.fa-stat .hi { color: var(--grn); font-weight: 700; }
+.fa-stat .mid { color: var(--amber); font-weight: 700; }
+.fa-stat .lo { color: #e86a45; font-weight: 700; }
+.fa-stat .dim { color: var(--dim); }
+.fa-ok { border-color: var(--grn)50; }
+.fa-warn { border-color: var(--amber)50; }
+.fa-partial { border-color: var(--g-blue)40; }
+
+/* KYC gap bar */
+.gap-bar { background: var(--surf); border: 1px solid var(--border); border-left: 3px solid var(--amber);
+  border-radius: 0 4px 4px 0; padding: 12px 18px; margin-bottom: 28px;
+  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.gap-label { font-size: 10px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--amber); white-space: nowrap; }
+.gap-text { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.gap-text strong { color: var(--text); }
+.gap-code { font-family: 'SF Mono', Menlo, monospace; font-size: 11px; color: var(--dim); }
+
+/* Week summary */
+.week-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 32px; }
+.wcard { background: var(--surf); border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px; }
+.wcard.latest { border-color: var(--grn)60; }
+.wc-lbl { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+.wc-dates { font-size: 11px; color: var(--dim); margin-bottom: 12px; }
+.wc-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.wc-key { font-size: 11px; color: var(--muted); }
+.wc-val { font-size: 12px; font-weight: 600; color: var(--text); }
+.wc-big { font-size: 16px; font-weight: 800; }
+.wc-hi  { color: var(--grn); }
+.wc-mid { color: var(--amber); }
+.wc-lo  { color: #e86a45; }
+.wc-dim { color: var(--dim); }
+.wc-div { height: 1px; background: var(--border2); margin: 7px 0; }
+.wc-note { font-size: 11px; color: var(--muted); margin-top: 8px; padding-top: 6px; border-top: 1px solid var(--border2); }
+.wc-note .up { color: var(--grn); font-weight: 700; }
+.wc-note .dn { color: var(--red); font-weight: 700; }
+.wc-note .na { color: var(--dim); }
+
+/* Channel table */
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 4px; margin-bottom: 32px; }
+table { width: 100%; border-collapse: collapse; min-width: 1080px; }
+thead th {
+  background: var(--surf2); padding: 9px 11px; text-align: right;
+  font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--muted); border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+thead th:first-child { text-align: left; min-width: 160px; }
+.th-grp-hd { background: var(--surf); text-align: center !important; font-size: 9px; color: var(--dim); border-left: 1px solid var(--border2); padding: 6px 8px !important; letter-spacing: .08em; }
+.th-grp { border-left: 1px solid var(--border2) !important; }
+tbody tr { border-bottom: 1px solid var(--border2); }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--surf2); }
+tbody td { padding: 9px 11px; text-align: right; font-size: 12px; color: var(--text); white-space: nowrap; }
+tbody td:first-child { text-align: left; }
+.td-grp { border-left: 1px solid var(--border2); }
+.td-dim { color: var(--dim); }
+
+.ch-name { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; }
+.dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.d-g  { background: var(--g-blue); }
+.d-m  { background: var(--m-purple); }
+.d-o  { background: var(--grn); }
+.d-oe { background: var(--teal); }
+.d-j  { background: var(--amber); }
+.d-x  { background: var(--muted); }
+.d-jk { background: var(--dim); }
+
+.cvr { font-weight: 700; }
+.cvr.hi   { color: var(--grn); }
+.cvr.mid  { color: var(--amber); }
+.cvr.lo   { color: #e86a45; }
+.cvr.dead { color: var(--dim); }
+.cvr.zero { color: var(--border); }
+
+.trend { font-size: 11px; font-weight: 700; text-align: center; }
+.trend.up { color: var(--grn); }
+.trend.dn { color: var(--red); }
+.trend.fl { color: var(--dim); }
+.trend.nw { color: var(--amber); }
+
+/* Reads */
+.reads { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 32px; }
+.read-card { background: var(--surf); border: 1px solid var(--border); border-radius: 4px; padding: 16px 18px; }
+.read-lbl { font-size: 10px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; margin-bottom: 8px; }
+.read-body { font-size: 12px; color: var(--muted); line-height: 1.75; }
+.read-body strong { color: var(--text); font-weight: 600; }
+
+.footer { margin-top: 40px; padding-top: 14px; border-top: 1px solid var(--border2);
+  font-size: 11px; color: var(--dim); display: flex; gap: 24px; flex-wrap: wrap; }
+
+@media (max-width: 740px) {
+  .funnel-avail { grid-template-columns: 1fr; }
+  .fa-arrow { display: none; }
+  .week-row { grid-template-columns: 1fr 1fr; }
+  .reads { grid-template-columns: 1fr; }
+}
+</style>
+
+<div class="page">
+
+  <div class="hd">
+    <div class="hd-top">
+      <span class="hd-eye">Aspero · Growth</span>
+      <h1 class="hd-title">Install → Signup → First Trade</h1>
+      <span class="hd-badge">Android · WoW</span>
+    </div>
+    <p class="hd-sub">Channel-level funnel · 4 complete Mon–Sun weeks · Jun 8 – Jul 5, 2026 · AppsFlyer partners_by_date_report/v5 · 1 API call, 998 rows</p>
+  </div>
+
+  <!-- Funnel availability -->
+  <div class="sh"><span class="sh-title">Funnel tracking status</span><span class="sh-line"></span></div>
+
+  <div class="funnel-avail">
+    <div class="fa-step fa-ok">
+      <div class="fa-label" style="color:var(--grn)">Install ✓</div>
+      <div class="fa-event">Installs column</div>
+      <div class="fa-stat">
+        W1 <strong>20,766</strong> · W2 <strong>19,591</strong><br>
+        W3 <strong>18,663</strong> · W4 <strong>18,984</strong>
+      </div>
+    </div>
+    <div class="fa-arrow">→</div>
+    <div class="fa-step fa-ok">
+      <div class="fa-label" style="color:var(--grn)">Signup ✓</div>
+      <div class="fa-event">SETUP_SECURE_PIN_SUCCESS</div>
+      <div class="fa-stat">
+        W1 <span class="lo">3,170 · 15.3%</span><br>
+        W2 <span class="mid">4,098 · 20.9%</span><br>
+        W3 <span class="mid">4,305 · 23.1%</span><br>
+        W4 <span class="hi">7,514 · 39.6%</span>
+      </div>
+    </div>
+    <div class="fa-arrow">→</div>
+    <div class="fa-step fa-warn">
+      <div class="fa-label" style="color:var(--amber)">KYC ✗ not tracked</div>
+      <div class="fa-event">KYC_RISKDETAILS_SUBMIT</div>
+      <div class="fa-stat">
+        <span class="dim">Not forwarded to AF via S2S.<br>KYC_DEMAT_VERIFIED column exists<br>but counts ≈ 0. Tracking gap.</span>
+      </div>
+    </div>
+    <div class="fa-arrow" style="color:var(--border)">→</div>
+    <div class="fa-step fa-partial">
+      <div class="fa-label" style="color:var(--g-blue)">First Trade ✓ (partial)</div>
+      <div class="fa-event">FIRST_TRADE_COMPLETED</div>
+      <div class="fa-stat">
+        W1 <strong>44</strong> · 1.4% of signups<br>
+        W2 <strong>31</strong> · 0.8% of signups<br>
+        W3 <strong>1</strong> · 0.02% (cohort early)<br>
+        W4 <strong>27</strong> · 0.36% (cohort early)
+      </div>
+    </div>
+  </div>
+
+  <!-- KYC gap -->
+  <div class="gap-bar">
+    <span class="gap-label">KYC tracking gap</span>
+    <span class="gap-text">
+      <span class="gap-code">KYC_RISKDETAILS_SUBMIT</span> and <span class="gap-code">KYC_ESIGN_SUCCESS</span> are not in AF at all.
+      <span class="gap-code">KYC_DEMAT_VERIFIED</span> column exists but returns ≈0 (S2S not wired).
+      Fix: <strong>yubi-fin-b2c-user-service</strong> + <strong>yubi-fin-b2c-kyc-service</strong> need to POST these events to AppsFlyer's <span class="gap-code">/inappevent</span> S2S endpoint on fire.
+    </span>
+  </div>
+
+  <!-- 4-week cards -->
+  <div class="sh"><span class="sh-title">Weekly Summary</span><span class="sh-line"></span><span class="sh-note">FT = First Trade · W3/W4 FT numbers are early — cohort still completing KYC</span></div>
+
+  <div class="week-row">
+    <div class="wcard">
+      <div class="wc-lbl">Week 1</div>
+      <div class="wc-dates">Jun 8 – Jun 14</div>
+      <div class="wc-row"><span class="wc-key">Installs</span><span class="wc-val">20,766</span></div>
+      <div class="wc-row"><span class="wc-key">Signups</span><span class="wc-val">3,170</span></div>
+      <div class="wc-row"><span class="wc-key">Install → Signup</span><span class="wc-val wc-big wc-lo">15.3%</span></div>
+      <div class="wc-div"></div>
+      <div class="wc-row"><span class="wc-key">First Trades</span><span class="wc-val">44</span></div>
+      <div class="wc-row"><span class="wc-key">Signup → FT</span><span class="wc-val wc-big wc-mid">1.4%</span></div>
+      <div class="wc-note">Baseline · FT cohort mature ✓</div>
+    </div>
+    <div class="wcard">
+      <div class="wc-lbl">Week 2</div>
+      <div class="wc-dates">Jun 15 – Jun 21</div>
+      <div class="wc-row"><span class="wc-key">Installs</span><span class="wc-val">19,591</span></div>
+      <div class="wc-row"><span class="wc-key">Signups</span><span class="wc-val">4,098</span></div>
+      <div class="wc-row"><span class="wc-key">Install → Signup</span><span class="wc-val wc-big wc-mid">20.9%</span></div>
+      <div class="wc-div"></div>
+      <div class="wc-row"><span class="wc-key">First Trades</span><span class="wc-val">31</span></div>
+      <div class="wc-row"><span class="wc-key">Signup → FT</span><span class="wc-val wc-big wc-mid">0.8%</span></div>
+      <div class="wc-note">Signup <span class="up">+29%</span> · FT cohort mostly mature ✓</div>
+    </div>
+    <div class="wcard">
+      <div class="wc-lbl">Week 3</div>
+      <div class="wc-dates">Jun 22 – Jun 28</div>
+      <div class="wc-row"><span class="wc-key">Installs</span><span class="wc-val">18,663</span></div>
+      <div class="wc-row"><span class="wc-key">Signups</span><span class="wc-val">4,305</span></div>
+      <div class="wc-row"><span class="wc-key">Install → Signup</span><span class="wc-val wc-big wc-mid">23.1%</span></div>
+      <div class="wc-div"></div>
+      <div class="wc-row"><span class="wc-key">First Trades</span><span class="wc-val wc-dim">1 *</span></div>
+      <div class="wc-row"><span class="wc-key">Signup → FT</span><span class="wc-val wc-big wc-dim">0.02% *</span></div>
+      <div class="wc-note"><span class="na">* Cohort early — users still mid-KYC</span></div>
+    </div>
+    <div class="wcard latest">
+      <div class="wc-lbl">Week 4 · Latest</div>
+      <div class="wc-dates">Jun 29 – Jul 5</div>
+      <div class="wc-row"><span class="wc-key">Installs</span><span class="wc-val">18,984</span></div>
+      <div class="wc-row"><span class="wc-key">Signups</span><span class="wc-val">7,514</span></div>
+      <div class="wc-row"><span class="wc-key">Install → Signup</span><span class="wc-val wc-big wc-hi">39.6%</span></div>
+      <div class="wc-div"></div>
+      <div class="wc-row"><span class="wc-key">First Trades</span><span class="wc-val wc-dim">27 *</span></div>
+      <div class="wc-row"><span class="wc-key">Signup → FT</span><span class="wc-val wc-big wc-dim">0.36% *</span></div>
+      <div class="wc-note">Signup <span class="up">+75%</span> WoW · <span class="na">* FT cohort early</span></div>
+    </div>
+  </div>
+
+  <!-- Channel table -->
+  <div class="sh">
+    <span class="sh-title">Channel WoW · Install → Signup CVR · Signup → First Trade CVR</span>
+    <span class="sh-line"></span>
+    <span class="sh-note">* W3/W4 FT partial — cohort still completing KYC</span>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th rowspan="2">Channel</th>
+          <th class="th-grp-hd" colspan="3">W1 · Jun 8–14</th>
+          <th class="th-grp-hd" colspan="3">W2 · Jun 15–21</th>
+          <th class="th-grp-hd" colspan="3">W3 · Jun 22–28</th>
+          <th class="th-grp-hd" colspan="3">W4 · Jun 29–Jul 5</th>
+          <th rowspan="2" style="text-align:center;vertical-align:bottom;font-size:9px;color:var(--dim);padding-bottom:9px;">Sign<br>trend</th>
+        </tr>
+        <tr>
+          <th class="th-grp">Inst</th><th>Sign%</th><th>FT%</th>
+          <th class="th-grp">Inst</th><th>Sign%</th><th>FT%</th>
+          <th class="th-grp">Inst</th><th>Sign%</th><th>FT%</th>
+          <th class="th-grp">Inst</th><th>Sign%</th><th>FT%</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="ch-name"><span class="dot d-g"></span>Google Ads</div></td>
+          <td class="td-grp">5,983</td><td class="cvr mid">28.2%</td><td class="cvr mid">1.2%</td>
+          <td class="td-grp">6,914</td><td class="cvr mid">31.3%</td><td class="cvr lo">0.7%</td>
+          <td class="td-grp">5,272</td><td class="cvr mid">30.2%</td><td class="cvr zero">0.0% *</td>
+          <td class="td-grp">6,511</td><td class="cvr mid">32.9%</td><td class="cvr dead">0.5% *</td>
+          <td class="trend up">+4.7pp ↑</td>
+        </tr>
+        <tr>
+          <td><div class="ch-name"><span class="dot d-m"></span>Meta (Facebook)</div></td>
+          <td class="td-grp">695</td><td class="cvr hi">64.0%</td><td class="cvr lo">1.1%</td>
+          <td class="td-grp">727</td><td class="cvr hi">64.1%</td><td class="cvr dead">0.9%</td>
+          <td class="td-grp">1,316</td><td class="cvr hi">71.0%</td><td class="cvr zero">0.0% *</td>
+          <td class="td-grp">4,707</td><td class="cvr hi">72.7%</td><td class="cvr dead">0.2% *</td>
+          <td class="trend up">+8.7pp ↑</td>
+        </tr>
+        <tr>
+          <td><div class="ch-name"><span class="dot d-o"></span>Organic</div></td>
+          <td class="td-grp">5,136</td><td class="cvr lo">4.9%</td><td class="cvr dead">0.4%</td>
+          <td class="td-grp">6,364</td><td class="cvr lo">3.7%</td><td class="cvr mid">3.0%</td>
+          <td class="td-grp">3,018</td><td class="cvr lo">7.6%</td><td class="cvr zero">0.0% *</td>
+          <td class="td-grp">2,186</td><td class="cvr lo">8.9%</td><td class="cvr lo">1.5% *</td>
+          <td class="trend up">+4.0pp ↑</td>
+        </tr>
+        <tr>
+          <td><div class="ch-name"><span class="dot d-oe"></span>Vivo (OEM)</div></td>
+          <td class="td-grp">4,542</td><td class="cvr lo">7.1%</td><td class="cvr zero">0.0%</td>
+          <td class="td-grp">879</td><td class="cvr mid">16.4%</td><td class="cvr zero">0.0%</td>
+          <td class="td-grp td-dim">3</td><td class="cvr zero">0.0%</td><td class="cvr zero">—</td>
+          <td class="td-grp td-dim">0</td><td class="cvr zero">—</td><td class="cvr zero">—</td>
+          <td class="trend dn">Dead ↓</td>
+        </tr>
+        <tr>
+          <td><div class="ch-name"><span class="dot d-oe"></span>Xiaomi (OEM)</div></td>
+          <td class="td-grp td-dim">—</td><td class="cvr zero">—</td><td class="cvr zero">—</td>
+          <td class="td-grp">54</td><td class="cvr hi">46.3%</td><td class="cvr zero">0.0%</td>
+          <td class="td-grp">1,901</td><td class="cvr hi">44.5%</td><td class="cvr zero">0.0% *</td>
+          <td class="td-grp">1,762</td><td class="cvr hi">52.4%</td><td class="cvr dead">0.3% *</td>
+          <td class="trend nw">New ↑</td>
+        </tr>
+        <tr>
+          <td><div class="ch-name"><span class="dot d-oe"></span>Oppo (OEM)</div></td>
+          <td class="td-grp">89</td><td class="cvr lo">18.0%</td><td class="cvr zero">0.0%</td>
+          <td class="td-grp">611</td><td class="cvr hi">53.4%</td><td class="cvr dead">0.9%</td>
+          <td class="td-grp">382</td><td class="cvr hi">52.9%</td><td class="cvr zero">0.0% *</td>
+          <td class="td-grp">846</td><td class="cvr hi">53.7%</td><td class="cvr dead">0.2% *</td>
+          <td class="trend up">+35.7pp ↑</td>
+        </tr>
+        <tr>
+          <td><div class="ch-name"><span class="dot d-j"></span>Jio (HM campaign)</div></td>
+          <td class="td-grp td-dim">5</td><td class="cvr hi">80.0%</td><td class="cvr zero">0.0%</td>
+          <td class="td-grp">820</td><td class="cvr hi">50.2%</td><td class="cvr dead">0.2%</td>
+          <td class="td-grp">601</td><td class="cvr hi">45.9%</td><td class="cvr dead">0.4% *</td>
+          <td class="td-grp">106</td><td class="cvr hi">50.0%</td><td class="cvr zero">0.0% *</td>
+          <td class="trend dn">Vol ↓</td>
+        </tr>
+        <tr>
+          <td><div class="ch-name"><span class="dot d-x"></span>Soken</div></td>
+          <td class="td-grp">498</td><td class="cvr mid">39.8%</td><td class="cvr lo">1.5%</td>
+          <td class="td-grp">250</td><td class="cvr hi">44.0%</td><td class="cvr zero">0.0%</td>
+          <td class="td-grp">46</td><td class="cvr hi">47.8%</td><td class="cvr zero">0.0% *</td>
+          <td class="td-grp">144</td><td class="cvr hi">63.2%</td><td class="cvr zero">0.0% *</td>
+          <td class="trend up">+23.4pp ↑</td>
+        </tr>
+        <tr>
+          <td><div class="ch-name"><span class="dot d-x"></span>Employee Referral</div></td>
+          <td class="td-grp">48</td><td class="cvr hi">83.3%</td><td class="cvr hi" style="color:#f0e050;font-weight:800">27.5%</td>
+          <td class="td-grp td-dim">0</td><td class="cvr zero">—</td><td class="cvr zero">—</td>
+          <td class="td-grp td-dim">0</td><td class="cvr zero">—</td><td class="cvr zero">—</td>
+          <td class="td-grp td-dim">0</td><td class="cvr zero">—</td><td class="cvr zero">—</td>
+          <td class="trend fl">W1 only</td>
+        </tr>
+        <tr>
+          <td><div class="ch-name"><span class="dot d-x"></span>Influencer (Aswin)</div></td>
+          <td class="td-grp">40</td><td class="cvr hi">72.5%</td><td class="cvr zero">0.0%</td>
+          <td class="td-grp">17</td><td class="cvr hi">58.8%</td><td class="cvr zero">0.0%</td>
+          <td class="td-grp">10</td><td class="cvr mid">40.0%</td><td class="cvr zero">0.0% *</td>
+          <td class="td-grp">32</td><td class="cvr hi">84.4%</td><td class="cvr lo">3.7% *</td>
+          <td class="trend up">+11.9pp ↑</td>
+        </tr>
+        <tr>
+          <td><div class="ch-name"><span class="dot d-jk"></span>Junk Networks ×8</div></td>
+          <td class="td-grp">3,352</td><td class="cvr dead">0.3%</td><td class="cvr zero">0.0%</td>
+          <td class="td-grp">2,515</td><td class="cvr dead">0.3%</td><td class="cvr zero">0.0%</td>
+          <td class="td-grp">5,691</td><td class="cvr dead">0.3%</td><td class="cvr zero">0.0%</td>
+          <td class="td-grp">2,345</td><td class="cvr dead">1.0%</td><td class="cvr zero">0.0%</td>
+          <td class="trend fl">Waste</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Key reads -->
+  <div class="sh"><span class="sh-title">Key reads</span><span class="sh-line"></span></div>
+  <div class="reads">
+    <div class="read-card">
+      <div class="read-lbl" style="color:var(--m-purple)">Meta is the signup driver — FT quality TBD</div>
+      <div class="read-body">
+        Meta scaled from <strong>695 installs/wk (W1)</strong> to <strong>4,707/wk (W4)</strong> — 6.7× — while holding 64–73% install→signup CVR.
+        It's responsible for the overall CVR jump 15.3% → 39.6%. On first trade, W1 shows <strong>1.1% signup→FT</strong> (5 of 445) — on par with Google.
+        High signup CVR ≠ high trading intent. W3/W4 Meta cohorts need 4–6 more weeks to confirm FT quality.
+      </div>
+    </div>
+    <div class="read-card">
+      <div class="read-lbl" style="color:var(--teal)">OEM channels: high signup CVR, FT unclear</div>
+      <div class="read-body">
+        Xiaomi and Oppo contributed <strong>2,608 installs</strong> and <strong>1,377 signups</strong> in W4 at 52–54% CVR — far better than Organic (8.9%).
+        W1/W2 show near-0 FT for both (too few installs in those weeks to be meaningful).
+        W4 Xiaomi shows 0.3%, Oppo 0.2% — early signal, confirmed in ~4 weeks.
+      </div>
+    </div>
+    <div class="read-card">
+      <div class="read-lbl" style="color:#f0e050">Employee referral: 27.5% signup→FT (outlier)</div>
+      <div class="read-body">
+        W1 employee referral: <strong>48 installs → 40 signups (83%) → 11 first trades (27.5% S→FT)</strong>.
+        That's 20× the rate of Google (1.2%) and Meta (1.1%). Volume is tiny but intent is validated —
+        warm referrals from employees who explain the product before the install. A structured referral programme scaling this channel is worth evaluating.
+      </div>
+    </div>
+    <div class="read-card">
+      <div class="read-lbl" style="color:var(--red)">13,903 installs wasted on junk — zero first trades</div>
+      <div class="read-body">
+        Eight networks (NFMobi, S2S Softsys, Leukmobi, Bigporrs, Lumolinka, Mobileadv, Soulaco, Dreamtaleem)
+        delivered <strong>13,903 installs across 4 weeks</strong>, 58 signups (0.4% CVR), and <strong>zero first trades</strong>.
+        These need to be paused or blocked immediately — budget allocated here produces no measurable business outcome.
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Android only · iOS pending</span>
+    <span>1 API call · 998 rows · Jun 8 – Jul 5, 2026</span>
+    <span>KYC needs S2S forwarding in yubi-fin-b2c-user-service + kyc-service</span>
+    <span>* W3/W4 FT partial — cohort still completing KYC</span>
+    <span>Generated Jul 11, 2026</span>
+  </div>
+
+</div>
