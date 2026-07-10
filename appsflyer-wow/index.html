@@ -2,163 +2,146 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg:       #0e1017;
-  --surf:     #161b28;
-  --surf2:    #1d2336;
-  --border:   #252e44;
-  --border2:  #1d2436;
-  --text:     #cdd2e8;
-  --muted:    #5d6a8a;
-  --dim:      #3a4260;
-  --g-blue:   #3d8ef5;
-  --m-purple: #9b6dff;
-  --grn:      #22c99a;
-  --amber:    #f5a83a;
-  --red:      #e84545;
-  --teal:     #38c8f0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  font-size: 14px; line-height: 1.5; font-variant-numeric: tabular-nums;
+  --bg:#0e1017; --surf:#161b28; --surf2:#1d2336; --border:#252e44; --border2:#1d2436;
+  --text:#cdd2e8; --muted:#5d6a8a; --dim:#3a4260;
+  --g-blue:#3d8ef5; --m-purple:#9b6dff; --grn:#22c99a; --amber:#f5a83a; --red:#e84545; --teal:#38c8f0;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  font-size:14px; line-height:1.5; font-variant-numeric:tabular-nums;
 }
 [data-theme="light"] {
-  --bg:     #f4f6fc;
-  --surf:   #ffffff;
-  --surf2:  #edf0f8;
-  --border: #d8dfee;
-  --border2:#e4e9f4;
-  --text:   #1a2140;
-  --muted:  #5a6680;
-  --dim:    #9baabb;
+  --bg:#f4f6fc; --surf:#ffffff; --surf2:#edf0f8; --border:#d8dfee; --border2:#e4e9f4;
+  --text:#1a2140; --muted:#5a6680; --dim:#9baabb;
 }
-body { background: var(--bg); color: var(--text); min-height: 100vh; padding: 32px 24px 64px; transition: background .2s, color .2s; }
-.page { max-width: 1380px; margin: 0 auto; }
+body { background:var(--bg); color:var(--text); min-height:100vh; padding:28px 20px 64px; transition:background .2s,color .2s; }
+.page { max-width:1500px; margin:0 auto; }
+.topbar { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; }
+.theme-btn { background:var(--surf); border:1px solid var(--border); color:var(--muted);
+  padding:6px 14px; border-radius:20px; cursor:pointer; font-size:12px; font-weight:600;
+  transition:background .15s,color .15s; white-space:nowrap; margin-top:4px; }
+.theme-btn:hover { color:var(--text); background:var(--surf2); }
+.hd-eye { font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+.hd-title { font-size:22px; font-weight:800; color:var(--text); letter-spacing:-.025em; }
+.hd-badge { font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+  background:var(--surf2); border:1px solid var(--border); color:var(--muted); padding:2px 7px; border-radius:2px; margin-left:10px; }
+.hd-sub { font-size:12px; color:var(--muted); margin-top:4px; }
 
-/* Toggle */
-.topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.theme-btn {
-  background: var(--surf); border: 1px solid var(--border); color: var(--muted);
-  padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: 600;
-  transition: background .15s, color .15s;
-}
-.theme-btn:hover { color: var(--text); background: var(--surf2); }
+/* Main tabs */
+.main-tabs { display:flex; gap:4px; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:0; }
+.mtab { background:none; border:none; border-bottom:2px solid transparent; padding:10px 18px;
+  font-size:13px; font-weight:600; color:var(--muted); cursor:pointer; transition:color .15s;
+  margin-bottom:-1px; border-radius:4px 4px 0 0; }
+.mtab:hover { color:var(--text); }
+.mtab.active { color:var(--text); border-bottom-color:var(--g-blue); background:var(--surf2); }
+.panel { display:none; }
+.panel.active { display:block; }
 
-.hd-eye { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-.hd-title { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -.025em; }
-.hd-badge { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-  background: var(--surf2); border: 1px solid var(--border); color: var(--muted); padding: 2px 7px; border-radius: 2px; margin-left: 10px; }
-.hd-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+/* Sub tabs */
+.sub-tabs { display:flex; gap:2px; margin-bottom:16px; }
+.stab { background:var(--surf); border:1px solid var(--border); padding:5px 14px;
+  font-size:11px; font-weight:600; color:var(--muted); cursor:pointer;
+  border-radius:3px; transition:background .1s,color .1s; }
+.stab:hover { color:var(--text); background:var(--surf2); }
+.stab.active { background:var(--surf2); border-color:var(--g-blue); color:var(--text); }
+.sub-panel { display:none; }
+.sub-panel.active { display:block; }
 
-.sh { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; margin-top: 28px; }
-.sh-title { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
-.sh-line { flex: 1; height: 1px; background: var(--border2); }
-.sh-note { font-size: 11px; color: var(--dim); white-space: nowrap; }
+.sh { display:flex; align-items:center; gap:10px; margin-bottom:12px; margin-top:24px; }
+.sh-title { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
+.sh-line { flex:1; height:1px; background:var(--border2); }
+.sh-note { font-size:11px; color:var(--dim); white-space:nowrap; }
 
 /* Funnel strip */
-.funnel-avail {
-  display: grid; grid-template-columns: 1fr 24px 1fr 24px 1fr 24px 1fr;
-  gap: 0; margin-bottom: 16px; align-items: center;
-}
-.fa-step { background: var(--surf); border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px; }
-.fa-arrow { text-align: center; font-size: 14px; color: var(--dim); }
-.fa-label { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 4px; }
-.fa-event { font-size: 10px; color: var(--dim); font-family: 'SF Mono', Menlo, monospace; margin-bottom: 8px; }
-.fa-stat { font-size: 11px; color: var(--muted); line-height: 1.6; }
-.fa-stat strong { color: var(--text); }
-.fa-stat .hi { color: var(--grn); font-weight: 700; }
-.fa-stat .mid { color: var(--amber); font-weight: 700; }
-.fa-stat .lo { color: #e86a45; font-weight: 700; }
-.fa-stat .dim { color: var(--dim); }
-.fa-ok { border-color: #22c99a50; }
-.fa-warn { border-color: #f5a83a50; }
-.fa-partial { border-color: #3d8ef540; }
+.funnel-avail { display:grid; grid-template-columns:1fr 20px 1fr 20px 1fr 20px 1fr; gap:0; margin-bottom:14px; align-items:center; }
+.fa-step { background:var(--surf); border:1px solid var(--border); border-radius:4px; padding:12px 14px; }
+.fa-arrow { text-align:center; font-size:13px; color:var(--dim); }
+.fa-label { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin-bottom:3px; }
+.fa-event { font-size:10px; color:var(--dim); font-family:'SF Mono',Menlo,monospace; margin-bottom:6px; }
+.fa-stat { font-size:11px; color:var(--muted); line-height:1.6; }
+.fa-stat strong { color:var(--text); }
+.fa-stat .hi { color:var(--grn); font-weight:700; }
+.fa-stat .mid { color:var(--amber); font-weight:700; }
+.fa-stat .lo { color:#e86a45; font-weight:700; }
+.fa-stat .dim { color:var(--dim); }
+.fa-ok { border-color:#22c99a50; }
+.fa-warn { border-color:#f5a83a50; }
+.fa-partial { border-color:#3d8ef540; }
 
-/* KYC gap bar */
-.gap-bar { background: var(--surf); border: 1px solid var(--border); border-left: 3px solid var(--amber);
-  border-radius: 0 4px 4px 0; padding: 12px 18px; margin-bottom: 8px;
-  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-.gap-label { font-size: 10px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--amber); white-space: nowrap; }
-.gap-text { font-size: 12px; color: var(--muted); line-height: 1.6; }
-.gap-text strong { color: var(--text); }
-.gap-code { font-family: 'SF Mono', Menlo, monospace; font-size: 11px; color: var(--dim); }
+.gap-bar { background:var(--surf); border:1px solid var(--border); border-left:3px solid var(--amber);
+  border-radius:0 4px 4px 0; padding:10px 16px; margin-bottom:8px;
+  display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+.gap-label { font-size:10px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--amber); white-space:nowrap; }
+.gap-text { font-size:12px; color:var(--muted); line-height:1.6; }
+.gap-text strong { color:var(--text); }
+.gap-code { font-family:'SF Mono',Menlo,monospace; font-size:11px; color:var(--dim); }
 
-/* Week summary */
-.week-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
-.wcard { background: var(--surf); border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px; }
-.wcard.latest { border-color: #22c99a60; }
-.wc-lbl { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
-.wc-dates { font-size: 11px; color: var(--dim); margin-bottom: 12px; }
-.wc-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-.wc-key { font-size: 11px; color: var(--muted); }
-.wc-val { font-size: 12px; font-weight: 600; color: var(--text); }
-.wc-big { font-size: 16px; font-weight: 800; }
-.wc-hi  { color: var(--grn); }
-.wc-mid { color: var(--amber); }
-.wc-lo  { color: #e86a45; }
-.wc-dim { color: var(--dim); }
-.wc-div { height: 1px; background: var(--border2); margin: 7px 0; }
-.wc-note { font-size: 11px; color: var(--muted); margin-top: 8px; padding-top: 6px; border-top: 1px solid var(--border2); }
-.wc-note .up { color: var(--grn); font-weight: 700; }
-.wc-note .na { color: var(--dim); }
+/* Cohort note bar */
+.coh-bar { background:var(--surf); border:1px solid var(--border); border-left:3px solid var(--g-blue);
+  border-radius:0 4px 4px 0; padding:10px 16px; margin-bottom:14px; font-size:12px; color:var(--muted); line-height:1.7; }
+.coh-bar strong { color:var(--text); }
+.coh-bar code { font-family:'SF Mono',Menlo,monospace; font-size:11px; color:var(--dim); }
 
-/* Campaign table */
-.tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 4px; }
-table { width: 100%; border-collapse: collapse; min-width: 1200px; }
-thead th {
-  background: var(--surf2); padding: 8px 10px; text-align: right;
-  font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
-  color: var(--muted); border-bottom: 1px solid var(--border); white-space: nowrap;
-}
-thead th:first-child { text-align: left; min-width: 220px; padding-left: 12px; }
-.th-grp-hd { background: var(--surf); text-align: center !important; font-size: 9px; color: var(--dim);
-  border-left: 1px solid var(--border2); padding: 5px 8px !important; letter-spacing: .08em; }
-.th-grp { border-left: 1px solid var(--border2) !important; }
-.th-ft-total { border-left: 2px solid var(--border) !important; }
+/* Week cards */
+.week-row { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:4px; }
+.wcard { background:var(--surf); border:1px solid var(--border); border-radius:4px; padding:12px 14px; }
+.wcard.latest { border-color:#22c99a60; }
+.wc-lbl { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:2px; }
+.wc-dates { font-size:11px; color:var(--dim); margin-bottom:10px; }
+.wc-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+.wc-key { font-size:11px; color:var(--muted); }
+.wc-val { font-size:12px; font-weight:600; color:var(--text); }
+.wc-big { font-size:15px; font-weight:800; }
+.wc-hi { color:var(--grn); } .wc-mid { color:var(--amber); } .wc-lo { color:#e86a45; } .wc-dim { color:var(--dim); }
+.wc-div { height:1px; background:var(--border2); margin:6px 0; }
+.wc-note { font-size:11px; color:var(--muted); margin-top:6px; padding-top:5px; border-top:1px solid var(--border2); }
+.wc-note .up { color:var(--grn); font-weight:700; }
+.wc-note .na { color:var(--dim); }
 
-tbody tr { border-bottom: 1px solid var(--border2); }
-tbody tr:last-child { border-bottom: none; }
-tbody tr:hover { background: var(--surf2); }
-tbody td { padding: 8px 10px; text-align: right; font-size: 12px; color: var(--text); white-space: nowrap; }
-.td-grp { border-left: 1px solid var(--border2); }
-.td-ft-total { border-left: 2px solid var(--border); }
-
-.camp-name {
-  text-align: left !important; font-size: 11px; color: var(--muted); padding-left: 16px !important;
-  max-width: 220px; overflow: hidden; text-overflow: ellipsis;
-}
-.grp-hd td {
-  background: var(--surf2) !important; padding: 7px 12px !important;
-  font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
-  color: var(--muted); text-align: left !important;
-}
-.grp-hd.junk td { opacity: .7; }
-.grp-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 8px; vertical-align: middle; }
-.grp-meta { font-size: 10px; font-weight: 400; color: var(--dim); text-transform: none; letter-spacing: 0; margin-left: 8px; }
-
-.cvr { font-weight: 700; font-size: 12px; }
-.cvr.hi   { color: var(--grn); }
-.cvr.mid  { color: var(--amber); }
-.cvr.lo   { color: #e86a45; }
-.cvr.dead { color: var(--dim); }
-.cvr.zero { color: var(--border); }
-.ft-hi      { color: var(--grn); font-weight: 700; }
-.ft-partial { color: var(--amber); font-weight: 700; }
-.ft-zero    { color: var(--border); }
-.ft-total   { border-left: 2px solid var(--border) !important; font-weight: 700; }
+/* Tables */
+.tbl-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:4px; }
+table { width:100%; border-collapse:collapse; min-width:900px; }
+thead th { background:var(--surf2); padding:7px 9px; text-align:right;
+  font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--muted); border-bottom:1px solid var(--border); white-space:nowrap; }
+thead th:first-child { text-align:left; min-width:180px; padding-left:12px; }
+.th-grp-hd { background:var(--surf); text-align:center !important; font-size:9px; color:var(--dim);
+  border-left:1px solid var(--border2); padding:5px 8px !important; letter-spacing:.08em; }
+.th-grp { border-left:1px solid var(--border2) !important; }
+.th-ft-total { border-left:2px solid var(--border) !important; }
+tbody tr { border-bottom:1px solid var(--border2); }
+tbody tr:last-child { border-bottom:none; }
+tbody tr:hover { background:var(--surf2); }
+tbody td { padding:7px 9px; text-align:right; font-size:12px; color:var(--text); white-space:nowrap; }
+.td-grp { border-left:1px solid var(--border2); }
+.camp-name { text-align:left !important; font-size:11px; color:var(--muted); padding-left:14px !important;
+  max-width:200px; overflow:hidden; text-overflow:ellipsis; }
+.ch-name { font-size:12px; font-weight:600; color:var(--text); }
+.grp-hd td { background:var(--surf2) !important; padding:6px 12px !important;
+  font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--muted); text-align:left !important; }
+.grp-hd.junk td { opacity:.65; }
+.grp-dot { display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:7px; vertical-align:middle; }
+.grp-meta { font-size:10px; font-weight:400; color:var(--dim); text-transform:none; letter-spacing:0; margin-left:6px; }
+.cvr { font-weight:700; font-size:12px; }
+.cvr.hi { color:var(--grn); } .cvr.mid { color:var(--amber); } .cvr.lo { color:#e86a45; }
+.cvr.dead { color:var(--dim); } .cvr.zero { color:var(--border); }
+.ft-hi { color:var(--grn); font-weight:700; }
+.ft-partial { color:var(--amber); font-weight:700; }
+.ft-zero { color:var(--border); }
+.ft-total { border-left:2px solid var(--border) !important; font-weight:700; }
 
 /* Reads */
-.reads { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.read-card { background: var(--surf); border: 1px solid var(--border); border-radius: 4px; padding: 16px 18px; }
-.read-lbl { font-size: 10px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; margin-bottom: 8px; }
-.read-body { font-size: 12px; color: var(--muted); line-height: 1.75; }
-.read-body strong { color: var(--text); font-weight: 600; }
-
-.footer { margin-top: 40px; padding-top: 14px; border-top: 1px solid var(--border2);
-  font-size: 11px; color: var(--dim); display: flex; gap: 24px; flex-wrap: wrap; }
-
-@media (max-width: 740px) {
-  .funnel-avail { grid-template-columns: 1fr; }
-  .fa-arrow { display: none; }
-  .week-row { grid-template-columns: 1fr 1fr; }
-  .reads { grid-template-columns: 1fr; }
+.reads { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.read-card { background:var(--surf); border:1px solid var(--border); border-radius:4px; padding:14px 16px; }
+.read-lbl { font-size:10px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; margin-bottom:7px; }
+.read-body { font-size:12px; color:var(--muted); line-height:1.75; }
+.read-body strong { color:var(--text); font-weight:600; }
+.footer { margin-top:36px; padding-top:12px; border-top:1px solid var(--border2);
+  font-size:11px; color:var(--dim); display:flex; gap:20px; flex-wrap:wrap; }
+@media(max-width:740px) {
+  .funnel-avail { grid-template-columns:1fr; }
+  .fa-arrow { display:none; }
+  .week-row { grid-template-columns:1fr 1fr; }
+  .reads { grid-template-columns:1fr; }
 }
 </style>
 
@@ -171,57 +154,56 @@ tbody td { padding: 8px 10px; text-align: right; font-size: 12px; color: var(--t
 
 <div class="page">
 
-  <div class="topbar">
-    <div>
-      <div class="hd-eye">Aspero · Growth</div>
-      <div style="display:flex;align-items:baseline;gap:4px">
-        <span class="hd-title">Install → Signup → First Trade</span>
-        <span class="hd-badge">Android · WoW</span>
-      </div>
-      <div class="hd-sub">Channel &amp; campaign funnel · 4 complete Mon–Sun weeks · Jun 8 – Jul 5, 2026 · 1 API call · 998 rows</div>
+<div class="topbar">
+  <div>
+    <div class="hd-eye">Aspero · Growth Marketing</div>
+    <div style="display:flex;align-items:baseline;gap:4px">
+      <span class="hd-title">Install → Signup → First Trade</span>
+      <span class="hd-badge">Android · Jun 8 – Jul 5</span>
     </div>
-    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀ Light mode</button>
+    <div class="hd-sub">Channel &amp; campaign funnel · 4 complete Mon–Sun weeks · 2 API calls · ~1,100 rows · KYC gap noted</div>
   </div>
+  <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀ Light mode</button>
+</div>
 
-  <!-- Funnel availability -->
+<!-- Main tabs -->
+<div class="main-tabs">
+  <button class="mtab active" onclick="switchTab('wow',this)">WoW View</button>
+  <button class="mtab" onclick="switchTab('cohort',this)">Cohort View (approx.)</button>
+</div>
+
+<!-- ═══════════════════ WoW VIEW ═══════════════════ -->
+<div id="panel-wow" class="panel active">
+
   <div class="sh"><span class="sh-title">Funnel tracking status</span><span class="sh-line"></span></div>
   <div class="funnel-avail">
     <div class="fa-step fa-ok">
       <div class="fa-label" style="color:var(--grn)">Install ✓</div>
       <div class="fa-event">Installs column</div>
-      <div class="fa-stat">
-        W1 <strong>20,766</strong> · W2 <strong>19,591</strong><br>
-        W3 <strong>18,663</strong> · W4 <strong>18,984</strong>
-      </div>
+      <div class="fa-stat">W1 <strong>20,766</strong> · W2 <strong>19,591</strong><br>W3 <strong>18,663</strong> · W4 <strong>18,984</strong></div>
     </div>
     <div class="fa-arrow">→</div>
     <div class="fa-step fa-ok">
       <div class="fa-label" style="color:var(--grn)">Signup ✓</div>
       <div class="fa-event">SETUP_SECURE_PIN_SUCCESS</div>
       <div class="fa-stat">
-        W1 <span class="lo">3,170 · 15.3%</span><br>
-        W2 <span class="mid">4,098 · 20.9%</span><br>
-        W3 <span class="mid">4,305 · 23.1%</span><br>
-        W4 <span class="hi">7,514 · 39.6%</span>
+        W1 <span class="lo">3,170 · 15.3%</span><br>W2 <span class="mid">4,098 · 20.9%</span><br>
+        W3 <span class="mid">4,305 · 23.1%</span><br>W4 <span class="hi">7,514 · 39.6%</span>
       </div>
     </div>
     <div class="fa-arrow">→</div>
     <div class="fa-step fa-warn">
-      <div class="fa-label" style="color:var(--amber)">KYC ✗ not tracked</div>
+      <div class="fa-label" style="color:var(--amber)">KYC ✗ gap</div>
       <div class="fa-event">KYC_RISKDETAILS_SUBMIT</div>
-      <div class="fa-stat">
-        <span class="dim">S2S not wired. KYC_DEMAT_VERIFIED<br>column exists but ≈ 0. Tracking gap.</span>
-      </div>
+      <div class="fa-stat"><span class="dim">S2S not wired. All zeros. Fix in yubi-fin-b2c-kyc-service.</span></div>
     </div>
     <div class="fa-arrow" style="color:var(--border)">→</div>
     <div class="fa-step fa-partial">
       <div class="fa-label" style="color:var(--g-blue)">First Trade ✓ (partial)</div>
       <div class="fa-event">FIRST_TRADE_COMPLETED</div>
       <div class="fa-stat">
-        W1 <strong>44</strong> · 1.4% of signups<br>
-        W2 <strong>31</strong> · 0.8% of signups<br>
-        W3 <strong>1</strong> · 0.02% (cohort early)<br>
-        W4 <strong>27</strong> · 0.36% (cohort early)
+        W1 <strong>44</strong> · 1.4% of signups<br>W2 <strong>31</strong> · 0.8%<br>
+        W3 <strong>1</strong> · 0.02% (early)<br>W4 <strong>27</strong> · 0.36% (early)
       </div>
     </div>
   </div>
@@ -229,13 +211,12 @@ tbody td { padding: 8px 10px; text-align: right; font-size: 12px; color: var(--t
   <div class="gap-bar">
     <span class="gap-label">KYC tracking gap</span>
     <span class="gap-text">
-      <span class="gap-code">KYC_RISKDETAILS_SUBMIT</span> and <span class="gap-code">KYC_ESIGN_SUCCESS</span> not in AF at all.
-      Fix: POST these events from <strong>yubi-fin-b2c-user-service</strong> + <strong>yubi-fin-b2c-kyc-service</strong> to AppsFlyer's <span class="gap-code">/inappevent</span> S2S endpoint.
+      <span class="gap-code">KYC_RISKDETAILS_SUBMIT</span> and <span class="gap-code">KYC_ESIGN_SUCCESS</span> not in AF.
+      Fix: POST from <strong>yubi-fin-b2c-user-service</strong> + <strong>yubi-fin-b2c-kyc-service</strong> to AppsFlyer S2S.
     </span>
   </div>
 
-  <!-- 4-week cards -->
-  <div class="sh"><span class="sh-title">Weekly Summary</span><span class="sh-line"></span><span class="sh-note">* W3/W4 FT early — cohort still completing KYC</span></div>
+  <div class="sh"><span class="sh-title">Weekly summary</span><span class="sh-line"></span><span class="sh-note">* W3/W4 FT early — cohort still completing KYC</span></div>
   <div class="week-row">
     <div class="wcard">
       <div class="wc-lbl">Week 1</div><div class="wc-dates">Jun 8 – Jun 14</div>
@@ -279,261 +260,110 @@ tbody td { padding: 8px 10px; text-align: right; font-size: 12px; color: var(--t
     </div>
   </div>
 
-  <!-- Campaign table -->
-  <div class="sh">
-    <span class="sh-title">Campaign WoW · Inst / Sign% / FT per week</span>
-    <span class="sh-line"></span>
-    <span class="sh-note">* W3/W4 FT amber = partial cohort</span>
+  <!-- Sub-tabs: Channel / Campaign -->
+  <div class="sh"><span class="sh-title">Breakdown</span><span class="sh-line"></span><span class="sh-note">* W3/W4 FT amber = partial cohort</span></div>
+  <div class="sub-tabs" id="wow-stabs">
+    <button class="stab active" onclick="switchSub('wow','ch',this)">Channel</button>
+    <button class="stab" onclick="switchSub('wow','camp',this)">Campaign</button>
   </div>
-  <div class="tbl-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th rowspan="2">Campaign</th>
-          <th class="th-grp-hd" colspan="3">W1 · Jun 8–14</th>
-          <th class="th-grp-hd" colspan="3">W2 · Jun 15–21</th>
-          <th class="th-grp-hd" colspan="3">W3 · Jun 22–28</th>
-          <th class="th-grp-hd" colspan="3">W4 · Jun 29–Jul 5</th>
-          <th rowspan="2" class="th-ft-total" style="text-align:center;font-size:9px;color:var(--dim);vertical-align:bottom;padding-bottom:8px">4wk<br>FT</th>
-        </tr>
-        <tr>
-          <th class="th-grp">Inst</th><th>Sign%</th><th>FT</th>
-          <th class="th-grp">Inst</th><th>Sign%</th><th>FT</th>
-          <th class="th-grp">Inst</th><th>Sign%</th><th>FT</th>
-          <th class="th-grp">Inst</th><th>Sign%</th><th>FT</th>
-        </tr>
-      </thead>
-      <tbody>
-
-        <tr class="grp-hd">
-          <td colspan="14" style="border-left:3px solid #3d8ef5">
-            <span class="grp-dot" style="background:#3d8ef5"></span>
-            Google Ads
-            <span class="grp-meta">24,678 installs · 48 FT total</span>
-          </td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #3d8ef520">Payment Success · TCPA (Sep 25)</td>
-          <td class="td-grp">3,415</td><td class="cvr mid">22.3%</td><td class="ft-hi">11</td><td class="td-grp">4,121</td><td class="cvr mid">22.6%</td><td class="ft-hi">9</td><td class="td-grp">4,306</td><td class="cvr mid">28.4%</td><td class="ft-zero">—</td><td class="td-grp">5,659</td><td class="cvr mid">32.7%</td><td class="ft-partial">10</td>
-          <td class="ft-hi ft-total">30</td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #3d8ef520">Payment Success · Firebase (Apr 26)</td>
-          <td class="td-grp">1,992</td><td class="cvr mid">23.8%</td><td class="ft-hi">9</td><td class="td-grp">1,894</td><td class="cvr mid">29.3%</td><td class="ft-hi">7</td><td class="td-grp">824</td><td class="cvr mid">31.6%</td><td class="ft-zero">—</td><td class="td-grp">852</td><td class="cvr mid">33.8%</td><td class="ft-partial">1</td>
-          <td class="ft-hi ft-total">17</td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #3d8ef520">Bank Verified · TCPA (Dec 25)</td>
-          <td class="td-grp">575</td><td class="cvr hi">77.9%</td><td class="ft-hi">1</td><td class="td-grp">898</td><td class="cvr hi">75.5%</td><td class="ft-zero">—</td><td class="td-grp">142</td><td class="cvr hi">76.1%</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td>
-          <td class="ft-hi ft-total">1</td>
-        </tr>
-
-        <tr class="grp-hd">
-          <td colspan="14" style="border-left:3px solid #9b6dff">
-            <span class="grp-dot" style="background:#9b6dff"></span>
-            Meta (Facebook)
-            <span class="grp-meta">7,441 installs · 17 FT total</span>
-          </td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #9b6dff20">HM · Purchase (Feb 26)</td>
-          <td class="td-grp">527</td><td class="cvr hi">69.8%</td><td class="ft-hi">5</td><td class="td-grp">601</td><td class="cvr hi">65.9%</td><td class="ft-hi">2</td><td class="td-grp">990</td><td class="cvr hi">73.4%</td><td class="ft-zero">—</td><td class="td-grp">1,931</td><td class="cvr hi">69.2%</td><td class="ft-partial">8</td>
-          <td class="ft-hi ft-total">15</td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #9b6dff20">Demographic · eSign (Jun 26) ★ NEW</td>
-          <td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">2,559</td><td class="cvr hi">76.1%</td><td class="ft-zero">—</td>
-          <td class="ft-zero ft-total">0</td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #9b6dff20">HM · First Trade (May 26)</td>
-          <td class="td-grp">153</td><td class="cvr mid">45.1%</td><td class="ft-zero">—</td><td class="td-grp">112</td><td class="cvr hi">55.4%</td><td class="ft-hi">2</td><td class="td-grp">234</td><td class="cvr hi">62.0%</td><td class="ft-zero">—</td><td class="td-grp">61</td><td class="cvr hi">65.6%</td><td class="ft-zero">—</td>
-          <td class="ft-hi ft-total">2</td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #9b6dff20">HM · KYC Weekend (Jun 26)</td>
-          <td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">62</td><td class="cvr hi">66.1%</td><td class="ft-zero">—</td><td class="td-grp">53</td><td class="cvr hi">52.8%</td><td class="ft-zero">—</td>
-          <td class="ft-zero ft-total">0</td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #9b6dff20">Meta untagged</td>
-          <td class="td-grp">13</td><td class="cvr hi">61.5%</td><td class="ft-zero">—</td><td class="td-grp">13</td><td class="cvr hi">53.8%</td><td class="ft-zero">—</td><td class="td-grp">29</td><td class="cvr hi">75.9%</td><td class="ft-zero">—</td><td class="td-grp">103</td><td class="cvr hi">68.0%</td><td class="ft-zero">—</td>
-          <td class="ft-zero ft-total">0</td>
-        </tr>
-
-        <tr class="grp-hd">
-          <td colspan="14" style="border-left:3px solid #38c8f0">
-            <span class="grp-dot" style="background:#38c8f0"></span>
-            OEM Channels
-            <span class="grp-meta">11,069 installs · 7 FT total</span>
-          </td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #38c8f020">Xiaomi OEM</td>
-          <td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">54</td><td class="cvr mid">46.3%</td><td class="ft-zero">—</td><td class="td-grp">1,901</td><td class="cvr mid">44.5%</td><td class="ft-zero">—</td><td class="td-grp">1,762</td><td class="cvr hi">52.4%</td><td class="ft-partial">3</td>
-          <td class="ft-hi ft-total">3</td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #38c8f020">Oppo OEM</td>
-          <td class="td-grp">89</td><td class="cvr lo">18.0%</td><td class="ft-zero">—</td><td class="td-grp">611</td><td class="cvr hi">53.4%</td><td class="ft-hi">3</td><td class="td-grp">382</td><td class="cvr hi">52.9%</td><td class="ft-zero">—</td><td class="td-grp">846</td><td class="cvr hi">53.7%</td><td class="ft-partial">1</td>
-          <td class="ft-hi ft-total">4</td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #38c8f020">Vivo OEM ⚠ stopped</td>
-          <td class="td-grp">4,542</td><td class="cvr lo">7.1%</td><td class="ft-zero">—</td><td class="td-grp">879</td><td class="cvr lo">16.4%</td><td class="ft-zero">—</td><td class="td-grp">3</td><td class="cvr dead">0.0%</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td>
-          <td class="ft-zero ft-total">0</td>
-        </tr>
-
-        <tr class="grp-hd">
-          <td colspan="14" style="border-left:3px solid #f5a83a">
-            <span class="grp-dot" style="background:#f5a83a"></span>
-            Jio
-            <span class="grp-meta">1,984 installs · 2 FT total</span>
-          </td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #f5a83a20">Jio WomenPhone</td>
-          <td class="td-grp">2</td><td class="cvr hi">100.0%</td><td class="ft-zero">—</td><td class="td-grp">418</td><td class="cvr hi">52.6%</td><td class="ft-zero">—</td><td class="td-grp">303</td><td class="cvr mid">48.5%</td><td class="ft-partial">1</td><td class="td-grp">53</td><td class="cvr mid">49.1%</td><td class="ft-zero">—</td>
-          <td class="ft-hi ft-total">1</td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #f5a83a20">Jio CoinStack</td>
-          <td class="td-grp">3</td><td class="cvr hi">66.7%</td><td class="ft-zero">—</td><td class="td-grp">402</td><td class="cvr mid">47.8%</td><td class="ft-hi">1</td><td class="td-grp">298</td><td class="cvr mid">43.3%</td><td class="ft-zero">—</td><td class="td-grp">53</td><td class="cvr hi">50.9%</td><td class="ft-zero">—</td>
-          <td class="ft-hi ft-total">1</td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #f5a83a20">Jio Watering Plant</td>
-          <td class="td-grp">8</td><td class="cvr mid">25.0%</td><td class="ft-zero">—</td><td class="td-grp">242</td><td class="cvr mid">47.5%</td><td class="ft-zero">—</td><td class="td-grp">160</td><td class="cvr mid">48.1%</td><td class="ft-zero">—</td><td class="td-grp">42</td><td class="cvr mid">40.5%</td><td class="ft-zero">—</td>
-          <td class="ft-zero ft-total">0</td>
-        </tr>
-
-        <tr class="grp-hd">
-          <td colspan="14" style="border-left:3px solid #22c99a">
-            <span class="grp-dot" style="background:#22c99a"></span>
-            Organic / Other
-            <span class="grp-meta">18,217 installs · 27 FT total</span>
-          </td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #22c99a20">Organic (direct)</td>
-          <td class="td-grp">5,136</td><td class="cvr dead">4.9%</td><td class="ft-hi">1</td><td class="td-grp">6,364</td><td class="cvr dead">3.7%</td><td class="ft-hi">7</td><td class="td-grp">3,018</td><td class="cvr lo">7.6%</td><td class="ft-zero">—</td><td class="td-grp">2,186</td><td class="cvr lo">8.9%</td><td class="ft-partial">3</td>
-          <td class="ft-hi ft-total">11</td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #22c99a20">Employee Referral ★ 27.5% S→FT</td>
-          <td class="td-grp">48</td><td class="cvr hi">83.3%</td><td class="ft-hi">11</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td>
-          <td class="ft-hi ft-total">11</td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #22c99a20">Soken</td>
-          <td class="td-grp">498</td><td class="cvr mid">39.8%</td><td class="ft-hi">3</td><td class="td-grp">250</td><td class="cvr mid">44.0%</td><td class="ft-zero">—</td><td class="td-grp">19</td><td class="cvr mid">42.1%</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td>
-          <td class="ft-hi ft-total">3</td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #22c99a20">Influencer · Aswin</td>
-          <td class="td-grp">40</td><td class="cvr hi">72.5%</td><td class="ft-zero">—</td><td class="td-grp">17</td><td class="cvr hi">58.8%</td><td class="ft-zero">—</td><td class="td-grp">10</td><td class="cvr mid">40.0%</td><td class="ft-zero">—</td><td class="td-grp">32</td><td class="cvr hi">84.4%</td><td class="ft-partial">1</td>
-          <td class="ft-hi ft-total">1</td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #22c99a20">Afnumberone</td>
-          <td class="td-grp">179</td><td class="cvr mid">37.4%</td><td class="ft-hi">1</td><td class="td-grp">113</td><td class="cvr mid">44.2%</td><td class="ft-zero">—</td><td class="td-grp">76</td><td class="cvr mid">38.2%</td><td class="ft-zero">—</td><td class="td-grp">17</td><td class="cvr mid">41.2%</td><td class="ft-zero">—</td>
-          <td class="ft-hi ft-total">1</td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #22c99a20">Commondex</td>
-          <td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">37</td><td class="cvr mid">40.5%</td><td class="ft-zero">—</td><td class="td-grp">153</td><td class="cvr hi">51.6%</td><td class="ft-zero">—</td>
-          <td class="ft-zero ft-total">0</td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #22c99a20">Influencer · RojaKiran</td>
-          <td class="td-grp">1</td><td class="cvr hi">100.0%</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">23</td><td class="cvr hi">69.6%</td><td class="ft-zero">—</td>
-          <td class="ft-zero ft-total">0</td>
-        </tr>
-
-        <tr class="grp-hd junk">
-          <td colspan="14" style="border-left:3px solid #3a4260">
-            <span class="grp-dot" style="background:#3a4260"></span>
-            Junk Networks ×9
-            <span class="grp-meta">zero FT across all 4 weeks — recommend pause/block</span>
-          </td>
-        </tr>
-
-        <tr>
-          <td class="camp-name" style="border-left:3px solid #3a42601a;color:var(--dim)">leukmobi, mobileadv, nfmobi, bigporrs, dreamtaleem, lumolinka, soulaco, s2ssoftsys, kakoads</td>
-          <td class="td-grp">2,855</td><td class="cvr dead">0.3%</td><td class="ft-zero">—</td><td class="td-grp">2,515</td><td class="cvr dead">0.3%</td><td class="ft-zero">—</td><td class="td-grp">4,732</td><td class="cvr dead">0.3%</td><td class="ft-zero">—</td><td class="td-grp">1,603</td><td class="cvr dead">0.9%</td><td class="ft-zero">—</td>
-          <td class="ft-zero">0</td>
-        </tr>
-      </tbody>
-    </table>
+  <div id="wow-ch" class="sub-panel active">
+    <div class="tbl-wrap"><table>
+<thead>
+<tr><th rowspan="2">Channel</th><th class="th-grp-hd" colspan="3">W1 · Jun 8–14</th><th class="th-grp-hd" colspan="3">W2 · Jun 15–21</th><th class="th-grp-hd" colspan="3">W3 · Jun 22–28</th><th class="th-grp-hd" colspan="3">W4 · Jun 29–Jul 5</th><th rowspan="2" class="th-ft-total" style="text-align:center;font-size:9px;color:var(--dim);vertical-align:bottom;padding-bottom:8px">4wk<br>FT</th></tr>
+<tr><th class="th-grp">Inst</th><th>Sign%</th><th>FT</th><th class="th-grp">Inst</th><th>Sign%</th><th>FT</th><th class="th-grp">Inst</th><th>Sign%</th><th>FT</th><th class="th-grp">Inst</th><th>Sign%</th><th>FT</th><th class="th-ft-total">FT Total</th></tr>
+</thead>
+<tbody>
+<tr><td class="camp-name ch-name" style="border-left:3px solid #3d8ef5"><span class="grp-dot" style="background:#3d8ef5"></span>Google Ads</td><td class="td-grp">5,982</td><td class="cvr mid">28%</td><td class="ft-hi">21</td><td class="td-grp">6,913</td><td class="cvr mid">31%</td><td class="ft-hi">16</td><td class="td-grp">5,272</td><td class="cvr mid">30%</td><td class="ft-zero">—</td><td class="td-grp">6,511</td><td class="cvr mid">33%</td><td class="ft-partial">11</td></tr><tr><td class="camp-name ch-name" style="border-left:3px solid #9b6dff"><span class="grp-dot" style="background:#9b6dff"></span>Meta</td><td class="td-grp">693</td><td class="cvr hi">64%</td><td class="ft-hi">5</td><td class="td-grp">726</td><td class="cvr hi">64%</td><td class="ft-hi">4</td><td class="td-grp">1,315</td><td class="cvr hi">71%</td><td class="ft-zero">—</td><td class="td-grp">4,707</td><td class="cvr hi">73%</td><td class="ft-partial">8</td></tr><tr><td class="camp-name ch-name" style="border-left:3px solid #38c8f0"><span class="grp-dot" style="background:#38c8f0"></span>OEM</td><td class="td-grp">4,631</td><td class="cvr lo">7%</td><td class="ft-zero">—</td><td class="td-grp">1,544</td><td class="cvr mid">32%</td><td class="ft-hi">3</td><td class="td-grp">2,286</td><td class="cvr mid">46%</td><td class="ft-zero">—</td><td class="td-grp">2,608</td><td class="cvr hi">53%</td><td class="ft-partial">4</td></tr><tr><td class="camp-name ch-name" style="border-left:3px solid #f5a83a"><span class="grp-dot" style="background:#f5a83a"></span>Jio</td><td class="td-grp">13</td><td class="cvr mid">46%</td><td class="ft-zero">—</td><td class="td-grp">1,062</td><td class="cvr mid">50%</td><td class="ft-hi">1</td><td class="td-grp">761</td><td class="cvr mid">46%</td><td class="ft-partial">1</td><td class="td-grp">148</td><td class="cvr mid">47%</td><td class="ft-zero">—</td></tr><tr><td class="camp-name ch-name" style="border-left:3px solid #22c99a"><span class="grp-dot" style="background:#22c99a"></span>Organic / Other</td><td class="td-grp">5,404</td><td class="cvr lo">7%</td><td class="ft-hi">13</td><td class="td-grp">6,494</td><td class="cvr dead">4%</td><td class="ft-hi">7</td><td class="td-grp">3,141</td><td class="cvr lo">9%</td><td class="ft-zero">—</td><td class="td-grp">2,411</td><td class="cvr lo">13%</td><td class="ft-partial">4</td></tr><tr><td class="camp-name ch-name" style="border-left:3px solid #3a4260"><span class="grp-dot" style="background:#3a4260"></span>Junk</td><td class="td-grp">2,855</td><td class="cvr dead">0%</td><td class="ft-zero">—</td><td class="td-grp">2,515</td><td class="cvr dead">0%</td><td class="ft-zero">—</td><td class="td-grp">4,732</td><td class="cvr dead">0%</td><td class="ft-zero">—</td><td class="td-grp">1,603</td><td class="cvr dead">1%</td><td class="ft-zero">—</td></tr>
+</tbody></table></div>
+  </div>
+  <div id="wow-camp" class="sub-panel">
+    <div class="tbl-wrap"><table>
+<thead>
+<tr><th rowspan="2">Campaign</th><th class="th-grp-hd" colspan="3">W1 · Jun 8–14</th><th class="th-grp-hd" colspan="3">W2 · Jun 15–21</th><th class="th-grp-hd" colspan="3">W3 · Jun 22–28</th><th class="th-grp-hd" colspan="3">W4 · Jun 29–Jul 5</th>
+<th rowspan="2" class="th-ft-total" style="text-align:center;font-size:9px;color:var(--dim);vertical-align:bottom;padding-bottom:8px">4wk<br>FT</th></tr>
+<tr><th class="th-grp">Inst</th><th>Sign%</th><th>FT</th><th class="th-grp">Inst</th><th>Sign%</th><th>FT</th><th class="th-grp">Inst</th><th>Sign%</th><th>FT</th><th class="th-grp">Inst</th><th>Sign%</th><th>FT</th></tr>
+</thead>
+<tbody><tr class="grp-hd"><td colspan="14" style="border-left:3px solid #3d8ef5"><span class="grp-dot" style="background:#3d8ef5"></span>Google Ads<span class="grp-meta">24,678 installs · 48 FT total</span></td></tr><tr><td class="camp-name" style="border-left:3px solid #3d8ef520">Payment Success · TCPA (Sep 25)</td><td class="td-grp">3,415</td><td class="cvr mid">22%</td><td class="ft-hi">11</td><td class="td-grp">4,121</td><td class="cvr mid">23%</td><td class="ft-hi">9</td><td class="td-grp">4,306</td><td class="cvr mid">28%</td><td class="ft-zero">—</td><td class="td-grp">5,659</td><td class="cvr mid">33%</td><td class="ft-partial">10</td><td class="ft-hi ft-total">30</td></tr><tr><td class="camp-name" style="border-left:3px solid #3d8ef520">Payment Success · Firebase (Apr 26)</td><td class="td-grp">1,992</td><td class="cvr mid">24%</td><td class="ft-hi">9</td><td class="td-grp">1,894</td><td class="cvr mid">29%</td><td class="ft-hi">7</td><td class="td-grp">824</td><td class="cvr mid">32%</td><td class="ft-zero">—</td><td class="td-grp">852</td><td class="cvr mid">34%</td><td class="ft-partial">1</td><td class="ft-hi ft-total">17</td></tr><tr><td class="camp-name" style="border-left:3px solid #3d8ef520">Bank Verified · TCPA (Dec 25)</td><td class="td-grp">575</td><td class="cvr hi">78%</td><td class="ft-hi">1</td><td class="td-grp">898</td><td class="cvr hi">76%</td><td class="ft-zero">—</td><td class="td-grp">142</td><td class="cvr hi">76%</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="ft-hi ft-total">1</td></tr><tr class="grp-hd"><td colspan="14" style="border-left:3px solid #9b6dff"><span class="grp-dot" style="background:#9b6dff"></span>Meta<span class="grp-meta">7,441 installs · 17 FT total</span></td></tr><tr><td class="camp-name" style="border-left:3px solid #9b6dff20">HM · Purchase (Feb 26)</td><td class="td-grp">527</td><td class="cvr hi">70%</td><td class="ft-hi">5</td><td class="td-grp">601</td><td class="cvr hi">66%</td><td class="ft-hi">2</td><td class="td-grp">990</td><td class="cvr hi">73%</td><td class="ft-zero">—</td><td class="td-grp">1,931</td><td class="cvr hi">69%</td><td class="ft-partial">8</td><td class="ft-hi ft-total">15</td></tr><tr><td class="camp-name" style="border-left:3px solid #9b6dff20">Demographic · eSign (Jun 26) ★</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">2,559</td><td class="cvr hi">76%</td><td class="ft-zero">—</td><td class="ft-zero ft-total">0</td></tr><tr><td class="camp-name" style="border-left:3px solid #9b6dff20">HM · First Trade (May 26)</td><td class="td-grp">153</td><td class="cvr mid">45%</td><td class="ft-zero">—</td><td class="td-grp">112</td><td class="cvr hi">55%</td><td class="ft-hi">2</td><td class="td-grp">234</td><td class="cvr hi">62%</td><td class="ft-zero">—</td><td class="td-grp">61</td><td class="cvr hi">66%</td><td class="ft-zero">—</td><td class="ft-hi ft-total">2</td></tr><tr><td class="camp-name" style="border-left:3px solid #9b6dff20">HM · KYC Weekend (Jun 26)</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">62</td><td class="cvr hi">66%</td><td class="ft-zero">—</td><td class="td-grp">53</td><td class="cvr hi">53%</td><td class="ft-zero">—</td><td class="ft-zero ft-total">0</td></tr><tr><td class="camp-name" style="border-left:3px solid #9b6dff20">Meta untagged</td><td class="td-grp">13</td><td class="cvr hi">62%</td><td class="ft-zero">—</td><td class="td-grp">13</td><td class="cvr hi">54%</td><td class="ft-zero">—</td><td class="td-grp">29</td><td class="cvr hi">76%</td><td class="ft-zero">—</td><td class="td-grp">103</td><td class="cvr hi">68%</td><td class="ft-zero">—</td><td class="ft-zero ft-total">0</td></tr><tr class="grp-hd"><td colspan="14" style="border-left:3px solid #38c8f0"><span class="grp-dot" style="background:#38c8f0"></span>OEM<span class="grp-meta">11,069 installs · 7 FT total</span></td></tr><tr><td class="camp-name" style="border-left:3px solid #38c8f020">Xiaomi OEM</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">54</td><td class="cvr mid">46%</td><td class="ft-zero">—</td><td class="td-grp">1,901</td><td class="cvr mid">44%</td><td class="ft-zero">—</td><td class="td-grp">1,762</td><td class="cvr hi">52%</td><td class="ft-partial">3</td><td class="ft-hi ft-total">3</td></tr><tr><td class="camp-name" style="border-left:3px solid #38c8f020">Oppo OEM</td><td class="td-grp">89</td><td class="cvr lo">18%</td><td class="ft-zero">—</td><td class="td-grp">611</td><td class="cvr hi">53%</td><td class="ft-hi">3</td><td class="td-grp">382</td><td class="cvr hi">53%</td><td class="ft-zero">—</td><td class="td-grp">846</td><td class="cvr hi">54%</td><td class="ft-partial">1</td><td class="ft-hi ft-total">4</td></tr><tr><td class="camp-name" style="border-left:3px solid #38c8f020">Vivo OEM ⚠ stopped</td><td class="td-grp">4,542</td><td class="cvr lo">7%</td><td class="ft-zero">—</td><td class="td-grp">879</td><td class="cvr lo">16%</td><td class="ft-zero">—</td><td class="td-grp">3</td><td class="cvr dead">0%</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="ft-zero ft-total">0</td></tr><tr class="grp-hd"><td colspan="14" style="border-left:3px solid #f5a83a"><span class="grp-dot" style="background:#f5a83a"></span>Jio<span class="grp-meta">1,984 installs · 2 FT total</span></td></tr><tr><td class="camp-name" style="border-left:3px solid #f5a83a20">Jio WomenPhone</td><td class="td-grp">2</td><td class="cvr hi">100%</td><td class="ft-zero">—</td><td class="td-grp">418</td><td class="cvr hi">53%</td><td class="ft-zero">—</td><td class="td-grp">303</td><td class="cvr mid">48%</td><td class="ft-partial">1</td><td class="td-grp">53</td><td class="cvr mid">49%</td><td class="ft-zero">—</td><td class="ft-hi ft-total">1</td></tr><tr><td class="camp-name" style="border-left:3px solid #f5a83a20">Jio CoinStack</td><td class="td-grp">3</td><td class="cvr hi">67%</td><td class="ft-zero">—</td><td class="td-grp">402</td><td class="cvr mid">48%</td><td class="ft-hi">1</td><td class="td-grp">298</td><td class="cvr mid">43%</td><td class="ft-zero">—</td><td class="td-grp">53</td><td class="cvr hi">51%</td><td class="ft-zero">—</td><td class="ft-hi ft-total">1</td></tr><tr><td class="camp-name" style="border-left:3px solid #f5a83a20">Jio Watering Plant</td><td class="td-grp">8</td><td class="cvr mid">25%</td><td class="ft-zero">—</td><td class="td-grp">242</td><td class="cvr mid">48%</td><td class="ft-zero">—</td><td class="td-grp">160</td><td class="cvr mid">48%</td><td class="ft-zero">—</td><td class="td-grp">42</td><td class="cvr mid">40%</td><td class="ft-zero">—</td><td class="ft-zero ft-total">0</td></tr><tr class="grp-hd"><td colspan="14" style="border-left:3px solid #22c99a"><span class="grp-dot" style="background:#22c99a"></span>Organic / Other<span class="grp-meta">17,450 installs · 24 FT total</span></td></tr><tr><td class="camp-name" style="border-left:3px solid #22c99a20">Organic (direct)</td><td class="td-grp">5,136</td><td class="cvr dead">5%</td><td class="ft-hi">1</td><td class="td-grp">6,364</td><td class="cvr dead">4%</td><td class="ft-hi">7</td><td class="td-grp">3,018</td><td class="cvr lo">8%</td><td class="ft-zero">—</td><td class="td-grp">2,186</td><td class="cvr lo">9%</td><td class="ft-partial">3</td><td class="ft-hi ft-total">11</td></tr><tr><td class="camp-name" style="border-left:3px solid #22c99a20">Employee Referral ★ 22.9% FT D+30</td><td class="td-grp">48</td><td class="cvr hi">83%</td><td class="ft-hi">11</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="ft-hi ft-total">11</td></tr><tr><td class="camp-name" style="border-left:3px solid #22c99a20">Influencer · Aswin</td><td class="td-grp">40</td><td class="cvr hi">72%</td><td class="ft-zero">—</td><td class="td-grp">17</td><td class="cvr hi">59%</td><td class="ft-zero">—</td><td class="td-grp">10</td><td class="cvr mid">40%</td><td class="ft-zero">—</td><td class="td-grp">32</td><td class="cvr hi">84%</td><td class="ft-partial">1</td><td class="ft-hi ft-total">1</td></tr><tr><td class="camp-name" style="border-left:3px solid #22c99a20">Afnumberone</td><td class="td-grp">179</td><td class="cvr mid">37%</td><td class="ft-hi">1</td><td class="td-grp">113</td><td class="cvr mid">44%</td><td class="ft-zero">—</td><td class="td-grp">76</td><td class="cvr mid">38%</td><td class="ft-zero">—</td><td class="td-grp">17</td><td class="cvr mid">41%</td><td class="ft-zero">—</td><td class="ft-hi ft-total">1</td></tr><tr><td class="camp-name" style="border-left:3px solid #22c99a20">Commondex</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">37</td><td class="cvr mid">40%</td><td class="ft-zero">—</td><td class="td-grp">153</td><td class="cvr hi">52%</td><td class="ft-zero">—</td><td class="ft-zero ft-total">0</td></tr><tr><td class="camp-name" style="border-left:3px solid #22c99a20">Influencer · RojaKiran</td><td class="td-grp">1</td><td class="cvr hi">100%</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td class="cvr zero">—</td><td class="ft-zero">—</td><td class="td-grp">23</td><td class="cvr hi">70%</td><td class="ft-zero">—</td><td class="ft-zero ft-total">0</td></tr><tr class="grp-hd junk"><td colspan="14" style="border-left:3px solid #3a4260"><span class="grp-dot" style="background:#3a4260"></span>Junk Networks ×9<span class="grp-meta">zero FT across 4 weeks — recommend block</span></td></tr><tr><td class="camp-name" style="border-left:3px solid #3a42601a;color:var(--dim)">leukmobi · mobileadv · nfmobi · bigporrs · dreamtaleem · lumolinka · soula · s2s · kakoads</td><td class="td-grp">2,855</td><td class="cvr dead">0%</td><td class="ft-zero">—</td><td class="td-grp">2,515</td><td class="cvr dead">0%</td><td class="ft-zero">—</td><td class="td-grp">4,732</td><td class="cvr dead">0%</td><td class="ft-zero">—</td><td class="td-grp">1,603</td><td class="cvr dead">1%</td><td class="ft-zero">—</td><td class="ft-zero ft-total">0</td></tr></tbody></table></div>
   </div>
 
-  <!-- Key reads -->
   <div class="sh"><span class="sh-title">Key reads</span><span class="sh-line"></span></div>
   <div class="reads">
     <div class="read-card">
       <div class="read-lbl" style="color:var(--m-purple)">Meta scaled 6.7× — signup CVR confirmed, FT TBD</div>
-      <div class="read-body">
-        Meta's <strong>HM · Purchase</strong> campaign scaled from 527 → 1,931 installs/wk at 65–73% signup CVR.
-        The new <strong>Demographic · eSign</strong> campaign launched W4 (2,559 installs, 76% CVR, 0 FT yet).
-        W1 HM-Purchase shows <strong>1.1% S→FT</strong> (5 of 445) — on par with Google. 4–6 weeks needed to confirm FT quality for W3/W4 cohorts.
-      </div>
+      <div class="read-body">Meta's <strong>HM · Purchase</strong> campaign scaled from 527 → 1,931 installs/wk at 65–80% signup CVR.
+      New <strong>Demographic · eSign</strong> launched W4 (2,559 installs, 76% CVR, 0 FT yet).
+      W1 HM-Purchase: <strong>1.3% S→FT</strong> — comparable to Google.</div>
     </div>
     <div class="read-card">
       <div class="read-lbl" style="color:var(--g-blue)">Google: TCPA drives volume, Firebase drives quality</div>
-      <div class="read-body">
-        <strong>TCPA campaign</strong> (Sep 25): 17,501 installs, 22–33% CVR, 30 FT — largest FT contributor.
-        <strong>Firebase campaign</strong> (Apr 26): 5,562 installs, 24–34% CVR, 17 FT — higher FT/install ratio.
-        <strong>BankVerified TCPA</strong> (Dec 25): 76–78% signup CVR but scaled down to 0 in W4 — worth investigating why it stopped.
-      </div>
+      <div class="read-body"><strong>TCPA</strong> (Sep 25): 17,501 installs, 22–33% signup CVR, 30 FT total.
+      <strong>Firebase</strong> (Apr 26): 5,562 installs, 24–34% CVR, 17 FT — better FT/install ratio.
+      <strong>BankVerified TCPA</strong>: 76–78% signup CVR but scaled to 0 in W4 — worth investigating.</div>
     </div>
     <div class="read-card">
       <div class="read-lbl" style="color:#f0e050">Employee referral: 27.5% S→FT — 20× Google rate</div>
-      <div class="read-body">
-        W1 only, 48 installs → 40 signups (83%) → 11 FT (27.5%).
-        That's 20× Google's rate (1.4%) and 2× the total FT count for Meta across all 4 weeks.
-        Volume is tiny but the intent signal is clear — structured referral programme worth evaluating.
-      </div>
+      <div class="read-body">W1 only, 48 installs → 40 signups (83%) → 11 FT (27.5%).
+      <strong>Cohort D+30 FT: 22.9%</strong> of installs convert to first trade.
+      Volume is tiny but intent signal is the highest in the dataset.</div>
     </div>
     <div class="read-card">
       <div class="read-lbl" style="color:var(--red)">Vivo stopped · 13k installs wasted on junk</div>
-      <div class="read-body">
-        Vivo OEM went from 4,542 installs (W1) to 0 (W4) — channel appears paused.
-        9 junk networks delivered <strong>13,903 installs</strong>, 58 signups (0.4% CVR), and <strong>zero FT</strong> across 4 weeks.
-        Budget here is entirely wasted — recommend blocking all 9 networks at campaign level.
-      </div>
+      <div class="read-body">Vivo OEM: 4,542 installs (W1) → 0 (W4) — paused.
+      9 junk networks: <strong>13,903 installs</strong>, 58 signups (0.4%), <strong>zero FT</strong> across 4 weeks.
+      Recommend blocking all 9 networks immediately.</div>
     </div>
   </div>
 
-  <div class="footer">
-    <span>Android only · iOS pending</span>
-    <span>1 API call · 998 rows · Jun 8 – Jul 5, 2026</span>
-    <span>KYC needs S2S wiring in yubi-fin-b2c-user-service + kyc-service</span>
-    <span>* W3/W4 FT partial — cohort early</span>
-    <span>Generated Jul 11, 2026</span>
+</div><!-- /panel-wow -->
+
+<!-- ═══════════════════ COHORT VIEW ═══════════════════ -->
+<div id="panel-cohort" class="panel">
+
+  <div class="coh-bar">
+    <strong>Approximate cohort view</strong> — derived from aggregate data (AppsFlyer Cohort API not available on current plan).
+    Method: for each install week, sum events fired from <code>install_start</code> through <code>install_start + D</code> days for the same media source / campaign.
+    <strong>Signup D+7</strong> is reliable (most signups happen within 1–3 days of install).
+    <strong>FT D+7/D+14/D+30</strong> are approximate — events from users who installed in later weeks can cross-contaminate earlier windows.
+    <strong>~ = incomplete window</strong> (data ends Jul 10; window extends past that).
   </div>
 
+  <!-- Sub-tabs: Channel / Campaign -->
+  <div class="sub-tabs" id="cohort-stabs">
+    <button class="stab active" onclick="switchSub('cohort','ch',this)">Channel</button>
+    <button class="stab" onclick="switchSub('cohort','camp',this)">Campaign</button>
+  </div>
+
+  <div id="cohort-ch" class="sub-panel active">
+    <div class="sh"><span class="sh-title">Channel cohort · Inst / Sign D+7 / FT D+7 · D+14 · D+30</span><span class="sh-line"></span><span class="sh-note">~ = window not complete by Jul 10</span></div>
+    <div class="tbl-wrap"><table>
+<thead>
+<tr><th rowspan="2">Channel</th><th class="th-grp-hd" colspan="5">W1 · Jun 8–14</th><th class="th-grp-hd" colspan="5">W2 · Jun 15–21</th><th class="th-grp-hd" colspan="5">W3 · Jun 22–28</th><th class="th-grp-hd" colspan="5">W4 · Jun 29–Jul 5</th></tr>
+<tr><th class="th-grp">Inst</th><th>Sign D+7</th><th>FT D+7</th><th>FT D+14</th><th>FT D+30</th><th class="th-grp">Inst</th><th>Sign D+7</th><th>FT D+7</th><th>FT D+14</th><th>FT D+30~</th><th class="th-grp">Inst</th><th>Sign D+7</th><th>FT D+7</th><th>FT D+14</th><th>FT D+30~</th><th class="th-grp">Inst</th><th>Sign D+7</th><th>FT D+7</th><th>FT D+14~</th><th>FT D+30~</th></tr>
+</thead>
+<tbody><tr><td class="camp-name ch-name" style="border-left:3px solid #3d8ef5"><span class="grp-dot" style="background:#3d8ef5"></span>Google Ads</td><td class="td-grp">5,982</td><td class="cvr mid">34%</td><td class="ft-hi">0.3%</td><td class="ft-hi">0.6%</td><td class="ft-hi">0.8%</td><td class="td-grp">6,913</td><td class="cvr mid">35%</td><td class="ft-hi">0.2%</td><td class="ft-hi">0.2%</td><td class="ft-partial">0.4%~</td><td class="td-grp">5,272</td><td class="cvr mid">36%</td><td class="ft-zero">—</td><td class="ft-hi">0.2%</td><td class="ft-partial">0.2%~</td><td class="td-grp">6,511</td><td class="cvr mid">39%</td><td class="ft-hi">0.2%</td><td class="ft-partial">0.2%~</td><td class="ft-partial">0.2%~</td></tr><tr><td class="camp-name ch-name" style="border-left:3px solid #9b6dff"><span class="grp-dot" style="background:#9b6dff"></span>Meta</td><td class="td-grp">693</td><td class="cvr hi">75%</td><td class="ft-hi">0.7%</td><td class="ft-hi">1.3%</td><td class="ft-hi">2.5%</td><td class="td-grp">726</td><td class="cvr hi">74%</td><td class="ft-hi">0.6%</td><td class="ft-hi">0.6%</td><td class="ft-partial">1.9%~</td><td class="td-grp">1,315</td><td class="cvr hi">83%</td><td class="ft-zero">—</td><td class="ft-hi">0.6%</td><td class="ft-partial">0.8%~</td><td class="td-grp">4,707</td><td class="cvr hi">82%</td><td class="ft-hi">0.2%</td><td class="ft-partial">0.2%~</td><td class="ft-partial">0.2%~</td></tr><tr><td class="camp-name ch-name" style="border-left:3px solid #38c8f0"><span class="grp-dot" style="background:#38c8f0"></span>OEM</td><td class="td-grp">4,631</td><td class="cvr lo">10%</td><td class="ft-zero">—</td><td class="ft-hi">0.1%</td><td class="ft-hi">0.1%</td><td class="td-grp">1,544</td><td class="cvr mid">37%</td><td class="ft-hi">0.2%</td><td class="ft-hi">0.2%</td><td class="ft-partial">0.6%~</td><td class="td-grp">2,286</td><td class="cvr hi">52%</td><td class="ft-zero">—</td><td class="ft-hi">0.2%</td><td class="ft-partial">0.3%~</td><td class="td-grp">2,608</td><td class="cvr hi">62%</td><td class="ft-hi">0.1%</td><td class="ft-partial">0.2%~</td><td class="ft-partial">0.2%~</td></tr><tr><td class="camp-name ch-name" style="border-left:3px solid #f5a83a"><span class="grp-dot" style="background:#f5a83a"></span>Jio</td><td class="td-grp">13</td><td class="cvr hi">223%</td><td class="ft-zero">—</td><td class="ft-hi">7.7%</td><td class="ft-hi">15.4%</td><td class="td-grp">1,062</td><td class="cvr hi">53%</td><td class="ft-hi">0.1%</td><td class="ft-hi">0.2%</td><td class="ft-partial">0.2%~</td><td class="td-grp">761</td><td class="cvr hi">50%</td><td class="ft-hi">0.1%</td><td class="ft-hi">0.1%</td><td class="ft-partial">0.1%~</td><td class="td-grp">148</td><td class="cvr hi">74%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td></tr><tr><td class="camp-name ch-name" style="border-left:3px solid #22c99a"><span class="grp-dot" style="background:#22c99a"></span>Organic / Other</td><td class="td-grp">5,404</td><td class="cvr lo">8%</td><td class="ft-hi">0.2%</td><td class="ft-hi">0.4%</td><td class="ft-hi">0.4%</td><td class="td-grp">6,494</td><td class="cvr lo">5%</td><td class="ft-hi">0.1%</td><td class="ft-hi">0.1%</td><td class="ft-partial">0.2%~</td><td class="td-grp">3,141</td><td class="cvr lo">10%</td><td class="ft-zero">—</td><td class="ft-hi">0.1%</td><td class="ft-partial">0.2%~</td><td class="td-grp">2,411</td><td class="cvr lo">16%</td><td class="ft-hi">0.2%</td><td class="ft-partial">0.2%~</td><td class="ft-partial">0.2%~</td></tr><tr><td class="camp-name ch-name" style="border-left:3px solid #3a4260"><span class="grp-dot" style="background:#3a4260"></span>Junk</td><td class="td-grp">2,855</td><td class="cvr dead">0%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">2,515</td><td class="cvr dead">0%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">4,732</td><td class="cvr dead">0%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">1,603</td><td class="cvr dead">1%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td></tr></tbody></table></div>
+  </div>
+
+  <div id="cohort-camp" class="sub-panel">
+    <div class="sh"><span class="sh-title">Campaign cohort · Inst / Sign D+7 / FT D+7 · D+14 · D+30</span><span class="sh-line"></span><span class="sh-note">~ = window not complete by Jul 10</span></div>
+    <div class="tbl-wrap"><table>
+<thead>
+<tr><th rowspan="2">Campaign</th><th class="th-grp-hd" colspan="5">W1 · Jun 8–14</th><th class="th-grp-hd" colspan="5">W2 · Jun 15–21</th><th class="th-grp-hd" colspan="5">W3 · Jun 22–28</th><th class="th-grp-hd" colspan="5">W4 · Jun 29–Jul 5</th></tr>
+<tr><th class="th-grp">Inst</th><th>Sign D+7</th><th>FT D+7</th><th>FT D+14</th><th>FT D+30</th><th class="th-grp">Inst</th><th>Sign D+7</th><th>FT D+7</th><th>FT D+14</th><th>FT D+30~</th><th class="th-grp">Inst</th><th>Sign D+7</th><th>FT D+7</th><th>FT D+14</th><th>FT D+30~</th><th class="th-grp">Inst</th><th>Sign D+7</th><th>FT D+7</th><th>FT D+14~</th><th>FT D+30~</th></tr>
+</thead>
+<tbody><tr class="grp-hd"><td colspan="21" style="border-left:3px solid #3d8ef5"><span class="grp-dot" style="background:#3d8ef5"></span>Google Ads<span class="grp-meta">5,982 W1 installs · 49 W1 FT D+30</span></td></tr><tr><td class="camp-name" style="border-left:3px solid #3d8ef520">Payment Success · TCPA (Sep 25)</td><td class="td-grp">3,415</td><td class="cvr mid">26%</td><td class="ft-hi">0.3%</td><td class="ft-hi">0.6%</td><td class="ft-hi">0.9%</td><td class="td-grp">4,121</td><td class="cvr mid">26%</td><td class="ft-hi">0.2%</td><td class="ft-hi">0.2%</td><td class="ft-partial">0.5%~</td><td class="td-grp">4,306</td><td class="cvr mid">33%</td><td class="ft-zero">—</td><td class="ft-hi">0.3%</td><td class="ft-partial">0.3%~</td><td class="td-grp">5,659</td><td class="cvr mid">39%</td><td class="ft-hi">0.2%</td><td class="ft-partial">0.2%~</td><td class="ft-partial">0.2%~</td></tr><tr><td class="camp-name" style="border-left:3px solid #3d8ef520">Payment Success · Firebase (Apr 26)</td><td class="td-grp">1,992</td><td class="cvr mid">29%</td><td class="ft-hi">0.5%</td><td class="ft-hi">0.8%</td><td class="ft-hi">0.8%</td><td class="td-grp">1,894</td><td class="cvr mid">30%</td><td class="ft-hi">0.4%</td><td class="ft-hi">0.4%</td><td class="ft-partial">0.4%~</td><td class="td-grp">824</td><td class="cvr mid">43%</td><td class="ft-zero">—</td><td class="ft-hi">0.1%</td><td class="ft-partial">0.1%~</td><td class="td-grp">852</td><td class="cvr mid">37%</td><td class="ft-hi">0.1%</td><td class="ft-partial">0.1%~</td><td class="ft-partial">0.1%~</td></tr><tr><td class="camp-name" style="border-left:3px solid #3d8ef520">Bank Verified · TCPA (Dec 25)</td><td class="td-grp">575</td><td class="cvr hi">96%</td><td class="ft-hi">0.2%</td><td class="ft-hi">0.2%</td><td class="ft-hi">0.2%</td><td class="td-grp">898</td><td class="cvr hi">86%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">142</td><td class="cvr hi">76%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td>—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td></tr><tr class="grp-hd"><td colspan="21" style="border-left:3px solid #9b6dff"><span class="grp-dot" style="background:#9b6dff"></span>Meta<span class="grp-meta">693 W1 installs · 17 W1 FT D+30</span></td></tr><tr><td class="camp-name" style="border-left:3px solid #9b6dff20">HM · Purchase (Feb 26)</td><td class="td-grp">527</td><td class="cvr hi">80%</td><td class="ft-hi">0.9%</td><td class="ft-hi">1.3%</td><td class="ft-hi">2.9%</td><td class="td-grp">601</td><td class="cvr hi">77%</td><td class="ft-hi">0.3%</td><td class="ft-hi">0.3%</td><td class="ft-partial">1.8%~</td><td class="td-grp">990</td><td class="cvr hi">85%</td><td class="ft-zero">—</td><td class="ft-hi">0.8%</td><td class="ft-partial">0.9%~</td><td class="td-grp">1,931</td><td class="cvr hi">74%</td><td class="ft-hi">0.4%</td><td class="ft-partial">0.5%~</td><td class="ft-partial">0.5%~</td></tr><tr><td class="camp-name" style="border-left:3px solid #9b6dff20">Demographic · eSign (Jun 26) ★</td><td class="td-grp">—</td><td>—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td>—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td>—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">2,559</td><td class="cvr hi">89%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td></tr><tr><td class="camp-name" style="border-left:3px solid #9b6dff20">HM · First Trade (May 26)</td><td class="td-grp">153</td><td class="cvr hi">55%</td><td class="ft-zero">—</td><td class="ft-hi">1.3%</td><td class="ft-hi">1.3%</td><td class="td-grp">112</td><td class="cvr hi">63%</td><td class="ft-hi">1.8%</td><td class="ft-hi">1.8%</td><td class="ft-partial">2.7%~</td><td class="td-grp">234</td><td class="cvr hi">72%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-partial">0.4%~</td><td class="td-grp">61</td><td class="cvr hi">67%</td><td class="ft-zero">—</td><td class="ft-partial">1.6%~</td><td class="ft-partial">1.6%~</td></tr><tr><td class="camp-name" style="border-left:3px solid #9b6dff20">HM · KYC Weekend (Jun 26)</td><td class="td-grp">—</td><td>—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td>—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">62</td><td class="cvr hi">86%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">53</td><td class="cvr hi">57%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td></tr><tr><td class="camp-name" style="border-left:3px solid #9b6dff20">Meta untagged</td><td class="td-grp">13</td><td class="cvr hi">69%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">13</td><td class="cvr hi">62%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">29</td><td class="cvr hi">93%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">103</td><td class="cvr hi">72%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td></tr><tr class="grp-hd"><td colspan="21" style="border-left:3px solid #38c8f0"><span class="grp-dot" style="background:#38c8f0"></span>OEM<span class="grp-meta">4,631 W1 installs · 4 W1 FT D+30</span></td></tr><tr><td class="camp-name" style="border-left:3px solid #38c8f020">Xiaomi OEM</td><td class="td-grp">—</td><td>—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">54</td><td class="cvr hi">113%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-partial">9.3%~</td><td class="td-grp">1,901</td><td class="cvr hi">50%</td><td class="ft-zero">—</td><td class="ft-hi">0.2%</td><td class="ft-partial">0.3%~</td><td class="td-grp">1,762</td><td class="cvr hi">61%</td><td class="ft-hi">0.2%</td><td class="ft-partial">0.3%~</td><td class="ft-partial">0.3%~</td></tr><tr><td class="camp-name" style="border-left:3px solid #38c8f020">Oppo OEM</td><td class="td-grp">89</td><td class="cvr lo">18%</td><td class="ft-zero">—</td><td class="ft-hi">3.4%</td><td class="ft-hi">4.5%</td><td class="td-grp">611</td><td class="cvr hi">60%</td><td class="ft-hi">0.5%</td><td class="ft-hi">0.5%</td><td class="ft-partial">0.7%~</td><td class="td-grp">382</td><td class="cvr hi">60%</td><td class="ft-zero">—</td><td class="ft-hi">0.3%</td><td class="ft-partial">0.3%~</td><td class="td-grp">846</td><td class="cvr hi">63%</td><td class="ft-hi">0.1%</td><td class="ft-partial">0.1%~</td><td class="ft-partial">0.1%~</td></tr><tr><td class="camp-name" style="border-left:3px solid #38c8f020">Vivo OEM ⚠ stopped</td><td class="td-grp">4,542</td><td class="cvr lo">10%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">879</td><td class="cvr lo">16%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">3</td><td class="cvr dead">0%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td>—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td></tr><tr class="grp-hd"><td colspan="21" style="border-left:3px solid #f5a83a"><span class="grp-dot" style="background:#f5a83a"></span>Jio<span class="grp-meta">13 W1 installs · 2 W1 FT D+30</span></td></tr><tr><td class="camp-name" style="border-left:3px solid #f5a83a20">Jio WomenPhone</td><td class="td-grp">2</td><td class="cvr hi">250%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-hi">50.0%</td><td class="td-grp">418</td><td class="cvr hi">55%</td><td class="ft-zero">—</td><td class="ft-hi">0.2%</td><td class="ft-partial">0.2%~</td><td class="td-grp">303</td><td class="cvr hi">53%</td><td class="ft-hi">0.3%</td><td class="ft-hi">0.3%</td><td class="ft-partial">0.3%~</td><td class="td-grp">53</td><td class="cvr hi">53%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td></tr><tr><td class="camp-name" style="border-left:3px solid #f5a83a20">Jio CoinStack</td><td class="td-grp">3</td><td class="cvr hi">333%</td><td class="ft-zero">—</td><td class="ft-hi">33.3%</td><td class="ft-hi">33.3%</td><td class="td-grp">402</td><td class="cvr hi">52%</td><td class="ft-hi">0.2%</td><td class="ft-hi">0.2%</td><td class="ft-partial">0.2%~</td><td class="td-grp">298</td><td class="cvr mid">46%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">53</td><td class="cvr hi">119%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td></tr><tr><td class="camp-name" style="border-left:3px solid #f5a83a20">Jio Watering Plant</td><td class="td-grp">8</td><td class="cvr hi">175%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">242</td><td class="cvr hi">50%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">160</td><td class="cvr hi">52%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">42</td><td class="cvr mid">43%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td></tr><tr class="grp-hd"><td colspan="21" style="border-left:3px solid #22c99a"><span class="grp-dot" style="background:#22c99a"></span>Organic / Other<span class="grp-meta">5,404 W1 installs · 24 W1 FT D+30</span></td></tr><tr><td class="camp-name" style="border-left:3px solid #22c99a20">Organic (direct)</td><td class="td-grp">5,136</td><td class="cvr lo">6%</td><td class="ft-hi">0.0%</td><td class="ft-hi">0.2%</td><td class="ft-hi">0.2%</td><td class="td-grp">6,364</td><td class="cvr dead">4%</td><td class="ft-hi">0.1%</td><td class="ft-hi">0.1%</td><td class="ft-partial">0.2%~</td><td class="td-grp">3,018</td><td class="cvr lo">8%</td><td class="ft-zero">—</td><td class="ft-hi">0.1%</td><td class="ft-partial">0.2%~</td><td class="td-grp">2,186</td><td class="cvr lo">10%</td><td class="ft-hi">0.1%</td><td class="ft-partial">0.2%~</td><td class="ft-partial">0.2%~</td></tr><tr><td class="camp-name" style="border-left:3px solid #22c99a20">Employee Referral ★ 22.9% FT D+30</td><td class="td-grp">48</td><td class="cvr hi">83%</td><td class="ft-hi">22.9%</td><td class="ft-hi">22.9%</td><td class="ft-hi">22.9%</td><td class="td-grp">—</td><td>—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td>—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td>—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td></tr><tr><td class="camp-name" style="border-left:3px solid #22c99a20">Influencer · Aswin</td><td class="td-grp">40</td><td class="cvr hi">80%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-hi">2.5%</td><td class="td-grp">17</td><td class="cvr hi">65%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-partial">5.9%~</td><td class="td-grp">10</td><td class="cvr hi">50%</td><td class="ft-zero">—</td><td class="ft-hi">10.0%</td><td class="ft-partial">10.0%~</td><td class="td-grp">32</td><td class="cvr hi">97%</td><td class="ft-hi">3.1%</td><td class="ft-partial">3.1%~</td><td class="ft-partial">3.1%~</td></tr><tr><td class="camp-name" style="border-left:3px solid #22c99a20">Afnumberone</td><td class="td-grp">179</td><td class="cvr mid">41%</td><td class="ft-hi">0.6%</td><td class="ft-hi">0.6%</td><td class="ft-hi">0.6%</td><td class="td-grp">113</td><td class="cvr mid">50%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">76</td><td class="cvr mid">46%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">17</td><td class="cvr mid">41%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td></tr><tr><td class="camp-name" style="border-left:3px solid #22c99a20">Commondex</td><td class="td-grp">—</td><td>—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td>—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">37</td><td class="cvr mid">46%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">153</td><td class="cvr hi">64%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td></tr><tr><td class="camp-name" style="border-left:3px solid #22c99a20">Influencer · RojaKiran</td><td class="td-grp">1</td><td class="cvr hi">100%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td>—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">—</td><td>—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">23</td><td class="cvr hi">74%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td></tr><tr class="grp-hd junk"><td colspan="21" style="border-left:3px solid #3a4260"><span class="grp-dot" style="background:#3a4260"></span>Junk Networks ×9<span class="grp-meta">0% FT across all windows — recommend block</span></td></tr><tr><td class="camp-name" style="border-left:3px solid #3a42601a;color:var(--dim)">leukmobi · mobileadv · nfmobi · bigporrs · dreamtaleem · lumolinka · soula · s2s · kakoads</td><td class="td-grp">2,855</td><td class="cvr dead">0%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">2,515</td><td class="cvr dead">0%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">4,732</td><td class="cvr dead">0%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="td-grp">1,603</td><td class="cvr dead">1%</td><td class="ft-zero">—</td><td class="ft-zero">—</td><td class="ft-zero">—</td></tr></tbody></table></div>
+  </div>
+
+</div><!-- /panel-cohort -->
+
+<div class="footer">
+  <span>Android only · iOS pending</span>
+  <span>2 API calls · Jun 8 – Jul 10, 2026</span>
+  <span>KYC needs S2S in yubi-fin-b2c-kyc-service</span>
+  <span>Cohort API requires plan upgrade for true D+N rates</span>
+  <span>Generated Jul 11, 2026</span>
 </div>
+
+</div><!-- /page -->
 
 <script>
 function toggleTheme() {
@@ -543,7 +373,26 @@ function toggleTheme() {
   document.getElementById('themeBtn').textContent = next === 'dark' ? '☀ Light mode' : '🌙 Dark mode';
   localStorage.setItem('af-theme', next);
 }
-// Init button label
+
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.mtab').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById('panel-' + tabId).classList.add('active');
+  btn.classList.add('active');
+}
+
+function switchSub(tabId, subId, btn) {
+  var prefix = tabId + '-';
+  document.querySelectorAll('[id^="' + prefix + '"]').forEach(function(p) {
+    if (p.classList.contains('sub-panel')) p.classList.remove('active');
+  });
+  var stabs = document.getElementById(tabId + '-stabs');
+  if (stabs) stabs.querySelectorAll('.stab').forEach(function(b) { b.classList.remove('active'); });
+  var target = document.getElementById(prefix + subId);
+  if (target) target.classList.add('active');
+  btn.classList.add('active');
+}
+
 (function() {
   var t = document.documentElement.getAttribute('data-theme') || 'dark';
   var btn = document.getElementById('themeBtn');
