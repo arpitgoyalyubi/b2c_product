@@ -842,6 +842,50 @@ function sdoToggle(g){
 </div>
 
 
+<!-- Signup → KYC Start Slide -->
+<div class="slide two-col" id="s-signup-kyc-start">
+  <div class="left-panel" style="background:linear-gradient(160deg,#3b0764,#7c3aed);">
+    <div class="slide-num">KYC</div>
+    <div class="slide-ttl">Signup &#8594; KYC Start</div>
+    <div class="slide-sub">Mon&#8211;Sun weeks &#183; signup-anchored</div>
+    <div class="hero-num" style="font-size:3rem;">43.4%</div>
+    <div class="hero-lbl">KYC Start rate (last week)</div>
+    <div class="hero-badge flat" style="background:rgba(255,255,255,.15);color:#86efac;">+0.1pp WoW</div>
+    <div class="stat-list" style="margin-top:18px;">
+      <div class="stat-item"><span class="si-lbl">Signups (this week)</span><span class="si-val">9,213</span></div>
+      <div class="stat-item"><span class="si-lbl">KYC Starters (this week)</span><span class="si-val">4,002</span></div>
+      <div class="stat-item"><span class="si-lbl">Signups (prior week)</span><span class="si-val">7,971</span></div>
+      <div class="stat-item"><span class="si-lbl">KYC Starters (prior week)</span><span class="si-val">3,452</span></div>
+      <div class="stat-item"><span class="si-lbl">Prior-week KYC Start%</span><span class="si-val">43.3%</span></div>
+    </div>
+  </div>
+  <div class="right-panel" style="padding:14px 18px;display:flex;flex-direction:column;gap:10px;">
+    <div style="font-size:.68rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;">Weekly Signups vs KYC Starters (Mon&#8211;Sun)</div>
+    <div style="position:relative;flex:1;min-height:0;">
+      <canvas id="chart-signup-kyc-start"></canvas>
+    </div>
+    <div style="font-size:.68rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-top:2px;">KYC Start % (signup-anchored)</div>
+    <div style="position:relative;height:88px;">
+      <canvas id="chart-kyc-start-pct"></canvas>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var labels=["May 25\u201331", "Jun 1\u20137", "Jun 8\u201314", "Jun 15\u201321", "Jun 22\u201328", "Jun 29\u2013Jul 5", "Jul 6\u201312"];
+  var signups=[3746, 4242, 3464, 4471, 4537, 7971, 9213];
+  var kycS=[1382, 1463, 1405, 1701, 1822, 3452, 4002];
+  var pcts=[36.9, 34.5, 40.6, 38.0, 40.2, 43.3, 43.4];
+  var c1=document.getElementById('chart-signup-kyc-start');
+  if(c1) new Chart(c1,{type:'bar',data:{labels:labels,datasets:[
+    {label:'Signups',data:signups,backgroundColor:'rgba(99,102,241,.5)',borderRadius:3},
+    {label:'KYC Starters',data:kycS,backgroundColor:'rgba(167,139,250,.85)',borderRadius:3}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#6b7280',font:{size:10}}},tooltip:{mode:'index'}},scales:{x:{ticks:{color:'#9ca3af',font:{size:9}},grid:{display:false}},y:{ticks:{color:'#9ca3af',font:{size:9}},grid:{color:'rgba(0,0,0,.06)'}}}}});
+  var c2=document.getElementById('chart-kyc-start-pct');
+  if(c2) new Chart(c2,{type:'line',data:{labels:labels,datasets:[{label:'KYC Start%',data:pcts,borderColor:'#a78bfa',backgroundColor:'rgba(167,139,250,.15)',fill:true,tension:0.4,pointRadius:3,pointBackgroundColor:'#a78bfa'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.parsed.y.toFixed(1)+'%';}}}},scales:{x:{ticks:{color:'#9ca3af',font:{size:9}},grid:{display:false}},y:{ticks:{color:'#9ca3af',font:{size:9},callback:function(v){return v+'%';}},grid:{color:'rgba(0,0,0,.06)'}}}}});
+})();
+</script>
+
 <!-- KRA V2 Impact Slide -->
   <div class="slide two-col" id="s-kra-v2-impact">
     <div class="left-panel" style="background:linear-gradient(160deg,#14532d,#16a34a);">
@@ -1167,46 +1211,6 @@ function sdoToggle(g){
 </div>
 </div>
 
-<!-- Risk Details Activation Slide -->
-<div class="slide" id="s-risk-details" style="flex-direction:column;overflow:hidden;">
-<div style="padding:16px 22px 12px;background:#fff;height:100%;box-sizing:border-box;
-  display:flex;flex-direction:column;gap:10px;
-  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-
-  <!-- Header -->
-  <div style="flex-shrink:0;">
-    <div style="font-size:14px;font-weight:700;color:#111827;margin:0 0 2px;">
-      Risk Details Activation &nbsp;·&nbsp; Registration → KYC Start &nbsp;·&nbsp; Jun 22 – Jul 13
-    </div>
-  </div>
-
-  <!-- Two-panel body -->
-  <div style="display:flex;gap:16px;flex:1;min-height:0;">
-
-    <!-- Left: activation funnel (60%) -->
-    <div style="flex:3;overflow-y:auto;padding:10px 12px 10px 8px;
-      background:#fafafa;border-radius:8px;border:1px solid #f3f4f6;
-      display:flex;flex-direction:column;justify-content:center;">
-      <div style="display:flex;align-items:center;gap:6px;padding:0 0 5px;border-bottom:1px solid #f3f4f6;margin-bottom:3px;"><div style="width:84px;"></div><div style="flex:1;min-width:60px;"></div><div style="width:37px;text-align:right;font-size:8px;color:#c4c9d4;">Jun 22</div><div style="width:37px;text-align:right;font-size:8px;color:#c4c9d4;">Jun 29</div><div style="width:37px;text-align:right;font-size:8px;color:#9ca3af;">Jul 06</div><div style="width:42px;text-align:right;font-size:8px;color:#6366f1;font-weight:600;">Jul 13</div><div style="width:52px;text-align:right;font-size:8px;color:#c4c9d4;">WoW</div><div style="width:100px;text-align:center;font-size:8px;color:#c4c9d4;">8wk trend</div></div><div style="display:flex;align-items:center;gap:6px;padding:3px 0;"><div style="width:84px;font-size:10px;color:#6b7280;text-align:right;flex-shrink:0;padding-right:4px;line-height:1.3;">Registered</div><div style="flex:1;min-width:60px;"><div style="width:100.0%;background:#6366f1;border-radius:3px;height:20px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;box-sizing:border-box;min-width:36px;"><span style="font-size:10px;font-weight:700;color:white;white-space:nowrap;">100%</span></div></div><div style="width:37px;"></div><div style="width:37px;"></div><div style="width:37px;"></div><div style="width:42px;text-align:right;font-size:10px;font-weight:700;color:#111827;">100%</div><div style="width:52px;"></div><div style="width:100px;"></div></div><details open style="padding-left:92px;"><summary style="list-style:none;cursor:pointer;outline:none;font-size:9.5px;color:#dc2626;font-weight:700;padding:3px 0;user-select:none;">↓ 57.0% ▲<span style="color:#c4c9d4;font-size:8.5px;font-weight:400;margin-left:5px;">▾ details</span></summary><div style="background:#fff8f8;border-left:2px solid #fca5a5;padding:8px 10px;margin:3px 0 6px;border-radius:0 6px 6px 0;"><div style="display:flex;align-items:flex-start;gap:14px;"><div style="flex-shrink:0;"><svg width="140" height="34" style="display:block;flex-shrink:0;"><polygon points="2.0,31 2.0,18.5 21.4,9.7 40.9,16.0 60.3,19.6 79.7,14.4 99.1,29.9 118.6,31.0 138.0,3.0 138.0,31" fill="#fee2e2" opacity="0.7"/><polyline points="2.0,18.5 21.4,9.7 40.9,16.0 60.3,19.6 79.7,14.4 99.1,29.9 118.6,31.0 138.0,3.0" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="138.0" cy="3.0" r="2.5" fill="#ef4444"/><circle cx="2.0" cy="18.5" r="7" fill="transparent"><title>May 25: 47.3%</title></circle><circle cx="21.4" cy="9.7" r="7" fill="transparent"><title>Jun 01: 52.8%</title></circle><circle cx="40.9" cy="16.0" r="7" fill="transparent"><title>Jun 08: 48.9%</title></circle><circle cx="60.3" cy="19.6" r="7" fill="transparent"><title>Jun 15: 46.6%</title></circle><circle cx="79.7" cy="14.4" r="7" fill="transparent"><title>Jun 22: 49.9%</title></circle><circle cx="99.1" cy="29.9" r="7" fill="transparent"><title>Jun 29: 40.2%</title></circle><circle cx="118.6" cy="31.0" r="7" fill="transparent"><title>Jul 06: 39.5%</title></circle><circle cx="138.0" cy="3.0" r="7" fill="transparent"><title>Jul 13: 57.0%</title></circle></svg><div style="font-size:9px;color:#9ca3af;margin-top:3px;">4-wk drop: 49.9% → 40.2% → 39.5% → 57.0%</div><div style="font-size:9.5px;font-weight:600;color:#dc2626;margin-top:4px;">+17.5pp WoW &nbsp;·&nbsp; worsening ↑</div></div><div style="flex:1;border-left:1px solid #fde8e8;padding-left:12px;"><div style="font-size:9px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Activation gap</div><div style="font-size:9px;color:#6b7280;line-height:1.5;">Registered users who never opened KYC — no nudge, cold start inertia. Push notification on Day 1 is the highest-impact lever.</div></div></div></div></details><div style="display:flex;align-items:center;gap:6px;padding:3px 0;"><div style="width:84px;font-size:10px;color:#6b7280;text-align:right;flex-shrink:0;padding-right:4px;line-height:1.3;">Risk Screen</div><div style="flex:1;min-width:60px;"><div style="width:43.0%;background:#6366f1;border-radius:3px;height:20px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;box-sizing:border-box;min-width:36px;"><span style="font-size:10px;font-weight:700;color:white;white-space:nowrap;">43.0%</span></div></div><div style="width:37px;text-align:right;font-size:9px;color:#9ca3af;">50.1%</div><div style="width:37px;text-align:right;font-size:9px;color:#6b7280;">59.8%</div><div style="width:37px;text-align:right;font-size:9.5px;color:#374151;">60.5%</div><div style="width:42px;text-align:right;font-size:10px;font-weight:700;color:#111827;">43.0%</div><div style="width:52px;text-align:right;font-size:9.5px;font-weight:600;color:#dc2626;">-17.5pp</div><svg width="100" height="28" style="display:block;flex-shrink:0;"><polyline points="2.0,12.7 15.7,20.2 29.4,14.9 43.1,11.7 56.9,16.3 70.6,3.0 84.3,2.0 98.0,26.0" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.8"/><circle cx="98.0" cy="26.0" r="2.5" fill="#6366f1"/><circle cx="2.0" cy="12.7" r="7" fill="transparent"><title>May 25: 52.7%</title></circle><circle cx="15.7" cy="20.2" r="7" fill="transparent"><title>Jun 01: 47.2%</title></circle><circle cx="29.4" cy="14.9" r="7" fill="transparent"><title>Jun 08: 51.1%</title></circle><circle cx="43.1" cy="11.7" r="7" fill="transparent"><title>Jun 15: 53.4%</title></circle><circle cx="56.9" cy="16.3" r="7" fill="transparent"><title>Jun 22: 50.1%</title></circle><circle cx="70.6" cy="3.0" r="7" fill="transparent"><title>Jun 29: 59.8%</title></circle><circle cx="84.3" cy="2.0" r="7" fill="transparent"><title>Jul 06: 60.5%</title></circle><circle cx="98.0" cy="26.0" r="7" fill="transparent"><title>Jul 13: 43.0%</title></circle></svg></div><details style="padding-left:92px;"><summary style="list-style:none;cursor:pointer;outline:none;font-size:9.5px;color:#6b7280;font-weight:500;padding:3px 0;user-select:none;">↓ 17.6%<span style="color:#c4c9d4;font-size:8.5px;font-weight:400;margin-left:5px;">▾ details</span></summary><div style="background:#fff8f8;border-left:2px solid #fca5a5;padding:8px 10px;margin:3px 0 6px;border-radius:0 6px 6px 0;"><div style="display:flex;align-items:flex-start;gap:14px;"><div style="flex-shrink:0;"><svg width="140" height="34" style="display:block;flex-shrink:0;"><polygon points="2.0,31 2.0,9.9 21.4,23.1 40.9,23.6 60.3,6.2 79.7,31.0 99.1,8.3 118.6,3.0 138.0,26.2 138.0,31" fill="#fee2e2" opacity="0.7"/><polyline points="2.0,9.9 21.4,23.1 40.9,23.6 60.3,6.2 79.7,31.0 99.1,8.3 118.6,3.0 138.0,26.2" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="138.0" cy="26.2" r="2.5" fill="#ef4444"/><circle cx="2.0" cy="9.9" r="7" fill="transparent"><title>May 25: 20.7%</title></circle><circle cx="21.4" cy="23.1" r="7" fill="transparent"><title>Jun 01: 18.2%</title></circle><circle cx="40.9" cy="23.6" r="7" fill="transparent"><title>Jun 08: 18.1%</title></circle><circle cx="60.3" cy="6.2" r="7" fill="transparent"><title>Jun 15: 21.4%</title></circle><circle cx="79.7" cy="31.0" r="7" fill="transparent"><title>Jun 22: 16.7%</title></circle><circle cx="99.1" cy="8.3" r="7" fill="transparent"><title>Jun 29: 21.0%</title></circle><circle cx="118.6" cy="3.0" r="7" fill="transparent"><title>Jul 06: 22.0%</title></circle><circle cx="138.0" cy="26.2" r="7" fill="transparent"><title>Jul 13: 17.6%</title></circle></svg><div style="font-size:9px;color:#9ca3af;margin-top:3px;">4-wk drop: 16.7% → 21.0% → 22.0% → 17.6%</div><div style="font-size:9.5px;font-weight:600;color:#16a34a;margin-top:4px;">-4.4pp WoW &nbsp;·&nbsp; improving ↓</div></div><div style="flex:1;border-left:1px solid #fde8e8;padding-left:12px;"><div style="font-size:9px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Form friction</div><div style="font-size:9px;color:#6b7280;line-height:1.5;">Saw risk form but didn't submit — hesitation at questions, possibly confused by occupation / net-worth options.</div></div></div></div></details><div style="display:flex;align-items:center;gap:6px;padding:3px 0;"><div style="width:84px;font-size:10px;color:#6b7280;text-align:right;flex-shrink:0;padding-right:4px;line-height:1.3;">Submit Click</div><div style="flex:1;min-width:60px;"><div style="width:25.4%;background:#6366f1;border-radius:3px;height:20px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;box-sizing:border-box;min-width:36px;"><span style="font-size:10px;font-weight:700;color:white;white-space:nowrap;">59.1%</span></div></div><div style="width:37px;text-align:right;font-size:9px;color:#9ca3af;">66.7%</div><div style="width:37px;text-align:right;font-size:9px;color:#6b7280;">64.9%</div><div style="width:37px;text-align:right;font-size:9.5px;color:#374151;">63.6%</div><div style="width:42px;text-align:right;font-size:10px;font-weight:700;color:#111827;">59.1%</div><div style="width:52px;text-align:right;font-size:9.5px;font-weight:600;color:#dc2626;">-4.5pp</div><svg width="100" height="28" style="display:block;flex-shrink:0;"><polyline points="2.0,20.9 15.7,18.7 29.4,8.6 43.1,23.5 56.9,2.0 70.6,7.7 84.3,11.8 98.0,26.0" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.8"/><circle cx="98.0" cy="26.0" r="2.5" fill="#6366f1"/><circle cx="2.0" cy="20.9" r="7" fill="transparent"><title>May 25: 60.7%</title></circle><circle cx="15.7" cy="18.7" r="7" fill="transparent"><title>Jun 01: 61.4%</title></circle><circle cx="29.4" cy="8.6" r="7" fill="transparent"><title>Jun 08: 64.6%</title></circle><circle cx="43.1" cy="23.5" r="7" fill="transparent"><title>Jun 15: 59.9%</title></circle><circle cx="56.9" cy="2.0" r="7" fill="transparent"><title>Jun 22: 66.7%</title></circle><circle cx="70.6" cy="7.7" r="7" fill="transparent"><title>Jun 29: 64.9%</title></circle><circle cx="84.3" cy="11.8" r="7" fill="transparent"><title>Jul 06: 63.6%</title></circle><circle cx="98.0" cy="26.0" r="7" fill="transparent"><title>Jul 13: 59.1%</title></circle></svg></div><details style="padding-left:92px;"><summary style="list-style:none;cursor:pointer;outline:none;font-size:9.5px;color:#6b7280;font-weight:500;padding:3px 0;user-select:none;">↓ 1.2%<span style="color:#c4c9d4;font-size:8.5px;font-weight:400;margin-left:5px;">▾ details</span></summary><div style="background:#fff8f8;border-left:2px solid #fca5a5;padding:8px 10px;margin:3px 0 6px;border-radius:0 6px 6px 0;"><div style="display:flex;align-items:flex-start;gap:14px;"><div style="flex-shrink:0;"><svg width="140" height="34" style="display:block;flex-shrink:0;"><polygon points="2.0,31 2.0,12.3 21.4,31.0 40.9,21.7 60.3,21.7 79.7,12.3 99.1,3.0 118.6,7.7 138.0,31.0 138.0,31" fill="#fee2e2" opacity="0.7"/><polyline points="2.0,12.3 21.4,31.0 40.9,21.7 60.3,21.7 79.7,12.3 99.1,3.0 118.6,7.7 138.0,31.0" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="138.0" cy="31.0" r="2.5" fill="#ef4444"/><circle cx="2.0" cy="12.3" r="7" fill="transparent"><title>May 25: 1.7%</title></circle><circle cx="21.4" cy="31.0" r="7" fill="transparent"><title>Jun 01: 1.3%</title></circle><circle cx="40.9" cy="21.7" r="7" fill="transparent"><title>Jun 08: 1.5%</title></circle><circle cx="60.3" cy="21.7" r="7" fill="transparent"><title>Jun 15: 1.5%</title></circle><circle cx="79.7" cy="12.3" r="7" fill="transparent"><title>Jun 22: 1.7%</title></circle><circle cx="99.1" cy="3.0" r="7" fill="transparent"><title>Jun 29: 1.9%</title></circle><circle cx="118.6" cy="7.7" r="7" fill="transparent"><title>Jul 06: 1.8%</title></circle><circle cx="138.0" cy="31.0" r="7" fill="transparent"><title>Jul 13: 1.3%</title></circle></svg><div style="font-size:9px;color:#9ca3af;margin-top:3px;">4-wk drop: 1.7% → 1.9% → 1.8% → 1.3%</div><div style="font-size:9.5px;font-weight:600;color:#16a34a;margin-top:4px;">-0.6pp WoW &nbsp;·&nbsp; improving ↓</div></div><div style="flex:1;border-left:1px solid #fde8e8;padding-left:12px;"><div style="font-size:9px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">API failure</div><div style="font-size:9px;color:#6b7280;line-height:1.5;">Clicked submit but API didn't fire — validation error or backend failure.</div></div></div></div></details><div style="display:flex;align-items:center;gap:6px;padding:3px 0;"><div style="width:84px;font-size:10px;color:#6b7280;text-align:right;flex-shrink:0;padding-right:4px;line-height:1.3;">Risk Submitted</div><div style="flex:1;min-width:60px;"><div style="width:24.2%;background:#10b981;border-radius:3px;height:20px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;box-sizing:border-box;min-width:36px;"><span style="font-size:10px;font-weight:700;color:white;white-space:nowrap;">95.3%</span></div></div><div style="width:37px;text-align:right;font-size:9px;color:#9ca3af;">94.8%</div><div style="width:37px;text-align:right;font-size:9px;color:#6b7280;">95.1%</div><div style="width:37px;text-align:right;font-size:9.5px;color:#374151;">95.3%</div><div style="width:42px;text-align:right;font-size:10px;font-weight:700;color:#111827;">95.0%</div><div style="width:52px;text-align:right;font-size:9.5px;font-weight:600;color:#dc2626;">-0.3pp</div><svg width="100" height="28" style="display:block;flex-shrink:0;"><polyline points="2.0,26.0 15.7,5.0 29.4,2.0 43.1,11.0 56.9,23.0 70.6,14.0 84.3,8.0 98.0,17.0" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.8"/><circle cx="98.0" cy="17.0" r="2.5" fill="#6366f1"/><circle cx="2.0" cy="26.0" r="7" fill="transparent"><title>May 25: 94.7%</title></circle><circle cx="15.7" cy="5.0" r="7" fill="transparent"><title>Jun 01: 95.4%</title></circle><circle cx="29.4" cy="2.0" r="7" fill="transparent"><title>Jun 08: 95.5%</title></circle><circle cx="43.1" cy="11.0" r="7" fill="transparent"><title>Jun 15: 95.2%</title></circle><circle cx="56.9" cy="23.0" r="7" fill="transparent"><title>Jun 22: 94.8%</title></circle><circle cx="70.6" cy="14.0" r="7" fill="transparent"><title>Jun 29: 95.1%</title></circle><circle cx="84.3" cy="8.0" r="7" fill="transparent"><title>Jul 06: 95.3%</title></circle><circle cx="98.0" cy="17.0" r="7" fill="transparent"><title>Jul 13: 95.0%</title></circle></svg></div>
-    </div>
-
-    <!-- Right: stats + question drop-off + occupation (40%) -->
-    <div style="flex:2;min-height:0;">
-      <div style="height:100%;overflow-y:auto;padding:10px 10px 10px 8px;background:#fafafa;border-radius:8px;border:1px solid #f3f4f6;"><div style="display:flex;gap:6px;margin-bottom:10px;"><div style="flex:1;background:#fff;border:1px solid #e5e7eb;border-radius:6px;padding:7px 8px;"><div style="font-size:9px;color:#9ca3af;margin-bottom:2px;">Activation rate</div><div style="font-size:16px;font-weight:700;color:#111827;line-height:1;">43.0%</div><div style="font-size:9px;font-weight:600;color:#dc2626;margin-top:2px;">-17.5pp WoW</div></div><div style="flex:1;background:#fff;border:1px solid #e5e7eb;border-radius:6px;padding:7px 8px;"><div style="font-size:9px;color:#9ca3af;margin-bottom:2px;">Screen→Submit</div><div style="font-size:16px;font-weight:700;color:#111827;line-height:1;">59.1%</div><div style="font-size:9px;font-weight:600;color:#dc2626;margin-top:2px;">-13.1pp WoW</div></div></div><div style="margin-bottom:10px;"><div style="font-size:10px;font-weight:700;color:#374151;margin-bottom:6px;">Question completion <span style="font-size:9px;font-weight:400;color:#9ca3af;">% of screen viewers who answered</span></div><div style="font-size:8.5px;color:#f59e0b;padding:0 0 1px 103px;">↓ 7.6%</div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:96px;font-size:9px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Occupation</div><div style="flex:1;background:#ede9fe;border-radius:3px;height:14px;"><div style="width:92.4%;background:#6366f1;border-radius:3px;height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;min-width:26px;"><span style="font-size:8.5px;font-weight:700;color:white;">92.4%</span></div></div><div style="width:34px;font-size:9px;color:#6b7280;text-align:right;flex-shrink:0;">594</div></div><div style="font-size:8.5px;color:#dc2626;padding:0 0 1px 103px;">↓ 12.8%</div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:96px;font-size:9px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Annual Income</div><div style="flex:1;background:#ede9fe;border-radius:3px;height:14px;"><div style="width:79.6%;background:#6366f1;border-radius:3px;height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;min-width:26px;"><span style="font-size:8.5px;font-weight:700;color:white;">79.6%</span></div></div><div style="width:34px;font-size:9px;color:#6b7280;text-align:right;flex-shrink:0;">512</div></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;opacity:0.45;"><div style="width:96px;font-size:9px;color:#9ca3af;flex-shrink:0;text-align:right;padding-right:4px;">Net Worth</div><div style="flex:1;background:#f3f4f6;border-radius:3px;height:14px;"><div style="width:4%;background:#d1d5db;border-radius:3px;height:100%;"></div></div><div style="width:34px;font-size:8.5px;color:#9ca3af;text-align:right;flex-shrink:0;">n/a</div></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:96px;font-size:9px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Inv. Experience</div><div style="flex:1;background:#ede9fe;border-radius:3px;height:14px;"><div style="width:69.1%;background:#6366f1;border-radius:3px;height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;min-width:26px;"><span style="font-size:8.5px;font-weight:700;color:white;">69.1%</span></div></div><div style="width:34px;font-size:9px;color:#6b7280;text-align:right;flex-shrink:0;">444</div></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:96px;font-size:9px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Politically Exposed</div><div style="flex:1;background:#ede9fe;border-radius:3px;height:14px;"><div style="width:80.7%;background:#6366f1;border-radius:3px;height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;min-width:26px;"><span style="font-size:8.5px;font-weight:700;color:white;">80.7%</span></div></div><div style="width:34px;font-size:9px;color:#6b7280;text-align:right;flex-shrink:0;">519</div></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;opacity:0.45;"><div style="width:96px;font-size:9px;color:#9ca3af;flex-shrink:0;text-align:right;padding-right:4px;">Father/Husband Name</div><div style="flex:1;background:#f3f4f6;border-radius:3px;height:14px;"><div style="width:4%;background:#d1d5db;border-radius:3px;height:100%;"></div></div><div style="width:34px;font-size:8.5px;color:#9ca3af;text-align:right;flex-shrink:0;">n/a</div></div><div style="margin-top:4px;font-size:8.5px;color:#dc2626;font-weight:600;">✕ 22 submit errors this week</div></div><div style="border-top:1px solid #f3f4f6;padding-top:8px;"><div style="font-size:10px;font-weight:700;color:#374151;margin-bottom:6px;">Occupation mix <span style="font-size:9px;font-weight:400;color:#9ca3af;">of 321 submitted this week</span></div><div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;"><div style="width:96px;font-size:8.5px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Salaried</div><div style="flex:1;background:#f0fdf4;border-radius:2px;height:12px;"><div style="width:35%;background:#34d399;border-radius:2px;height:100%;"></div></div><div style="width:34px;font-size:8.5px;font-weight:600;color:#16a34a;text-align:right;flex-shrink:0;">35%</div></div><div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;"><div style="width:96px;font-size:8.5px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Business Owner</div><div style="flex:1;background:#f0fdf4;border-radius:2px;height:12px;"><div style="width:21%;background:#34d399;border-radius:2px;height:100%;"></div></div><div style="width:34px;font-size:8.5px;font-weight:600;color:#16a34a;text-align:right;flex-shrink:0;">21%</div></div><div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;"><div style="width:96px;font-size:8.5px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Professional</div><div style="flex:1;background:#f0fdf4;border-radius:2px;height:12px;"><div style="width:15%;background:#34d399;border-radius:2px;height:100%;"></div></div><div style="width:34px;font-size:8.5px;font-weight:600;color:#16a34a;text-align:right;flex-shrink:0;">15%</div></div><div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;"><div style="width:96px;font-size:8.5px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Student</div><div style="flex:1;background:#f0fdf4;border-radius:2px;height:12px;"><div style="width:13%;background:#34d399;border-radius:2px;height:100%;"></div></div><div style="width:34px;font-size:8.5px;font-weight:600;color:#16a34a;text-align:right;flex-shrink:0;">13%</div></div><div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;"><div style="width:96px;font-size:8.5px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Homemaker</div><div style="flex:1;background:#f0fdf4;border-radius:2px;height:12px;"><div style="width:8%;background:#34d399;border-radius:2px;height:100%;"></div></div><div style="width:34px;font-size:8.5px;font-weight:600;color:#16a34a;text-align:right;flex-shrink:0;">8%</div></div><div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;"><div style="width:96px;font-size:8.5px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Agriculture</div><div style="flex:1;background:#f0fdf4;border-radius:2px;height:12px;"><div style="width:5%;background:#34d399;border-radius:2px;height:100%;"></div></div><div style="width:34px;font-size:8.5px;font-weight:600;color:#16a34a;text-align:right;flex-shrink:0;">5%</div></div><div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;"><div style="width:96px;font-size:8.5px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Landlord</div><div style="flex:1;background:#f0fdf4;border-radius:2px;height:12px;"><div style="width:3%;background:#34d399;border-radius:2px;height:100%;"></div></div><div style="width:34px;font-size:8.5px;font-weight:600;color:#16a34a;text-align:right;flex-shrink:0;">3%</div></div></div></div>
-    </div>
-
-  </div>
-
-  <!-- Insight strip -->
-  <div style="flex-shrink:0;background:#fffbeb;border-left:3px solid #f59e0b;
-    padding:8px 12px;border-radius:0 4px 4px 0;font-size:11px;color:#374151;line-height:1.6;">
-    Biggest drop: <b>57.0% activation gap</b>. Activation (signup → risk screen): <b>43.0%</b>. End-to-end submission: <b>24.2%</b> <span style='color:#dc2626;font-weight:600'>(-12.5pp WoW)</span>. <i>% = of users who registered that week, reached each step within 7 days.</i>
-  </div>
-
-</div>
-</div>
-
-<!-- HyperVerge SDK Slide -->
 <div class="slide" id="s-hv-sdk" style="flex-direction:column;overflow:hidden;">
 <div style="padding:16px 22px 12px;background:#fff;height:100%;box-sizing:border-box;
   display:flex;flex-direction:column;gap:10px;
@@ -1296,105 +1300,6 @@ function sdoToggle(g){
     </div>
   </div>
 
-  <!-- First Trade Why Slide — channel mix driver analysis -->
-  <div class="slide two-col" id="s4w">
-    <div class="left-panel" style="background:linear-gradient(160deg,#1e1b4b,#7c3aed);">
-      <div class="slide-num">Slide 4&#8599;</div>
-      <div class="slide-ttl">Why First Trade% Spiked</div>
-      <div class="slide-sub">Acquisition channel mix shift &middot; Jun 29–5 &rarr; Jul 6–12</div>
-      <div class="hero-num">9.1%</div>
-      <div class="hero-lbl">First trade conv% &nbsp;Jul 6–12</div>
-      <div class="hero-badge flat neg">-5.5pp WoW</div>
-      <div class="stat-list">
-        <div class="stat-item"><span class="si-lbl">Prior week conv%</span><span class="si-val">14.6%</span></div>
-        <div class="stat-item"><span class="si-lbl">Signups WoW</span><span class="si-val">+16%</span></div>
-        <div class="stat-item"><span class="si-lbl">First traders WoW</span><span class="si-val">-20%</span></div>
-      </div>
-      <div style="background:rgba(255,255,255,0.12);border-radius:6px;padding:8px 10px;margin-top:12px;"><div style="font-size:.63rem;font-weight:700;color:rgba(255,255,255,0.9);margin-bottom:4px;">Key driver</div><div style="font-size:.59rem;color:rgba(255,255,255,0.80);line-height:1.55;"><b>Unattributed</b> share fell 18.1pp &rarr; fewer low-intent paid installs in cohort.<br><b>Organic</b> share rose +7.3pp &rarr; higher-intent users increased.<br>Combined: cleaner cohort composition drove the First Trade% spike.</div></div>
-    </div>
-    <div class="right-panel" style="padding:14px 18px 10px;">
-      <div style="margin-bottom:6px;">
-        <div style="font-size:.78rem;font-weight:700;color:#1e293b;">Signup Mix by Acquisition Channel</div>
-        <div style="font-size:.60rem;color:#64748b;margin-top:2px;line-height:1.4;">
-          % share of weekly signups &middot; channels with low conversion rates drag the blended First Trade% down
-        </div>
-      </div>
-      <div style="height:190px;"><canvas id="chart-why-ftrade"></canvas></div>
-      <div style="margin-top:10px;">
-        <div style="font-size:.67rem;font-weight:700;color:#1e293b;margin-bottom:4px;">
-          Conversion rate by channel (traders &divide; signups, same week)
-        </div>
-        <table style="width:100%;border-collapse:collapse;font-size:.59rem;">
-          <thead>
-            <tr style="background:#f8fafc;">
-              <th style="padding:3px 6px;text-align:left;color:#475569;font-weight:600;">Channel</th>
-              <th style="padding:3px 6px;text-align:right;color:#475569;font-weight:600;">Jun 29–5</th>
-              <th style="padding:3px 6px;text-align:right;color:#475569;font-weight:600;">Jul 6–12</th>
-              <th style="padding:3px 6px;text-align:right;color:#475569;font-weight:600;">&Delta; conv</th>
-              <th style="padding:3px 6px;text-align:right;color:#475569;font-weight:600;">Mix shift</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:3px 6px;color:#334155;">Unattributed</td><td style="padding:3px 6px;text-align:right;color:#64748b;">5.6%</td><td style="padding:3px 6px;text-align:right;color:#334155;">5.1%</td><td style="padding:3px 6px;text-align:right;color:#dc2626;font-weight:600;">↓ 0.5pp</td><td style="padding:3px 6px;text-align:right;color:#16a34a;font-size:.57rem;">mix -18.1pp</td></tr>
-<tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:3px 6px;color:#334155;">Google Ads</td><td style="padding:3px 6px;text-align:right;color:#64748b;">7.3%</td><td style="padding:3px 6px;text-align:right;color:#334155;">4.7%</td><td style="padding:3px 6px;text-align:right;color:#dc2626;font-weight:600;">↓ 2.7pp</td><td style="padding:3px 6px;text-align:right;color:#dc2626;font-size:.57rem;">mix +4.8pp</td></tr>
-<tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:3px 6px;color:#334155;">Other perf.</td><td style="padding:3px 6px;text-align:right;color:#64748b;">1.6%</td><td style="padding:3px 6px;text-align:right;color:#334155;">1.6%</td><td style="padding:3px 6px;text-align:right;color:#16a34a;font-weight:600;">↑ 0.0pp</td><td style="padding:3px 6px;text-align:right;color:#dc2626;font-size:.57rem;">mix +5.1pp</td></tr>
-<tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:3px 6px;color:#334155;">Organic</td><td style="padding:3px 6px;text-align:right;color:#64748b;">11.7%</td><td style="padding:3px 6px;text-align:right;color:#334155;">2.9%</td><td style="padding:3px 6px;text-align:right;color:#dc2626;font-weight:600;">↓ 8.8pp</td><td style="padding:3px 6px;text-align:right;color:#dc2626;font-size:.57rem;">mix +7.3pp</td></tr>
-<tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:3px 6px;color:#334155;">Jio / ZOM / ZEP</td><td style="padding:3px 6px;text-align:right;color:#64748b;">10.4%</td><td style="padding:3px 6px;text-align:right;color:#334155;">3.7%</td><td style="padding:3px 6px;text-align:right;color:#dc2626;font-weight:600;">↓ 6.7pp</td><td style="padding:3px 6px;text-align:right;color:#64748b;font-size:.57rem;">mix +1.0pp</td></tr>
-<tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:3px 6px;color:#334155;">Employee / Ref.</td><td style="padding:3px 6px;text-align:right;color:#64748b;">5.6%</td><td style="padding:3px 6px;text-align:right;color:#334155;">50.0%</td><td style="padding:3px 6px;text-align:right;color:#16a34a;font-weight:600;">↑ 44.4pp</td><td style="padding:3px 6px;text-align:right;color:#64748b;font-size:.57rem;">mix -0.2pp</td></tr>
-
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-  <script>
-  (function() {
-    var ctx = document.getElementById('chart-why-ftrade');
-    if (!ctx) return;
-    new Chart(ctx.getContext('2d'), {
-      type: 'bar',
-      data: {
-        labels: ["Unattributed", "Google Ads", "Other perf.", "Organic", "Jio / ZOM / ZEP", "Employee / Ref."],
-        datasets: [
-          {
-            label: 'Jun 29–5',
-            data: [50.4, 26.0, 18.9, 3.5, 1.0, 0.2],
-            backgroundColor: 'rgba(99,102,241,0.40)',
-            borderColor: 'rgba(99,102,241,0.85)',
-            borderWidth: 1,
-            borderRadius: 2,
-          },
-          {
-            label: 'Jul 6–12',
-            data: [32.3, 30.8, 24.0, 10.8, 2.0, 0.0],
-            backgroundColor: 'rgba(16,185,129,0.40)',
-            borderColor: 'rgba(16,185,129,0.85)',
-            borderWidth: 1,
-            borderRadius: 2,
-          }
-        ]
-      },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { position: 'top', labels: { font: { size: 9 }, boxWidth: 10, padding: 8 } },
-          tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + c.parsed.x.toFixed(1) + '%'; } } },
-        },
-        scales: {
-          x: {
-            ticks: { font: { size: 9 }, callback: function(v) { return v + '%'; } },
-            grid: { color: '#f1f5f9' },
-          },
-          y: { ticks: { font: { size: 9 } } },
-        },
-      }
-    });
-  })();
-  </script>
-
-  <!-- Slide 5: Weekly Active Users — Amber -->
   <div class="slide two-col" id="s5">
     <div class="left-panel" style="background:linear-gradient(160deg,#78350f,#f59e0b);">
       <div class="slide-num">Slide 05</div>
@@ -1704,7 +1609,16 @@ function sdoToggle(g){
           <div style="font-size:.58rem;color:#94a3b8;margin-top:2px;">iOS/Android login success rate — May 24 fix impact</div>
         </div>
         <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:10px 12px;">
-          <div style="font-size:.65rem;font-weight:700;color:#e2e8f0;">Slides 11–12 · Calling Team</div>
+          <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:.65rem;font-weight:700;color:#e2e8f0;">Risk Details Activation &#183; Registration &#8594; KYC Start</div>
+          <div style="font-size:.58rem;color:#94a3b8;margin-top:2px;">8-week trend: risk details submit rate &amp; KYC start conversion</div>
+        </div>
+        <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:.65rem;font-weight:700;color:#e2e8f0;">Why First Trade% Spiked / Dropped</div>
+          <div style="font-size:.58rem;color:#94a3b8;margin-top:2px;">WoW acquisition &amp; conversion mix shift analysis</div>
+        </div>
+        <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:.65rem;font-weight:700;color:#e2e8f0;">Slides 11&#8211;12 · Calling Team</div>
           <div style="font-size:.58rem;color:#94a3b8;margin-top:2px;">KYC activation calls &amp; payment recovery outreach</div>
         </div>
       </div>
@@ -1827,6 +1741,147 @@ function sdoToggle(g){
     </div>
   </div>
 
+<!-- Risk Details Activation Slide -->
+<div class="slide" id="s-risk-details" style="flex-direction:column;overflow:hidden;">
+<div style="padding:16px 22px 12px;background:#fff;height:100%;box-sizing:border-box;
+  display:flex;flex-direction:column;gap:10px;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+
+  <!-- Header -->
+  <div style="flex-shrink:0;">
+    <div style="font-size:14px;font-weight:700;color:#111827;margin:0 0 2px;">
+      Risk Details Activation &nbsp;·&nbsp; Registration → KYC Start &nbsp;·&nbsp; Jun 22 – Jul 13
+    </div>
+  </div>
+
+  <!-- Two-panel body -->
+  <div style="display:flex;gap:16px;flex:1;min-height:0;">
+
+    <!-- Left: activation funnel (60%) -->
+    <div style="flex:3;overflow-y:auto;padding:10px 12px 10px 8px;
+      background:#fafafa;border-radius:8px;border:1px solid #f3f4f6;
+      display:flex;flex-direction:column;justify-content:center;">
+      <div style="display:flex;align-items:center;gap:6px;padding:0 0 5px;border-bottom:1px solid #f3f4f6;margin-bottom:3px;"><div style="width:84px;"></div><div style="flex:1;min-width:60px;"></div><div style="width:37px;text-align:right;font-size:8px;color:#c4c9d4;">Jun 22</div><div style="width:37px;text-align:right;font-size:8px;color:#c4c9d4;">Jun 29</div><div style="width:37px;text-align:right;font-size:8px;color:#9ca3af;">Jul 06</div><div style="width:42px;text-align:right;font-size:8px;color:#6366f1;font-weight:600;">Jul 13</div><div style="width:52px;text-align:right;font-size:8px;color:#c4c9d4;">WoW</div><div style="width:100px;text-align:center;font-size:8px;color:#c4c9d4;">8wk trend</div></div><div style="display:flex;align-items:center;gap:6px;padding:3px 0;"><div style="width:84px;font-size:10px;color:#6b7280;text-align:right;flex-shrink:0;padding-right:4px;line-height:1.3;">Registered</div><div style="flex:1;min-width:60px;"><div style="width:100.0%;background:#6366f1;border-radius:3px;height:20px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;box-sizing:border-box;min-width:36px;"><span style="font-size:10px;font-weight:700;color:white;white-space:nowrap;">100%</span></div></div><div style="width:37px;"></div><div style="width:37px;"></div><div style="width:37px;"></div><div style="width:42px;text-align:right;font-size:10px;font-weight:700;color:#111827;">100%</div><div style="width:52px;"></div><div style="width:100px;"></div></div><details open style="padding-left:92px;"><summary style="list-style:none;cursor:pointer;outline:none;font-size:9.5px;color:#dc2626;font-weight:700;padding:3px 0;user-select:none;">↓ 57.0% ▲<span style="color:#c4c9d4;font-size:8.5px;font-weight:400;margin-left:5px;">▾ details</span></summary><div style="background:#fff8f8;border-left:2px solid #fca5a5;padding:8px 10px;margin:3px 0 6px;border-radius:0 6px 6px 0;"><div style="display:flex;align-items:flex-start;gap:14px;"><div style="flex-shrink:0;"><svg width="140" height="34" style="display:block;flex-shrink:0;"><polygon points="2.0,31 2.0,18.5 21.4,9.7 40.9,16.0 60.3,19.6 79.7,14.4 99.1,29.9 118.6,31.0 138.0,3.0 138.0,31" fill="#fee2e2" opacity="0.7"/><polyline points="2.0,18.5 21.4,9.7 40.9,16.0 60.3,19.6 79.7,14.4 99.1,29.9 118.6,31.0 138.0,3.0" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="138.0" cy="3.0" r="2.5" fill="#ef4444"/><circle cx="2.0" cy="18.5" r="7" fill="transparent"><title>May 25: 47.3%</title></circle><circle cx="21.4" cy="9.7" r="7" fill="transparent"><title>Jun 01: 52.8%</title></circle><circle cx="40.9" cy="16.0" r="7" fill="transparent"><title>Jun 08: 48.9%</title></circle><circle cx="60.3" cy="19.6" r="7" fill="transparent"><title>Jun 15: 46.6%</title></circle><circle cx="79.7" cy="14.4" r="7" fill="transparent"><title>Jun 22: 49.9%</title></circle><circle cx="99.1" cy="29.9" r="7" fill="transparent"><title>Jun 29: 40.2%</title></circle><circle cx="118.6" cy="31.0" r="7" fill="transparent"><title>Jul 06: 39.5%</title></circle><circle cx="138.0" cy="3.0" r="7" fill="transparent"><title>Jul 13: 57.0%</title></circle></svg><div style="font-size:9px;color:#9ca3af;margin-top:3px;">4-wk drop: 49.9% → 40.2% → 39.5% → 57.0%</div><div style="font-size:9.5px;font-weight:600;color:#dc2626;margin-top:4px;">+17.5pp WoW &nbsp;·&nbsp; worsening ↑</div></div><div style="flex:1;border-left:1px solid #fde8e8;padding-left:12px;"><div style="font-size:9px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Activation gap</div><div style="font-size:9px;color:#6b7280;line-height:1.5;">Registered users who never opened KYC — no nudge, cold start inertia. Push notification on Day 1 is the highest-impact lever.</div></div></div></div></details><div style="display:flex;align-items:center;gap:6px;padding:3px 0;"><div style="width:84px;font-size:10px;color:#6b7280;text-align:right;flex-shrink:0;padding-right:4px;line-height:1.3;">Risk Screen</div><div style="flex:1;min-width:60px;"><div style="width:43.0%;background:#6366f1;border-radius:3px;height:20px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;box-sizing:border-box;min-width:36px;"><span style="font-size:10px;font-weight:700;color:white;white-space:nowrap;">43.0%</span></div></div><div style="width:37px;text-align:right;font-size:9px;color:#9ca3af;">50.1%</div><div style="width:37px;text-align:right;font-size:9px;color:#6b7280;">59.8%</div><div style="width:37px;text-align:right;font-size:9.5px;color:#374151;">60.5%</div><div style="width:42px;text-align:right;font-size:10px;font-weight:700;color:#111827;">43.0%</div><div style="width:52px;text-align:right;font-size:9.5px;font-weight:600;color:#dc2626;">-17.5pp</div><svg width="100" height="28" style="display:block;flex-shrink:0;"><polyline points="2.0,12.7 15.7,20.2 29.4,14.9 43.1,11.7 56.9,16.3 70.6,3.0 84.3,2.0 98.0,26.0" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.8"/><circle cx="98.0" cy="26.0" r="2.5" fill="#6366f1"/><circle cx="2.0" cy="12.7" r="7" fill="transparent"><title>May 25: 52.7%</title></circle><circle cx="15.7" cy="20.2" r="7" fill="transparent"><title>Jun 01: 47.2%</title></circle><circle cx="29.4" cy="14.9" r="7" fill="transparent"><title>Jun 08: 51.1%</title></circle><circle cx="43.1" cy="11.7" r="7" fill="transparent"><title>Jun 15: 53.4%</title></circle><circle cx="56.9" cy="16.3" r="7" fill="transparent"><title>Jun 22: 50.1%</title></circle><circle cx="70.6" cy="3.0" r="7" fill="transparent"><title>Jun 29: 59.8%</title></circle><circle cx="84.3" cy="2.0" r="7" fill="transparent"><title>Jul 06: 60.5%</title></circle><circle cx="98.0" cy="26.0" r="7" fill="transparent"><title>Jul 13: 43.0%</title></circle></svg></div><details style="padding-left:92px;"><summary style="list-style:none;cursor:pointer;outline:none;font-size:9.5px;color:#6b7280;font-weight:500;padding:3px 0;user-select:none;">↓ 17.6%<span style="color:#c4c9d4;font-size:8.5px;font-weight:400;margin-left:5px;">▾ details</span></summary><div style="background:#fff8f8;border-left:2px solid #fca5a5;padding:8px 10px;margin:3px 0 6px;border-radius:0 6px 6px 0;"><div style="display:flex;align-items:flex-start;gap:14px;"><div style="flex-shrink:0;"><svg width="140" height="34" style="display:block;flex-shrink:0;"><polygon points="2.0,31 2.0,9.9 21.4,23.1 40.9,23.6 60.3,6.2 79.7,31.0 99.1,8.3 118.6,3.0 138.0,26.2 138.0,31" fill="#fee2e2" opacity="0.7"/><polyline points="2.0,9.9 21.4,23.1 40.9,23.6 60.3,6.2 79.7,31.0 99.1,8.3 118.6,3.0 138.0,26.2" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="138.0" cy="26.2" r="2.5" fill="#ef4444"/><circle cx="2.0" cy="9.9" r="7" fill="transparent"><title>May 25: 20.7%</title></circle><circle cx="21.4" cy="23.1" r="7" fill="transparent"><title>Jun 01: 18.2%</title></circle><circle cx="40.9" cy="23.6" r="7" fill="transparent"><title>Jun 08: 18.1%</title></circle><circle cx="60.3" cy="6.2" r="7" fill="transparent"><title>Jun 15: 21.4%</title></circle><circle cx="79.7" cy="31.0" r="7" fill="transparent"><title>Jun 22: 16.7%</title></circle><circle cx="99.1" cy="8.3" r="7" fill="transparent"><title>Jun 29: 21.0%</title></circle><circle cx="118.6" cy="3.0" r="7" fill="transparent"><title>Jul 06: 22.0%</title></circle><circle cx="138.0" cy="26.2" r="7" fill="transparent"><title>Jul 13: 17.6%</title></circle></svg><div style="font-size:9px;color:#9ca3af;margin-top:3px;">4-wk drop: 16.7% → 21.0% → 22.0% → 17.6%</div><div style="font-size:9.5px;font-weight:600;color:#16a34a;margin-top:4px;">-4.4pp WoW &nbsp;·&nbsp; improving ↓</div></div><div style="flex:1;border-left:1px solid #fde8e8;padding-left:12px;"><div style="font-size:9px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Form friction</div><div style="font-size:9px;color:#6b7280;line-height:1.5;">Saw risk form but didn't submit — hesitation at questions, possibly confused by occupation / net-worth options.</div></div></div></div></details><div style="display:flex;align-items:center;gap:6px;padding:3px 0;"><div style="width:84px;font-size:10px;color:#6b7280;text-align:right;flex-shrink:0;padding-right:4px;line-height:1.3;">Submit Click</div><div style="flex:1;min-width:60px;"><div style="width:25.4%;background:#6366f1;border-radius:3px;height:20px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;box-sizing:border-box;min-width:36px;"><span style="font-size:10px;font-weight:700;color:white;white-space:nowrap;">59.1%</span></div></div><div style="width:37px;text-align:right;font-size:9px;color:#9ca3af;">66.7%</div><div style="width:37px;text-align:right;font-size:9px;color:#6b7280;">64.9%</div><div style="width:37px;text-align:right;font-size:9.5px;color:#374151;">63.6%</div><div style="width:42px;text-align:right;font-size:10px;font-weight:700;color:#111827;">59.1%</div><div style="width:52px;text-align:right;font-size:9.5px;font-weight:600;color:#dc2626;">-4.5pp</div><svg width="100" height="28" style="display:block;flex-shrink:0;"><polyline points="2.0,20.9 15.7,18.7 29.4,8.6 43.1,23.5 56.9,2.0 70.6,7.7 84.3,11.8 98.0,26.0" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.8"/><circle cx="98.0" cy="26.0" r="2.5" fill="#6366f1"/><circle cx="2.0" cy="20.9" r="7" fill="transparent"><title>May 25: 60.7%</title></circle><circle cx="15.7" cy="18.7" r="7" fill="transparent"><title>Jun 01: 61.4%</title></circle><circle cx="29.4" cy="8.6" r="7" fill="transparent"><title>Jun 08: 64.6%</title></circle><circle cx="43.1" cy="23.5" r="7" fill="transparent"><title>Jun 15: 59.9%</title></circle><circle cx="56.9" cy="2.0" r="7" fill="transparent"><title>Jun 22: 66.7%</title></circle><circle cx="70.6" cy="7.7" r="7" fill="transparent"><title>Jun 29: 64.9%</title></circle><circle cx="84.3" cy="11.8" r="7" fill="transparent"><title>Jul 06: 63.6%</title></circle><circle cx="98.0" cy="26.0" r="7" fill="transparent"><title>Jul 13: 59.1%</title></circle></svg></div><details style="padding-left:92px;"><summary style="list-style:none;cursor:pointer;outline:none;font-size:9.5px;color:#6b7280;font-weight:500;padding:3px 0;user-select:none;">↓ 1.2%<span style="color:#c4c9d4;font-size:8.5px;font-weight:400;margin-left:5px;">▾ details</span></summary><div style="background:#fff8f8;border-left:2px solid #fca5a5;padding:8px 10px;margin:3px 0 6px;border-radius:0 6px 6px 0;"><div style="display:flex;align-items:flex-start;gap:14px;"><div style="flex-shrink:0;"><svg width="140" height="34" style="display:block;flex-shrink:0;"><polygon points="2.0,31 2.0,12.3 21.4,31.0 40.9,21.7 60.3,21.7 79.7,12.3 99.1,3.0 118.6,7.7 138.0,31.0 138.0,31" fill="#fee2e2" opacity="0.7"/><polyline points="2.0,12.3 21.4,31.0 40.9,21.7 60.3,21.7 79.7,12.3 99.1,3.0 118.6,7.7 138.0,31.0" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="138.0" cy="31.0" r="2.5" fill="#ef4444"/><circle cx="2.0" cy="12.3" r="7" fill="transparent"><title>May 25: 1.7%</title></circle><circle cx="21.4" cy="31.0" r="7" fill="transparent"><title>Jun 01: 1.3%</title></circle><circle cx="40.9" cy="21.7" r="7" fill="transparent"><title>Jun 08: 1.5%</title></circle><circle cx="60.3" cy="21.7" r="7" fill="transparent"><title>Jun 15: 1.5%</title></circle><circle cx="79.7" cy="12.3" r="7" fill="transparent"><title>Jun 22: 1.7%</title></circle><circle cx="99.1" cy="3.0" r="7" fill="transparent"><title>Jun 29: 1.9%</title></circle><circle cx="118.6" cy="7.7" r="7" fill="transparent"><title>Jul 06: 1.8%</title></circle><circle cx="138.0" cy="31.0" r="7" fill="transparent"><title>Jul 13: 1.3%</title></circle></svg><div style="font-size:9px;color:#9ca3af;margin-top:3px;">4-wk drop: 1.7% → 1.9% → 1.8% → 1.3%</div><div style="font-size:9.5px;font-weight:600;color:#16a34a;margin-top:4px;">-0.6pp WoW &nbsp;·&nbsp; improving ↓</div></div><div style="flex:1;border-left:1px solid #fde8e8;padding-left:12px;"><div style="font-size:9px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">API failure</div><div style="font-size:9px;color:#6b7280;line-height:1.5;">Clicked submit but API didn't fire — validation error or backend failure.</div></div></div></div></details><div style="display:flex;align-items:center;gap:6px;padding:3px 0;"><div style="width:84px;font-size:10px;color:#6b7280;text-align:right;flex-shrink:0;padding-right:4px;line-height:1.3;">Risk Submitted</div><div style="flex:1;min-width:60px;"><div style="width:24.2%;background:#10b981;border-radius:3px;height:20px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;box-sizing:border-box;min-width:36px;"><span style="font-size:10px;font-weight:700;color:white;white-space:nowrap;">95.3%</span></div></div><div style="width:37px;text-align:right;font-size:9px;color:#9ca3af;">94.8%</div><div style="width:37px;text-align:right;font-size:9px;color:#6b7280;">95.1%</div><div style="width:37px;text-align:right;font-size:9.5px;color:#374151;">95.3%</div><div style="width:42px;text-align:right;font-size:10px;font-weight:700;color:#111827;">95.0%</div><div style="width:52px;text-align:right;font-size:9.5px;font-weight:600;color:#dc2626;">-0.3pp</div><svg width="100" height="28" style="display:block;flex-shrink:0;"><polyline points="2.0,26.0 15.7,5.0 29.4,2.0 43.1,11.0 56.9,23.0 70.6,14.0 84.3,8.0 98.0,17.0" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.8"/><circle cx="98.0" cy="17.0" r="2.5" fill="#6366f1"/><circle cx="2.0" cy="26.0" r="7" fill="transparent"><title>May 25: 94.7%</title></circle><circle cx="15.7" cy="5.0" r="7" fill="transparent"><title>Jun 01: 95.4%</title></circle><circle cx="29.4" cy="2.0" r="7" fill="transparent"><title>Jun 08: 95.5%</title></circle><circle cx="43.1" cy="11.0" r="7" fill="transparent"><title>Jun 15: 95.2%</title></circle><circle cx="56.9" cy="23.0" r="7" fill="transparent"><title>Jun 22: 94.8%</title></circle><circle cx="70.6" cy="14.0" r="7" fill="transparent"><title>Jun 29: 95.1%</title></circle><circle cx="84.3" cy="8.0" r="7" fill="transparent"><title>Jul 06: 95.3%</title></circle><circle cx="98.0" cy="17.0" r="7" fill="transparent"><title>Jul 13: 95.0%</title></circle></svg></div>
+    </div>
+
+    <!-- Right: stats + question drop-off + occupation (40%) -->
+    <div style="flex:2;min-height:0;">
+      <div style="height:100%;overflow-y:auto;padding:10px 10px 10px 8px;background:#fafafa;border-radius:8px;border:1px solid #f3f4f6;"><div style="display:flex;gap:6px;margin-bottom:10px;"><div style="flex:1;background:#fff;border:1px solid #e5e7eb;border-radius:6px;padding:7px 8px;"><div style="font-size:9px;color:#9ca3af;margin-bottom:2px;">Activation rate</div><div style="font-size:16px;font-weight:700;color:#111827;line-height:1;">43.0%</div><div style="font-size:9px;font-weight:600;color:#dc2626;margin-top:2px;">-17.5pp WoW</div></div><div style="flex:1;background:#fff;border:1px solid #e5e7eb;border-radius:6px;padding:7px 8px;"><div style="font-size:9px;color:#9ca3af;margin-bottom:2px;">Screen→Submit</div><div style="font-size:16px;font-weight:700;color:#111827;line-height:1;">59.1%</div><div style="font-size:9px;font-weight:600;color:#dc2626;margin-top:2px;">-13.1pp WoW</div></div></div><div style="margin-bottom:10px;"><div style="font-size:10px;font-weight:700;color:#374151;margin-bottom:6px;">Question completion <span style="font-size:9px;font-weight:400;color:#9ca3af;">% of screen viewers who answered</span></div><div style="font-size:8.5px;color:#f59e0b;padding:0 0 1px 103px;">↓ 7.6%</div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:96px;font-size:9px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Occupation</div><div style="flex:1;background:#ede9fe;border-radius:3px;height:14px;"><div style="width:92.4%;background:#6366f1;border-radius:3px;height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;min-width:26px;"><span style="font-size:8.5px;font-weight:700;color:white;">92.4%</span></div></div><div style="width:34px;font-size:9px;color:#6b7280;text-align:right;flex-shrink:0;">594</div></div><div style="font-size:8.5px;color:#dc2626;padding:0 0 1px 103px;">↓ 12.8%</div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:96px;font-size:9px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Annual Income</div><div style="flex:1;background:#ede9fe;border-radius:3px;height:14px;"><div style="width:79.6%;background:#6366f1;border-radius:3px;height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;min-width:26px;"><span style="font-size:8.5px;font-weight:700;color:white;">79.6%</span></div></div><div style="width:34px;font-size:9px;color:#6b7280;text-align:right;flex-shrink:0;">512</div></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;opacity:0.45;"><div style="width:96px;font-size:9px;color:#9ca3af;flex-shrink:0;text-align:right;padding-right:4px;">Net Worth</div><div style="flex:1;background:#f3f4f6;border-radius:3px;height:14px;"><div style="width:4%;background:#d1d5db;border-radius:3px;height:100%;"></div></div><div style="width:34px;font-size:8.5px;color:#9ca3af;text-align:right;flex-shrink:0;">n/a</div></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:96px;font-size:9px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Inv. Experience</div><div style="flex:1;background:#ede9fe;border-radius:3px;height:14px;"><div style="width:69.1%;background:#6366f1;border-radius:3px;height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;min-width:26px;"><span style="font-size:8.5px;font-weight:700;color:white;">69.1%</span></div></div><div style="width:34px;font-size:9px;color:#6b7280;text-align:right;flex-shrink:0;">444</div></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div style="width:96px;font-size:9px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Politically Exposed</div><div style="flex:1;background:#ede9fe;border-radius:3px;height:14px;"><div style="width:80.7%;background:#6366f1;border-radius:3px;height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;min-width:26px;"><span style="font-size:8.5px;font-weight:700;color:white;">80.7%</span></div></div><div style="width:34px;font-size:9px;color:#6b7280;text-align:right;flex-shrink:0;">519</div></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;opacity:0.45;"><div style="width:96px;font-size:9px;color:#9ca3af;flex-shrink:0;text-align:right;padding-right:4px;">Father/Husband Name</div><div style="flex:1;background:#f3f4f6;border-radius:3px;height:14px;"><div style="width:4%;background:#d1d5db;border-radius:3px;height:100%;"></div></div><div style="width:34px;font-size:8.5px;color:#9ca3af;text-align:right;flex-shrink:0;">n/a</div></div><div style="margin-top:4px;font-size:8.5px;color:#dc2626;font-weight:600;">✕ 22 submit errors this week</div></div><div style="border-top:1px solid #f3f4f6;padding-top:8px;"><div style="font-size:10px;font-weight:700;color:#374151;margin-bottom:6px;">Occupation mix <span style="font-size:9px;font-weight:400;color:#9ca3af;">of 321 submitted this week</span></div><div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;"><div style="width:96px;font-size:8.5px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Salaried</div><div style="flex:1;background:#f0fdf4;border-radius:2px;height:12px;"><div style="width:35%;background:#34d399;border-radius:2px;height:100%;"></div></div><div style="width:34px;font-size:8.5px;font-weight:600;color:#16a34a;text-align:right;flex-shrink:0;">35%</div></div><div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;"><div style="width:96px;font-size:8.5px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Business Owner</div><div style="flex:1;background:#f0fdf4;border-radius:2px;height:12px;"><div style="width:21%;background:#34d399;border-radius:2px;height:100%;"></div></div><div style="width:34px;font-size:8.5px;font-weight:600;color:#16a34a;text-align:right;flex-shrink:0;">21%</div></div><div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;"><div style="width:96px;font-size:8.5px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Professional</div><div style="flex:1;background:#f0fdf4;border-radius:2px;height:12px;"><div style="width:15%;background:#34d399;border-radius:2px;height:100%;"></div></div><div style="width:34px;font-size:8.5px;font-weight:600;color:#16a34a;text-align:right;flex-shrink:0;">15%</div></div><div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;"><div style="width:96px;font-size:8.5px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Student</div><div style="flex:1;background:#f0fdf4;border-radius:2px;height:12px;"><div style="width:13%;background:#34d399;border-radius:2px;height:100%;"></div></div><div style="width:34px;font-size:8.5px;font-weight:600;color:#16a34a;text-align:right;flex-shrink:0;">13%</div></div><div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;"><div style="width:96px;font-size:8.5px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Homemaker</div><div style="flex:1;background:#f0fdf4;border-radius:2px;height:12px;"><div style="width:8%;background:#34d399;border-radius:2px;height:100%;"></div></div><div style="width:34px;font-size:8.5px;font-weight:600;color:#16a34a;text-align:right;flex-shrink:0;">8%</div></div><div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;"><div style="width:96px;font-size:8.5px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Agriculture</div><div style="flex:1;background:#f0fdf4;border-radius:2px;height:12px;"><div style="width:5%;background:#34d399;border-radius:2px;height:100%;"></div></div><div style="width:34px;font-size:8.5px;font-weight:600;color:#16a34a;text-align:right;flex-shrink:0;">5%</div></div><div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;"><div style="width:96px;font-size:8.5px;color:#374151;flex-shrink:0;text-align:right;padding-right:4px;">Landlord</div><div style="flex:1;background:#f0fdf4;border-radius:2px;height:12px;"><div style="width:3%;background:#34d399;border-radius:2px;height:100%;"></div></div><div style="width:34px;font-size:8.5px;font-weight:600;color:#16a34a;text-align:right;flex-shrink:0;">3%</div></div></div></div>
+    </div>
+
+  </div>
+
+  <!-- Insight strip -->
+  <div style="flex-shrink:0;background:#fffbeb;border-left:3px solid #f59e0b;
+    padding:8px 12px;border-radius:0 4px 4px 0;font-size:11px;color:#374151;line-height:1.6;">
+    Biggest drop: <b>57.0% activation gap</b>. Activation (signup → risk screen): <b>43.0%</b>. End-to-end submission: <b>24.2%</b> <span style='color:#dc2626;font-weight:600'>(-12.5pp WoW)</span>. <i>% = of users who registered that week, reached each step within 7 days.</i>
+  </div>
+
+</div>
+</div>
+
+<!-- HyperVerge SDK Slide -->
+
+<!-- First Trade Why Slide — channel mix driver analysis -->
+  <div class="slide two-col" id="s4w">
+    <div class="left-panel" style="background:linear-gradient(160deg,#1e1b4b,#7c3aed);">
+      <div class="slide-num">Slide 4&#8599;</div>
+      <div class="slide-ttl">Why First Trade% Spiked</div>
+      <div class="slide-sub">Acquisition channel mix shift &middot; Jun 29–5 &rarr; Jul 6–12</div>
+      <div class="hero-num">9.1%</div>
+      <div class="hero-lbl">First trade conv% &nbsp;Jul 6–12</div>
+      <div class="hero-badge flat neg">-5.5pp WoW</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">Prior week conv%</span><span class="si-val">14.6%</span></div>
+        <div class="stat-item"><span class="si-lbl">Signups WoW</span><span class="si-val">+16%</span></div>
+        <div class="stat-item"><span class="si-lbl">First traders WoW</span><span class="si-val">-20%</span></div>
+      </div>
+      <div style="background:rgba(255,255,255,0.12);border-radius:6px;padding:8px 10px;margin-top:12px;"><div style="font-size:.63rem;font-weight:700;color:rgba(255,255,255,0.9);margin-bottom:4px;">Key driver</div><div style="font-size:.59rem;color:rgba(255,255,255,0.80);line-height:1.55;"><b>Unattributed</b> share fell 18.1pp &rarr; fewer low-intent paid installs in cohort.<br><b>Organic</b> share rose +7.3pp &rarr; higher-intent users increased.<br>Combined: cleaner cohort composition drove the First Trade% spike.</div></div>
+    </div>
+    <div class="right-panel" style="padding:14px 18px 10px;">
+      <div style="margin-bottom:6px;">
+        <div style="font-size:.78rem;font-weight:700;color:#1e293b;">Signup Mix by Acquisition Channel</div>
+        <div style="font-size:.60rem;color:#64748b;margin-top:2px;line-height:1.4;">
+          % share of weekly signups &middot; channels with low conversion rates drag the blended First Trade% down
+        </div>
+      </div>
+      <div style="height:190px;"><canvas id="chart-why-ftrade"></canvas></div>
+      <div style="margin-top:10px;">
+        <div style="font-size:.67rem;font-weight:700;color:#1e293b;margin-bottom:4px;">
+          Conversion rate by channel (traders &divide; signups, same week)
+        </div>
+        <table style="width:100%;border-collapse:collapse;font-size:.59rem;">
+          <thead>
+            <tr style="background:#f8fafc;">
+              <th style="padding:3px 6px;text-align:left;color:#475569;font-weight:600;">Channel</th>
+              <th style="padding:3px 6px;text-align:right;color:#475569;font-weight:600;">Jun 29–5</th>
+              <th style="padding:3px 6px;text-align:right;color:#475569;font-weight:600;">Jul 6–12</th>
+              <th style="padding:3px 6px;text-align:right;color:#475569;font-weight:600;">&Delta; conv</th>
+              <th style="padding:3px 6px;text-align:right;color:#475569;font-weight:600;">Mix shift</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:3px 6px;color:#334155;">Unattributed</td><td style="padding:3px 6px;text-align:right;color:#64748b;">5.6%</td><td style="padding:3px 6px;text-align:right;color:#334155;">5.1%</td><td style="padding:3px 6px;text-align:right;color:#dc2626;font-weight:600;">↓ 0.5pp</td><td style="padding:3px 6px;text-align:right;color:#16a34a;font-size:.57rem;">mix -18.1pp</td></tr>
+<tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:3px 6px;color:#334155;">Google Ads</td><td style="padding:3px 6px;text-align:right;color:#64748b;">7.3%</td><td style="padding:3px 6px;text-align:right;color:#334155;">4.7%</td><td style="padding:3px 6px;text-align:right;color:#dc2626;font-weight:600;">↓ 2.7pp</td><td style="padding:3px 6px;text-align:right;color:#dc2626;font-size:.57rem;">mix +4.8pp</td></tr>
+<tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:3px 6px;color:#334155;">Other perf.</td><td style="padding:3px 6px;text-align:right;color:#64748b;">1.6%</td><td style="padding:3px 6px;text-align:right;color:#334155;">1.6%</td><td style="padding:3px 6px;text-align:right;color:#16a34a;font-weight:600;">↑ 0.0pp</td><td style="padding:3px 6px;text-align:right;color:#dc2626;font-size:.57rem;">mix +5.1pp</td></tr>
+<tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:3px 6px;color:#334155;">Organic</td><td style="padding:3px 6px;text-align:right;color:#64748b;">11.7%</td><td style="padding:3px 6px;text-align:right;color:#334155;">2.9%</td><td style="padding:3px 6px;text-align:right;color:#dc2626;font-weight:600;">↓ 8.8pp</td><td style="padding:3px 6px;text-align:right;color:#dc2626;font-size:.57rem;">mix +7.3pp</td></tr>
+<tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:3px 6px;color:#334155;">Jio / ZOM / ZEP</td><td style="padding:3px 6px;text-align:right;color:#64748b;">10.4%</td><td style="padding:3px 6px;text-align:right;color:#334155;">3.7%</td><td style="padding:3px 6px;text-align:right;color:#dc2626;font-weight:600;">↓ 6.7pp</td><td style="padding:3px 6px;text-align:right;color:#64748b;font-size:.57rem;">mix +1.0pp</td></tr>
+<tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:3px 6px;color:#334155;">Employee / Ref.</td><td style="padding:3px 6px;text-align:right;color:#64748b;">5.6%</td><td style="padding:3px 6px;text-align:right;color:#334155;">50.0%</td><td style="padding:3px 6px;text-align:right;color:#16a34a;font-weight:600;">↑ 44.4pp</td><td style="padding:3px 6px;text-align:right;color:#64748b;font-size:.57rem;">mix -0.2pp</td></tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script>
+  (function() {
+    var ctx = document.getElementById('chart-why-ftrade');
+    if (!ctx) return;
+    new Chart(ctx.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ["Unattributed", "Google Ads", "Other perf.", "Organic", "Jio / ZOM / ZEP", "Employee / Ref."],
+        datasets: [
+          {
+            label: 'Jun 29–5',
+            data: [50.4, 26.0, 18.9, 3.5, 1.0, 0.2],
+            backgroundColor: 'rgba(99,102,241,0.40)',
+            borderColor: 'rgba(99,102,241,0.85)',
+            borderWidth: 1,
+            borderRadius: 2,
+          },
+          {
+            label: 'Jul 6–12',
+            data: [32.3, 30.8, 24.0, 10.8, 2.0, 0.0],
+            backgroundColor: 'rgba(16,185,129,0.40)',
+            borderColor: 'rgba(16,185,129,0.85)',
+            borderWidth: 1,
+            borderRadius: 2,
+          }
+        ]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'top', labels: { font: { size: 9 }, boxWidth: 10, padding: 8 } },
+          tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + c.parsed.x.toFixed(1) + '%'; } } },
+        },
+        scales: {
+          x: {
+            ticks: { font: { size: 9 }, callback: function(v) { return v + '%'; } },
+            grid: { color: '#f1f5f9' },
+          },
+          y: { ticks: { font: { size: 9 } } },
+        },
+      }
+    });
+  })();
+  </script>
+
+  <!-- Slide 5: Weekly Active Users — Amber -->
+  
 </div>
 </div><!-- /.deck-wrap -->
 
