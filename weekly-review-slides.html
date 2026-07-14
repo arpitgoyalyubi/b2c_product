@@ -848,15 +848,15 @@ function sdoToggle(g){
     <div class="slide-num">KYC</div>
     <div class="slide-ttl">Signup &#8594; KYC Start</div>
     <div class="slide-sub">Mon&#8211;Sun weeks &#183; signup-anchored</div>
-    <div class="hero-num" style="font-size:3rem;">43.4%</div>
+    <div class="hero-num" style="font-size:3rem;">38.1%</div>
     <div class="hero-lbl">KYC Start rate (last week)</div>
-    <div class="hero-badge flat" style="background:rgba(255,255,255,.15);color:#86efac;">+0.1pp WoW</div>
+    <div class="hero-badge flat" style="background:rgba(255,255,255,.15);color:#fca5a5;">&#8722;0.2pp WoW</div>
     <div class="stat-list" style="margin-top:18px;">
       <div class="stat-item"><span class="si-lbl">Signups (this week)</span><span class="si-val">9,213</span></div>
-      <div class="stat-item"><span class="si-lbl">KYC Starters (this week)</span><span class="si-val">4,002</span></div>
+      <div class="stat-item"><span class="si-lbl">KYC Starters (this week)</span><span class="si-val">3,511</span></div>
       <div class="stat-item"><span class="si-lbl">Signups (prior week)</span><span class="si-val">7,971</span></div>
-      <div class="stat-item"><span class="si-lbl">KYC Starters (prior week)</span><span class="si-val">3,452</span></div>
-      <div class="stat-item"><span class="si-lbl">Prior-week KYC Start%</span><span class="si-val">43.3%</span></div>
+      <div class="stat-item"><span class="si-lbl">KYC Starters (prior week)</span><span class="si-val">3,054</span></div>
+      <div class="stat-item"><span class="si-lbl">Prior-week KYC Start%</span><span class="si-val">38.3%</span></div>
     </div>
   </div>
   <div class="right-panel" style="padding:14px 18px;display:flex;flex-direction:column;gap:10px;">
@@ -874,8 +874,8 @@ function sdoToggle(g){
 (function(){
   var labels=["May 25\u201331", "Jun 1\u20137", "Jun 8\u201314", "Jun 15\u201321", "Jun 22\u201328", "Jun 29\u2013Jul 5", "Jul 6\u201312"];
   var signups=[3746, 4242, 3464, 4471, 4537, 7971, 9213];
-  var kycS=[1382, 1463, 1405, 1701, 1822, 3452, 4002];
-  var pcts=[36.9, 34.5, 40.6, 38.0, 40.2, 43.3, 43.4];
+  var kycS=[1200, 1247, 1141, 1424, 1524, 3054, 3511];
+  var pcts=[32.0, 29.4, 32.9, 31.8, 33.6, 38.3, 38.1];
   var c1=document.getElementById('chart-signup-kyc-start');
   if(c1) new Chart(c1,{type:'bar',data:{labels:labels,datasets:[
     {label:'Signups',data:signups,backgroundColor:'rgba(99,102,241,.5)',borderRadius:3},
