@@ -1,0 +1,803 @@
+<title>Demat Closure — UI Mockups · ASP-4113</title>
+<style>
+:root{
+  --bg:#090C18;--sb:#0D1125;--sb2:#111828;--frame:#1C2140;--surface:#202847;
+  --border:#2A335A;--border2:#1E2545;
+  --acc:#7B6AF5;--acc2:#5D4FDB;--acc-glow:rgba(123,106,245,.18);
+  --ok:#10B981;--warn:#F59E0B;--err:#EF4444;--ok-bg:rgba(16,185,129,.1);--warn-bg:rgba(245,158,11,.1);--err-bg:rgba(239,68,68,.1);
+  --tx1:#EEF0FF;--tx2:#7C8DB5;--tx3:#4A5578;
+  --aspero:#5B21B6;--aspero-light:#EDE9FE;
+  --radius:10px;--radius-lg:16px;--hdr:48px;--sb-w:228px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;background:var(--bg);color:var(--tx1);font-size:13px;line-height:1.5;font-variant-numeric:tabular-nums}
+
+/* ─── Layout shell ─── */
+.shell{display:grid;grid-template-rows:var(--hdr) 1fr;grid-template-columns:var(--sb-w) 1fr;height:100vh}
+
+/* ─── Header ─── */
+header{grid-column:1/-1;background:linear-gradient(90deg,#0F1330 0%,#0A0D20 100%);border-bottom:1px solid var(--border2);display:flex;align-items:center;padding:0 18px 0 0;gap:0}
+.hdr-logo{width:var(--sb-w);padding:0 16px;display:flex;align-items:center;gap:9px;border-right:1px solid var(--border2);height:100%}
+.hdr-dot{width:26px;height:26px;border-radius:7px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
+.hdr-name{font-size:12px;font-weight:700;color:var(--tx1);letter-spacing:-.01em}
+.hdr-ver{font-size:10px;color:var(--tx3);letter-spacing:.02em}
+.hdr-center{flex:1;padding:0 16px}
+.hdr-title{font-size:13px;font-weight:700;color:var(--tx1);letter-spacing:-.01em}
+.hdr-sub{font-size:10.5px;color:var(--tx2);margin-top:1px}
+.hdr-right{display:flex;align-items:center;gap:7px;margin-left:auto}
+.badge{padding:2px 8px;border-radius:99px;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.badge-p1{background:rgba(16,185,129,.15);color:#34D399;border:1px solid rgba(16,185,129,.25)}
+.badge-p2{background:rgba(245,158,11,.12);color:#FBB83B;border:1px solid rgba(245,158,11,.2)}
+.hdr-link{color:var(--tx2);font-size:11px;text-decoration:none;padding:4px 9px;border:1px solid var(--border);border-radius:5px;transition:.15s;white-space:nowrap}
+.hdr-link:hover{color:var(--tx1);border-color:var(--acc);background:var(--acc-glow)}
+
+/* ─── Sidebar ─── */
+.sidebar{background:var(--sb);border-right:1px solid var(--border2);overflow-y:auto;padding:8px 0 20px}
+.sidebar::-webkit-scrollbar{width:3px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.grp-label{padding:14px 14px 5px;font-size:9px;font-weight:700;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:7px}
+.grp-label::after{content:'';flex:1;height:1px;background:var(--border2)}
+.nav-item{display:flex;align-items:center;gap:8px;width:100%;background:none;border:none;cursor:pointer;color:var(--tx2);font-size:11.5px;padding:7px 14px;text-align:left;transition:.12s;border-left:2px solid transparent}
+.nav-item:hover{color:var(--tx1);background:rgba(255,255,255,.03)}
+.nav-item.active{background:rgba(123,106,245,.1);color:#A99FFA;border-left-color:var(--acc)}
+.nav-num{width:18px;height:18px;border-radius:5px;background:var(--border2);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--tx3);flex-shrink:0;font-variant-numeric:tabular-nums}
+.nav-item.active .nav-num{background:rgba(123,106,245,.25);color:#A99FFA}
+.nav-text{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-badge{font-size:9px;padding:1px 5px;border-radius:3px;font-weight:700;flex-shrink:0}
+.nb-p1{background:rgba(16,185,129,.12);color:#34D399}.nb-p2{background:rgba(245,158,11,.1);color:#FBB83B}
+
+/* ─── Canvas ─── */
+.canvas{display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse 80% 60% at 50% 40%,#141A35,var(--bg));overflow:auto;padding:28px}
+.canvas::-webkit-scrollbar{width:6px;height:6px}.canvas::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.screen{display:none;animation:fadeIn .18s ease}.screen.active{display:flex;flex-direction:column;align-items:center}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.screen-label{font-size:10px;color:var(--tx3);letter-spacing:.04em;margin-bottom:11px;display:flex;align-items:center;gap:8px;font-weight:500}
+.screen-label b{color:var(--tx2);font-weight:600}
+.sl-tag{padding:1px 6px;border-radius:3px;background:var(--border2);font-size:9px;color:var(--tx3)}
+
+/* ─── Phone frame ─── */
+.phone-frame{width:375px;border-radius:46px;background:#1A1C26;box-shadow:0 0 0 1px #2A2E45,0 0 0 8px #141728,inset 0 0 0 1px rgba(255,255,255,.04),0 28px 60px rgba(0,0,0,.7);overflow:hidden;position:relative;display:flex;flex-direction:column}
+.phone-screen{width:375px;background:#F8FAFC;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;flex:1}
+/* Dynamic island / notch */
+.ph-notch{height:44px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:10px 22px 0 24px;flex-shrink:0}
+.ph-time{font-size:14.5px;font-weight:600;color:#0F172A}
+.ph-status-icons{display:flex;align-items:center;gap:4px;color:#0F172A;font-size:12px}
+.ph-body{flex:1;overflow-y:auto;background:#F8FAFC}
+.ph-body::-webkit-scrollbar{display:none}
+.ph-bar{padding:10px 14px 20px;background:#fff;border-top:1px solid #E2E8F0;flex-shrink:0}
+
+/* ─── In-app components ─── */
+.app-nav{background:#fff;height:54px;display:flex;align-items:center;padding:0 12px;gap:9px;border-bottom:1px solid #E2E8F0;flex-shrink:0;position:sticky;top:0;z-index:5}
+.nav-back{width:32px;height:32px;background:#F1F5F9;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;cursor:pointer}
+.nav-title{font-size:15px;font-weight:700;color:#0F172A;line-height:1.1}
+.nav-subtitle{font-size:10.5px;color:#64748B}
+.sec-head{padding:14px 14px 6px;font-size:10px;font-weight:700;color:#94A3B8;letter-spacing:.06em;text-transform:uppercase}
+.a-card{background:#fff;border-radius:12px;margin:0 12px 10px;border:1px solid #E8EDF4}
+.a-card-inner{padding:12px 14px}
+.d-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #F1F5F9}
+.d-row:last-child{border-bottom:none}
+.d-lbl{font-size:11.5px;color:#64748B}.d-val{font-size:11.5px;font-weight:600;color:#0F172A}
+.a-btn{width:100%;padding:13px 16px;border-radius:11px;border:none;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;letter-spacing:-.01em}
+.a-btn-primary{background:var(--aspero);color:#fff}.a-btn-secondary{background:#F1F5F9;color:#475569}
+.a-btn-danger{background:#DC2626;color:#fff}
+.a-btn-outline{background:transparent;border:1.5px solid var(--aspero);color:var(--aspero)}
+.a-pill{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:99px;font-size:10px;font-weight:700}
+.pill-active{background:#EDE9FE;color:#6D28D9}.pill-pending{background:#FEF3C7;color:#92400E}
+.pill-approved{background:#D1FAE5;color:#065F46}.pill-rejected{background:#FEE2E2;color:#991B1B}
+.pill-external{background:#E0F2FE;color:#0369A1}
+.a-info{display:flex;gap:9px;margin:0 12px 10px;padding:10px 11px;border-radius:9px}
+.ai-warn{background:#FFFBEB;border:1px solid #FDE68A}.ai-info{background:#EFF6FF;border:1px solid #BFDBFE}.ai-err{background:#FEF2F2;border:1px solid #FECACA}
+.ai-ico{font-size:14px;flex-shrink:0;margin-top:1px}.ai-txt{font-size:11.5px;line-height:1.55;color:#475569}
+.ai-txt strong{color:#1E293B}
+.a-center{display:flex;flex-direction:column;align-items:center;text-align:center;padding:32px 20px 16px}
+.a-icon-circle{border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;width:62px;height:62px;margin-bottom:16px;flex-shrink:0}
+.a-state-title{font-size:19px;font-weight:800;color:#0F172A;letter-spacing:-.02em;margin-bottom:5px}
+.a-state-sub{font-size:13px;color:#64748B;line-height:1.6;max-width:258px}
+.tl-row{display:flex;gap:10px;padding:6px 0}
+.tl-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:2px}
+.tl-done{background:#D1FAE5;color:#059669}.tl-active{background:#EDE9FE;color:#6D28D9}.tl-todo{background:#F1F5F9;color:#94A3B8}
+.tl-ttl{font-size:12px;font-weight:700;color:#0F172A}.tl-sub{font-size:11px;color:#64748B}
+.cb-row{display:flex;align-items:flex-start;gap:9px;padding:10px 14px}
+.cb-box{width:20px;height:20px;border-radius:5px;background:var(--aspero);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-size:10px;color:#fff}
+.cb-txt{font-size:12px;color:#475569;line-height:1.5}
+.bbar{padding:10px 12px 18px;background:#fff;border-top:1px solid #E2E8F0;flex-shrink:0}
+.bbar-2{display:flex;gap:8px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.pulse-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:currentColor;animation:blink 1.4s ease infinite}
+.re-overlay{position:absolute;inset:0;background:rgba(0,0,0,.62);display:flex;align-items:flex-end;border-radius:36px;z-index:20}
+.re-sheet{width:100%;background:#fff;border-radius:20px 20px 0 0;padding:18px 20px 24px;text-align:center}
+.re-handle{width:36px;height:4px;border-radius:2px;background:#E2E8F0;margin:0 auto 16px}
+.p2-tag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:#FEF3C7;border:1px solid #FDE68A;border-radius:4px;font-size:10px;font-weight:700;color:#92400E;margin-bottom:8px}
+.upload-box{border:2px dashed #C4B5FD;border-radius:10px;padding:18px;text-align:center;background:#FAF5FF;margin-bottom:8px}
+.form-lbl{font-size:11px;font-weight:700;color:#475569;display:block;margin-bottom:3px}
+.form-inp{width:100%;padding:8px 10px;border:1px solid #E2E8F0;border-radius:7px;font-size:12px;color:#0F172A;background:#fff;margin-bottom:8px}
+
+/* ─── Gap Analysis doc view ─── */
+.gap-doc{width:100%;max-width:760px;padding-bottom:40px}
+.gap-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
+.gap-stat{background:var(--frame);border:1px solid var(--border);border-radius:10px;padding:14px 16px;text-align:center}
+.gap-stat-n{font-size:28px;font-weight:800;letter-spacing:-.04em;line-height:1}
+.gap-stat-l{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-top:4px;color:var(--tx2)}
+.gap-sec-hd{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3);padding:0 0 8px;border-bottom:1px solid var(--border2);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.gap-sec-hd::after{content:'';flex:1;height:1px;background:var(--border2)}
+.gap-card{background:var(--frame);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px;display:grid;grid-template-columns:auto 1fr;gap:0 12px}
+.gap-sev{width:3px;border-radius:2px;flex-shrink:0;align-self:stretch;grid-row:1/3}
+.gap-crit .gap-sev{background:var(--err)}.gap-sig .gap-sev{background:var(--warn)}.gap-min .gap-sev{background:var(--tx3)}
+.gap-head{display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.gap-num{font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.03em;min-width:22px}
+.gap-title{font-size:12.5px;font-weight:700;color:var(--tx1);letter-spacing:-.01em;flex:1}
+.gap-pill{font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:99px}
+.gp-crit{background:rgba(239,68,68,.15);color:#F87171;border:1px solid rgba(239,68,68,.2)}
+.gp-sig{background:rgba(245,158,11,.12);color:#FBB83B;border:1px solid rgba(245,158,11,.2)}
+.gp-min{background:rgba(74,85,120,.25);color:var(--tx2);border:1px solid var(--border)}
+.gap-body{font-size:12px;color:var(--tx2);line-height:1.65;grid-column:2}
+.gap-body strong{color:var(--tx1)}
+.gap-action{display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-size:10.5px;font-weight:700;color:var(--acc);background:rgba(123,106,245,.1);border:1px solid rgba(123,106,245,.2);border-radius:5px;padding:3px 8px}
+.open-q-card{background:rgba(123,106,245,.06);border:1px solid rgba(123,106,245,.18);border-radius:10px;padding:12px 14px;margin-bottom:7px;display:flex;gap:11px}
+.oq-icon{font-size:15px;flex-shrink:0;margin-top:1px}
+.oq-body{font-size:12px;color:var(--tx2);line-height:1.6}
+.oq-body strong{color:var(--tx1)}
+.oq-owner{display:inline-block;margin-top:5px;font-size:10px;font-weight:700;color:var(--acc);letter-spacing:.03em}
+
+/* ─── Desktop / admin ─── */
+.desktop-frame{width:900px;border-radius:10px;background:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.06),0 24px 64px rgba(0,0,0,.6);overflow:hidden}
+.dt-chrome{height:30px;background:#E8ECEF;display:flex;align-items:center;padding:0 10px;gap:5px;flex-shrink:0}
+.dt-dot{width:11px;height:11px;border-radius:50%}
+.dt-red{background:#FC5E58}.dt-yel{background:#FEBC2E}.dt-grn{background:#28C840}
+.dt-addr{flex:1;text-align:center;font-size:10px;color:#64748B}
+.dt-addr span{background:#fff;padding:2px 12px;border-radius:4px;display:inline-block}
+.dt-body{display:flex;min-height:530px;position:relative}
+.admin-sidebar{width:188px;background:#1E1B4B;flex-shrink:0}
+.as-logo{color:#fff;font-size:13px;font-weight:800;padding:16px 14px 14px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:4px;letter-spacing:-.02em}
+.as-nav{padding:7px 12px;color:rgba(255,255,255,.4);font-size:11px;cursor:pointer;display:flex;align-items:center;gap:7px;border-radius:5px;margin:0 4px 1px;transition:.1s}
+.as-nav:hover{color:rgba(255,255,255,.75);background:rgba(255,255,255,.04)}
+.as-nav.active{color:#A5B4FC;background:rgba(99,102,241,.18);border-left:2px solid #6366F1;border-radius:0 5px 5px 0;margin-left:0;padding-left:10px}
+.admin-main{flex:1;background:#F8FAFC;overflow:hidden;display:flex;flex-direction:column}
+.am-header{background:#fff;padding:12px 18px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.am-header h1{font-size:13px;font-weight:800;color:#0F172A;letter-spacing:-.01em}
+.am-filter{padding:8px 18px;background:#fff;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;gap:6px;flex-shrink:0}
+.am-sel{padding:4px 8px;border:1px solid #E2E8F0;border-radius:5px;font-size:10.5px;color:#475569;background:#fff}
+.am-search{padding:4px 8px;border:1px solid #E2E8F0;border-radius:5px;font-size:10.5px;color:#475569;flex:1;max-width:170px}
+.am-table{width:100%;border-collapse:collapse;font-size:11px}
+.am-table th{padding:8px 10px;text-align:left;font-size:10px;font-weight:700;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;letter-spacing:.03em;text-transform:uppercase}
+.am-table td{padding:9px 10px;border-bottom:1px solid #F1F5F9;color:#1E293B;vertical-align:middle}
+.am-table tr:last-child td{border-bottom:none}
+.am-table tr:hover td{background:#F8FAFC}
+.am-btn{padding:3px 7px;border-radius:4px;border:1px solid;font-size:9.5px;font-weight:700;cursor:pointer;margin-right:2px;white-space:nowrap}
+.am-app{border-color:#6EE7B7;color:#059669;background:#D1FAE5}.am-rej{border-color:#FCA5A5;color:#DC2626;background:#FEE2E2}
+.am-dl{border-color:#BFDBFE;color:#2563EB;background:#EFF6FF}.am-def{border-color:#E2E8F0;color:#64748B;background:#F8FAFC}
+.modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:50}
+.modal-box{background:#fff;border-radius:10px;padding:20px 22px;width:370px;box-shadow:0 20px 50px rgba(0,0,0,.22)}
+.modal-box h3{font-size:14px;font-weight:800;color:#0F172A;margin-bottom:6px;letter-spacing:-.01em}
+.modal-box p{font-size:11.5px;color:#475569;line-height:1.55;margin-bottom:8px}
+.m-client{background:#F8FAFC;border:1px solid #E2E8F0;border-radius:7px;padding:9px 10px;font-size:11px;margin:8px 0}
+.m-client strong{font-size:13px;color:#0F172A;display:block;margin-bottom:3px}
+.m-lbl{font-size:10.5px;font-weight:700;color:#64748B;margin-bottom:3px;letter-spacing:.02em;text-transform:uppercase}
+.m-sel{width:100%;padding:7px 9px;border:1px solid #E2E8F0;border-radius:6px;font-size:12px;color:#1E293B;background:#fff;margin:3px 0 10px}
+.m-ul{padding-left:18px;margin:5px 0 10px}
+.m-ul li{font-size:11px;color:#475569;line-height:1.9}
+.m-actions{display:flex;gap:8px;margin-top:14px}
+.m-btn{flex:1;padding:9px;border-radius:7px;font-size:12px;font-weight:700;border:none;cursor:pointer}
+.m-cancel{background:#F1F5F9;color:#475569}.m-confirm-app{background:#059669;color:#fff}.m-confirm-rej{background:#DC2626;color:#fff}
+.acct-demat{background:#fff;border-radius:12px;margin:0 12px 10px;border:1px solid #E8EDF4;padding:12px 14px}
+</style>
+
+<div class="shell">
+
+<!-- ════ HEADER ════ -->
+<header>
+  <div class="hdr-logo">
+    <div class="hdr-dot">A</div>
+    <div><div class="hdr-name">Aspero B2C</div><div class="hdr-ver">Design Review</div></div>
+  </div>
+  <div class="hdr-center">
+    <div class="hdr-title">Demat Account Closure — UI Mockups</div>
+    <div class="hdr-sub">ASP-4113 · 13 screens · Insta Demat (DP IN302662) · Self-service closure</div>
+  </div>
+  <div class="hdr-right">
+    <span class="badge badge-p1">Phase 1 · P1</span>
+    <span class="badge badge-p2">Phase 2 · P2</span>
+    <a class="hdr-link" href="https://goyubi.atlassian.net/browse/ASP-4113" target="_blank">↗ Jira</a>
+    <a class="hdr-link" href="https://goyubi.atlassian.net/wiki/x/AoDTj" target="_blank">↗ PRD</a>
+  </div>
+</header>
+
+<!-- ════ SIDEBAR ════ -->
+<nav class="sidebar">
+  <div class="grp-label">User App · Phase 1</div>
+  <button class="nav-item active" onclick="show('s1',this)"><span class="nav-num">1</span><span class="nav-text">Demat Account List</span><span class="nav-badge nb-p1">P1</span></button>
+  <button class="nav-item" onclick="show('s2',this)"><span class="nav-num">2</span><span class="nav-text">NIL Balance Summary</span><span class="nav-badge nb-p1">P1</span></button>
+  <button class="nav-item" onclick="show('s3',this)"><span class="nav-num">3</span><span class="nav-text">Holdings Detected</span><span class="nav-badge nb-p1">P1</span></button>
+  <button class="nav-item" onclick="show('s4',this)"><span class="nav-num">4</span><span class="nav-text">eSign Form</span><span class="nav-badge nb-p1">P1</span></button>
+  <button class="nav-item" onclick="show('s5',this)"><span class="nav-num">5</span><span class="nav-text">Request Submitted</span><span class="nav-badge nb-p1">P1</span></button>
+  <button class="nav-item" onclick="show('s6',this)"><span class="nav-num">6</span><span class="nav-text">Status · Pending</span><span class="nav-badge nb-p1">P1</span></button>
+  <button class="nav-item" onclick="show('s7',this)"><span class="nav-num">7</span><span class="nav-text">Status · Approved</span><span class="nav-badge nb-p1">P1</span></button>
+  <button class="nav-item" onclick="show('s8',this)"><span class="nav-num">8</span><span class="nav-text">Status · Rejected</span><span class="nav-badge nb-p1">P1</span></button>
+  <button class="nav-item" onclick="show('s9',this)"><span class="nav-num">9</span><span class="nav-text">Re-entry Popup</span><span class="nav-badge nb-p1">P1</span></button>
+  <div class="grp-label">Ops Admin Portal</div>
+  <button class="nav-item" onclick="show('s10',this)"><span class="nav-num">10</span><span class="nav-text">Closure Requests List</span><span class="nav-badge nb-p1">P1</span></button>
+  <button class="nav-item" onclick="show('s11',this)"><span class="nav-num">11</span><span class="nav-text">Approve Modal</span><span class="nav-badge nb-p1">P1</span></button>
+  <button class="nav-item" onclick="show('s12',this)"><span class="nav-num">12</span><span class="nav-text">Reject Modal</span><span class="nav-badge nb-p1">P1</span></button>
+  <div class="grp-label">Phase 2 · Preview</div>
+  <button class="nav-item" onclick="show('s13',this)"><span class="nav-num">13</span><span class="nav-text">Transfer Cum Closure</span><span class="nav-badge nb-p2">P2</span></button>
+  <div class="grp-label">Design Review</div>
+  <button class="nav-item" onclick="show('sgaps',this)"><span class="nav-num" style="font-size:10px">⚠</span><span class="nav-text">Flow Gap Analysis</span><span class="nav-badge" style="background:rgba(239,68,68,.12);color:#F87171;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:700">13 gaps</span></button>
+</nav>
+
+<!-- ════ CANVAS ════ -->
+<main class="canvas">
+
+<!-- ─── S1: Demat Account List ─── -->
+<div id="s1" class="screen active">
+  <div class="screen-label">Screen 1 · <b>Demat Account List</b> <span class="sl-tag">Profile → Demat Accounts</span></div>
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="ph-notch"><span class="ph-time">9:41</span><span class="ph-status-icons">▲▲▲ 🔋</span></div>
+      <div class="ph-body">
+        <div class="app-nav"><div class="nav-back">←</div><div><div class="nav-title">Demat Accounts</div></div></div>
+        <div class="sec-head">Your Accounts</div>
+        <!-- Insta Demat -->
+        <div class="acct-demat">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div style="width:38px;height:38px;border-radius:10px;background:#EDE9FE;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0">🏦</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#0F172A;margin-bottom:2px">Insta Demat</div><div style="font-size:11px;color:#64748B">IN302662 · 1234567</div></div>
+            <span class="a-pill pill-active">Active</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
+            <button style="padding:7px;background:#F1F5F9;border-radius:7px;border:none;font-size:11px;font-weight:700;color:#475569;cursor:pointer">View Details</button>
+            <button style="padding:7px;background:#FEF2F2;border-radius:7px;border:1px solid #FECACA;font-size:11px;font-weight:700;color:#DC2626;cursor:pointer">Close Account</button>
+          </div>
+        </div>
+        <!-- External -->
+        <div class="acct-demat">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div style="width:38px;height:38px;border-radius:10px;background:#E0F2FE;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0">🏛</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#0F172A;margin-bottom:2px">HDFC Securities</div><div style="font-size:11px;color:#64748B">IN303720 · 9876543</div></div>
+            <span class="a-pill pill-external">External</span>
+          </div>
+          <button style="width:100%;padding:7px;background:#F1F5F9;border-radius:7px;border:none;font-size:11px;font-weight:700;color:#475569;cursor:pointer;margin-bottom:8px">View Details</button>
+          <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:7px;padding:8px;font-size:11px;color:#1D4ED8">ℹ️ To close an external account, contact your DP directly.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── S2: NIL Balance ─── -->
+<div id="s2" class="screen">
+  <div class="screen-label">Screen 2 · <b>NIL Balance Summary</b> <span class="sl-tag">Path A — Closure Review</span></div>
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="ph-notch"><span class="ph-time">9:41</span><span class="ph-status-icons">▲▲▲ 🔋</span></div>
+      <div class="ph-body">
+        <div class="app-nav"><div class="nav-back">←</div><div><div class="nav-title">Account Closure</div><div class="nav-subtitle">Insta Demat · IN302662</div></div></div>
+        <div style="padding:14px 12px 6px"><div style="font-size:14px;font-weight:800;color:#0F172A;margin-bottom:2px;letter-spacing:-.02em">Review closure request</div><div style="font-size:12px;color:#64748B">Confirm details before signing</div></div>
+        <div class="a-card"><div class="a-card-inner">
+          <div class="d-row"><span class="d-lbl">Account Holder</span><span class="d-val">Ravi Kumar</span></div>
+          <div class="d-row"><span class="d-lbl">DP ID</span><span class="d-val">IN302662</span></div>
+          <div class="d-row"><span class="d-lbl">Client ID (BO ID)</span><span class="d-val">1234567</span></div>
+          <div class="d-row"><span class="d-lbl">Request Date</span><span class="d-val">14 Jul 2026</span></div>
+          <div class="d-row"><span class="d-lbl">Holdings</span><span class="d-val" style="color:#059669;font-weight:700">✓ NIL</span></div>
+        </div></div>
+        <div class="a-info ai-warn"><span class="ai-ico">⚠️</span><div class="ai-txt"><strong>Before you proceed</strong><br>Closing your account will permanently:<br>• Deactivate your trading account (UCCC)<br>• Remove your profile from Aspero<br>• Block future investments until you re-open</div></div>
+        <div class="cb-row"><div class="cb-box">✓</div><div class="cb-txt">I understand and wish to proceed with account closure.</div></div>
+      </div>
+      <div class="bbar"><button class="a-btn a-btn-danger">Proceed to eSign →</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── S3: Holdings Detected ─── -->
+<div id="s3" class="screen">
+  <div class="screen-label">Screen 3 · <b>Holdings Detected</b> <span class="sl-tag">ASP-4115 · Phase 1 informational block</span></div>
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="ph-notch"><span class="ph-time">9:41</span><span class="ph-status-icons">▲▲▲ 🔋</span></div>
+      <div class="ph-body">
+        <div class="app-nav"><div class="nav-back">←</div><div><div class="nav-title">Account Closure</div></div></div>
+        <div class="a-center">
+          <div class="a-icon-circle" style="background:#FEF3C7">📦</div>
+          <div class="a-state-title">Holdings Detected</div>
+          <div class="a-state-sub">Your account has active securities. To close your account, all holdings must be transferred or liquidated first.</div>
+        </div>
+        <div class="a-card"><div class="a-card-inner">
+          <div style="font-size:10px;font-weight:700;color:#0F172A;margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">Current Holdings</div>
+          <div class="d-row"><span class="d-lbl">Sovereign Gold Bonds</span><span class="d-val">2 units</span></div>
+          <div class="d-row"><span class="d-lbl">SGB ETF Units</span><span class="d-val">50 units</span></div>
+        </div></div>
+        <div class="a-info ai-info"><span class="ai-ico">ℹ️</span><div class="ai-txt"><strong>Transfer Cum Closure coming in Phase 2.</strong><br>Once available, you can transfer all holdings and close your account in a single step. Need help now? Contact support.</div></div>
+      </div>
+      <div class="bbar bbar-2">
+        <button class="a-btn a-btn-outline" style="flex:1;font-size:12px">Contact Support</button>
+        <button class="a-btn a-btn-secondary" style="flex:1;font-size:12px">Back to Profile</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── S4: eSign ─── -->
+<div id="s4" class="screen">
+  <div class="screen-label">Screen 4 · <b>eSign Form</b> <span class="sl-tag">ASP-4116 · Digio Aadhaar OTP eSign</span></div>
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="ph-notch"><span class="ph-time">9:41</span><span class="ph-status-icons">▲▲▲ 🔋</span></div>
+      <div class="ph-body">
+        <div class="app-nav"><div class="nav-back">←</div><div><div class="nav-title">eSign Closure Form</div></div></div>
+        <div style="padding:12px 12px 4px"><div style="font-size:13px;font-weight:700;color:#0F172A;margin-bottom:2px">Review &amp; sign</div><div style="font-size:11.5px;color:#64748B">Form pre-filled from KYC — read only</div></div>
+        <!-- doc preview -->
+        <div class="a-card"><div class="a-card-inner">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
+            <span style="font-size:24px">📄</span>
+            <div><div style="font-size:12.5px;font-weight:700;color:#0F172A">Account Closure Request</div><div style="font-size:10px;color:#64748B">Aspero Financial Services Pvt. Ltd.</div></div>
+            <span class="a-pill" style="background:#EDE9FE;color:#6D28D9;margin-left:auto">Pre-filled</span>
+          </div>
+          <div style="background:#F8FAFC;border-radius:8px;padding:10px;border:1px solid #E8EDF4;font-size:11.5px;color:#475569;line-height:2">
+            <div><strong style="color:#0F172A">Date:</strong> 14 July 2026</div>
+            <div><strong style="color:#0F172A">Client Name:</strong> Ravi Kumar</div>
+            <div><strong style="color:#0F172A">DP ID:</strong> IN302662</div>
+            <div><strong style="color:#0F172A">Client ID:</strong> 1234567</div>
+            <div><strong style="color:#0F172A">PAN:</strong> ABCDE1234F</div>
+          </div>
+        </div></div>
+        <div class="a-info ai-info"><span class="ai-ico">🔒</span><div class="ai-txt">Signed securely via <strong>Digio</strong> using Aadhaar OTP — creates a legally valid eSign.</div></div>
+        <div style="padding:4px 12px 12px;font-size:11px;color:#94A3B8;line-height:1.5">By signing, you confirm you are voluntarily requesting account closure and understand the consequences.</div>
+      </div>
+      <div class="bbar"><button class="a-btn a-btn-primary">🔏 Sign with Aadhaar OTP</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── S5: Submitted ─── -->
+<div id="s5" class="screen">
+  <div class="screen-label">Screen 5 · <b>Request Submitted</b> <span class="sl-tag">Post-eSign success</span></div>
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="ph-notch"><span class="ph-time">9:41</span><span class="ph-status-icons">▲▲▲ 🔋</span></div>
+      <div class="ph-body">
+        <div class="a-center" style="padding-top:40px">
+          <div class="a-icon-circle" style="background:#D1FAE5">✅</div>
+          <div class="a-state-title">Request Submitted!</div>
+          <div class="a-state-sub">Your closure request has been received. DP Ops will process it within 2 business days.</div>
+        </div>
+        <div class="a-card"><div class="a-card-inner">
+          <div class="d-row"><span class="d-lbl">Request ID</span><span class="d-val" style="font-family:monospace;font-size:11px">CLR-2026-001423</span></div>
+          <div class="d-row"><span class="d-lbl">Submitted</span><span class="d-val">14 Jul 2026, 3:45 PM</span></div>
+          <div class="d-row"><span class="d-lbl">Account</span><span class="d-val">IN302662 · 1234567</span></div>
+          <div class="d-row"><span class="d-lbl">Expected by</span><span class="d-val">16 Jul 2026</span></div>
+        </div></div>
+        <div class="a-info ai-info"><span class="ai-ico">📧</span><div class="ai-txt">Confirmation sent to <strong>r***@gmail.com</strong>. You'll receive another email once processed.</div></div>
+      </div>
+      <div class="bbar bbar-2">
+        <button class="a-btn a-btn-outline" style="flex:1;font-size:12px">Track Status</button>
+        <button class="a-btn a-btn-secondary" style="flex:1;font-size:12px">Back to Profile</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── S6: Pending ─── -->
+<div id="s6" class="screen">
+  <div class="screen-label">Screen 6 · <b>Status · CLOSURE_PENDING</b> <span class="sl-tag">ASP-4117</span></div>
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="ph-notch"><span class="ph-time">9:41</span><span class="ph-status-icons">▲▲▲ 🔋</span></div>
+      <div class="ph-body">
+        <div class="app-nav"><div class="nav-back">←</div><div><div class="nav-title">Closure Status</div><div class="nav-subtitle">IN302662 · 1234567</div></div></div>
+        <div style="margin:12px 12px 10px;background:#fff;border-radius:12px;border:1px solid #E8EDF4;padding:14px;text-align:center">
+          <div style="display:inline-flex;align-items:center;gap:7px;background:#FEF3C7;border-radius:99px;padding:6px 14px;font-size:12px;font-weight:800;color:#92400E;margin-bottom:5px"><span class="pulse-dot" style="background:#F59E0B"></span>Under Review</div>
+          <div style="font-size:11px;color:#64748B">Submitted 14 Jul 2026, 3:45 PM · CLR-2026-001423</div>
+        </div>
+        <div class="a-card"><div class="a-card-inner">
+          <div style="font-size:10px;font-weight:700;color:#94A3B8;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em">Timeline</div>
+          <div class="tl-row"><div class="tl-dot tl-done">✓</div><div><div class="tl-ttl">Request submitted</div><div class="tl-sub">14 Jul 2026, 3:45 PM · eSigned via Digio</div></div></div>
+          <div class="tl-row"><div class="tl-dot tl-active">⏳</div><div><div class="tl-ttl">Under review</div><div class="tl-sub">Processing on NSDL i-Assist · Est. 2 days</div></div></div>
+          <div class="tl-row"><div class="tl-dot tl-todo">○</div><div><div class="tl-ttl" style="color:#94A3B8">Decision</div><div class="tl-sub">Pending</div></div></div>
+        </div></div>
+        <div class="a-info ai-warn"><span class="ai-ico">🚫</span><div class="ai-txt"><strong>Investments paused</strong><br>You cannot place new orders while your closure is under review. Contact support to cancel this request.</div></div>
+      </div>
+      <div class="bbar"><button class="a-btn a-btn-secondary">Contact Support</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── S7: Approved ─── -->
+<div id="s7" class="screen">
+  <div class="screen-label">Screen 7 · <b>Status · CLOSURE_APPROVED</b> <span class="sl-tag">Account closed successfully</span></div>
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="ph-notch"><span class="ph-time">9:41</span><span class="ph-status-icons">▲▲▲ 🔋</span></div>
+      <div class="ph-body">
+        <div class="app-nav"><div class="nav-back">←</div><div><div class="nav-title">Account Closed</div></div></div>
+        <div class="a-center" style="padding-top:36px">
+          <div class="a-icon-circle" style="background:#D1FAE5">✅</div>
+          <div class="a-state-title">Account Closed</div>
+          <div class="a-state-sub">Your Insta Demat and trading account have been successfully closed.</div>
+        </div>
+        <div class="a-card"><div class="a-card-inner">
+          <div class="d-row"><span class="d-lbl">Account</span><span class="d-val">IN302662 · 1234567</span></div>
+          <div class="d-row"><span class="d-lbl">Closed on</span><span class="d-val">16 Jul 2026</span></div>
+          <div class="d-row"><span class="d-lbl">Trading Account (UCCC)</span><span class="d-val" style="color:#DC2626">Deactivated</span></div>
+          <div class="d-row"><span class="d-lbl">Platform Profile</span><span class="d-val" style="color:#DC2626">Soft-deleted</span></div>
+        </div></div>
+        <div class="a-info ai-info"><span class="ai-ico">📧</span><div class="ai-txt">Your complete account statement has been emailed to <strong>r***@gmail.com</strong>.</div></div>
+      </div>
+      <div class="bbar"><button class="a-btn a-btn-primary">Open New Account</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── S8: Rejected ─── -->
+<div id="s8" class="screen">
+  <div class="screen-label">Screen 8 · <b>Status · CLOSURE_REJECTED</b> <span class="sl-tag">ASP-4122 · Reason shown in-app</span></div>
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="ph-notch"><span class="ph-time">9:41</span><span class="ph-status-icons">▲▲▲ 🔋</span></div>
+      <div class="ph-body">
+        <div class="app-nav"><div class="nav-back">←</div><div><div class="nav-title">Closure Status</div></div></div>
+        <div style="margin:12px 12px 10px;background:#fff;border-radius:12px;border:1px solid #E8EDF4;padding:14px;text-align:center">
+          <div style="display:inline-flex;align-items:center;gap:6px;background:#FEE2E2;border-radius:99px;padding:6px 14px;font-size:12px;font-weight:800;color:#991B1B;margin-bottom:5px">✗ Request Rejected</div>
+          <div style="font-size:11px;color:#64748B">16 Jul 2026, 11:30 AM</div>
+        </div>
+        <div class="a-info ai-err"><span class="ai-ico">❌</span><div class="ai-txt"><strong>Rejection Reason</strong><br>Invalid or incomplete eSign form — please re-submit the closure request with a valid eSign.</div></div>
+        <div class="a-card"><div class="a-card-inner">
+          <div style="font-size:10px;font-weight:700;color:#94A3B8;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em">Timeline</div>
+          <div class="tl-row"><div class="tl-dot tl-done">✓</div><div><div class="tl-ttl">Submitted</div><div class="tl-sub">14 Jul 2026, 3:45 PM</div></div></div>
+          <div class="tl-row"><div class="tl-dot" style="background:#FEE2E2;color:#DC2626">✗</div><div><div class="tl-ttl" style="color:#DC2626">Rejected</div><div class="tl-sub">16 Jul 2026, 11:30 AM</div></div></div>
+        </div></div>
+        <div class="a-info ai-info"><span class="ai-ico">ℹ️</span><div class="ai-txt">Your account is now <strong>Active</strong> again. You can submit a new closure request.</div></div>
+      </div>
+      <div class="bbar bbar-2">
+        <button class="a-btn a-btn-primary" style="flex:1;font-size:12px">New Request</button>
+        <button class="a-btn a-btn-secondary" style="flex:1;font-size:12px">Support</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── S9: Re-entry ─── -->
+<div id="s9" class="screen">
+  <div class="screen-label">Screen 9 · <b>Re-entry Popup</b> <span class="sl-tag">ASP-4127 · Post-closure, on app open</span></div>
+  <div class="phone-frame">
+    <div class="phone-screen" style="position:relative">
+      <div class="ph-notch"><span class="ph-time">9:41</span><span class="ph-status-icons">▲▲▲ 🔋</span></div>
+      <div class="ph-body" style="filter:blur(3px);pointer-events:none;padding:30px 20px;color:#94A3B8;text-align:center;font-size:14px">App home screen — blurred</div>
+      <div class="re-overlay">
+        <div class="re-sheet">
+          <div class="re-handle"></div>
+          <div style="font-size:40px;margin-bottom:10px">🏠</div>
+          <div style="font-size:17px;font-weight:800;color:#0F172A;margin-bottom:7px;letter-spacing:-.02em">Welcome Back!</div>
+          <div style="font-size:12.5px;color:#64748B;line-height:1.6;margin-bottom:18px">Your Aspero account was closed on <strong>16 Jul 2026</strong> as per your request.<br><br>Would you like to open a new account with Aspero?</div>
+          <button class="a-btn a-btn-primary" style="margin-bottom:8px;font-size:13px">Open New Account</button>
+          <button class="a-btn a-btn-secondary" style="color:#94A3B8;font-size:13px">Not Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── S10: Admin List ─── -->
+<div id="s10" class="screen">
+  <div class="screen-label">Screen 10 · <b>Closure Requests List</b> <span class="sl-tag">ASP-4119 / ASP-4120 · Ops Admin Portal</span></div>
+  <div class="desktop-frame">
+    <div class="dt-chrome"><div class="dt-dot dt-red"></div><div class="dt-dot dt-yel"></div><div class="dt-dot dt-grn"></div><div class="dt-addr"><span>admin.aspero.in / demat-closure</span></div></div>
+    <div class="dt-body">
+      <div class="admin-sidebar">
+        <div class="as-logo">Aspero Admin</div>
+        <div class="as-nav">📊 Dashboard</div>
+        <div class="as-nav">👥 Users</div>
+        <div class="as-nav">📋 KYC Queue</div>
+        <div class="as-nav active">🏦 Demat Closure</div>
+        <div class="as-nav">📁 Documents</div>
+        <div class="as-nav">⚙️ Settings</div>
+      </div>
+      <div class="admin-main">
+        <div class="am-header">
+          <h1>Demat Account Closure Requests</h1>
+          <div style="margin-left:auto;display:flex;gap:5px">
+            <span style="font-size:10.5px;color:#64748B;align-self:center">2 selected</span>
+            <button class="am-btn am-dl" style="padding:4px 9px;font-size:10px">📥 Download Selected</button>
+            <button class="am-btn am-def" style="padding:4px 9px;font-size:10px">📥 Bulk ZIP</button>
+          </div>
+        </div>
+        <div class="am-filter">
+          <select class="am-sel"><option>All Status</option><option selected>Pending (2)</option><option>Approved</option><option>Rejected</option></select>
+          <input class="am-sel" type="date" value="2026-07-10" style="width:108px">
+          <input class="am-sel" type="date" value="2026-07-14" style="width:108px">
+          <input class="am-search" type="text" placeholder="Name, Client ID…">
+          <span style="margin-left:auto;font-size:10.5px;color:#64748B">4 of 4</span>
+        </div>
+        <div style="overflow-x:auto;flex:1">
+          <table class="am-table">
+            <thead><tr>
+              <th><input type="checkbox"></th><th>Client</th><th>Demat ID</th><th>Client ID</th><th>Type</th><th>Status</th><th>Submitted</th><th>Actions</th>
+            </tr></thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" checked></td>
+                <td><div style="font-weight:700;color:#0F172A">Ravi Kumar</div><div style="font-size:9.5px;color:#94A3B8">USR-98231</div></td>
+                <td>IN302662</td><td>1234567</td>
+                <td><span style="background:#EDE9FE;color:#6D28D9;padding:2px 6px;border-radius:3px;font-size:9.5px;font-weight:700">NIL</span></td>
+                <td><span class="a-pill pill-pending">Pending</span></td>
+                <td><div style="font-size:11px">14 Jul 2026</div><div style="font-size:9.5px;color:#94A3B8">3:45 PM</div></td>
+                <td><button class="am-btn am-dl">↓ PDF</button><button class="am-btn am-app">✓ Approve</button><button class="am-btn am-rej">✗ Reject</button></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" checked></td>
+                <td><div style="font-weight:700;color:#0F172A">Priya Sharma</div><div style="font-size:9.5px;color:#94A3B8">USR-87104</div></td>
+                <td>IN302662</td><td>2345678</td>
+                <td><span style="background:#EDE9FE;color:#6D28D9;padding:2px 6px;border-radius:3px;font-size:9.5px;font-weight:700">NIL</span></td>
+                <td><span class="a-pill pill-pending">Pending</span></td>
+                <td><div style="font-size:11px">13 Jul 2026</div><div style="font-size:9.5px;color:#94A3B8">11:20 AM</div></td>
+                <td><button class="am-btn am-dl">↓ PDF</button><button class="am-btn am-app">✓ Approve</button><button class="am-btn am-rej">✗ Reject</button></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div style="font-weight:700;color:#0F172A">Amit Patel</div><div style="font-size:9.5px;color:#94A3B8">USR-76523</div></td>
+                <td>IN302662</td><td>3456789</td>
+                <td><span style="background:#EDE9FE;color:#6D28D9;padding:2px 6px;border-radius:3px;font-size:9.5px;font-weight:700">NIL</span></td>
+                <td><span class="a-pill pill-approved">Approved</span></td>
+                <td><div style="font-size:11px">10 Jul 2026</div><div style="font-size:9.5px;color:#94A3B8">2:15 PM</div></td>
+                <td><button class="am-btn am-dl">↓ PDF</button></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div style="font-weight:700;color:#0F172A">Sneha Roy</div><div style="font-size:9.5px;color:#94A3B8">USR-65412</div></td>
+                <td>IN302662</td><td>4567890</td>
+                <td><span style="background:#EDE9FE;color:#6D28D9;padding:2px 6px;border-radius:3px;font-size:9.5px;font-weight:700">NIL</span></td>
+                <td><span class="a-pill pill-rejected">Rejected</span></td>
+                <td><div style="font-size:11px">09 Jul 2026</div><div style="font-size:9.5px;color:#94A3B8">10:05 AM</div></td>
+                <td><button class="am-btn am-dl">↓ PDF</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── S11: Approve Modal ─── -->
+<div id="s11" class="screen">
+  <div class="screen-label">Screen 11 · <b>Approve Modal</b> <span class="sl-tag">ASP-4121 · 5 parallel system actions</span></div>
+  <div class="desktop-frame">
+    <div class="dt-chrome"><div class="dt-dot dt-red"></div><div class="dt-dot dt-yel"></div><div class="dt-dot dt-grn"></div><div class="dt-addr"><span>admin.aspero.in / demat-closure</span></div></div>
+    <div class="dt-body" style="position:relative">
+      <div class="admin-sidebar"><div class="as-logo">Aspero Admin</div><div class="as-nav active">🏦 Demat Closure</div></div>
+      <div class="admin-main" style="filter:blur(2px);pointer-events:none">
+        <div class="am-header"><h1>Demat Account Closure Requests</h1></div>
+        <div style="padding:20px;color:#94A3B8;font-size:12px">List behind modal…</div>
+      </div>
+      <div class="modal-overlay">
+        <div class="modal-box">
+          <h3>✓ Confirm Closure Approval</h3>
+          <p style="color:#EF4444;background:#FEF2F2;padding:7px 9px;border-radius:6px;border:1px solid #FECACA;font-size:11.5px;margin-bottom:10px">⚠️ Ensure NSDL i-Assist closure is already processed before approving here.</p>
+          <div class="m-client"><strong>Ravi Kumar</strong>Demat: IN302662 · Client ID: 1234567<br>Submitted: 14 Jul 2026, 3:45 PM · Type: NIL Balance</div>
+          <div class="m-lbl">Actions triggered on approval:</div>
+          <ul class="m-ul">
+            <li>✅ Status → <strong>CLOSURE_APPROVED</strong></li>
+            <li>🗑️ Platform soft-delete (KYC, demat, UCCC records)</li>
+            <li>📡 Exchange API → deactivate UCCC</li>
+            <li>📧 Approval email + push notification to user</li>
+            <li>📄 Account statement auto-emailed to user</li>
+          </ul>
+          <p style="font-size:11px;color:#64748B;margin-bottom:0">UCCC API failure won't block approval — flagged in admin for manual follow-up.</p>
+          <div class="m-actions">
+            <button class="m-btn m-cancel">Cancel</button>
+            <button class="m-btn m-confirm-app">✓ Confirm Approval</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── S12: Reject Modal ─── -->
+<div id="s12" class="screen">
+  <div class="screen-label">Screen 12 · <b>Reject Modal</b> <span class="sl-tag">ASP-4122 · Predefined rejection reasons</span></div>
+  <div class="desktop-frame">
+    <div class="dt-chrome"><div class="dt-dot dt-red"></div><div class="dt-dot dt-yel"></div><div class="dt-dot dt-grn"></div><div class="dt-addr"><span>admin.aspero.in / demat-closure</span></div></div>
+    <div class="dt-body" style="position:relative">
+      <div class="admin-sidebar"><div class="as-logo">Aspero Admin</div><div class="as-nav active">🏦 Demat Closure</div></div>
+      <div class="admin-main" style="filter:blur(2px);pointer-events:none">
+        <div class="am-header"><h1>Demat Account Closure Requests</h1></div>
+        <div style="padding:20px;color:#94A3B8;font-size:12px">List behind modal…</div>
+      </div>
+      <div class="modal-overlay">
+        <div class="modal-box">
+          <h3>✗ Reject Closure Request</h3>
+          <div class="m-client"><strong>Ravi Kumar</strong>Demat: IN302662 · Client ID: 1234567</div>
+          <label class="m-lbl">Rejection Reason <span style="color:#EF4444">*</span></label>
+          <select class="m-sel">
+            <option value="">Select a reason…</option>
+            <option>Invalid or incomplete eSign form</option>
+            <option selected>Open positions / pending orders on account</option>
+            <option>Existing loan against securities</option>
+            <option>Other DP confirmation pending</option>
+            <option>Duplicate closure request</option>
+          </select>
+          <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:6px;padding:8px 10px;font-size:11px;color:#92400E;margin-bottom:8px">⚠️ This reason is shown to the user in-app and in the rejection email.</div>
+          <p style="font-size:11.5px;color:#64748B;margin-bottom:0">Account status will revert to <strong>Active</strong>. User will be notified immediately.</p>
+          <div class="m-actions">
+            <button class="m-btn m-cancel">Cancel</button>
+            <button class="m-btn m-confirm-rej">✗ Confirm Rejection</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── S13: Phase 2 TCC ─── -->
+<div id="s13" class="screen">
+  <div class="screen-label">Screen 13 · <b>Transfer Cum Closure</b> <span class="sl-tag">ASP-4128/4129 · Phase 2 · Path B</span></div>
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="ph-notch"><span class="ph-time">9:41</span><span class="ph-status-icons">▲▲▲ 🔋</span></div>
+      <div class="ph-body">
+        <div class="app-nav"><div class="nav-back">←</div><div><div class="nav-title">Transfer &amp; Close</div></div></div>
+        <div style="padding:10px 12px 4px;display:flex;align-items:center;gap:8px">
+          <span class="p2-tag">Phase 2</span>
+          <span style="font-size:11px;color:#64748B">Transfer Cum Closure</span>
+        </div>
+        <div class="a-card"><div class="a-card-inner">
+          <div style="font-size:10px;font-weight:700;color:#0F172A;margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">Holdings to Transfer</div>
+          <div class="d-row"><span class="d-lbl">Sovereign Gold Bonds</span><span class="d-val">2 units</span></div>
+          <div class="d-row"><span class="d-lbl">SGB ETF Units</span><span class="d-val">50 units</span></div>
+          <div style="margin-top:8px;background:#FFFBEB;border-radius:6px;padding:7px;font-size:11px;color:#92400E">⚠️ All holdings transferred to one target — no partial transfers.</div>
+        </div></div>
+        <div class="a-card"><div class="a-card-inner">
+          <div style="font-size:10px;font-weight:700;color:#0F172A;margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em">Target Demat Account</div>
+          <label class="form-lbl">Target DP ID *</label>
+          <input class="form-inp" value="IN300095" placeholder="e.g. IN300095">
+          <label class="form-lbl">Target Client ID (BO ID) *</label>
+          <input class="form-inp" value="9876543" placeholder="e.g. 9876543">
+          <label class="form-lbl" style="margin-top:2px">Upload CMR (Client Master Report) *</label>
+          <div class="upload-box">
+            <div style="font-size:26px;margin-bottom:5px">📎</div>
+            <div style="font-size:12px;color:#475569;font-weight:600">Tap to upload CMR PDF</div>
+            <div style="font-size:10.5px;color:#94A3B8;margin-top:2px">PDF only · Max 5 MB</div>
+          </div>
+          <div style="background:#D1FAE5;border-radius:7px;padding:8px 10px;font-size:11.5px;color:#059669;display:flex;align-items:center;gap:7px">✅ PAN validated — matches ABCDE1234F</div>
+        </div></div>
+      </div>
+      <div class="bbar"><button class="a-btn a-btn-primary">Proceed to eSign →</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SGAPS: Gap Analysis ─── -->
+<div id="sgaps" class="screen">
+  <div class="screen-label">Flow Gap Analysis · <b>Designer's Flowchart vs PRD</b> <span class="sl-tag">ASP-4113 · 13 gaps across 6 flows</span></div>
+  <div class="gap-doc">
+
+    <!-- Summary stats -->
+    <div class="gap-summary">
+      <div class="gap-stat"><div class="gap-stat-n" style="color:#F87171">4</div><div class="gap-stat-l">Critical</div></div>
+      <div class="gap-stat"><div class="gap-stat-n" style="color:#FBB83B">5</div><div class="gap-stat-l">Significant</div></div>
+      <div class="gap-stat"><div class="gap-stat-n" style="color:var(--tx2)">4</div><div class="gap-stat-l">Minor / Notes</div></div>
+    </div>
+
+    <!-- Critical -->
+    <div class="gap-sec-hd"><span style="color:#F87171">CRITICAL</span> <span style="font-size:10px;color:var(--tx3)">Block dev start if unresolved</span></div>
+
+    <div class="gap-card gap-crit">
+      <div class="gap-sev"></div>
+      <div class="gap-head"><span class="gap-num">C1</span><span class="gap-title">Holdings re-check at eSign is noted but not drawn</span><span class="gap-pill gp-crit">Critical</span></div>
+      <div class="gap-body">Flowchart 2 has a note: <strong>"Holdings re-checked at eSign time to handle bond-maturity race condition."</strong> But Flowchart 3 (eSign flow) has no such gate between "User reviews form" and "Digio eSign." If a bond settles after Gate 4 passes but before the user signs, the system allows closure of a non-NIL account. This check must be an explicit step in the eSign flow with a failure path back to the Holdings Detected screen.<div class="gap-action">→ Add holdings re-check step to Flowchart 3 before Digio handoff</div></div>
+    </div>
+
+    <div class="gap-card gap-crit">
+      <div class="gap-sev"></div>
+      <div class="gap-head"><span class="gap-num">C2</span><span class="gap-title">Gate 3 blocks re-initiation after CLOSURE_REJECTED</span><span class="gap-pill gp-crit">Critical</span></div>
+      <div class="gap-body">The pre-check gate redirects <strong>any</strong> existing request to the status screen. If the existing request is <strong>CLOSURE_REJECTED</strong>, the user should be allowed to re-initiate — not blocked. Gate 3 needs a sub-check: if existing request status = REJECTED, pass through to the closure form. Currently the flow treats PENDING and REJECTED identically.<div class="gap-action">→ Update Gate 3 logic: REJECTED state → pass through, PENDING → redirect</div></div>
+    </div>
+
+    <div class="gap-card gap-crit">
+      <div class="gap-sev"></div>
+      <div class="gap-head"><span class="gap-num">C3</span><span class="gap-title">Bond matures during CLOSURE_PENDING — no flow exists</span><span class="gap-pill gp-crit">Critical</span></div>
+      <div class="gap-body">A user submits with NIL balance → bond settles next day → demat now has holdings while status is <strong>CLOSURE_PENDING</strong>. No flowchart covers this. Two possible decisions: (a) ops can still approve and NSDL handles settlement, or (b) request auto-rejects with system reason. Neither path is drawn. This is the open question flagged in the PRD that is still unresolved.<div class="gap-action">→ Decision needed from DP Ops before design can be finalised</div></div>
+    </div>
+
+    <div class="gap-card gap-crit">
+      <div class="gap-sev"></div>
+      <div class="gap-head"><span class="gap-num">C4</span><span class="gap-title">Consent checkbox and warning banner missing from eSign flow</span><span class="gap-pill gp-crit">Critical</span></div>
+      <div class="gap-body">The mockup (Screen 2) correctly shows a consent checkbox and a warning banner about UCCC deactivation and profile removal. These also appear as node J in the Master Decision Tree. But Flowchart 3 (eSign detail) skips from "User reviews form" directly to Digio — the consent gate is absent. If the user dismisses the form without checking consent, should eSign still proceed?<div class="gap-action">→ Add explicit consent gate in Flowchart 3 before Digio handoff</div></div>
+    </div>
+
+    <!-- Significant -->
+    <div class="gap-sec-hd" style="margin-top:24px"><span style="color:#FBB83B">SIGNIFICANT</span> <span style="font-size:10px;color:var(--tx3)">Resolve before UI handoff to engineering</span></div>
+
+    <div class="gap-card gap-sig">
+      <div class="gap-sev"></div>
+      <div class="gap-head"><span class="gap-num">S1</span><span class="gap-title">No DP Ops notification mechanism shown</span><span class="gap-pill gp-sig">Significant</span></div>
+      <div class="gap-body">Flowchart 4 starts with <em>"DP Ops opens Aspero Demat Closure collection"</em> — but what triggers them? There is no email alert, Slack ping, in-admin badge, or daily digest shown. If 10 requests arrive overnight with no alert, TAT will slip. The trigger mechanism must be specified (real-time push notification, daily digest email, or dashboard badge count).<div class="gap-action">→ Specify Ops notification mechanism; add to ASP-4118 (admin list story)</div></div>
+    </div>
+
+    <div class="gap-card gap-sig">
+      <div class="gap-sev"></div>
+      <div class="gap-head"><span class="gap-num">S2</span><span class="gap-title">eSign timeout / session expiry not handled</span><span class="gap-pill gp-sig">Significant</span></div>
+      <div class="gap-body">The eSign flow has three outcomes: Success, Failed/Error, Abandoned. A 4th path is missing: <strong>session expired</strong> (user takes too long, or Aadhaar OTP expires mid-flow). Digio sessions time out. The error message and retry path for expiry is different from a "failed" signature. This needs its own branch in Flowchart 3.<div class="gap-action">→ Add Session Expired branch to Flowchart 3 with retry copy</div></div>
+    </div>
+
+    <div class="gap-card gap-sig">
+      <div class="gap-sev"></div>
+      <div class="gap-head"><span class="gap-num">S3</span><span class="gap-title">"Phase 2 available?" has no implementation spec</span><span class="gap-pill gp-sig">Significant</span></div>
+      <div class="gap-body">Both the Master Decision Tree and Pre-Check Gate flow have a <strong>"Phase 2 available?"</strong> decision diamond. There is no spec for how this is evaluated — feature flag, release date, user cohort, or remote config. Engineering will ask this immediately on receiving the flows. Without a mechanism, this node is floating.<div class="gap-action">→ PM + Eng to confirm: feature flag (recommended), date-based, or cohort; document in PRD</div></div>
+    </div>
+
+    <div class="gap-card gap-sig">
+      <div class="gap-sev"></div>
+      <div class="gap-head"><span class="gap-num">S4</span><span class="gap-title">Bulk approval not specified in ops flow</span><span class="gap-pill gp-sig">Significant</span></div>
+      <div class="gap-body">The admin UI (Screen 10) has bulk checkboxes and a "Download Selected / Bulk ZIP" action. Flowchart 4 only covers single-request approval/rejection. If ops bulk-approves 5 requests, does each trigger the full parallel action set (status change + soft-delete + UCCC API + emails) independently and simultaneously? Is there a confirmation modal? A separate ops sub-flow is needed.<div class="gap-action">→ Add bulk approval flow as a separate sub-flow in Flowchart 4 or a new Flowchart 7</div></div>
+    </div>
+
+    <div class="gap-card gap-sig">
+      <div class="gap-sev"></div>
+      <div class="gap-head"><span class="gap-num">S5</span><span class="gap-title">CANCELLED state missing from the state machine</span><span class="gap-pill gp-sig">Significant</span></div>
+      <div class="gap-body">The status screen shows "Contact Support to cancel" (ASP-4126). If support cancels a <strong>CLOSURE_PENDING</strong> request, there is no CANCELLED state in Flowchart 6's state machine. Additionally, Gate 3 (existing request check) has no way to handle a cancelled request — should it pass through or block? The state machine and Gate 3 both need updating.<div class="gap-action">→ Add CANCELLED state to Flowchart 6; update Gate 3 to handle CANCELLED as "pass through"</div></div>
+    </div>
+
+    <!-- Minor -->
+    <div class="gap-sec-hd" style="margin-top:24px"><span style="color:var(--tx2)">MINOR / NOTES</span> <span style="font-size:10px;color:var(--tx3)">Document for engineering handoff</span></div>
+
+    <div class="gap-card gap-min">
+      <div class="gap-sev"></div>
+      <div class="gap-head"><span class="gap-num">M1</span><span class="gap-title">Re-entry login path unclear (same mobile number?)</span><span class="gap-pill gp-min">Minor</span></div>
+      <div class="gap-body">Flowchart 5 says fresh onboarding creates a new User ID, new demat, new UCCC, fresh KYC. But the PRD specifies email and mobile number are <strong>retained</strong> on soft-delete. The flow doesn't clarify whether the returning user logs in with the same mobile, or whether the auth layer sees the mobile as already registered. If the same mobile is retained but the User ID changes, the login layer needs special handling.<div class="gap-action">→ Clarify in re-entry flow: same mobile → detected at login → show re-entry popup</div></div>
+    </div>
+
+    <div class="gap-card gap-min">
+      <div class="gap-sev"></div>
+      <div class="gap-head"><span class="gap-num">M2</span><span class="gap-title">UCCC failure → email sequence is ambiguous</span><span class="gap-pill gp-min">Minor</span></div>
+      <div class="gap-body">In Flowchart 4, when the UCCC API fails (G2b), the "Approval NOT rolled back" path converges at H (statement email fired to user). A reader could interpret this as a bug — the email fires even when UCCC deactivation failed. This is likely intentional but needs an explicit note: <strong>"Statement email fires regardless of UCCC API outcome."</strong><div class="gap-action">→ Add annotation to Flowchart 4 node H: email fires regardless of UCCC result</div></div>
+    </div>
+
+    <div class="gap-card gap-min">
+      <div class="gap-sev"></div>
+      <div class="gap-head"><span class="gap-num">M3</span><span class="gap-title">Email triggers not mapped to specific flow steps</span><span class="gap-pill gp-min">Minor</span></div>
+      <div class="gap-body">ASP-4125 requires email templates for: (a) request submitted, (b) approved, (c) rejected, (d) account statement. The flowcharts mention emails at several nodes but there is no consolidated view of which template fires at which step. Not a blocker for the designer, but will become one during engineering handoff when email triggers need to be wired.<div class="gap-action">→ Add an email trigger map table to the PRD or as Flowchart 7</div></div>
+    </div>
+
+    <div class="gap-card gap-min">
+      <div class="gap-sev"></div>
+      <div class="gap-head"><span class="gap-num">M4</span><span class="gap-title">Flowchart 1 is too long to be a useful stakeholder artifact</span><span class="gap-pill gp-min">Note</span></div>
+      <div class="gap-body">The Master Decision Tree conflates pre-checks (Gates 1–4) and the closure ceremony (eSign, ops approval, parallel actions) into one long flow. Flowcharts 2–4 correctly break these out. For stakeholder reviews, Flowchart 1 should be simplified to a swim-lane summary referencing 2–4 for detail, not the single source of truth.<div class="gap-action">→ Designer: simplify Flowchart 1 to a 1-page swim-lane; keep Flowcharts 2–4 as the spec</div></div>
+    </div>
+
+    <!-- Open decisions -->
+    <div class="gap-sec-hd" style="margin-top:24px"><span style="color:var(--acc)">OPEN DECISIONS</span> <span style="font-size:10px;color:var(--tx3)">Answers needed from stakeholders before dev can start</span></div>
+
+    <div class="open-q-card">
+      <div class="oq-icon">🔴</div>
+      <div class="oq-body"><strong>Bond-matures-during-CLOSURE_PENDING:</strong> If a bond settles after the user submits a NIL-balance closure, can ops still approve? Or does the system auto-reject? <div class="oq-owner">→ Owner: DP Ops / Sivasankari</div></div>
+    </div>
+    <div class="open-q-card">
+      <div class="oq-icon">🔴</div>
+      <div class="oq-body"><strong>Phase 2 feature flag mechanism:</strong> How is "Phase 2 available?" evaluated in the app — feature flag, date, cohort, or remote config? <div class="oq-owner">→ Owner: PM + Engineering</div></div>
+    </div>
+    <div class="open-q-card">
+      <div class="oq-icon">🟠</div>
+      <div class="oq-body"><strong>DP Ops notification trigger:</strong> Real-time push notification, daily digest email, or admin badge count — how will ops know when a new request is waiting? <div class="oq-owner">→ Owner: DP Ops + PM</div></div>
+    </div>
+    <div class="open-q-card">
+      <div class="oq-icon">🟠</div>
+      <div class="oq-body"><strong>Cancellation flow and CANCELLED state:</strong> If a user contacts support to cancel a CLOSURE_PENDING request, what state does it move to, and how does Gate 3 treat it on the next closure attempt? <div class="oq-owner">→ Owner: PM decision</div></div>
+    </div>
+
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+document.querySelectorAll('button[onclick]').forEach(b=>{
+  b.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();b.click()} });
+});
+</script>
