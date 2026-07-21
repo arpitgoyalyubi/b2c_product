@@ -26,17 +26,32 @@
   .dot { width:10px;height:10px;border-radius:50%; }
   .note { font-size:11px;color:#94a3b8;padding:6px 24px 14px; }
   .sub  { font-size:11px;color:#94a3b8; }
+  .tabs-nav{display:flex;max-width:1100px;margin:0 auto 0;background:#fff;
+             border-radius:12px 12px 0 0;box-shadow:0 1px 4px rgba(0,0,0,.08);
+             border-bottom:2px solid #e2e8f0;overflow:hidden;}
+  .tab-btn{padding:13px 24px;font-size:13px;font-weight:600;color:#64748b;cursor:pointer;
+           border:none;background:none;border-bottom:3px solid transparent;margin-bottom:-2px;
+           transition:all .15s;outline:none;white-space:nowrap;}
+  .tab-btn.active{color:#0f172a;border-bottom-color:#6366f1;background:#f8fafc;}
+  .tab-btn:hover:not(.active){color:#334155;background:#f8fafc;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
 </style>
 </head>
 <body>
-
+<div class="tabs-nav">
+  <button class="tab-btn active" data-tab="tab-s1" onclick="switchTab('tab-s1')">Signup Quality Funnel</button>
+  <button class="tab-btn" data-tab="tab-s2" onclick="switchTab('tab-s2')">DigiLocker Breakdown</button>
+  <button class="tab-btn" data-tab="tab-s3" onclick="switchTab('tab-s3')">Failure Recovery</button>
+</div>
+<div id="tab-s1" class="tab-panel active">
 <!-- ═══════════════ SECTION 1: Main cohort table ═══════════════ -->
 <div class="card">
   <div class="hdr">
     <h1>Signup Quality Funnel</h1>
-    <p>Signups → KYC Start → PAN Verified → Address Verified &nbsp;·&nbsp;
+    <p>Signups → KYC Start → PAN Verified → Address Verified → KYC Completed → First Trade &nbsp;·&nbsp;
        Cohort-anchored at signup &nbsp;·&nbsp; Excl. bots + employee referral &nbsp;·&nbsp;
-       Updated 22 Jun 2026</p>
+       Updated 21 Jul 2026</p>
     <p style="margin:6px 0 0;font-size:12px;color:#94a3b8;">✓ No new bot countries detected · Excluded: Poland + employee referral</p>
     <p class="sub">Each metric: <strong>7-day %</strong> (WoW Δ) · count · <em>eventual % ever</em>
        &nbsp;·&nbsp; Click a week row to expand daily breakdown</p>
@@ -49,6 +64,8 @@
         <th><span style="color:#8b5cf6;">●</span> KYC Start</th>
         <th><span style="color:#0ea5e9;">●</span> PAN Verified</th>
         <th><span style="color:#10b981;">●</span> Address Verified</th>
+          <th><span style="color:#6366f1;">●</span> KYC Completed</th>
+          <th><span style="color:#f59e0b;">●</span> First Trade</th>
       </tr>
     </thead>
     <tbody>
@@ -65,6 +82,8 @@
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">29.0%</div><div style="font-size:11px;color:#64748b;">917 · <span style="color:#94a3b8;">34.1% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:29%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">13.0%</div><div style="font-size:11px;color:#64748b;">410 · <span style="color:#94a3b8;">17.6% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:13%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">13.3%</div><div style="font-size:11px;color:#64748b;">420 · <span style="color:#94a3b8;">18.1% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:13%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#94a3b8;">–</div><div style="font-size:11px;color:#94a3b8;font-style:italic;">pending</div></td>
+          <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#94a3b8;">–</div><div style="font-size:11px;color:#94a3b8;font-style:italic;">pending</div></td>
         </tr>
         <tr class="day-w0" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -76,6 +95,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.5%</div><div style="font-size:10px;color:#94a3b8;">55 · 32.7% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">12.7%</div><div style="font-size:10px;color:#94a3b8;">48 · 18.2% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:13%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">12.4%</div><div style="font-size:10px;color:#94a3b8;">47 · 18.7% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w0" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -87,6 +108,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.3%</div><div style="font-size:10px;color:#94a3b8;">52 · 29.9% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.2%</div><div style="font-size:10px;color:#94a3b8;">37 · 13.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.4%</div><div style="font-size:10px;color:#94a3b8;">38 · 13.7% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w0" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -98,6 +121,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">13.9%</div><div style="font-size:10px;color:#94a3b8;">57 · 34.8% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">11.4%</div><div style="font-size:10px;color:#94a3b8;">47 · 17.3% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">11.4%</div><div style="font-size:10px;color:#94a3b8;">47 · 17.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w0" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -109,6 +134,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">17.9%</div><div style="font-size:10px;color:#94a3b8;">76 · 34.2% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:18%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.2%</div><div style="font-size:10px;color:#94a3b8;">60 · 19.6% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.9%</div><div style="font-size:10px;color:#94a3b8;">63 · 20.3% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w0" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -120,6 +147,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">18.2%</div><div style="font-size:10px;color:#94a3b8;">89 · 38.3% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:18%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.6%</div><div style="font-size:10px;color:#94a3b8;">76 · 20.3% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:16%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">16.0%</div><div style="font-size:10px;color:#94a3b8;">78 · 21.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:16%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w0" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -131,6 +160,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.3%</div><div style="font-size:10px;color:#94a3b8;">79 · 31.7% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">12.0%</div><div style="font-size:10px;color:#94a3b8;">66 · 16.3% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">12.5%</div><div style="font-size:10px;color:#94a3b8;">69 · 17.0% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w0" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -142,6 +173,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.1%</div><div style="font-size:10px;color:#94a3b8;">82 · 36.0% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.0%</div><div style="font-size:10px;color:#94a3b8;">76 · 17.3% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.3%</div><div style="font-size:10px;color:#94a3b8;">78 · 17.6% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="week-row" onclick="toggle('w1')"
             style="cursor:pointer;background:#f8fafc;border-top:2px solid #e2e8f0;">
@@ -156,6 +189,8 @@
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">27.2%<span style="font-size:10px;color:#dc2626;margin-left:3px;">-1.8pp</span></div><div style="font-size:11px;color:#64748b;">1,018 · <span style="color:#94a3b8;">32.6% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:27%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">10.9%<span style="font-size:10px;color:#dc2626;margin-left:3px;">-2.1pp</span></div><div style="font-size:11px;color:#64748b;">407 · <span style="color:#94a3b8;">16.5% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">11.4%<span style="font-size:10px;color:#dc2626;margin-left:3px;">-1.9pp</span></div><div style="font-size:11px;color:#64748b;">427 · <span style="color:#94a3b8;">17.2% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#94a3b8;">–</div><div style="font-size:11px;color:#94a3b8;font-style:italic;">pending</div></td>
+          <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#94a3b8;">–</div><div style="font-size:11px;color:#94a3b8;font-style:italic;">pending</div></td>
         </tr>
         <tr class="day-w1" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -167,6 +202,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.3%</div><div style="font-size:10px;color:#94a3b8;">62 · 33.8% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.6%</div><div style="font-size:10px;color:#94a3b8;">46 · 17.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.8%</div><div style="font-size:10px;color:#94a3b8;">47 · 18.2% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w1" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -178,6 +215,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.7%</div><div style="font-size:10px;color:#94a3b8;">70 · 35.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">13.4%</div><div style="font-size:10px;color:#94a3b8;">64 · 18.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:13%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.1%</div><div style="font-size:10px;color:#94a3b8;">67 · 19.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w1" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -189,6 +228,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.0%</div><div style="font-size:10px;color:#94a3b8;">85 · 31.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">11.9%</div><div style="font-size:10px;color:#94a3b8;">67 · 17.3% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">12.6%</div><div style="font-size:10px;color:#94a3b8;">71 · 18.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:13%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w1" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -200,6 +241,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.3%</div><div style="font-size:10px;color:#94a3b8;">84 · 32.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">13.3%</div><div style="font-size:10px;color:#94a3b8;">73 · 19.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:13%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">13.5%</div><div style="font-size:10px;color:#94a3b8;">74 · 19.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w1" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -211,6 +254,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">11.3%</div><div style="font-size:10px;color:#94a3b8;">68 · 27.2% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">6.5%</div><div style="font-size:10px;color:#94a3b8;">39 · 11.6% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:6%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">7.0%</div><div style="font-size:10px;color:#94a3b8;">42 · 12.3% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:7%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w1" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -222,6 +267,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.7%</div><div style="font-size:10px;color:#94a3b8;">86 · 35.9% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.8%</div><div style="font-size:10px;color:#94a3b8;">63 · 16.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">11.8%</div><div style="font-size:10px;color:#94a3b8;">69 · 17.6% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w1" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -233,6 +280,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">13.6%</div><div style="font-size:10px;color:#94a3b8;">73 · 33.0% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.3%</div><div style="font-size:10px;color:#94a3b8;">55 · 16.2% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.6%</div><div style="font-size:10px;color:#94a3b8;">57 · 16.2% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="week-row" onclick="toggle('w2')"
             style="cursor:pointer;background:#f8fafc;border-top:2px solid #e2e8f0;">
@@ -247,6 +296,8 @@
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">28.2%<span style="font-size:10px;color:#16a34a;margin-left:3px;">+1.0pp</span></div><div style="font-size:11px;color:#64748b;">1,078 · <span style="color:#94a3b8;">32.8% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:28%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">12.5%<span style="font-size:10px;color:#16a34a;margin-left:3px;">+1.6pp</span></div><div style="font-size:11px;color:#64748b;">479 · <span style="color:#94a3b8;">17.2% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">12.9%<span style="font-size:10px;color:#16a34a;margin-left:3px;">+1.5pp</span></div><div style="font-size:11px;color:#64748b;">493 · <span style="color:#94a3b8;">17.9% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:13%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#94a3b8;">–</div><div style="font-size:11px;color:#94a3b8;font-style:italic;">pending</div></td>
+          <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#94a3b8;">–</div><div style="font-size:11px;color:#94a3b8;font-style:italic;">pending</div></td>
         </tr>
         <tr class="day-w2" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -258,6 +309,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.6%</div><div style="font-size:10px;color:#94a3b8;">74 · 33.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:16%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">13.9%</div><div style="font-size:10px;color:#94a3b8;">66 · 19.2% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.1%</div><div style="font-size:10px;color:#94a3b8;">67 · 19.6% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w2" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -269,6 +322,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.5%</div><div style="font-size:10px;color:#94a3b8;">54 · 30.0% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">9.3%</div><div style="font-size:10px;color:#94a3b8;">48 · 14.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:9%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">9.3%</div><div style="font-size:10px;color:#94a3b8;">48 · 14.7% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:9%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w2" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -280,6 +335,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.1%</div><div style="font-size:10px;color:#94a3b8;">67 · 33.2% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">12.4%</div><div style="font-size:10px;color:#94a3b8;">55 · 16.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">13.3%</div><div style="font-size:10px;color:#94a3b8;">59 · 17.8% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:13%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w2" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -291,6 +348,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.5%</div><div style="font-size:10px;color:#94a3b8;">71 · 30.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">11.2%</div><div style="font-size:10px;color:#94a3b8;">55 · 15.9% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">11.4%</div><div style="font-size:10px;color:#94a3b8;">56 · 16.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w2" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -302,6 +361,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.6%</div><div style="font-size:10px;color:#94a3b8;">78 · 32.0% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.5%</div><div style="font-size:10px;color:#94a3b8;">56 · 15.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.5%</div><div style="font-size:10px;color:#94a3b8;">56 · 15.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w2" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -313,6 +374,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.6%</div><div style="font-size:10px;color:#94a3b8;">94 · 34.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.5%</div><div style="font-size:10px;color:#94a3b8;">93 · 19.3% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.0%</div><div style="font-size:10px;color:#94a3b8;">96 · 20.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w2" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -324,6 +387,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.0%</div><div style="font-size:10px;color:#94a3b8;">109 · 35.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.6%</div><div style="font-size:10px;color:#94a3b8;">106 · 19.0% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.3%</div><div style="font-size:10px;color:#94a3b8;">111 · 19.9% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="week-row" onclick="toggle('w3')"
             style="cursor:pointer;background:#f8fafc;border-top:2px solid #e2e8f0;">
@@ -338,6 +403,8 @@
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">27.1%<span style="font-size:10px;color:#dc2626;margin-left:3px;">-1.1pp</span></div><div style="font-size:11px;color:#64748b;">1,412 · <span style="color:#94a3b8;">31.8% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:27%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">10.0%<span style="font-size:10px;color:#dc2626;margin-left:3px;">-2.5pp</span></div><div style="font-size:11px;color:#64748b;">519 · <span style="color:#94a3b8;">14.4% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">10.5%<span style="font-size:10px;color:#dc2626;margin-left:3px;">-2.4pp</span></div><div style="font-size:11px;color:#64748b;">545 · <span style="color:#94a3b8;">15.0% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#94a3b8;">–</div><div style="font-size:11px;color:#94a3b8;font-style:italic;">pending</div></td>
+          <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#94a3b8;">–</div><div style="font-size:11px;color:#94a3b8;font-style:italic;">pending</div></td>
         </tr>
         <tr class="day-w3" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -349,6 +416,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">16.2%</div><div style="font-size:10px;color:#94a3b8;">113 · 33.0% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:16%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">11.6%</div><div style="font-size:10px;color:#94a3b8;">81 · 16.2% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">11.9%</div><div style="font-size:10px;color:#94a3b8;">83 · 16.7% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w3" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -360,6 +429,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">29.8%</div><div style="font-size:10px;color:#94a3b8;">232 · 33.9% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:30%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">12.2%</div><div style="font-size:10px;color:#94a3b8;">95 · 16.0% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">12.6%</div><div style="font-size:10px;color:#94a3b8;">98 · 16.8% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:13%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w3" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -371,6 +442,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">25.1%</div><div style="font-size:10px;color:#94a3b8;">182 · 29.8% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:25%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">9.0%</div><div style="font-size:10px;color:#94a3b8;">65 · 13.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:9%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">9.5%</div><div style="font-size:10px;color:#94a3b8;">69 · 14.0% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w3" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -382,6 +455,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">25.9%</div><div style="font-size:10px;color:#94a3b8;">228 · 29.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:26%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">7.3%</div><div style="font-size:10px;color:#94a3b8;">64 · 10.7% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:7%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">7.7%</div><div style="font-size:10px;color:#94a3b8;">68 · 10.9% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:8%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w3" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -393,6 +468,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">12.5%</div><div style="font-size:10px;color:#94a3b8;">92 · 30.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">8.1%</div><div style="font-size:10px;color:#94a3b8;">60 · 12.9% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:8%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">8.7%</div><div style="font-size:10px;color:#94a3b8;">64 · 13.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:9%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w3" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -404,6 +481,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">13.0%</div><div style="font-size:10px;color:#94a3b8;">91 · 31.0% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:13%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">9.9%</div><div style="font-size:10px;color:#94a3b8;">69 · 14.9% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">11.0%</div><div style="font-size:10px;color:#94a3b8;">77 · 15.9% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w3" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -415,6 +494,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.1%</div><div style="font-size:10px;color:#94a3b8;">104 · 35.3% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">12.4%</div><div style="font-size:10px;color:#94a3b8;">85 · 18.0% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">12.5%</div><div style="font-size:10px;color:#94a3b8;">86 · 18.6% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="week-row" onclick="toggle('w4')"
             style="cursor:pointer;background:#f8fafc;border-top:2px solid #e2e8f0;">
@@ -429,6 +510,8 @@
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">26.1%<span style="font-size:10px;color:#dc2626;margin-left:3px;">-1.0pp</span></div><div style="font-size:11px;color:#64748b;">967 · <span style="color:#94a3b8;">31.3% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:26%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">9.4%<span style="font-size:10px;color:#dc2626;margin-left:3px;">-0.6pp</span></div><div style="font-size:11px;color:#64748b;">347 · <span style="color:#94a3b8;">14.7% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:9%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">10.0%<span style="font-size:10px;color:#dc2626;margin-left:3px;">-0.5pp</span></div><div style="font-size:11px;color:#64748b;">371 · <span style="color:#94a3b8;">15.3% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#94a3b8;">–</div><div style="font-size:11px;color:#94a3b8;font-style:italic;">pending</div></td>
+          <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#94a3b8;">–</div><div style="font-size:11px;color:#94a3b8;font-style:italic;">pending</div></td>
         </tr>
         <tr class="day-w4" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -440,6 +523,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">12.4%</div><div style="font-size:10px;color:#94a3b8;">70 · 33.7% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">9.8%</div><div style="font-size:10px;color:#94a3b8;">55 · 16.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">11.5%</div><div style="font-size:10px;color:#94a3b8;">65 · 18.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w4" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -451,6 +536,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">25.2%</div><div style="font-size:10px;color:#94a3b8;">92 · 30.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:25%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.4%</div><div style="font-size:10px;color:#94a3b8;">38 · 16.7% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">11.5%</div><div style="font-size:10px;color:#94a3b8;">42 · 17.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w4" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -462,6 +549,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">24.7%</div><div style="font-size:10px;color:#94a3b8;">116 · 30.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:25%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">7.2%</div><div style="font-size:10px;color:#94a3b8;">34 · 13.6% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:7%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">7.0%</div><div style="font-size:10px;color:#94a3b8;">33 · 13.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:7%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w4" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -473,6 +562,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">12.0%</div><div style="font-size:10px;color:#94a3b8;">70 · 31.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">8.1%</div><div style="font-size:10px;color:#94a3b8;">47 · 13.2% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:8%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">8.4%</div><div style="font-size:10px;color:#94a3b8;">49 · 13.7% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:8%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w4" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -484,6 +575,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">13.3%</div><div style="font-size:10px;color:#94a3b8;">68 · 31.8% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:13%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.5%</div><div style="font-size:10px;color:#94a3b8;">54 · 13.9% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">11.3%</div><div style="font-size:10px;color:#94a3b8;">58 · 14.8% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w4" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -495,6 +588,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">12.9%</div><div style="font-size:10px;color:#94a3b8;">73 · 31.0% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:13%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.3%</div><div style="font-size:10px;color:#94a3b8;">58 · 15.0% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.6%</div><div style="font-size:10px;color:#94a3b8;">60 · 15.2% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w4" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -506,6 +601,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">13.7%</div><div style="font-size:10px;color:#94a3b8;">88 · 30.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">9.5%</div><div style="font-size:10px;color:#94a3b8;">61 · 14.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.0%</div><div style="font-size:10px;color:#94a3b8;">64 · 14.8% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="week-row" onclick="toggle('w5')"
             style="cursor:pointer;background:#f8fafc;border-top:2px solid #e2e8f0;">
@@ -520,6 +617,8 @@
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">26.4%<span style="font-size:10px;color:#16a34a;margin-left:3px;">+0.3pp</span></div><div style="font-size:11px;color:#64748b;">980 · <span style="color:#94a3b8;">30.6% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:26%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">11.1%<span style="font-size:10px;color:#16a34a;margin-left:3px;">+1.7pp</span></div><div style="font-size:11px;color:#64748b;">412 · <span style="color:#94a3b8;">15.6% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">11.5%<span style="font-size:10px;color:#16a34a;margin-left:3px;">+1.5pp</span></div><div style="font-size:11px;color:#64748b;">425 · <span style="color:#94a3b8;">16.0% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#94a3b8;">–</div><div style="font-size:11px;color:#94a3b8;font-style:italic;">pending</div></td>
+          <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#94a3b8;">–</div><div style="font-size:11px;color:#94a3b8;font-style:italic;">pending</div></td>
         </tr>
         <tr class="day-w5" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -531,6 +630,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.6%</div><div style="font-size:10px;color:#94a3b8;">96 · 33.2% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:16%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">11.5%</div><div style="font-size:10px;color:#94a3b8;">71 · 16.9% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">11.8%</div><div style="font-size:10px;color:#94a3b8;">73 · 17.2% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w5" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -542,6 +643,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.2%</div><div style="font-size:10px;color:#94a3b8;">89 · 28.6% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">13.8%</div><div style="font-size:10px;color:#94a3b8;">86 · 13.8% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">13.9%</div><div style="font-size:10px;color:#94a3b8;">87 · 13.9% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w5" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -553,6 +656,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">17.4%</div><div style="font-size:10px;color:#94a3b8;">88 · 33.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:17%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.0%</div><div style="font-size:10px;color:#94a3b8;">71 · 18.9% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.0%</div><div style="font-size:10px;color:#94a3b8;">76 · 19.7% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w5" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -564,6 +669,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">17.5%</div><div style="font-size:10px;color:#94a3b8;">100 · 36.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:18%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.9%</div><div style="font-size:10px;color:#94a3b8;">85 · 20.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.9%</div><div style="font-size:10px;color:#94a3b8;">85 · 20.9% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w5" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -575,6 +682,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">19.9%</div><div style="font-size:10px;color:#94a3b8;">95 · 23.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:20%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">7.1%</div><div style="font-size:10px;color:#94a3b8;">34 · 10.9% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:7%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">7.3%</div><div style="font-size:10px;color:#94a3b8;">35 · 11.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:7%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w5" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -586,6 +695,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">13.5%</div><div style="font-size:10px;color:#94a3b8;">70 · 26.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">7.7%</div><div style="font-size:10px;color:#94a3b8;">40 · 11.8% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:8%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">7.7%</div><div style="font-size:10px;color:#94a3b8;">40 · 11.8% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:8%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w5" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -597,6 +708,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">25.2%</div><div style="font-size:10px;color:#94a3b8;">99 · 32.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:25%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.2%</div><div style="font-size:10px;color:#94a3b8;">40 · 15.8% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">11.2%</div><div style="font-size:10px;color:#94a3b8;">44 · 16.8% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="week-row" onclick="toggle('w6')"
             style="cursor:pointer;background:#f8fafc;border-top:2px solid #e2e8f0;">
@@ -611,6 +724,8 @@
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">27.2%<span style="font-size:10px;color:#16a34a;margin-left:3px;">+0.8pp</span></div><div style="font-size:11px;color:#64748b;">920 · <span style="color:#94a3b8;">31.7% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:27%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">11.4%<span style="font-size:10px;color:#16a34a;margin-left:3px;">+0.3pp</span></div><div style="font-size:11px;color:#64748b;">385 · <span style="color:#94a3b8;">16.1% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#1e293b;">11.8%<span style="font-size:10px;color:#16a34a;margin-left:3px;">+0.3pp</span></div><div style="font-size:11px;color:#64748b;">398 · <span style="color:#94a3b8;">16.6% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#94a3b8;">–</div><div style="font-size:11px;color:#94a3b8;font-style:italic;">pending</div></td>
+          <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#94a3b8;">–</div><div style="font-size:11px;color:#94a3b8;font-style:italic;">pending</div></td>
         </tr>
         <tr class="day-w6" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -622,6 +737,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">29.4%</div><div style="font-size:10px;color:#94a3b8;">96 · 29.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:29%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.7%</div><div style="font-size:10px;color:#94a3b8;">48 · 14.7% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.6%</div><div style="font-size:10px;color:#94a3b8;">51 · 15.6% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:16%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w6" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -633,6 +750,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">11.9%</div><div style="font-size:10px;color:#94a3b8;">46 · 28.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">12.2%</div><div style="font-size:10px;color:#94a3b8;">47 · 16.6% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">12.2%</div><div style="font-size:10px;color:#94a3b8;">47 · 16.6% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w6" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -644,6 +763,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">13.2%</div><div style="font-size:10px;color:#94a3b8;">49 · 30.7% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:13%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.8%</div><div style="font-size:10px;color:#94a3b8;">40 · 18.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">11.1%</div><div style="font-size:10px;color:#94a3b8;">41 · 19.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w6" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -655,6 +776,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">16.7%</div><div style="font-size:10px;color:#94a3b8;">81 · 34.0% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:17%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.7%</div><div style="font-size:10px;color:#94a3b8;">52 · 15.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">11.5%</div><div style="font-size:10px;color:#94a3b8;">56 · 15.9% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:12%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w6" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -666,6 +789,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.4%</div><div style="font-size:10px;color:#94a3b8;">85 · 36.2% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.2%</div><div style="font-size:10px;color:#94a3b8;">84 · 20.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.2%</div><div style="font-size:10px;color:#94a3b8;">84 · 20.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w6" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -677,6 +802,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">12.7%</div><div style="font-size:10px;color:#94a3b8;">72 · 31.0% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:13%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">9.5%</div><div style="font-size:10px;color:#94a3b8;">54 · 13.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">9.9%</div><div style="font-size:10px;color:#94a3b8;">56 · 13.8% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w6" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -688,6 +815,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">30.4%</div><div style="font-size:10px;color:#94a3b8;">212 · 30.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:30%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.6%</div><div style="font-size:10px;color:#94a3b8;">102 · 14.6% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.4%</div><div style="font-size:10px;color:#94a3b8;">107 · 15.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="week-row" onclick="toggle('w7')"
             style="cursor:pointer;background:#f8fafc;border-top:2px solid #e2e8f0;">
@@ -702,6 +831,8 @@
           <td style="text-align:right;padding:10px 14px;opacity:.55;"><div style="font-size:13px;font-weight:600;color:#1e293b;">30.1%<span style="font-size:10px;color:#16a34a;margin-left:3px;">+2.9pp</span></div><div style="font-size:11px;color:#64748b;">1,343 · <span style="color:#94a3b8;">30.1% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:30%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:10px 14px;opacity:.55;"><div style="font-size:13px;font-weight:600;color:#1e293b;">13.9%<span style="font-size:10px;color:#16a34a;margin-left:3px;">+2.5pp</span></div><div style="font-size:11px;color:#64748b;">621 · <span style="color:#94a3b8;">13.9% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:10px 14px;opacity:.55;"><div style="font-size:13px;font-weight:600;color:#1e293b;">14.3%<span style="font-size:10px;color:#16a34a;margin-left:3px;">+2.5pp</span></div><div style="font-size:11px;color:#64748b;">640 · <span style="color:#94a3b8;">14.3% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#94a3b8;">–</div><div style="font-size:11px;color:#94a3b8;font-style:italic;">pending</div></td>
+          <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#94a3b8;">–</div><div style="font-size:11px;color:#94a3b8;font-style:italic;">pending</div></td>
         </tr>
         <tr class="day-w7" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -713,6 +844,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">23.4%</div><div style="font-size:10px;color:#94a3b8;">175 · 23.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:23%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.3%</div><div style="font-size:10px;color:#94a3b8;">77 · 10.3% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:10%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">10.8%</div><div style="font-size:10px;color:#94a3b8;">81 · 10.8% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:11%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w7" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -724,6 +857,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">26.8%</div><div style="font-size:10px;color:#94a3b8;">150 · 26.8% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:27%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.2%</div><div style="font-size:10px;color:#94a3b8;">85 · 15.2% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.4%</div><div style="font-size:10px;color:#94a3b8;">86 · 15.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w7" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -735,6 +870,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">31.7%</div><div style="font-size:10px;color:#94a3b8;">247 · 31.7% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:32%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">13.5%</div><div style="font-size:10px;color:#94a3b8;">105 · 13.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.2%</div><div style="font-size:10px;color:#94a3b8;">111 · 14.2% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:14%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w7" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -746,6 +883,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">30.5%</div><div style="font-size:10px;color:#94a3b8;">209 · 30.5% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:30%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">12.7%</div><div style="font-size:10px;color:#94a3b8;">87 · 12.7% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:13%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">13.1%</div><div style="font-size:10px;color:#94a3b8;">90 · 13.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:13%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w7" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -757,6 +896,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">32.3%</div><div style="font-size:10px;color:#94a3b8;">201 · 32.3% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:32%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.1%</div><div style="font-size:10px;color:#94a3b8;">94 · 15.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">14.9%</div><div style="font-size:10px;color:#94a3b8;">93 · 14.9% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w7" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -768,6 +909,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">32.1%</div><div style="font-size:10px;color:#94a3b8;">203 · 32.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:32%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.7%</div><div style="font-size:10px;color:#94a3b8;">99 · 15.7% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:16%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">16.1%</div><div style="font-size:10px;color:#94a3b8;">102 · 16.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:16%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="day-w7" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -779,6 +922,8 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">35.7%</div><div style="font-size:10px;color:#94a3b8;">158 · 35.7% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:36%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">16.7%</div><div style="font-size:10px;color:#94a3b8;">74 · 16.7% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:17%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">17.4%</div><div style="font-size:10px;color:#94a3b8;">77 · 17.4% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:17%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr>
         <tr class="week-row" onclick="toggle('w8')"
             style="cursor:pointer;background:#f8fafc;border-top:2px solid #e2e8f0;">
@@ -793,6 +938,8 @@
           <td style="text-align:right;padding:10px 14px;opacity:.55;"><div style="font-size:13px;font-weight:600;color:#1e293b;">32.7%<span style="font-size:10px;color:#16a34a;margin-left:3px;">+2.6pp</span></div><div style="font-size:11px;color:#64748b;">162 · <span style="color:#94a3b8;">32.7% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:33%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:10px 14px;opacity:.55;"><div style="font-size:13px;font-weight:600;color:#1e293b;">15.3%<span style="font-size:10px;color:#16a34a;margin-left:3px;">+1.4pp</span></div><div style="font-size:11px;color:#64748b;">76 · <span style="color:#94a3b8;">15.3% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:10px 14px;opacity:.55;"><div style="font-size:13px;font-weight:600;color:#1e293b;">15.9%<span style="font-size:10px;color:#16a34a;margin-left:3px;">+1.6pp</span></div><div style="font-size:11px;color:#64748b;">79 · <span style="color:#94a3b8;">15.9% ever</span></div><div style="height:3px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:16%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#94a3b8;">–</div><div style="font-size:11px;color:#94a3b8;font-style:italic;">pending</div></td>
+          <td style="text-align:right;padding:10px 14px;"><div style="font-size:13px;font-weight:600;color:#94a3b8;">–</div><div style="font-size:11px;color:#94a3b8;font-style:italic;">pending</div></td>
         </tr>
         <tr class="day-w8" style="display:none;background:#fff;">
           <td style="padding:7px 14px 7px 36px;">
@@ -804,19 +951,25 @@
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">32.2%</div><div style="font-size:10px;color:#94a3b8;">162 · 32.2% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:32%;height:100%;background:#8b5cf6;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.1%</div><div style="font-size:10px;color:#94a3b8;">76 · 15.1% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:15%;height:100%;background:#0ea5e9;border-radius:2px;"></div></div></td>
           <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#334155;">15.7%</div><div style="font-size:10px;color:#94a3b8;">79 · 15.7% ever</div><div style="height:2px;background:#f1f5f9;border-radius:2px;margin-top:3px;"><div style="width:16%;height:100%;background:#10b981;border-radius:2px;"></div></div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
+          <td style="text-align:right;padding:7px 14px;"><div style="font-size:12px;font-weight:600;color:#94a3b8;">–</div></td>
         </tr></tbody>
   </table>
   <div class="legend">
     <div class="li"><div class="dot" style="background:#8b5cf6;"></div>KYC_RISKDETAILS_SUBMIT</div>
     <div class="li"><div class="dot" style="background:#0ea5e9;"></div>KYC_PAN_VERIFIED</div>
     <div class="li"><div class="dot" style="background:#10b981;"></div>KYC_ADDRESS_VERIFIED</div>
+    <div class="li"><div class="dot" style="background:#6366f1;"></div>KYC Completed (KYC_DEMAT_VERIFIED)</div>
+    <div class="li"><div class="dot" style="background:#f59e0b;"></div>First Trade (payment_successful · first_trade=true)</div>
   </div>
   <div class="note">
-    7d% = users who completed the step within 7 days of signing up · Ever% = eventual (matured) conversion ·
-    Partial weeks: 7d% is understated (cohort not yet complete)
+    7d% = users who completed the step within 7 days of signup · Ever% = eventual (matured) conversion · KYC Completed = KYC_DEMAT_VERIFIED · First Trade = payment_successful (first_trade=true) ·
+    Partial weeks: 7d% understated · KYC Completed + First Trade columns: data pending
   </div>
 </div>
+</div>
 
+<div id="tab-s2" class="tab-panel">
 <!-- ═══════════════ SECTION 2: DigiLocker substage funnel ═══════════════ -->
 <div class="card">
   <div class="hdr">
@@ -915,7 +1068,9 @@
     PAN/Addr Verified: % of KYC Start (DigiLocker + manual paths combined) · WoW Δ: green = improving, red = worsening
   </div>
 </div>
+</div>
 
+<div id="tab-s3" class="tab-panel">
 <!-- ═══════════════ SECTION 3: Failure recovery ═══════════════ -->
 <div class="card">
   <div class="hdr">
@@ -1061,8 +1216,15 @@
     Recovery includes both DigiLocker retry and manual PAN fallback paths
   </div>
 </div>
-
+</div>
 <script>
+function switchTab(id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector('[data-tab="'+id+'"').classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
 function toggle(id) {
   const rows = document.querySelectorAll('.day-' + id);
   const arrow = document.getElementById('arrow_' + id);
