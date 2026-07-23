@@ -356,6 +356,299 @@
     <div class="cover-metrics" id="cover-metrics"></div>
   </div>
 
+
+  <div class="slide two-col" id="s-homev3-funnel">
+    <div class="left-panel" style="background:linear-gradient(160deg,#7c2d12,#f97316);">
+      <div class="slide-num">HomeV3 · 1 of 2</div>
+      <div class="slide-ttl">KYC Funnel —<br>v&lt;2.8.3 vs v≥2.8.3</div>
+      <div class="slide-sub">Same month · Jul 1–22 · version as homepage proxy</div>
+
+      <div class="hero-num">36.0%</div>
+      <div class="hero-lbl">Signup → KYC Start · HomeV3 (v≥2.8.3)</div>
+      <div class="hero-badge flat">– 0.4pp vs old app</div>
+
+      <div class="stat-list" style="margin-top:14px;">
+        <div class="stat-item">
+          <span class="si-lbl">Old app KYC Start %</span>
+          <span class="si-val">36.4%</span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl">HomeV3 KYC Done %</span>
+          <span class="si-val" style="color:#fde68a;">15.0% ⚠</span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl">Old app KYC Done %</span>
+          <span class="si-val">11.6%</span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl">InvestNow→KYC · HomeV3</span>
+          <span class="si-val" style="color:#fca5a5;">15.6%</span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl">InvestNow→KYC · Old app</span>
+          <span class="si-val">28.2%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-panel" style="padding:16px 20px 12px; overflow:hidden;">
+      <div style="font-size:.75rem; font-weight:700; color:#1e293b; margin-bottom:2px;">Signup-anchored funnel waterfall · Jul 1–22 · same-month version split</div>
+      <div style="font-size:.6rem; color:#94a3b8; margin-bottom:14px;">⚠ HomeV3 KYC Done &amp; First Trade are lower bounds — async NSDL; recency bias for v≥2.8.3 (launched mid-period)</div>
+
+      <!-- Funnel comparison table -->
+      <style>
+        #s-homev3-funnel .hv-tbl { width:100%; border-collapse:collapse; font-size:.68rem; }
+        #s-homev3-funnel .hv-tbl th { font-size:.58rem; font-weight:700; color:#94a3b8; text-transform:uppercase;
+          letter-spacing:.06em; padding:4px 8px; border-bottom:2px solid #e2e8f0; text-align:right; }
+        #s-homev3-funnel .hv-tbl th:first-child { text-align:left; }
+        #s-homev3-funnel .hv-tbl td { padding:7px 8px; border-bottom:1px solid #f1f5f9; vertical-align:middle; }
+        #s-homev3-funnel .hv-tbl td:not(:first-child) { text-align:right; }
+        #s-homev3-funnel .step-name { font-size:.66rem; font-weight:700; color:#1e293b; }
+        #s-homev3-funnel .step-evt  { font-size:.54rem; color:#94a3b8; margin-top:1px; }
+        #s-homev3-funnel .bar-wrap  { display:flex; align-items:center; gap:6px; margin-top:4px; }
+        #s-homev3-funnel .bar-old   { height:5px; border-radius:3px; background:#94a3b8; }
+        #s-homev3-funnel .bar-new   { height:5px; border-radius:3px; background:#f97316; }
+        #s-homev3-funnel .val-old   { font-size:.66rem; color:#64748b; font-weight:600; }
+        #s-homev3-funnel .val-new   { font-size:.72rem; color:#ea580c; font-weight:700; }
+        #s-homev3-funnel .delta-pos { font-size:.6rem; font-weight:700; color:#16a34a; }
+        #s-homev3-funnel .delta-neg { font-size:.6rem; font-weight:700; color:#dc2626; }
+        #s-homev3-funnel .delta-flat{ font-size:.6rem; font-weight:700; color:#94a3b8; }
+        #s-homev3-funnel .row-sos   { background:#fafbff; }
+        #s-homev3-funnel .sos-lbl   { font-size:.58rem; color:#94a3b8; font-style:italic; padding-left:8px; }
+      </style>
+
+      <table class="hv-tbl">
+        <thead>
+          <tr>
+            <th style="width:38%;">Step</th>
+            <th style="width:18%;">Old app<br><span style="font-weight:400;font-size:.52rem;color:#cbd5e1;">v&lt;2.8.3 · 18,655</span></th>
+            <th style="width:18%;">HomeV3<br><span style="font-weight:400;font-size:.52rem;color:#fed7aa;">v≥2.8.3 · 8,084</span></th>
+            <th style="width:12%;">Delta</th>
+            <th style="width:14%;">Bars</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="step-name">→ KYC Start</div>
+              <div class="step-evt">KYC_RISKDETAILS_SUBMIT</div>
+            </td>
+            <td class="val-old">36.4%</td>
+            <td class="val-new">36.0%</td>
+            <td class="delta-flat">-0.4pp</td>
+            <td>
+              <div class="bar-wrap" style="flex-direction:column;gap:2px;">
+                <div class="bar-old" style="width:100%;"></div>
+                <div class="bar-new" style="width:98.9%;"></div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="step-name">→ KYC Done</div>
+              <div class="step-evt">KYC_DEMAT_VERIFIED · 2-step</div>
+            </td>
+            <td class="val-old">11.6%</td>
+            <td class="val-new">15.0% ⚠</td>
+            <td class="delta-pos">+3.4pp</td>
+            <td>
+              <div class="bar-wrap" style="flex-direction:column;gap:2px;">
+                <div class="bar-old" style="width:77.3%;"></div>
+                <div class="bar-new" style="width:100%;"></div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="step-name">→ First Trade</div>
+              <div class="step-evt">PAYMENT_SUCCESSFUL · lower bound</div>
+            </td>
+            <td class="val-old">1.0%</td>
+            <td class="val-new" style="color:#94a3b8;">0.7% ⚠</td>
+            <td class="delta-neg">-0.3pp</td>
+            <td>
+              <div class="bar-wrap" style="flex-direction:column;gap:2px;">
+                <div class="bar-old" style="width:100%;"></div>
+                <div class="bar-new" style="width:70%;background:#d1d5db;"></div>
+              </div>
+            </td>
+          </tr>
+          <tr class="row-sos">
+            <td colspan="5" class="sos-lbl">— step-over-step —</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="step-name">KYC Start → KYC Done</div>
+              <div class="step-evt">completion rate</div>
+            </td>
+            <td class="val-old">29.2%</td>
+            <td class="val-new">34.1%</td>
+            <td class="delta-pos">+4.9pp</td>
+            <td>
+              <div class="bar-wrap" style="flex-direction:column;gap:2px;">
+                <div class="bar-old" style="width:85.6%;"></div>
+                <div class="bar-new" style="width:100%;"></div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="step-name">PDP → Invest Now</div>
+              <div class="step-evt">BOND_DETAILS_INVEST_NOW_BUTTON</div>
+            </td>
+            <td class="val-old">39.7%</td>
+            <td class="val-new">54.0%</td>
+            <td class="delta-pos">+14.3pp</td>
+            <td>
+              <div class="bar-wrap" style="flex-direction:column;gap:2px;">
+                <div class="bar-old" style="width:73.5%;"></div>
+                <div class="bar-new" style="width:100%;"></div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="step-name">Invest Now → KYC Start</div>
+              <div class="step-evt">post-PDP KYC hand-off</div>
+            </td>
+            <td class="val-old">28.2%</td>
+            <td class="val-new" style="color:#dc2626;">15.6%</td>
+            <td class="delta-neg">-12.6pp</td>
+            <td>
+              <div class="bar-wrap" style="flex-direction:column;gap:2px;">
+                <div class="bar-old" style="width:100%;"></div>
+                <div class="bar-new" style="width:55.3%;background:#fca5a5;"></div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div id="ins-homev3-funnel" class="insight-row" style="margin-top:10px;padding-top:8px;border-top:1px solid #f1f5f9;">
+        <span class="ins-chip"><span class="ins-dot" style="background:#94a3b8;"></span>KYC Start flat (-0.4pp) — HomeV3 activation intent unchanged vs old app</span>
+        <span class="ins-chip"><span class="ins-dot" style="background:#16a34a;"></span>KYC Start→Done +4.9pp &amp; PDP→Invest Now +14.3pp — bond detail quality up, completion improves</span>
+        <span class="ins-chip"><span class="ins-dot" style="background:#dc2626;"></span>Invest Now→KYC Start -12.6pp — PDP-to-KYC hand-off broken; primary P0 leak</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       HomeV3 Slide B — Widget Engagement & Popular Widget Alert
+  ════════════════════════════════════════════════════════════════════════ -->
+  <div class="slide two-col" id="s-homev3-widgets">
+    <div class="left-panel" style="background:linear-gradient(160deg,#1e1b4b,#4f46e5);">
+      <div class="slide-num">HomeV3 · 2 of 2</div>
+      <div class="slide-ttl">Homepage Widget<br>Engagement</div>
+      <div class="slide-sub">Jul 1–22 · v≥2.8.3 · 8,084 signups</div>
+
+      <div class="hero-num" style="color:#fca5a5;">75.6%</div>
+      <div class="hero-lbl">Popular widget HIDDEN rate</div>
+      <div class="hero-badge down">14:1 hide-to-tap ratio</div>
+
+      <div class="stat-list" style="margin-top:14px;">
+        <div class="stat-item">
+          <span class="si-lbl">Hero CTA tapped</span>
+          <span class="si-val">46.5%</span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl">— KYC-routed CTAs</span>
+          <span class="si-val">~88.6%</span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl">Featured bond tapped</span>
+          <span class="si-val">25.6%</span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl">Profile icon (KYC anxiety)</span>
+          <span class="si-val" style="color:#fde68a;">16.6%</span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl">Popular bond tapped</span>
+          <span class="si-val">5.3%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-panel" style="padding:14px 18px 10px; overflow:hidden; display:flex; flex-direction:column; gap:0;">
+      <style>
+        #s-homev3-widgets .hw-bar-row { display:flex; align-items:center; gap:8px; margin-bottom:5px; }
+        #s-homev3-widgets .hw-bar-lbl { font-size:.6rem; color:#475569; width:160px; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        #s-homev3-widgets .hw-bar-track { flex:1; height:12px; background:#f1f5f9; border-radius:6px; overflow:hidden; position:relative; }
+        #s-homev3-widgets .hw-bar-fill  { height:100%; border-radius:6px; transition:width .3s; }
+        #s-homev3-widgets .hw-bar-val   { font-size:.63rem; font-weight:700; color:#1e293b; width:36px; text-align:right; flex-shrink:0; }
+        #s-homev3-widgets .hw-alert     { background:#fef2f2; border:1.5px solid #fca5a5; border-radius:8px; padding:9px 12px; }
+        #s-homev3-widgets .hw-section-lbl { font-size:.58rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#94a3b8; margin-bottom:6px; margin-top:2px; }
+      </style>
+
+      <div style="font-size:.75rem; font-weight:700; color:#1e293b; margin-bottom:10px;">
+        Discovery surface reach &nbsp;<span style="font-size:.6rem; font-weight:400; color:#94a3b8;">% of 8,084 signups · Jul 1–22 · v≥2.8.3</span>
+      </div>
+
+      <!-- Engagement bars -->
+      <div class="hw-section-lbl">Discovery surfaces</div>
+
+      <div class="hw-bar-row">
+        <span class="hw-bar-lbl">Hero CTA tapped</span>
+        <div class="hw-bar-track"><div class="hw-bar-fill" style="width:62.2%;background:#4f46e5;"></div></div>
+        <span class="hw-bar-val">46.5%</span>
+      </div>
+      <div class="hw-bar-row">
+        <span class="hw-bar-lbl">Featured bond tapped</span>
+        <div class="hw-bar-track"><div class="hw-bar-fill" style="width:34.3%;background:#6366f1;"></div></div>
+        <span class="hw-bar-val">25.6%</span>
+      </div>
+      <div class="hw-bar-row">
+        <span class="hw-bar-lbl">Featured View All</span>
+        <div class="hw-bar-track"><div class="hw-bar-fill" style="width:24.4%;background:#818cf8;"></div></div>
+        <span class="hw-bar-val">18.2%</span>
+      </div>
+      <div class="hw-bar-row">
+        <span class="hw-bar-lbl" style="color:#b45309;">Profile icon (KYC-seek)</span>
+        <div class="hw-bar-track"><div class="hw-bar-fill" style="width:22.2%;background:#f59e0b;"></div></div>
+        <span class="hw-bar-val" style="color:#b45309;">16.6%</span>
+      </div>
+      <div class="hw-bar-row">
+        <span class="hw-bar-lbl">Goal card tapped</span>
+        <div class="hw-bar-track"><div class="hw-bar-fill" style="width:17.7%;background:#a5b4fc;"></div></div>
+        <span class="hw-bar-val">13.2%</span>
+      </div>
+      <div class="hw-bar-row">
+        <span class="hw-bar-lbl">Filter pill tapped</span>
+        <div class="hw-bar-track"><div class="hw-bar-fill" style="width:16.3%;background:#c7d2fe;"></div></div>
+        <span class="hw-bar-val">12.2%</span>
+      </div>
+      <div class="hw-bar-row">
+        <span class="hw-bar-lbl">Popular bond tapped</span>
+        <div class="hw-bar-track"><div class="hw-bar-fill" style="width:7.1%;background:#c7d2fe;"></div></div>
+        <span class="hw-bar-val">5.3%</span>
+      </div>
+      <div class="hw-bar-row">
+        <span class="hw-bar-lbl">Category / FAQ / other</span>
+        <div class="hw-bar-track"><div class="hw-bar-fill" style="width:5%;background:#e0e7ff;"></div></div>
+        <span class="hw-bar-val">≤4.5%</span>
+      </div>
+
+      <!-- Popular widget alert -->
+      <div class="hw-alert" style="margin-top:10px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:5px;">
+          <span style="font-size:.7rem; font-weight:700; color:#991b1b;">🔴 Popular Widget Hidden — P0 Bug</span>
+          <span style="font-size:.78rem; font-weight:800; color:#dc2626;">75.6% of sessions</span>
+        </div>
+        <div style="display:flex; gap:16px; font-size:.6rem; color:#7f1d1d; flex-wrap:wrap;">
+          <span><b>6,112</b> users see no popular bonds</span>
+          <span><b>14:1</b> hidden : tapped ratio</span>
+          <span><b>Root cause:</b> <code style="font-size:.58rem;">popularOnAsperoBonds.length === 0</code> · no diagnostic reason field</span>
+        </div>
+      </div>
+
+      <div class="insight-row" style="margin-top:8px; padding-top:8px; border-top:1px solid #f1f5f9;">
+        <span class="ins-chip"><span class="ins-dot" style="background:#4f46e5;"></span>48%+ of featured bond taps happen without using a filter pill — users trust the default ranking</span>
+        <span class="ins-chip"><span class="ins-dot" style="background:#f59e0b;"></span>16.6% profile icon seek = KYC status anxiety; ASP-4176 (KYC state card) should recover this</span>
+        <span class="ins-chip"><span class="ins-dot" style="background:#dc2626;"></span>All 10 event properties unindexed in Amplitude — granular breakdowns blocked until tracking plan updated</span>
+      </div>
+    </div>
+  </div>
+
   <!-- Store Listing Slide -->
   <div class="slide two-col" id="s-store-listing">
     <div class="left-panel" style="background:linear-gradient(160deg,#3b0764,#7c3aed);">
@@ -2438,311 +2731,6 @@ function sdoToggle(g){
         <strong>P0 — Acquisition quality:</strong> 57.2% of "payment failures" are loan seekers acquired via Instagram / GPay / PhonePe cashback vouchers.<br/>
         These users never intended to invest — they inflated funnel volume and skew recovery metrics.<br/><br/>
         <strong>Action:</strong> Tighten acquisition targeting; add intent qualifier on landing page before KYC starts.
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════════════════════════════════
-       HomeV3 Slide A — KYC Funnel: Old HP vs HomeV3 (v≥2.8.3)
-  ════════════════════════════════════════════════════════════════════════ -->
-  <div class="slide two-col" id="s-homev3-funnel">
-    <div class="left-panel" style="background:linear-gradient(160deg,#7c2d12,#f97316);">
-      <div class="slide-num">HomeV3 · 1 of 2</div>
-      <div class="slide-ttl">KYC Funnel —<br>Old HP vs HomeV3</div>
-      <div class="slide-sub">v&lt;2.8.3 (Jun10–Jul10 · 30d) vs v≥2.8.3 (Jul16–22 · 7d)</div>
-
-      <div class="hero-num">36.2%</div>
-      <div class="hero-lbl">Signup → KYC Start · HomeV3</div>
-      <div class="hero-badge up">▲ +0.3pp vs Old HP</div>
-
-      <div class="stat-list" style="margin-top:14px;">
-        <div class="stat-item">
-          <span class="si-lbl">Old HP KYC Start %</span>
-          <span class="si-val">35.9%</span>
-        </div>
-        <div class="stat-item">
-          <span class="si-lbl">HomeV3 KYC Done %</span>
-          <span class="si-val" style="color:#fde68a;">15.1% ⚠</span>
-        </div>
-        <div class="stat-item">
-          <span class="si-lbl">Old HP KYC Done %</span>
-          <span class="si-val">12.1%</span>
-        </div>
-        <div class="stat-item">
-          <span class="si-lbl">InvestNow→KYC · HomeV3</span>
-          <span class="si-val" style="color:#fca5a5;">15.9%</span>
-        </div>
-        <div class="stat-item">
-          <span class="si-lbl">InvestNow→KYC · Old HP</span>
-          <span class="si-val">31.6%</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="right-panel" style="padding:16px 20px 12px; overflow:hidden;">
-      <div style="font-size:.75rem; font-weight:700; color:#1e293b; margin-bottom:2px;">Signup-anchored funnel waterfall</div>
-      <div style="font-size:.6rem; color:#94a3b8; margin-bottom:14px;">⚠ HomeV3 KYC Done &amp; First Trade are lower bounds — async NSDL processing; re-run at Jul 30</div>
-
-      <!-- Funnel comparison table -->
-      <style>
-        #s-homev3-funnel .hv-tbl { width:100%; border-collapse:collapse; font-size:.68rem; }
-        #s-homev3-funnel .hv-tbl th { font-size:.58rem; font-weight:700; color:#94a3b8; text-transform:uppercase;
-          letter-spacing:.06em; padding:4px 8px; border-bottom:2px solid #e2e8f0; text-align:right; }
-        #s-homev3-funnel .hv-tbl th:first-child { text-align:left; }
-        #s-homev3-funnel .hv-tbl td { padding:7px 8px; border-bottom:1px solid #f1f5f9; vertical-align:middle; }
-        #s-homev3-funnel .hv-tbl td:not(:first-child) { text-align:right; }
-        #s-homev3-funnel .step-name { font-size:.66rem; font-weight:700; color:#1e293b; }
-        #s-homev3-funnel .step-evt  { font-size:.54rem; color:#94a3b8; margin-top:1px; }
-        #s-homev3-funnel .bar-wrap  { display:flex; align-items:center; gap:6px; margin-top:4px; }
-        #s-homev3-funnel .bar-old   { height:5px; border-radius:3px; background:#94a3b8; }
-        #s-homev3-funnel .bar-new   { height:5px; border-radius:3px; background:#f97316; }
-        #s-homev3-funnel .val-old   { font-size:.66rem; color:#64748b; font-weight:600; }
-        #s-homev3-funnel .val-new   { font-size:.72rem; color:#ea580c; font-weight:700; }
-        #s-homev3-funnel .delta-pos { font-size:.6rem; font-weight:700; color:#16a34a; }
-        #s-homev3-funnel .delta-neg { font-size:.6rem; font-weight:700; color:#dc2626; }
-        #s-homev3-funnel .delta-flat{ font-size:.6rem; font-weight:700; color:#94a3b8; }
-        #s-homev3-funnel .row-sos   { background:#fafbff; }
-        #s-homev3-funnel .sos-lbl   { font-size:.58rem; color:#94a3b8; font-style:italic; padding-left:8px; }
-      </style>
-
-      <table class="hv-tbl">
-        <thead>
-          <tr>
-            <th style="width:38%;">Step</th>
-            <th style="width:18%;">Old HP<br><span style="font-weight:400;font-size:.52rem;color:#cbd5e1;">Jun10–Jul10</span></th>
-            <th style="width:18%;">HomeV3<br><span style="font-weight:400;font-size:.52rem;color:#fed7aa;">v≥2.8.3</span></th>
-            <th style="width:12%;">Delta</th>
-            <th style="width:14%;">Bars</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <div class="step-name">Signups</div>
-              <div class="step-evt">SETUP_SECURE_PIN_SUCCESS</div>
-            </td>
-            <td class="val-old">26,200</td>
-            <td class="val-new">6,557</td>
-            <td class="delta-flat">—</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>
-              <div class="step-name">→ KYC Start</div>
-              <div class="step-evt">KYC_RISKDETAILS_SUBMIT</div>
-            </td>
-            <td class="val-old">35.9%</td>
-            <td class="val-new">36.2%</td>
-            <td class="delta-pos">+0.3pp</td>
-            <td>
-              <div class="bar-wrap" style="flex-direction:column;gap:2px;">
-                <div class="bar-old" style="width:100%;"></div>
-                <div class="bar-new" style="width:100.8%;"></div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="step-name">→ KYC Done</div>
-              <div class="step-evt">KYC_DEMAT_VERIFIED · 2-step</div>
-            </td>
-            <td class="val-old">12.1%</td>
-            <td class="val-new">15.1% ⚠</td>
-            <td class="delta-pos">+3.0pp</td>
-            <td>
-              <div class="bar-wrap" style="flex-direction:column;gap:2px;">
-                <div class="bar-old" style="width:80%;"></div>
-                <div class="bar-new" style="width:100%;"></div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="step-name">→ First Trade</div>
-              <div class="step-evt">PAYMENT_SUCCESSFUL · lower bound</div>
-            </td>
-            <td class="val-old">1.9%</td>
-            <td class="val-new" style="color:#94a3b8;">0.7% ⚠</td>
-            <td class="delta-neg">-1.2pp</td>
-            <td>
-              <div class="bar-wrap" style="flex-direction:column;gap:2px;">
-                <div class="bar-old" style="width:100%;"></div>
-                <div class="bar-new" style="width:37%;background:#d1d5db;"></div>
-              </div>
-            </td>
-          </tr>
-          <tr class="row-sos">
-            <td colspan="5" class="sos-lbl">— step-over-step —</td>
-          </tr>
-          <tr>
-            <td>
-              <div class="step-name">KYC Start → KYC Done</div>
-              <div class="step-evt">completion rate</div>
-            </td>
-            <td class="val-old">33.7%</td>
-            <td class="val-new">34.1%</td>
-            <td class="delta-pos">+0.4pp</td>
-            <td>
-              <div class="bar-wrap" style="flex-direction:column;gap:2px;">
-                <div class="bar-old" style="width:98.8%;"></div>
-                <div class="bar-new" style="width:100%;"></div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="step-name">PDP → Invest Now</div>
-              <div class="step-evt">BOND_DETAILS_INVEST_NOW_BUTTON</div>
-            </td>
-            <td class="val-old">33.9%</td>
-            <td class="val-new">44.3%</td>
-            <td class="delta-pos">+10.4pp</td>
-            <td>
-              <div class="bar-wrap" style="flex-direction:column;gap:2px;">
-                <div class="bar-old" style="width:76.5%;"></div>
-                <div class="bar-new" style="width:100%;"></div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="step-name">Invest Now → KYC Start</div>
-              <div class="step-evt">post-PDP KYC hand-off</div>
-            </td>
-            <td class="val-old">31.6%</td>
-            <td class="val-new" style="color:#dc2626;">15.9%</td>
-            <td class="delta-neg">-15.8pp</td>
-            <td>
-              <div class="bar-wrap" style="flex-direction:column;gap:2px;">
-                <div class="bar-old" style="width:100%;"></div>
-                <div class="bar-new" style="width:50.3%;background:#fca5a5;"></div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div id="ins-homev3-funnel" class="insight-row" style="margin-top:10px;padding-top:8px;border-top:1px solid #f1f5f9;">
-        <span class="ins-chip"><span class="ins-dot" style="background:#16a34a;"></span>KYC Start rate flat vs Old HP (+0.3pp) when version-filtered — earlier -2.3pp gap was pre-2.8.3 users in denominator</span>
-        <span class="ins-chip"><span class="ins-dot" style="background:#dc2626;"></span>Invest Now → KYC Start down 15.8pp — PDP KYC hand-off broken; primary leak to investigate</span>
-        <span class="ins-chip"><span class="ins-dot" style="background:#94a3b8;"></span>First Trade lower bound only — re-run Jul 30 against same signup cohort</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════════════════════════════════
-       HomeV3 Slide B — Widget Engagement & Popular Widget Alert
-  ════════════════════════════════════════════════════════════════════════ -->
-  <div class="slide two-col" id="s-homev3-widgets">
-    <div class="left-panel" style="background:linear-gradient(160deg,#1e1b4b,#4f46e5);">
-      <div class="slide-num">HomeV3 · 2 of 2</div>
-      <div class="slide-ttl">Homepage Widget<br>Engagement</div>
-      <div class="slide-sub">Jul 16–22 · 7,757 signups anchor</div>
-
-      <div class="hero-num" style="color:#fca5a5;">74.7%</div>
-      <div class="hero-lbl">Popular widget HIDDEN rate</div>
-      <div class="hero-badge down">14:1 hide-to-tap ratio</div>
-
-      <div class="stat-list" style="margin-top:14px;">
-        <div class="stat-item">
-          <span class="si-lbl">Hero CTA tapped</span>
-          <span class="si-val">46.5%</span>
-        </div>
-        <div class="stat-item">
-          <span class="si-lbl">— KYC-routed CTAs</span>
-          <span class="si-val">~88.6%</span>
-        </div>
-        <div class="stat-item">
-          <span class="si-lbl">Featured bond tapped</span>
-          <span class="si-val">23.6%</span>
-        </div>
-        <div class="stat-item">
-          <span class="si-lbl">Profile icon (KYC anxiety)</span>
-          <span class="si-val" style="color:#fde68a;">16.6%</span>
-        </div>
-        <div class="stat-item">
-          <span class="si-lbl">Popular bond tapped</span>
-          <span class="si-val">5.3%</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="right-panel" style="padding:14px 18px 10px; overflow:hidden; display:flex; flex-direction:column; gap:0;">
-      <style>
-        #s-homev3-widgets .hw-bar-row { display:flex; align-items:center; gap:8px; margin-bottom:5px; }
-        #s-homev3-widgets .hw-bar-lbl { font-size:.6rem; color:#475569; width:160px; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-        #s-homev3-widgets .hw-bar-track { flex:1; height:12px; background:#f1f5f9; border-radius:6px; overflow:hidden; position:relative; }
-        #s-homev3-widgets .hw-bar-fill  { height:100%; border-radius:6px; transition:width .3s; }
-        #s-homev3-widgets .hw-bar-val   { font-size:.63rem; font-weight:700; color:#1e293b; width:36px; text-align:right; flex-shrink:0; }
-        #s-homev3-widgets .hw-alert     { background:#fef2f2; border:1.5px solid #fca5a5; border-radius:8px; padding:9px 12px; }
-        #s-homev3-widgets .hw-section-lbl { font-size:.58rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#94a3b8; margin-bottom:6px; margin-top:2px; }
-      </style>
-
-      <div style="font-size:.75rem; font-weight:700; color:#1e293b; margin-bottom:10px;">
-        Discovery surface reach &nbsp;<span style="font-size:.6rem; font-weight:400; color:#94a3b8;">% of 7,757 signups · Jul 16–22</span>
-      </div>
-
-      <!-- Engagement bars -->
-      <div class="hw-section-lbl">Discovery surfaces</div>
-
-      <div class="hw-bar-row">
-        <span class="hw-bar-lbl">Hero CTA tapped</span>
-        <div class="hw-bar-track"><div class="hw-bar-fill" style="width:62.2%;background:#4f46e5;"></div></div>
-        <span class="hw-bar-val">46.5%</span>
-      </div>
-      <div class="hw-bar-row">
-        <span class="hw-bar-lbl">Featured bond tapped</span>
-        <div class="hw-bar-track"><div class="hw-bar-fill" style="width:31.6%;background:#6366f1;"></div></div>
-        <span class="hw-bar-val">23.6%</span>
-      </div>
-      <div class="hw-bar-row">
-        <span class="hw-bar-lbl">Featured View All</span>
-        <div class="hw-bar-track"><div class="hw-bar-fill" style="width:24.4%;background:#818cf8;"></div></div>
-        <span class="hw-bar-val">18.2%</span>
-      </div>
-      <div class="hw-bar-row">
-        <span class="hw-bar-lbl" style="color:#b45309;">Profile icon (KYC-seek)</span>
-        <div class="hw-bar-track"><div class="hw-bar-fill" style="width:22.2%;background:#f59e0b;"></div></div>
-        <span class="hw-bar-val" style="color:#b45309;">16.6%</span>
-      </div>
-      <div class="hw-bar-row">
-        <span class="hw-bar-lbl">Goal card tapped</span>
-        <div class="hw-bar-track"><div class="hw-bar-fill" style="width:17.7%;background:#a5b4fc;"></div></div>
-        <span class="hw-bar-val">13.2%</span>
-      </div>
-      <div class="hw-bar-row">
-        <span class="hw-bar-lbl">Filter pill tapped</span>
-        <div class="hw-bar-track"><div class="hw-bar-fill" style="width:16.3%;background:#c7d2fe;"></div></div>
-        <span class="hw-bar-val">12.2%</span>
-      </div>
-      <div class="hw-bar-row">
-        <span class="hw-bar-lbl">Popular bond tapped</span>
-        <div class="hw-bar-track"><div class="hw-bar-fill" style="width:7.1%;background:#c7d2fe;"></div></div>
-        <span class="hw-bar-val">5.3%</span>
-      </div>
-      <div class="hw-bar-row">
-        <span class="hw-bar-lbl">Category / FAQ / other</span>
-        <div class="hw-bar-track"><div class="hw-bar-fill" style="width:5%;background:#e0e7ff;"></div></div>
-        <span class="hw-bar-val">≤4.5%</span>
-      </div>
-
-      <!-- Popular widget alert -->
-      <div class="hw-alert" style="margin-top:10px;">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:5px;">
-          <span style="font-size:.7rem; font-weight:700; color:#991b1b;">🔴 Popular Widget Hidden — P0 Bug</span>
-          <span style="font-size:.78rem; font-weight:800; color:#dc2626;">74.7% of sessions</span>
-        </div>
-        <div style="display:flex; gap:16px; font-size:.6rem; color:#7f1d1d; flex-wrap:wrap;">
-          <span><b>5,797</b> users see no popular bonds</span>
-          <span><b>14:1</b> hidden : tapped ratio</span>
-          <span><b>Root cause:</b> <code style="font-size:.58rem;">popularOnAsperoBonds.length === 0</code> · no diagnostic reason field</span>
-        </div>
-      </div>
-
-      <div class="insight-row" style="margin-top:8px; padding-top:8px; border-top:1px solid #f1f5f9;">
-        <span class="ins-chip"><span class="ins-dot" style="background:#4f46e5;"></span>48%+ of featured bond taps happen without using a filter pill — users trust the default ranking</span>
-        <span class="ins-chip"><span class="ins-dot" style="background:#f59e0b;"></span>16.6% profile icon seek = KYC status anxiety; ASP-4176 (KYC state card) should recover this</span>
-        <span class="ins-chip"><span class="ins-dot" style="background:#dc2626;"></span>All 10 event properties unindexed in Amplitude — granular breakdowns blocked until tracking plan updated</span>
       </div>
     </div>
   </div>
