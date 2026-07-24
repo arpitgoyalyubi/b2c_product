@@ -1691,6 +1691,89 @@ function sdoToggle(g){
   </div>
   <!-- DDPI Feedback Slide End -->
 
+  <!-- ML-DS Name Match Slide -->
+  <div class="slide two-col" id="s-mlds-namematch">
+    <div class="left-panel" style="background:linear-gradient(160deg,#312e81,#6d28d9);">
+      <div class="slide-num">Feature Launch</div>
+      <div class="slide-ttl">ML-DS<br>Name Match</div>
+      <div class="slide-sub">Bank + PAN verification · Jul 16–20 vs Jul 11–15</div>
+      <div class="hero-num" style="font-size:2.6rem;">+9.1 pp</div>
+      <div class="hero-lbl">Bank auto-approval rate (86% → 95%)</div>
+      <div class="stat-list" style="margin-top:18px;">
+        <div class="stat-item">
+          <span class="si-lbl">Bank ops queue (5d)</span>
+          <span class="si-val" style="color:#c4b5fd;">99 → 21 users &nbsp;<strong style="color:#4ade80;">&#8722;79%</strong></span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl">PAN ops queue (5d)</span>
+          <span class="si-val" style="color:#c4b5fd;">20 → 4 users &nbsp;<strong style="color:#4ade80;">&#8722;80%</strong></span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl">True new conversions</span>
+          <span class="si-val" style="color:#c4b5fd;">~55–73 of 88 incremental</span>
+        </div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div class="rp-title">What changed &amp; impact</div>
+
+      <div style="background:#f5f3ff;border-radius:8px;padding:10px 12px;margin-bottom:10px;border-left:3px solid #6d28d9;">
+        <div style="font-size:.62rem;color:#4c1d95;line-height:1.5;">Introduced ML-DS name match fallback for users whose legacy 3P score was below threshold — applies to both Bank verification and manual PAN path.</div>
+      </div>
+
+      <!-- Metrics table -->
+      <table style="width:100%;border-collapse:collapse;font-size:.6rem;margin-bottom:10px;">
+        <thead>
+          <tr style="background:#6d28d9;color:#fff;">
+            <th style="padding:5px 8px;text-align:left;border-radius:4px 0 0 0;">Metric</th>
+            <th style="padding:5px 8px;text-align:center;">Before</th>
+            <th style="padding:5px 8px;text-align:center;">After</th>
+            <th style="padding:5px 8px;text-align:center;border-radius:0 4px 0 0;">Delta</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:#f9f9f9;">
+            <td style="padding:5px 8px;color:#374151;">Bank ops queue (SUBMITTED)</td>
+            <td style="padding:5px 8px;text-align:center;color:#6b7280;">99 / 5d</td>
+            <td style="padding:5px 8px;text-align:center;color:#6b7280;">21 / 5d</td>
+            <td style="padding:5px 8px;text-align:center;font-weight:700;color:#16a34a;">&#8722;79%</td>
+          </tr>
+          <tr>
+            <td style="padding:5px 8px;color:#374151;">PAN ops queue (SUBMITTED)</td>
+            <td style="padding:5px 8px;text-align:center;color:#6b7280;">20 / 5d</td>
+            <td style="padding:5px 8px;text-align:center;color:#6b7280;">4 / 5d</td>
+            <td style="padding:5px 8px;text-align:center;font-weight:700;color:#16a34a;">&#8722;80%</td>
+          </tr>
+          <tr style="background:#f9f9f9;">
+            <td style="padding:5px 8px;color:#374151;">Bank verified % of terminal events</td>
+            <td style="padding:5px 8px;text-align:center;color:#6b7280;">86.1%</td>
+            <td style="padding:5px 8px;text-align:center;color:#6b7280;">95.2%</td>
+            <td style="padding:5px 8px;text-align:center;font-weight:700;color:#16a34a;">+9.1 pp</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Attribution breakdown -->
+      <div style="background:#faf5ff;border-radius:8px;padding:9px 12px;margin-bottom:10px;">
+        <div style="font-size:.62rem;font-weight:700;color:#6d28d9;margin-bottom:4px;">What the gain actually is</div>
+        <div style="font-size:.59rem;color:#374151;line-height:1.6;">
+          &#8226; ~88 incremental Bank-verified users / 5 days (78 from Bank path, 10 via PAN)<br>
+          &#8226; <strong>~55–73 are true new conversions</strong> — ops would have rejected these<br>
+          &#8226; ~15–23 are efficiency gains — same outcome, no ops touch needed
+        </div>
+      </div>
+
+      <!-- Insight -->
+      <div style="display:flex;flex-direction:column;gap:5px;">
+        <div class="insight-row">
+          <span class="ins-chip"><span class="ins-dot" style="background:#6d28d9;"></span>Ops queue down 79–80% in 5 days; majority of incremental approvals are genuinely new users unlocked, not just automation of existing outcomes</span>
+          <span class="ins-chip" style="font-style:italic;color:#94a3b8;font-size:.55rem;">5-day windows; +27% volume growth excluded from ML-DS attribution</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ML-DS Name Match Slide End -->
+
   <!-- KRA V2 Impact Slide -->
   <div class="slide two-col" id="s-kra-v2-impact">
     <div class="left-panel" style="background:linear-gradient(160deg,#14532d,#16a34a);">
