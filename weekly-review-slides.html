@@ -1079,298 +1079,7 @@ function sdoToggle(g){
   })();
   </script>
 
-  <!-- KRA V2 Impact Slide -->
-  <div class="slide two-col" id="s-kra-v2-impact">
-    <div class="left-panel" style="background:linear-gradient(160deg,#14532d,#16a34a);">
-      <div class="slide-num">KYC Feature</div>
-      <div class="slide-ttl">KRA V2: Unblocking Impact</div>
-      <div class="slide-sub">CVL upload &#8212; live Jun 3, 2026</div>
-      <div class="hero-num" style="font-size:2.9rem;">761</div>
-      <div class="hero-lbl">users unblocked from KRA gate</div>
-      <div class="hero-badge flat" style="background:rgba(255,255,255,.18);font-size:.82rem;margin-bottom:3px;">demat rate 56.5% &#8594; 61.1% (+4.6pp)</div>
-      <div class="stat-list" style="margin-top:18px;">
-        <div class="stat-item">
-          <span class="si-lbl">Before (avg/week)</span>
-          <span class="si-val" style="color:#fca5a5;">~144 blocked (22.2% of signups)</span>
-        </div>
-        <div class="stat-item">
-          <span class="si-lbl">After — blocked rate</span>
-          <span class="si-val" style="color:#86efac;">0% &#8212; every user gets CVL path</span>
-        </div>
-        <div class="stat-item">
-          <span class="si-lbl">Demat completion lift</span>
-          <span class="si-val" style="color:#86efac;">56.5% &#8594; 61.1% <span style="color:#bbf7d0;">(+4.6pp)</span></span>
-        </div>
-        <div class="stat-item">
-          <span class="si-lbl">Days since launch</span>
-          <span class="si-val" style="color:#d9f99d;">52d live &mdash; trade conv matures at 2&#8211;3 wks</span>
-        </div>
-      </div>
-    </div>
-    <div class="right-panel" style="padding:0;overflow:hidden;display:flex;flex-direction:column;">
-
-      <!-- Tab bar -->
-      <div style="display:flex;border-bottom:2px solid #e2e8f0;background:#f8fafc;padding:0 16px;gap:0;flex-shrink:0;">
-        <button id="kra1-tab-impact" onclick="kra1ShowTab('impact')"
-          style="padding:9px 14px;font-size:.67rem;font-weight:700;color:#14532d;border:none;
-                 border-bottom:2.5px solid #14532d;background:transparent;cursor:pointer;letter-spacing:.02em;">
-          Impact
-        </button>
-        <button id="kra1-tab-delayfix" onclick="kra1ShowTab('delayfix')"
-          style="padding:9px 14px;font-size:.67rem;font-weight:700;color:#9ca3af;border:none;
-                 border-bottom:2.5px solid transparent;background:transparent;cursor:pointer;letter-spacing:.02em;">
-          Delay &amp; Fix
-        </button>
-      </div>
-
-      <!-- Tab 1: Impact -->
-      <div id="kra1-view-impact" style="padding:16px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:14px;flex:1;">
-
-        <!-- CVL upload funnel tree -->
-        <div>
-          <div style="font-size:.68rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">
-            CVL Upload Funnel
-            <span style="font-weight:400;color:#9ca3af;font-size:.63rem;text-transform:none;">Jun 3&#8211;24 Jul &middot; Jun 4 6pm&#8211;midnight excluded</span>
-          </div>
-          <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:13px 15px;font-size:.69rem;line-height:2;color:#374151;">
-            <div style="margin-bottom:1px;">
-              <span style="font-size:.82rem;font-weight:800;color:#1e293b;">1116</span>
-              <span style="color:#64748b;"> Upload Triggered</span>
-              <span style="font-size:.58rem;color:#94a3b8;margin-left:4px;">KRA_V2_UPLOAD_INITIATED</span>
-              <span style="font-size:.55rem;color:#d97706;margin-left:6px;">&#9888; Jun 4 6pm–midnight excl.</span>
-            </div>
-            <div style="padding-left:8px;">
-              &#9500;&#9472;&#9472; <span style="font-weight:700;color:#16a34a;">358</span>
-              <span style="color:#374151;"> Instant Validated</span>
-              <span style="background:#dcfce7;color:#166534;font-weight:700;font-size:.6rem;padding:1px 5px;border-radius:3px;margin-left:4px;">32.1%</span>
-              <span style="font-size:.58rem;color:#94a3b8;margin-left:3px;">CVL sync &#10003;</span>
-            </div>
-            <div style="padding-left:8px;">
-              &#9500;&#9472;&#9472; <span style="font-weight:700;color:#2563eb;">714</span>
-              <span style="color:#374151;"> Submitted to CVL</span>
-              <span style="background:#dbeafe;color:#1d4ed8;font-weight:700;font-size:.6rem;padding:1px 5px;border-radius:3px;margin-left:4px;">64.0%</span>
-              <span style="font-size:.58rem;color:#94a3b8;margin-left:3px;">awaiting webhook</span>
-            </div>
-            <div style="padding-left:28px;">
-              &#9474;&nbsp;&nbsp; &#9492;&#9472;&#9472; <span style="font-weight:700;color:#16a34a;">403</span>
-              <span style="color:#374151;"> Webhook Validated</span>
-              <span style="background:#dcfce7;color:#166534;font-weight:700;font-size:.6rem;padding:1px 5px;border-radius:3px;margin-left:4px;">56.4%</span>
-              <span style="font-size:.58rem;color:#94a3b8;margin-left:3px;">&#10003;</span>
-            </div>
-            <div style="padding-left:28px;">
-              &#9474;&nbsp;&nbsp; &#9492;&#9472;&#9472; <span style="font-weight:700;color:#d97706;">311</span>
-              <span style="color:#374151;"> Still Pending</span>
-              <span style="background:#fef3c7;color:#92400e;font-weight:700;font-size:.6rem;padding:1px 5px;border-radius:3px;margin-left:4px;">43.6%</span>
-              <span style="font-size:.58rem;color:#94a3b8;margin-left:3px;">&#9203;</span>
-            </div>
-            <div style="padding-left:8px;">
-              &#9492;&#9472;&#9472; <span style="font-weight:700;color:#dc2626;">65</span>
-              <span style="color:#374151;"> Failed</span>
-              <span style="background:#fee2e2;color:#dc2626;font-weight:700;font-size:.6rem;padding:1px 5px;border-radius:3px;margin-left:4px;">5.8%</span>
-              <span style="font-size:.58rem;color:#94a3b8;margin-left:3px;">API error &#10007;</span>
-            </div>
-            <div style="height:1px;background:#e2e8f0;margin:6px 0;"></div>
-            <div>
-              <span style="font-weight:700;color:#16a34a;">&#10003; Total Unblocked: 761</span>
-              <span style="background:#dcfce7;color:#166534;font-weight:700;font-size:.6rem;padding:1px 5px;border-radius:3px;margin-left:4px;">68.2%</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── 4-KPI impact strip ─────────────────────────────────────────── -->
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;">
-
-          <div style="background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:11px 10px;text-align:center;">
-            <div style="font-size:.52rem;font-weight:700;color:#dc2626;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">Blocked / wk before</div>
-            <div style="font-size:1.9rem;font-weight:800;color:#dc2626;line-height:1;">~144</div>
-            <div style="font-size:.58rem;color:#9ca3af;margin-top:3px;">22.2% of PAN users</div>
-          </div>
-
-          <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:11px 10px;text-align:center;">
-            <div style="font-size:.52rem;font-weight:700;color:#16a34a;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">Blocked now</div>
-            <div style="font-size:1.9rem;font-weight:800;color:#16a34a;line-height:1;">0</div>
-            <div style="font-size:.58rem;color:#9ca3af;margin-top:3px;">761 unblocked Jun 3+</div>
-          </div>
-
-          <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:11px 10px;text-align:center;">
-            <div style="font-size:.52rem;font-weight:700;color:#16a34a;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">PAN &#8594; Demat lift</div>
-            <div style="font-size:1.9rem;font-weight:800;color:#16a34a;line-height:1;">+4.6pp</div>
-            <div style="font-size:.58rem;color:#9ca3af;margin-top:3px;">56.5% &#8594; 61.1%</div>
-          </div>
-
-          <div style="background:#fdf4ff;border:1.5px solid #e9d5ff;border-radius:10px;padding:11px 10px;text-align:center;">
-            <div style="font-size:.52rem;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">GTV recovered</div>
-            <div style="font-size:1.9rem;font-weight:800;color:#7c3aed;line-height:1;">&#8377;1.7Cr</div>
-            <div style="font-size:.58rem;color:#9ca3af;margin-top:3px;">Jun 3&#8211;24 Jul</div>
-          </div>
-
-        </div>
-
-        <!-- ── Investor quality card ──────────────────────────────────────── -->
-        <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:13px 16px;">
-          <div style="font-size:.65rem;font-weight:700;color:#374151;margin-bottom:10px;">
-            Do unblocked users invest?
-            <span style="font-weight:400;color:#9ca3af;font-size:.62rem;">first-trade conversion, Jun 3&#8211;24 Jul</span>
-          </div>
-
-          <div style="display:flex;align-items:stretch;gap:10px;">
-
-            <!-- Unblocked funnel -->
-            <div style="flex:1;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:8px;padding:10px 12px;">
-              <div style="font-size:.55rem;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Unblocked (CVL)</div>
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-                <div style="text-align:center;min-width:36px;">
-                  <div style="font-size:1.5rem;font-weight:800;color:#1d4ed8;line-height:1;">1111</div>
-                  <div style="font-size:.57rem;color:#9ca3af;margin-top:2px;">upload</div>
-                </div>
-                <div style="flex:1;text-align:center;padding:0 4px;">
-                  <div style="font-size:.6rem;color:#059669;font-weight:700;">89.1%</div>
-                  <div style="border-top:1.5px solid #93c5fd;margin-top:3px;"></div>
-                </div>
-                <div style="text-align:center;min-width:36px;">
-                  <div style="font-size:1.5rem;font-weight:800;color:#1d4ed8;line-height:1;">990</div>
-                  <div style="font-size:.57rem;color:#9ca3af;margin-top:2px;">demat</div>
-                </div>
-                <div style="flex:1;text-align:center;padding:0 4px;">
-                  <div style="font-size:.6rem;color:#d97706;font-weight:700;">11.3%</div>
-                  <div style="border-top:1.5px solid #93c5fd;margin-top:3px;"></div>
-                </div>
-                <div style="text-align:center;min-width:36px;">
-                  <div style="font-size:1.5rem;font-weight:800;color:#1d4ed8;line-height:1;">112</div>
-                  <div style="font-size:.57rem;color:#9ca3af;margin-top:2px;">traded</div>
-                </div>
-              </div>
-              <div style="font-size:.63rem;font-weight:700;color:#1d4ed8;text-align:center;">&#8377;1.7Cr GTV</div>
-            </div>
-
-            <div style="display:flex;align-items:center;flex-shrink:0;">
-              <div style="font-size:.7rem;font-weight:700;color:#94a3b8;">vs</div>
-            </div>
-
-            <!-- Validated baseline -->
-            <div style="flex:1;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:8px;padding:10px 12px;">
-              <div style="font-size:.55rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">KRA Validated baseline</div>
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-                <div style="text-align:center;min-width:36px;">
-                  <div style="font-size:1.5rem;font-weight:800;color:#374151;line-height:1;">5547</div>
-                  <div style="font-size:.57rem;color:#9ca3af;margin-top:2px;">demat</div>
-                </div>
-                <div style="flex:1;text-align:center;padding:0 4px;">
-                  <div style="font-size:.6rem;color:#d97706;font-weight:700;">19.4%</div>
-                  <div style="border-top:1.5px solid #cbd5e1;margin-top:3px;"></div>
-                </div>
-                <div style="text-align:center;min-width:36px;">
-                  <div style="font-size:1.5rem;font-weight:800;color:#374151;line-height:1;">1078</div>
-                  <div style="font-size:.57rem;color:#9ca3af;margin-top:2px;">traded</div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <div style="margin-top:9px;font-size:.62rem;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:7px 10px;color:#92400e;line-height:1.5;">
-            Non-validated: <b>11.3%</b> first-trade conv vs Validated: <b>19.4%</b> &#8212; gap to watch.
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Tab 2: Delay & Fix -->
-      <div id="kra1-view-delayfix" style="padding:16px 20px;overflow-y:auto;display:none;flex-direction:column;gap:14px;flex:1;">
-
-        <!-- CVL Webhook Delay -->
-        <div>
-          <div style="font-size:.68rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">
-            CVL Webhook Delay
-            <span style="font-weight:400;color:#9ca3af;font-size:.63rem;text-transform:none;">time from upload to KRA validated</span>
-          </div>
-          <div style="display:flex;gap:10px;margin-bottom:14px;"><div style="flex:1;background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:14px 10px;text-align:center;"><div style="font-size:.58rem;font-weight:700;color:#dc2626;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">p50 median</div><div style="font-size:1.7rem;font-weight:800;color:#dc2626;line-height:1;">10.4hr</div></div><div style="flex:1;background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:14px 10px;text-align:center;"><div style="font-size:.58rem;font-weight:700;color:#dc2626;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">p75</div><div style="font-size:1.7rem;font-weight:800;color:#dc2626;line-height:1;">18.4hr</div></div><div style="flex:1;background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:14px 10px;text-align:center;"><div style="font-size:.58rem;font-weight:700;color:#dc2626;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">p90</div><div style="font-size:1.7rem;font-weight:800;color:#dc2626;line-height:1;">69.5hr</div></div></div><div style="display:flex;gap:10px;"><div style="flex:1;font-size:.63rem;background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:13px 14px;color:#9a3412;line-height:1.7;"><b>What happens today</b><br>User submits KYC &rarr; app shows &ldquo;Explore Bonds&rdquo; screen. CVL validates <b>10.4hr later</b>. <b>No push is sent.</b> User has already left.</div><div style="flex:1;font-size:.63rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:13px 14px;color:#166534;line-height:1.7;"><b>Why send a notification</b><br>User just finished KYC &mdash; <b>peak purchase intent</b>. A single &ldquo;KRA verified, invest now&rdquo; push brings them back at exactly the right moment. 1 event &rarr; 1 eng task.</div></div>
-        </div>
-
-        <!-- Fix: Multi-KRA Agency Routing -->
-        <div style="background:#fffbeb;border:2px solid #f59e0b;border-radius:12px;padding:14px 16px;">
-
-          <!-- Header row with action badge -->
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-            <span style="font-size:.72rem;font-weight:800;color:#92400e;text-transform:uppercase;letter-spacing:.05em;">Fix: Multi-KRA Agency Routing</span>
-            <span style="background:#f59e0b;color:#fff;font-size:.58rem;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.04em;white-space:nowrap;">Action Required</span>
-            <span style="font-size:.63rem;color:#b45309;margin-left:auto;white-space:nowrap;">add CAMS + NDML creds</span>
-          </div>
-
-          <!-- Agency table -->
-          <div style="background:#fff;border:1.5px solid #fde68a;border-radius:10px;overflow:hidden;margin-bottom:12px;">
-            <table style="width:100%;border-collapse:collapse;font-size:.72rem;">
-              <thead>
-                <tr style="background:#fef3c7;">
-                  <th style="padding:10px 14px;text-align:left;font-weight:700;color:#92400e;border-bottom:1px solid #fde68a;">Agency</th>
-                  <th style="padding:10px 12px;text-align:center;font-weight:700;color:#92400e;border-bottom:1px solid #fde68a;">Webhook time</th>
-                  <th style="padding:10px 12px;text-align:center;font-weight:700;color:#92400e;border-bottom:1px solid #fde68a;">Mkt share</th>
-                  <th style="padding:10px 12px;text-align:center;font-weight:700;color:#92400e;border-bottom:1px solid #fde68a;">Our status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr style="border-bottom:1px solid #fef3c7;">
-                  <td style="padding:11px 14px;font-weight:700;color:#374151;">CVL</td>
-                  <td style="padding:11px 12px;text-align:center;color:#dc2626;font-weight:700;">up to 24hr</td>
-                  <td style="padding:11px 12px;text-align:center;color:#6b7280;">~60%</td>
-                  <td style="padding:11px 12px;text-align:center;"><span style="background:#dcfce7;color:#166534;font-weight:700;font-size:.65rem;padding:3px 9px;border-radius:20px;">Active</span></td>
-                </tr>
-                <tr style="border-bottom:1px solid #fef3c7;background:#fffbeb;">
-                  <td style="padding:11px 14px;font-weight:700;color:#374151;">CAMS</td>
-                  <td style="padding:11px 12px;text-align:center;color:#d97706;font-weight:700;">~30 min</td>
-                  <td style="padding:11px 12px;text-align:center;color:#6b7280;">~20%</td>
-                  <td style="padding:11px 12px;text-align:center;"><span style="background:#f59e0b;color:#fff;font-weight:700;font-size:.65rem;padding:3px 9px;border-radius:20px;">Get creds</span></td>
-                </tr>
-                <tr style="background:#fffbeb;">
-                  <td style="padding:11px 14px;font-weight:700;color:#374151;">NDML</td>
-                  <td style="padding:11px 12px;text-align:center;color:#16a34a;font-weight:700;">&lt;1 min &#9889;</td>
-                  <td style="padding:11px 12px;text-align:center;color:#6b7280;">~15%</td>
-                  <td style="padding:11px 12px;text-align:center;"><span style="background:#f59e0b;color:#fff;font-weight:700;font-size:.65rem;padding:3px 9px;border-radius:20px;">Get creds</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Callouts -->
-          <div style="display:flex;gap:10px;">
-            <div style="flex:1;font-size:.63rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:11px 13px;color:#166534;line-height:1.7;">
-              &#9889; <b>Zero integration cost</b> &#8212; Digio has auto-routing built in.
-              Once CAMS + NDML creds are set, routing is automatic. No engineering work beyond credential setup.
-            </div>
-            <div style="flex:1;font-size:.63rem;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:11px 13px;color:#1d4ed8;line-height:1.7;">
-              &#128200; <b>Wint benchmark</b> &#8212; already live on CVL + NDML, adding CAMS.
-              &ldquo;KRA not available&rdquo; users routed to CAMS/NDML directly &#8212; bypassing CVL delays entirely.
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-<script>
-(function() {
-  function kra1ShowTab(tab) {
-    ['impact','delayfix'].forEach(function(t) {
-      var btn  = document.getElementById('kra1-tab-' + t);
-      var view = document.getElementById('kra1-view-' + t);
-      if (t === tab) {
-        btn.style.color = '#14532d';
-        btn.style.borderBottom = '2.5px solid #14532d';
-        view.style.display = 'flex';
-      } else {
-        btn.style.color = '#9ca3af';
-        btn.style.borderBottom = '2.5px solid transparent';
-        view.style.display = 'none';
-      }
-    });
-  }
-  window.kra1ShowTab = kra1ShowTab;
-})();
-</script>
-
-<!-- KYC Microstages Slide -->
+  <!-- KYC Microstages Slide -->
 <div class="slide" id="s-kyc-stages" style="flex-direction:column;overflow:hidden;">
 <div style="padding:16px 22px 12px;background:#fff;height:100%;box-sizing:border-box;
   display:flex;flex-direction:column;gap:10px;
@@ -1825,7 +1534,298 @@ function sdoToggle(g){
     </div>
   </div>
 
-  <!-- Slide 6: Orders & GTV — Rose -->
+  <!-- KRA V2 Impact Slide -->
+  <div class="slide two-col" id="s-kra-v2-impact">
+    <div class="left-panel" style="background:linear-gradient(160deg,#14532d,#16a34a);">
+      <div class="slide-num">KYC Feature</div>
+      <div class="slide-ttl">KRA V2: Unblocking Impact</div>
+      <div class="slide-sub">CVL upload &#8212; live Jun 3, 2026</div>
+      <div class="hero-num" style="font-size:2.9rem;">761</div>
+      <div class="hero-lbl">users unblocked from KRA gate</div>
+      <div class="hero-badge flat" style="background:rgba(255,255,255,.18);font-size:.82rem;margin-bottom:3px;">demat rate 56.5% &#8594; 61.1% (+4.6pp)</div>
+      <div class="stat-list" style="margin-top:18px;">
+        <div class="stat-item">
+          <span class="si-lbl">Before (avg/week)</span>
+          <span class="si-val" style="color:#fca5a5;">~144 blocked (22.2% of signups)</span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl">After — blocked rate</span>
+          <span class="si-val" style="color:#86efac;">0% &#8212; every user gets CVL path</span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl">Demat completion lift</span>
+          <span class="si-val" style="color:#86efac;">56.5% &#8594; 61.1% <span style="color:#bbf7d0;">(+4.6pp)</span></span>
+        </div>
+        <div class="stat-item">
+          <span class="si-lbl">Days since launch</span>
+          <span class="si-val" style="color:#d9f99d;">52d live &mdash; trade conv matures at 2&#8211;3 wks</span>
+        </div>
+      </div>
+    </div>
+    <div class="right-panel" style="padding:0;overflow:hidden;display:flex;flex-direction:column;">
+
+      <!-- Tab bar -->
+      <div style="display:flex;border-bottom:2px solid #e2e8f0;background:#f8fafc;padding:0 16px;gap:0;flex-shrink:0;">
+        <button id="kra1-tab-impact" onclick="kra1ShowTab('impact')"
+          style="padding:9px 14px;font-size:.67rem;font-weight:700;color:#14532d;border:none;
+                 border-bottom:2.5px solid #14532d;background:transparent;cursor:pointer;letter-spacing:.02em;">
+          Impact
+        </button>
+        <button id="kra1-tab-delayfix" onclick="kra1ShowTab('delayfix')"
+          style="padding:9px 14px;font-size:.67rem;font-weight:700;color:#9ca3af;border:none;
+                 border-bottom:2.5px solid transparent;background:transparent;cursor:pointer;letter-spacing:.02em;">
+          Delay &amp; Fix
+        </button>
+      </div>
+
+      <!-- Tab 1: Impact -->
+      <div id="kra1-view-impact" style="padding:16px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:14px;flex:1;">
+
+        <!-- CVL upload funnel tree -->
+        <div>
+          <div style="font-size:.68rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">
+            CVL Upload Funnel
+            <span style="font-weight:400;color:#9ca3af;font-size:.63rem;text-transform:none;">Jun 3&#8211;24 Jul &middot; Jun 4 6pm&#8211;midnight excluded</span>
+          </div>
+          <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:13px 15px;font-size:.69rem;line-height:2;color:#374151;">
+            <div style="margin-bottom:1px;">
+              <span style="font-size:.82rem;font-weight:800;color:#1e293b;">1116</span>
+              <span style="color:#64748b;"> Upload Triggered</span>
+              <span style="font-size:.58rem;color:#94a3b8;margin-left:4px;">KRA_V2_UPLOAD_INITIATED</span>
+              <span style="font-size:.55rem;color:#d97706;margin-left:6px;">&#9888; Jun 4 6pm–midnight excl.</span>
+            </div>
+            <div style="padding-left:8px;">
+              &#9500;&#9472;&#9472; <span style="font-weight:700;color:#16a34a;">358</span>
+              <span style="color:#374151;"> Instant Validated</span>
+              <span style="background:#dcfce7;color:#166534;font-weight:700;font-size:.6rem;padding:1px 5px;border-radius:3px;margin-left:4px;">32.1%</span>
+              <span style="font-size:.58rem;color:#94a3b8;margin-left:3px;">CVL sync &#10003;</span>
+            </div>
+            <div style="padding-left:8px;">
+              &#9500;&#9472;&#9472; <span style="font-weight:700;color:#2563eb;">714</span>
+              <span style="color:#374151;"> Submitted to CVL</span>
+              <span style="background:#dbeafe;color:#1d4ed8;font-weight:700;font-size:.6rem;padding:1px 5px;border-radius:3px;margin-left:4px;">64.0%</span>
+              <span style="font-size:.58rem;color:#94a3b8;margin-left:3px;">awaiting webhook</span>
+            </div>
+            <div style="padding-left:28px;">
+              &#9474;&nbsp;&nbsp; &#9492;&#9472;&#9472; <span style="font-weight:700;color:#16a34a;">403</span>
+              <span style="color:#374151;"> Webhook Validated</span>
+              <span style="background:#dcfce7;color:#166534;font-weight:700;font-size:.6rem;padding:1px 5px;border-radius:3px;margin-left:4px;">56.4%</span>
+              <span style="font-size:.58rem;color:#94a3b8;margin-left:3px;">&#10003;</span>
+            </div>
+            <div style="padding-left:28px;">
+              &#9474;&nbsp;&nbsp; &#9492;&#9472;&#9472; <span style="font-weight:700;color:#d97706;">311</span>
+              <span style="color:#374151;"> Still Pending</span>
+              <span style="background:#fef3c7;color:#92400e;font-weight:700;font-size:.6rem;padding:1px 5px;border-radius:3px;margin-left:4px;">43.6%</span>
+              <span style="font-size:.58rem;color:#94a3b8;margin-left:3px;">&#9203;</span>
+            </div>
+            <div style="padding-left:8px;">
+              &#9492;&#9472;&#9472; <span style="font-weight:700;color:#dc2626;">65</span>
+              <span style="color:#374151;"> Failed</span>
+              <span style="background:#fee2e2;color:#dc2626;font-weight:700;font-size:.6rem;padding:1px 5px;border-radius:3px;margin-left:4px;">5.8%</span>
+              <span style="font-size:.58rem;color:#94a3b8;margin-left:3px;">API error &#10007;</span>
+            </div>
+            <div style="height:1px;background:#e2e8f0;margin:6px 0;"></div>
+            <div>
+              <span style="font-weight:700;color:#16a34a;">&#10003; Total Unblocked: 761</span>
+              <span style="background:#dcfce7;color:#166534;font-weight:700;font-size:.6rem;padding:1px 5px;border-radius:3px;margin-left:4px;">68.2%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── 4-KPI impact strip ─────────────────────────────────────────── -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;">
+
+          <div style="background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:11px 10px;text-align:center;">
+            <div style="font-size:.52rem;font-weight:700;color:#dc2626;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">Blocked / wk before</div>
+            <div style="font-size:1.9rem;font-weight:800;color:#dc2626;line-height:1;">~144</div>
+            <div style="font-size:.58rem;color:#9ca3af;margin-top:3px;">22.2% of PAN users</div>
+          </div>
+
+          <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:11px 10px;text-align:center;">
+            <div style="font-size:.52rem;font-weight:700;color:#16a34a;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">Blocked now</div>
+            <div style="font-size:1.9rem;font-weight:800;color:#16a34a;line-height:1;">0</div>
+            <div style="font-size:.58rem;color:#9ca3af;margin-top:3px;">761 unblocked Jun 3+</div>
+          </div>
+
+          <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:11px 10px;text-align:center;">
+            <div style="font-size:.52rem;font-weight:700;color:#16a34a;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">PAN &#8594; Demat lift</div>
+            <div style="font-size:1.9rem;font-weight:800;color:#16a34a;line-height:1;">+4.6pp</div>
+            <div style="font-size:.58rem;color:#9ca3af;margin-top:3px;">56.5% &#8594; 61.1%</div>
+          </div>
+
+          <div style="background:#fdf4ff;border:1.5px solid #e9d5ff;border-radius:10px;padding:11px 10px;text-align:center;">
+            <div style="font-size:.52rem;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">GTV recovered</div>
+            <div style="font-size:1.9rem;font-weight:800;color:#7c3aed;line-height:1;">&#8377;1.7Cr</div>
+            <div style="font-size:.58rem;color:#9ca3af;margin-top:3px;">Jun 3&#8211;24 Jul</div>
+          </div>
+
+        </div>
+
+        <!-- ── Investor quality card ──────────────────────────────────────── -->
+        <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:13px 16px;">
+          <div style="font-size:.65rem;font-weight:700;color:#374151;margin-bottom:10px;">
+            Do unblocked users invest?
+            <span style="font-weight:400;color:#9ca3af;font-size:.62rem;">first-trade conversion, Jun 3&#8211;24 Jul</span>
+          </div>
+
+          <div style="display:flex;align-items:stretch;gap:10px;">
+
+            <!-- Unblocked funnel -->
+            <div style="flex:1;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:8px;padding:10px 12px;">
+              <div style="font-size:.55rem;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Unblocked (CVL)</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                <div style="text-align:center;min-width:36px;">
+                  <div style="font-size:1.5rem;font-weight:800;color:#1d4ed8;line-height:1;">1111</div>
+                  <div style="font-size:.57rem;color:#9ca3af;margin-top:2px;">upload</div>
+                </div>
+                <div style="flex:1;text-align:center;padding:0 4px;">
+                  <div style="font-size:.6rem;color:#059669;font-weight:700;">89.1%</div>
+                  <div style="border-top:1.5px solid #93c5fd;margin-top:3px;"></div>
+                </div>
+                <div style="text-align:center;min-width:36px;">
+                  <div style="font-size:1.5rem;font-weight:800;color:#1d4ed8;line-height:1;">990</div>
+                  <div style="font-size:.57rem;color:#9ca3af;margin-top:2px;">demat</div>
+                </div>
+                <div style="flex:1;text-align:center;padding:0 4px;">
+                  <div style="font-size:.6rem;color:#d97706;font-weight:700;">11.3%</div>
+                  <div style="border-top:1.5px solid #93c5fd;margin-top:3px;"></div>
+                </div>
+                <div style="text-align:center;min-width:36px;">
+                  <div style="font-size:1.5rem;font-weight:800;color:#1d4ed8;line-height:1;">112</div>
+                  <div style="font-size:.57rem;color:#9ca3af;margin-top:2px;">traded</div>
+                </div>
+              </div>
+              <div style="font-size:.63rem;font-weight:700;color:#1d4ed8;text-align:center;">&#8377;1.7Cr GTV</div>
+            </div>
+
+            <div style="display:flex;align-items:center;flex-shrink:0;">
+              <div style="font-size:.7rem;font-weight:700;color:#94a3b8;">vs</div>
+            </div>
+
+            <!-- Validated baseline -->
+            <div style="flex:1;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:8px;padding:10px 12px;">
+              <div style="font-size:.55rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">KRA Validated baseline</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                <div style="text-align:center;min-width:36px;">
+                  <div style="font-size:1.5rem;font-weight:800;color:#374151;line-height:1;">5547</div>
+                  <div style="font-size:.57rem;color:#9ca3af;margin-top:2px;">demat</div>
+                </div>
+                <div style="flex:1;text-align:center;padding:0 4px;">
+                  <div style="font-size:.6rem;color:#d97706;font-weight:700;">19.4%</div>
+                  <div style="border-top:1.5px solid #cbd5e1;margin-top:3px;"></div>
+                </div>
+                <div style="text-align:center;min-width:36px;">
+                  <div style="font-size:1.5rem;font-weight:800;color:#374151;line-height:1;">1078</div>
+                  <div style="font-size:.57rem;color:#9ca3af;margin-top:2px;">traded</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div style="margin-top:9px;font-size:.62rem;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:7px 10px;color:#92400e;line-height:1.5;">
+            Non-validated: <b>11.3%</b> first-trade conv vs Validated: <b>19.4%</b> &#8212; gap to watch.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Tab 2: Delay & Fix -->
+      <div id="kra1-view-delayfix" style="padding:16px 20px;overflow-y:auto;display:none;flex-direction:column;gap:14px;flex:1;">
+
+        <!-- CVL Webhook Delay -->
+        <div>
+          <div style="font-size:.68rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">
+            CVL Webhook Delay
+            <span style="font-weight:400;color:#9ca3af;font-size:.63rem;text-transform:none;">time from upload to KRA validated</span>
+          </div>
+          <div style="display:flex;gap:10px;margin-bottom:14px;"><div style="flex:1;background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:14px 10px;text-align:center;"><div style="font-size:.58rem;font-weight:700;color:#dc2626;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">p50 median</div><div style="font-size:1.7rem;font-weight:800;color:#dc2626;line-height:1;">10.4hr</div></div><div style="flex:1;background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:14px 10px;text-align:center;"><div style="font-size:.58rem;font-weight:700;color:#dc2626;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">p75</div><div style="font-size:1.7rem;font-weight:800;color:#dc2626;line-height:1;">18.4hr</div></div><div style="flex:1;background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:14px 10px;text-align:center;"><div style="font-size:.58rem;font-weight:700;color:#dc2626;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">p90</div><div style="font-size:1.7rem;font-weight:800;color:#dc2626;line-height:1;">69.5hr</div></div></div><div style="display:flex;gap:10px;"><div style="flex:1;font-size:.63rem;background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:13px 14px;color:#9a3412;line-height:1.7;"><b>What happens today</b><br>User submits KYC &rarr; app shows &ldquo;Explore Bonds&rdquo; screen. CVL validates <b>10.4hr later</b>. <b>No push is sent.</b> User has already left.</div><div style="flex:1;font-size:.63rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:13px 14px;color:#166534;line-height:1.7;"><b>Why send a notification</b><br>User just finished KYC &mdash; <b>peak purchase intent</b>. A single &ldquo;KRA verified, invest now&rdquo; push brings them back at exactly the right moment. 1 event &rarr; 1 eng task.</div></div>
+        </div>
+
+        <!-- Fix: Multi-KRA Agency Routing -->
+        <div style="background:#fffbeb;border:2px solid #f59e0b;border-radius:12px;padding:14px 16px;">
+
+          <!-- Header row with action badge -->
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+            <span style="font-size:.72rem;font-weight:800;color:#92400e;text-transform:uppercase;letter-spacing:.05em;">Fix: Multi-KRA Agency Routing</span>
+            <span style="background:#f59e0b;color:#fff;font-size:.58rem;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.04em;white-space:nowrap;">Action Required</span>
+            <span style="font-size:.63rem;color:#b45309;margin-left:auto;white-space:nowrap;">add CAMS + NDML creds</span>
+          </div>
+
+          <!-- Agency table -->
+          <div style="background:#fff;border:1.5px solid #fde68a;border-radius:10px;overflow:hidden;margin-bottom:12px;">
+            <table style="width:100%;border-collapse:collapse;font-size:.72rem;">
+              <thead>
+                <tr style="background:#fef3c7;">
+                  <th style="padding:10px 14px;text-align:left;font-weight:700;color:#92400e;border-bottom:1px solid #fde68a;">Agency</th>
+                  <th style="padding:10px 12px;text-align:center;font-weight:700;color:#92400e;border-bottom:1px solid #fde68a;">Webhook time</th>
+                  <th style="padding:10px 12px;text-align:center;font-weight:700;color:#92400e;border-bottom:1px solid #fde68a;">Mkt share</th>
+                  <th style="padding:10px 12px;text-align:center;font-weight:700;color:#92400e;border-bottom:1px solid #fde68a;">Our status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid #fef3c7;">
+                  <td style="padding:11px 14px;font-weight:700;color:#374151;">CVL</td>
+                  <td style="padding:11px 12px;text-align:center;color:#dc2626;font-weight:700;">up to 24hr</td>
+                  <td style="padding:11px 12px;text-align:center;color:#6b7280;">~60%</td>
+                  <td style="padding:11px 12px;text-align:center;"><span style="background:#dcfce7;color:#166534;font-weight:700;font-size:.65rem;padding:3px 9px;border-radius:20px;">Active</span></td>
+                </tr>
+                <tr style="border-bottom:1px solid #fef3c7;background:#fffbeb;">
+                  <td style="padding:11px 14px;font-weight:700;color:#374151;">CAMS</td>
+                  <td style="padding:11px 12px;text-align:center;color:#d97706;font-weight:700;">~30 min</td>
+                  <td style="padding:11px 12px;text-align:center;color:#6b7280;">~20%</td>
+                  <td style="padding:11px 12px;text-align:center;"><span style="background:#f59e0b;color:#fff;font-weight:700;font-size:.65rem;padding:3px 9px;border-radius:20px;">Get creds</span></td>
+                </tr>
+                <tr style="background:#fffbeb;">
+                  <td style="padding:11px 14px;font-weight:700;color:#374151;">NDML</td>
+                  <td style="padding:11px 12px;text-align:center;color:#16a34a;font-weight:700;">&lt;1 min &#9889;</td>
+                  <td style="padding:11px 12px;text-align:center;color:#6b7280;">~15%</td>
+                  <td style="padding:11px 12px;text-align:center;"><span style="background:#f59e0b;color:#fff;font-weight:700;font-size:.65rem;padding:3px 9px;border-radius:20px;">Get creds</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Callouts -->
+          <div style="display:flex;gap:10px;">
+            <div style="flex:1;font-size:.63rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:11px 13px;color:#166534;line-height:1.7;">
+              &#9889; <b>Zero integration cost</b> &#8212; Digio has auto-routing built in.
+              Once CAMS + NDML creds are set, routing is automatic. No engineering work beyond credential setup.
+            </div>
+            <div style="flex:1;font-size:.63rem;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:11px 13px;color:#1d4ed8;line-height:1.7;">
+              &#128200; <b>Wint benchmark</b> &#8212; already live on CVL + NDML, adding CAMS.
+              &ldquo;KRA not available&rdquo; users routed to CAMS/NDML directly &#8212; bypassing CVL delays entirely.
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+<script>
+(function() {
+  function kra1ShowTab(tab) {
+    ['impact','delayfix'].forEach(function(t) {
+      var btn  = document.getElementById('kra1-tab-' + t);
+      var view = document.getElementById('kra1-view-' + t);
+      if (t === tab) {
+        btn.style.color = '#14532d';
+        btn.style.borderBottom = '2.5px solid #14532d';
+        view.style.display = 'flex';
+      } else {
+        btn.style.color = '#9ca3af';
+        btn.style.borderBottom = '2.5px solid transparent';
+        view.style.display = 'none';
+      }
+    });
+  }
+  window.kra1ShowTab = kra1ShowTab;
+})();
+</script>
+
+<!-- Slide 6: Orders & GTV — Rose -->
   <div class="slide two-col" id="s6">
     <div class="left-panel" style="background:linear-gradient(160deg,#881337,#ec4899);">
       <div class="slide-num">Slide 06</div>
