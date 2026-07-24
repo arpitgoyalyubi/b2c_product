@@ -2148,30 +2148,7 @@ function sdoToggle(g){
   }
   </script>
 
-  <!-- Slide 11: Support Pulse — Rose -->
-  <div class="slide two-col" id="s10">
-    <div class="left-panel" style="background:linear-gradient(160deg,#881337,#ec4899);">
-      <div class="slide-num">Slide 10</div>
-      <div class="slide-ttl">Support Pulse</div>
-      <div class="slide-sub">Tag + description classified · B2C only</div>
-      <div class="hero-num" id="h10-val">—</div>
-      <div class="hero-lbl">Unique users with issues (last week)</div>
-      <div class="hero-badge flat" id="h10-delta">—</div>
-      <div class="stat-list">
-        <div class="stat-item"><span class="si-lbl">Total Freshdesk (B2C)</span><span class="si-val" id="s10-total">—</span></div>
-        <div class="stat-item"><span class="si-lbl">Follow-up tickets excluded</span><span class="si-val" id="s10-dupes">—</span></div>
-        <div class="stat-item"><span class="si-lbl">Agent-tagged coverage</span><span class="si-val" id="s10-tagged">59%</span></div>
-      </div>
-      <div class="insight-row" id="ins-s10"></div>
-    </div>
-    <div class="right-panel" style="overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:14px;">
-      <div style="height:175px;position:relative;flex-shrink:0;">
-        <canvas id="chart-support-trend"></canvas>
-      </div>
-      <div id="support-issue-table"></div>
-    </div>
-  </div>
-
+  
   <!-- ── APPENDIX ─────────────────────────────────────────────────────────── -->
   <div class="slide two-col" id="s-appendix">
     <div class="left-panel" style="background:linear-gradient(160deg,#1e293b,#475569);">
@@ -2203,6 +2180,11 @@ function sdoToggle(g){
         <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:10px 12px;">
           <div style="font-size:.65rem;font-weight:700;color:#e2e8f0;">Slide 06b · Payer Attribution</div>
           <div style="font-size:.58rem;color:#94a3b8;margin-top:2px;">Periodic channel-mix analysis for paying users</div>
+        </div>
+
+        <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:.65rem;font-weight:700;color:#e2e8f0;">Slide 10 · Support Pulse</div>
+          <div style="font-size:.58rem;color:#94a3b8;margin-top:2px;">Freshdesk B2C tickets · category breakdown &amp; top issues</div>
         </div>
       </div>
     </div>
@@ -2488,6 +2470,30 @@ function sdoToggle(g){
   })();
   </script>
 <!-- Payer Attribution Slide End -->
+
+<!-- Slide 11: Support Pulse — Rose -->
+  <div class="slide two-col" id="s10">
+    <div class="left-panel" style="background:linear-gradient(160deg,#881337,#ec4899);">
+      <div class="slide-num">Slide 10</div>
+      <div class="slide-ttl">Support Pulse</div>
+      <div class="slide-sub">Tag + description classified · B2C only</div>
+      <div class="hero-num" id="h10-val">—</div>
+      <div class="hero-lbl">Unique users with issues (last week)</div>
+      <div class="hero-badge flat" id="h10-delta">—</div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="si-lbl">Total Freshdesk (B2C)</span><span class="si-val" id="s10-total">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Follow-up tickets excluded</span><span class="si-val" id="s10-dupes">—</span></div>
+        <div class="stat-item"><span class="si-lbl">Agent-tagged coverage</span><span class="si-val" id="s10-tagged">59%</span></div>
+      </div>
+      <div class="insight-row" id="ins-s10"></div>
+    </div>
+    <div class="right-panel" style="overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:14px;">
+      <div style="height:175px;position:relative;flex-shrink:0;">
+        <canvas id="chart-support-trend"></canvas>
+      </div>
+      <div id="support-issue-table"></div>
+    </div>
+  </div>
 
   <!-- Slide 9: Biometrics Health — Purple -->
   <div class="slide two-col" id="s9">
@@ -2885,7 +2891,6 @@ var s1Datasets = [
 ];
 var s1Plugins = [];
 if (D.has_bot_data_s1) {
-  s1Datasets.push(Object.assign(line('Signups (excl. bots)', D.signups_clean, BLUE), { borderDash: [5,3], borderWidth: 1.5 }));
   setEl('s1-bot-val', num(D.signups_clean[D.signups_clean.length - 1]));
   var _s1br = document.getElementById('s1-bot-row');
   if (_s1br) _s1br.style.display = '';
@@ -2942,19 +2947,11 @@ var _rttDatasets = [
   bar('Investors',     D.payments,            BLUE),
   line('Cohort Conv%', D.rtt_cohort_conv_pct, AMBER, 'y2'),
 ];
-if (D.has_bot_data_rtt && D.rtt_clean) {
-  _rttDatasets.push(Object.assign(line('RTT Users (excl. bots)', D.rtt_clean, GREEN), { borderDash: [6,3], borderWidth: 1.8, pointRadius: 0, pointHoverRadius: 4, borderColor: GREEN + '99' }));
-  _rttDatasets.push(Object.assign(line('Investors (excl. bots)', D.payments_clean, '#93c5fd'), { borderDash: [6,3], borderWidth: 1.8, pointRadius: 0, pointHoverRadius: 4 }));
-  _rttDatasets.push(Object.assign(line('Conv% (excl. bots)', D.rtt_cohort_conv_pct_clean, AMBER, 'y2'), { borderDash: [6,3], borderWidth: 1.8, pointRadius: 0, pointHoverRadius: 4, borderColor: AMBER + '99' }));
-}
 mkChart('chart-rtt', _rttDatasets, Y2_PCT);
 var _s3Insights = [
   { color: BLUE,  txt: `Investors: ${num(D.kpi_investors.this)} last wk (excl. bots) vs ${num(D.kpi_investors.last)} prior wk · 7-wk avg: ${num(D.kpi_investors.avg)}` },
   { color: AMBER, txt: `Last-wk RTT cohort conv: ${pct(D.kpi_rtt_cohort_conv.this)} (excl. bots) · prior wk cohort: ${pct(D.kpi_rtt_cohort_conv.last)} (older cohort, naturally higher)` },
 ];
-if (D.has_bot_data_rtt) {
-  _s3Insights.push({ color: '#93c5fd', txt: `‒‒ Raw incl. Poland bots: ${num(D.payments[D.payments.length-1])} investors · conv% ${pct(D.rtt_cohort_conv_pct[D.rtt_cohort_conv_pct.length-1])} (solid lines)` });
-}
 insights('ins-s3', _s3Insights);
 
 // ── Slide 4: RTT Cohort Timing — line chart ───────────────────────────────────
